@@ -70,7 +70,7 @@
           <li><a href="#portfolio">Portfolio</a></li>
           <li class="drop-down"><a href="#">Survei</a>
             <ul>
-              <li><a href="<?=base_url('IDE/SurveiIPM')?>"><b>IPM</b></a></li>
+              <li><a href="<?=base_url('IDE/SurveiIPM')?>"><b>Indikator Kesejahteraan</b></a></li>
               <li><a href="<?=base_url('IDE/SurveiIKM')?>"><b>IKM</b></a></li>
               <li><a href="<?=base_url('IDE/SurveiBPD')?>"><b>BPD</b></a></li>
               <li><a href="<?=base_url('IDE/SurveiKinerjaPemDes')?>"><b>Kinerja PemDes</b></a></li>
