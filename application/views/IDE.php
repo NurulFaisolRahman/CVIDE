@@ -73,6 +73,7 @@
               <li><a href="<?=base_url('IDE/SurveiIPM')?>"><b>IPM</b></a></li>
               <li><a href="<?=base_url('IDE/SurveiIKM')?>"><b>IKM</b></a></li>
               <li><a href="<?=base_url('IDE/SurveiBPD')?>"><b>BPD</b></a></li>
+              <li><a href="<?=base_url('IDE/SurveiKinerjaPemDes')?>"><b>Kinerja PemDes</b></a></li>
             </ul>
           </li>
         </ul>

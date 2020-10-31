@@ -25,6 +25,12 @@ class IDE extends CI_Controller {
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `KodeWilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `KodeWilayah` WHERE Kode LIKE '35.10.01.%'")->result_array();
 		$this->load->view('SurveiBPD',$Data);
+  }
+  
+  public function SurveiKinerjaPemDes(){
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `KodeWilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `KodeWilayah` WHERE Kode LIKE '35.10.01.%'")->result_array();
+		$this->load->view('SurveiKinerjaPemDes',$Data);
 	}
 
 	function Kabupaten(){

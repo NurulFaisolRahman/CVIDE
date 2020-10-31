@@ -21,7 +21,7 @@
         <div class="col-sm-12">
           <div class="card mt-2">
             <div class="card-header bg-primary text-light">
-              <b>SURVEY EVALUASI KINERJA BADAN PERMUSYAWARATAN DESA</b>
+              <b>SURVEI EVALUASI KINERJA BADAN PERMUSYAWARATAN DESA</b>
             </div>
             <div style="background-color: yellow;" class="card-body border border-primary">
               <div class="container-fluid">
@@ -196,7 +196,7 @@
                       </table>
                     </div>
                   </div> -->
-                  <div class="col-sm-6 offset-sm-6 mt-2">
+                  <div class="col-sm-12 mt-2 d-flex justify-content-center">
                     <button type="button" class="btn btn-primary" id="Kirim"><b>Kirim Survei</b></button>
                   </div> 
                 </div>
