@@ -49,13 +49,14 @@
                             <th scope="col" class="text-center align-middle">Total Responden</th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="RekapSurvei">
                           <?php $Index = 0; foreach ($Desa as $key) { ?>
                             <tr>
                               <th scope="row" class="text-center align-middle"><?=$key['Nama']?></th>
                               <td scope="row" class="text-center align-middle"><?=$Responden[$Index++]?></td>
                             </tr>
                           <?php } ?>  
+                        </tbody>
                       </table>
                     </div>
                   </div>
@@ -75,10 +76,10 @@
       var BaseURL = '<?=base_url()?>'  
 
       $("#Kecamatan").change(function (){
-        // var Desa = { Kode: $("#Kecamatan").val() }
-        // $.post(BaseURL+"IDE/Desa", Desa).done(function(Respon) {
-        //   $('#Desa').html(Respon)
-        // })    
+        var Kecamatan = { Kecamatan: $("#Kecamatan").val() }
+        $.post(BaseURL+"IDE/InfoIKM", Kecamatan).done(function(Respon) {
+          $('#RekapSurvei').html(Respon)
+        })    
       })
       
     })

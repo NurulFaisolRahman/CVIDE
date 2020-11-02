@@ -42,7 +42,7 @@ class IDE extends CI_Controller {
   }
 
   public function InfoSurveiIKM(){
-    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%'")->result_array();
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.01.%'")->result_array();
     $Data['Responden'] = array();
     foreach ($Data['Desa'] as $key) {
@@ -50,6 +50,17 @@ class IDE extends CI_Controller {
       array_push($Data['Responden'], $Total);
     }
     $this->load->view('InfoSurveiIKM',$Data);
+  }
+
+  public function InfoIKM(){
+    $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$_POST['Kecamatan'].".%'")->result_array();
+    foreach ($Desa as $key) {
+      $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikm` WHERE Desa = "."'".$key['Kode']."'")->row_array()['Total'];
+      echo "<tr>";
+      echo "<th scope='row' class='text-center align-middle'>".$key['Nama']."</th>";
+      echo "<td scope='row' class='text-center align-middle'>".$Total."</td>";
+      echo "</tr>";
+    }
   }
 
   public function InputIKM(){
