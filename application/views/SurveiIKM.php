@@ -31,7 +31,7 @@
                       <div class="input-group-prepend">
                         <label class="input-group-text bg-danger text-light"><b>NIK</b></label>
                       </div>
-                      <input class="form-control" type="text" id="NIK" placeholder="NIK">
+                      <input class="form-control" type="text" id="NIK" data-inputmask='"mask": "9999999999999999"' data-mask>
                     </div>
                   </div> 
                   <div class="col-sm-3 my-1">
@@ -187,10 +187,13 @@
   </body>
   <script src="../assets/vendor/jquery/jquery.min.js"></script>
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/inputmask/min/jquery.inputmask.bundle.min.js"></script>
   <script>
     $(document).ready(function(){
         
       var BaseURL = '<?=base_url()?>'  
+
+      $('[data-mask]').inputmask()
 
       $("#Kecamatan").change(function (){
         var Desa = { Kode: $("#Kecamatan").val() }
@@ -206,6 +209,58 @@
         } else {
           $("#PekerjaanLainnya").prop('disabled', true);
           $("#PekerjaanLainnya").attr("placeholder", "Jenis Lainnya");
+        }
+      })
+
+      $("#Kirim").click(function() {
+        if (isNaN($("#NIK").val()) || $("#NIK").val() === "") {
+          alert('Input NIK Belum Benar!')
+        } else if ($("#Nama").val() === "") {
+          alert('Input Nama Belum Benar!')
+        } else if ($("#Pekerjaan").val() == 6 && $("#PekerjaanLainnya").val() === "") {
+          alert('Input Pekerjaan Lainnya Belum Benar!')
+        } else if ($("#Keperluan").val() === "") {
+          alert('Input Keperluan Belum Benar!')
+        } else {
+          var Cek = false
+          var Tanya = 0
+          for (let i = 1; i <= 11; i++) {
+            if ($("input[name='Input"+i+"']:checked").val() == undefined) {
+              Cek = true
+              Tanya = i
+              break
+            }
+          }
+          if (Cek) {
+            alert('Pertanyaan Nomer '+Tanya+' Wajib Di Isi!')
+          } 
+          else {
+            var Poin = ""
+            for (let i = 1; i <= 11; i++) {
+              Poin += $("input[name='Input"+i+"']:checked").val()
+              if (i < 11) {
+                Poin += "|"
+              }
+            }
+            var IKM = { NIK: $("#NIK").val(),
+                        Nama: $("#Nama").val(),
+                        Gender: $("#Gender").val(),
+                        Usia: $("#Usia").val(),
+                        Pendidikan: $("#Pendidikan").val(),
+                        Kecamatan: $("#Kecamatan").val(),
+                        Desa: $("#Desa").val(),
+                        Pekerjaan: $("#Pekerjaan").val(),
+                        Keperluan: $("#Keperluan").val(),
+                        Poin: Poin }
+            $.post(BaseURL+"IDE/InputIKM", IKM).done(function(Respon) {
+              if (Respon == '1') {
+                alert('Terima Kasih')
+                window.location = BaseURL + "IDE/SurveiIKM"
+              } else {
+                alert(Respon)
+              }
+            })
+          }
         }
       })
       

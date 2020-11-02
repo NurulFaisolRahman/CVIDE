@@ -65,17 +65,17 @@
       <nav class="nav-menu float-right d-none d-lg-block font-weight-bold">
         <ul>
           <li class="active"><a href="<?=base_url()?>">Home</a></li>
-          <li><a href="#about">About Us</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#portfolio">Portfolio</a></li>
-          <li class="drop-down"><a href="#">Survei</a>
-            <ul>
+          <li><a href="<?=base_url('IDE/Surveyor')?>">Survei</a>
+            <!-- <ul>
               <li><a href="<?=base_url('IDE/SurveiIPM')?>"><b>Indikator Kesejahteraan</b></a></li>
               <li><a href="<?=base_url('IDE/SurveiIKM')?>"><b>IKM</b></a></li>
               <li><a href="<?=base_url('IDE/SurveiBPD')?>"><b>BPD</b></a></li>
               <li><a href="<?=base_url('IDE/SurveiKinerjaPemDes')?>"><b>Kinerja PemDes</b></a></li>
-            </ul>
+            </ul> -->
           </li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
         </ul>
       </nav>
       <!-- .nav-menu -->
@@ -97,7 +97,7 @@
           <div class="carousel-item active" style="background-image: url('assets/img/slide/slide-1.jpg');">
             <div class="carousel-container">
               <div class="carousel-content container">
-                <h2 class="animate__animated animate__fadeInDown">Welcome to <span>Mamba</span></h2>
+                <h2 class="animate__animated animate__fadeInDown">Welcome to <span>IDE Consultant</span></h2>
                 <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.</p>
                 <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Read More</a>
               </div>
