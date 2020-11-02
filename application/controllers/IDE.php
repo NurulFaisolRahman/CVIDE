@@ -41,6 +41,17 @@ class IDE extends CI_Controller {
     $this->load->view('SurveiIKM',$Data);
   }
 
+  public function InfoSurveiIKM(){
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%'")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.01.%'")->result_array();
+    $Data['Responden'] = array();
+    foreach ($Data['Desa'] as $key) {
+      $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikm` WHERE Desa = "."'".$key['Kode']."'")->row_array()['Total'];
+      array_push($Data['Responden'], $Total);
+    }
+    $this->load->view('InfoSurveiIKM',$Data);
+  }
+
   public function InputIKM(){
     if($this->db->get_where('ikm', array('NIK' => $_POST['NIK']))->num_rows() === 0){
       $this->db->insert('ikm',$_POST);

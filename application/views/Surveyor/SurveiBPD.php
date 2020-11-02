@@ -41,7 +41,7 @@
                                 <div class="input-group-prepend">
                                   <label class="input-group-text bg-danger text-light"><b>Jumlah Dusun</b></label>
                                 </div>
-                                <input class="form-control" type="text" id="Dusun" placeholder="0">
+                                <input class="form-control" type="text" id="Dusun" data-inputmask='"mask": "99"' data-mask>
                               </div>
                             </div> 
                             <?php 
@@ -51,6 +51,7 @@
                                               'Berapa persentase aspirasi perempuan & kelompok marginal yang tergali?',
                                               'Berapa persentase agenda kerja yang terealisasi?',
                                               'Apakah ada buku panduan BPD? (Sistematika => maksud, tujuan, sasaran waktu dan uraian kegiatan)',
+                                              'Berapa persentase aspirasi yang ditampung?',
                                               'Berapa persentase aspirasi yang disampaikan?',
                                               'Berapa persentase aspirasi yang disalurkan?',
                                               'Berapa kali musyawarah yang sudah dilakukan dalam satu tahun?',
@@ -65,6 +66,7 @@
                                             'Jumlah Aspirasi Perempuan & Kelompok Marginal|Jumlah Perempuan & Kelompok Marginal',
                                             'Jumlah agenda terealisasi Dalam 1 Tahun|Jumlah agenda Dalam 1 Tahun',
                                             'Tidak Ada Buku Panduan|Memuat 1 atau 2 Poin Sistematika|Memuat 3 Poin Sistematika|Memuat 4 Poin Sistematika',
+                                            'Jumlah Aspirasi yang ditampung',
                                             'Jumlah Aspirasi Yang Disampaikan',
                                             'Jumlah Aspirasi Yang Disalurkan',
                                             '12 Kali|11 Kali|10 Kali|< 10 Kali',
@@ -87,7 +89,7 @@
                                   <?php if (count($Pisah) == 4) { ?>
                                     <?php for ($j=0; $j < 4; $j++) { ?>
                                       <div class="form-check form-check-inline ml-4 my-1">
-                                        <input style="transform: scale(1.5);" class="form-check-input" type="radio" name="I<?=$i?>" id="I<?=$i.$j?>" value="<?=$j?>">
+                                        <input style="transform: scale(1.5);" class="form-check-input" type="radio" name="I<?=$i?>" id="I<?=$i.$j?>" value="<?=(4-$j)?>">
                                         <label class="form-check-label font-weight-bold" for="I<?=$i.$j?>">&nbsp;<?=$Pisah[$j]?></label>
                                       </div>
                                     <?php } ?>
@@ -122,17 +124,103 @@
 		</div>
   </body>
   <script src="<?=base_url('assets/vendor/jquery/jquery.min.js')?>"></script>
-	<script src="<?=base_url('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')?>"></script>
+  <script src="<?=base_url('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')?>"></script>
+  <script src="<?=base_url('assets/inputmask/min/jquery.inputmask.bundle.min.js')?>"></script>
 	<script>
     $(document).ready(function(){
         
       var BaseURL = '<?=base_url()?>'  
+
+      $('[data-mask]').inputmask()
 
       $("#Kecamatan").change(function (){
         var Desa = { Kode: $("#Kecamatan").val() }
         $.post(BaseURL+"IDE/Desa", Desa).done(function(Respon) {
           $('#Desa').html(Respon)
         })    
+      })
+
+      $("#Kirim").click(function() {
+        if (isNaN(parseInt($("#Dusun").val())) || $("#Dusun").val() === "") {
+          alert('Input Jumlah Dusun Belum Benar!')
+        } else {
+          var Cek = false
+          var Tanya = 0
+          var Radio = [0,5,9,10,11,12,13,14]
+          for (let i = 0; i < Radio.length; i++) {
+            if ($("input[name='I"+Radio[i]+"']:checked").val() == undefined) {
+              Cek = true
+              Tanya = Radio[i]+1
+              break
+            }
+          }
+          if (Cek) {
+            alert('Pertanyaan Nomer '+Tanya+' Wajib Di Isi!')
+          } else {
+            if (isNaN(parseInt($("#I10").val()))) {
+              alert('Input Jumlah Aspirasi Masyarakat Miskin Belum Benar!')
+            } else if (isNaN(parseInt($("#I11").val()))) {
+              alert('Input Jumlah Masyarakat Miskin Belum Benar!')
+            } else if (isNaN(parseInt($("#I20").val()))) {
+              alert('Input Jumlah Aspirasi Masyarakat Berkebutuhan Khusus Belum Benar!')
+            } else if (isNaN(parseInt($("#I21").val()))) {
+              alert('Input Jumlah Masyarakat Berkebutuhan Khusus Belum Benar!')
+            } else if (isNaN(parseInt($("#I30").val()))) {
+              alert('Input Jumlah Aspirasi Perempuan & Kelompok Marginal Belum Benar!')
+            } else if (isNaN(parseInt($("#I31").val()))) {
+              alert('Input Jumlah Perempuan & Kelompok Marginal Belum Benar!')
+            } else if (isNaN(parseInt($("#I40").val()))) {
+              alert('Input Jumlah agenda terealisasi Dalam 1 Tahun Belum Benar!')
+            } else if (isNaN(parseInt($("#I41").val()))) {
+              alert('Input Jumlah agenda Dalam 1 Tahun Belum Benar!')
+            } else if (isNaN(parseInt($("#I60").val()))) {
+              alert('Input Jumlah Aspirasi yang ditampung Belum Benar!')
+            } else if (isNaN(parseInt($("#I70").val()))) {
+              alert('Input Jumlah Aspirasi Yang Disampaikan Belum Benar!')
+            } else if (isNaN(parseInt($("#I80").val()))) {
+              alert('Input Jumlah Aspirasi Yang Disalurkan Belum Benar!')
+            } 
+            Cek = true
+          }
+          if (!Cek) {
+            var JumlahAspirasiMasyarakatMiskin = parseInt($("#I10").val())
+            var JumlahMasyarakatMiskin = parseInt($("#I11").val())
+            var JumlahAspirasiMasyarakatBerkebutuhanKhusus = parseInt($("#I20").val())
+            var JumlahMasyarakatBerkebutuhanKhusus = parseInt($("#I21").val())
+            var JumlahAspirasiPerempuandanKelompokMarginal = parseInt($("#I30").val())
+            var JumlahPerempuandanKelompokMarginal = parseInt($("#I31").val())
+            var JumlahagendaterealisasiDalam1Tahun = parseInt($("#I40").val())
+            var JumlahagendaDalam1Tahun = parseInt($("#I41").val())
+            var JumlahAspirasiyangditampung = parseInt($("#I60").val())
+            var JumlahAspirasiYangDisampaikan = parseInt($("#I70").val())
+            var JumlahAspirasiYangDisalurkan = parseInt($("#I80").val())
+            if (JumlahAspirasiMasyarakatMiskin > JumlahMasyarakatMiskin) {
+              alert('Input Jumlah Masyarakat Miskin Belum Benar!')
+            }
+            // var Poin = ""
+            // Poin += ($("input[name='I0']:checked").val() + '|')
+            // Poin += ($("input[name='I0']:checked").val() + '|')
+            // alert(Poin)
+            // var IKM = { NIK: $("#NIK").val(),
+            //             Nama: $("#Nama").val(),
+            //             Gender: $("#Gender").val(),
+            //             Usia: $("#Usia").val(),
+            //             Pendidikan: $("#Pendidikan").val(),
+            //             Kecamatan: $("#Kecamatan").val(),
+            //             Desa: $("#Desa").val(),
+            //             Pekerjaan: $("#Pekerjaan").val(),
+            //             Keperluan: $("#Keperluan").val(),
+            //             Poin: Poin }
+            // $.post(BaseURL+"IDE/InputIKM", IKM).done(function(Respon) {
+            //   if (Respon == '1') {
+            //     alert('Terima Kasih')
+            //     window.location = BaseURL + "IDE/SurveiIKM"
+            //   } else {
+            //     alert(Respon)
+            //   }
+            // })
+          }
+        }
       })
       
     })

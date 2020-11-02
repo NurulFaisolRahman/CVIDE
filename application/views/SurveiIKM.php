@@ -18,6 +18,14 @@
   <body>  
     <div class="container-fluid">
       <div class="row">
+        <div class="col-sm-12 mt-2"> 
+          <p class="text-justify">&emsp;&emsp;&emsp;Dengan Hormat, Inti Desain Ekonomi Konsultan Beserta Bagian Pemberdayaan Masyarakat Desa 
+            Kabupaten Banyuwangi sedang melakukan Survey Kepuasan Masyarakat terhadap pelayanan desa dan kelurahan. Survey Kepuasan Pelayanan 
+            Desa dan Kelurahan bertujuan untuk mengukur tingkat kepuasan masyarakat sebagai pengguna layanan desa dan sebagai masukan dalam 
+            kebijakan meningkatkan kualitas penyelenggaraan pelayanan publik desa. <b>Kami mengharap Saudara/i sekalian yang pernah melakukan 
+            pelayanan di Kantor Desa dan Kelurahan harap mengisi kuisioner ini dengan se obyektif mungkin sesuai dengan keadaan yang sebenarnya. 
+            <span class="text-danger">**Catatan Penting : Segala informasi isian dari responden dijamin kerahasiaannya oleh konsultan independen.</span></b></p>
+        </div>
         <div class="col-sm-12">
           <div class="card mt-2">
             <div class="card-header bg-primary text-light">
