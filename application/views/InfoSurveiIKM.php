@@ -21,9 +21,9 @@
         <div class="col-sm-6">
           <div class="card mt-2">
             <div class="card-header bg-primary text-light">
-              <b>REKAPITULASI SURVEY KEPUASAN PELAYANAN DESA / KELURAHAN</b>
+              <b>REKAPITULASI SURVEY KEPUASAN PELAYANAN DESA</b>
             </div>
-            <div style="background-color: yellow;" class="card-body border border-primary">
+            <div style="background-color: yellow;padding: 0.5rem;" class="card-body border border-primary">
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-sm-6 my-1">

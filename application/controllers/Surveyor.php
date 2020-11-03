@@ -22,6 +22,21 @@ class Surveyor extends CI_Controller {
 		$this->load->view('Surveyor/SurveiBPD',$Data);
   }
 
+  public function InputBPD(){
+    if ($this->db->get_where('bpd', array('Desa' => $_POST['Desa']))->num_rows() === 0){
+      $_POST['NIK'] = $this->session->userdata('NIK');
+      $this->db->insert('bpd',$_POST);
+      if ($this->db->affected_rows()){
+        echo '1';
+      } else {
+        echo 'Gagal Menyimpan Survei!';
+      }
+    } else {
+      $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode = "."'".$_POST['Desa']."'")->row_array()['Nama'];
+      echo 'Data Survei Desa '.$Desa.' Sudah Ada!';
+    }
+  }
+
   public function SurveiIPM(){
 		$Data['Provinsi'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE length(Kode) = 2")->result_array();
     $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '11.%' AND length(Kode) = 5")->result_array();

@@ -142,8 +142,9 @@
 
       $("#Kirim").click(function() {
         if (isNaN(parseInt($("#Dusun").val())) || $("#Dusun").val() === "") {
-          alert('Input Jumlah Dusun Belum Benar!')
-        } else {
+          alert('Input Jumlah Dusun Hanya Boleh Angka Positif!')
+        } 
+        else {
           var Cek = false
           var Tanya = 0
           var Radio = [0,5,9,10,11,12,13,14]
@@ -158,72 +159,146 @@
             alert('Pertanyaan Nomer '+Tanya+' Wajib Di Isi!')
           } else {
             if (isNaN(parseInt($("#I10").val()))) {
-              alert('Input Jumlah Aspirasi Masyarakat Miskin Belum Benar!')
+              alert('Input Jumlah Aspirasi Masyarakat Miskin Hanya Boleh 0 Atau Angka Positif!')
             } else if (isNaN(parseInt($("#I11").val()))) {
-              alert('Input Jumlah Masyarakat Miskin Belum Benar!')
+              alert('Input Jumlah Masyarakat Miskin Hanya Boleh 0 Atau Angka Positif!')
             } else if (isNaN(parseInt($("#I20").val()))) {
-              alert('Input Jumlah Aspirasi Masyarakat Berkebutuhan Khusus Belum Benar!')
+              alert('Input Jumlah Aspirasi Masyarakat Berkebutuhan Khusus Hanya Boleh 0 Atau Angka Positif!')
             } else if (isNaN(parseInt($("#I21").val()))) {
-              alert('Input Jumlah Masyarakat Berkebutuhan Khusus Belum Benar!')
+              alert('Input Jumlah Masyarakat Berkebutuhan Khusus Hanya Boleh 0 Atau Angka Positif!')
             } else if (isNaN(parseInt($("#I30").val()))) {
-              alert('Input Jumlah Aspirasi Perempuan & Kelompok Marginal Belum Benar!')
+              alert('Input Jumlah Aspirasi Perempuan & Kelompok Marginal Hanya Boleh 0 Atau Angka Positif!')
             } else if (isNaN(parseInt($("#I31").val()))) {
-              alert('Input Jumlah Perempuan & Kelompok Marginal Belum Benar!')
+              alert('Input Jumlah Perempuan & Kelompok Marginal Hanya Boleh 0 Atau Angka Positif!')
             } else if (isNaN(parseInt($("#I40").val()))) {
-              alert('Input Jumlah agenda terealisasi Dalam 1 Tahun Belum Benar!')
+              alert('Input Jumlah agenda terealisasi Dalam 1 Tahun Hanya Boleh 0 Atau Angka Positif!')
             } else if (isNaN(parseInt($("#I41").val()))) {
-              alert('Input Jumlah agenda Dalam 1 Tahun Belum Benar!')
+              alert('Input Jumlah agenda Dalam 1 Tahun Hanya Boleh 0 Atau Angka Positif!')
             } else if (isNaN(parseInt($("#I60").val()))) {
-              alert('Input Jumlah Aspirasi yang ditampung Belum Benar!')
+              alert('Input Jumlah Aspirasi yang ditampung Hanya Boleh 0 Atau Angka Positif!')
             } else if (isNaN(parseInt($("#I70").val()))) {
-              alert('Input Jumlah Aspirasi Yang Disampaikan Belum Benar!')
+              alert('Input Jumlah Aspirasi Yang Disampaikan Hanya Boleh 0 Atau Angka Positif!')
             } else if (isNaN(parseInt($("#I80").val()))) {
-              alert('Input Jumlah Aspirasi Yang Disalurkan Belum Benar!')
-            } 
-            Cek = true
-          }
-          if (!Cek) {
-            var JumlahAspirasiMasyarakatMiskin = parseInt($("#I10").val())
-            var JumlahMasyarakatMiskin = parseInt($("#I11").val())
-            var JumlahAspirasiMasyarakatBerkebutuhanKhusus = parseInt($("#I20").val())
-            var JumlahMasyarakatBerkebutuhanKhusus = parseInt($("#I21").val())
-            var JumlahAspirasiPerempuandanKelompokMarginal = parseInt($("#I30").val())
-            var JumlahPerempuandanKelompokMarginal = parseInt($("#I31").val())
-            var JumlahagendaterealisasiDalam1Tahun = parseInt($("#I40").val())
-            var JumlahagendaDalam1Tahun = parseInt($("#I41").val())
-            var JumlahAspirasiyangditampung = parseInt($("#I60").val())
-            var JumlahAspirasiYangDisampaikan = parseInt($("#I70").val())
-            var JumlahAspirasiYangDisalurkan = parseInt($("#I80").val())
-            if (JumlahAspirasiMasyarakatMiskin > JumlahMasyarakatMiskin) {
-              alert('Input Jumlah Masyarakat Miskin Belum Benar!')
+              alert('Input Jumlah Aspirasi Yang Disalurkan Hanya Boleh 0 Atau Angka Positif!')
+            } else {
+              var JumlahAspirasiMasyarakatMiskin = parseInt($("#I10").val())
+              var JumlahMasyarakatMiskin = parseInt($("#I11").val())
+              var JumlahAspirasiMasyarakatBerkebutuhanKhusus = parseInt($("#I20").val())
+              var JumlahMasyarakatBerkebutuhanKhusus = parseInt($("#I21").val())
+              var JumlahAspirasiPerempuandanKelompokMarginal = parseInt($("#I30").val())
+              var JumlahPerempuandanKelompokMarginal = parseInt($("#I31").val())
+              var JumlahagendaterealisasiDalam1Tahun = parseInt($("#I40").val())
+              var JumlahagendaDalam1Tahun = parseInt($("#I41").val())
+              var JumlahAspirasiyangditampung = parseInt($("#I60").val())
+              var JumlahAspirasiYangDisampaikan = parseInt($("#I70").val())
+              var JumlahAspirasiYangDisalurkan = parseInt($("#I80").val())
+              if (JumlahAspirasiMasyarakatMiskin > JumlahMasyarakatMiskin) {
+                alert('Input Jumlah Aspirasi Masyarakat Miskin Harus Lebih Kecil Dari '+(JumlahMasyarakatMiskin+1))
+              } else if (JumlahAspirasiMasyarakatBerkebutuhanKhusus > JumlahMasyarakatBerkebutuhanKhusus) {
+                alert('Input Jumlah Aspirasi Masyarakat Berkebutuhan Khusus Harus Lebih Kecil Dari '+(JumlahMasyarakatBerkebutuhanKhusus+1))
+              } else if (JumlahAspirasiPerempuandanKelompokMarginal > JumlahPerempuandanKelompokMarginal) {
+                alert('Input Jumlah Aspirasi Perempuan & Kelompok Marginal Harus Lebih Kecil Dari '+(JumlahPerempuandanKelompokMarginal+1))
+              } else if (JumlahagendaterealisasiDalam1Tahun > JumlahagendaDalam1Tahun) {
+                alert('Input Jumlah agenda terealisasi Dalam 1 Tahun Harus Lebih Kecil Dari '+(JumlahagendaDalam1Tahun+1))
+              } else if (JumlahAspirasiyangditampung > (JumlahAspirasiMasyarakatMiskin+JumlahAspirasiMasyarakatBerkebutuhanKhusus+JumlahAspirasiPerempuandanKelompokMarginal)) {
+                alert('Input Jumlah Aspirasi yang ditampung Harus Lebih Kecil Dari '+(JumlahAspirasiMasyarakatMiskin+JumlahAspirasiMasyarakatBerkebutuhanKhusus+JumlahAspirasiPerempuandanKelompokMarginal+1))
+              } else if (JumlahAspirasiYangDisampaikan > JumlahAspirasiyangditampung) {
+                alert('Input Jumlah Aspirasi yang ditampung Harus Lebih Kecil Dari '+(JumlahAspirasiyangditampung+1))
+              } else if (JumlahAspirasiYangDisalurkan > JumlahAspirasiYangDisampaikan) {
+                alert('Input Jumlah Aspirasi yang ditampung Harus Lebih Kecil Dari '+(JumlahAspirasiYangDisampaikan+1))
+              } else {
+                var Poin = ""
+                Poin += ($("input[name='I0']:checked").val() + '|')
+                if (JumlahAspirasiMasyarakatMiskin == 0 && JumlahMasyarakatMiskin == 0 || (JumlahAspirasiMasyarakatMiskin/JumlahMasyarakatMiskin*100) < 40) {
+                  Poin += '1|'
+                } else if ((JumlahAspirasiMasyarakatMiskin/JumlahMasyarakatMiskin*100) < 56) {
+                  Poin += '2|'
+                } else if ((JumlahAspirasiMasyarakatMiskin/JumlahMasyarakatMiskin*100) < 76) {
+                  Poin += '3|'
+                } else {
+                  Poin += '4|'
+                }
+                if (JumlahAspirasiMasyarakatBerkebutuhanKhusus == 0 && JumlahMasyarakatBerkebutuhanKhusus == 0 || (JumlahAspirasiMasyarakatBerkebutuhanKhusus/JumlahMasyarakatBerkebutuhanKhusus*100) < 40) {
+                  Poin += '1|'
+                } else if ((JumlahAspirasiMasyarakatBerkebutuhanKhusus/JumlahMasyarakatBerkebutuhanKhusus*100) < 56) {
+                  Poin += '2|'
+                } else if ((JumlahAspirasiMasyarakatBerkebutuhanKhusus/JumlahMasyarakatBerkebutuhanKhusus*100) < 76) {
+                  Poin += '3|'
+                } else {
+                  Poin += '4|'
+                }
+                if (JumlahAspirasiPerempuandanKelompokMarginal == 0 && JumlahPerempuandanKelompokMarginal == 0 || (JumlahAspirasiPerempuandanKelompokMarginal/JumlahPerempuandanKelompokMarginal*100) < 40) {
+                  Poin += '1|'
+                } else if ((JumlahAspirasiPerempuandanKelompokMarginal/JumlahPerempuandanKelompokMarginal*100) < 56) {
+                  Poin += '2|'
+                } else if ((JumlahAspirasiPerempuandanKelompokMarginal/JumlahPerempuandanKelompokMarginal*100) < 76) {
+                  Poin += '3|'
+                } else {
+                  Poin += '4|'
+                }
+                if (JumlahagendaterealisasiDalam1Tahun == 0 && JumlahagendaDalam1Tahun == 0 || (JumlahagendaterealisasiDalam1Tahun/JumlahagendaDalam1Tahun*100) < 40) {
+                  Poin += '1|'
+                } else if ((JumlahagendaterealisasiDalam1Tahun/JumlahagendaDalam1Tahun*100) < 56) {
+                  Poin += '2|'
+                } else if ((JumlahagendaterealisasiDalam1Tahun/JumlahagendaDalam1Tahun*100) < 76) {
+                  Poin += '3|'
+                } else {
+                  Poin += '4|'
+                }
+                Poin += ($("input[name='I5']:checked").val() + '|')
+                if (JumlahAspirasiyangditampung == 0 && (JumlahAspirasiMasyarakatMiskin+JumlahAspirasiMasyarakatBerkebutuhanKhusus+JumlahAspirasiPerempuandanKelompokMarginal) == 0 || (JumlahAspirasiyangditampung/(JumlahAspirasiMasyarakatMiskin+JumlahAspirasiMasyarakatBerkebutuhanKhusus+JumlahAspirasiPerempuandanKelompokMarginal)*100) < 40) {
+                  Poin += '1|'
+                } else if ((JumlahAspirasiyangditampung/(JumlahAspirasiMasyarakatMiskin+JumlahAspirasiMasyarakatBerkebutuhanKhusus+JumlahAspirasiPerempuandanKelompokMarginal)*100) < 56) {
+                  Poin += '2|'
+                } else if ((JumlahAspirasiyangditampung/(JumlahAspirasiMasyarakatMiskin+JumlahAspirasiMasyarakatBerkebutuhanKhusus+JumlahAspirasiPerempuandanKelompokMarginal)*100) < 76) {
+                  Poin += '3|'
+                } else {
+                  Poin += '4|'
+                }
+                if (JumlahAspirasiYangDisampaikan == 0 && JumlahAspirasiyangditampung == 0 || (JumlahAspirasiYangDisampaikan/JumlahAspirasiyangditampung*100) < 40) {
+                  Poin += '1|'
+                } else if ((JumlahAspirasiYangDisampaikan/JumlahAspirasiyangditampung*100) < 56) {
+                  Poin += '2|'
+                } else if ((JumlahAspirasiYangDisampaikan/JumlahAspirasiyangditampung*100) < 76) {
+                  Poin += '3|'
+                } else {
+                  Poin += '4|'
+                }
+                if (JumlahAspirasiYangDisalurkan == 0 && JumlahAspirasiYangDisampaikan == 0 || (JumlahAspirasiYangDisalurkan/JumlahAspirasiYangDisampaikan*100) < 40) {
+                  Poin += '1|'
+                } else if ((JumlahAspirasiYangDisampaikan/JumlahAspirasiyangditampung*100) < 56) {
+                  Poin += '2|'
+                } else if ((JumlahAspirasiYangDisampaikan/JumlahAspirasiyangditampung*100) < 76) {
+                  Poin += '3|'
+                } else {
+                  Poin += '4|'
+                }
+                Poin += ($("input[name='I9']:checked").val() + '|')
+                Poin += ($("input[name='I10']:checked").val() + '|')
+                Poin += ($("input[name='I11']:checked").val() + '|')
+                Poin += ($("input[name='I12']:checked").val() + '|')
+                Poin += ($("input[name='I13']:checked").val() + '|')
+                Poin += ($("input[name='I14']:checked").val())
+                var IKM = { Kecamatan: $("#Kecamatan").val(),
+                            Desa: $("#Desa").val(),
+                            JumlahDusun: parseInt($("#Dusun").val()),
+                            Poin: Poin }
+                $.post(BaseURL+"Surveyor/InputBPD", IKM).done(function(Respon) {
+                  if (Respon == '1') {
+                    alert('Survei Berhasil Di Simpan!')
+                    window.location = BaseURL + "Surveyor/SurveiBPD"
+                  } else {
+                    alert(Respon)
+                  }
+                })
+              }
             }
-            // var Poin = ""
-            // Poin += ($("input[name='I0']:checked").val() + '|')
-            // Poin += ($("input[name='I0']:checked").val() + '|')
-            // alert(Poin)
-            // var IKM = { NIK: $("#NIK").val(),
-            //             Nama: $("#Nama").val(),
-            //             Gender: $("#Gender").val(),
-            //             Usia: $("#Usia").val(),
-            //             Pendidikan: $("#Pendidikan").val(),
-            //             Kecamatan: $("#Kecamatan").val(),
-            //             Desa: $("#Desa").val(),
-            //             Pekerjaan: $("#Pekerjaan").val(),
-            //             Keperluan: $("#Keperluan").val(),
-            //             Poin: Poin }
-            // $.post(BaseURL+"IDE/InputIKM", IKM).done(function(Respon) {
-            //   if (Respon == '1') {
-            //     alert('Terima Kasih')
-            //     window.location = BaseURL + "IDE/SurveiIKM"
-            //   } else {
-            //     alert(Respon)
-            //   }
-            // })
           }
         }
       })
       
     })
+
 		var toggle = true;			
 		$(".sidebar-icon").click(function() {                
 			if (toggle){
@@ -238,5 +313,6 @@
 			}
 			toggle = !toggle;
 		});
+    
 	</script>
 </html>

@@ -65,6 +65,9 @@ class IDE extends CI_Controller {
 
   public function InputIKM(){
     if($this->db->get_where('ikm', array('NIK' => $_POST['NIK']))->num_rows() === 0){
+      $_POST['Nama'] = htmlentities($_POST['Nama']);
+      $_POST['Pekerjaan'] = htmlentities($_POST['Pekerjaan']);
+      $_POST['Keperluan'] = htmlentities($_POST['Keperluan']);
       $this->db->insert('ikm',$_POST);
       if ($this->db->affected_rows()){
         echo '1';
