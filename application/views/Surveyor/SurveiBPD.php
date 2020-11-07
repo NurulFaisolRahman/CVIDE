@@ -287,7 +287,7 @@
                   if (Respon == '1') {
                     alert('Survei Berhasil Di Simpan!')
                     window.location = BaseURL + "Surveyor/SurveiBPD"
-                  } else {
+                  } else { 
                     alert(Respon)
                   }
                 })

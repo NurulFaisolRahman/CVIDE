@@ -38,6 +38,9 @@
                       </select>
                     </div>
                   </div>
+                  <div class="col-sm-6 d-flex align-items-center">
+                    <h5 class="font-weight-bold">Total Responden = <?=$Total?></h5>
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-sm-12 my-1">

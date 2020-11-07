@@ -15,6 +15,16 @@ class Surveyor extends CI_Controller {
 		$this->load->view('Surveyor/Profil');
   }
 
+  public function GantiPassword(){
+    $this->db->where('NIK', $this->session->userdata('NIK'));
+    $this->db->update('surveyor', array('Password' => password_hash($_POST['Password'], PASSWORD_DEFAULT)));
+    if ($this->db->affected_rows()){
+      echo '1';
+    } else {
+      echo 'Gagal Mengganti Password!';
+    }
+  }
+
 	public function SurveiBPD(){
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.01.%'")->result_array();
@@ -48,7 +58,8 @@ class Surveyor extends CI_Controller {
   public function SurveiKinerjaPemDes(){
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.01.%'")->result_array();
-		$this->load->view('SurveiKinerjaPemDes',$Data);
+    $this->load->view('Surveyor/Header',$Data);
+    $this->load->view('Surveyor/SurveiKinerjaPemDes',$Data);
 	}
   
 }
