@@ -201,11 +201,11 @@
               } else if (JumlahagendaterealisasiDalam1Tahun > JumlahagendaDalam1Tahun) {
                 alert('Input Jumlah agenda terealisasi Dalam 1 Tahun Harus Lebih Kecil Dari '+(JumlahagendaDalam1Tahun+1))
               } else if (JumlahAspirasiyangditampung > (JumlahAspirasiMasyarakatMiskin+JumlahAspirasiMasyarakatBerkebutuhanKhusus+JumlahAspirasiPerempuandanKelompokMarginal)) {
-                alert('Input Jumlah Aspirasi yang ditampung Harus Lebih Kecil Dari '+(JumlahAspirasiMasyarakatMiskin+JumlahAspirasiMasyarakatBerkebutuhanKhusus+JumlahAspirasiPerempuandanKelompokMarginal+1))
+                alert('Input Jumlah Aspirasi yang Ditampung Harus Lebih Kecil Dari '+(JumlahAspirasiMasyarakatMiskin+JumlahAspirasiMasyarakatBerkebutuhanKhusus+JumlahAspirasiPerempuandanKelompokMarginal+1))
               } else if (JumlahAspirasiYangDisampaikan > JumlahAspirasiyangditampung) {
-                alert('Input Jumlah Aspirasi yang ditampung Harus Lebih Kecil Dari '+(JumlahAspirasiyangditampung+1))
+                alert('Input Jumlah Aspirasi yang Disampaikan Harus Lebih Kecil Dari '+(JumlahAspirasiyangditampung+1))
               } else if (JumlahAspirasiYangDisalurkan > JumlahAspirasiYangDisampaikan) {
-                alert('Input Jumlah Aspirasi yang ditampung Harus Lebih Kecil Dari '+(JumlahAspirasiYangDisampaikan+1))
+                alert('Input Jumlah Aspirasi yang Disalurkan Harus Lebih Kecil Dari '+(JumlahAspirasiYangDisampaikan+1))
               } else {
                 var Poin = ""
                 Poin += ($("input[name='I0']:checked").val() + '|')

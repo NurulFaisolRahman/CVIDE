@@ -42,26 +42,61 @@ class IDE extends CI_Controller {
   }
 
   public function InfoSurveiIKM(){
-    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
-    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.01.%'")->result_array();
+    if (isset($_SESSION['KodeKecamatanIKM'])) {
+      $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+      $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '".$this->session->userdata('KodeKecamatanIKM').".%'")->result_array();
+      $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatanIKM');
+    } else {
+      $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+      $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.01.%'")->result_array();
+      $Data['KodeKecamatan'] = '35.10.01';
+    }
     $Data['Total'] = $this->db->query("SELECT COUNT(*) AS Total FROM `ikm`")->row_array()['Total'];
     $Data['Responden'] = array();
-    foreach ($Data['Desa'] as $key) {
-      $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikm` WHERE Desa = "."'".$key['Kode']."'")->row_array()['Total'];
+    $Data['NilaiIndeks'] = array();
+    $Data['MutuPelayanan'] = array();
+    $Data['KinerjaUnit'] = array();
+    for ($j = 0; $j < count($Data['Desa']); $j++) { 
+      $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikm` WHERE Desa = "."'".$Data['Desa'][$j]['Kode']."'")->row_array()['Total'];
       array_push($Data['Responden'], $Total);
+      $Data['NilaiIndeks'][$j] = 0;
+      $RespondenDesa = $this->db->query("SELECT Poin FROM `ikm` WHERE Desa = "."'".$Data['Desa'][$j]['Kode']."'")->result_array();
+      $Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
+      $Averge = array(0,0,0,0,0,0,0,0,0,0,0);
+      foreach ($RespondenDesa as $key) {
+        $Pecah = explode("|",$key['Poin']);
+        for ($i=0; $i < 11; $i++) { 
+          $Tampung[$i] += $Pecah[$i];
+        }
+        for ($i=0; $i < 11; $i++) { 
+          $Averge[$i] = ($Tampung[$i]/$Total)*(1/11)*25;
+        }
+        $Data['NilaiIndeks'][$j] = round(array_sum($Averge),2);
+      }
+      if ($Total > 355) {
+        if ($Data['NilaiIndeks'][$j] < 65) {
+          $Data['MutuPelayanan'][$j] = 'D';
+          $Data['KinerjaUnit'][$j] = 'Tidak Baik';
+        } else if ($Data['NilaiIndeks'][$j] < 76.61) {
+          $Data['MutuPelayanan'][$j] = 'C';
+          $Data['KinerjaUnit'][$j] = 'Kurang Baik';
+        } else if ($Data['NilaiIndeks'][$j] < 88.31) {
+          $Data['MutuPelayanan'][$j] = 'B';
+          $Data['KinerjaUnit'][$j] = 'Baik';
+        } else {
+          $Data['MutuPelayanan'][$j] = 'A';
+          $Data['KinerjaUnit'][$j] = 'Sangat Baik';
+        } 
+      } else {
+        $Data['MutuPelayanan'][$j] = 'Jumlah Responden Belum Mencapai 356';
+        $Data['KinerjaUnit'][$j] = 'Belum Diketahui';
+      }
     }
     $this->load->view('InfoSurveiIKM',$Data);
   }
 
   public function InfoIKM(){
-    $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$_POST['Kecamatan'].".%'")->result_array();
-    foreach ($Desa as $key) {
-      $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikm` WHERE Desa = "."'".$key['Kode']."'")->row_array()['Total'];
-      echo "<tr>";
-      echo "<th scope='row' class='text-center align-middle'>".$key['Nama']."</th>";
-      echo "<td scope='row' class='text-center align-middle'>".$Total."</td>";
-      echo "</tr>";
-    }
+    $this->session->set_userdata('KodeKecamatanIKM', $_POST['Kecamatan']);
   }
 
   public function InputIKM(){
