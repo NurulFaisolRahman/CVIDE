@@ -60,6 +60,21 @@ class Surveyor extends CI_Controller {
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.01.%'")->result_array();
     $this->load->view('Surveyor/Header',$Data);
     $this->load->view('Surveyor/SurveiKinerjaPemDes',$Data);
-	}
+  }
+  
+  public function InputKinerjaPemDes(){
+    if ($this->db->get_where('kinerjapemdes', array('Desa' => $_POST['Desa']))->num_rows() === 0){
+      $_POST['NIK'] = $this->session->userdata('NIK');
+      $this->db->insert('kinerjapemdes',$_POST);
+      if ($this->db->affected_rows()){
+        echo '1';
+      } else {
+        echo 'Gagal Menyimpan Survei!';
+      }
+    } else {
+      $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode = "."'".$_POST['Desa']."'")->row_array()['Nama'];
+      echo 'Data Survei Desa '.$Desa.' Sudah Ada!';
+    }
+  }
   
 }

@@ -40,7 +40,7 @@
                               $Tanya =  array('Apakah visi dan misi penyelenggaraan pemerintahan desa yang dituangkan dalam LPPDes sesuai dengan RPJMDes?',
                                               'Apakah arah dan strategi yang dituangkan dalam LPPDes selaras dengan RKPDes dan APBDes yang telah disusun?',
                                               'Berapakah PADes dan Dana Desa yang dimiliki sesuai dengan yang dicantumkan di LPPDes?',
-                                              'Berapakah jumlah belanja aparatur desa & berapa jumlah total APBDes dengan yang dicantumkan ada di LPPDes?',
+                                              'Berapakah total belanja untuk aparatur desa & berapa total belanja sesuai yang dituangkan di APBDes?',
                                               'Berapakah hasil SiLPA? (Terselanggaranya semua program kegiatan dan terdapat laporan sisa hasil anggaran)',
                                               'Keberhasilan apa sajakah yang telah dicapai dalam setiap bidang aspek baik pelaksanaan pemerintahan desa, pelaksanaan pembangunan, pembinaan kemasyarakatan dan pemberdayaan masyarakat yang telah dituangkan dalam Laporan Penyelenggaran Pemerintahan Desa (LPPDes)?  (Dalam 1 Tahun)',
                                               'Permasalahan apa sajakah yang dihadapi dalam setiap bidang aspek baik pelaksanaan pemerintahan desa, pelaksanaan pembangunan, pembinaan kemasyrakatan dan pemberdayaan masyarakat yang telah dituangkan dalam Laporan Penyelenggaran Pemerintahan Desa (LPPDes)? Serta berapakah persentase tindak lanjut yang telah dicapai dalam menyelesaikan permasalahan tersebut?',
@@ -80,14 +80,14 @@
                               $Opsi = array('Sangat Selaras|Cukup Selaras|Kurang Selaras|Tidak Selaras',
                                             'Sangat Selaras|Cukup Selaras|Kurang Selaras|Tidak Selaras',
                                             'PADes|Dana Desa',
-                                            'Penghasilan tetap aparatur desa|Total belanja pembangunan',
+                                            'Total belanja untuk aparatur desa|Total belanja Berdasarkan APBDes',
                                             'program telah terselenggara semua & SiLPA < 30% dari pendapatan desa|program telah terselenggara semua & SiLPA = 0 dari pendapatan desa|program telah terselenggara semua & SiLPA < 0 dari pendapatan desa|ada program yang belum terselenggara & SiLPA > 0 dari pendapatan desa',
                                             'Keberhasilan yang telah dicapai > 5|Keberhasilan yang telah dicapai 4-5|Keberhasilan yang telah dicapai 2-3|Keberhasilan yang telah dicapai < 0',
                                             'tindak lanjut sebesar 76-100%|tindak lanjut sebesar 56-75%|tindak lanjut sebesar 40-55%|tindak lanjut sebesar < 40%',
                                             'Selaras semua|Selaras 3|Selaras 2|Selaras 1',
                                             'Tercatat semua item di LPPDes|Tercatat > 5 item di LPPDes|Tercatat hanya 5 item di LPPDes|Tercatat < 5 item di LPPDes',
                                             'Tercatat semua item di LPPDes|Tercatat > 8 item di LPPDes|Tercatat hanya 5 item di LPPDes|Tercatat < 5 item di LPPDes',
-                                            'Target|Realisasi',
+                                            'Realisasi|Target',
                                             'Jumlah hansip|Jumlah penduduk',
                                             'tersedia semua item|tersedia 3 item|tersedia 1-2 item|tidak tersedia',
                                             'tersedia semua item|tersedia 3 item|tersedia 1-2 item|tidak tersedia',
@@ -211,37 +211,144 @@
               alert('Input Pertanyaan Nomer '+(Input[i]+1)+' Hanya Boleh Angka!')
               Cek = false
               break
-            } else if (parseInt($("#I"+Input[i]+"0").val()) > parseInt($("#I"+Input[i]+"1").val())) {
+            } else if (parseInt($("#I"+Input[i]+"0").val()) > parseInt($("#I"+Input[i]+"1").val()) && i != 4) {
               $Pisah = Tanya[i].split("|")
               alert('Pertanyaan Nomer '+(Input[i]+1)+', Input '+$Pisah[0]+' Tidak Boleh Lebih Besar Dari Input '+$Pisah[1])
               Cek = false
               break
+            } else if (parseInt($("#I"+Input[i]+"0").val()) == 0 && parseInt($("#I"+Input[i]+"1").val()) == 0) {
+              $Pisah = Tanya[i].split("|")
+              alert('Pertanyaan Nomer '+(Input[i]+1)+', Input '+$Pisah[0]+' & '+$Pisah[1]+' Tidak boleh 0')
+              Cek = false
+              break
             }
           }
-          if ((parseInt($("#I"+Input[i]+"0").val())/parseInt($("#I"+Input[i]+"1").val())*100) < 40) {
-            Poin[Input[i]] = '1'
-          } else if ((parseInt($("#I"+Input[i]+"0").val())/parseInt($("#I"+Input[i]+"1").val())*100) < 56) {
-            Poin[Input[i]] = '2'
-          } else if ((parseInt($("#I"+Input[i]+"0").val())/parseInt($("#I"+Input[i]+"1").val())*100) < 76) {
-            Poin[Input[i]] = '3'
-          } else {
-            Poin[Input[i]] = '4'
-          } 
         } 
-        // if (Cek) {
-        //   var IKM = { Kecamatan: $("#Kecamatan").val(),
-        //               Desa: $("#Desa").val(),
-        //               JumlahDusun: parseInt($("#Dusun").val()),
-        //               Poin: Poin }
-        //   $.post(BaseURL+"Surveyor/InputKinerjaPemDes", IKM).done(function(Respon) {
-        //     if (Respon == '1') {
-        //       alert('Survei Berhasil Di Simpan!')
-        //       window.location = BaseURL + "Surveyor/SurveiKinerjaPemDes"
-        //     } else { 
-        //       alert(Respon)
-        //     }
-        //   })
-        // }
+        if (Cek) {
+          if ((parseInt($("#I"+Input[0]+"0").val())/parseInt($("#I"+Input[0]+"1").val())*100) < 40) {
+            Poin[Input[0]] = '1'
+          } else if ((parseInt($("#I"+Input[0]+"0").val())/parseInt($("#I"+Input[0]+"1").val())*100) < 56) {
+            Poin[Input[0]] = '2'
+          } else if ((parseInt($("#I"+Input[0]+"0").val())/parseInt($("#I"+Input[0]+"1").val())*100) < 76) {
+            Poin[Input[0]] = '3'
+          } else {
+            Poin[Input[0]] = '4'
+          } 
+          if ((parseInt($("#I"+Input[1]+"0").val())/parseInt($("#I"+Input[1]+"1").val())*100) < 30) {
+            Poin[Input[1]] = '4'
+          } else if ((parseInt($("#I"+Input[1]+"0").val())/parseInt($("#I"+Input[1]+"1").val())*100) < 56) {
+            Poin[Input[1]] = '3'
+          } else if ((parseInt($("#I"+Input[1]+"0").val())/parseInt($("#I"+Input[1]+"1").val())*100) < 76) {
+            Poin[Input[1]] = '2'
+          } else {
+            Poin[Input[1]] = '1'
+          } 
+          if ((parseInt($("#I"+Input[2]+"0").val())/parseInt($("#I"+Input[2]+"1").val())*100) < 40) {
+            Poin[Input[2]] = '1'
+          } else if ((parseInt($("#I"+Input[2]+"0").val())/parseInt($("#I"+Input[2]+"1").val())*100) < 56) {
+            Poin[Input[2]] = '2'
+          } else if ((parseInt($("#I"+Input[2]+"0").val())/parseInt($("#I"+Input[2]+"1").val())*100) < 76) {
+            Poin[Input[2]] = '3'
+          } else {
+            Poin[Input[2]] = '4'
+          } 
+          if (parseInt($("#I"+Input[3]+"1").val()/parseInt($("#I"+Input[3]+"0").val())) < 3) {
+            Poin[Input[3]] = '1'
+          } else if (parseInt($("#I"+Input[3]+"1").val())/parseInt($("#I"+Input[3]+"0").val()) < 6) {
+            Poin[Input[3]] = '2'
+          } else if (parseInt($("#I"+Input[3]+"1").val())/parseInt($("#I"+Input[3]+"0").val()) < 11) {
+            Poin[Input[3]] = '3'
+          } else {
+            Poin[Input[3]] = '4'
+          } 
+          if (parseInt($("#I"+Input[4]+"0").val()/parseInt($("#I"+Input[4]+"1").val())) < 11) {
+            Poin[Input[4]] = '1'
+          } else if (parseInt($("#I"+Input[4]+"0").val())/parseInt($("#I"+Input[4]+"1").val()) < 26) {
+            Poin[Input[4]] = '2'
+          } else if (parseInt($("#I"+Input[4]+"0").val())/parseInt($("#I"+Input[4]+"1").val()) < 36) {
+            Poin[Input[4]] = '3'
+          } else {
+            Poin[Input[4]] = '4'
+          } 
+          if (parseInt($("#I"+Input[5]+"1").val()/parseInt($("#I"+Input[5]+"0").val())) < 1000) {
+            Poin[Input[5]] = '4'
+          } else if (parseInt($("#I"+Input[5]+"1").val())/parseInt($("#I"+Input[5]+"0").val()) < 1501) {
+            Poin[Input[5]] = '3'
+          } else if (parseInt($("#I"+Input[5]+"1").val())/parseInt($("#I"+Input[5]+"0").val()) < 2001) {
+            Poin[Input[5]] = '2'
+          } else {
+            Poin[Input[5]] = '1'
+          } 
+          if (parseInt($("#I"+Input[6]+"1").val()/parseInt($("#I"+Input[6]+"0").val())) < 2000) {
+            Poin[Input[6]] = '4'
+          } else if (parseInt($("#I"+Input[6]+"1").val())/parseInt($("#I"+Input[6]+"0").val()) < 2501) {
+            Poin[Input[6]] = '3'
+          } else if (parseInt($("#I"+Input[6]+"1").val())/parseInt($("#I"+Input[6]+"0").val()) < 3001) {
+            Poin[Input[6]] = '2'
+          } else {
+            Poin[Input[6]] = '1'
+          }
+          if (parseInt($("#I"+Input[7]+"1").val()/parseInt($("#I"+Input[7]+"0").val())) < 2000) {
+            Poin[Input[7]] = '4'
+          } else if (parseInt($("#I"+Input[7]+"1").val())/parseInt($("#I"+Input[7]+"0").val()) < 2501) {
+            Poin[Input[7]] = '3'
+          } else if (parseInt($("#I"+Input[7]+"1").val())/parseInt($("#I"+Input[7]+"0").val()) < 3001) {
+            Poin[Input[7]] = '2'
+          } else {
+            Poin[Input[7]] = '1'
+          }
+          if (parseInt($("#I"+Input[8]+"1").val()/parseInt($("#I"+Input[8]+"0").val())) < 6000) {
+            Poin[Input[8]] = '4'
+          } else if (parseInt($("#I"+Input[8]+"1").val())/parseInt($("#I"+Input[8]+"0").val()) < 7001) {
+            Poin[Input[8]] = '3'
+          } else if (parseInt($("#I"+Input[8]+"1").val())/parseInt($("#I"+Input[8]+"0").val()) < 9001) {
+            Poin[Input[8]] = '2'
+          } else {
+            Poin[Input[8]] = '1'
+          }
+          if (parseInt($("#I"+Input[9]+"1").val()/parseInt($("#I"+Input[9]+"0").val())) < 6000) {
+            Poin[Input[9]] = '4'
+          } else if (parseInt($("#I"+Input[9]+"1").val())/parseInt($("#I"+Input[9]+"0").val()) < 7001) {
+            Poin[Input[9]] = '3'
+          } else if (parseInt($("#I"+Input[9]+"1").val())/parseInt($("#I"+Input[9]+"0").val()) < 9001) {
+            Poin[Input[9]] = '2'
+          } else {
+            Poin[Input[9]] = '1'
+          }
+          if (parseInt($("#I"+Input[10]+"1").val()/parseInt($("#I"+Input[10]+"0").val())) < 3000) {
+            Poin[Input[10]] = '4'
+          } else if (parseInt($("#I"+Input[10]+"1").val())/parseInt($("#I"+Input[10]+"0").val()) < 5001) {
+            Poin[Input[10]] = '3'
+          } else if (parseInt($("#I"+Input[10]+"1").val())/parseInt($("#I"+Input[10]+"0").val()) < 9001) {
+            Poin[Input[10]] = '2'
+          } else {
+            Poin[Input[10]] = '1'
+          }
+          if ((parseInt($("#I"+Input[11]+"0").val())/parseInt($("#I"+Input[11]+"1").val())*100) < 40) {
+            Poin[Input[11]] = '1'
+          } else if ((parseInt($("#I"+Input[11]+"0").val())/parseInt($("#I"+Input[11]+"1").val())*100) < 56) {
+            Poin[Input[11]] = '2'
+          } else if ((parseInt($("#I"+Input[11]+"0").val())/parseInt($("#I"+Input[11]+"1").val())*100) < 76) {
+            Poin[Input[11]] = '3'
+          } else {
+            Poin[Input[11]] = '4'
+          } 
+          var GabungPoin = ''
+          for (let i = 0; i < Poin.length; i++) {
+            i < (Poin.length-1) ? GabungPoin += (Poin[i]+'|') : GabungPoin += Poin[i]
+          }
+          var KinerjaPemdes = { Kecamatan: $("#Kecamatan").val(),
+                                Desa: $("#Desa").val(),
+                                Poin: GabungPoin }
+          $.post(BaseURL+"Surveyor/InputKinerjaPemDes", KinerjaPemdes).done(function(Respon) {
+            if (Respon == '1') {
+              alert('Survei Berhasil Di Simpan!')
+              window.location = BaseURL + "Surveyor/SurveiKinerjaPemDes"
+            } else { 
+              alert(Respon)
+            }
+          })
+        }
       })
       
     })
