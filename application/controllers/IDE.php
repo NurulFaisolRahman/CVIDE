@@ -88,6 +88,7 @@ class IDE extends CI_Controller {
           $Data['KinerjaUnit'][$j] = 'Sangat Baik';
         } 
       } else {
+        $Data['NilaiIndeks'][$j] = '-';
         $Data['MutuPelayanan'][$j] = 'Jumlah Responden Belum Mencapai 356';
         $Data['KinerjaUnit'][$j] = 'Belum Diketahui';
       }

@@ -22,6 +22,8 @@
 							<ul>
 								<li><a href="<?=base_url('Surveyor/SurveiBPD')?>">Kinerja Badan Permusyawaratan Desa</a></li>           
 								<li><a href="<?=base_url('Surveyor/SurveiKinerjaPemDes')?>">Kinerja Penyelenggaraan Pemerintahan Desa</a></li>   
+								<!-- <li><a href="<?=base_url('Surveyor/SurveiKinerjaAparatur')?>">Kinerja Aparatur Desa</a></li>    -->
+								<li><a href="<?=base_url('Surveyor/SurveiIPM')?>">Indikator Kesejahteraan Masyarakat</a></li>   
 							</ul>
             </li>
             <li id="menu-home"><a href="<?=base_url('IDE/SurveyorSignOut')?>"><i class="fa fa-lock"></i><span>Keluar</span></a></li>
