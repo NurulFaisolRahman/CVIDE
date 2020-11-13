@@ -84,5 +84,15 @@ class Surveyor extends CI_Controller {
     $this->load->view('Surveyor/Header',$Data);
 		$this->load->view('Surveyor/SurveiIPM',$Data);
   }
+
+  public function InputIPM(){
+    $_POST['NIK'] = $this->session->userdata('NIK');
+    $this->db->insert('ipm',$_POST);
+    if ($this->db->affected_rows()){
+      echo '1';
+    } else {
+      echo 'Gagal Menyimpan Survei!';
+    }
+  }
   
 }

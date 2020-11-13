@@ -1010,7 +1010,7 @@
                   <div class="col-sm-12 mt-2">
                     <div class="card">
                       <div class="card-header bg-primary text-light py-2">
-                        <b>Kepemilikan Aset (Ditanyakan Untuk 1 Keluarga)</b>
+                        <b>Keterangan Kondisi Rumah (Ditanyakan Untuk 1 Keluarga)</b>
                       </div>
                       <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
                         <div class="container-fluid">
@@ -1199,6 +1199,104 @@
                       </div>
                     </div>
                   </div>
+                  <div class="col-sm-12 mt-2">
+                    <div class="card">
+                      <div class="card-header bg-primary text-light py-2">
+                        <b>Kepemilikan Aset (Ditanyakan Untuk 1 Keluarga)</b>
+                      </div>
+                      <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
+                        <div class="container-fluid">
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <div style="width: 40%;" class="table-responsive mt-1">
+                                <table class="table table-sm table-bordered table-striped">
+                                  <thead class="bg-danger">
+                                    <tr style="font-size: 10pt;" class="text-light text-center">
+                                      <th style="width: 4%;" class="align-middle">No</th>
+                                      <th style="width: 50%;"class="align-middle">Aset</th>
+                                      <th class="align-middle">Banyaknya</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody class="bg-primary">
+                                  <?php $Aset = array('Sepeda Motor','Mobil','Lemari Es','AC','Pemanas Air (Watr heater)','Televisi','Sepeda','Komputer/Laptop','Perhiasan/Tabungan>10Gr','Rumah di tempat lain'); 
+                                    $No = 1; for ($i=0; $i < count($Aset); $i++) { ?>
+                                    <tr class="text-light text-center align-middle">
+                                      <td class="align-middle font-weight-bold"><?=$No++?></td>
+                                      <td class="align-middle font-weight-bold"><?=$Aset[$i]?></td>
+                                      <td>
+                                        <input class="form-control form-control-sm" type="text" id="Aset<?=$i?>">
+                                      </td>
+                                    </tr>
+                                  <?php } ?>
+                                    <tr class="text-light text-center align-middle">
+                                      <td class="align-middle font-weight-bold">11</td>
+                                      <td class="align-middle font-weight-bold">Lahan/Tanah</td>
+                                      <td>
+                                        <div class="input-group input-group-sm">
+                                          <input class="form-control form-control-sm" type="text" id="Aset10">
+                                          <div class="input-group-prepend">
+                                            <label class="input-group-text bg-danger text-light"><b>ha</b></label>
+                                          </div>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                    <tr class="text-light text-center align-middle">
+                                      <td class="align-middle font-weight-bold">12</td>
+                                      <td class="align-middle font-weight-bold">Sapi</td>
+                                      <td>
+                                        <div class="input-group input-group-sm">
+                                          <input class="form-control form-control-sm" type="text" id="Aset11">
+                                          <div class="input-group-prepend">
+                                            <label class="input-group-text bg-danger text-light"><b>ekor</b></label>
+                                          </div>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                    <tr class="text-light text-center align-middle">
+                                      <td class="align-middle font-weight-bold">13</td>
+                                      <td class="align-middle font-weight-bold">Kerbau</td>
+                                      <td>
+                                        <div class="input-group input-group-sm">
+                                          <input class="form-control form-control-sm" type="text" id="Aset12">
+                                          <div class="input-group-prepend">
+                                            <label class="input-group-text bg-danger text-light"><b>ekor</b></label>
+                                          </div>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                    <tr class="text-light text-center align-middle">
+                                      <td class="align-middle font-weight-bold">14</td>
+                                      <td class="align-middle font-weight-bold">Kambing/Domba</td>
+                                      <td>
+                                        <div class="input-group input-group-sm">
+                                          <input class="form-control form-control-sm" type="text" id="Aset13">
+                                          <div class="input-group-prepend">
+                                            <label class="input-group-text bg-danger text-light"><b>ekor</b></label>
+                                          </div>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                    <tr class="text-light text-center align-middle">
+                                      <td class="align-middle font-weight-bold">15</td>
+                                      <td class="align-middle font-weight-bold">Kuda</td>
+                                      <td>
+                                        <div class="input-group input-group-sm">
+                                          <input class="form-control form-control-sm" type="text" id="Aset14">
+                                          <div class="input-group-prepend">
+                                            <label class="input-group-text bg-danger text-light"><b>ekor</b></label>
+                                          </div>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div> 
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <div class="col-sm-3 my-2">
                     <button type="button" class="btn btn-primary" id="Kirim"><b>Kirim Survei</b></button>
                   </div>
@@ -1227,9 +1325,9 @@
       })
 
       $("#Kirim").click(function() {
-        if ($("#Alamat").val() === "") {
-          alert('Input Alamat Tidak Boleh Kosong!')
-        } else {
+        // if ($("#Alamat").val() === "") {
+        //   alert('Input Alamat Tidak Boleh Kosong!')
+        // } else {
           var Anggota = 0,NamaAnggota = '',Status = '',Gender = '',Pendapatan = '',SumberPendapatan = '',Pekerjaan = ''
           for (let i = 0; i < 8; i++) {
             if ($("#NamaAnggota"+i).val() != "" && i == 0) {
@@ -1418,6 +1516,14 @@
           } else {
             Rumah += ("|"+$("#Rumah12").val())
           }
+          var Aset = ''
+          for (let i = 0; i < 15; i++) {
+            if (i == 0) {
+              Aset += $("#Aset"+i).val()
+            } else {
+              Aset += ("|"+$("#Aset"+i).val())
+            }
+          }
           var IPM = { Kecamatan: $("#Kecamatan").val(),Desa: $("#Desa").val(),Alamat: $("#Alamat").val(),
                       NamaAnggota: NamaAnggota,Status: Status,Gender: Gender,Pendapatan: Pendapatan,
                       Pekerjaan: Pekerjaan,SumberPendapatan: SumberPendapatan,KegiatanSeminggu: KegiatanSeminggu,
@@ -1429,17 +1535,16 @@
                       PartisipasiSekolah: PartisipasiSekolah,PendidikanTertinggi: PendidikanTertinggi,
                       StatusSekolah: StatusSekolah,IjazahTertinggi: IjazahTertinggi,FasilitasPendidikan:FasilitasPendidikan,
                       KeluhanPendidikan: KeluhanPendidikan,KepesertaanProgram: KepesertaanProgram,
-                      Banyaknya: Banyaknya,Harga: Harga, Nilai: Nilai,Rumah: Rumah }             
-          console.log(Rumah)
-          // $.post(BaseURL+"Surveyor/InputIPM", IPM).done(function(Respon) {
-          //   if (Respon == '1') {
-          //     alert('Survei Berhasil Di Simpan!')
-          //     window.location = BaseURL + "Surveyor/SurveiIPM"
-          //   } else { 
-          //     alert(Respon)
-          //   }
-          // })
-        } 
+                      Banyaknya: Banyaknya,Harga: Harga, Nilai: Nilai,Rumah: Rumah,Aset: Aset }             
+          $.post(BaseURL+"Surveyor/InputIPM", IPM).done(function(Respon) {
+            if (Respon == '1') {
+              alert('Survei Berhasil Di Simpan!')
+              window.location = BaseURL + "Surveyor/SurveiIPM"
+            } else { 
+              alert(Respon)
+            }
+          })
+        // } 
       })
 
       <?php for ($i=0; $i < 8; $i++) { ?>
