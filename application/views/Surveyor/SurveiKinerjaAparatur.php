@@ -716,10 +716,10 @@
                                                   'Pengembangan Industri kecil level Desa',
                                                   'Pembentukan/Fasilitasi/Pelatihan/Pendampingan kelompok usaha ekonomi produktif (pengrajin, pedagang, industri rumah tangga, dll) **',
                                                   'lain-lain kegiatan sub bidang Perdagangan dan Perindustrian*',
-                                                  'Berapa jumlah kelas (Paud,TK,TKA,TPQ,Madarsah) & Berapa jumlah siswa?',
-                                                  'Berapa jumlah guru (Paud,TK,TKA,TPQ,Madarsah) & Berapa jumlah murid (Paud,TK,TPQ,Madarsah)?',
-                                                  'Berapa jumlah tenaga poskesdes & Berapa jumlah penduduk?',
-                                                  'Berapa jumlah tenaga posyandu & Berapa jumlah balita?'); 
+                                                  'Berapa jumlah siswa & Berapa jumlah kelas (Paud,TK,TKA,TPQ,Madarsah)?',
+                                                  'Berapa jumlah murid (Paud,TK,TPQ,Madarsah) & Berapa jumlah guru (Paud,TK,TKA,TPQ,Madarsah)?',
+                                                  'Berapa jumlah penduduk & Berapa jumlah tenaga poskesdes?',
+                                                  'Berapa jumlah balita & Berapa jumlah tenaga posyandu?'); 
                                     $Opsi = array('Jika aparatur desa masuk selama 181-200 jam kerja dalam sebulan|Jika aparatur desa masuk selama 141-180 jam kerja dalam sebulan|Jika aparatur desa masuk selama 101-140 jam kerja dalam sebulan|Jika aparatur desa masuk selama < 100 jam kerja dalam sebulan',
                                                   'Jika aparatur melakukan finger print sebanyak 4 kali dalam sehari|Jika aparatur melakukan finger print sebanyak 3 kali dalam sehari|Jika aparatur melakukan finger print sebanyak 2 kali  dalam sehari|Jika aparatur melakukan finger print sebanyak 1 kali dalam sehari',
                                                   'Kasi Pelayanan melaksanakan 7 dokumen|Kasi Pelayanan melaksanakan 5-6 dokumen |Kasi Pelayanan melaksanakan 3-4 dokumen |Kasi Pelayanan melaksanakan < 3 dokumen',
@@ -797,10 +797,10 @@
                                                   'Realisasi Belanja|Anggaran Belanja',
                                                   'Realisasi Belanja|Anggaran Belanja',
                                                   'Realisasi Belanja|Anggaran Belanja',
-                                                  'jumlah kelas (Paud,TK,TKA,TPQ,Madarsah)|jumlah siswa',
-                                                  'jumlah guru (Paud,TK,TKA,TPQ,Madarsah)|jumlah murid (Paud,TK,TPQ,Madarsah)',
-                                                  'jumlah tenaga poskesdes|jumlah penduduk',
-                                                  'jumlah tenaga posyandu|jumlah balita'); 
+                                                  'jumlah siswa|jumlah kelas (Paud,TK,TKA,TPQ,Madarsah)',
+                                                  'jumlah murid (Paud,TK,TPQ,Madarsah)|jumlah guru (Paud,TK,TKA,TPQ,Madarsah)',
+                                                  'jumlah penduduk|jumlah tenaga poskesdes',
+                                                  'jumlah balita|jumlah tenaga posyandu'); 
                                   $No = 1; for ($i=0; $i < count($Tanya); $i++) { $Pisah = explode("|",$Opsi[$i]); ?>
                                     <tr class="text-light">
                                       <td class="text-center font-weight-bold"><?=$No++?></td>
@@ -1308,10 +1308,10 @@
                   break
                 } 
               }
-              if (parseInt($("#Pelayanan770").val()) > parseInt($("#Pelayanan771").val()) || isNaN(parseInt($("#Pelayanan770").val())) || isNaN(parseInt($("#Pelayanan771").val())) || $("#Pelayanan770").val() == "" || $("#Pelayanan771").val() == "") {
+              if (isNaN(parseInt($("#Pelayanan770").val())) || isNaN(parseInt($("#Pelayanan771").val())) || $("#Pelayanan770").val() == "" || $("#Pelayanan771").val() == "") {
                 alert('KASI PELAYANAN, Pertanyaan Nomer 78 Input Pertama Harus Lebih Kecil Dari input Kedua!')
                 return true
-              } else if (parseInt($("#Pelayanan780").val()) > parseInt($("#Pelayanan781").val()) || isNaN(parseInt($("#Pelayanan780").val())) || isNaN(parseInt($("#Pelayanan781").val())) || $("#Pelayanan780").val() == "" || $("#Pelayanan781").val() == "") {
+              } else if (isNaN(parseInt($("#Pelayanan780").val())) || isNaN(parseInt($("#Pelayanan781").val())) || $("#Pelayanan780").val() == "" || $("#Pelayanan781").val() == "") {
                 alert('KASI PELAYANAN, Pertanyaan Nomer 79 Input Pertama Harus Lebih Kecil Dari input Kedua!')
                 return true
               } else if (parseInt($("#Pelayanan790").val()) > parseInt($("#Pelayanan791").val()) || isNaN(parseInt($("#Pelayanan790").val())) || isNaN(parseInt($("#Pelayanan791").val())) || $("#Pelayanan790").val() == "" || $("#Pelayanan791").val() == "") {
@@ -1346,16 +1346,41 @@
                   Pelayanan += '|4'
                 } 
               }
-              for (let i = 77; i < 81; i++) {
-                if (parseInt($("#Pelayanan"+i+"0").val()) / parseInt($("#Pelayanan"+i+"1").val()) * 100 < 26) {
-                  Pelayanan += '|1'
-                } else if (parseInt($("#Pelayanan"+i+"0").val()) / parseInt($("#Pelayanan"+i+"1").val()) * 100 < 51) {
-                  Pelayanan += '|2'
-                } else if (parseInt($("#Pelayanan"+i+"0").val()) / parseInt($("#Pelayanan"+i+"1").val()) * 100 < 76) {
-                  Pelayanan += '|3'
-                } else {
-                  Pelayanan += '|4'
-                } 
+              if (parseInt($("#Pelayanan770").val()) / parseInt($("#Pelayanan771").val()) * 100 > 36) {
+                Pelayanan += '|1'
+              } else if (parseInt($("#Pelayanan770").val()) / parseInt($("#Pelayanan771").val()) * 100 > 27) {
+                Pelayanan += '|2'
+              } else if (parseInt($("#Pelayanan770").val()) / parseInt($("#Pelayanan771").val()) * 100 > 20) {
+                Pelayanan += '|3'
+              } else {
+                Pelayanan += '|4'
+              } 
+              if (parseInt($("#Pelayanan780").val()) / parseInt($("#Pelayanan781").val()) * 100 > 75) {
+                Pelayanan += '|1'
+              } else if (parseInt($("#Pelayanan780").val()) / parseInt($("#Pelayanan781").val()) * 100 > 50) {
+                Pelayanan += '|2'
+              } else if (parseInt($("#Pelayanan780").val()) / parseInt($("#Pelayanan781").val()) * 100 > 25) {
+                Pelayanan += '|3'
+              } else {
+                Pelayanan += '|4'
+              } 
+              if (parseInt($("#Pelayanan790").val()) / parseInt($("#Pelayanan791").val()) * 100 > 75) {
+                Pelayanan += '|1'
+              } else if (parseInt($("#Pelayanan790").val()) / parseInt($("#Pelayanan791").val()) * 100 > 50) {
+                Pelayanan += '|2'
+              } else if (parseInt($("#Pelayanan790").val()) / parseInt($("#Pelayanan791").val()) * 100 > 25) {
+                Pelayanan += '|3'
+              } else {
+                Pelayanan += '|4'
+              }
+              if (parseInt($("#Pelayanan800").val()) / parseInt($("#Pelayanan801").val()) * 100 > 75) {
+                Pelayanan += '|1'
+              } else if (parseInt($("#Pelayanan800").val()) / parseInt($("#Pelayanan801").val()) * 100 > 50) {
+                Pelayanan += '|2'
+              } else if (parseInt($("#Pelayanan800").val()) / parseInt($("#Pelayanan801").val()) * 100 > 25) {
+                Pelayanan += '|3'
+              } else {
+                Pelayanan += '|4'
               }
             }
           }
