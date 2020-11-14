@@ -99,7 +99,7 @@
                                         <div class="input-group-prepend">
                                           <label class="input-group-text bg-danger text-light"><b><?=$Pisah[$j]?></b></label>
                                         </div>
-                                        <input class="form-control" type="text" id="I<?=$i.$j?>" placeholder="0">
+                                        <input class="form-control" type="text" id="I<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
                                       </div>
                                     <?php } ?>
                                   <?php } ?>
@@ -279,11 +279,11 @@
                 Poin += ($("input[name='I12']:checked").val() + '|')
                 Poin += ($("input[name='I13']:checked").val() + '|')
                 Poin += ($("input[name='I14']:checked").val())
-                var IKM = { Kecamatan: $("#Kecamatan").val(),
+                var BPD = { Kecamatan: $("#Kecamatan").val(),
                             Desa: $("#Desa").val(),
                             JumlahDusun: parseInt($("#Dusun").val()),
                             Poin: Poin }
-                $.post(BaseURL+"Surveyor/InputBPD", IKM).done(function(Respon) {
+                $.post(BaseURL+"Surveyor/InputBPD", BPD).done(function(Respon) {
                   if (Respon == '1') {
                     alert('Survei Berhasil Di Simpan!')
                     window.location = BaseURL + "Surveyor/SurveiBPD"

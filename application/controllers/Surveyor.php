@@ -76,6 +76,16 @@ class Surveyor extends CI_Controller {
 		$this->load->view('Surveyor/SurveiKinerjaAparatur',$Data);
   }
 
+  public function InputKinerjaAparatur(){
+    $_POST['NIK'] = $this->session->userdata('NIK');
+    $this->db->insert('KinerjaAparatur',$_POST);
+    if ($this->db->affected_rows()){
+      echo '1';
+    } else {
+      echo 'Gagal Menyimpan Survei!';
+    }
+  }
+
   public function SurveiIPM(){
 		// $Data['Provinsi'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE length(Kode) = 2")->result_array();
     // $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '11.%' AND length(Kode) = 5")->result_array();

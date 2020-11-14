@@ -141,7 +141,7 @@
                                         <div class="input-group-prepend">
                                           <label class="input-group-text bg-danger text-light"><b><?=($j+1).'. '.$Pisah[$j]?></b></label>
                                         </div>
-                                        <input class="form-control" type="text" id="I<?=$i.$j?>" placeholder="Hanya Boleh Input Angka">
+                                        <input class="form-control" type="text" id="I<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
                                       </div>
                                     <?php } ?>
                                   <?php } ?>
