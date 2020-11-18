@@ -34,6 +34,21 @@ class IDE extends CI_Controller {
 		$this->session->sess_destroy();
 		redirect(base_url('IDE/Surveyor'));
   }
+
+  public function RekapSurveiIKM(){
+    $Data['Rekap'] = array();
+    $Kecamatan = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    foreach ($Kecamatan as $key) {
+      $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$key['Kode'].".%"."'")->result_array();
+      foreach ($Desa as $KEY) {
+        $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikm` WHERE Desa = "."'".$KEY['Kode']."'")->row_array()['Total'];
+        if ($Total < 356) {
+          array_push($Data['Rekap'],$KEY['Nama']."|".$key['Nama']."|".$Total);
+        } 
+      }
+    }
+    $this->load->view('RekapSurveiIKM',$Data);
+  }
   
   public function SurveiIKM(){
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();

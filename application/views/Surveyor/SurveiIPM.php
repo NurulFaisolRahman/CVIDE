@@ -1,4 +1,4 @@
-    	<div class="left-content">
+<div class="left-content">
 				<div class="mother-grid-inner">
 					<div class="ml-2">
 						<div class="blank">
@@ -1334,7 +1334,7 @@
               NamaAnggota += $("#NamaAnggota"+i).val()
               Status += $("#Status"+i).val()
               Gender += $("#Gender"+i).val()
-              Pendapatan += parseInt($("#Pendapatan"+i).val())
+              Pendapatan += $("#Pendapatan"+i).val()
               Pekerjaan += $("#Pekerjaan"+i).val()
               if ($("#SumberPendapatan"+i).val() == 8) {
                 SumberPendapatan += $("#SumberPendapatanLainnya"+i).val()
@@ -1345,7 +1345,7 @@
               NamaAnggota += ('|'+$("#NamaAnggota"+i).val())
               Status += ('|'+$("#Status"+i).val())
               Gender += ('|'+$("#Gender"+i).val())
-              Pendapatan += ('|'+parseInt($("#Pendapatan"+i).val()))
+              Pendapatan += ('|'+$("#Pendapatan"+i).val())
               Pekerjaan += ('|'+$("#Pekerjaan"+i).val())
               if ($("#SumberPendapatan"+i).val() == 8) {
                 SumberPendapatan += ('|'+$("#SumberPendapatanLainnya"+i).val())
@@ -1362,7 +1362,7 @@
             if (i == 0) {
               KegiatanSeminggu += $("#KegiatanSeminggu"+i).val()
               Keahlian += $("#Keahlian"+i).val()
-              JamKerja += parseInt($("#JamKerja"+i).val())
+              JamKerja += $("#JamKerja"+i).val()
               if ($("#AlasanMencariKerja"+i).val() == 3) {
                 AlasanMencariKerja += $("#AlasanMencariKerjaLainnya"+i).val()
               } else {
@@ -1378,7 +1378,7 @@
             } else {
               KegiatanSeminggu += ('|'+$("#KegiatanSeminggu"+i).val())
               Keahlian += ('|'+$("#Keahlian"+i).val())
-              JamKerja += ('|'+parseInt($("#JamKerja"+i).val()))
+              JamKerja += ('|'+$("#JamKerja"+i).val())
               if ($("#AlasanMencariKerja"+i).val() == 3) {
                 AlasanMencariKerja += ('|'+$("#AlasanMencariKerjaLainnya"+i).val())
               } else {
@@ -1465,12 +1465,12 @@
           var Banyaknya = '',Harga = '',Nilai = ''
           for (let i = 0; i < 154; i++) {
             if (i == 0) {
-              Banyaknya += $("#Banyaknya"+i).val()
-              Harga += $("#Harga"+i).val()
+              Banyaknya += $("#Banyaknya"+i).val().replace(',','.')
+              Harga += $("#Harga"+i).val().replace(',','.')
               Nilai += $("#Nilai"+i).val()
             } else {
-              Banyaknya += ("|"+$("#Banyaknya"+i).val())
-              Harga += ("|"+$("#Harga"+i).val())
+              Banyaknya += ("|"+$("#Banyaknya"+i).val().replace(',','.'))
+              Harga += ("|"+$("#Harga"+i).val().replace(',','.'))
               Nilai += ("|"+$("#Nilai"+i).val())
             }
           }

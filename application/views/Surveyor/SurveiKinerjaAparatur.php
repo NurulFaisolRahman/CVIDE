@@ -797,7 +797,7 @@
                                                   'Realisasi Belanja|Anggaran Belanja',
                                                   'Realisasi Belanja|Anggaran Belanja',
                                                   'Realisasi Belanja|Anggaran Belanja',
-                                                  'jumlah siswa|jumlah kelas (Paud,TK,TKA,TPQ,Madarsah)',
+                                                  'jumlah murid (Paud,TK,TPQ,Madarsah)|jumlah kelas (Paud,TK,TKA,TPQ,Madarsah)',
                                                   'jumlah murid (Paud,TK,TPQ,Madarsah)|jumlah guru (Paud,TK,TKA,TPQ,Madarsah)',
                                                   'jumlah penduduk|jumlah tenaga poskesdes',
                                                   'jumlah balita|jumlah tenaga posyandu'); 
@@ -1309,16 +1309,16 @@
                 } 
               }
               if (isNaN(parseInt($("#Pelayanan770").val())) || isNaN(parseInt($("#Pelayanan771").val())) || $("#Pelayanan770").val() == "" || $("#Pelayanan771").val() == "") {
-                alert('KASI PELAYANAN, Pertanyaan Nomer 78 Input Pertama Harus Lebih Kecil Dari input Kedua!')
+                alert('KASI PELAYANAN, Pertanyaan Nomer 78 Belum Benar!')
                 return true
               } else if (isNaN(parseInt($("#Pelayanan780").val())) || isNaN(parseInt($("#Pelayanan781").val())) || $("#Pelayanan780").val() == "" || $("#Pelayanan781").val() == "") {
-                alert('KASI PELAYANAN, Pertanyaan Nomer 79 Input Pertama Harus Lebih Kecil Dari input Kedua!')
+                alert('KASI PELAYANAN, Pertanyaan Nomer 79 Belum Benar!')
                 return true
-              } else if (parseInt($("#Pelayanan790").val()) > parseInt($("#Pelayanan791").val()) || isNaN(parseInt($("#Pelayanan790").val())) || isNaN(parseInt($("#Pelayanan791").val())) || $("#Pelayanan790").val() == "" || $("#Pelayanan791").val() == "") {
-                alert('KASI PELAYANAN, Pertanyaan Nomer 80 Input Pertama Harus Lebih Kecil Dari input Kedua!')
+              } else if (parseInt($("#Pelayanan790").val()) < parseInt($("#Pelayanan791").val()) || isNaN(parseInt($("#Pelayanan790").val())) || isNaN(parseInt($("#Pelayanan791").val())) || $("#Pelayanan790").val() == "" || $("#Pelayanan791").val() == "") {
+                alert('KASI PELAYANAN, Pertanyaan Nomer 80 Input Pertama Harus Lebih Besar Dari input Kedua!')
                 return true
-              } else if (parseInt($("#Pelayanan800").val()) > parseInt($("#Pelayanan801").val()) || isNaN(parseInt($("#Pelayanan800").val())) || isNaN(parseInt($("#Pelayanan801").val())) || $("#Pelayanan800").val() == "" || $("#Pelayanan801").val() == "") {
-                alert('KASI PELAYANAN, Pertanyaan Nomer 81 Input Pertama Harus Lebih Kecil Dari input Kedua!')
+              } else if (parseInt($("#Pelayanan800").val()) < parseInt($("#Pelayanan801").val()) || isNaN(parseInt($("#Pelayanan800").val())) || isNaN(parseInt($("#Pelayanan801").val())) || $("#Pelayanan800").val() == "" || $("#Pelayanan801").val() == "") {
+                alert('KASI PELAYANAN, Pertanyaan Nomer 81 Input Pertama Harus Lebih Besar Dari input Kedua!')
                 return true
               } 
               Pelayanan += ($("input[name='Pelayanan0']:checked").val()+"|"+
