@@ -83,7 +83,7 @@
                                               <div class="input-group-prepend">
                                                 <label class="input-group-text bg-danger text-light"><b><?=$Pisah[$j]?></b></label>
                                               </div>
-                                              <input class="form-control form-control-sm" type="text" id="KepalaDesa<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
+                                              <input class="form-control form-control-sm" type="text" value="0" id="KepalaDesa<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
                                             </div>
                                           <?php } ?>
                                         <?php } ?>
@@ -145,7 +145,7 @@
                                               <div class="input-group-prepend">
                                                 <label class="input-group-text bg-danger text-light"><b><?=$Pisah[$j]?></b></label>
                                               </div>
-                                              <input class="form-control form-control-sm" type="text" id="SekertarisDesa<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
+                                              <input class="form-control form-control-sm" type="text" value="0" id="SekertarisDesa<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
                                             </div>
                                           <?php } ?>
                                         <?php } ?>
@@ -229,7 +229,7 @@
                                               <div class="input-group-prepend">
                                                 <label class="input-group-text bg-danger text-light"><b><?=$Pisah[$j]?></b></label>
                                               </div>
-                                              <input class="form-control form-control-sm" type="text" id="TU<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
+                                              <input class="form-control form-control-sm" type="text" value="0" id="TU<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
                                             </div>
                                           <?php } ?>
                                         <?php } ?>
@@ -283,7 +283,7 @@
                                               <div class="input-group-prepend">
                                                 <label class="input-group-text bg-danger text-light"><b><?=$Pisah[$j]?></b></label>
                                               </div>
-                                              <input class="form-control form-control-sm" type="text" id="Keuangan<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
+                                              <input class="form-control form-control-sm" type="text" value="0" id="Keuangan<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
                                             </div>
                                           <?php } ?>
                                         <?php } ?>
@@ -347,7 +347,7 @@
                                               <div class="input-group-prepend">
                                                 <label class="input-group-text bg-danger text-light"><b><?=$Pisah[$j]?></b></label>
                                               </div>
-                                              <input class="form-control form-control-sm" type="text" id="Perencanaan<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
+                                              <input class="form-control form-control-sm" type="text" value="0" id="Perencanaan<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
                                             </div>
                                           <?php } ?>
                                         <?php } ?>
@@ -469,7 +469,7 @@
                                               <div class="input-group-prepend">
                                                 <label class="input-group-text bg-danger text-light"><b><?=$Pisah[$j]?></b></label>
                                               </div>
-                                              <input class="form-control form-control-sm" type="text" id="Pemerintahan<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
+                                              <input class="form-control form-control-sm" type="text" value="0" id="Pemerintahan<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
                                             </div>
                                           <?php } ?>
                                         <?php } ?>
@@ -615,7 +615,7 @@
                                               <div class="input-group-prepend">
                                                 <label class="input-group-text bg-danger text-light"><b><?=$Pisah[$j]?></b></label>
                                               </div>
-                                              <input class="form-control form-control-sm" type="text" id="Kesejahteraan<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
+                                              <input class="form-control form-control-sm" type="text" value="0" id="Kesejahteraan<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
                                             </div>
                                           <?php } ?>
                                         <?php } ?>
@@ -819,7 +819,7 @@
                                               <div class="input-group-prepend">
                                                 <label class="input-group-text bg-danger text-light"><b><?=$Pisah[$j]?></b></label>
                                               </div>
-                                              <input class="form-control form-control-sm" type="text" id="Pelayanan<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
+                                              <input class="form-control form-control-sm" type="text" value="0" id="Pelayanan<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
                                             </div>
                                           <?php } ?>
                                         <?php } ?>
@@ -892,11 +892,12 @@
               KepalaDesa += ($("input[name='KepalaDesa0']:checked").val()+"|"+
                             $("input[name='KepalaDesa1']:checked").val()+"|"+
                             $("input[name='KepalaDesa2']:checked").val()+"|")
-              if (parseInt($("#KepalaDesa30").val()) / parseInt($("#KepalaDesa31").val()) * 100 < 26) {
+              var KepDes = parseInt($("#KepalaDesa30").val()) / parseInt($("#KepalaDesa31").val()) * 100
+              if (KepDes < 26 || isNaN(KepDes) || KepDes == Infinity) {
                 KepalaDesa += '1'
-              } else if (parseInt($("#KepalaDesa30").val()) / parseInt($("#KepalaDesa31").val()) * 100 < 51) {
+              } else if (KepDes < 51) {
                 KepalaDesa += '2'
-              } else if (parseInt($("#KepalaDesa30").val()) / parseInt($("#KepalaDesa31").val()) * 100 < 76) {
+              } else if (KepDes < 76) {
                 KepalaDesa += '3'
               } else {
                 KepalaDesa += '4'
@@ -936,7 +937,7 @@
                   SekertarisDesa += ("|"+$("input[name='SekertarisDesa"+i+"']:checked").val())
                 }
               }
-              if (parseInt($("#SekertarisDesa70").val()) / parseInt($("#SekertarisDesa71").val()) * 100 < 26) {
+              if (parseInt($("#SekertarisDesa70").val()) / parseInt($("#SekertarisDesa71").val()) * 100 < 26 || isNaN(parseInt($("#SekertarisDesa70").val()) / parseInt($("#SekertarisDesa71").val()) * 100) || parseInt($("#SekertarisDesa70").val()) / parseInt($("#SekertarisDesa71").val()) * 100 == Infinity) {
                 SekertarisDesa += '|1'
               } else if (parseInt($("#SekertarisDesa70").val()) / parseInt($("#SekertarisDesa71").val()) * 100 < 51) {
                 SekertarisDesa += '|2'
@@ -945,7 +946,7 @@
               } else {
                 SekertarisDesa += '|4'
               }   
-              if (parseInt($("#SekertarisDesa80").val()) / parseInt($("#SekertarisDesa81").val()) * 100 < 26) {
+              if (parseInt($("#SekertarisDesa80").val()) / parseInt($("#SekertarisDesa81").val()) * 100 < 26 || isNaN(parseInt($("#SekertarisDesa80").val()) / parseInt($("#SekertarisDesa81").val()) * 100) || parseInt($("#SekertarisDesa80").val()) / parseInt($("#SekertarisDesa81").val()) * 100 == Infinity) {
                 SekertarisDesa += '|1'
               } else if (parseInt($("#SekertarisDesa80").val()) / parseInt($("#SekertarisDesa81").val()) * 100 < 51) {
                 SekertarisDesa += '|2'
@@ -954,7 +955,7 @@
               } else {
                 SekertarisDesa += '|4'
               }
-              if (parseInt($("#SekertarisDesa90").val()) / parseInt($("#SekertarisDesa91").val()) * 100 > 100) {
+              if (parseInt($("#SekertarisDesa90").val()) / parseInt($("#SekertarisDesa91").val()) * 100 > 100 || isNaN(parseInt($("#SekertarisDesa90").val()) / parseInt($("#SekertarisDesa91").val()) * 100) || parseInt($("#SekertarisDesa90").val()) / parseInt($("#SekertarisDesa91").val()) * 100 == Infinity) {
                 SekertarisDesa += '|1'
               } else if (parseInt($("#SekertarisDesa90").val()) / parseInt($("#SekertarisDesa91").val()) * 100 > 90) {
                 SekertarisDesa += '|2'
@@ -1003,7 +1004,7 @@
                   $("input[name='TU1']:checked").val()+"|"+
                   $("input[name='TU2']:checked").val())
             for (let i = 3; i < 5; i++) {
-              if (parseInt($("#TU"+i+"0").val()) / parseInt($("#TU"+i+"1").val()) * 100 < 26) {
+              if (parseInt($("#TU"+i+"0").val()) / parseInt($("#TU"+i+"1").val()) * 100 < 26 || isNaN(parseInt($("#TU"+i+"0").val()) / parseInt($("#TU"+i+"1").val()) * 100) || parseInt($("#TU"+i+"0").val()) / parseInt($("#TU"+i+"1").val()) * 100 == Infinity) {
                 TU += '|1'
               } else if (parseInt($("#TU"+i+"0").val()) / parseInt($("#TU"+i+"1").val()) * 100 < 51) {
                 TU += '|2'
@@ -1014,7 +1015,7 @@
               } 
             }     
             for (let i = 5; i < 20; i++) {
-              if (parseInt($("#TU"+i+"0").val()) / parseInt($("#TU"+i+"1").val()) * 100 > 100) {
+              if (parseInt($("#TU"+i+"0").val()) / parseInt($("#TU"+i+"1").val()) * 100 > 100 || isNaN(parseInt($("#TU"+i+"0").val()) / parseInt($("#TU"+i+"1").val()) * 100) || parseInt($("#TU"+i+"0").val()) / parseInt($("#TU"+i+"1").val()) * 100 == Infinity) {
                 TU += '|1'
               } else if (parseInt($("#TU"+i+"0").val()) / parseInt($("#TU"+i+"1").val()) * 100 > 90) {
                 TU += '|2'
@@ -1055,7 +1056,7 @@
               Keuangan += ($("input[name='Keuangan0']:checked").val()+"|"+
                             $("input[name='Keuangan1']:checked").val()+"|"+
                             $("input[name='Keuangan2']:checked").val()+"|")
-              if (parseInt($("#Keuangan30").val()) / parseInt($("#Keuangan31").val()) * 100 < 26) {
+              if (parseInt($("#Keuangan30").val()) / parseInt($("#Keuangan31").val()) * 100 < 26 || isNaN(parseInt($("#Keuangan30").val()) / parseInt($("#Keuangan31").val()) * 100) || parseInt($("#Keuangan30").val()) / parseInt($("#Keuangan31").val()) * 100 == Infinity) {
                 Keuangan += '1|'
               } else if (parseInt($("#Keuangan30").val()) / parseInt($("#Keuangan31").val()) * 100 < 51) {
                 Keuangan += '2|'
@@ -1064,7 +1065,7 @@
               } else {
                 Keuangan += '4|'
               }   
-              if (parseInt($("#Keuangan40").val()) / parseInt($("#Keuangan41").val()) * 100 < 26) {
+              if (parseInt($("#Keuangan40").val()) / parseInt($("#Keuangan41").val()) * 100 < 26 || isNaN(parseInt($("#Keuangan40").val()) / parseInt($("#Keuangan41").val()) * 100) || parseInt($("#Keuangan40").val()) / parseInt($("#Keuangan41").val()) * 100 == Infinity) {
                 Keuangan += '1|'
               } else if (parseInt($("#Keuangan40").val()) / parseInt($("#Keuangan41").val()) * 100 < 51) {
                 Keuangan += '2|'
@@ -1114,7 +1115,7 @@
                               $("input[name='Perencanaan1']:checked").val()+"|"+
                               $("input[name='Perencanaan2']:checked").val())
               for (let i = 3; i < 5; i++) {
-                if (parseInt($("#Perencanaan"+i+"0").val()) / parseInt($("#Perencanaan"+i+"1").val()) * 100 < 26) {
+                if (parseInt($("#Perencanaan"+i+"0").val()) / parseInt($("#Perencanaan"+i+"1").val()) * 100 < 26 || isNaN(parseInt($("#Perencanaan"+i+"0").val()) / parseInt($("#Perencanaan"+i+"1").val()) * 100) || parseInt($("#Perencanaan"+i+"0").val()) / parseInt($("#Perencanaan"+i+"1").val()) * 100 == Infinity) {
                   Perencanaan += '|1'
                 } else if (parseInt($("#Perencanaan"+i+"0").val()) / parseInt($("#Perencanaan"+i+"1").val()) * 100 < 51) {
                   Perencanaan += '|2'
@@ -1125,7 +1126,7 @@
                 } 
               }     
               for (let i = 5; i < 10; i++) {
-                if (parseInt($("#Perencanaan"+i+"0").val()) / parseInt($("#Perencanaan"+i+"1").val()) * 100 > 100) {
+                if (parseInt($("#Perencanaan"+i+"0").val()) / parseInt($("#Perencanaan"+i+"1").val()) * 100 > 100 || isNaN(parseInt($("#Perencanaan"+i+"0").val()) / parseInt($("#Perencanaan"+i+"1").val()) * 100) || parseInt($("#Perencanaan"+i+"0").val()) / parseInt($("#Perencanaan"+i+"1").val()) * 100 == Infinity) {
                   Perencanaan += '|1'
                 } else if (parseInt($("#Perencanaan"+i+"0").val()) / parseInt($("#Perencanaan"+i+"1").val()) * 100 > 90) {
                   Perencanaan += '|2'
@@ -1176,7 +1177,7 @@
                               $("input[name='Pemerintahan1']:checked").val()+"|"+
                               $("input[name='Pemerintahan2']:checked").val())
               for (let i = 3; i < 5; i++) {
-                if (parseInt($("#Pemerintahan"+i+"0").val()) / parseInt($("#Pemerintahan"+i+"1").val()) * 100 < 26) {
+                if (parseInt($("#Pemerintahan"+i+"0").val()) / parseInt($("#Pemerintahan"+i+"1").val()) * 100 < 26 || isNaN(parseInt($("#Pemerintahan"+i+"0").val()) / parseInt($("#Pemerintahan"+i+"1").val()) * 100) || parseInt($("#Pemerintahan"+i+"0").val()) / parseInt($("#Pemerintahan"+i+"1").val()) * 100 == Infinity) {
                   Pemerintahan += '|1'
                 } else if (parseInt($("#Pemerintahan"+i+"0").val()) / parseInt($("#Pemerintahan"+i+"1").val()) * 100 < 51) {
                   Pemerintahan += '|2'
@@ -1187,7 +1188,7 @@
                 } 
               }     
               for (let i = 5; i < 39; i++) {
-                if (parseInt($("#Pemerintahan"+i+"0").val()) / parseInt($("#Pemerintahan"+i+"1").val()) * 100 > 100) {
+                if (parseInt($("#Pemerintahan"+i+"0").val()) / parseInt($("#Pemerintahan"+i+"1").val()) * 100 > 100 || isNaN(parseInt($("#Pemerintahan"+i+"0").val()) / parseInt($("#Pemerintahan"+i+"1").val()) * 100) || parseInt($("#Pemerintahan"+i+"0").val()) / parseInt($("#Pemerintahan"+i+"1").val()) * 100 == Infinity) {
                   Pemerintahan += '|1'
                 } else if (parseInt($("#Pemerintahan"+i+"0").val()) / parseInt($("#Pemerintahan"+i+"1").val()) * 100 > 90) {
                   Pemerintahan += '|2'
@@ -1197,7 +1198,7 @@
                   Pemerintahan += '|4'
                 } 
               }
-              if (parseInt($("#Pemerintahan"+39+"0").val()) / parseInt($("#Pemerintahan"+39+"1").val()) * 100 < 26) {
+              if (parseInt($("#Pemerintahan"+39+"0").val()) / parseInt($("#Pemerintahan"+39+"1").val()) * 100 < 26 || isNaN(parseInt($("#Pemerintahan"+39+"0").val()) / parseInt($("#Pemerintahan"+39+"1").val()) * 100) || parseInt($("#Pemerintahan"+39+"0").val()) / parseInt($("#Pemerintahan"+39+"1").val()) * 100 == Infinity) {
                 Pemerintahan += '|1'
               } else if (parseInt($("#Pemerintahan"+39+"0").val()) / parseInt($("#Pemerintahan"+39+"1").val()) * 100 < 51) {
                 Pemerintahan += '|2'
@@ -1246,7 +1247,7 @@
                               $("input[name='Kesejahteraan1']:checked").val()+"|"+
                               $("input[name='Kesejahteraan2']:checked").val())
               for (let i = 3; i < 5; i++) {
-                if (parseInt($("#Kesejahteraan"+i+"0").val()) / parseInt($("#Kesejahteraan"+i+"1").val()) * 100 < 26) {
+                if (parseInt($("#Kesejahteraan"+i+"0").val()) / parseInt($("#Kesejahteraan"+i+"1").val()) * 100 < 26 || isNaN(parseInt($("#Kesejahteraan"+i+"0").val()) / parseInt($("#Kesejahteraan"+i+"1").val()) * 100) || parseInt($("#Kesejahteraan"+i+"0").val()) / parseInt($("#Kesejahteraan"+i+"1").val()) * 100 == Infinity) {
                   Kesejahteraan += '|1'
                 } else if (parseInt($("#Kesejahteraan"+i+"0").val()) / parseInt($("#Kesejahteraan"+i+"1").val()) * 100 < 51) {
                   Kesejahteraan += '|2'
@@ -1257,7 +1258,7 @@
                 } 
               }     
               for (let i = 5; i < 51; i++) {
-                if (parseInt($("#Kesejahteraan"+i+"0").val()) / parseInt($("#Kesejahteraan"+i+"1").val()) * 100 > 100) {
+                if (parseInt($("#Kesejahteraan"+i+"0").val()) / parseInt($("#Kesejahteraan"+i+"1").val()) * 100 > 100 || isNaN(parseInt($("#Kesejahteraan"+i+"0").val()) / parseInt($("#Kesejahteraan"+i+"1").val()) * 100) || parseInt($("#Kesejahteraan"+i+"0").val()) / parseInt($("#Kesejahteraan"+i+"1").val()) * 100 == Infinity) {
                   Kesejahteraan += '|1'
                 } else if (parseInt($("#Kesejahteraan"+i+"0").val()) / parseInt($("#Kesejahteraan"+i+"1").val()) * 100 > 90) {
                   Kesejahteraan += '|2'
@@ -1267,7 +1268,7 @@
                   Kesejahteraan += '|4'
                 } 
               }
-              if (parseInt($("#Kesejahteraan"+51+"0").val()) / parseInt($("#Kesejahteraan"+51+"1").val()) * 100 < 26) {
+              if (parseInt($("#Kesejahteraan"+51+"0").val()) / parseInt($("#Kesejahteraan"+51+"1").val()) * 100 < 26 || isNaN(parseInt($("#Kesejahteraan"+51+"0").val()) / parseInt($("#Kesejahteraan"+51+"1").val()) * 100) || parseInt($("#Kesejahteraan"+51+"0").val()) / parseInt($("#Kesejahteraan"+51+"1").val()) * 100 == Infinity) {
                 Kesejahteraan += '|1'
               } else if (parseInt($("#Kesejahteraan"+51+"0").val()) / parseInt($("#Kesejahteraan"+51+"1").val()) * 100 < 51) {
                 Kesejahteraan += '|2'
@@ -1325,7 +1326,7 @@
                               $("input[name='Pelayanan1']:checked").val()+"|"+
                               $("input[name='Pelayanan2']:checked").val())
               for (let i = 3; i < 5; i++) {
-                if (parseInt($("#Pelayanan"+i+"0").val()) / parseInt($("#Pelayanan"+i+"1").val()) * 100 < 26) {
+                if (parseInt($("#Pelayanan"+i+"0").val()) / parseInt($("#Pelayanan"+i+"1").val()) * 100 < 26 || isNaN(parseInt($("#Pelayanan"+i+"0").val()) / parseInt($("#Pelayanan"+i+"1").val()) * 100) || parseInt($("#Pelayanan"+i+"0").val()) / parseInt($("#Pelayanan"+i+"1").val()) * 100 == Infinity) {
                   Pelayanan += '|1'
                 } else if (parseInt($("#Pelayanan"+i+"0").val()) / parseInt($("#Pelayanan"+i+"1").val()) * 100 < 51) {
                   Pelayanan += '|2'
@@ -1336,7 +1337,7 @@
                 } 
               }     
               for (let i = 5; i < 77; i++) {
-                if (parseInt($("#Pelayanan"+i+"0").val()) / parseInt($("#Pelayanan"+i+"1").val()) * 100 > 100) {
+                if (parseInt($("#Pelayanan"+i+"0").val()) / parseInt($("#Pelayanan"+i+"1").val()) * 100 > 100 || isNaN(parseInt($("#Pelayanan"+i+"0").val()) / parseInt($("#Pelayanan"+i+"1").val()) * 100) || parseInt($("#Pelayanan"+i+"0").val()) / parseInt($("#Pelayanan"+i+"1").val()) * 100 == Infinity) {
                   Pelayanan += '|1'
                 } else if (parseInt($("#Pelayanan"+i+"0").val()) / parseInt($("#Pelayanan"+i+"1").val()) * 100 > 90) {
                   Pelayanan += '|2'
@@ -1346,7 +1347,7 @@
                   Pelayanan += '|4'
                 } 
               }
-              if (parseInt($("#Pelayanan770").val()) / parseInt($("#Pelayanan771").val()) * 100 > 36) {
+              if (parseInt($("#Pelayanan770").val()) / parseInt($("#Pelayanan771").val()) * 100 > 36 || isNaN(parseInt($("#Pelayanan770").val()) / parseInt($("#Pelayanan771").val()) * 100) || parseInt($("#Pelayanan770").val()) / parseInt($("#Pelayanan771").val()) * 100 == Infinity) {
                 Pelayanan += '|1'
               } else if (parseInt($("#Pelayanan770").val()) / parseInt($("#Pelayanan771").val()) * 100 > 27) {
                 Pelayanan += '|2'
@@ -1355,7 +1356,7 @@
               } else {
                 Pelayanan += '|4'
               } 
-              if (parseInt($("#Pelayanan780").val()) / parseInt($("#Pelayanan781").val()) * 100 > 75) {
+              if (parseInt($("#Pelayanan780").val()) / parseInt($("#Pelayanan781").val()) * 100 > 75 || isNaN(parseInt($("#Pelayanan780").val()) / parseInt($("#Pelayanan781").val()) * 100) || parseInt($("#Pelayanan780").val()) / parseInt($("#Pelayanan781").val()) * 100 == Infinity) {
                 Pelayanan += '|1'
               } else if (parseInt($("#Pelayanan780").val()) / parseInt($("#Pelayanan781").val()) * 100 > 50) {
                 Pelayanan += '|2'
@@ -1364,7 +1365,7 @@
               } else {
                 Pelayanan += '|4'
               } 
-              if (parseInt($("#Pelayanan790").val()) / parseInt($("#Pelayanan791").val()) * 100 > 75) {
+              if (parseInt($("#Pelayanan790").val()) / parseInt($("#Pelayanan791").val()) * 100 > 75 || isNaN(parseInt($("#Pelayanan790").val()) / parseInt($("#Pelayanan791").val()) * 100) || parseInt($("#Pelayanan790").val()) / parseInt($("#Pelayanan791").val()) * 100 == Infinity) {
                 Pelayanan += '|1'
               } else if (parseInt($("#Pelayanan790").val()) / parseInt($("#Pelayanan791").val()) * 100 > 50) {
                 Pelayanan += '|2'
@@ -1373,7 +1374,7 @@
               } else {
                 Pelayanan += '|4'
               }
-              if (parseInt($("#Pelayanan800").val()) / parseInt($("#Pelayanan801").val()) * 100 > 75) {
+              if (parseInt($("#Pelayanan800").val()) / parseInt($("#Pelayanan801").val()) * 100 > 75 || isNaN(parseInt($("#Pelayanan800").val()) / parseInt($("#Pelayanan801").val()) * 100) || parseInt($("#Pelayanan800").val()) / parseInt($("#Pelayanan801").val()) * 100 == Infinity) {
                 Pelayanan += '|1'
               } else if (parseInt($("#Pelayanan800").val()) / parseInt($("#Pelayanan801").val()) * 100 > 50) {
                 Pelayanan += '|2'

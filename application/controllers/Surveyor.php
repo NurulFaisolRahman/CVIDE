@@ -77,12 +77,17 @@ class Surveyor extends CI_Controller {
   }
 
   public function InputKinerjaAparatur(){
-    $_POST['NIK'] = $this->session->userdata('NIK');
-    $this->db->insert('KinerjaAparatur',$_POST);
-    if ($this->db->affected_rows()){
-      echo '1';
+    if ($this->db->get_where('kinerjaaparatur', array('Desa' => $_POST['Desa']))->num_rows() === 0){
+      $_POST['NIK'] = $this->session->userdata('NIK');
+      $this->db->insert('kinerjaaparatur',$_POST);
+      if ($this->db->affected_rows()){
+        echo '1';
+      } else {
+        echo 'Gagal Menyimpan Survei!';
+      }
     } else {
-      echo 'Gagal Menyimpan Survei!';
+      $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode = "."'".$_POST['Desa']."'")->row_array()['Nama'];
+      echo 'Data Survei Desa '.$Desa.' Sudah Ada!';
     }
   }
 
