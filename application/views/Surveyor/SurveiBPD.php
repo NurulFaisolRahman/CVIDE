@@ -65,7 +65,7 @@
                                             'Jumlah Aspirasi Masyarakat Berkebutuhan Khusus|Jumlah Masyarakat Berkebutuhan Khusus',
                                             'Jumlah Aspirasi Perempuan & Kelompok Marginal|Jumlah Perempuan & Kelompok Marginal',
                                             'Jumlah agenda terealisasi Dalam 1 Tahun|Jumlah agenda Dalam 1 Tahun',
-                                            'Tidak Ada Buku Panduan|Memuat 1 atau 2 Poin Sistematika|Memuat 3 Poin Sistematika|Memuat 4 Poin Sistematika',
+                                            'Memuat 4 Poin Sistematika|Memuat 3 Poin Sistematika|Memuat 1 atau 2 Poin Sistematika|Tidak Ada Buku Panduan',
                                             'Jumlah Aspirasi yang ditampung',
                                             'Jumlah Aspirasi Yang Disampaikan',
                                             'Jumlah Aspirasi Yang Disalurkan',

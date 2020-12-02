@@ -26,6 +26,10 @@
             pelayanan di Kantor Desa harap mengisi kuisioner ini dengan se obyektif mungkin sesuai dengan keadaan yang sebenarnya. 
             <span class="text-danger">**Catatan Penting : Segala informasi isian dari responden dijamin kerahasiaannya oleh konsultan independen.</span></b></p>
         </div>
+        <div class="col-sm-12 text-center">
+          <h2 class="text-primary font-weight-bold">WAKTU PENGISIAN SURVEI TINGGAL</h2>
+          <h2 id="Timer" class="text-danger font-weight-bold"></h2>
+        </div>
         <div class="col-sm-12">
           <div class="card mt-2">
             <div class="card-header bg-primary text-light">
@@ -272,6 +276,29 @@
         }
       })
       
+      // Set the date we're counting down to
+      var countDownDate = new Date("Nov 27, 2020 12:00:00").getTime();
+      // Update the count down every 1 second
+      var x = setInterval(function() {
+        // Get today's date and time
+        var now = new Date().getTime();
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        // Output the result in an element with id="demo"
+        document.getElementById("Timer").innerHTML = days + " HARI " + hours + " JAM "
+        + minutes + " MENIT " + seconds + " DETIK ";
+        // If the count down is over, write some text 
+        if (distance < 0) {
+          clearInterval(x);
+          document.getElementById("Timer").innerHTML = "SURVEI DITUTUP";
+          $("#Kirim").remove();
+        }
+      }, 1000);
     })
   </script>
 </html>

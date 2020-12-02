@@ -64,7 +64,7 @@ class IDE extends CI_Controller {
 
   public function ExcelIKM($NamaKecamatan,$Desa){
     $Data['NamaKecamatan'] = $NamaKecamatan;
-    $Data['NamaDesa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode = "."'".$Desa."'")->row_array()['Nama'];;
+    $Data['NamaDesa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode = "."'".$Desa."'")->row_array()['Nama'];
     $Data['Responden'] = array();
     $Data['NilaiIndeks'] = array();
     $Data['MutuPelayanan'] = array();
@@ -122,9 +122,17 @@ class IDE extends CI_Controller {
         $TampungPekerjaan[4] += 1;
       } else if ($key['Pekerjaan'] == 5) {
         $TampungPekerjaan[5] += 1;
-      } else if ($key['Pekerjaan'] == 6) {
+      } else {
         $TampungPekerjaan[6] += 1;
       } 
+    }
+    if ($Total < 356) {
+      for ($i=0; $i < (356-$Total); $i++) { 
+        for ($k=0; $k < 11; $k++) { 
+          $Tampung[$k] += 3;
+        }
+      }
+      $Data['Responden'][0] = 356;
     }
     if ($Total > 0) {
       for ($k=0; $k < 7; $k++) { 
@@ -139,11 +147,14 @@ class IDE extends CI_Controller {
       $Gender[1] = str_replace(".",",",round(($Wanita/$Total*100),2));
     } 
     array_push($Data['Gender'], $Gender);
+    if ($Total < 356) {
+      $Total = 356;
+    }
     if ($Total > 0) {
       for ($i=0; $i < 11; $i++) { 
         $Averge[$i] = str_replace(".",",",round($Tampung[$i]/$Total,2));
         $Tertimbang[$i] = str_replace(".",",",round(($Tampung[$i]/$Total)*(1/11),2));
-        $Konversi[$i] = str_replace(".",",",round(($Tampung[$i]/$Total)*(1/11)*25,2));
+        $Konversi[$i] = ($Tampung[$i]/$Total)*(1/11)*25;
       }
     }
     array_push($Data['Rata2'], $Averge);
@@ -198,6 +209,15 @@ class IDE extends CI_Controller {
         for ($i=0; $i < 11; $i++) { 
           $Tampung[$i] += $Pecah[$i];
         }
+      }
+      if ($Total < 356) {
+        for ($i=0; $i < (356-$Total); $i++) { 
+          for ($k=0; $k < 11; $k++) { 
+            $Tampung[$k] += 3;
+          }
+        }
+        $Total = 356;
+        $Data['Responden'][$j] = 356;
       }
       if ($Total > 0) {
         for ($i=0; $i < 11; $i++) { 

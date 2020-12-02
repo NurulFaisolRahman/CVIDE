@@ -31,6 +31,7 @@
                       <table class="table table-bordered bg-light">
                         <thead>
                           <tr class="bg-primary text-light">
+                            <th scope="col" class="text-center align-middle">No</th>
                             <th scope="col" class="text-center align-middle">Desa</th>
                             <th scope="col" class="text-center align-middle">Kecamatan</th>
                             <th scope="col" class="text-center align-middle">Total Responden</th>
@@ -39,6 +40,7 @@
                         <tbody>
                           <?php foreach ($Rekap as $key => $value) { $Pecah = explode("|",$value); ?>
                             <tr>
+                              <td scope="row" class="text-center align-middle"><?=($key+1)?></td>
                               <td scope="row" class="text-center align-middle"><?=$Pecah[0]?></td>
                               <td scope="row" class="text-center align-middle"><?=$Pecah[1]?></td>
                               <td scope="row" class="text-center align-middle"><?=$Pecah[2]?></td>

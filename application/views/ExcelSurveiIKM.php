@@ -930,7 +930,7 @@ td
     <td class=3D"xl67"><?=$Tertimbang[0][0]?></td>
     <td></td>
     <td class=3D"xl68" x:str>Jumlah Responden</td>
-    <td class=3D"xl69" x:num><?=$Responden[0][0]?></td>
+    <td class=3D"xl69" x:num><?=$Responden[0]?></td>
     <td></td>
    </tr>
    <tr height=3D"20" style=3D'height:15.00pt;mso-height-source:userset;mso-height-alt:300;'>
@@ -1044,7 +1044,7 @@ td
     <td class=3D"xl74" height=3D"20" style=3D'height:15.00pt;'></td>
     <td class=3D"xl65" x:str>Nilai IKM</td>
     <td class=3D"xl65"></td>
-    <td class=3D"xl67"><?=$NilaiIndeks[0][0]?></td>
+    <td class=3D"xl67"><?=$NilaiIndeks[0]?></td>
     <td></td>
     <td class=3D"xl70" x:str>Pekerjaan</td>
     <td class=3D"xl71"></td>
@@ -1057,47 +1057,47 @@ td
     <td class=3D"xl65" x:str><?=$MutuPelayanan[0][0]?></td>
     <td></td>
     <td class=3D"xl75" x:str>PNS</td>
-    <td class=3D"xl67"><?=$Pendidikan[0][0]?></td>
+    <td class=3D"xl67"><?=$Pekerjaan[0][0]?></td>
     <td></td>
    </tr>
    <tr height=3D"20" style=3D'height:15.00pt;mso-height-source:userset;mso-height-alt:300;'>
     <td class=3D"xl74" height=3D"20" style=3D'height:15.00pt;'></td>
     <td class=3D"xl65" x:str>Kinerja Pelayanan</td>
     <td class=3D"xl65"></td>
-    <td class=3D"xl65" x:str><?=$KinerjaUnit[0][0]?></td>
+    <td class=3D"xl65" x:str><?=$KinerjaUnit[0]?></td>
     <td></td>
     <td class=3D"xl75" x:str>TNI/POLRI</td>
-    <td class=3D"xl67"><?=$Pendidikan[0][1]?></td>
+    <td class=3D"xl67"><?=$Pekerjaan[0][1]?></td>
     <td></td>
    </tr>
    <tr height=3D"20" style=3D'height:15.00pt;'>
     <td height=3D"20" colspan=3D"5" style=3D'height:15.00pt;mso-ignore:colspan;'></td>
     <td class=3D"xl75" x:str>Pegawai Swasta</td>
-    <td class=3D"xl67"><?=$Pendidikan[0][2]?></td>
+    <td class=3D"xl67"><?=$Pekerjaan[0][2]?></td>
     <td></td>
    </tr>
    <tr height=3D"20" style=3D'height:15.00pt;'>
     <td height=3D"20" colspan=3D"5" style=3D'height:15.00pt;mso-ignore:colspan;'></td>
     <td class=3D"xl75" x:str>Wiraswasta</td>
-    <td class=3D"xl67"><?=$Pendidikan[0][3]?></td>
+    <td class=3D"xl67"><?=$Pekerjaan[0][3]?></td>
     <td></td>
    </tr>
    <tr height=3D"20" style=3D'height:15.00pt;'>
     <td height=3D"20" colspan=3D"5" style=3D'height:15.00pt;mso-ignore:colspan;'></td>
     <td class=3D"xl75" x:str>Pelajar/Mahasiswa</td>
-    <td class=3D"xl67"><?=$Pendidikan[0][4]?></td>
+    <td class=3D"xl67"><?=$Pekerjaan[0][4]?></td>
     <td></td>
    </tr>
    <tr height=3D"20" style=3D'height:15.00pt;'>
     <td height=3D"20" colspan=3D"5" style=3D'height:15.00pt;mso-ignore:colspan;'></td>
     <td class=3D"xl75" x:str>Tidak/Belum Bekerja</td>
-    <td class=3D"xl67"><?=$Pendidikan[0][5]?></td>
+    <td class=3D"xl67"><?=$Pekerjaan[0][5]?></td>
     <td></td>
    </tr>
    <tr height=3D"20" style=3D'height:15.00pt;'>
     <td height=3D"20" colspan=3D"5" style=3D'height:15.00pt;mso-ignore:colspan;'></td>
     <td class=3D"xl75" x:str>Lainnya</td>
-    <td class=3D"xl67"><?=$Pendidikan[0][6]?></td>
+    <td class=3D"xl67"><?=$Pekerjaan[0][6]?></td>
     <td></td>
    </tr>
    <![if supportMisalignedColumns]>

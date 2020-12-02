@@ -82,7 +82,7 @@
                                             'PADes|Dana Desa',
                                             'Total belanja untuk aparatur desa|Total belanja Berdasarkan APBDes',
                                             'program telah terselenggara semua & SiLPA < 30% dari pendapatan desa|program telah terselenggara semua & SiLPA = 0 dari pendapatan desa|program telah terselenggara semua & SiLPA < 0 dari pendapatan desa|ada program yang belum terselenggara & SiLPA > 0 dari pendapatan desa',
-                                            'Keberhasilan yang telah dicapai > 5|Keberhasilan yang telah dicapai 4-5|Keberhasilan yang telah dicapai 2-3|Keberhasilan yang telah dicapai < 0',
+                                            'Keberhasilan yang telah dicapai > 5|Keberhasilan yang telah dicapai 4-5|Keberhasilan yang telah dicapai 2-3|Keberhasilan yang telah dicapai < 2',
                                             'tindak lanjut sebesar 76-100%|tindak lanjut sebesar 56-75%|tindak lanjut sebesar 40-55%|tindak lanjut sebesar < 40%',
                                             'Selaras semua|Selaras 3|Selaras 2|Selaras 1',
                                             'Tercatat semua item di LPPDes|Tercatat > 5 item di LPPDes|Tercatat hanya 5 item di LPPDes|Tercatat < 5 item di LPPDes',

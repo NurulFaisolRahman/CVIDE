@@ -1640,13 +1640,21 @@
 
     <?php for ($i=0; $i < 154; $i++) { ?>
       function Banyaknya<?=$i?>() {
-        $("#Nilai<?=$i?>").val(parseFloat($('#Banyaknya<?=$i?>').val().replace(',','.')) * parseInt($('#Harga<?=$i?>').val()))
+        if ($('#Banyaknya<?=$i?>').val() === "" || $('#Harga<?=$i?>').val() === "") {
+          $("#Nilai<?=$i?>").val("")
+        } else {
+          $("#Nilai<?=$i?>").val(parseFloat($('#Banyaknya<?=$i?>').val().replace(',','.')) * parseInt($('#Harga<?=$i?>').val())) 
+        }
       }
     <?php } ?>
 
     <?php for ($i=0; $i < 154; $i++) { ?>
       function Harga<?=$i?>() {
-        $("#Nilai<?=$i?>").val(parseFloat($('#Banyaknya<?=$i?>').val().replace(',','.')) * parseInt($('#Harga<?=$i?>').val()))
+        if ($('#Banyaknya<?=$i?>').val() === "" || $('#Harga<?=$i?>').val() === "") {
+          $("#Nilai<?=$i?>").val("")
+        } else {
+          $("#Nilai<?=$i?>").val(parseFloat($('#Banyaknya<?=$i?>').val().replace(',','.')) * parseInt($('#Harga<?=$i?>').val())) 
+        }
       }
     <?php } ?>
 
