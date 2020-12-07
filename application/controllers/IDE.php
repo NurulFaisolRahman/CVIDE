@@ -127,10 +127,8 @@ class IDE extends CI_Controller {
       } 
     }
     if ($Total < 356) {
-      for ($i=0; $i < (356-$Total); $i++) { 
-        for ($k=0; $k < 11; $k++) { 
-          $Tampung[$k] += 3;
-        }
+      for ($k=0; $k < 11; $k++) { 
+        $Tampung[$k] += (3*(356-$Total));
       }
       $Data['Responden'][0] = 356;
     }
@@ -182,6 +180,117 @@ class IDE extends CI_Controller {
     $this->load->view('ExcelSurveiIKM',$Data);
   }
 
+  public function ExcelIKMKecamatan($KodeKecamatan,$NamaKecamatan){
+    $Data['NamaKecamatan'] = $NamaKecamatan;
+    $Data['NamaDesa'] = '';
+    $Data['Responden'] = array(0);
+    $Data['NilaiIndeks'] = array();
+    $Data['MutuPelayanan'] = array();
+    $Data['KinerjaUnit'] = array();
+    $Data['Rata2'] = array();
+    $Data['Tertimbang'] = array();
+    $Data['Gender'] = array();
+    $Data['Pendidikan'] = array();
+    $Data['Pekerjaan'] = array();
+    $Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
+    $Averge = array(0,0,0,0,0,0,0,0,0,0,0);
+    $Tertimbang = array(0,0,0,0,0,0,0,0,0,0,0);
+    $Konversi = array(0,0,0,0,0,0,0,0,0,0,0);
+    $Pendidikan = array(0,0,0,0,0,0,0);
+    $TampungPendidikan = array(0,0,0,0,0,0,0);
+    $Pekerjaan = array(0,0,0,0,0,0,0);
+    $TampungPekerjaan = array(0,0,0,0,0,0,0);
+    $Gender = array(0,0);
+    $Pria = 0;
+    $Wanita = 0;
+    $Titip = 0;
+    $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$KodeKecamatan.".%'")->result_array();
+    for ($j = 0; $j < count($Desa); $j++) { 
+      $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikm` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->row_array()['Total'];
+      $RespondenDesa = $this->db->query("SELECT * FROM `ikm` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->result_array();
+      foreach ($RespondenDesa as $key) {
+        $Pecah = explode("|",$key['Poin']);
+        for ($i=0; $i < 11; $i++) { 
+          $Tampung[$i] += $Pecah[$i];
+        }
+        $key['Gender'] == 1 ? $Pria++ : $Wanita++;
+        if ($key['Pendidikan'] == 0) {
+          $TampungPendidikan[0] += 1;
+        } else if ($key['Pendidikan'] == 1) {
+          $TampungPendidikan[1] += 1;
+        } else if ($key['Pendidikan'] == 2) {
+          $TampungPendidikan[2] += 1;
+        } else if ($key['Pendidikan'] == 3) {
+          $TampungPendidikan[3] += 1;
+        } else if ($key['Pendidikan'] == 4) {
+          $TampungPendidikan[4] += 1;
+        } else if ($key['Pendidikan'] == 5) {
+          $TampungPendidikan[5] += 1;
+        } else if ($key['Pendidikan'] == 6) {
+          $TampungPendidikan[6] += 1;
+        } 
+        if ($key['Pekerjaan'] == 0) {
+          $TampungPekerjaan[0] += 1;
+        } else if ($key['Pekerjaan'] == 1) {
+          $TampungPekerjaan[1] += 1;
+        } else if ($key['Pekerjaan'] == 2) {
+          $TampungPekerjaan[2] += 1;
+        } else if ($key['Pekerjaan'] == 3) {
+          $TampungPekerjaan[3] += 1;
+        } else if ($key['Pekerjaan'] == 4) {
+          $TampungPekerjaan[4] += 1;
+        } else if ($key['Pekerjaan'] == 5) {
+          $TampungPekerjaan[5] += 1;
+        } else {
+          $TampungPekerjaan[6] += 1;
+        }
+      }
+      if ($Total < 356) {
+        for ($k=0; $k < 11; $k++) { 
+          $Tampung[$k] += (3*(356-$Total));
+        }
+        $Titip += 356-$Total;
+      }
+      $Data['Responden'][0] += $Total;
+    }
+    if ($Total > 0) {
+      for ($k=0; $k < 7; $k++) { 
+        $Pendidikan[$k] = str_replace(".",",",round(($TampungPendidikan[$k]/$Data['Responden'][0]*100),2));
+        $Pekerjaan[$k] = str_replace(".",",",round(($TampungPekerjaan[$k]/$Data['Responden'][0]*100),2));
+      }
+    }
+    array_push($Data['Pendidikan'], $Pendidikan);
+    array_push($Data['Pekerjaan'], $Pekerjaan);
+    if ($Total > 0) {
+      $Gender[0] = str_replace(".",",",round(($Pria/$Data['Responden'][0]*100),2));
+      $Gender[1] = str_replace(".",",",round(($Wanita/$Data['Responden'][0]*100),2));
+    } 
+    array_push($Data['Gender'], $Gender);
+    $Data['Responden'][0] += $Titip;
+    for ($i=0; $i < 11; $i++) { 
+      $Averge[$i] = str_replace(".",",",round($Tampung[$i]/$Data['Responden'][0],2));
+      $Tertimbang[$i] = str_replace(".",",",round(($Tampung[$i]/$Data['Responden'][0])*(1/11),2));
+      $Konversi[$i] = ($Tampung[$i]/$Data['Responden'][0])*(1/11)*25;
+    }
+    array_push($Data['Rata2'], $Averge);
+    array_push($Data['Tertimbang'], $Tertimbang);
+    $Data['NilaiIndeks'][0] = str_replace(".",",",round(array_sum($Konversi),2));
+    if ($Data['NilaiIndeks'][0] < 65) {
+      $Data['MutuPelayanan'][0] = 'D';
+      $Data['KinerjaUnit'][0] = 'Tidak Baik';
+    } else if ($Data['NilaiIndeks'][0] < 76.61) {
+      $Data['MutuPelayanan'][0] = 'C';
+      $Data['KinerjaUnit'][0] = 'Kurang Baik';
+    } else if ($Data['NilaiIndeks'][0] < 88.31) {
+      $Data['MutuPelayanan'][0] = 'B';
+      $Data['KinerjaUnit'][0] = 'Baik';
+    } else {
+      $Data['MutuPelayanan'][0] = 'A';
+      $Data['KinerjaUnit'][0] = 'Sangat Baik';
+    }
+    $this->load->view('ExcelSurveiIKM',$Data);
+  }
+
   public function InfoSurveiIKM(){
     if (isset($_SESSION['KodeKecamatanIKM'])) {
       $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
@@ -211,10 +320,8 @@ class IDE extends CI_Controller {
         }
       }
       if ($Total < 356) {
-        for ($i=0; $i < (356-$Total); $i++) { 
-          for ($k=0; $k < 11; $k++) { 
-            $Tampung[$k] += 3;
-          }
+        for ($k=0; $k < 11; $k++) { 
+          $Tampung[$k] += (3*(356-$Total));
         }
         $Total = 356;
         $Data['Responden'][$j] = 356;
@@ -294,4 +401,33 @@ class IDE extends CI_Controller {
     }
     echo $OpsiDesa;
   }
+
+  public function Simulasi(){
+    $Data['BPD'] = $this->db->query("SELECT Poin FROM `bpd`")->result_array();
+    $Data['KinerjaPemDes'] = $this->db->query("SELECT Poin FROM `kinerjapemdes`")->result_array();
+    $Data['KinerjaAparatur'] = $this->db->query("SELECT * FROM `kinerjaaparatur`")->result_array();
+    $this->load->view('ExcelSimulasi',$Data);
+  }
+
+  public function RekapIKM(){
+    $Data['Surveyor'] = $this->db->get("Surveyor")->result_array();
+    $this->load->view('RekapSurveyorIKM',$Data);
+  }
+
+  public function Rekap($NIK,$Surveyor){
+    $Data['IPM'] = $this->db->query("SELECT NamaAnggota FROM `ipm` WHERE NIK='".$NIK."'")->result_array();
+    $Data['Surveyor'] = $Surveyor;
+    $this->load->view('ExcelSurveyorIKM',$Data);                     
+  }
 }
+// SELECT * FROM `ipm` WHERE NIK='3528021509990001'
+// UPDATE ipm SET Pendapatan = REPLACE(Pendapatan, '.', '') WHERE NIK='3528021509990001'
+// SELECT surveyor.Nama,COUNT(ipm.NIK) Total FROM surveyor,ipm WHERE surveyor.NIK=ipm.NIK GROUP BY ipm.NIK 
+// $(".numbers").keypress(function (e) {
+//   //if the letter is not digit then display error and don't type anything
+//   if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+//   //display error message
+//   alert("Insert Only Numbers");
+//   return false;
+//   }
+//   });

@@ -1365,20 +1365,20 @@
               } else {
                 Pelayanan += '|4'
               } 
-              if (parseInt($("#Pelayanan790").val()) / parseInt($("#Pelayanan791").val()) * 100 > 75 || isNaN(parseInt($("#Pelayanan790").val()) / parseInt($("#Pelayanan791").val()) * 100) || parseInt($("#Pelayanan790").val()) / parseInt($("#Pelayanan791").val()) * 100 == Infinity) {
+              if (parseInt($("#Pelayanan790").val()) / parseInt($("#Pelayanan791").val()) > 75 || isNaN(parseInt($("#Pelayanan790").val()) / parseInt($("#Pelayanan791").val()) * 100) || parseInt($("#Pelayanan790").val()) / parseInt($("#Pelayanan791").val()) * 100 == Infinity) {
                 Pelayanan += '|1'
-              } else if (parseInt($("#Pelayanan790").val()) / parseInt($("#Pelayanan791").val()) * 100 > 50) {
+              } else if (parseInt($("#Pelayanan790").val()) / parseInt($("#Pelayanan791").val()) > 50) {
                 Pelayanan += '|2'
-              } else if (parseInt($("#Pelayanan790").val()) / parseInt($("#Pelayanan791").val()) * 100 > 25) {
+              } else if (parseInt($("#Pelayanan790").val()) / parseInt($("#Pelayanan791").val()) > 25) {
                 Pelayanan += '|3'
               } else {
                 Pelayanan += '|4'
               }
-              if (parseInt($("#Pelayanan800").val()) / parseInt($("#Pelayanan801").val()) * 100 > 75 || isNaN(parseInt($("#Pelayanan800").val()) / parseInt($("#Pelayanan801").val()) * 100) || parseInt($("#Pelayanan800").val()) / parseInt($("#Pelayanan801").val()) * 100 == Infinity) {
+              if (parseInt($("#Pelayanan800").val()) / parseInt($("#Pelayanan801").val()) > 75 || isNaN(parseInt($("#Pelayanan800").val()) / parseInt($("#Pelayanan801").val()) * 100) || parseInt($("#Pelayanan800").val()) / parseInt($("#Pelayanan801").val()) * 100 == Infinity) {
                 Pelayanan += '|1'
-              } else if (parseInt($("#Pelayanan800").val()) / parseInt($("#Pelayanan801").val()) * 100 > 50) {
+              } else if (parseInt($("#Pelayanan800").val()) / parseInt($("#Pelayanan801").val()) > 50) {
                 Pelayanan += '|2'
-              } else if (parseInt($("#Pelayanan800").val()) / parseInt($("#Pelayanan801").val()) * 100 > 25) {
+              } else if (parseInt($("#Pelayanan800").val()) / parseInt($("#Pelayanan801").val()) > 25) {
                 Pelayanan += '|3'
               } else {
                 Pelayanan += '|4'

@@ -42,33 +42,22 @@
                 <div class="row">
                   <div class="col-sm-12">
                     <div class="card border border-warning">
-                      <div class="card-header bg-danger"><b class="text-light">UNDUH DATA IKM</b></div>
+                      <div class="card-header bg-danger"><b class="text-light">UNDUH REKAP IKM</b></div>
                       <div class="card-body bg-primary">
                         <div class="container-fluid p-0">
                           <div class="row">
                             <div class="col-sm-12">
                               <div class="input-group mb-2">
                                 <div class="input-group-prepend">
-                                  <span class="input-group-text bg-danger text-light"><b>Kecamatan</b></span>
+                                  <span class="input-group-text bg-danger text-light"><b>Surveyor</b></span>
                                 </div>
-                                <select class="custom-select" id="Kecamatan">  
-                                  <?php foreach ($Kecamatan as $key) { ?>
-                                    <option value="<?=$key['Kode']."|".$key['Nama']?>"><?=$key['Nama']?></option>
-                                  <?php } ?>                  
-                                </select>
-                              </div>
-                              <div class="input-group mb-2">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text bg-danger text-light"><b>Desa</b></span>
-                                </div>
-                                <select class="custom-select" id="Desa">                    
-                                  <?php foreach ($Desa as $key) { ?>
-                                    <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option>
+                                <select class="custom-select" id="Surveyor">  
+                                  <?php foreach ($Surveyor as $key) { ?>
+                                    <option value="<?=$key['NIK']."|".$key['Nama']?>"><?=$key['Nama']?></option>
                                   <?php } ?>                  
                                 </select>
                               </div>
                               <div class="btn btn-danger text-light" id="Unduh"><b>UNDUH</b></div>
-                              <div class="btn btn-warning text-light" id="Rekap"><b>REKAP</b></div>
                             </div>
                           </div>
                         </div>
@@ -89,22 +78,9 @@
         
         var BaseURL = '<?=base_url()?>'
 
-        $("#Kecamatan").change(function (){
-          var Pecah = $("#Kecamatan").val().split("|")
-          var Desa = { Kode: Pecah[0] }
-          $.post(BaseURL+"IDE/Desa", Desa).done(function(Respon) {
-            $('#Desa').html(Respon)
-          })    
-        })
-
         $("#Unduh").click(function() {
-          var Kecamatan = $("#Kecamatan").val().split("|")
-          window.location = BaseURL + 'IDE/ExcelIKM/'+Kecamatan[1]+'/'+$("#Desa").val()
-        })
-
-        $("#Rekap").click(function() {
-          var Kecamatan = $("#Kecamatan").val().split("|")
-          window.location = BaseURL + 'IDE/ExcelIKMKecamatan/'+Kecamatan[0]+'/'+Kecamatan[1]
+          var Surveyor = $("#Surveyor").val().split("|")
+          window.location = BaseURL + 'IDE/Rekap/'+Surveyor[0]+'/'+Surveyor[1]
         })
 
       })
