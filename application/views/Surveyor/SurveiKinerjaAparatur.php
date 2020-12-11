@@ -859,7 +859,7 @@
 
       $("#Kecamatan").change(function (){
         var Desa = { Kode: $("#Kecamatan").val() }
-        $.post(BaseURL+"IDE/Desa", Desa).done(function(Respon) {
+        $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) {
           $('#Desa').html(Respon)
         })    
       })

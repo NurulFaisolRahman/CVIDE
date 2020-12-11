@@ -6,6 +6,32 @@ class IDE extends CI_Controller {
 	public function index(){
 		$this->load->view('IDE');
   }
+
+  public function Desa(){
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.01.%'")->result_array();
+		$this->load->view('AuthDesa',$Data);
+  }
+
+  public function DesaSignIn(){ 
+    $Desa = $this->db->get_where('desa', array('Username' => htmlentities($_POST['Username'])));
+		if($Desa->num_rows() == 0){
+			echo "Desa ".$_POST['NamaDesa']." Belum Punya Akun!";
+		}
+		else{
+			$Akun = $Desa->result_array();
+			if (password_verify($_POST['Password'], $Akun[0]['Password'])) {
+        $Session = array('Desa' => true,
+                         'KodeDesa' => $_POST['Username'],
+                         'NamaKecamatan' => $_POST['NamaKecamatan'],
+                         'NamaDesa' => $_POST['NamaDesa']);
+				$this->session->set_userdata($Session);
+				echo '1';
+			} else {
+				echo "Password Salah!";
+			}
+		}
+  }
   
   public function Surveyor(){
 		$this->load->view('SurveyorSignIn');
@@ -33,6 +59,11 @@ class IDE extends CI_Controller {
   public function SurveyorSignOut(){
 		$this->session->sess_destroy();
 		redirect(base_url('IDE/Surveyor'));
+  }
+
+  public function DesaSignOut(){
+		$this->session->sess_destroy();
+		redirect(base_url('IDE/Desa'));
   }
 
   public function RekapSurveiIKM(){
@@ -79,7 +110,7 @@ class IDE extends CI_Controller {
     $Data['NilaiIndeks'][0] = 0;
     $RespondenDesa = $this->db->query("SELECT * FROM `ikm` WHERE Desa = "."'".$Desa."'")->result_array();
     $Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
-    $Averge = array(0,0,0,0,0,0,0,0,0,0,0);
+    $Average = array(0,0,0,0,0,0,0,0,0,0,0);
     $Tertimbang = array(0,0,0,0,0,0,0,0,0,0,0);
     $Konversi = array(0,0,0,0,0,0,0,0,0,0,0);
     $Pendidikan = array(0,0,0,0,0,0,0);
@@ -150,12 +181,12 @@ class IDE extends CI_Controller {
     }
     if ($Total > 0) {
       for ($i=0; $i < 11; $i++) { 
-        $Averge[$i] = str_replace(".",",",round($Tampung[$i]/$Total,2));
+        $Average[$i] = str_replace(".",",",round($Tampung[$i]/$Total,2));
         $Tertimbang[$i] = str_replace(".",",",round(($Tampung[$i]/$Total)*(1/11),2));
         $Konversi[$i] = ($Tampung[$i]/$Total)*(1/11)*25;
       }
     }
-    array_push($Data['Rata2'], $Averge);
+    array_push($Data['Rata2'], $Average);
     array_push($Data['Tertimbang'], $Tertimbang);
     $Data['NilaiIndeks'][0] = str_replace(".",",",round(array_sum($Konversi),2));
     if ($Total > 355) {
@@ -193,7 +224,7 @@ class IDE extends CI_Controller {
     $Data['Pendidikan'] = array();
     $Data['Pekerjaan'] = array();
     $Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
-    $Averge = array(0,0,0,0,0,0,0,0,0,0,0);
+    $Average = array(0,0,0,0,0,0,0,0,0,0,0);
     $Tertimbang = array(0,0,0,0,0,0,0,0,0,0,0);
     $Konversi = array(0,0,0,0,0,0,0,0,0,0,0);
     $Pendidikan = array(0,0,0,0,0,0,0);
@@ -268,11 +299,11 @@ class IDE extends CI_Controller {
     array_push($Data['Gender'], $Gender);
     $Data['Responden'][0] += $Titip;
     for ($i=0; $i < 11; $i++) { 
-      $Averge[$i] = str_replace(".",",",round($Tampung[$i]/$Data['Responden'][0],2));
+      $Average[$i] = str_replace(".",",",round($Tampung[$i]/$Data['Responden'][0],2));
       $Tertimbang[$i] = str_replace(".",",",round(($Tampung[$i]/$Data['Responden'][0])*(1/11),2));
       $Konversi[$i] = ($Tampung[$i]/$Data['Responden'][0])*(1/11)*25;
     }
-    array_push($Data['Rata2'], $Averge);
+    array_push($Data['Rata2'], $Average);
     array_push($Data['Tertimbang'], $Tertimbang);
     $Data['NilaiIndeks'][0] = str_replace(".",",",round(array_sum($Konversi),2));
     if ($Data['NilaiIndeks'][0] < 65) {
@@ -312,7 +343,7 @@ class IDE extends CI_Controller {
       $Data['NilaiIndeks'][$j] = 0;
       $RespondenDesa = $this->db->query("SELECT Poin FROM `ikm` WHERE Desa = "."'".$Data['Desa'][$j]['Kode']."'")->result_array();
       $Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
-      $Averge = array(0,0,0,0,0,0,0,0,0,0,0);
+      $Average = array(0,0,0,0,0,0,0,0,0,0,0);
       foreach ($RespondenDesa as $key) {
         $Pecah = explode("|",$key['Poin']);
         for ($i=0; $i < 11; $i++) { 
@@ -328,10 +359,10 @@ class IDE extends CI_Controller {
       }
       if ($Total > 0) {
         for ($i=0; $i < 11; $i++) { 
-          $Averge[$i] = ($Tampung[$i]/$Total)*(1/11)*25;
+          $Average[$i] = ($Tampung[$i]/$Total)*(1/11)*25;
         }
       }
-      $Data['NilaiIndeks'][$j] = round(array_sum($Averge),2);
+      $Data['NilaiIndeks'][$j] = round(array_sum($Average),2);
       if ($Total > 355) {
         if ($Data['NilaiIndeks'][$j] < 65) {
           $Data['MutuPelayanan'][$j] = 'D';
@@ -375,7 +406,7 @@ class IDE extends CI_Controller {
     }
   }
 
-	function Kabupaten(){
+	function ListKabupaten(){
     $Kabupaten = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$_POST['Kode'].".%"."' AND length(Kode) = 5")->result_array();
     $OpsiKabupaten = "";
     foreach ($Kabupaten as $key) {
@@ -384,7 +415,7 @@ class IDE extends CI_Controller {
     echo $OpsiKabupaten;
   }
   
-  function Kecamatan(){
+  function ListKecamatan(){
     $Kecamatan = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$_POST['Kode'].".%"."' AND length(Kode) = 8")->result_array();
     $OpsiKecamatan = "";
     foreach ($Kecamatan as $key) {
@@ -393,7 +424,7 @@ class IDE extends CI_Controller {
     echo $OpsiKecamatan;
   }
 
-  function Desa(){
+  function ListDesa(){
     $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$_POST['Kode'].".%"."'")->result_array();
     $OpsiDesa = "";
     foreach ($Desa as $key) {
@@ -410,8 +441,13 @@ class IDE extends CI_Controller {
   }
 
   public function RekapIKM(){
-    $Data['Surveyor'] = $this->db->get("Surveyor")->result_array();
+    $Data['Surveyor'] = $this->db->get("surveyor")->result_array();
     $this->load->view('RekapSurveyorIKM',$Data);
+  }
+
+  public function RekapSurveyor(){
+    $Data['Surveyor'] = $this->db->query("select surveyor.nama,count(ipm.nik) as total from surveyor left join ipm on (surveyor.nik = ipm.nik) group by surveyor.nik")->result_array();
+    $this->load->view('RekapSurveyor',$Data);
   }
 
   public function Rekap($NIK,$Surveyor){
