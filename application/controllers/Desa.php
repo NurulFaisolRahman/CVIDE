@@ -115,7 +115,8 @@ class Desa extends CI_Controller {
     $BPD = $this->db->query("SELECT * FROM `bpd` WHERE Desa = "."'".$Desa."'")->result_array();  
     $Poin = explode("|",$BPD[0]['Poin']);
     $JumlahIndikator = array(6,3,2,3,1);
-    $Average = array();
+    $Data['Average'] = array();
+    $Data['Kinerja'] = array();
     $Loop = 0;
     for ($i=0; $i < 5; $i++) { 
       $Tampung = 0;
@@ -123,10 +124,68 @@ class Desa extends CI_Controller {
         $Tampung += $Poin[$Loop];
         $Loop++; 
       }
-      array_push($Average,($Tampung/$JumlahIndikator[$i]*25));
+      array_push($Data['Average'],(round($Tampung/$JumlahIndikator[$i]*25,2)));
+      if ($Data['Average'][$i] < 43.75) {
+        array_push($Data['Kinerja'],'Tidak Baik');
+      } else if ($Data['Average'][$i] < 62.5) {
+        array_push($Data['Kinerja'],'Kurang Baik');
+      } else if ($Data['Average'][$i] < 81.25) {
+        array_push($Data['Kinerja'],'Baik');
+      } else {
+        array_push($Data['Kinerja'],'Sangat Baik');
+      }
     }
-    $Hasil = round(array_sum($Average)/5,2);
-    echo $Hasil;
+    $Data['Hasil'] = round(array_sum($Data['Average'])/5,2);
+    if ($Data['Hasil'] < 43.75) {
+      array_push($Data['Kinerja'],'Tidak Baik');
+    } else if ($Data['Hasil'] < 62.5) {
+      array_push($Data['Kinerja'],'Kurang Baik');
+    } else if ($Data['Hasil'] < 81.25) {
+      array_push($Data['Kinerja'],'Baik');
+    } else {
+      array_push($Data['Kinerja'],'Sangat Baik');
+    }
+    $this->load->view('Desa/Header',$Data);
+		$this->load->view('Desa/BPD',$Data);
+  }
+
+  public function KinerjaPemDes(){
+    $Desa = $this->session->userdata('KodeDesa');
+    $KinerjaPemDes = $this->db->query("SELECT * FROM `kinerjapemdes` WHERE Desa = "."'".$Desa."'")->result_array();  
+    $Poin = explode("|",$KinerjaPemDes[0]['Poin']);
+    $JumlahIndikator = array(7,11,13,6,3);
+    $Data['Average'] = array();
+    $Data['Kinerja'] = array();
+    $Loop = 0;
+    for ($i=0; $i < 5; $i++) { 
+      $Tampung = 0;
+      for ($j=0; $j < $JumlahIndikator[$i]; $j++) { 
+        $Tampung += $Poin[$Loop];
+        $Loop++; 
+      }
+      array_push($Data['Average'],(round($Tampung/$JumlahIndikator[$i]*25,2)));
+      if ($Data['Average'][$i] < 43.75) {
+        array_push($Data['Kinerja'],'Tidak Baik');
+      } else if ($Data['Average'][$i] < 62.5) {
+        array_push($Data['Kinerja'],'Kurang Baik');
+      } else if ($Data['Average'][$i] < 81.25) {
+        array_push($Data['Kinerja'],'Baik');
+      } else {
+        array_push($Data['Kinerja'],'Sangat Baik');
+      }
+    }
+    $Data['Hasil'] = round(array_sum($Data['Average'])/5,2);
+    if ($Data['Hasil'] < 43.75) {
+      array_push($Data['Kinerja'],'Tidak Baik');
+    } else if ($Data['Hasil'] < 62.5) {
+      array_push($Data['Kinerja'],'Kurang Baik');
+    } else if ($Data['Hasil'] < 81.25) {
+      array_push($Data['Kinerja'],'Baik');
+    } else {
+      array_push($Data['Kinerja'],'Sangat Baik');
+    }
+    $this->load->view('Desa/Header',$Data);
+		$this->load->view('Desa/KinerjaPemDes',$Data);
   }
   
 }

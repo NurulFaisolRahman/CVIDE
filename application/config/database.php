@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
+	// 'hostname' => 'localhost',
 	// 'username' => 'root',
 	// 'password' => '',
-	// 'database' => 'cvide',
+	'database' => 'cvide',
 	'dbdriver' => 'mysqli',
 	'username' => 'u5384729_ide',
 	'password' => 'CV1d3consultan',

@@ -42,7 +42,7 @@
                 <div class="row">
                   <div class="col-sm-12">
                     <div class="card border border-warning">
-                      <div class="card-header bg-danger"><b class="text-light">UNDUH DATA IKM</b></div>
+                      <div class="card-header bg-danger"><b class="text-light">REKAP INDIKATOR KESEJAHTERAAN</b></div>
                       <div class="card-body bg-primary">
                         <div class="container-fluid p-0">
                           <div class="row">
@@ -68,7 +68,6 @@
                                 </select>
                               </div>
                               <div class="btn btn-danger text-light" id="Unduh"><b>UNDUH</b></div>
-                              <div class="btn btn-warning text-light" id="Rekap"><b>REKAP</b></div>
                             </div>
                           </div>
                         </div>
@@ -99,12 +98,7 @@
 
         $("#Unduh").click(function() {
           var Kecamatan = $("#Kecamatan").val().split("|")
-          window.location = BaseURL + 'IDE/ExcelIKM/'+Kecamatan[1]+'/'+$("#Desa").val()
-        })
-
-        $("#Rekap").click(function() {
-          var Kecamatan = $("#Kecamatan").val().split("|")
-          window.location = BaseURL + 'IDE/ExcelIKMKecamatan/'+Kecamatan[0]+'/'+Kecamatan[1]
+          window.location = BaseURL + 'IDE/ExcelIndikatorKesejahteraan/'+Kecamatan[1]+'/'+$("#Desa").val()+'/'+$("#Desa option:selected").text()
         })
 
       })

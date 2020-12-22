@@ -455,6 +455,21 @@ class IDE extends CI_Controller {
     $Data['Surveyor'] = $Surveyor;
     $this->load->view('ExcelSurveyorIKM',$Data);                     
   }
+
+  public function RekapIndikatorKesejahteraan(){
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.01.%'")->result_array();
+    $this->load->view('RekapIndikatorKesejahteraan',$Data);
+  }
+
+  public function ExcelIndikatorKesejahteraan($Kecamatan,$Desa,$NamaDesa){
+    $Data['IPM'] = $this->db->query("SELECT * FROM `ipm` WHERE Desa='".$Desa."'")->result_array();
+    // $Data['IPM'] = $this->db->query("SELECT * FROM `ipm` WHERE Id=208")->result_array();
+    $Data['NamaKecamatan'] = $Kecamatan;
+    $Data['NamaDesa'] = $NamaDesa;
+    // print_r($Data['IPM']);
+    $this->load->view('ExcelIndikatorKesejahteraan',$Data);                     
+  }
 }
 // SELECT * FROM `ipm` WHERE NIK='3528021509990001'
 // UPDATE ipm SET Pendapatan = REPLACE(Pendapatan, '.', '') WHERE NIK='3528021509990001'

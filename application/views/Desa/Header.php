@@ -18,16 +18,14 @@
 				<div class="menu">
 					<ul id="menu" >
 						<li id="menu-home"><a href="<?=base_url('Desa')?>"><i class="fa fa-user"></i><span>Dashboard</span></a></li>
-						<li id="menu-home"><a href="<?=base_url('Desa/IKM')?>"><i class="fa fa-list"></i><span>IKM</span></a></li>
-						<li id="menu-home"><a href="<?=base_url('Desa/BPD')?>"><i class="fa fa-list"></i><span>BPD</span></a></li>
-						<!-- <li><a href="#"><i class="fa fa-list"></i><span>Survei</span><span class="fa fa-angle-right" style="float: right"></span></a>
+						<li><a href="#"><i class="fa fa-list"></i><span>Desa</span><span class="fa fa-angle-right" style="float: right"></span></a>
 							<ul>
-								<li><a href="<?=base_url('Surveyor/SurveiBPD')?>">Kinerja Badan Permusyawaratan Desa</a></li>           
-								<li><a href="<?=base_url('Surveyor/SurveiKinerjaPemDes')?>">Kinerja Penyelenggaraan Pemerintahan Desa</a></li>   
-								<li><a href="<?=base_url('Surveyor/SurveiKinerjaAparatur')?>">Kinerja Aparatur Desa</a></li>   
-								<li><a href="<?=base_url('Surveyor/SurveiIPM')?>">Indikator Kesejahteraan Masyarakat</a></li>   
+								<li><a href="<?=base_url('Desa/IKM')?>">Kepuasan Pelayanan Desa</a></li>           
+								<li><a href="<?=base_url('Desa/BPD')?>">Kinerja Badan Permusyawaratan Desa</a></li>    
+								<li><a href="<?=base_url('Desa/KinerjaPemDes')?>">Kinerja Penyelenggaraan Pemerintahan Desa</a></li>   
+								<!-- <li><a href="<?=base_url('Desa/KinerjaPemDes')?>">Kinerja Aparatur Desa</a></li>    -->
 							</ul>
-            </li> -->
+            </li>
             <li id="menu-home"><a href="<?=base_url('IDE/DesaSignOut')?>"><i class="fa fa-lock"></i><span>Keluar</span></a></li>
 					</ul>
 				</div>
