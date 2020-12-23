@@ -888,7 +888,7 @@ td
     <td class=3D"xl66" width=3D"84" style=3D'width:63.00pt;' x:str>Anak Lahir Hidup</td>
     <td class=3D"xl66" width=3D"87" style=3D'width:65.25pt;' x:str>Anak Masih Hidup</td>
     <td class=3D"xl66" width=3D"81" style=3D'width:60.75pt;' x:str>Anak Sudah Meninggal</td>
-    <td class=3D"xl66" width=3D"40" style=3D'width:30.00pt;' x:str>Usia</td>
+    <td class=3D"xl66" width=3D"40" style=3D'width:30.00pt;' x:str>Usia Anak</td>
     <td class=3D"xl66" width=3D"72" style=3D'width:54.00pt;' x:str>Fasilitas Kesehatan</td>
     <td class=3D"xl66" width=3D"79" style=3D'width:59.25pt;' x:str>Partisipasi Sekolah</td>
     <td class=3D"xl66" width=3D"90" style=3D'width:67.50pt;' x:str>Pendidikan Tertinggi</td>

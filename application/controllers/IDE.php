@@ -470,6 +470,13 @@ class IDE extends CI_Controller {
     // print_r($Data['IPM']);
     $this->load->view('ExcelIndikatorKesejahteraan',$Data);                     
   }
+
+  public function ExcelKomoditas($Kecamatan,$Desa,$NamaDesa){
+    $Data['IPM'] = $this->db->query("SELECT Id,Banyaknya,Harga,Nilai FROM `ipm` WHERE Desa='".$Desa."'")->result_array();
+    $Data['NamaKecamatan'] = $Kecamatan;
+    $Data['NamaDesa'] = $NamaDesa;
+    $this->load->view('ExcelKomoditas',$Data);                      
+  }
 }
 // SELECT * FROM `ipm` WHERE NIK='3528021509990001'
 // UPDATE ipm SET Pendapatan = REPLACE(Pendapatan, '.', '') WHERE NIK='3528021509990001'
