@@ -23,7 +23,7 @@
 								<li><a href="<?=base_url('Desa/IKM')?>">Kepuasan Pelayanan Desa</a></li>           
 								<li><a href="<?=base_url('Desa/BPD')?>">Kinerja Badan Permusyawaratan Desa</a></li>    
 								<li><a href="<?=base_url('Desa/KinerjaPemDes')?>">Kinerja Penyelenggaraan Pemerintahan Desa</a></li>   
-								<!-- <li><a href="<?=base_url('Desa/KinerjaPemDes')?>">Kinerja Aparatur Desa</a></li>    -->
+								<li><a href="<?=base_url('Desa/KinerjaAparatur')?>">Kinerja Aparatur Desa</a></li>   
 							</ul>
             </li>
             <li id="menu-home"><a href="<?=base_url('IDE/DesaSignOut')?>"><i class="fa fa-lock"></i><span>Keluar</span></a></li>

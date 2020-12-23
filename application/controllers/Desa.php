@@ -187,5 +187,44 @@ class Desa extends CI_Controller {
     $this->load->view('Desa/Header',$Data);
 		$this->load->view('Desa/KinerjaPemDes',$Data);
   }
+
+  public function KinerjaAparatur(){
+    $Desa = $this->session->userdata('KodeDesa');
+    $KinerjaAparatur = $this->db->query("SELECT * FROM `kinerjaaparatur` WHERE Desa = "."'".$Desa."'")->result_array(); 
+    $Indikator = array('KepalaDesa','SekertarisDesa','TU','Keuangan','Perencanaan','Pemerintahan','Kesejahteraan','Pelayanan'); 
+    $Data['Average'] = array();
+    $Data['Kinerja'] = array();
+    for ($i=0; $i < count($Indikator); $i++) { 
+      $Poin = explode("|",$KinerjaAparatur[0][$Indikator[$i]]);
+      $Kedisiplinan = ($Poin[0]+$Poin[1])/2*0.2;
+      $Tampung = 0;
+      for ($j=2; $j < count($Poin); $j++) { 
+        $Tampung += $Poin[$j];
+      }
+      $Keterlaksanaan = $Tampung/(count($Poin)-2)*0.8;
+      array_push($Data['Average'],(round(($Kedisiplinan+$Keterlaksanaan)*25,2)));
+      if ($Data['Average'][$i] < 43.75) {
+        array_push($Data['Kinerja'],'Tidak Baik');
+      } else if ($Data['Average'][$i] < 62.5) {
+        array_push($Data['Kinerja'],'Kurang Baik');
+      } else if ($Data['Average'][$i] < 81.25) {
+        array_push($Data['Kinerja'],'Baik');
+      } else {
+        array_push($Data['Kinerja'],'Sangat Baik');
+      }
+    }
+    $Data['Hasil'] = round(array_sum($Data['Average'])/count($Indikator),2);
+    if ($Data['Hasil'] < 43.75) {
+      array_push($Data['Kinerja'],'Tidak Baik');
+    } else if ($Data['Hasil'] < 62.5) {
+      array_push($Data['Kinerja'],'Kurang Baik');
+    } else if ($Data['Hasil'] < 81.25) {
+      array_push($Data['Kinerja'],'Baik');
+    } else {
+      array_push($Data['Kinerja'],'Sangat Baik');
+    }
+    $this->load->view('Desa/Header',$Data);
+		$this->load->view('Desa/KinerjaAparatur',$Data);
+  }
   
 }
