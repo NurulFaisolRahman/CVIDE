@@ -324,8 +324,8 @@ Content-Type: text/html; charset="us-ascii"
    <?php for ($j=0; $j < count($IPM); $j++) { ?>
    <tr height=3D"20" style=3D'height:15.00pt;'>
     <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:str><?=$IPM[$j]['Id']?></td>
-    <?php $Jumlah = explode("|",$IPM[0]['Banyaknya']); for ($i=0; $i < 154; $i++) { ?>
-      <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:str><?=$Jumlah[$i] != '' ? $Jumlah[$i] : 0; ?></td>
+    <?php $Jumlah = explode("|",$IPM[$j]['Banyaknya']); for ($i=0; $i < 154; $i++) { ?>
+      <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=$Jumlah[$i] != '' ? $Jumlah[$i] : 0; ?></td>
     <?php } ?>
    </tr>
    <?php } ?>
@@ -396,8 +396,8 @@ Content-Type: text/html; charset="us-ascii"
    <?php for ($j=0; $j < count($IPM); $j++) { ?>
    <tr height=3D"20" style=3D'height:15.00pt;'>
     <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:str><?=$IPM[$j]['Id']?></td>
-    <?php $Jumlah = explode("|",$IPM[0]['Harga']); for ($i=0; $i < 154; $i++) { ?>
-      <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:str><?=$Jumlah[$i] != '' ? $Jumlah[$i] : 0; ?></td>
+    <?php $Jumlah = explode("|",$IPM[$j]['Harga']); for ($i=0; $i < 154; $i++) { ?>
+      <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=$Jumlah[$i] != '' ? $Jumlah[$i] : 0; ?></td>
     <?php } ?>
    </tr>
    <?php } ?>
@@ -468,8 +468,8 @@ Content-Type: text/html; charset="us-ascii"
    <?php for ($j=0; $j < count($IPM); $j++) { ?>
    <tr height=3D"20" style=3D'height:15.00pt;'>
     <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:str><?=$IPM[$j]['Id']?></td>
-    <?php $Jumlah = explode("|",$IPM[0]['Nilai']); for ($i=0; $i < 154; $i++) { ?>
-      <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:str><?=$Jumlah[$i] != '' ? $Jumlah[$i] : 0; ?></td>
+    <?php $Jumlah = explode("|",$IPM[$j]['Nilai']); for ($i=0; $i < 154; $i++) { ?>
+      <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=$Jumlah[$i] != '' ? $Jumlah[$i] : 0; ?></td>
     <?php } ?>
    </tr>
    <?php } ?>

@@ -44,7 +44,12 @@
                           </table>
                         </div>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Kuisioner"><i class="fa fa-book"></i> <b>Lihat Kuisioner</b></button> 
-											</div>
+                      </div>
+                      <div class="col-sm-8 align-self-center">
+                        <div class="col-sm-12">
+                          <div id="chart_div"></div> 
+                        </div>
+                      </div>
 										</div>
 									</div>
 								</div>
@@ -76,9 +81,32 @@
   </div>
 	<script src="<?=base_url('assets/vendor/jquery/jquery.min.js')?>"></script>
   <script src="<?=base_url('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')?>"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script>
 		$(document).ready(function(){
 			var BaseURL = '<?=base_url()?>'  
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawVisualization);
+
+      function drawVisualization() {
+        // Some raw data (not necessarily accurate)
+        var data = google.visualization.arrayToDataTable([
+          ['Skor', 'Indikator 1', 'Indikator 2', 'Indikator 3', 'Indikator 4', 'Indikator 5'],
+          ['',<?=$Average[0]?>, <?=$Average[1]?>,<?=$Average[2]?>,<?=$Average[3]?>,<?=$Average[4]?>] 
+        ]);
+
+        var options = {
+          title : 'Grafik Evaluasi Kinerja Penyelenggaraan Pemerintahan Desa',
+          legend: {position: 'none'},
+          vAxis: {title: 'Skor'},
+          hAxis: {title: 'Indikator'},
+          seriesType: 'bars',
+          series: {5: {type: 'line'}}
+        };
+
+        var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
 		})
 		var toggle = true;			
 		$(".sidebar-icon").click(function() {                

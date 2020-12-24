@@ -55,11 +55,19 @@
                             </tbody>
                           </table>
                         </div>
-											</div>
-                      <div class="col-sm-6">
-                        <div id="Gender"></div>
-                        <div id="Pendidikan"></div>
-                        <div id="Pekerjaan"></div>
+                      </div>
+                      <div class="col-sm-8 align-self-center">
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div id="Gender"></div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div id="Pendidikan"></div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div id="Pekerjaan"></div> 
+                          </div>
+                        </div>
                       </div>
 										</div>
 									</div>
@@ -89,7 +97,8 @@
 
         var OpsiGender = {
           title: 'Jenis Kelamin',
-          chartArea:{left:10,top:70,width:'45%',height:'65%'}
+          titleTextStyle : {fontSize: 12,bold: true},
+          legend: {position: 'none'}
         };
         var ChartGender = new google.visualization.PieChart(document.getElementById('Gender'));
         ChartGender.draw(DataGender, OpsiGender);
@@ -106,7 +115,8 @@
 
         var OpsiPendidikan = {
           title: 'Pendidikan',
-          chartArea:{left:10,top:50,width:'50%',height:'65%'}
+          titleTextStyle : {fontSize: 12,bold: true},
+          legend: {position: 'none'}
         };
         var ChartPendidikan = new google.visualization.PieChart(document.getElementById('Pendidikan'));
         ChartPendidikan.draw(DataPendidikan, OpsiPendidikan);
@@ -123,7 +133,8 @@
 
         var OpsiPekerjaan = {
           title: 'Pekerjaan',
-          chartArea:{left:10,top:20,width:'58%',height:'65%'}
+          titleTextStyle : {fontSize: 12,bold: true},
+          legend: {position: 'none'}
         };
         var ChartPekerjaan = new google.visualization.PieChart(document.getElementById('Pekerjaan'));
         ChartPekerjaan.draw(DataPekerjaan, OpsiPekerjaan);
