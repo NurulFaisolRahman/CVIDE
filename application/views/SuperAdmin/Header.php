@@ -25,7 +25,8 @@
 								<li><a href="<?=base_url('SuperAdmin/KinerjaPemDes')?>">Kinerja Penyelenggaraan Pemerintahan Desa</a></li>   
 								<li><a href="<?=base_url('SuperAdmin/KinerjaAparatur')?>">Kinerja Aparatur Desa</a></li>   
 							</ul>
-            </li>
+						</li>
+						<li id="menu-home"><a href="<?=base_url('SuperAdmin/Pendidikan')?>"><i class="fa fa-graduation-cap"></i><span>Pendidikan</span></a></li>
             <li id="menu-home"><a href="<?=base_url('IDE/SuperAdminSignOut')?>"><i class="fa fa-lock"></i><span>Keluar</span></a></li>
 					</ul>
 				</div>

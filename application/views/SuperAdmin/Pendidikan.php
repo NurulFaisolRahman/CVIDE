@@ -1,4 +1,4 @@
-      <div class="left-content">
+<div class="left-content">
 				<div class="mother-grid-inner">
 					<div class="inner-block">
 						<div class="blank">
@@ -6,44 +6,29 @@
 								<div class="row">
 									<div class="col-sm-12">
 										<div class="row">
-											<div class="col-sm-4 mb-2">
-                        <p style="font-size: 12px;" class="text-justify font-weight-bold">Hasil Penghitungan Survei Evaluasi Kinerja Badan Permusyawaratan Desa</p>
+                    <div class="col-sm-4 mb-2">
+                        <p style="font-size: 12px;" class="text-center font-weight-bold">Jumlah Responden <?=$Responden?></p>
 												<div class="table-responsive mt-1">
                           <table class="table table-sm table-bordered table-striped">
                             <thead class="bg-danger">
                               <tr style="font-size: 10pt;" class="text-light text-center">
                                 <th class="align-middle">No</th>
-                                <th class="align-middle">Indikator</th>
-                                <th class="align-middle">Skor</th>
-                                <th class="align-middle">Kinerja</th>
+                                <th class="align-middle">Pendidikan</th>
+                                <th class="align-middle">%</th>
                               </tr>
                             </thead>
                             <tbody style="font-size: 12px;" class="bg-primary">
-                            <?php $Indikator = array('Menggali Aspirasi Masyarakat','Menampung dan Menyalurkan Aspirasi Masyarakat','Menyelenggarakan Musyawarah BPD dan Desa','Gabungan (Penyelenggaraan Pemilihan Kepala Desa)','Melaksanakan Tugas Lain Yang Diatur Dalam Ketentuan Peraturan Perundang Undangan'); 
-                              foreach ($Indikator as $key => $value) { ?>
+                            <?php $TingkatPendidikan = array('Tidak Pernah Sekolah','SD/SDLB','MI','Paket A','SMP/SMLB','M.Ts','Paket B','SMA/SMLB','MA','SMK','Paket C','D1/D2','D3','D4/S1','S2','S3'); 
+                              foreach ($TingkatPendidikan as $key => $value) { ?>
                               <tr class="text-light align-middle">
                                 <td class="align-middle text-center font-weight-bold"><?=($key+1)?></td>
                                 <td class="align-middle font-weight-bold"><?=$value?></td>
-                                <td class="align-middle text-center font-weight-bold"><?=number_format($Average[$key],2)?></td>
-                                <td class="align-middle text-center font-weight-bold"><?=$Kinerja[$key]?></td>
+                                <td class="align-middle text-center font-weight-bold"><?=$Pendidikan[$key].'%'?></td>
                               </tr>
                             <?php } ?>
-                              <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                              </tr>
-                              <tr class="text-light align-middle">
-                                <td class="align-middle text-center font-weight-bold"></td>
-                                <td class="align-middle font-weight-bold">Kesimpulan</td>
-                                <td class="align-middle text-center font-weight-bold"><?=number_format($Hasil,2)?></td>
-                                <td class="align-middle text-center font-weight-bold"><?=$Kinerja[5]?></td>
-                              </tr>
                             </tbody>
                           </table>
                         </div>
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Kuisioner"><i class="fa fa-book"></i> <b>Lihat Kuisioner</b></button> 
                       </div>
                       <div class="col-sm-8 align-self-center">
                         <div class="row">
@@ -77,7 +62,7 @@
                         </div>
                         <div class="row">
                           <div class="col-sm-12">
-                            <div id="chart_div"></div>
+                            <div id="chart_div" style="width: 100%; height: 700px;"></div>
                           </div>
                         </div>
                       </div>
@@ -92,33 +77,15 @@
 			<div class="clearfix"> </div>
 		</div>
   </body>
-  <div class="modal fade" id="Kuisioner">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title font-weight-bold">Kuisioner Evaluasi Kinerja Badan Permusyawaratan Desa</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <embed src="<?=base_url('Kuisioner/BPD.pdf')?>" type="application/pdf" width="100%" height="400"/>
-        </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-danger" data-dismiss="modal"><b>Tutup</b></button>
-        </div>
-      </div>
-    </div>
-  </div>
 	<script src="<?=base_url('assets/vendor/jquery/jquery.min.js')?>"></script>
   <script src="<?=base_url('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')?>"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script>
 		$(document).ready(function(){
-			var BaseURL = '<?=base_url()?>'  
+			var BaseURL = '<?=base_url()?>' 
       $("#Kecamatan").change(function (){
         var Desa = { Kode: $("#Kecamatan").val() }
-        $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) {
+        $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) { 
           $('#Desa').html(Respon)
         })    
       })
@@ -128,33 +95,44 @@
                       NamaDesa: $("#Desa option:selected").text() }
         $.post(BaseURL+"SuperAdmin/Session", Akun).done(function(Respon) {
           if (Respon == '1') {
-            window.location = BaseURL + "SuperAdmin/BPD"
+            window.location = BaseURL + "SuperAdmin/Pendidikan"
           }
           else {
             alert(Respon)
           }
         })                    
       })
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawVisualization);
-
-      function drawVisualization() {
-        // Some raw data (not necessarily accurate)
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Skor', 'Indikator 1', 'Indikator 2', 'Indikator 3', 'Indikator 4', 'Indikator 5'],
-          ['',<?=$Average[0]?>, <?=$Average[1]?>,<?=$Average[2]?>,<?=$Average[3]?>,<?=$Average[4]?>] 
+          ['Pendidikan', 'Jumlah'],
+          ['Tidak Pernah Sekolah',<?=$JenisPendidikan[0]?>],
+          ['SD/SDLB',<?=$JenisPendidikan[1]?>],
+          ['MI',<?=$JenisPendidikan[2]?>],
+          ['Paket A',<?=$JenisPendidikan[3]?>],
+          ['SMP/SMLB',<?=$JenisPendidikan[4]?>],
+          ['M.Ts',<?=$JenisPendidikan[5]?>],
+          ['Paket B',<?=$JenisPendidikan[6]?>],
+          ['SMA/SMLB',<?=$JenisPendidikan[7]?>],
+          ['MA',<?=$JenisPendidikan[8]?>],
+          ['SMK',<?=$JenisPendidikan[9]?>],
+          ['Paket C',<?=$JenisPendidikan[10]?>],
+          ['D1/D2',<?=$JenisPendidikan[11]?>],
+          ['D3',<?=$JenisPendidikan[12]?>],
+          ['D4/S1',<?=$JenisPendidikan[13]?>],
+          ['S2',<?=$JenisPendidikan[14]?>],
+          ['S3',<?=$JenisPendidikan[15]?>]
         ]);
 
         var options = {
-          title : 'Grafik Evaluasi Kinerja Badan Permusyawaratan Desa',
+          pieHole: 0.4,
+          sliceVisibilityThreshold : 0,
+          chartArea : {left:140,top:15},
           legend: {position: 'none'},
-          vAxis: {title: 'Skor'},
-          hAxis: {title: 'Indikator'},
-          seriesType: 'bars',
-          series: {5: {type: 'line'}}
         };
 
-        var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
         chart.draw(data, options);
       }
 		})

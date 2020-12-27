@@ -99,11 +99,11 @@ class SuperAdmin extends CI_Controller {
     $Data['Gender'][0] = $Pria;
     $Data['Gender'][1] = $Wanita;
     for ($i=0; $i < 11; $i++) { 
-      $Data['Rata2'][$i] = str_replace(".",",",round($Tampung[$i]/$Data['Responden'],2));
-      $Data['Tertimbang'][$i] = str_replace(".",",",round(($Tampung[$i]/$Data['Responden'])*(1/11),2));
+      $Data['Rata2'][$i] = round($Tampung[$i]/$Data['Responden'],2);
+      $Data['Tertimbang'][$i] = round(($Tampung[$i]/$Data['Responden'])*(1/11),2);
       $Konversi[$i] = ($Tampung[$i]/$Data['Responden'])*(1/11)*25;
     }
-    $Data['NilaiIndeks'] = str_replace(".",",",round(array_sum($Konversi),2));
+    $Data['NilaiIndeks'] = round(array_sum($Konversi),2);
     if ($Data['NilaiIndeks'] < 65) {
       $Data['MutuPelayanan'] = 'D';
       $Data['KinerjaUnit'] = 'Tidak Baik';
@@ -257,6 +257,66 @@ class SuperAdmin extends CI_Controller {
     }
     $this->load->view('SuperAdmin/Header',$Data);
 		$this->load->view('SuperAdmin/KinerjaAparatur',$Data);
+  }
+
+  public function Pendidikan(){
+    $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan'); 
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
+    $Pendidikan = $this->db->query("SELECT PartisipasiSekolah,PendidikanTertinggi FROM `ipm` WHERE Desa = "."'".$Data['KodeDesa']."'")->result_array();
+    $Data['JenisPendidikan'] = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+    $Data['Responden'] = 0;
+    for ($i=0; $i < count($Pendidikan); $i++) { 
+      $Pecah = explode("|",$Pendidikan[$i]['PartisipasiSekolah']);
+      $Pisah = explode("|",$Pendidikan[$i]['PendidikanTertinggi']);
+      $Data['Responden'] += count($Pisah);
+      for ($j=0; $j < count($Pecah); $j++) { 
+        if ($Pecah[$j] == 1) {
+          $Data['JenisPendidikan'][0] += 1;
+        } else {
+          if ($Pisah[$j] == 1) {
+            $Data['JenisPendidikan'][1] += 1;
+          } else if ($Pisah[$j] == 2) {
+            $Data['JenisPendidikan'][2] += 1;
+          } if ($Pisah[$j] == 3) {
+            $Data['JenisPendidikan'][3] += 1;
+          } if ($Pisah[$j] == 4) {
+            $Data['JenisPendidikan'][4] += 1;
+          } if ($Pisah[$j] == 5) {
+            $Data['JenisPendidikan'][5] += 1;
+          } if ($Pisah[$j] == 6) {
+            $Data['JenisPendidikan'][6] += 1;
+          } if ($Pisah[$j] == 7) {
+            $Data['JenisPendidikan'][7] += 1;
+          } if ($Pisah[$j] == 8) {
+            $Data['JenisPendidikan'][8] += 1;
+          } if ($Pisah[$j] == 9) {
+            $Data['JenisPendidikan'][9] += 1;
+          } if ($Pisah[$j] == 10) {
+            $Data['JenisPendidikan'][10] += 1;
+          } if ($Pisah[$j] == 11) {
+            $Data['JenisPendidikan'][11] += 1;
+          } if ($Pisah[$j] == 12) {
+            $Data['JenisPendidikan'][12] += 1;
+          } if ($Pisah[$j] == 13) {
+            $Data['JenisPendidikan'][13] += 1;
+          } if ($Pisah[$j] == 14) {
+            $Data['JenisPendidikan'][14] += 1;
+          } if ($Pisah[$j] == 15) {
+            $Data['JenisPendidikan'][15] += 1;
+          } 
+        } 
+      }
+    }
+    $Data['Pendidikan'] = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+    if ($Data['Responden'] > 0) {
+      for ($i=0; $i < count($Data['JenisPendidikan']); $i++) { 
+        $Data['Pendidikan'][$i] = number_format($Data['JenisPendidikan'][$i]/$Data['Responden']*100,1);
+      }
+    }
+    $this->load->view('SuperAdmin/Header',$Data);
+		$this->load->view('SuperAdmin/Pendidikan',$Data);
   }
   
 }

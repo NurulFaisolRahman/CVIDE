@@ -88,11 +88,11 @@ class Desa extends CI_Controller {
     $Data['Gender'][0] = $Pria;
     $Data['Gender'][1] = $Wanita;
     for ($i=0; $i < 11; $i++) { 
-      $Data['Rata2'][$i] = str_replace(".",",",round($Tampung[$i]/$Data['Responden'],2));
-      $Data['Tertimbang'][$i] = str_replace(".",",",round(($Tampung[$i]/$Data['Responden'])*(1/11),2));
+      $Data['Rata2'][$i] = round($Tampung[$i]/$Data['Responden'],2);
+      $Data['Tertimbang'][$i] = round(($Tampung[$i]/$Data['Responden'])*(1/11),2);
       $Konversi[$i] = ($Tampung[$i]/$Data['Responden'])*(1/11)*25;
     }
-    $Data['NilaiIndeks'] = str_replace(".",",",round(array_sum($Konversi),2));
+    $Data['NilaiIndeks'] = round(array_sum($Konversi),2);
     if ($Data['NilaiIndeks'] < 65) {
       $Data['MutuPelayanan'] = 'D';
       $Data['KinerjaUnit'] = 'Tidak Baik';

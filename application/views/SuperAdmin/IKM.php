@@ -24,8 +24,8 @@
                               <tr class="text-light align-middle">
                                 <td class="align-middle text-center font-weight-bold"><?=($key+1)?></td>
                                 <td class="align-middle font-weight-bold"><?=$value?></td>
-                                <td class="align-middle text-center font-weight-bold"><?=$Rata2[$key]?></td>
-                                <td class="align-middle text-center font-weight-bold"><?=$Tertimbang[$key]?></td>
+                                <td class="align-middle text-center font-weight-bold"><?=number_format($Rata2[$key],2)?></td>
+                                <td class="align-middle text-center font-weight-bold"><?=number_format($Tertimbang[$key],2)?></td>
                               </tr>
                             <?php } ?>
                               <tr>
@@ -38,7 +38,7 @@
                                 <td class="align-middle text-center font-weight-bold"></td>
                                 <td class="align-middle font-weight-bold">Nilai IKM</td>
                                 <td class="align-middle text-center font-weight-bold"></td>
-                                <td class="align-middle text-center font-weight-bold"><?=$NilaiIndeks?></td>
+                                <td class="align-middle text-center font-weight-bold"><?=number_format($NilaiIndeks,2)?></td>
                               </tr>
                               <tr class="text-light align-middle">
                                 <td class="align-middle text-center font-weight-bold"></td>

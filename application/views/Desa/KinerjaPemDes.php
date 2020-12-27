@@ -24,7 +24,7 @@
                               <tr class="text-light align-middle">
                                 <td class="align-middle text-center font-weight-bold"><?=($key+1)?></td>
                                 <td class="align-middle font-weight-bold"><?=$value?></td>
-                                <td class="align-middle text-center font-weight-bold"><?=$Average[$key]?></td>
+                                <td class="align-middle text-center font-weight-bold"><?=number_format($Average[$key],2)?></td>
                                 <td class="align-middle text-center font-weight-bold"><?=$Kinerja[$key]?></td>
                               </tr>
                             <?php } ?>
@@ -37,7 +37,7 @@
                               <tr class="text-light align-middle">
                                 <td class="align-middle text-center font-weight-bold"></td>
                                 <td class="align-middle font-weight-bold">Kesimpulan</td>
-                                <td class="align-middle text-center font-weight-bold"><?=$Hasil?></td>
+                                <td class="align-middle text-center font-weight-bold"><?=number_format($Hasil,2)?></td>
                                 <td class="align-middle text-center font-weight-bold"><?=$Kinerja[5]?></td>
                               </tr>
                             </tbody>
