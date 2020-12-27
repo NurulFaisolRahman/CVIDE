@@ -885,10 +885,10 @@ td
     <td class=3D"xl66" width=3D"71" style=3D'width:53.25pt;' x:str>Jaminan Kesehatan</td>
     <td class=3D"xl66" width=3D"62" style=3D'width:46.50pt;' x:str>Usia Menikah</td>
     <td class=3D"xl66" width=3D"83" style=3D'width:62.25pt;' x:str>Usia Pernikahan</td>
-    <td class=3D"xl66" width=3D"84" style=3D'width:63.00pt;' x:str>Anak Lahir Hidup</td>
+    /* <td class=3D"xl66" width=3D"84" style=3D'width:63.00pt;' x:str>Anak Lahir Hidup</td>
     <td class=3D"xl66" width=3D"87" style=3D'width:65.25pt;' x:str>Anak Masih Hidup</td>
     <td class=3D"xl66" width=3D"81" style=3D'width:60.75pt;' x:str>Anak Sudah Meninggal</td>
-    <td class=3D"xl66" width=3D"40" style=3D'width:30.00pt;' x:str>Usia Anak</td>
+    <td class=3D"xl66" width=3D"40" style=3D'width:30.00pt;' x:str>Usia Anak</td> */
     <td class=3D"xl66" width=3D"72" style=3D'width:54.00pt;' x:str>Fasilitas Kesehatan</td>
     <td class=3D"xl66" width=3D"79" style=3D'width:59.25pt;' x:str>Partisipasi Sekolah</td>
     <td class=3D"xl66" width=3D"90" style=3D'width:67.50pt;' x:str>Pendidikan Tertinggi</td>
@@ -973,85 +973,85 @@ td
    ?>
       <?php for ($j=0; $j < count($PisahAnggota); $j++) { ?>
         <tr height=3D"20" style=3D'height:15.00pt;'>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$IPM[$i]['Id']?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$NamaKecamatan?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$NamaDesa?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$IPM[$i]['Alamat']?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahAnggota[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahStatus[$j]==1 ? 'Suami' : ($PisahStatus[$j]==2 ? 'Istri' : 'Anak');?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahGender[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahPendapatan[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahSumberPendapatan[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahPekerjaan[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahKegiatanSeminggu[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahKeahlian[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahJamKerja[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahAlasanMencariKerja[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahPenyebabMenganggur[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahMengikutiPelatihan[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahLokasiPekerjaan[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahUsaha[0] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? ($PisahUsaha[1] == 'Ya' ? 'Ya' : ($PisahUsaha[1] == 'Tidak' ? 'Tidak' : 'Ya')) : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? ($PisahUsaha[1] == 'Tidak' ? '' : ($PisahUsaha[1] > 0 ? $PisahUsaha[1] : 0)) : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahUsaha[2] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahUsaha[3] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahUsaha[4] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahUsaha[5] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahUsaha[6] : '';?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahPertolonganLahir[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahAsi[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahImunisasi[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahJaminanKesehatan[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahStatus[$j]==2 ? $PisahPernikahan[0] : '';?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahStatus[$j]==2 ? $PisahPernikahan[1] : '';?></td>    
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahStatus[$j]==3 ? $PisahFertilitas[($j+1)-count($PisahAnggota)+1][0] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahStatus[$j]==3 ? $PisahFertilitas[($j+1)-count($PisahAnggota)+1][2] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahStatus[$j]==3 ? $PisahFertilitas[($j+1)-count($PisahAnggota)+1][4] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahStatus[$j]==3 ? substr($PisahFertilitas[($j+1)-count($PisahAnggota)+1],6) : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahPartisipasiSekolah[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahPendidikanTertinggi[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahStatusSekolah[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahIjazahTertinggi[$j]?></td>
-          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$PisahBacaTulis[$j]?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahKepesertaanProgram[0] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahKepesertaanProgram[1] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahKepesertaanProgram[2] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahKepesertaanProgram[3] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahKepesertaanProgram[4] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahRumah[0] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahRumah[1] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahRumah[2] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahRumah[3] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahRumah[4] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahRumah[5] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahRumah[6] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahRumah[7] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahRumah[8] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahRumah[9] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahRumah[10] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahRumah[11] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahRumah[12] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahAset[0] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahAset[1] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahAset[2] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahAset[3] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahAset[4] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahAset[5] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahAset[6] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahAset[7] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahAset[8] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahAset[9] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahAset[10] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahAset[11] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahAset[12] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahAset[13] : '';?></td>
-					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:str><?=$j==0 ? $PisahAset[14] : '';?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$IPM[$i]['Id']?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$NamaKecamatan?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$NamaDesa?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$IPM[$i]['Alamat']?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahAnggota[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahStatus[$j]==1 ? 'Suami' : ($PisahStatus[$j]==2 ? 'Istri' : 'Anak');?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahGender[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahPendapatan[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahSumberPendapatan[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahPekerjaan[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahKegiatanSeminggu[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahKeahlian[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahJamKerja[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahAlasanMencariKerja[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahPenyebabMenganggur[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahMengikutiPelatihan[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahLokasiPekerjaan[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahUsaha[0] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? ($PisahUsaha[1] == 'Ya' ? 'Ya' : ($PisahUsaha[1] == 'Tidak' ? 'Tidak' : 'Ya')) : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? ($PisahUsaha[1] == 'Tidak' ? '' : ($PisahUsaha[1] > 0 ? $PisahUsaha[1] : 0)) : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahUsaha[2] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahUsaha[3] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahUsaha[4] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahUsaha[5] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahUsaha[6] : '';?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahPertolonganLahir[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahAsi[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahImunisasi[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahJaminanKesehatan[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahStatus[$j]==2 ? $PisahPernikahan[0] : '';?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahStatus[$j]==2 ? $PisahPernikahan[1] : '';?></td>    
+					/* <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahStatus[$j]==3 ? $PisahFertilitas[($j+1)-count($PisahAnggota)+1][0] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahStatus[$j]==3 ? $PisahFertilitas[($j+1)-count($PisahAnggota)+1][2] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahStatus[$j]==3 ? $PisahFertilitas[($j+1)-count($PisahAnggota)+1][4] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahStatus[$j]==3 ? substr($PisahFertilitas[($j+1)-count($PisahAnggota)+1],6) : '';?></td> */
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahPartisipasiSekolah[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahPendidikanTertinggi[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahStatusSekolah[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahIjazahTertinggi[$j]?></td>
+          <td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$PisahBacaTulis[$j]?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahKepesertaanProgram[0] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahKepesertaanProgram[1] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahKepesertaanProgram[2] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahKepesertaanProgram[3] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahKepesertaanProgram[4] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahRumah[0] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahRumah[1] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahRumah[2] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahRumah[3] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahRumah[4] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahRumah[5] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahRumah[6] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahRumah[7] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahRumah[8] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahRumah[9] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahRumah[10] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahRumah[11] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahRumah[12] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahAset[0] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahAset[1] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahAset[2] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahAset[3] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahAset[4] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahAset[5] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahAset[6] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahAset[7] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahAset[8] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahAset[9] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahAset[10] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahAset[11] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahAset[12] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahAset[13] : '';?></td>
+					<td class=3D"xl67" height=3D"20" style=3D'height:15.00pt;' x:num><?=$j==0 ? $PisahAset[14] : '';?></td>
         </tr>
       <?php } ?>
    <?php } ?>

@@ -36,6 +36,10 @@ class IDE extends CI_Controller {
   public function Surveyor(){
 		$this->load->view('SurveyorSignIn');
   }
+
+  public function SuperAdmin(){
+		$this->load->view('SuperAdmin');
+  }
   
   public function SurveyorSignIn(){ 
     $Surveyor = $this->db->get_where('surveyor', array('NIK' => htmlentities($_POST['NIK'])));
@@ -55,6 +59,27 @@ class IDE extends CI_Controller {
 			}
 		}
   }
+
+  public function SuperAdminSignIn(){ 
+    $SuperAdmin = $this->db->get_where('superadmin', array('Username' => htmlentities($_POST['Username'])));
+		if($SuperAdmin->num_rows() == 0){
+			echo "Username Salah!";
+		}
+		else{
+			$Akun = $SuperAdmin->result_array();
+			if (password_verify($_POST['Password'], $Akun[0]['Password'])) {
+        $Session = array('SuperAdmin' => true,
+                         'Username' => $_POST['Username'],
+                         'KodeKecamatan' => '35.10.01',
+                         'KodeDesa' => '35.10.01.2001',
+                         'NamaDesa' => 'Sarongan');
+				$this->session->set_userdata($Session);
+				echo '1';
+			} else {
+				echo "Password Salah!";
+			}
+		}
+  }
   
   public function SurveyorSignOut(){
 		$this->session->sess_destroy();
@@ -64,6 +89,11 @@ class IDE extends CI_Controller {
   public function DesaSignOut(){
 		$this->session->sess_destroy();
 		redirect(base_url('IDE/Desa'));
+  }
+
+  public function SuperAdminSignOut(){
+		$this->session->sess_destroy();
+		redirect(base_url('IDE/SuperAdmin'));
   }
 
   public function RekapSurveiIKM(){
@@ -476,6 +506,15 @@ class IDE extends CI_Controller {
     $Data['NamaKecamatan'] = $Kecamatan;
     $Data['NamaDesa'] = $NamaDesa;
     $this->load->view('ExcelKomoditas',$Data);                      
+  }
+
+  public function ExcelALHAMH($Kecamatan,$Desa,$NamaDesa){
+    $Data['IPM'] = $this->db->query("SELECT Fertilitas FROM `ipm` WHERE Desa='".$Desa."'")->result_array();
+    $Data['NamaKecamatan'] = $Kecamatan;
+    $Data['NamaDesa'] = $NamaDesa;
+    $Data['ALHAMH'] = array();
+    
+    $this->load->view('ExcelALHAMH',$Data);                      
   }
 }
 // SELECT * FROM `ipm` WHERE NIK='3528021509990001'
