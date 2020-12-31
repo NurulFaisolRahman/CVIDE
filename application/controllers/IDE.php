@@ -517,14 +517,3 @@ class IDE extends CI_Controller {
     $this->load->view('ExcelALHAMH',$Data);                      
   }
 }
-// SELECT * FROM `ipm` WHERE NIK='3528021509990001'
-// UPDATE ipm SET Pendapatan = REPLACE(Pendapatan, '.', '') WHERE NIK='3528021509990001'
-// SELECT surveyor.Nama,COUNT(ipm.NIK) Total FROM surveyor,ipm WHERE surveyor.NIK=ipm.NIK GROUP BY ipm.NIK 
-// $(".numbers").keypress(function (e) {
-//   //if the letter is not digit then display error and don't type anything
-//   if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-//   //display error message
-//   alert("Insert Only Numbers");
-//   return false;
-//   }
-//   });
