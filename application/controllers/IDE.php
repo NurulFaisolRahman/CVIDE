@@ -509,11 +509,99 @@ class IDE extends CI_Controller {
   }
 
   public function ExcelALHAMH($Kecamatan,$Desa,$NamaDesa){
-    $Data['IPM'] = $this->db->query("SELECT Fertilitas FROM `ipm` WHERE Desa='".$Desa."'")->result_array();
+    $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm` WHERE Desa='".$Desa."'")->result_array();
     $Data['NamaKecamatan'] = $Kecamatan;
     $Data['NamaDesa'] = $NamaDesa;
     $Data['ALHAMH'] = array();
-    
+    $Rentang1 = array(0,0,0,0,0,0);
+    $Rentang2 = array(0,0,0,0,0,0);
+    $Rentang3 = array(0,0,0,0,0,0);
+    $Rentang4 = array(0,0,0,0,0,0);
+    $Rentang5 = array(0,0,0,0,0,0);
+    $Rentang6 = array(0,0,0,0,0,0);
+    $Rentang7 = array(0,0,0,0,0,0);
+    for ($i=0; $i < count($ALHAMH); $i++) { 
+      $UsiaIbu = explode("|",$ALHAMH[$i]['Pernikahan']);
+      $JumlahAnak = explode("$",$ALHAMH[$i]['Fertilitas']);
+      if ($ALHAMH[$i]['Fertilitas'] == "") {
+        $JumlahAnak = array();
+      }
+      if (is_numeric($UsiaIbu[0]) && is_numeric($UsiaIbu[1])) {
+        $Cek1 = true;$Cek2 = true;$Cek3 = true;$Cek4 = true;$Cek5 = true;$Cek6 = true;$Cek7 = true;
+        for ($j=0; $j < count($JumlahAnak); $j++) { 
+          $PisahAnak = explode("|",$JumlahAnak[$j]);
+          if (is_numeric($PisahAnak[3])) {
+            if ($PisahAnak[3] < ($UsiaIbu[0]+$UsiaIbu[1])) {
+              if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) > 14 && (($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 20) {
+                if ($Cek1) {$Rentang1[3] += 1;$Cek1 = false;}
+                $Rentang1[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang1[2] += 1 : $Rentang1[1] += 1;
+              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 25) {
+                if ($Cek2) {$Rentang2[3] += 1;$Cek2 = false;}
+                $Rentang2[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang2[2] += 1 : $Rentang2[1] += 1;
+              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 30) {
+                if ($Cek3) {$Rentang3[3] += 1;$Cek3 = false;}
+                $Rentang3[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang3[2] += 1 : $Rentang3[1] += 1;
+              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 35) {
+                if ($Cek4) {$Rentang4[3] += 1;$Cek4 = false;}
+                $Rentang4[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang4[2] += 1 : $Rentang4[1] += 1;
+              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 40) {
+                if ($Cek5) {$Rentang5[3] += 1;$Cek5 = false;}
+                $Rentang5[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang5[2] += 1 : $Rentang5[1] += 1;
+              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 45) {
+                if ($Cek6) {$Rentang6[3] += 1;$Cek6 = false;}
+                $Rentang6[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang6[2] += 1 : $Rentang6[1] += 1;
+              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 50) {
+                if ($Cek7) {$Rentang7[3] += 1;$Cek7 = false;}
+                $Rentang7[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang7[2] += 1 : $Rentang7[1] += 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    if ($Rentang1[3] > 0) {
+      $Rentang1[4] = number_format($Rentang1[0]/$Rentang1[3],2);
+      $Rentang1[5] = number_format($Rentang1[2]/$Rentang1[3],2);
+    }
+    if ($Rentang2[3] > 0) {
+      $Rentang2[4] = number_format($Rentang2[0]/$Rentang2[3],2);
+      $Rentang2[5] = number_format($Rentang2[2]/$Rentang2[3],2);
+    }
+    if ($Rentang3[3] > 0) {
+      $Rentang3[4] = number_format($Rentang3[0]/$Rentang3[3],2);
+      $Rentang3[5] = number_format($Rentang3[2]/$Rentang3[3],2);
+    }
+    if ($Rentang4[3] > 0) {
+      $Rentang4[4] = number_format($Rentang4[0]/$Rentang4[3],2);
+      $Rentang4[5] = number_format($Rentang4[2]/$Rentang4[3],2);
+    }
+    if ($Rentang5[3] > 0) {
+      $Rentang5[4] = number_format($Rentang5[0]/$Rentang5[3],2);
+      $Rentang5[5] = number_format($Rentang5[2]/$Rentang5[3],2);
+    }
+    if ($Rentang6[3] > 0) {
+      $Rentang6[4] = number_format($Rentang6[0]/$Rentang6[3],2);
+      $Rentang6[5] = number_format($Rentang6[2]/$Rentang6[3],2);
+    }
+    if ($Rentang7[3] > 0) {
+      $Rentang7[4] = number_format($Rentang7[0]/$Rentang7[3],2);
+      $Rentang7[5] = number_format($Rentang7[2]/$Rentang7[3],2);
+    }
+    $Data['ALHAMH'][0] = $Rentang1;
+    $Data['ALHAMH'][1] = $Rentang2;
+    $Data['ALHAMH'][2] = $Rentang3;
+    $Data['ALHAMH'][3] = $Rentang4;
+    $Data['ALHAMH'][4] = $Rentang5;
+    $Data['ALHAMH'][5] = $Rentang6;
+    $Data['ALHAMH'][6] = $Rentang7;
+    $Data['TotalIbu'] = $Rentang1[3]+$Rentang2[3]+$Rentang3[3]+$Rentang4[3]+$Rentang5[3]+$Rentang6[3]+$Rentang7[3];
     $this->load->view('ExcelALHAMH',$Data);                      
   }
 }
