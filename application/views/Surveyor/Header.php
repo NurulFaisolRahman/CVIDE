@@ -18,6 +18,7 @@
 				<div class="menu">
 					<ul id="menu" >
 						<li id="menu-home"><a href="<?=base_url('Surveyor')?>"><i class="fa fa-user"></i><span>Profil</span></a></li>
+						<li id="menu-home"><a href="<?=base_url('Surveyor/Usia')?>"><i class="fa fa-child"></i><span>Usia</span></a></li>
 						<li><a href="#"><i class="fa fa-list"></i><span>Survei</span><span class="fa fa-angle-right" style="float: right"></span></a>
 							<ul>
 								<li><a href="<?=base_url('Surveyor/SurveiBPD')?>">Kinerja Badan Permusyawaratan Desa</a></li>           

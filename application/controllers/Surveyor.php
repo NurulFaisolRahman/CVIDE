@@ -109,5 +109,12 @@ class Surveyor extends CI_Controller {
       echo 'Gagal Menyimpan Survei!';
     }
   }
+
+  public function Usia(){
+    $NIK = $this->session->userdata('NIK');
+    $Data['IPM'] = $this->db->query("SELECT NamaAnggota FROM `ipm` WHERE NIK='".$NIK."'")->result_array();
+    $this->load->view('Surveyor/Header',$Data);
+		$this->load->view('Surveyor/Usia',$Data);
+  }
   
 }
