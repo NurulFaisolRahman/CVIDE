@@ -1341,6 +1341,7 @@
               } else {
                 SumberPendapatan += $("#SumberPendapatan"+i).val()
               }
+              Anggota = i
             } else if ($("#NamaAnggota"+i).val() != "") {
               NamaAnggota += ('|'+$("#NamaAnggota"+i).val())
               Status += ('|'+$("#Status"+i).val())
@@ -1352,6 +1353,7 @@
               } else {
                 SumberPendapatan += ('|'+$("#SumberPendapatan"+i).val())
               }
+              Anggota = i
             } else {
               Anggota = i
               break

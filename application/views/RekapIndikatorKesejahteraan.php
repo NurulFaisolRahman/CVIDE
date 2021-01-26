@@ -69,6 +69,7 @@
                               </div>
                               <div class="btn btn-danger text-light" id="Unduh"><b>UNDUH</b></div>
                               <div class="btn btn-danger text-light" id="ALHAMH"><b>ALH</b></div>
+                              <div class="btn btn-danger text-light" id="Pendidikan"><b>Pendidikan</b></div>
                               <!-- <div class="btn btn-danger text-light" id="Komoditas"><b>KOMODITAS</b></div> -->
                             </div>
                           </div>
@@ -111,6 +112,14 @@
         $("#ALHAMH").click(function() {
           var Kecamatan = $("#Kecamatan").val().split("|")
           window.location = BaseURL + 'IDE/ExcelALHAMH/'+Kecamatan[1]+'/'+$("#Desa").val()+'/'+$("#Desa option:selected").text()
+        })
+
+        $("#Pendidikan").click(function() {
+          var Kecamatan = $("#Kecamatan").val().split("|")
+          $.post(BaseURL+"IDE/Pendidikan/"+Kecamatan[1]+'/'+$("#Desa").val()+'/'+$("#Desa option:selected").text()).done(function(Respon) {
+            alert(Respon)
+          })    
+          // window.location = BaseURL + 'IDE/Pendidikan/'+Kecamatan[1]+'/'+$("#Desa").val()+'/'+$("#Desa option:selected").text()
         })
 
       })
