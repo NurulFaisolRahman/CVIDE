@@ -302,5 +302,326 @@ class SuperAdmin extends CI_Controller {
     $this->load->view('SuperAdmin/Header',$Data);
 		$this->load->view('SuperAdmin/Pendidikan',$Data);
   }
+
+  public function IPMKesehatan(){
+    $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan'); 
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
+    $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+    $Data['ALHAMH'] = array();
+    $Rentang1 = array(0,0,0,0,0,0);
+    $Rentang2 = array(0,0,0,0,0,0);
+    $Rentang3 = array(0,0,0,0,0,0);
+    $Rentang4 = array(0,0,0,0,0,0);
+    $Rentang5 = array(0,0,0,0,0,0);
+    $Rentang6 = array(0,0,0,0,0,0);
+    $Rentang7 = array(0,0,0,0,0,0);
+    for ($i=0; $i < count($ALHAMH); $i++) { 
+      $UsiaIbu = explode("|",$ALHAMH[$i]['Pernikahan']);
+      $JumlahAnak = explode("$",$ALHAMH[$i]['Fertilitas']);
+      if ($ALHAMH[$i]['Fertilitas'] == "") {
+        $JumlahAnak = array();
+      }
+      if (is_numeric($UsiaIbu[0]) && is_numeric($UsiaIbu[1])) {
+        $Cek1 = true;$Cek2 = true;$Cek3 = true;$Cek4 = true;$Cek5 = true;$Cek6 = true;$Cek7 = true;
+        for ($j=0; $j < count($JumlahAnak); $j++) { 
+          $PisahAnak = explode("|",$JumlahAnak[$j]);
+          if (is_numeric($PisahAnak[3])) {
+            if ($PisahAnak[3] < ($UsiaIbu[0]+$UsiaIbu[1])) {
+              if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) > 14 && (($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 20) {
+                if ($Cek1) {$Rentang1[3] += 1;$Cek1 = false;}
+                $Rentang1[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang1[2] += 1 : $Rentang1[1] += 1;
+              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 25) {
+                if ($Cek2) {$Rentang2[3] += 1;$Cek2 = false;}
+                $Rentang2[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang2[2] += 1 : $Rentang2[1] += 1;
+              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 30) {
+                if ($Cek3) {$Rentang3[3] += 1;$Cek3 = false;}
+                $Rentang3[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang3[2] += 1 : $Rentang3[1] += 1;
+              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 35) {
+                if ($Cek4) {$Rentang4[3] += 1;$Cek4 = false;}
+                $Rentang4[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang4[2] += 1 : $Rentang4[1] += 1;
+              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 40) {
+                if ($Cek5) {$Rentang5[3] += 1;$Cek5 = false;}
+                $Rentang5[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang5[2] += 1 : $Rentang5[1] += 1;
+              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 45) {
+                if ($Cek6) {$Rentang6[3] += 1;$Cek6 = false;}
+                $Rentang6[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang6[2] += 1 : $Rentang6[1] += 1;
+              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 50) {
+                if ($Cek7) {$Rentang7[3] += 1;$Cek7 = false;}
+                $Rentang7[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang7[2] += 1 : $Rentang7[1] += 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    if ($Rentang1[3] > 0) {
+      $Rentang1[4] = number_format($Rentang1[0]/$Rentang1[3],2);
+      $Rentang1[5] = number_format($Rentang1[2]/$Rentang1[3],2);
+    }
+    if ($Rentang2[3] > 0) {
+      $Rentang2[4] = number_format($Rentang2[0]/$Rentang2[3],2);
+      $Rentang2[5] = number_format($Rentang2[2]/$Rentang2[3],2);
+    }
+    if ($Rentang3[3] > 0) {
+      $Rentang3[4] = number_format($Rentang3[0]/$Rentang3[3],2);
+      $Rentang3[5] = number_format($Rentang3[2]/$Rentang3[3],2);
+    }
+    if ($Rentang4[3] > 0) {
+      $Rentang4[4] = number_format($Rentang4[0]/$Rentang4[3],2);
+      $Rentang4[5] = number_format($Rentang4[2]/$Rentang4[3],2);
+    }
+    if ($Rentang5[3] > 0) {
+      $Rentang5[4] = number_format($Rentang5[0]/$Rentang5[3],2);
+      $Rentang5[5] = number_format($Rentang5[2]/$Rentang5[3],2);
+    }
+    if ($Rentang6[3] > 0) {
+      $Rentang6[4] = number_format($Rentang6[0]/$Rentang6[3],2);
+      $Rentang6[5] = number_format($Rentang6[2]/$Rentang6[3],2);
+    }
+    if ($Rentang7[3] > 0) {
+      $Rentang7[4] = number_format($Rentang7[0]/$Rentang7[3],2);
+      $Rentang7[5] = number_format($Rentang7[2]/$Rentang7[3],2);
+    }
+    $Data['ALHAMH'][0] = $Rentang1;
+    $Data['ALHAMH'][1] = $Rentang2;
+    $Data['ALHAMH'][2] = $Rentang3;
+    $Data['ALHAMH'][3] = $Rentang4;
+    $Data['ALHAMH'][4] = $Rentang5;
+    $Data['ALHAMH'][5] = $Rentang6;
+    $Data['ALHAMH'][6] = $Rentang7;
+    $Data['TotalIbu'] = $Rentang1[3]+$Rentang2[3]+$Rentang3[3]+$Rentang4[3]+$Rentang5[3]+$Rentang6[3]+$Rentang7[3];
+    $this->load->view('SuperAdmin/Header',$Data);
+		$this->load->view('SuperAdmin/IPMKesehatan',$Data);
+  }
+
+  public function IPMPendidikan(){
+    $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan'); 
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
+    $Pendidikan = $this->db->query("SELECT Usia,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,KeluhanPendidikan FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+    $KelompokHLS = array(array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0));
+    $LamaSekolah = $Penduduk25 = $PendudukSekolah = $Penduduk7 = $Santri = 0;
+    $Data['IPMPendidikan'] = array();
+    $Data['IPMPendidikan']['RLS'] = 0;
+    $Data['IPMPendidikan']['HLS'] = 0;
+    $Data['IPMPendidikan']['IRLS'] = 0;
+    $Data['IPMPendidikan']['IHLS'] = 0;
+    $Data['IPMPendidikan']['IPendidikan'] = 0;
+    if (!empty($Pendidikan[0]['Usia'])) {
+      foreach ($Pendidikan as $key) {
+        $Partisipasi = explode("|",$key['PartisipasiSekolah']);
+        $Jenjang = explode("|",$key['PendidikanTertinggi']);
+        $Tingkat = explode("|",$key['StatusSekolah']);
+        $Usia = explode("|",$key['Usia']);
+        if ($key['KeluhanPendidikan'][0] == 1) {
+          $Santri += 1;  
+        }
+        for ($i=0; $i < count($Partisipasi); $i++) { 
+          if (count($Partisipasi) == count($Usia)) {
+            if ($Usia[$i] > 6) {
+              $Penduduk7 += 1;
+              if ($Usia[$i] == 7) {
+                $KelompokHLS[0][0] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][0] += 1;
+                }
+              } else if ($Usia[$i] == 8) {
+                $KelompokHLS[0][1] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][1] += 1;
+                }
+              } else if ($Usia[$i] == 9) {
+                $KelompokHLS[0][2] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][2] += 1;
+                }
+              } else if ($Usia[$i] == 10) {
+                $KelompokHLS[0][3] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][3] += 1;
+                }
+              } else if ($Usia[$i] == 11) {
+                $KelompokHLS[0][4] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][4] += 1;
+                }
+              } else if ($Usia[$i] == 12) {
+                $KelompokHLS[0][5] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][5] += 1;
+                }
+              } else if ($Usia[$i] == 13) {
+                $KelompokHLS[0][6] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][6] += 1;
+                }
+              } else if ($Usia[$i] == 14) {
+                $KelompokHLS[0][7] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][7] += 1;
+                }
+              } else if ($Usia[$i] == 15) {
+                $KelompokHLS[0][8] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][8] += 1;
+                }
+              } else if ($Usia[$i] == 16) {
+                $KelompokHLS[0][9] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][9] += 1;
+                }
+              } else if ($Usia[$i] == 17) {
+                $KelompokHLS[0][10] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][10] += 1;
+                }
+              } else if ($Usia[$i] == 18) {
+                $KelompokHLS[0][11] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][11] += 1;
+                }
+              } else if ($Usia[$i] == 19) {
+                $KelompokHLS[0][12] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][12] += 1;
+                }
+              } else if ($Usia[$i] == 20) {
+                $KelompokHLS[0][13] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][13] += 1;
+                }
+              } else if ($Usia[$i] == 21) {
+                $KelompokHLS[0][14] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][14] += 1;
+                }
+              } else if ($Usia[$i] == 22) {
+                $KelompokHLS[0][15] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][15] += 1;
+                }
+              } else if ($Usia[$i] == 23) {
+                $KelompokHLS[0][16] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][16] += 1;
+                }
+              } else if ($Usia[$i] == 24) {
+                $KelompokHLS[0][17] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][17] += 1;
+                }
+              } else if ($Usia[$i] == 25) {
+                $KelompokHLS[0][18] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][18] += 1;
+                }
+              }
+            }
+            if ($Partisipasi[$i] != 1 && $Usia[$i] > 24) {
+              $PendudukSekolah += 1;
+              if ($Jenjang[$i] < 4) {
+                if ($Tingkat[$i] == 9) {
+                  $LamaSekolah += 6; $Penduduk25 += 1;
+                } else {
+                  $LamaSekolah += ($Tingkat[$i]-1); $Penduduk25 += 1;
+                }
+              } else if ($Jenjang[$i] < 7) {
+                if ($Tingkat[$i] == 9) {
+                  $LamaSekolah += 9; $Penduduk25 += 1;
+                } else {
+                  $LamaSekolah += (5+$Tingkat[$i]); $Penduduk25 += 1;
+                }
+              } else if ($Jenjang[$i] < 11) {
+                if ($Tingkat[$i] == 9) {
+                  $LamaSekolah += 12; $Penduduk25 += 1;
+                } else {
+                  $LamaSekolah += (8+$Tingkat[$i]); $Penduduk25 += 1;
+                }
+              } else if ($Jenjang[$i] == 11) {
+                if ($Tingkat[$i] == 9) {
+                  $LamaSekolah += 14; $Penduduk25 += 1;
+                } else {
+                  $LamaSekolah += (11+$Tingkat[$i]); $Penduduk25 += 1;
+                }
+              } else if ($Jenjang[$i] == 12) {
+                if ($Tingkat[$i] == 9) {
+                  $LamaSekolah += 15; $Penduduk25 += 1;
+                } else {
+                  $LamaSekolah += (11+$Tingkat[$i]); $Penduduk25 += 1;
+                }
+              } else if ($Jenjang[$i] == 13) {
+                if ($Tingkat[$i] == 9) {
+                  $LamaSekolah += 16; $Penduduk25 += 1;
+                } else {
+                  $LamaSekolah += (11+$Tingkat[$i]); $Penduduk25 += 1;
+                }
+              } else if ($Jenjang[$i] == 14 || $Jenjang[$i] == 15) {
+                if ($Tingkat[$i] == 9) {
+                  $LamaSekolah += 18; $Penduduk25 += 1;
+                } else {
+                  $LamaSekolah += (15+$Tingkat[$i]); $Penduduk25 += 1;
+                }
+              }
+            }
+          }
+        }
+      }
+      if ($Penduduk25 > 0) {
+        $Data['IPMPendidikan']['RLS'] = number_format(($LamaSekolah/$Penduduk25),2);
+        $FK = number_format(($Santri/$Penduduk7)+1,2);
+        $Sigma = 0;
+        for ($i=0; $i < 19; $i++) { 
+          if ($KelompokHLS[0][$i] > 0) {
+            $Sigma += (number_format($KelompokHLS[1][$i]/$KelompokHLS[0][$i],2));
+          }
+        }
+        $Data['IPMPendidikan']['HLS'] = number_format(($FK*$Sigma),2);
+        $Data['IPMPendidikan']['IHLS'] = number_format($Data['IPMPendidikan']['HLS']/18,2);
+        $Data['IPMPendidikan']['IRLS'] = number_format($Data['IPMPendidikan']['RLS']/15,2);
+        $Data['IPMPendidikan']['IPendidikan'] = number_format(($Data['IPMPendidikan']['IRLS']+$Data['IPMPendidikan']['IHLS'])/2,2);
+      }
+    }
+    $this->load->view('SuperAdmin/Header',$Data);
+		$this->load->view('SuperAdmin/IPMPendidikan',$Data);
+  }
+
+  public function IPMPengeluaran(){
+    $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan'); 
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
+    $DataKomoditas = $this->db->query("SELECT NamaAnggota,Banyaknya,Harga,Nilai FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+    $Data['PerKapita'] = 0; 
+    $TotalPengeluaran = $TotalIndividu = 0;
+    foreach ($DataKomoditas as $key) {
+      $TotalIndividu += count(explode("|",$key['NamaAnggota']));
+      $Nilai = explode("|",$key['Nilai']);
+      for ($i=0; $i < count($Nilai); $i++) { 
+        if ($i < 107 || in_array($i,array(113,114,115,118,121,125,141))) {
+          $TotalPengeluaran += ((int)$Nilai[$i]*52);
+        } else if (in_array($i,array(107,111,112,117,124,142,143,153))) {
+          $TotalPengeluaran += ((int)$Nilai[$i]*12);
+        } else if (in_array($i,array(116,119,120,136,138,140,148))) {
+          $TotalPengeluaran += ((int)$Nilai[$i]*2);
+        } else if (in_array($i,array(108,109,110,122,123,126,127,128,129,130,131,132,133,134,135,137,139,144,145,146,147,149,150,151,152))) {
+          $TotalPengeluaran += (int)$Nilai[$i];
+        }
+      }
+    }
+    $Data['PerKapita'] = $TotalPengeluaran/$TotalIndividu/1000; 
+    $Data['PerKapitaKonstan'] = $Data['PerKapita']/103.59*100.0; 
+    $this->load->view('SuperAdmin/Header',$Data);
+		$this->load->view('SuperAdmin/IPMPengeluaran',$Data);
+  }
   
 }

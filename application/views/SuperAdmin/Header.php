@@ -46,6 +46,15 @@
 											<li><a href="<?=base_url('SuperAdmin/KinerjaAparatur')?>"><b>Kinerja Aparatur Desa</b></a></li>   
                     </ul>
 									</li>
+                </ul>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-tasks"></i> <b>IPM</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('SuperAdmin/IPMKesehatan')?>"><b>ALH & AMH</b></a></li>
+                      <li><a href="<?=base_url('SuperAdmin/IPMPendidikan')?>"><b>Pendidikan</b></a></li>
+                      <li><a href="<?=base_url('SuperAdmin/IPMPengeluaran')?>"><b>Pengeluaran</b></a></li>
+                    </ul>
+									</li>
 								</ul>
 								<ul class="nav side-menu">
 									<li><a href="<?=base_url('SuperAdmin/Pendidikan')?>"><i class="fa fa-graduation-cap"></i> <b>Pendidikan</b> </a></li>
