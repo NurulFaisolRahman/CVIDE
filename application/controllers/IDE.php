@@ -96,7 +96,7 @@ class IDE extends CI_Controller {
 		redirect(base_url('IDE/SuperAdmin'));
   }
 
-  public function RekapSurveiIKM(){
+  public function RekapDesaSurveiIKM(){
     $Data['Rekap'] = array();
     $Kecamatan = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     foreach ($Kecamatan as $key) {
@@ -108,6 +108,89 @@ class IDE extends CI_Controller {
         } 
       }
     }
+    $this->load->view('RekapDesaSurveiIKM',$Data);
+  }
+  
+  public function RekapSurveiIKM(){
+    ini_set('max_execution_time', 0); 
+    ini_set('memory_limit','2048M');
+    $Data['IKMKecamatan'] = array();
+    $_Responden = 0;
+    $_Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
+    $_Konversi = array(0,0,0,0,0,0,0,0,0,0,0);
+    $Kecamatan = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    foreach ($Kecamatan as $KEY) {
+      $Responden = 0;
+      $Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
+      $Konversi = array(0,0,0,0,0,0,0,0,0,0,0);
+      $Titip = 0;
+      $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$KEY['Kode'].".%'")->result_array();
+      $DataIKMKecamatan = array();
+      array_push($DataIKMKecamatan,$KEY['Nama']);
+      for ($j = 0; $j < count($Desa); $j++) { 
+        $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikm` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->row_array()['Total'];
+        $RespondenDesa = $this->db->query("SELECT * FROM `ikm` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->result_array();
+        foreach ($RespondenDesa as $key) {
+          $Pecah = explode("|",$key['Poin']);
+          for ($i=0; $i < 11; $i++) { 
+            $Tampung[$i] += $Pecah[$i];
+            $_Tampung[$i] += $Pecah[$i];
+          }
+        }
+        if ($Total < 356) {
+          for ($k=0; $k < 11; $k++) { 
+            $Tampung[$k] += (3*(356-$Total));
+            $_Tampung[$k] += (3*(356-$Total));
+          }
+          $Titip += 356-$Total;
+        }
+        $Responden += $Total;
+      }
+      $Responden += $Titip;
+      $_Responden += $Responden;
+      for ($i=0; $i < 11; $i++) { 
+        array_push($DataIKMKecamatan,number_format(($Tampung[$i]/$Responden)*(1/11),2));
+        $Konversi[$i] = ($Tampung[$i]/$Responden)*(1/11)*25;
+      }
+      $NilaiIndeks = number_format(array_sum($Konversi),2);
+      array_push($DataIKMKecamatan,$NilaiIndeks);
+      if ($NilaiIndeks < 65) {
+        array_push($DataIKMKecamatan,'D');
+        array_push($DataIKMKecamatan,'Tidak Baik');
+      } else if ($NilaiIndeks < 76.61) {
+        array_push($DataIKMKecamatan,'C');
+        array_push($DataIKMKecamatan,'Kurang Baik');
+      } else if ($NilaiIndeks < 88.31) {
+        array_push($DataIKMKecamatan,'B');
+        array_push($DataIKMKecamatan,'Baik');
+      } else {
+        array_push($DataIKMKecamatan,'A');
+        array_push($DataIKMKecamatan,'Sangat Baik');
+      }
+      array_push($Data['IKMKecamatan'],$DataIKMKecamatan);
+    }
+    $DataIKMKecamatan = array();
+    array_push($DataIKMKecamatan,'Banyuwangi');
+    for ($i=0; $i < 11; $i++) { 
+      array_push($DataIKMKecamatan,number_format(($_Tampung[$i]/$_Responden)*(1/11),2));
+      $_Konversi[$i] = ($_Tampung[$i]/$_Responden)*(1/11)*25;
+    }
+    $NilaiIndeks = number_format(array_sum($_Konversi),2);
+    array_push($DataIKMKecamatan,$NilaiIndeks);
+    if ($NilaiIndeks < 65) {
+      array_push($DataIKMKecamatan,'D');
+      array_push($DataIKMKecamatan,'Tidak Baik');
+    } else if ($NilaiIndeks < 76.61) {
+      array_push($DataIKMKecamatan,'C');
+      array_push($DataIKMKecamatan,'Kurang Baik');
+    } else if ($NilaiIndeks < 88.31) {
+      array_push($DataIKMKecamatan,'B');
+      array_push($DataIKMKecamatan,'Baik');
+    } else {
+      array_push($DataIKMKecamatan,'A');
+      array_push($DataIKMKecamatan,'Sangat Baik');
+    }
+    array_push($Data['IKMKecamatan'],$DataIKMKecamatan);
     $this->load->view('RekapSurveiIKM',$Data);
   }
   

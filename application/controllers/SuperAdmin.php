@@ -527,9 +527,11 @@ class SuperAdmin extends CI_Controller {
                 }
               }
             }
-            if ($Partisipasi[$i] != 1 && $Usia[$i] > 24) {
+            if ($Usia[$i] > 24) {
               $PendudukSekolah += 1;
-              if ($Jenjang[$i] < 4) {
+              if ($Partisipasi[$i] == 1) {
+                $Penduduk25 += 1;
+              } else if ($Jenjang[$i] < 4) {
                 if ($Tingkat[$i] == 9) {
                   $LamaSekolah += 6; $Penduduk25 += 1;
                 } else {
@@ -601,25 +603,27 @@ class SuperAdmin extends CI_Controller {
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
     $DataKomoditas = $this->db->query("SELECT NamaAnggota,Banyaknya,Harga,Nilai FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
-    $Data['PerKapita'] = 0; 
+    $Data['PerKapita'] = $Data['PerKapitaKonstan'] = 0; 
     $TotalPengeluaran = $TotalIndividu = 0;
     foreach ($DataKomoditas as $key) {
       $TotalIndividu += count(explode("|",$key['NamaAnggota']));
       $Nilai = explode("|",$key['Nilai']);
       for ($i=0; $i < count($Nilai); $i++) { 
-        if ($i < 107 || in_array($i,array(113,114,115,118,121,125,141))) {
+        if (in_array($i,array(0,2,3,4,5,6,7,8,9,10,11,12,13,14,16,19,20,21,23,24,25,36,37,38,39,40,41,41,42,43,49,51,52,53,54,62,63,64,66,68,69,71,72,76,79,84,85,86,87,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,113,114,115,118,121,141))) {
           $TotalPengeluaran += ((int)$Nilai[$i]*52);
-        } else if (in_array($i,array(107,111,112,117,124,142,143,153))) {
+        } else if (in_array($i,array(107,111,112,142,143))) {
           $TotalPengeluaran += ((int)$Nilai[$i]*12);
-        } else if (in_array($i,array(116,119,120,136,138,140,148))) {
+        } else if (in_array($i,array(119,120,136,148))) {
           $TotalPengeluaran += ((int)$Nilai[$i]*2);
-        } else if (in_array($i,array(108,109,110,122,123,126,127,128,129,130,131,132,133,134,135,137,139,144,145,146,147,149,150,151,152))) {
+        } else if (in_array($i,array(108,109,110,127,128,129,130,144,145,146,147,149,150,151,152))) {
           $TotalPengeluaran += (int)$Nilai[$i];
         }
       }
     }
-    $Data['PerKapita'] = $TotalPengeluaran/$TotalIndividu/1000; 
-    $Data['PerKapitaKonstan'] = $Data['PerKapita']/103.59*100.0; 
+    if (count($DataKomoditas) > 0) {
+      $Data['PerKapita'] = $TotalPengeluaran/$TotalIndividu/1000; 
+      $Data['PerKapitaKonstan'] = $Data['PerKapita']/103.59*100.0; 
+    }
     $this->load->view('SuperAdmin/Header',$Data);
 		$this->load->view('SuperAdmin/IPMPengeluaran',$Data);
   }

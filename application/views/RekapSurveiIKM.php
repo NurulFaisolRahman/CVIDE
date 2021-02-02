@@ -21,7 +21,7 @@
         <div class="col-sm-12">
           <div class="card mt-2">
             <div class="card-header bg-primary text-light">
-              <b>REKAPITULASI DESA YANG BELUM MENYELESAIKAN SURVEI KEPUASAN PELAYANAN TAHUN 2020</b>
+              <b>REKAPITULASI SURVEI KEPUASAN PELAYANAN DESA PER KECAMATAN TAHUN 2020</b>
             </div>
             <div style="background-color: yellow;padding: 0.5rem;" class="card-body border border-primary">
               <div class="container-fluid">
@@ -31,21 +31,62 @@
                       <table class="table table-bordered bg-light">
                         <thead>
                           <tr class="bg-primary text-light">
-                            <th scope="col" class="text-center align-middle">No</th>
-                            <th scope="col" class="text-center align-middle">Desa</th>
+                          <th scope="col" class="text-center align-middle">No</th>
                             <th scope="col" class="text-center align-middle">Kecamatan</th>
-                            <th scope="col" class="text-center align-middle">Total Responden</th>
+                            <th scope="col" class="text-center align-middle">V1</th>
+                            <th scope="col" class="text-center align-middle">V2</th>
+                            <th scope="col" class="text-center align-middle">V3</th>
+                            <th scope="col" class="text-center align-middle">V4</th>
+                            <th scope="col" class="text-center align-middle">V5</th>
+                            <th scope="col" class="text-center align-middle">V6</th>
+                            <th scope="col" class="text-center align-middle">V7</th>
+                            <th scope="col" class="text-center align-middle">V8</th>
+                            <th scope="col" class="text-center align-middle">V9</th>
+                            <th scope="col" class="text-center align-middle">V10</th>
+                            <th scope="col" class="text-center align-middle">V11</th>
+                            <th scope="col" class="text-center align-middle">Nilai<br>Indeks</th>
+                            <th scope="col" class="text-center align-middle">Mutu<br>Pelayanan</th>
+                            <th scope="col" class="text-center align-middle">Kinerja<br>Unit<br>Pelayanan</th>
                           </tr>
                         </thead>
-                        <tbody>
-                          <?php foreach ($Rekap as $key => $value) { $Pecah = explode("|",$value); ?>
+                        <tbody id="RekapSurvei">
+                          <?php for ($i = 0; $i < 25; $i++) { ?>
                             <tr>
-                              <td scope="row" class="text-center align-middle"><?=($key+1)?></td>
-                              <td scope="row" class="text-center align-middle"><?=$Pecah[0]?></td>
-                              <td scope="row" class="text-center align-middle"><?=$Pecah[1]?></td>
-                              <td scope="row" class="text-center align-middle"><?=$Pecah[2]?></td>
+                              <th scope="row" class="text-center align-middle"><?=($i+1)?></th>
+                              <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[$i][0]?></th>
+                              <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[$i][1]?></th>
+                              <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[$i][2]?></th>
+                              <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[$i][3]?></th>
+                              <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[$i][4]?></th>
+                              <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[$i][5]?></th>
+                              <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[$i][6]?></th>
+                              <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[$i][7]?></th>
+                              <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[$i][8]?></th>
+                              <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[$i][9]?></th>
+                              <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[$i][10]?></th>
+                              <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[$i][11]?></th>
+                              <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[$i][12]?></th>
+                              <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[$i][13]?></th>
+                              <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[$i][14]?></th>
                             </tr>
                           <?php } ?>  
+                          <tr>
+                            <th colspan="2" scope="row" class="text-center align-middle"><?=$IKMKecamatan[25][0]?></th>
+                            <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[25][1]?></th>
+                            <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[25][2]?></th>
+                            <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[25][3]?></th>
+                            <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[25][4]?></th>
+                            <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[25][5]?></th>
+                            <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[25][6]?></th>
+                            <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[25][7]?></th>
+                            <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[25][8]?></th>
+                            <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[25][9]?></th>
+                            <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[25][10]?></th>
+                            <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[25][11]?></th>
+                            <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[25][12]?></th>
+                            <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[25][13]?></th>
+                            <th scope="row" class="text-center align-middle"><?=$IKMKecamatan[25][14]?></th>
+                          </tr>
                         </tbody>
                       </table>
                     </div>

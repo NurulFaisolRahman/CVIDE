@@ -67,8 +67,8 @@
                                   <?php } ?>                  
                                 </select>
                               </div>
-                              <div class="btn btn-danger text-light" id="Unduh"><b>UNDUH</b></div>
-                              <div class="btn btn-warning text-light" id="Rekap"><b>REKAP</b></div>
+                              <div class="btn btn-success text-light" id="Unduh"><b>Desa</b></div>
+                              <div class="btn btn-warning text-light" id="Rekap"><b>Kecamatan</b></div>
                             </div>
                           </div>
                         </div>
