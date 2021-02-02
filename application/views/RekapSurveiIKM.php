@@ -22,6 +22,7 @@
           <div class="card mt-2">
             <div class="card-header bg-primary text-light">
               <b>REKAPITULASI SURVEI KEPUASAN PELAYANAN DESA PER KECAMATAN TAHUN 2020</b>
+              <a href="<?=base_url('IKMKecamatan.xlsx')?>" class="btn btn-sm btn-success font-weight-bold"> Download Excel</i></a>
             </div>
             <div style="background-color: yellow;padding: 0.5rem;" class="card-body border border-primary">
               <div class="container-fluid">
