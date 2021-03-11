@@ -32,68 +32,47 @@ class IDE extends CI_Controller {
 			}
 		}
   }
-  
-  public function Surveyor(){
-		$this->load->view('SurveyorSignIn');
-  }
 
-  public function SuperAdmin(){
-		$this->load->view('SuperAdmin');
-  }
-  
-  public function SurveyorSignIn(){ 
-    $Surveyor = $this->db->get_where('surveyor', array('NIK' => htmlentities($_POST['NIK'])));
-		if($Surveyor->num_rows() == 0){
-			echo "NIK Salah!";
-		}
-		else{
-			$Akun = $Surveyor->result_array();
-			if (password_verify($_POST['Password'], $Akun[0]['Password'])) {
+  public function SignIn(){  
+    $Akun = $this->db->get_where('surveyor', array('NIK' => $_POST['Username']))->row_array();
+		if (isset($Akun) > 0) {
+      if (password_verify($_POST['Password'], $Akun['Password'])) {
         $Session = array('Surveyor' => true,
-                         'NIK' => $_POST['NIK'],
-                         'Nama' => $Akun[0]['Nama']);
-				$this->session->set_userdata($Session);
-				echo '1';
-			} else {
-				echo "Password Salah!";
-			}
-		}
-  }
-
-  public function SuperAdminSignIn(){ 
-    $SuperAdmin = $this->db->get_where('superadmin', array('Username' => htmlentities($_POST['Username'])));
-		if($SuperAdmin->num_rows() == 0){
-			echo "Username Salah!";
-		}
-		else{
-			$Akun = $SuperAdmin->result_array();
-			if (password_verify($_POST['Password'], $Akun[0]['Password'])) {
-        $Session = array('SuperAdmin' => true,
-                         'Username' => $_POST['Username'],
-                         'KodeKecamatan' => '35.10.01',
-                         'KodeDesa' => '35.10.01.2001',
-                         'NamaDesa' => 'Sarongan');
-				$this->session->set_userdata($Session);
-				echo '1';
-			} else {
-				echo "Password Salah!";
-			}
-		}
+                         'NIK' => $_POST['Username'],
+                         'Nama' => $Akun['Nama']);
+        $this->session->set_userdata($Session);
+        echo '1';
+      } else { 
+        echo "Password Salah!";
+      }
+    } else {
+      $Akun = $this->db->get_where('superadmin', array('Username' => $_POST['Username']))->row_array();
+      if (isset($Akun) > 0) {
+        if (password_verify($_POST['Password'], $Akun['Password'])) {
+          $Session = array('SuperAdmin' => true,
+                           'Username' => $_POST['Username'],
+                           'KodeKecamatan' => '35.10.01',
+                           'KodeDesa' => '35.10.01.2001',
+                           'NamaDesa' => 'Sarongan');
+          $this->session->set_userdata($Session);
+          echo '2';
+        } else {
+          echo "Password Salah!";
+        }
+      } else {
+        echo "Username Salah!";
+      }
+    }			
   }
   
-  public function SurveyorSignOut(){
+  public function SignOut(){
 		$this->session->sess_destroy();
-		redirect(base_url('IDE/Surveyor'));
+		redirect(base_url());
   }
 
   public function DesaSignOut(){
 		$this->session->sess_destroy();
 		redirect(base_url('IDE/Desa'));
-  }
-
-  public function SuperAdminSignOut(){
-		$this->session->sess_destroy();
-		redirect(base_url('IDE/SuperAdmin'));
   }
 
   public function RekapDesaSurveiIKM(){
@@ -112,85 +91,85 @@ class IDE extends CI_Controller {
   }
   
   public function RekapSurveiIKM(){
-    // ini_set('max_execution_time', 0); 
-    // ini_set('memory_limit','2048M');
+    ini_set('max_execution_time', 0); 
+    ini_set('memory_limit','2048M');
     $Data['IKMKecamatan'] = array();
-    // $_Responden = 0;
-    // $_Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
-    // $_Konversi = array(0,0,0,0,0,0,0,0,0,0,0);
-    // $Kecamatan = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
-    // foreach ($Kecamatan as $KEY) {
-    //   $Responden = 0;
-    //   $Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
-    //   $Konversi = array(0,0,0,0,0,0,0,0,0,0,0);
-    //   $Titip = 0;
-    //   $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$KEY['Kode'].".%'")->result_array();
-    //   $DataIKMKecamatan = array();
-    //   array_push($DataIKMKecamatan,$KEY['Nama']);
-    //   for ($j = 0; $j < count($Desa); $j++) { 
-    //     $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikm` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->row_array()['Total'];
-    //     $RespondenDesa = $this->db->query("SELECT * FROM `ikm` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->result_array();
-    //     foreach ($RespondenDesa as $key) {
-    //       $Pecah = explode("|",$key['Poin']);
-    //       for ($i=0; $i < 11; $i++) { 
-    //         $Tampung[$i] += $Pecah[$i];
-    //         $_Tampung[$i] += $Pecah[$i];
-    //       }
-    //     }
-    //     if ($Total < 356) {
-    //       for ($k=0; $k < 11; $k++) { 
-    //         $Tampung[$k] += (3*(356-$Total));
-    //         $_Tampung[$k] += (3*(356-$Total));
-    //       }
-    //       $Titip += 356-$Total;
-    //     }
-    //     $Responden += $Total;
-    //   }
-    //   $Responden += $Titip;
-    //   $_Responden += $Responden;
-    //   for ($i=0; $i < 11; $i++) { 
-    //     array_push($DataIKMKecamatan,number_format(($Tampung[$i]/$Responden)*(1/11),2));
-    //     $Konversi[$i] = ($Tampung[$i]/$Responden)*(1/11)*25;
-    //   }
-    //   $NilaiIndeks = number_format(array_sum($Konversi),2);
-    //   array_push($DataIKMKecamatan,$NilaiIndeks);
-    //   if ($NilaiIndeks < 65) {
-    //     array_push($DataIKMKecamatan,'D');
-    //     array_push($DataIKMKecamatan,'Tidak Baik');
-    //   } else if ($NilaiIndeks < 76.61) {
-    //     array_push($DataIKMKecamatan,'C');
-    //     array_push($DataIKMKecamatan,'Kurang Baik');
-    //   } else if ($NilaiIndeks < 88.31) {
-    //     array_push($DataIKMKecamatan,'B');
-    //     array_push($DataIKMKecamatan,'Baik');
-    //   } else {
-    //     array_push($DataIKMKecamatan,'A');
-    //     array_push($DataIKMKecamatan,'Sangat Baik');
-    //   }
-    //   array_push($Data['IKMKecamatan'],$DataIKMKecamatan);
-    // }
-    // $DataIKMKecamatan = array();
-    // array_push($DataIKMKecamatan,'Banyuwangi');
-    // for ($i=0; $i < 11; $i++) { 
-    //   array_push($DataIKMKecamatan,number_format(($_Tampung[$i]/$_Responden)*(1/11),2));
-    //   $_Konversi[$i] = ($_Tampung[$i]/$_Responden)*(1/11)*25;
-    // }
-    // $NilaiIndeks = number_format(array_sum($_Konversi),2);
-    // array_push($DataIKMKecamatan,$NilaiIndeks);
-    // if ($NilaiIndeks < 65) {
-    //   array_push($DataIKMKecamatan,'D');
-    //   array_push($DataIKMKecamatan,'Tidak Baik');
-    // } else if ($NilaiIndeks < 76.61) {
-    //   array_push($DataIKMKecamatan,'C');
-    //   array_push($DataIKMKecamatan,'Kurang Baik');
-    // } else if ($NilaiIndeks < 88.31) {
-    //   array_push($DataIKMKecamatan,'B');
-    //   array_push($DataIKMKecamatan,'Baik');
-    // } else {
-    //   array_push($DataIKMKecamatan,'A');
-    //   array_push($DataIKMKecamatan,'Sangat Baik');
-    // }
-    // array_push($Data['IKMKecamatan'],$DataIKMKecamatan);
+    $_Responden = 0;
+    $_Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
+    $_Konversi = array(0,0,0,0,0,0,0,0,0,0,0);
+    $Kecamatan = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    foreach ($Kecamatan as $KEY) {
+      $Responden = 0;
+      $Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
+      $Konversi = array(0,0,0,0,0,0,0,0,0,0,0);
+      $Titip = 0;
+      $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$KEY['Kode'].".%'")->result_array();
+      $DataIKMKecamatan = array();
+      array_push($DataIKMKecamatan,$KEY['Nama']);
+      for ($j = 0; $j < count($Desa); $j++) { 
+        $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikm` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->row_array()['Total'];
+        $RespondenDesa = $this->db->query("SELECT * FROM `ikm` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->result_array();
+        foreach ($RespondenDesa as $key) {
+          $Pecah = explode("|",$key['Poin']);
+          for ($i=0; $i < 11; $i++) { 
+            $Tampung[$i] += $Pecah[$i];
+            $_Tampung[$i] += $Pecah[$i];
+          }
+        }
+        if ($Total < 356) {
+          for ($k=0; $k < 11; $k++) { 
+            $Tampung[$k] += (3*(356-$Total));
+            $_Tampung[$k] += (3*(356-$Total));
+          }
+          $Titip += 356-$Total;
+        }
+        $Responden += $Total;
+      }
+      $Responden += $Titip;
+      $_Responden += $Responden;
+      for ($i=0; $i < 11; $i++) { 
+        array_push($DataIKMKecamatan,number_format(($Tampung[$i]/$Responden)*(1/11),2));
+        $Konversi[$i] = ($Tampung[$i]/$Responden)*(1/11)*25;
+      }
+      $NilaiIndeks = number_format(array_sum($Konversi),2);
+      array_push($DataIKMKecamatan,$NilaiIndeks);
+      if ($NilaiIndeks < 65) {
+        array_push($DataIKMKecamatan,'D');
+        array_push($DataIKMKecamatan,'Tidak Baik');
+      } else if ($NilaiIndeks < 76.61) {
+        array_push($DataIKMKecamatan,'C');
+        array_push($DataIKMKecamatan,'Kurang Baik');
+      } else if ($NilaiIndeks < 88.31) {
+        array_push($DataIKMKecamatan,'B');
+        array_push($DataIKMKecamatan,'Baik');
+      } else {
+        array_push($DataIKMKecamatan,'A');
+        array_push($DataIKMKecamatan,'Sangat Baik');
+      }
+      array_push($Data['IKMKecamatan'],$DataIKMKecamatan);
+    }
+    $DataIKMKecamatan = array();
+    array_push($DataIKMKecamatan,'Banyuwangi');
+    for ($i=0; $i < 11; $i++) { 
+      array_push($DataIKMKecamatan,number_format(($_Tampung[$i]/$_Responden)*(1/11),2));
+      $_Konversi[$i] = ($_Tampung[$i]/$_Responden)*(1/11)*25;
+    }
+    $NilaiIndeks = number_format(array_sum($_Konversi),2);
+    array_push($DataIKMKecamatan,$NilaiIndeks);
+    if ($NilaiIndeks < 65) {
+      array_push($DataIKMKecamatan,'D');
+      array_push($DataIKMKecamatan,'Tidak Baik');
+    } else if ($NilaiIndeks < 76.61) {
+      array_push($DataIKMKecamatan,'C');
+      array_push($DataIKMKecamatan,'Kurang Baik');
+    } else if ($NilaiIndeks < 88.31) {
+      array_push($DataIKMKecamatan,'B');
+      array_push($DataIKMKecamatan,'Baik');
+    } else {
+      array_push($DataIKMKecamatan,'A');
+      array_push($DataIKMKecamatan,'Sangat Baik');
+    }
+    array_push($Data['IKMKecamatan'],$DataIKMKecamatan);
     $this->load->view('RekapSurveiIKM',$Data);
   }
   

@@ -36,7 +36,7 @@
     <header id="intro">
       <div class="d-flex align-items-center h-100">
         <div class="container">
-          <div class="row justify-content-sm-center">
+          <div class="row justify-content-sm-center"> 
             <div class="col-sm-auto">
               <div class="container-fluid">
                 <div class="row">

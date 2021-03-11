@@ -59,6 +59,9 @@
 								<ul class="nav side-menu">
 									<li><a href="<?=base_url('SuperAdmin/Pendidikan')?>"><i class="fa fa-graduation-cap"></i> <b>Pendidikan</b> </a></li>
                 </ul>
+                <ul class="nav side-menu">
+									<li><a href="<?=base_url('IDE/SignOut')?>"><i class="fa fa-sign-out"></i> <b>Keluar</b> </a></li>
+                </ul>
               </div>
             </div>
             <!-- /sidebar menu -->
@@ -69,20 +72,8 @@
         <div class="top_nav">
           <div class="nav_menu">
             <div class="nav toggle">
-              <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              <a id="menu_toggle"><i class="fa fa-bars text-primary"></i></a>
             </div>
-            <nav class="nav navbar-nav">
-              <ul class=" navbar-right">
-                <li class="nav-item dropdown open" style="padding-left: 15px;">
-                  <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                    <img src="<?=base_url('assets/img/SuperAdmin.png')?>" alt="..."> <b>Super Admin</b>
-                  </a>
-                  <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item"  href="<?=base_url('IDE/SuperAdminSignOut')?>"><i class="fa fa-sign-out pull-right"></i> <b>Log Out</b></a>
-                  </div>
-                </li>
-              </ul>
-            </nav>
           </div>
         </div>
         <!-- /top navigation -->

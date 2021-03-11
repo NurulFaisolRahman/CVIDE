@@ -43,11 +43,11 @@
   <section id="topbar" class="d-none d-lg-block">
     <div class="container clearfix">
       <div class="contact-info float-left">
-        <i class="icofont-envelope"></i><a href="mailto:contact@example.com">contact@example.com</a>
-        <i class="icofont-phone"></i> +1 5589 55488 55
+        <i class="icofont-envelope font-weight-bold text-primary"></i><a href="mailto:cvideconsultan@gmail.com" class="font-weight-bold text-primary">cvideconsultan@gmail.com</a>
+        <i class="icofont-phone font-weight-bold text-primary"> 081334411285</i>
       </div>
       <div class="social-links float-left">
-        <a href="#" class="instagram"><i class="icofont-instagram"></i></a>
+        <a href="#" class="instagram font-weight-bold text-primary"><i class="icofont-instagram"></i></a>
       </div>
     </div>
   </section>
@@ -57,25 +57,16 @@
     <div class="container">
 
       <div class="logo float-left">
-        <h1 class="text-light"><a href="index.html"><span><b>IDE Consultant</b></span></a></h1>
+        <h1 class="text-primary font-weight-bold">IDE Consultant</h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a> -->
       </div>
 
       <nav class="nav-menu float-right d-none d-lg-block font-weight-bold">
         <ul>
-          <li class="active"><a href="<?=base_url()?>">Home</a></li>
-          <li><a href="<?=base_url('IDE/Surveyor')?>">Survei</a>
-            <!-- <ul>
-              <li><a href="<?=base_url('IDE/SurveiIPM')?>"><b>Indikator Kesejahteraan</b></a></li>
-              <li><a href="<?=base_url('IDE/SurveiIKM')?>"><b>IKM</b></a></li>
-              <li><a href="<?=base_url('IDE/SurveiBPD')?>"><b>BPD</b></a></li>
-              <li><a href="<?=base_url('IDE/SurveiKinerjaPemDes')?>"><b>Kinerja PemDes</b></a></li>
-            </ul> -->
-          </li>
-          <li><a href="#about">About Us</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a class="text-primary" href="#about">Profil</a></li>
+          <li><a class="text-primary" href="#services">Pelayanan</a></li>
+          <li><a class="text-primary" href="#" data-toggle="modal" data-target="#ModalSignIn">Masuk</a></li>
         </ul>
       </nav>
       <!-- .nav-menu -->
@@ -115,17 +106,6 @@
             </div>
           </div>
 
-          <!-- Slide 3 -->
-          <div class="carousel-item" style="background-image: url('assets/img/slide/slide-3.jpg');">
-            <div class="carousel-container">
-              <div class="carousel-content container">
-                <h2 class="animate__animated animate__fadeInDown">Sequi ea ut et est quaerat</h2>
-                <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.</p>
-                <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Read More</a>
-              </div>
-            </div>
-          </div>
-
         </div>
 
         <a class="carousel-control-prev" href="#heroCarousel" role="button" data-slide="prev">
@@ -156,20 +136,20 @@
 
           <div class="col-lg-6 d-flex flex-column justify-content-center about-content">
 
-            <div class="section-title">
-              <h2>About Us</h2>
-              <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea.</p>
+            <div class="section-title mb-3">
+              <h2>PROFIL</h2>
+              <p class="text-justify">Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea.</p>
             </div>
 
             <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
               <div class="icon"><i class="bx bx-fingerprint"></i></div>
-              <h4 class="title"><a href="">Lorem Ipsum</a></h4>
+              <h4 class="title"><a href="">VISI</a></h4>
               <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
             </div>
 
             <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
               <div class="icon"><i class="bx bx-gift"></i></div>
-              <h4 class="title"><a href="">Nemo Enim</a></h4>
+              <h4 class="title"><a href="">MISI</a></h4>
               <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque</p>
             </div>
 
@@ -180,59 +160,15 @@
     </section>
     <!-- End About Us Section -->
 
-    <!-- ======= Counts Section ======= -->
-    <section class="counts section-bg">
-      <div class="container">
-
-        <div class="row">
-
-          <div class="col-lg-3 col-md-6 text-center" data-aos="fade-up">
-            <div class="count-box">
-              <i class="icofont-simple-smile" style="color: #20b38e;"></i>
-              <span data-toggle="counter-up">232</span>
-              <p>Happy Clients</p>
-            </div>
-          </div>
-
-          <div class="col-lg-3 col-md-6 text-center" data-aos="fade-up" data-aos-delay="200">
-            <div class="count-box">
-              <i class="icofont-document-folder" style="color: #c042ff;"></i>
-              <span data-toggle="counter-up">521</span>
-              <p>Projects</p>
-            </div>
-          </div>
-
-          <div class="col-lg-3 col-md-6 text-center" data-aos="fade-up" data-aos-delay="400">
-            <div class="count-box">
-              <i class="icofont-live-support" style="color: #46d1ff;"></i>
-              <span data-toggle="counter-up">1,463</span>
-              <p>Hours Of Support</p>
-            </div>
-          </div>
-
-          <div class="col-lg-3 col-md-6 text-center" data-aos="fade-up" data-aos-delay="600">
-            <div class="count-box">
-              <i class="icofont-users-alt-5" style="color: #ffb459;"></i>
-              <span data-toggle="counter-up">15</span>
-              <p>Hard Workers</p>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-    <!-- End Counts Section -->
-
     <!-- ======= Services Section ======= -->
     <section id="services" class="services">
       <div class="container">
 
-        <div class="section-title">
-          <h2>Services</h2>
+        <div class="section-title my-3">
+          <h2>Pelayanan</h2>
         </div>
 
-        <div class="row">
+        <div class="row mt-3">
           <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up">
             <div class="icon"><i class="icofont-computer"></i></div>
             <h4 class="title"><a href="">Lorem Ipsum</a></h4>
@@ -254,96 +190,87 @@
     </section>
     <!-- End Services Section -->
 
-    <!-- ======= Our Portfolio Section ======= -->
-    <section id="portfolio" class="portfolio section-bg">
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="section-title">
-          <h2>Our Portfolio</h2>
-          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-12">
-            <ul id="portfolio-flters">
-              <li data-filter="*" class="filter-active">All</li>
-              <li data-filter=".filter-app">App</li>
-              <li data-filter=".filter-card">Card</li>
-              <li data-filter=".filter-web">Web</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="row portfolio-container">
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-            <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-1.jpg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>App 1</h4>
-                <p>App</p>
-                <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-1.jpg" data-gall="portfolioGallery" class="venobox" title="App 1"><i class="icofont-eye"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="icofont-external-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-            <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-2.jpg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Web 3</h4>
-                <p>Web</p>
-                <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-2.jpg" data-gall="portfolioGallery" class="venobox" title="Web 3"><i class="icofont-eye"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="icofont-external-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-            <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-3.jpg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>App 2</h4>
-                <p>App</p>
-                <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-3.jpg" data-gall="portfolioGallery" class="venobox" title="App 2"><i class="icofont-eye"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="icofont-external-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-    <!-- End Our Portfolio Section -->
-
   </main><!-- End #main -->
 
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
+  <div class="modal fade" id="ModalSignIn">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-transparent">
+        <div class="modal-body">
+          <div class="container">
+            <div class="row d-flex justify-content-center">
+              <div class="col-lg-9 col-sm-12 my-1">
+                <div class="card border border-light">
+                  <div class="card-body bg-primary">
+                    <div class="input-group input-group-sm mb-2">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text bg-danger text-light"><b>Username</b></span>
+                      </div>
+                      <input type="text" class="form-control" id="Username">
+                    </div>
+                    <div class="input-group input-group-sm mb-2">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text bg-danger text-light"><b>Password</b></span>
+                      </div>
+                      <input type="password" class="form-control" id="Password">
+                    </div>
+                    <div class="btn btn-danger text-light d-flex justify-content-center" id="Masuk"><b>MASUK</b></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Vendor JS Files -->
   <script src="assets/vendor/jquery/jquery.min.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/jquery.easing/jquery.easing.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
   <script src="assets/vendor/jquery-sticky/jquery.sticky.js"></script>
   <script src="assets/vendor/venobox/venobox.min.js"></script>
-  <script src="assets/vendor/waypoints/jquery.waypoints.min.js"></script>
   <script src="assets/vendor/counterup/counterup.min.js"></script>
   <script src="assets/vendor/owl.carousel/owl.carousel.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>
-
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
-
+  <script>
+    var BaseURL = '<?=base_url()?>'
+      jQuery(document).ready(function($) {
+        "use strict";
+      $('#Username').keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+          event.preventDefault();
+          document.getElementById("Masuk").click();  
+        }
+      });
+      $('#Password').keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+          event.preventDefault();
+          document.getElementById("Masuk").click();  
+        }
+      });
+      $("#Masuk").click(function() {
+        var Akun = { Username: $("#Username").val(),
+                     Password: $("#Password").val() }
+        $.post(BaseURL+"IDE/SignIn", Akun).done(function(Respon) {
+          if (Respon == '1') {
+            window.location = BaseURL + "Surveyor"
+          }
+          else if (Respon == '2') {
+            window.location = BaseURL + "SuperAdmin"
+          }
+          else {
+            alert(Respon)
+          }
+        })                      
+      })
+    })
+  </script>
 </body>
-
 </html>
