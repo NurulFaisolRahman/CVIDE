@@ -19,36 +19,34 @@
       <div class="main_container">
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
-            <div class="clearfix"></div> 
+            <div class="clearfix"></div>
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
                 <img src="<?=base_url('assets/img/profil.jpg')?>" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
-                <span class="font-weight-bold">Welcome,</span>
-                <h2 class="font-weight-bold">Surveyor</h2>
+                <span class="font-weight-bold">Pendamping Desa,</span>
+                <h2 class="font-weight-bold"><?=$this->session->userdata('NamaDesa')?></h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
-						<!-- sidebar menu -->
+            <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 <ul class="nav side-menu">
-									<li id="menu-home"><a href="<?=base_url('Desa')?>"><i class="fa fa-user"></i><span>Dashboard</span></a></li>
-								</ul>
-								<ul class="nav side-menu">
-                  <li><a><i class="fa fa-tasks"></i> <b>Desa</b> <span class="fa fa-chevron-down"></span></a>
+									<li><a href="<?=base_url('PendampingDesa')?>"><i class="fa fa-user"></i> <b>Dashboard</b> </a></li>
+                </ul>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-tasks"></i> <b>Survei</b> <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-											<li><a href="<?=base_url('Desa/IKM')?>"><b>Kepuasan Pelayanan Desa</b></a></li>           
-											<li><a href="<?=base_url('Desa/BPD')?>"><b>Kinerja Badan Permusyawaratan Desa</b></a></li>    
-											<li><a href="<?=base_url('Desa/KinerjaPemDes')?>"><b>Kinerja Penyelenggaraan Pemerintahan Desa</b></a></li>   
-											<li><a href="<?=base_url('Desa/KinerjaAparatur')?>"><b>Kinerja Aparatur Desa</b></a></li>   
+											<li><a href="<?=base_url('PendampingDesa/SurveiBPD')?>"><b>Kinerja Badan Permusyawaratan Desa</b></a></li>           
+									    <li><a href="<?=base_url('PendampingDesa/SurveiKinerjaPemDes')?>"><b>Kinerja Penyelenggaraan Pemerintahan Desa</b></a></li>
                     </ul>
 									</li>
 								</ul>
 								<ul class="nav side-menu">
-									<li id="menu-home"><a href="<?=base_url('IDE/DesaSignOut')?>"><i class="fa fa-lock"></i><span>Keluar</span></a></li>
+									<li><a href="<?=base_url('IDE/PendampingDesa')?>"><i class="fa fa-sign-out"></i> <b>Keluar</b> </a></li>
                 </ul>
               </div>
             </div>
@@ -65,3 +63,8 @@
           </div>
         </div>
         <!-- /top navigation -->
+
+        <!-- page content -->
+				<div class="right_col" role="main" style="overflow-x: hidden;">
+					<div class="">
+            <div class="clearfix"></div>

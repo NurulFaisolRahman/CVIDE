@@ -627,5 +627,58 @@ class SuperAdmin extends CI_Controller {
     $this->load->view('SuperAdmin/Header',$Data);
 		$this->load->view('SuperAdmin/IPMPengeluaran',$Data);
   }
+
+  public function GarisKemiskinan(){
+    $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan'); 
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
+    $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+    $Data['JumlahKK'] = count($DataKomoditas); $Data['GK'] = $Data['GKM'] = $Data['GKNM'] = $Data['Individu'] = array(); 
+    $Data['GKDesa'] = $Data['GKMDesa'] = $Data['GKNMDesa'] = 0; $Data['KelompokGK'] = array(0,0);
+    $Data['TotalIndividuDesa'] = $Data['TotalPengeluaranMakananDesa'] = $Data['TotalPengeluaranNonMakananDesa'] = 0;
+    foreach ($DataKomoditas as $key) {
+      $TotalIndividuKeluarga = count(explode("|",$key['NamaAnggota']));
+      $Data['TotalIndividuDesa'] += $TotalIndividuKeluarga;
+      $Nilai = explode("|",$key['Nilai']);
+      $TotalPengeluaranMakanan = $TotalPengeluaranNonMakanan = 0;
+      for ($i=0; $i < count($Nilai); $i++) { 
+        if ($i < 107) {
+          $TotalPengeluaranMakanan += (int)$Nilai[$i]*4;
+        }
+        else if (in_array($i,array(113,114,115,118,121,141))) {
+          $TotalPengeluaranNonMakanan += (int)$Nilai[$i]*4;
+        }  
+        else if (in_array($i,array(116,119,120,136,148))) {
+          $TotalPengeluaranNonMakanan += round((int)$Nilai[$i]/6);
+        } 
+        else if (in_array($i,array(108,109,110,127,128,129,130,144,145,146,147,149,150,151,152))){
+          $TotalPengeluaranNonMakanan += round((int)$Nilai[$i]/12);
+        }
+        else {
+          $TotalPengeluaranNonMakanan += (int)$Nilai[$i];
+        }
+      }
+      array_push($Data['Individu'],$TotalIndividuKeluarga);
+      array_push($Data['GKM'],($TotalPengeluaranMakanan/$TotalIndividuKeluarga));
+      array_push($Data['GKNM'],($TotalPengeluaranNonMakanan/$TotalIndividuKeluarga));
+      $Data['TotalPengeluaranMakananDesa'] += $TotalPengeluaranMakanan;
+      $Data['TotalPengeluaranNonMakananDesa'] += $TotalPengeluaranNonMakanan;
+    }
+    if (count($DataKomoditas) > 0) {
+      $Data['GKMDesa'] = $Data['TotalPengeluaranMakananDesa']/$Data['TotalIndividuDesa']; 
+      $Data['GKNMDesa'] = $Data['TotalPengeluaranNonMakananDesa']/$Data['TotalIndividuDesa']; 
+      $Data['GKDesa'] = $Data['GKMDesa']+$Data['GKNMDesa']; 
+      for ($i=0; $i < count($Data['GKM']); $i++) { 
+        if (($Data['GKM'][$i]+$Data['GKNM'][$i]) > $Data['GKDesa']) {
+          $Data['KelompokGK'][0] += $Data['Individu'][$i];
+        } else {
+          $Data['KelompokGK'][1] += $Data['Individu'][$i];
+        }
+      }
+    }
+    $this->load->view('SuperAdmin/Header',$Data);
+		$this->load->view('SuperAdmin/GarisKemiskinan',$Data);
+  }
   
 }

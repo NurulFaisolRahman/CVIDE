@@ -12,7 +12,7 @@
                       <div class="container-fluid">
                         <div class="row">
                           <div class="col-sm-4 my-1">
-                            <div class="input-group">
+                            <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-light"><b>Kecamatan</b></label>
                               </div>
@@ -24,7 +24,7 @@
                             </div>
                           </div>
                           <div class="col-sm-4 my-1">
-                            <div class="input-group">
+                            <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-light"><b>Desa/Kelurahan</b></label>
                               </div>
@@ -36,7 +36,7 @@
                             </div>
                           </div>
                           <div class="col-sm-4 my-1">
-                            <div class="input-group">
+                            <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-light"><b>Jumlah Dusun</b></label>
                               </div>

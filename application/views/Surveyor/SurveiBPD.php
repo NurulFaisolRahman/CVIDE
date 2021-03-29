@@ -12,7 +12,7 @@
                       <div class="container-fluid">
                         <div class="row">
                           <div class="col-sm-4 my-1">
-                            <div class="input-group">
+                            <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-light"><b>Kecamatan</b></label>
                               </div>
@@ -24,7 +24,7 @@
                             </div>
                           </div>
                           <div class="col-sm-4 my-1">
-                            <div class="input-group">
+                            <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-light"><b>Desa/Kelurahan</b></label>
                               </div>
@@ -36,7 +36,7 @@
                             </div>
                           </div>
                           <div class="col-sm-4 my-1">
-                            <div class="input-group">
+                            <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-light"><b>Jumlah Dusun</b></label>
                               </div>
@@ -77,14 +77,14 @@
                           ?>
                           <?php for ($i=0; $i < count($Tanya); $i++) { $Pisah = explode("|",$Opsi[$i]);?>
                             <div class="col-sm-5 my-1">
-                              <div class="input-group">
+                              <div class="input-group input-group-sm">
                                 <div class="input-group-prepend">
                                   <p class="input-group-text bg-danger text-light text-justify text-wrap"><b><?=($i+1).". ".$Tanya[$i]?></b></p>
                                 </div>
                               </div>
                             </div> 
                             <div class="col-sm-7 bg-light p-2 my-1">
-                              <div class="input-group">
+                              <div class="input-group input-group-sm">
                                 <?php if (count($Pisah) == 4) { ?>
                                   <?php for ($j=0; $j < 4; $j++) { ?>
                                     <div class="form-check form-check-inline ml-4 my-1">

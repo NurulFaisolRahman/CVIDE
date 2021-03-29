@@ -461,6 +461,7 @@ Content-Type: text/html; charset="us-ascii"
    <col width=3D"64" style=3D'width:48,00pt;'/>
    <tr height=3D"20" style=3D'height:15.00pt;'>
     <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:str>Id</td>
+		<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:str>Anggota</td>
     <?php for ($i=1; $i <= 154; $i++) { ?>
       <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:str><?=$i?></td>
     <?php } ?>
@@ -468,9 +469,19 @@ Content-Type: text/html; charset="us-ascii"
    <?php for ($j=0; $j < count($IPM); $j++) { ?>
    <tr height=3D"20" style=3D'height:15.00pt;'>
     <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:str><?=$IPM[$j]['Id']?></td>
+		<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:str><?=count(explode("|",$IPM[$j]['NamaAnggota']))?></td>
     <?php $Jumlah = explode("|",$IPM[$j]['Nilai']); for ($i=0; $i < 154; $i++) { ?>
-      <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=$Jumlah[$i] != '' ? $Jumlah[$i] : 0; ?></td>
-    <?php } ?>
+		<?php if ($i < 107) { ?>
+			<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=(int)$Jumlah[$i]*4?></td>
+		<?php } else if (in_array($i,array(113,114,115,118,121,141))) { ?>
+			<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=(int)$Jumlah[$i]*4?></td>
+		<?php } else if (in_array($i,array(116,119,120,136,148))) { ?>
+			<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=round((int)$Jumlah[$i]/6)?></td>
+		<?php } else if (in_array($i,array(108,109,110,127,128,129,130,144,145,146,147,149,150,151,152))){ ?>
+			<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=round((int)$Jumlah[$i]/12)?></td>
+		<?php } else { ?>	
+      <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=(int)$Jumlah[$i]?></td>
+    <?php }} ?>
    </tr>
    <?php } ?>
    <![if supportMisalignedColumns]>

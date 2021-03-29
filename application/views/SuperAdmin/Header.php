@@ -57,6 +57,9 @@
 									</li>
 								</ul>
 								<ul class="nav side-menu">
+									<li><a href="<?=base_url('SuperAdmin/GarisKemiskinan')?>"><i class="fa fa-tasks"></i> <b>Garis Kemiskinan</b> </a></li>
+                </ul>
+                <ul class="nav side-menu">
 									<li><a href="<?=base_url('SuperAdmin/Pendidikan')?>"><i class="fa fa-graduation-cap"></i> <b>Pendidikan</b> </a></li>
                 </ul>
                 <ul class="nav side-menu">
@@ -71,7 +74,7 @@
         <!-- top navigation -->
         <div class="top_nav">
           <div class="nav_menu">
-            <div class="nav toggle">
+            <div class="nav toggle ml-1">
               <a id="menu_toggle"><i class="fa fa-bars text-primary"></i></a>
             </div>
           </div>

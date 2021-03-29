@@ -1,40 +1,12 @@
-      	<!-- page content -->
-				<div class="right_col" role="main">
-					<div class="">
-            <div class="clearfix"></div>
-							<div class="row">
+      	      <div class="row">
                 <div class="col-sm-12">
                   <div class="card">
-                    <div class="card-header bg-primary text-light">
+                    <div class="card-header bg-primary text-white">
                       <b>SURVEI KINERJA PENYELENGGARAAN PEMERINTAHAN DESA</b>
                     </div>
-                    <div style="background-color: yellow;" class="card-body border border-primary">
+                    <div style="background-color: yellow;" class="card-body border border-primary py-2 pl-1">
                       <div class="container-fluid">
                         <div class="row">
-                          <div class="col-sm-4 my-1">
-                            <div class="input-group input-group-sm">
-                              <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-light"><b>Kecamatan</b></label>
-                              </div>
-                              <select class="custom-select" id="Kecamatan">  
-                                <?php foreach ($Kecamatan as $key) { ?>
-                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option>
-                                <?php } ?>                  
-                              </select>
-                            </div>
-                          </div>
-                          <div class="col-sm-4 my-1">
-                            <div class="input-group input-group-sm">
-                              <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-light"><b>Desa/Kelurahan</b></label>
-                              </div>
-                              <select class="custom-select" id="Desa">                    
-                                <?php foreach ($Desa as $key) { ?>
-                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option>
-                                <?php } ?>                  
-                              </select>
-                            </div>
-                          </div>
                           <?php 
                             $Tanya =  array('Apakah visi dan misi penyelenggaraan pemerintahan desa yang dituangkan dalam LPPDes sesuai dengan RPJMDes?',
                                             'Apakah arah dan strategi yang dituangkan dalam LPPDes selaras dengan RKPDes dan APBDes yang telah disusun?',
@@ -121,24 +93,24 @@
                             <div class="col-sm-5 my-1">
                               <div class="input-group input-group-sm">
                                 <div class="input-group-prepend">
-                                  <p class="input-group-text bg-danger text-light text-justify text-wrap"><b><?=($i+1).". ".$Tanya[$i]?></b></p>
+                                  <p class="input-group-text bg-danger text-white text-justify text-wrap"><b><?=($i+1).". ".$Tanya[$i]?></b></p>
                                 </div>
                               </div>
                             </div> 
-                            <div class="col-sm-7 bg-light p-2 my-1">
+                            <div class="col-sm-7 bg-primary p-2 my-1">
                               <div class="input-group input-group-sm">
                                 <?php if (count($Pisah) == 4) { ?>
                                   <?php for ($j=0; $j < 4; $j++) { ?>
                                     <div class="form-check form-check-inline ml-4 my-1">
                                       <input style="transform: scale(1.5);" class="form-check-input" type="radio" name="I<?=$i?>" id="I<?=$i.$j?>" value="<?=(4-$j)?>">
-                                      <label class="form-check-label font-weight-bold" for="I<?=$i.$j?>">&nbsp;<?=$Pisah[$j]?></label>
+                                      <label class="form-check-label text-white font-weight-bold" for="I<?=$i.$j?>">&nbsp;<?=$Pisah[$j]?></label>
                                     </div>
                                   <?php } ?>
                                 <?php } else if (count($Pisah) <= 2) { ?>
                                   <?php for ($j=0; $j < count($Pisah); $j++) { ?>
-                                    <div class="input-group my-1">
+                                    <div class="input-group input-group-sm my-1">
                                       <div class="input-group-prepend">
-                                        <label class="input-group-text bg-danger text-light"><b><?=($j+1).'. '.$Pisah[$j]?></b></label>
+                                        <label class="input-group-text bg-danger text-white"><b><?=($j+1).'. '.$Pisah[$j]?></b></label>
                                       </div>
                                       <input class="form-control" type="text" id="I<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
                                     </div>
@@ -182,13 +154,6 @@
         var BaseURL = '<?=base_url()?>'  
   
         $('[data-mask]').inputmask()
-  
-        $("#Kecamatan").change(function (){
-          var Desa = { Kode: $("#Kecamatan").val() }
-          $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) {
-            $('#Desa').html(Respon)
-          })    
-        })
   
         $("#Kirim").click(function() {
           var Poin = []
@@ -345,13 +310,19 @@
             for (let i = 0; i < Poin.length; i++) {
               i < (Poin.length-1) ? GabungPoin += (Poin[i]+'|') : GabungPoin += Poin[i]
             }
-            var KinerjaPemdes = { Kecamatan: $("#Kecamatan").val(),
-                                  Desa: $("#Desa").val(),
-                                  Poin: GabungPoin }
-            $.post(BaseURL+"Surveyor/InputKinerjaPemDes", KinerjaPemdes).done(function(Respon) {
+            var Tampung = []
+            for (let i = 0; i < Input.length; i++) {
+              Tampung.push(parseInt($("#I"+Input[i]+"0").val()))
+              Tampung.push(parseInt($("#I"+Input[i]+"1").val()))
+            }
+            var Info = Tampung.join("|")
+            var KinerjaPemdes = { Poin: GabungPoin,
+                                  Info: Info }
+            $("#Kirim").prop('disabled', true);
+            $.post(BaseURL+"PendampingDesa/InputKinerjaPemDes", KinerjaPemdes).done(function(Respon) {
               if (Respon == '1') {
                 alert('Survei Berhasil Di Simpan!')
-                window.location = BaseURL + "Surveyor/SurveiKinerjaPemDes"
+                window.location = BaseURL + "PendampingDesa/SurveiKinerjaPemDes"
               } else { 
                 alert(Respon)
               }

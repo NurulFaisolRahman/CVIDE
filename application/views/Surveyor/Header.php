@@ -59,7 +59,7 @@
         <!-- top navigation -->
         <div class="top_nav">
           <div class="nav_menu bg-danger">
-            <div class="nav toggle">
+            <div class="nav toggle ml-1">
               &nbsp;&nbsp;<a id="menu_toggle"><i class="fa fa-bars text-white"></i></a>
             </div>
           </div>

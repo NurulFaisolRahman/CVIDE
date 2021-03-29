@@ -7,6 +7,43 @@ class IDE extends CI_Controller {
 		$this->load->view('IDE');
   }
 
+  // public function PendampingDesa(){
+  //   $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 13")->result_array();
+  //   $Akun = array();
+  //   foreach ($Desa as $key) {
+  //     $Data = array();
+  //     $Data['Username'] = $key['Kode'];
+  //     $Data['Password'] = 'pendampingdesa';
+  //     $Data['KodeDesa'] = $key['Kode'];
+  //     $Data['NamaDesa'] = $key['Nama'];
+  //     array_push($Akun,$Data);
+  //   }
+  //   $this->db->insert_batch('PendampingDesa', $Akun);
+  // }
+
+  public function PendampingDesa(){
+    $this->load->view('AuthPendampingDesa');
+  }
+
+  public function AuthPendampingDesa(){ 
+    $Desa = $this->db->get_where('PendampingDesa', array('Username' => htmlentities($_POST['Username'])));
+		if($Desa->num_rows() == 0){
+			echo "Username Salah!";
+		}
+		else{
+			$Akun = $Desa->result_array();
+			if ($_POST['Password'] == $Akun[0]['Password']) {
+        $Session = array('PendampingDesa' => true,
+                         'KodeDesa' => $Akun[0]['KodeDesa'],
+                         'NamaDesa' => $Akun[0]['NamaDesa']);
+				$this->session->set_userdata($Session);
+				echo '1';
+			} else {
+				echo "Password Salah!";
+			}
+		}
+  }
+
   public function Desa(){
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.01.%'")->result_array();
@@ -564,194 +601,9 @@ class IDE extends CI_Controller {
   }
 
   public function ExcelKomoditas($Kecamatan,$Desa,$NamaDesa){
-    $Data['IPM'] = $this->db->query("SELECT Id,Banyaknya,Harga,Nilai FROM `ipm` WHERE Desa='".$Desa."'")->result_array();
+    $Data['IPM'] = $this->db->query("SELECT Id,NamaAnggota,Banyaknya,Harga,Nilai FROM `ipm` WHERE Desa='".$Desa."'")->result_array();
     $Data['NamaKecamatan'] = $Kecamatan;
     $Data['NamaDesa'] = $NamaDesa;
     $this->load->view('ExcelKomoditas',$Data);                      
-  }
-
-  public function Pendidikan($Kecamatan,$Desa,$NamaDesa){
-    $Pendidikan = $this->db->query("SELECT Status,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,KeluhanPendidikan FROM `ipm` WHERE Desa='".$Desa."'")->result_array();
-    $LamaSekolah = $Penduduk15 = $PendudukSekolah = $Penduduk7 = $Santri = 0;
-    foreach ($Pendidikan as $key) {
-      $Partisipasi = explode("|",$key['PartisipasiSekolah']);
-      $Jenjang = explode("|",$key['PendidikanTertinggi']);
-      $Tingkat = explode("|",$key['StatusSekolah']);
-      $Status = explode("|",$key['Status']);
-      if ($key['KeluhanPendidikan'][0] == 1) {
-        $Santri += 1;  
-      }
-      for ($i=0; $i < count($Partisipasi); $i++) { 
-        if ($Status[$i] == 3) {
-          if ($Jenjang[$i] > 6) {
-            $Penduduk15 += 1;  
-          }
-          if ($Partisipasi[$i] != 1) {
-            $Penduduk7 += 1;
-          }
-        } else {
-          $Penduduk15 += 1;
-          $Penduduk7 += 1;
-        }
-        if ($Partisipasi[$i] != 1) {
-          $PendudukSekolah += 1;
-          if ($Jenjang[$i] < 4) {
-            if ($Tingkat[$i] == 9) {
-              $LamaSekolah += 6;
-            } else {
-              $LamaSekolah += $Tingkat[$i];
-            }
-          } else if ($Jenjang[$i] < 7) {
-            if ($Tingkat[$i] == 9) {
-              $LamaSekolah += 9;
-            } else {
-              $LamaSekolah += (6+$Tingkat[$i]);
-            }
-          } else if ($Jenjang[$i] < 11) {
-            if ($Tingkat[$i] == 9) {
-              $LamaSekolah += 12;
-            } else {
-              $LamaSekolah += (9+$Tingkat[$i]);
-            }
-          } else if ($Jenjang[$i] == 11) {
-            if ($Tingkat[$i] == 9) {
-              $LamaSekolah += 14;
-            } else {
-              $LamaSekolah += (12+$Tingkat[$i]);
-            }
-          } else if ($Jenjang[$i] == 12) {
-            if ($Tingkat[$i] == 9) {
-              $LamaSekolah += 15;
-            } else {
-              $LamaSekolah += (12+$Tingkat[$i]);
-            }
-          } else if ($Jenjang[$i] == 13) {
-            if ($Tingkat[$i] == 9) {
-              $LamaSekolah += 16;
-            } else {
-              $LamaSekolah += (12+$Tingkat[$i]);
-            }
-          } else if ($Jenjang[$i] == 14) {
-            if ($Tingkat[$i] == 9) {
-              $LamaSekolah += 18;
-            } else {
-              $LamaSekolah += (16+$Tingkat[$i]);
-            }
-          } else if ($Jenjang[$i] == 15) {
-            if ($Tingkat[$i] == 9) {
-              $LamaSekolah += 21;
-            } else {
-              $LamaSekolah += (18+$Tingkat[$i]);
-            }
-          } 
-        }
-      }
-    }
-    if (count($Pendidikan) > 0) {
-      $RLS = number_format(($LamaSekolah/$Penduduk15),2);
-      $FK = number_format(($Santri/$Penduduk7)+1,2);
-      $HLS = number_format(($FK*$PendudukSekolah/$Penduduk7)+1,2);
-      $IHLS = number_format($HLS/18,2);
-      $IRLS = number_format($RLS/15,2);
-      $IPendidikan = number_format(($IRLS+$IHLS)/2,2);
-      echo $IPendidikan;
-    }
-  }
-
-  public function ExcelALHAMH($Kecamatan,$Desa,$NamaDesa){
-    $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm` WHERE Desa='".$Desa."'")->result_array();
-    $Data['NamaKecamatan'] = $Kecamatan;
-    $Data['NamaDesa'] = $NamaDesa;
-    $Data['ALHAMH'] = array();
-    $Rentang1 = array(0,0,0,0,0,0);
-    $Rentang2 = array(0,0,0,0,0,0);
-    $Rentang3 = array(0,0,0,0,0,0);
-    $Rentang4 = array(0,0,0,0,0,0);
-    $Rentang5 = array(0,0,0,0,0,0);
-    $Rentang6 = array(0,0,0,0,0,0);
-    $Rentang7 = array(0,0,0,0,0,0);
-    for ($i=0; $i < count($ALHAMH); $i++) { 
-      $UsiaIbu = explode("|",$ALHAMH[$i]['Pernikahan']);
-      $JumlahAnak = explode("$",$ALHAMH[$i]['Fertilitas']);
-      if ($ALHAMH[$i]['Fertilitas'] == "") {
-        $JumlahAnak = array();
-      }
-      if (is_numeric($UsiaIbu[0]) && is_numeric($UsiaIbu[1])) {
-        $Cek1 = true;$Cek2 = true;$Cek3 = true;$Cek4 = true;$Cek5 = true;$Cek6 = true;$Cek7 = true;
-        for ($j=0; $j < count($JumlahAnak); $j++) { 
-          $PisahAnak = explode("|",$JumlahAnak[$j]);
-          if (is_numeric($PisahAnak[3])) {
-            if ($PisahAnak[3] < ($UsiaIbu[0]+$UsiaIbu[1])) {
-              if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) > 14 && (($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 20) {
-                if ($Cek1) {$Rentang1[3] += 1;$Cek1 = false;}
-                $Rentang1[0] += 1;
-                $PisahAnak[1] == 1 ? $Rentang1[2] += 1 : $Rentang1[1] += 1;
-              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 25) {
-                if ($Cek2) {$Rentang2[3] += 1;$Cek2 = false;}
-                $Rentang2[0] += 1;
-                $PisahAnak[1] == 1 ? $Rentang2[2] += 1 : $Rentang2[1] += 1;
-              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 30) {
-                if ($Cek3) {$Rentang3[3] += 1;$Cek3 = false;}
-                $Rentang3[0] += 1;
-                $PisahAnak[1] == 1 ? $Rentang3[2] += 1 : $Rentang3[1] += 1;
-              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 35) {
-                if ($Cek4) {$Rentang4[3] += 1;$Cek4 = false;}
-                $Rentang4[0] += 1;
-                $PisahAnak[1] == 1 ? $Rentang4[2] += 1 : $Rentang4[1] += 1;
-              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 40) {
-                if ($Cek5) {$Rentang5[3] += 1;$Cek5 = false;}
-                $Rentang5[0] += 1;
-                $PisahAnak[1] == 1 ? $Rentang5[2] += 1 : $Rentang5[1] += 1;
-              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 45) {
-                if ($Cek6) {$Rentang6[3] += 1;$Cek6 = false;}
-                $Rentang6[0] += 1;
-                $PisahAnak[1] == 1 ? $Rentang6[2] += 1 : $Rentang6[1] += 1;
-              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 50) {
-                if ($Cek7) {$Rentang7[3] += 1;$Cek7 = false;}
-                $Rentang7[0] += 1;
-                $PisahAnak[1] == 1 ? $Rentang7[2] += 1 : $Rentang7[1] += 1;
-              }
-            }
-          }
-        }
-      }
-    }
-    if ($Rentang1[3] > 0) {
-      $Rentang1[4] = number_format($Rentang1[0]/$Rentang1[3],2);
-      $Rentang1[5] = number_format($Rentang1[2]/$Rentang1[3],2);
-    }
-    if ($Rentang2[3] > 0) {
-      $Rentang2[4] = number_format($Rentang2[0]/$Rentang2[3],2);
-      $Rentang2[5] = number_format($Rentang2[2]/$Rentang2[3],2);
-    }
-    if ($Rentang3[3] > 0) {
-      $Rentang3[4] = number_format($Rentang3[0]/$Rentang3[3],2);
-      $Rentang3[5] = number_format($Rentang3[2]/$Rentang3[3],2);
-    }
-    if ($Rentang4[3] > 0) {
-      $Rentang4[4] = number_format($Rentang4[0]/$Rentang4[3],2);
-      $Rentang4[5] = number_format($Rentang4[2]/$Rentang4[3],2);
-    }
-    if ($Rentang5[3] > 0) {
-      $Rentang5[4] = number_format($Rentang5[0]/$Rentang5[3],2);
-      $Rentang5[5] = number_format($Rentang5[2]/$Rentang5[3],2);
-    }
-    if ($Rentang6[3] > 0) {
-      $Rentang6[4] = number_format($Rentang6[0]/$Rentang6[3],2);
-      $Rentang6[5] = number_format($Rentang6[2]/$Rentang6[3],2);
-    }
-    if ($Rentang7[3] > 0) {
-      $Rentang7[4] = number_format($Rentang7[0]/$Rentang7[3],2);
-      $Rentang7[5] = number_format($Rentang7[2]/$Rentang7[3],2);
-    }
-    $Data['ALHAMH'][0] = $Rentang1;
-    $Data['ALHAMH'][1] = $Rentang2;
-    $Data['ALHAMH'][2] = $Rentang3;
-    $Data['ALHAMH'][3] = $Rentang4;
-    $Data['ALHAMH'][4] = $Rentang5;
-    $Data['ALHAMH'][5] = $Rentang6;
-    $Data['ALHAMH'][6] = $Rentang7;
-    $Data['TotalIbu'] = $Rentang1[3]+$Rentang2[3]+$Rentang3[3]+$Rentang4[3]+$Rentang5[3]+$Rentang6[3]+$Rentang7[3];
-    $this->load->view('ExcelALHAMH',$Data);                      
   }
 }
