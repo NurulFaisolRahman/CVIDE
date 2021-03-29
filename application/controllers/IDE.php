@@ -7,26 +7,12 @@ class IDE extends CI_Controller {
 		$this->load->view('IDE');
   }
 
-  // public function PendampingDesa(){
-  //   $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 13")->result_array();
-  //   $Akun = array();
-  //   foreach ($Desa as $key) {
-  //     $Data = array();
-  //     $Data['Username'] = $key['Kode'];
-  //     $Data['Password'] = 'pendampingdesa';
-  //     $Data['KodeDesa'] = $key['Kode'];
-  //     $Data['NamaDesa'] = $key['Nama'];
-  //     array_push($Akun,$Data);
-  //   }
-  //   $this->db->insert_batch('PendampingDesa', $Akun);
-  // }
-
   public function PendampingDesa(){
     $this->load->view('AuthPendampingDesa');
   }
 
   public function AuthPendampingDesa(){ 
-    $Desa = $this->db->get_where('PendampingDesa', array('Username' => htmlentities($_POST['Username'])));
+    $Desa = $this->db->get_where('pendampingdesa', array('Username' => htmlentities($_POST['Username'])));
 		if($Desa->num_rows() == 0){
 			echo "Username Salah!";
 		}
