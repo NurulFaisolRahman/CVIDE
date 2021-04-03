@@ -59,34 +59,34 @@
                 <div class="row">
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
-                      <div class="card-body bg-primary border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/GKM.png')?>" alt="GKM" width="81%"></a>
+                      <div class="card-body bg-warning border border-light p-0">
+                        <div id="AngkatanKerja" style="margin-bottom: 24px;"></div>
                       </div>
-                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Garis Kemiskinan <br>Makanan Rp ".number_format($GKMRata2,2,",",".")?></div></div>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-sm-12 text-center">
-                    <div class="card">
-                      <div class="card-body bg-primary border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/GKNM.png')?>" alt="GKNM" width="81%"></a>
-                      </div>
-                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Garis Kemiskinan <br>Non Makanan Rp ".number_format($GKNMRata2,2,",",".")?></div></div>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-sm-12 text-center">
-                    <div class="card">
-                      <div class="card-body bg-primary border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/GK.png')?>" alt="GK" width="81%"></a>
-                      </div>
-                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Garis Kemiskinan <br>Rp ".number_format($GKRata2,2,",",".")?></div></div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Total Angkatan Kerja <br>".$AngkatanKerja." Responden"?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-warning border border-light p-0">
-                        <div id="chart_div" style="margin-bottom: 24px;"></div>
+                        <a><img class="my-2" src="<?=base_url('assets/img/Profil.jpg')?>" alt="GK" width="81%"></a>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?=$KelompokGK[0]+$KelompokGK[1]." Responden<br>Dari ".$JumlahKK." Keluarga"?></div></div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Persentase Tingkat Pengangguran <br> Sebesar ".number_format($Pengangguran,2)." %"?></div></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-12 text-center">
+                    <div class="card">
+                      <div class="card-body bg-warning border border-light p-0">
+                        <a><img class="my-2" src="<?=base_url('assets/img/Profil.jpg')?>" alt="GK" width="81%"></a>
+                      </div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Tingkat Partisipasi Angkatan <br> Kerja Sebesar ".number_format($PartisipasiAngkatanKerja,2)." %"?></div></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-12 text-center">
+                    <div class="card">
+                      <div class="card-body bg-warning border border-light p-0">
+                        <a><img class="my-2" src="<?=base_url('assets/img/Profil.jpg')?>" alt="GK" width="81%"></a>
+                      </div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Tingkat Pengangguran Terbuka <br> Kerja Sebesar ".number_format($TPT,2)." %"?></div></div>
                     </div>
                   </div>
                 </div>
@@ -117,7 +117,7 @@
                         JenisData: $("#JenisData").val() }
           $.post(BaseURL+"SuperAdmin/Session", Data).done(function(Respon) {
             if (Respon == '1') {
-              window.location = BaseURL + "SuperAdmin/GarisKemiskinan"
+              window.location = BaseURL + "SuperAdmin/Pengangguran"
             }
             else {
               alert(Respon)
@@ -128,9 +128,9 @@
         google.charts.setOnLoadCallback(drawChart);
         function drawChart() {
           var data = google.visualization.arrayToDataTable([
-            ['Pendidikan', 'Jumlah'],
-            ['Di Atas GK',<?=$KelompokGK[0]?>],
-            ['Di Bawah GK',<?=$KelompokGK[1]?>],
+            ['Angkatan Kerja', 'Jumlah'],
+            ['Bekerja',<?=$Bekerja?>],
+            ['Tidak Bekerja',<?=$TidakBekerja?>],
           ]);
 
           var options = {
@@ -138,10 +138,10 @@
             sliceVisibilityThreshold : 0,
             chartArea : {left:5,top:20,width: 250, height: 250},
             legend: {position: 'none'},
-            backgroundColor: { fill:'transparent' }
+            backgroundColor: { fill:'transparent' },
           };
 
-          var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+          var chart = new google.visualization.PieChart(document.getElementById('AngkatanKerja'));
           chart.draw(data, options);
         }
       })

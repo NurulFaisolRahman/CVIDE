@@ -1,28 +1,15 @@
-				<!-- page content -->
-				<div class="right_col" role="main">
-					<div class="">
-            <div class="clearfix"></div>
-							<div class="row">
-								<div class="col-sm-6 d-flex align-items-center">
-									<div class="input-group">
-										<input type="password" class="form-control" id="Password" placeholder="Isi Untuk Mengganti Password">
-										<button type="button" class="btn btn-primary" id="GantiPassword"><b>Simpan</b></button>
-									</div>
+					<div class="clearfix"></div>
+						<div class="row">
+							<div class="col-sm-6 d-flex align-items-center">
+								<div class="input-group">
+									<input type="password" class="form-control" id="Password" placeholder="Isi Untuk Mengganti Password">
+									<button type="button" class="btn btn-primary" id="GantiPassword"><b>Simpan</b></button>
 								</div>
 							</div>
-            </div>
-          </div>
+						</div>
+					</div>
         </div>
         <!-- /page content -->
-        
-        <!-- footer content -->
-        <footer>
-          <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-          </div>
-          <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
       </div>
     </div>
 

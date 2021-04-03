@@ -36,14 +36,17 @@
               <div class="menu_section">
                 <ul class="nav side-menu">
 									<li><a href="<?=base_url('SuperAdmin')?>"><i class="fa fa-user"></i> <b>Profil</b> </a></li>
-								</ul>
+                </ul>
 								<ul class="nav side-menu">
-                  <li><a><i class="fa fa-tasks"></i> <b>Desa</b> <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-tasks"></i> <b>Data</b> <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="<?=base_url('SuperAdmin/IKM')?>"><b>Kepuasan Pelayanan Desa</b></a></li>           
 											<li><a href="<?=base_url('SuperAdmin/BPD')?>"><b>Kinerja Badan Permusyawaratan Desa</b></a></li>    
 											<li><a href="<?=base_url('SuperAdmin/KinerjaPemDes')?>"><b>Kinerja Penyelenggaraan Pemerintahan Desa</b></a></li>   
-											<li><a href="<?=base_url('SuperAdmin/KinerjaAparatur')?>"><b>Kinerja Aparatur Desa</b></a></li>   
+                      <li><a href="<?=base_url('SuperAdmin/KinerjaAparatur')?>"><b>Kinerja Aparatur Desa</b></a></li>   
+                      <li><a href="<?=base_url('SuperAdmin/Pendidikan')?>"><b>Pendidikan</b> </a></li>
+                      <li><a href="<?=base_url('SuperAdmin/GarisKemiskinan')?>"><b>Garis Kemiskinan</b> </a></li>
+                      <li><a href="<?=base_url('SuperAdmin/Pengangguran')?>"><b>Pengangguran</b> </a></li>
                     </ul>
 									</li>
                 </ul>
@@ -55,12 +58,6 @@
                       <li><a href="<?=base_url('SuperAdmin/IPMPengeluaran')?>"><b>Pengeluaran</b></a></li>
                     </ul>
 									</li>
-								</ul>
-								<ul class="nav side-menu">
-									<li><a href="<?=base_url('SuperAdmin/GarisKemiskinan')?>"><i class="fa fa-tasks"></i> <b>Garis Kemiskinan</b> </a></li>
-                </ul>
-                <ul class="nav side-menu">
-									<li><a href="<?=base_url('SuperAdmin/Pendidikan')?>"><i class="fa fa-graduation-cap"></i> <b>Pendidikan</b> </a></li>
                 </ul>
                 <ul class="nav side-menu">
 									<li><a href="<?=base_url('IDE/SignOut')?>"><i class="fa fa-sign-out"></i> <b>Keluar</b> </a></li>
@@ -80,3 +77,4 @@
           </div>
         </div>
         <!-- /top navigation -->
+      <div class="right_col bg-success" role="main" style="overflow-x: hidden;">

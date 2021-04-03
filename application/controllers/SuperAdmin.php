@@ -26,24 +26,32 @@ class SuperAdmin extends CI_Controller {
   }
 
   public function Session(){
-    $_SESSION['NamaDesa'] = $_POST['NamaDesa'];
     $_SESSION['KodeDesa'] = $_POST['KodeDesa'];
     $_SESSION['KodeKecamatan'] = $_POST['KodeKecamatan'];
+    $_SESSION['JenisData'] = $_POST['JenisData'];
     echo '1';
   }
 
   public function IKM(){
-    $Data['NamaDesa'] = $this->session->userdata('NamaDesa');
     $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
-    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan'); 
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');
+    $Data['KodeKabupaten'] = $this->session->userdata('KodeKabupaten'); 
+    $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.%' AND length(Kode) = 5")->result_array();
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
     $Data['Responden'] = 0;
     $Data['NilaiIndeks'] = 0;
     $Data['MutuPelayanan'] = '';
     $Data['KinerjaUnit'] = '';
-    $RespondenDesa = $this->db->query("SELECT * FROM `ikm` WHERE Desa = "."'".$Data['KodeDesa']."'")->result_array();
-    $Data['Responden'] = count($RespondenDesa);
+    $Responden = array();
+    if ($this->session->userdata('JenisData') == 'Desa') {
+      $Responden = $this->db->query("SELECT * FROM `ikm` WHERE Desa = "."'".$Data['KodeDesa']."'")->result_array();
+    } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
+      $Responden = $this->db->query("SELECT * FROM `ikm` WHERE Kecamatan = "."'".$Data['KodeKecamatan']."'")->result_array();
+    } else {
+      $Responden = $this->db->query("SELECT * FROM `ikm`")->result_array();
+    }
+    $Data['Responden'] = count($Responden);
     $Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
     $Data['Rata2'] = array(0,0,0,0,0,0,0,0,0,0,0);
     $Data['Tertimbang'] = array(0,0,0,0,0,0,0,0,0,0,0);
@@ -53,7 +61,7 @@ class SuperAdmin extends CI_Controller {
     $Data['Gender'] = array(0,0);
     $Pria = 0;
     $Wanita = 0;
-    foreach ($RespondenDesa as $key) {
+    foreach ($Responden as $key) {
       $Pecah = explode("|",$key['Poin']);
       for ($i=0; $i < 11; $i++) { 
         $Tampung[$i] += $Pecah[$i];
@@ -122,18 +130,26 @@ class SuperAdmin extends CI_Controller {
   }
 
   public function BPD(){
-    $Data['NamaDesa'] = $this->session->userdata('NamaDesa');
     $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
-    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan'); 
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');
+    $Data['KodeKabupaten'] = $this->session->userdata('KodeKabupaten'); 
+    $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.%' AND length(Kode) = 5")->result_array();
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
-    $BPD = $this->db->query("SELECT * FROM `bpd` WHERE Desa = "."'".$Data['KodeDesa']."'")->result_array();  
+    $BPD = array();  
+    if ($this->session->userdata('JenisData') == 'Desa') {
+      $BPD = $this->db->query("SELECT * FROM `bpd` WHERE Desa = "."'".$Data['KodeDesa']."'")->result_array();
+    } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
+      $BPD = $this->db->query("SELECT * FROM `bpd` WHERE Kecamatan = "."'".$Data['KodeKecamatan']."'")->result_array();
+    } else {
+      $BPD = $this->db->query("SELECT * FROM `bpd`")->result_array();
+    }
     $Data['Average'] = array(0,0,0,0,0);
     $Data['Kinerja'] = array('','','','','','');
     $Data['Hasil'] = 0;
-    if (count($BPD) == 1) {
-      $Poin = explode("|",$BPD[0]['Poin']);
-      $JumlahIndikator = array(6,3,2,3,1);
+    $JumlahIndikator = array(6,3,2,3,1);
+    foreach ($BPD as $key) {
+      $Poin = explode("|",$key['Poin']);
       $Loop = 0;
       for ($i=0; $i < 5; $i++) { 
         $Tampung = 0;
@@ -141,7 +157,12 @@ class SuperAdmin extends CI_Controller {
           $Tampung += $Poin[$Loop];
           $Loop++; 
         }
-        $Data['Average'][$i] = (round($Tampung/$JumlahIndikator[$i]*25,2));
+        $Data['Average'][$i] += $Tampung;
+      }
+    }
+    if (count($BPD) > 0) {
+      for ($i=0; $i < 5; $i++) { 
+        $Data['Average'][$i] = round(($Data['Average'][$i]/count($BPD))/$JumlahIndikator[$i]*25,2);
         if ($Data['Average'][$i] < 43.75) {
           $Data['Kinerja'][$i] = 'Tidak Baik';
         } else if ($Data['Average'][$i] < 62.5) {
@@ -168,18 +189,26 @@ class SuperAdmin extends CI_Controller {
   }
 
   public function KinerjaPemDes(){
-    $Data['NamaDesa'] = $this->session->userdata('NamaDesa');
     $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
-    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan'); 
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');
+    $Data['KodeKabupaten'] = $this->session->userdata('KodeKabupaten'); 
+    $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.%' AND length(Kode) = 5")->result_array();
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
-    $KinerjaPemDes = $this->db->query("SELECT * FROM `kinerjapemdes` WHERE Desa = "."'".$Data['KodeDesa']."'")->result_array();  
+    $KinerjaPemDes = array();  
+    if ($this->session->userdata('JenisData') == 'Desa') {
+      $KinerjaPemDes = $this->db->query("SELECT * FROM `kinerjapemdes` WHERE Desa = "."'".$Data['KodeDesa']."'")->result_array();
+    } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
+      $KinerjaPemDes = $this->db->query("SELECT * FROM `kinerjapemdes` WHERE Kecamatan = "."'".$Data['KodeKecamatan']."'")->result_array();
+    } else {
+      $KinerjaPemDes = $this->db->query("SELECT * FROM `kinerjapemdes`")->result_array();
+    }
     $Data['Average'] = array(0,0,0,0,0);
     $Data['Kinerja'] = array('','','','','','');
     $Data['Hasil'] = 0;
-    if (count($KinerjaPemDes) == 1) {
-      $Poin = explode("|",$KinerjaPemDes[0]['Poin']);
-      $JumlahIndikator = array(7,11,13,6,3);
+    $JumlahIndikator = array(7,11,13,6,3);
+    foreach ($KinerjaPemDes as $key) {
+      $Poin = explode("|",$key['Poin']);
       $Loop = 0;
       for ($i=0; $i < 5; $i++) { 
         $Tampung = 0;
@@ -187,7 +216,12 @@ class SuperAdmin extends CI_Controller {
           $Tampung += $Poin[$Loop];
           $Loop++; 
         }
-        $Data['Average'][$i] = (round($Tampung/$JumlahIndikator[$i]*25,2));
+        $Data['Average'][$i] += $Tampung;
+      }
+    }
+    if (count($KinerjaPemDes) > 0) {
+      for ($i=0; $i < 5; $i++) { 
+        $Data['Average'][$i] = round(($Data['Average'][$i]/count($KinerjaPemDes))/$JumlahIndikator[$i]*25,2);
         if ($Data['Average'][$i] < 43.75) {
           $Data['Kinerja'][$i] = 'Tidak Baik';
         } else if ($Data['Average'][$i] < 62.5) {
@@ -214,26 +248,39 @@ class SuperAdmin extends CI_Controller {
   }
 
   public function KinerjaAparatur(){
-    $Data['NamaDesa'] = $this->session->userdata('NamaDesa');
     $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
-    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan'); 
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');
+    $Data['KodeKabupaten'] = $this->session->userdata('KodeKabupaten'); 
+    $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.%' AND length(Kode) = 5")->result_array();
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
-    $KinerjaAparatur = $this->db->query("SELECT * FROM `kinerjaaparatur` WHERE Desa = "."'".$Data['KodeDesa']."'")->result_array(); 
+    $KinerjaAparatur = array();  
+    if ($this->session->userdata('JenisData') == 'Desa') {
+      $KinerjaAparatur = $this->db->query("SELECT * FROM `kinerjaaparatur` WHERE Desa = "."'".$Data['KodeDesa']."'")->result_array();
+    } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
+      $KinerjaAparatur = $this->db->query("SELECT * FROM `kinerjaaparatur` WHERE Kecamatan = "."'".$Data['KodeKecamatan']."'")->result_array();
+    } else {
+      $KinerjaAparatur = $this->db->query("SELECT * FROM `kinerjaaparatur`")->result_array();
+    }
     $Indikator = array('KepalaDesa','SekertarisDesa','TU','Keuangan','Perencanaan','Pemerintahan','Kesejahteraan','Pelayanan'); 
     $Data['Average'] = array(0,0,0,0,0,0,0,0);
     $Data['Kinerja'] = array('','','','','','','','','');
     $Data['Hasil'] = 0;
-    if (count($KinerjaAparatur) == 1) {
+    foreach ($KinerjaAparatur as $key) {
       for ($i=0; $i < count($Indikator); $i++) { 
-        $Poin = explode("|",$KinerjaAparatur[0][$Indikator[$i]]);
+        $Poin = explode("|",$key[$Indikator[$i]]);
         $Kedisiplinan = ($Poin[0]+$Poin[1])/2*0.2;
         $Tampung = 0;
         for ($j=2; $j < count($Poin); $j++) { 
           $Tampung += $Poin[$j];
         }
         $Keterlaksanaan = $Tampung/(count($Poin)-2)*0.8;
-        $Data['Average'][$i] = (round(($Kedisiplinan+$Keterlaksanaan)*25,2));
+        $Data['Average'][$i] += ($Kedisiplinan+$Keterlaksanaan);
+      }
+    }
+    if (count($KinerjaAparatur) > 0) {
+      for ($i=0; $i < count($Indikator); $i++) { 
+        $Data['Average'][$i] = round(($Data['Average'][$i]/count($KinerjaAparatur))*25,2);
         if ($Data['Average'][$i] < 43.75) {
           $Data['Kinerja'][$i] = 'Tidak Baik';
         } else if ($Data['Average'][$i] < 62.5) {
@@ -261,10 +308,19 @@ class SuperAdmin extends CI_Controller {
 
   public function Pendidikan(){
     $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
-    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan'); 
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');
+    $Data['KodeKabupaten'] = $this->session->userdata('KodeKabupaten'); 
+    $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.%' AND length(Kode) = 5")->result_array();
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
-    $Pendidikan = $this->db->query("SELECT PartisipasiSekolah,PendidikanTertinggi FROM `ipm` WHERE Desa = "."'".$Data['KodeDesa']."'")->result_array();
+    $Pendidikan = array();  
+    if ($this->session->userdata('JenisData') == 'Desa') {
+      $Pendidikan = $this->db->query("SELECT PartisipasiSekolah,PendidikanTertinggi FROM `ipm` WHERE Desa = "."'".$Data['KodeDesa']."'")->result_array();
+    } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
+      $Pendidikan = $this->db->query("SELECT PartisipasiSekolah,PendidikanTertinggi FROM `ipm` WHERE Kecamatan = "."'".$Data['KodeKecamatan']."'")->result_array();
+    } else {
+      $Pendidikan = $this->db->query("SELECT PartisipasiSekolah,PendidikanTertinggi FROM `ipm`")->result_array();
+    }
     $Data['JenisPendidikan'] = array(0,0,0,0,0,0,0,0);
     $Data['Responden'] = 0;
     for ($i=0; $i < count($Pendidikan); $i++) { 
@@ -301,6 +357,128 @@ class SuperAdmin extends CI_Controller {
     }
     $this->load->view('SuperAdmin/Header',$Data);
 		$this->load->view('SuperAdmin/Pendidikan',$Data);
+  }
+
+  public function GarisKemiskinan(){
+    $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');
+    $Data['KodeKabupaten'] = $this->session->userdata('KodeKabupaten'); 
+    $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.%' AND length(Kode) = 5")->result_array();
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
+    $DataKomoditas = array();  
+    if ($this->session->userdata('JenisData') == 'Desa') {
+      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+    } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
+      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `ipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
+    } else {
+      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `ipm`")->result_array();
+    }
+    $Data['JumlahKK'] = count($DataKomoditas); $Data['GK'] = $Data['GKM'] = $Data['GKNM'] = $Data['Individu'] = array(); 
+    $Data['GKRata2'] = $Data['GKMRata2'] = $Data['GKNMRata2'] = 0; $Data['KelompokGK'] = array(0,0);
+    $Data['TotalIndividu'] = $Data['TotalPengeluaranMakanan'] = $Data['TotalPengeluaranNonMakanan'] = 0;
+    foreach ($DataKomoditas as $key) {
+      $TotalIndividuKeluarga = count(explode("|",$key['NamaAnggota']));
+      $Data['TotalIndividu'] += $TotalIndividuKeluarga;
+      $Nilai = explode("|",$key['Nilai']);
+      $TotalPengeluaranMakanan = $TotalPengeluaranNonMakanan = 0;
+      for ($i=0; $i < count($Nilai); $i++) { 
+        if ($i < 107) {
+          if ($i > 4 && $i < 19) {
+            $TotalPengeluaranMakanan += (int)$Nilai[$i]*3;
+          } 
+          else if ($i > 41 && $i < 62) {
+            $TotalPengeluaranMakanan += (int)$Nilai[$i];
+          }
+          else {
+            $TotalPengeluaranMakanan += (int)$Nilai[$i]*4;
+          }
+        }
+        else if (in_array($i,array(113,114,115,118,121,141))) {
+          $TotalPengeluaranNonMakanan += (int)$Nilai[$i]*4;
+        }  
+        else if (in_array($i,array(116,119,120,136,138,140,148))) {
+          $TotalPengeluaranNonMakanan += round((int)$Nilai[$i]/6);
+        } 
+        else if (in_array($i,array(108,109,110,122,123,126,127,128,129,130,131,132,133,134,135,137,139,144,145,146,147,149,150,151,152))){
+          $TotalPengeluaranNonMakanan += round((int)$Nilai[$i]/12);
+        }
+        else {
+          $TotalPengeluaranNonMakanan += (int)$Nilai[$i];
+        }
+      }
+      array_push($Data['Individu'],$TotalIndividuKeluarga);
+      array_push($Data['GKM'],($TotalPengeluaranMakanan/$TotalIndividuKeluarga));
+      array_push($Data['GKNM'],($TotalPengeluaranNonMakanan/$TotalIndividuKeluarga));
+      $Data['TotalPengeluaranMakanan'] += $TotalPengeluaranMakanan;
+      $Data['TotalPengeluaranNonMakanan'] += $TotalPengeluaranNonMakanan;
+    }
+    if (count($DataKomoditas) > 0) {
+      $Data['GKMRata2'] = $Data['TotalPengeluaranMakanan']/$Data['TotalIndividu']; 
+      $Data['GKNMRata2'] = $Data['TotalPengeluaranNonMakanan']/$Data['TotalIndividu']; 
+      $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+      for ($i=0; $i < count($Data['GKM']); $i++) { 
+        if (($Data['GKM'][$i]+$Data['GKNM'][$i]) > $Data['GKRata2']) {
+          $Data['KelompokGK'][0] += $Data['Individu'][$i];
+        } else {
+          $Data['KelompokGK'][1] += $Data['Individu'][$i];
+        }
+      }
+    }
+    $this->load->view('SuperAdmin/Header',$Data);
+		$this->load->view('SuperAdmin/GarisKemiskinan',$Data);
+  }
+  
+  public function Pengangguran(){
+    $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');
+    $Data['KodeKabupaten'] = $this->session->userdata('KodeKabupaten'); 
+    $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.%' AND length(Kode) = 5")->result_array();
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
+    $Pengangguran = array();  
+    if ($this->session->userdata('JenisData') == 'Desa') {
+      $Pengangguran = $this->db->query("SELECT Usia,KegiatanSeminggu,PenyebabMenganggur FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+    } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
+      $Pengangguran = $this->db->query("SELECT Usia,KegiatanSeminggu,PenyebabMenganggur FROM `ipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
+    } else {
+      $Pengangguran = $this->db->query("SELECT Usia,KegiatanSeminggu,PenyebabMenganggur FROM `ipm`")->result_array();
+    }
+    $Data['Dewasa'] = $Data['Terbuka'] = $Data['Bekerja'] = $Data['TidakBekerja'] = $Data['AngkatanKerja'] = 0;
+    $Data['AngkatanKerja'] = $Data['Pengangguran'] = $Data['PartisipasiAngkatanKerja'] = $Data['TPT'] = 0;
+    foreach ($Pengangguran as $key) {
+      $Usia = explode("|",$key['Usia']);
+      $KegiatanSeminggu = explode("|",$key['KegiatanSeminggu']);
+      $PenyebabMenganggur = explode("|",$key['PenyebabMenganggur']);
+      for ($i=0; $i < count($Usia); $i++) { 
+        if ($Usia[$i] > 15 && $Usia[$i] < 66) {
+          if (isset($Usia[$i]) && isset($KegiatanSeminggu[$i])) {
+            if ($KegiatanSeminggu[$i] == 1 || $KegiatanSeminggu[$i] == 5) {
+              $Data['TidakBekerja'] += 1;
+              $Data['Dewasa'] += 1;
+              if ($KegiatanSeminggu[$i] == 1 && ($PenyebabMenganggur[$i] == 2 || $PenyebabMenganggur[$i] == 3)) {
+                $Data['Terbuka'] += 1;
+              } else {
+                $Data['Terbuka'] += 1;
+              }
+            } else if ($KegiatanSeminggu[$i] == 2){
+              $Data['Bekerja'] += 1;
+              $Data['Dewasa'] += 1;
+            } else {
+              $Data['Dewasa'] += 1;
+            }
+          }
+        }
+      }
+    }
+    if (count($Pengangguran) > 0) {
+      $Data['AngkatanKerja'] = $Data['Bekerja']+$Data['TidakBekerja'];
+      $Data['Pengangguran'] = $Data['TidakBekerja']/($Data['Bekerja']+$Data['TidakBekerja'])*100;
+      $Data['PartisipasiAngkatanKerja'] = ($Data['Bekerja']+$Data['TidakBekerja'])/$Data['Dewasa']*100;
+      $Data['TPT'] = $Data['Terbuka']/($Data['Bekerja']+$Data['TidakBekerja'])*100;
+    }
+    $this->load->view('SuperAdmin/Header',$Data);
+		$this->load->view('SuperAdmin/Pengangguran',$Data);
   }
 
   public function IPMKesehatan(){
@@ -627,58 +805,4 @@ class SuperAdmin extends CI_Controller {
     $this->load->view('SuperAdmin/Header',$Data);
 		$this->load->view('SuperAdmin/IPMPengeluaran',$Data);
   }
-
-  public function GarisKemiskinan(){
-    $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
-    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan'); 
-    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
-    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
-    $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
-    $Data['JumlahKK'] = count($DataKomoditas); $Data['GK'] = $Data['GKM'] = $Data['GKNM'] = $Data['Individu'] = array(); 
-    $Data['GKDesa'] = $Data['GKMDesa'] = $Data['GKNMDesa'] = 0; $Data['KelompokGK'] = array(0,0);
-    $Data['TotalIndividuDesa'] = $Data['TotalPengeluaranMakananDesa'] = $Data['TotalPengeluaranNonMakananDesa'] = 0;
-    foreach ($DataKomoditas as $key) {
-      $TotalIndividuKeluarga = count(explode("|",$key['NamaAnggota']));
-      $Data['TotalIndividuDesa'] += $TotalIndividuKeluarga;
-      $Nilai = explode("|",$key['Nilai']);
-      $TotalPengeluaranMakanan = $TotalPengeluaranNonMakanan = 0;
-      for ($i=0; $i < count($Nilai); $i++) { 
-        if ($i < 107) {
-          $TotalPengeluaranMakanan += (int)$Nilai[$i]*4;
-        }
-        else if (in_array($i,array(113,114,115,118,121,141))) {
-          $TotalPengeluaranNonMakanan += (int)$Nilai[$i]*4;
-        }  
-        else if (in_array($i,array(116,119,120,136,148))) {
-          $TotalPengeluaranNonMakanan += round((int)$Nilai[$i]/6);
-        } 
-        else if (in_array($i,array(108,109,110,127,128,129,130,144,145,146,147,149,150,151,152))){
-          $TotalPengeluaranNonMakanan += round((int)$Nilai[$i]/12);
-        }
-        else {
-          $TotalPengeluaranNonMakanan += (int)$Nilai[$i];
-        }
-      }
-      array_push($Data['Individu'],$TotalIndividuKeluarga);
-      array_push($Data['GKM'],($TotalPengeluaranMakanan/$TotalIndividuKeluarga));
-      array_push($Data['GKNM'],($TotalPengeluaranNonMakanan/$TotalIndividuKeluarga));
-      $Data['TotalPengeluaranMakananDesa'] += $TotalPengeluaranMakanan;
-      $Data['TotalPengeluaranNonMakananDesa'] += $TotalPengeluaranNonMakanan;
-    }
-    if (count($DataKomoditas) > 0) {
-      $Data['GKMDesa'] = $Data['TotalPengeluaranMakananDesa']/$Data['TotalIndividuDesa']; 
-      $Data['GKNMDesa'] = $Data['TotalPengeluaranNonMakananDesa']/$Data['TotalIndividuDesa']; 
-      $Data['GKDesa'] = $Data['GKMDesa']+$Data['GKNMDesa']; 
-      for ($i=0; $i < count($Data['GKM']); $i++) { 
-        if (($Data['GKM'][$i]+$Data['GKNM'][$i]) > $Data['GKDesa']) {
-          $Data['KelompokGK'][0] += $Data['Individu'][$i];
-        } else {
-          $Data['KelompokGK'][1] += $Data['Individu'][$i];
-        }
-      }
-    }
-    $this->load->view('SuperAdmin/Header',$Data);
-		$this->load->view('SuperAdmin/GarisKemiskinan',$Data);
-  }
-  
 }

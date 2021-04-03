@@ -1,118 +1,129 @@
-      	<!-- page content -->
-				<div class="right_col" role="main">
-					<div class="">
-            <div class="clearfix"></div>
-							<div class="row">
-								<div class="col-sm-12">
-                  <div class="row">
-                    <div class="col-sm-4 mb-2">
-                      <p style="font-size: 12px;" class="my-0 text-justify font-weight-bold">Hasil Penghitungan Indeks Kepuasan Masyarakat Terhadap Pelayanan Desa <?=$NamaDesa?>. Jumlah Responden <?=$Responden?></p>
-                      <div class="table-responsive mt-1">
-                        <table class="table table-sm table-bordered table-striped">
-                          <thead class="bg-danger">
-                            <tr style="font-size: 10pt;" class="text-light text-center">
-                              <th class="align-middle">No</th>
-                              <th class="align-middle">Indikator</th>
-                              <th class="align-middle">Rata-Rata</th>
-                              <th class="align-middle">Rata-Rata<br>Tertimbang</th>
-                            </tr>
-                          </thead>
-                          <tbody style="font-size: 12px;" class="bg-primary">
-                          <?php $Indikator = array('Persyaratan Pelayanan','Prosedur Pelayanan','Waktu Pelayanan','Biaya / Tarif','Spesifikasi Pelayanan','Kompetensi Pelaksana','Perilaku Pelaksana','Kedisiplinan','Penanganan Pengaduan','Sarana','Penerapan Smart Kampung'); 
-                            foreach ($Indikator as $key => $value) { ?>
-                            <tr class="text-light align-middle">
-                              <td class="align-middle text-center font-weight-bold"><?=($key+1)?></td>
-                              <td class="align-middle font-weight-bold"><?=$value?></td>
-                              <td class="align-middle text-center font-weight-bold"><?=number_format($Rata2[$key],2)?></td>
-                              <td class="align-middle text-center font-weight-bold"><?=number_format($Tertimbang[$key],2)?></td>
-                            </tr>
-                          <?php } ?>
-                            <tr>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                            </tr>
-                            <tr class="text-light align-middle">
-                              <td class="align-middle text-center font-weight-bold"></td>
-                              <td class="align-middle font-weight-bold">Nilai IKM</td>
-                              <td class="align-middle text-center font-weight-bold"></td>
-                              <td class="align-middle text-center font-weight-bold"><?=number_format($NilaiIndeks,2)?></td>
-                            </tr>
-                            <tr class="text-light align-middle">
-                              <td class="align-middle text-center font-weight-bold"></td>
-                              <td class="align-middle font-weight-bold">Mutu Pelayanan</td>
-                              <td class="align-middle text-center font-weight-bold"></td>
-                              <td class="align-middle text-center font-weight-bold"><?=$MutuPelayanan?></td>
-                            </tr>
-                            <tr class="text-light align-middle">
-                              <td class="align-middle text-center font-weight-bold"></td>
-                              <td class="align-middle font-weight-bold">Kinerja Pelayanan</td>
-                              <td class="align-middle text-center font-weight-bold"></td>
-                              <td class="align-middle text-center font-weight-bold"><?=$KinerjaUnit?></td>
-                            </tr>
-                          </tbody>
-                        </table>
+          <div class="clearfix"></div>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="row mt-2">
+                  <div class="col-lg-4 mb-2">
+                    <p style="font-size: 15px;" class="my-0 text-justify text-white font-weight-bold">Jumlah Responden Sebanyak <?=$Responden?> Orang</p>
+                    <div class="table-responsive mt-1">
+                      <table class="table table-sm table-bordered table-striped">
+                        <thead class="bg-danger">
+                          <tr style="font-size: 10pt;" class="text-light text-center">
+                            <th class="align-middle">No</th>
+                            <th class="align-middle">Indikator</th>
+                            <th class="align-middle">Rata-Rata</th>
+                            <th class="align-middle">Rata-Rata<br>Tertimbang</th>
+                          </tr>
+                        </thead>
+                        <tbody style="font-size: 12px;" class="bg-primary">
+                        <?php $Indikator = array('Persyaratan Pelayanan','Prosedur Pelayanan','Waktu Pelayanan','Biaya / Tarif','Spesifikasi Pelayanan','Kompetensi Pelaksana','Perilaku Pelaksana','Kedisiplinan','Penanganan Pengaduan','Sarana','Penerapan Smart Kampung'); 
+                          foreach ($Indikator as $key => $value) { ?>
+                          <tr class="text-light align-middle">
+                            <td class="align-middle text-center font-weight-bold"><?=($key+1)?></td>
+                            <td class="align-middle font-weight-bold"><?=$value?></td>
+                            <td class="align-middle text-center font-weight-bold"><?=number_format($Rata2[$key],2)?></td>
+                            <td class="align-middle text-center font-weight-bold"><?=number_format($Tertimbang[$key],2)?></td>
+                          </tr>
+                        <?php } ?>
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                          <tr class="text-light align-middle">
+                            <td class="align-middle text-center font-weight-bold"></td>
+                            <td class="align-middle font-weight-bold">Nilai IKM</td>
+                            <td class="align-middle text-center font-weight-bold"></td>
+                            <td class="align-middle text-center font-weight-bold"><?=number_format($NilaiIndeks,2)?></td>
+                          </tr>
+                          <tr class="text-light align-middle">
+                            <td class="align-middle text-center font-weight-bold"></td>
+                            <td class="align-middle font-weight-bold">Mutu Pelayanan</td>
+                            <td class="align-middle text-center font-weight-bold"></td>
+                            <td class="align-middle text-center font-weight-bold"><?=$MutuPelayanan?></td>
+                          </tr>
+                          <tr class="text-light align-middle">
+                            <td class="align-middle text-center font-weight-bold"></td>
+                            <td class="align-middle font-weight-bold">Kinerja Pelayanan</td>
+                            <td class="align-middle text-center font-weight-bold"></td>
+                            <td class="align-middle text-center font-weight-bold"><?=$KinerjaUnit?></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="col-lg-8 align-self-center">
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <div class="input-group input-group-sm mb-2">
+                          <div class="input-group-prepend">
+                            <label class="input-group-text bg-danger text-light"><b>Kabupaten</b></label>
+                          </div>
+                          <select class="custom-select" id="Kabupaten">  
+                            <?php foreach ($Kabupaten as $key) { ?>
+                              <option value="<?=$key['Kode']?>" <?=$KodeKabupaten==$key['Kode']?'selected':'';?>><?=ucfirst(strtolower(substr($key['Nama'],5)))?></option>
+                            <?php } ?>                  
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="input-group input-group-sm mb-2">
+                          <div class="input-group-prepend">
+                            <label class="input-group-text bg-danger text-light"><b>Kecamatan</b></label>
+                          </div>
+                          <select class="custom-select" id="Kecamatan">  
+                            <?php foreach ($Kecamatan as $key) { ?>
+                              <option value="<?=$key['Kode']?>" <?=$KodeKecamatan==$key['Kode']?'selected':'';?>><?=$key['Nama']?></option>
+                            <?php } ?>                  
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="input-group input-group-sm mb-2">
+                          <div class="input-group-prepend">
+                            <label class="input-group-text bg-danger text-light"><b>Desa</b></label>
+                          </div>
+                          <select class="custom-select" id="Desa">                    
+                            <?php foreach ($Desa as $key) { ?>
+                              <option value="<?=$key['Kode']?>" <?=$KodeDesa==$key['Kode']?'selected':'';?>><?=$key['Nama']?></option>
+                            <?php } ?>                  
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="input-group input-group-sm mb-2">
+                          <div class="input-group-prepend">
+                            <label class="input-group-text bg-primary text-light"><b>Data</b></label>
+                          </div>
+                          <select class="custom-select" id="JenisData">                    
+                            <option value="Kabupaten" <?=$this->session->userdata('JenisData')=='Kabupaten'?'selected':'';?>>Kabupaten</option>
+                            <option value="Kecamatan" <?=$this->session->userdata('JenisData')=='Kecamatan'?'selected':'';?>>Kecamatan</option>
+                            <option value="Desa" <?=$this->session->userdata('JenisData')=='Desa'?'selected':'';?>>Desa</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="btn btn-sm btn-primary border-light" id="TampilkanData"><b>Tampilkan</b></div>
                       </div>
                     </div>
-                    <div class="col-sm-8 align-self-center">
-                      <div class="row">
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-sm mb-2">
-                            <div class="input-group-prepend">
-                              <label class="input-group-text bg-danger text-light"><b>Kecamatan</b></label>
-                            </div>
-                            <select class="custom-select" id="Kecamatan">  
-                              <?php foreach ($Kecamatan as $key) { ?>
-                                <option value="<?=$key['Kode']?>" <?=$KodeKecamatan==$key['Kode']?'selected':'';?>><?=$key['Nama']?></option>
-                              <?php } ?>                  
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-sm-5">
-                          <div class="input-group input-group-sm mb-2">
-                            <div class="input-group-prepend">
-                              <label class="input-group-text bg-danger text-light"><b>Desa/Kelurahan</b></label>
-                            </div>
-                            <select class="custom-select" id="Desa">                    
-                              <?php foreach ($Desa as $key) { ?>
-                                <option value="<?=$key['Kode']?>" <?=$KodeDesa==$key['Kode']?'selected':'';?>><?=$key['Nama']?></option>
-                              <?php } ?>                  
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-sm-3">
-                          <div class="btn btn-sm btn-primary" id="ViewData"><b>View Data</b></div>
-                        </div>
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <div id="Gender"></div>
                       </div>
-                      <div class="row">
-                        <div class="col-sm-4">
-                          <div id="Gender"></div>
-                        </div>
-                        <div class="col-sm-4">
-                          <div id="Pendidikan"></div>
-                        </div>
-                        <div class="col-sm-4">
-                          <div id="Pekerjaan"></div> 
-                        </div>
+                      <div class="col-lg-4">
+                        <div id="Pendidikan"></div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div id="Pekerjaan"></div> 
                       </div>
                     </div>
                   </div>
                 </div>
-							</div>
+              </div>
             </div>
           </div>
         </div>
         <!-- /page content -->
-        
-        <!-- footer content -->
-        <footer>
-          <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-          </div>
-          <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
       </div>
     </div>
 
@@ -129,11 +140,11 @@
             $('#Desa').html(Respon)
           })    
         })
-        $("#ViewData").click(function() {
-          var Akun =  { KodeDesa: $("#Desa").val(),
+        $("#TampilkanData").click(function() {
+          var Data =  { KodeDesa: $("#Desa").val(),
                         KodeKecamatan: $("#Kecamatan").val(),
-                        NamaDesa: $("#Desa option:selected").text() }
-          $.post(BaseURL+"SuperAdmin/Session", Akun).done(function(Respon) {
+                        JenisData: $("#JenisData").val() }
+          $.post(BaseURL+"SuperAdmin/Session", Data).done(function(Respon) {
             if (Respon == '1') {
               window.location = BaseURL + "SuperAdmin/IKM"
             }

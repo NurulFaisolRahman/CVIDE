@@ -74,9 +74,10 @@ class IDE extends CI_Controller {
         if (password_verify($_POST['Password'], $Akun['Password'])) {
           $Session = array('SuperAdmin' => true,
                            'Username' => $_POST['Username'],
+                           'KodeKabupaten' => '35.10',
                            'KodeKecamatan' => '35.10.01',
                            'KodeDesa' => '35.10.01.2001',
-                           'NamaDesa' => 'Sarongan');
+                           'JenisData' => 'Desa');
           $this->session->set_userdata($Session);
           echo '2';
         } else {

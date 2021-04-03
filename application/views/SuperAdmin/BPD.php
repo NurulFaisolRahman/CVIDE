@@ -1,120 +1,130 @@
-        <!-- page content -->
-				<div class="right_col" role="main">
-					<div class="">
-            <div class="clearfix"></div>
-							<div class="row">
-								<div class="col-sm-12">
-                  <div class="row">
-                    <div class="col-sm-4 mb-2">
-                      <p style="font-size: 12px;" class="text-justify font-weight-bold">Hasil Penghitungan Survei Evaluasi Kinerja Badan Permusyawaratan Desa</p>
-                      <div class="table-responsive mt-1">
-                        <table class="table table-sm table-bordered table-striped">
-                          <thead class="bg-danger">
-                            <tr style="font-size: 10pt;" class="text-light text-center">
-                              <th class="align-middle">No</th>
-                              <th class="align-middle">Indikator</th>
-                              <th class="align-middle">Skor</th>
-                              <th class="align-middle">Kinerja</th>
-                            </tr>
-                          </thead>
-                          <tbody style="font-size: 12px;" class="bg-primary">
-                          <?php $Indikator = array('Menggali Aspirasi Masyarakat','Menampung dan Menyalurkan Aspirasi Masyarakat','Menyelenggarakan Musyawarah BPD dan Desa','Gabungan (Penyelenggaraan Pemilihan Kepala Desa)','Melaksanakan Tugas Lain Yang Diatur Dalam Ketentuan Peraturan Perundang Undangan'); 
-                            foreach ($Indikator as $key => $value) { ?>
-                            <tr class="text-light align-middle">
-                              <td class="align-middle text-center font-weight-bold"><?=($key+1)?></td>
-                              <td class="align-middle font-weight-bold"><?=$value?></td>
-                              <td class="align-middle text-center font-weight-bold"><?=number_format($Average[$key],2)?></td>
-                              <td class="align-middle text-center font-weight-bold"><?=$Kinerja[$key]?></td>
-                            </tr>
-                          <?php } ?>
-                            <tr>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                            </tr>
-                            <tr class="text-light align-middle">
-                              <td class="align-middle text-center font-weight-bold"></td>
-                              <td class="align-middle font-weight-bold">Kesimpulan</td>
-                              <td class="align-middle text-center font-weight-bold"><?=number_format($Hasil,2)?></td>
-                              <td class="align-middle text-center font-weight-bold"><?=$Kinerja[5]?></td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Kuisioner"><i class="fa fa-book"></i> <b>Lihat Kuisioner</b></button> 
+          <div class="clearfix"></div>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="row mt-2">
+                  <div class="col-lg-4">
+                    <div class="table-responsive">
+                      <table class="table table-sm table-bordered table-striped">
+                        <thead class="bg-danger">
+                          <tr style="font-size: 10pt;" class="text-light text-center">
+                            <th class="align-middle">No</th>
+                            <th class="align-middle">Indikator</th>
+                            <th class="align-middle">Skor</th>
+                            <th class="align-middle">Kinerja</th>
+                          </tr>
+                        </thead>
+                        <tbody style="font-size: 12px;" class="bg-primary">
+                        <?php $Indikator = array('Menggali Aspirasi Masyarakat','Menampung dan Menyalurkan Aspirasi Masyarakat','Menyelenggarakan Musyawarah BPD dan Desa','Gabungan (Penyelenggaraan Pemilihan Kepala Desa)','Melaksanakan Tugas Lain Yang Diatur Dalam Ketentuan Peraturan Perundang Undangan'); 
+                          foreach ($Indikator as $key => $value) { ?>
+                          <tr class="text-light align-middle">
+                            <td class="align-middle text-center font-weight-bold"><?=($key+1)?></td>
+                            <td class="align-middle font-weight-bold"><?=$value?></td>
+                            <td class="align-middle text-center font-weight-bold"><?=number_format($Average[$key],2)?></td>
+                            <td class="align-middle text-center font-weight-bold"><?=$Kinerja[$key]?></td>
+                          </tr>
+                        <?php } ?>
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                          <tr class="text-light align-middle">
+                            <td class="align-middle text-center font-weight-bold"></td>
+                            <td class="align-middle font-weight-bold">Kesimpulan</td>
+                            <td class="align-middle text-center font-weight-bold"><?=number_format($Hasil,2)?></td>
+                            <td class="align-middle text-center font-weight-bold"><?=$Kinerja[5]?></td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
-                    <div class="col-sm-8 align-self-center">
-                      <div class="row">
-                        <div class="col-sm-4"> 
-                          <div class="input-group input-group-sm mb-2">
-                            <div class="input-group-prepend">
-                              <label class="input-group-text bg-danger text-light"><b>Kecamatan</b></label>
-                            </div>
-                            <select class="custom-select" id="Kecamatan">  
-                              <?php foreach ($Kecamatan as $key) { ?>
-                                <option value="<?=$key['Kode']?>" <?=$KodeKecamatan==$key['Kode']?'selected':'';?>><?=$key['Nama']?></option>
-                              <?php } ?>                  
-                            </select>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Kuisioner"><i class="fa fa-book"></i> <b>Lihat Kuisioner</b></button> 
+                  </div>
+                  <div class="col-lg-8 align-self-center">
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <div class="input-group input-group-sm mb-2">
+                          <div class="input-group-prepend">
+                            <label class="input-group-text bg-danger text-light"><b>Kabupaten</b></label>
                           </div>
-                        </div>
-                        <div class="col-sm-5">
-                          <div class="input-group input-group-sm mb-2">
-                            <div class="input-group-prepend">
-                              <label class="input-group-text bg-danger text-light"><b>Desa/Kelurahan</b></label>
-                            </div>
-                            <select class="custom-select" id="Desa">                    
-                              <?php foreach ($Desa as $key) { ?>
-                                <option value="<?=$key['Kode']?>" <?=$KodeDesa==$key['Kode']?'selected':'';?>><?=$key['Nama']?></option>
-                              <?php } ?>                  
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-sm-3">
-                          <div class="btn btn-sm btn-primary" id="ViewData"><b>View Data</b></div>
+                          <select class="custom-select" id="Kabupaten">  
+                            <?php foreach ($Kabupaten as $key) { ?>
+                              <option value="<?=$key['Kode']?>" <?=$KodeKabupaten==$key['Kode']?'selected':'';?>><?=ucfirst(strtolower(substr($key['Nama'],5)))?></option>
+                            <?php } ?>                  
+                          </select>
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <div id="chart_div"></div>
+                      <div class="col-lg-4">
+                        <div class="input-group input-group-sm mb-2">
+                          <div class="input-group-prepend">
+                            <label class="input-group-text bg-danger text-light"><b>Kecamatan</b></label>
+                          </div>
+                          <select class="custom-select" id="Kecamatan">  
+                            <?php foreach ($Kecamatan as $key) { ?>
+                              <option value="<?=$key['Kode']?>" <?=$KodeKecamatan==$key['Kode']?'selected':'';?>><?=$key['Nama']?></option>
+                            <?php } ?>                  
+                          </select>
                         </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="input-group input-group-sm mb-2">
+                          <div class="input-group-prepend">
+                            <label class="input-group-text bg-danger text-light"><b>Desa</b></label>
+                          </div>
+                          <select class="custom-select" id="Desa">                    
+                            <?php foreach ($Desa as $key) { ?>
+                              <option value="<?=$key['Kode']?>" <?=$KodeDesa==$key['Kode']?'selected':'';?>><?=$key['Nama']?></option>
+                            <?php } ?>                  
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="input-group input-group-sm mb-2">
+                          <div class="input-group-prepend">
+                            <label class="input-group-text bg-primary text-light"><b>Data</b></label>
+                          </div>
+                          <select class="custom-select" id="JenisData">                    
+                            <option value="Kabupaten" <?=$this->session->userdata('JenisData')=='Kabupaten'?'selected':'';?>>Kabupaten</option>
+                            <option value="Kecamatan" <?=$this->session->userdata('JenisData')=='Kecamatan'?'selected':'';?>>Kecamatan</option>
+                            <option value="Desa" <?=$this->session->userdata('JenisData')=='Desa'?'selected':'';?>>Desa</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="btn btn-sm btn-primary border-light" id="TampilkanData"><b>Tampilkan</b></div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div id="chart_div"></div>
                       </div>
                     </div>
                   </div>
                 </div>
-							</div>
+              </div>
             </div>
           </div>
         </div>
         <!-- /page content -->
+      </div>
+    </div>
 
-        <div class="modal fade" id="Kuisioner">
-          <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title font-weight-bold">Kuisioner Evaluasi Kinerja Badan Permusyawaratan Desa</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <embed src="<?=base_url('Kuisioner/BPD.pdf')?>" type="application/pdf" width="100%" height="400"/>
-              </div>
-              <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-danger" data-dismiss="modal"><b>Tutup</b></button>
-              </div>
-            </div>
+    <div class="modal fade" id="Kuisioner">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title font-weight-bold">Kuisioner Evaluasi Kinerja Badan Permusyawaratan Desa</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <embed src="<?=base_url('Kuisioner/BPD.pdf')?>" type="application/pdf" width="100%" height="400"/>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-danger" data-dismiss="modal"><b>Tutup</b></button>
           </div>
         </div>
-        
-        <!-- footer content -->
-        <footer>
-          <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-          </div>
-          <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
       </div>
     </div>
 
@@ -131,11 +141,11 @@
             $('#Desa').html(Respon)
           })    
         })
-        $("#ViewData").click(function() {
-          var Akun =  { KodeDesa: $("#Desa").val(),
+        $("#TampilkanData").click(function() {
+          var Data =  { KodeDesa: $("#Desa").val(),
                         KodeKecamatan: $("#Kecamatan").val(),
-                        NamaDesa: $("#Desa option:selected").text() }
-          $.post(BaseURL+"SuperAdmin/Session", Akun).done(function(Respon) {
+                        JenisData: $("#JenisData").val() }
+          $.post(BaseURL+"SuperAdmin/Session", Data).done(function(Respon) {
             if (Respon == '1') {
               window.location = BaseURL + "SuperAdmin/BPD"
             }
