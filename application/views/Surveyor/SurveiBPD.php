@@ -8,7 +8,7 @@
                     <div class="card-header bg-primary text-white">
                       <b>SURVEI EVALUASI KINERJA BADAN PERMUSYAWARATAN DESA</b>
                     </div>
-                    <div style="background-color: yellow;" class="card-body border border-primary">
+                    <div style="background-color: yellow;" class="card-body border border-primary pl-0 pr-2 py-2">
                       <div class="container-fluid">
                         <div class="row">
                           <div class="col-sm-4 my-1">
