@@ -1,11 +1,11 @@
 				<!-- page content -->
-				<div class="right_col" role="main">
+				<div class="right_col" role="main" style="overflow-x: hidden;">
 					<div class="">
             <div class="clearfix"></div>
 							<div class="row">
                 <div class="col-sm-12">
                   <div class="card"> 
-                    <div class="card-header bg-primary text-light">
+                    <div class="card-header bg-primary text-white">
                       <b>SURVEI EVALUASI KINERJA BADAN PERMUSYAWARATAN DESA</b>
                     </div>
                     <div style="background-color: yellow;" class="card-body border border-primary">
@@ -14,11 +14,11 @@
                           <div class="col-sm-4 my-1">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-light"><b>Kecamatan</b></label>
+                                <label class="input-group-text bg-danger text-white"><b>Kecamatan</b></label>
                               </div>
                               <select class="custom-select" id="Kecamatan">  
                                 <?php foreach ($Kecamatan as $key) { ?>
-                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option>
+                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
                                 <?php } ?>                  
                               </select>
                             </div>
@@ -26,7 +26,7 @@
                           <div class="col-sm-4 my-1">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-light"><b>Desa/Kelurahan</b></label>
+                                <label class="input-group-text bg-danger text-white"><b>Desa/Kelurahan</b></label>
                               </div>
                               <select class="custom-select" id="Desa">                    
                                 <?php foreach ($Desa as $key) { ?>
@@ -38,7 +38,7 @@
                           <div class="col-sm-4 my-1">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-light"><b>Jumlah Dusun</b></label>
+                                <label class="input-group-text bg-danger text-white"><b>Jumlah Dusun</b></label>
                               </div>
                               <input class="form-control" type="text" id="Dusun" data-inputmask='"mask": "99"' data-mask>
                             </div>
@@ -79,24 +79,24 @@
                             <div class="col-sm-5 my-1">
                               <div class="input-group input-group-sm">
                                 <div class="input-group-prepend">
-                                  <p class="input-group-text bg-danger text-light text-justify text-wrap"><b><?=($i+1).". ".$Tanya[$i]?></b></p>
+                                  <p class="input-group-text bg-danger text-white text-justify text-wrap"><b><?=($i+1).". ".$Tanya[$i]?></b></p>
                                 </div>
                               </div>
                             </div> 
-                            <div class="col-sm-7 bg-light p-2 my-1">
+                            <div class="col-sm-7 bg-primary p-2 my-1">
                               <div class="input-group input-group-sm">
                                 <?php if (count($Pisah) == 4) { ?>
                                   <?php for ($j=0; $j < 4; $j++) { ?>
                                     <div class="form-check form-check-inline ml-4 my-1">
                                       <input style="transform: scale(1.5);" class="form-check-input" type="radio" name="I<?=$i?>" id="I<?=$i.$j?>" value="<?=(4-$j)?>">
-                                      <label class="form-check-label font-weight-bold" for="I<?=$i.$j?>">&nbsp;<?=$Pisah[$j]?></label>
+                                      <label class="form-check-label font-weight-bold text-white" for="I<?=$i.$j?>">&nbsp;<?=$Pisah[$j]?></label>
                                     </div>
                                   <?php } ?>
                                 <?php } else if (count($Pisah) <= 2) { ?>
                                   <?php for ($j=0; $j < count($Pisah); $j++) { ?>
-                                    <div class="input-group my-1">
+                                    <div class="input-group input-group-sm my-1">
                                       <div class="input-group-prepend">
-                                        <label class="input-group-text bg-danger text-light"><b><?=$Pisah[$j]?></b></label>
+                                        <label class="input-group-text bg-danger text-white"><b><?=$Pisah[$j]?></b></label>
                                       </div>
                                       <input class="form-control" type="text" id="I<?=$i.$j?>" placeholder="Input Hanya Angka Saja">
                                     </div>
@@ -118,15 +118,6 @@
           </div> 
         </div>
         <!-- /page content -->
-        
-        <!-- footer content -->
-        <footer>
-          <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-          </div>
-          <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
       </div>
     </div>
 

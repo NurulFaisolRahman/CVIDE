@@ -472,8 +472,13 @@ Content-Type: text/html; charset="us-ascii"
 		<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:str><?=count(explode("|",$IPM[$j]['NamaAnggota']))?></td>
     <?php $Jumlah = explode("|",$IPM[$j]['Nilai']); for ($i=0; $i < 154; $i++) { ?>
 		<?php if ($i < 107) { ?>
-			<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=(int)$Jumlah[$i]*4?></td>
-		<?php } else if (in_array($i,array(113,114,115,118,121,141))) { ?>
+			<?php if ($i > 4 && $i < 19) { ?>
+				<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=(int)$Jumlah[$i]*3?></td>
+			<?php } else if ($i > 41 && $i < 62) { ?>
+				<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=(int)$Jumlah[$i]?></td>
+			<?php } else { ?>
+				<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=(int)$Jumlah[$i]*4?></td>
+		<?php }} else if (in_array($i,array(113,114,115,118,121,141))) { ?>
 			<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=(int)$Jumlah[$i]*4?></td>
 		<?php } else if (in_array($i,array(116,119,120,136,138,140,148))) { ?>
 			<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=round((int)$Jumlah[$i]/6)?></td>

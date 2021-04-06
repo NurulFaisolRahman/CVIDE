@@ -1,8 +1,8 @@
 				<!-- page content -->
-				<div class="right_col" role="main">
+				<div class="right_col bg-success" role="main" style="overflow-x: hidden;"> 
 					<div class="">
             <div class="clearfix"></div>
-							<div class="row">
+							<div class="row mt-1">
 								<div class="col-sm-6 d-flex align-items-center">
 									<div class="input-group">
 										<input type="password" class="form-control" id="Password" placeholder="Isi Untuk Mengganti Password">
@@ -13,16 +13,7 @@
             </div>
           </div> 
         </div>
-        <!-- /page content -->
-        
-        <!-- footer content -->
-        <footer>
-          <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-          </div>
-          <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
+        <!-- /page content --> 
       </div>
     </div>
 

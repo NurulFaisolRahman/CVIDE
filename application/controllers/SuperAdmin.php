@@ -418,7 +418,7 @@ class SuperAdmin extends CI_Controller {
       $Data['GKNMRata2'] = $Data['TotalPengeluaranNonMakanan']/$Data['TotalIndividu']; 
       $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       for ($i=0; $i < count($Data['GKM']); $i++) { 
-        if (($Data['GKM'][$i]+$Data['GKNM'][$i]) > $Data['GKRata2']) {
+        if (($Data['GKM'][$i]+$Data['GKNM'][$i]) > ($Data['GKRata2']-223500)) {
           $Data['KelompokGK'][0] += $Data['Individu'][$i];
         } else {
           $Data['KelompokGK'][1] += $Data['Individu'][$i];
@@ -444,8 +444,8 @@ class SuperAdmin extends CI_Controller {
     } else {
       $Pengangguran = $this->db->query("SELECT Usia,KegiatanSeminggu,PenyebabMenganggur FROM `ipm`")->result_array();
     }
-    $Data['Dewasa'] = $Data['Terbuka'] = $Data['Bekerja'] = $Data['TidakBekerja'] = $Data['AngkatanKerja'] = 0;
-    $Data['AngkatanKerja'] = $Data['Pengangguran'] = $Data['PartisipasiAngkatanKerja'] = $Data['TPT'] = 0;
+    $Data['Dewasa'] = $Data['Bekerja'] = $Data['TidakBekerja'] = $Data['AngkatanKerja'] = 0;
+    $Data['Terbuka'] =  $Data['BukanAngkatanKerja'] = $Data['TPAK'] = $Data['TPT'] = 0;
     foreach ($Pengangguran as $key) {
       $Usia = explode("|",$key['Usia']);
       $KegiatanSeminggu = explode("|",$key['KegiatanSeminggu']);
@@ -453,19 +453,18 @@ class SuperAdmin extends CI_Controller {
       for ($i=0; $i < count($Usia); $i++) { 
         if ($Usia[$i] > 15 && $Usia[$i] < 66) {
           if (isset($Usia[$i]) && isset($KegiatanSeminggu[$i])) {
+            $Data['Dewasa'] += 1;
             if ($KegiatanSeminggu[$i] == 1 || $KegiatanSeminggu[$i] == 5) {
               $Data['TidakBekerja'] += 1;
-              $Data['Dewasa'] += 1;
-              if ($KegiatanSeminggu[$i] == 1 && ($PenyebabMenganggur[$i] == 2 || $PenyebabMenganggur[$i] == 3)) {
+              if ($KegiatanSeminggu[$i] == 1 && $PenyebabMenganggur[$i] == 2 || $PenyebabMenganggur[$i] == 3) {
                 $Data['Terbuka'] += 1;
-              } else {
+              } else if($KegiatanSeminggu[$i] == 5){
                 $Data['Terbuka'] += 1;
               }
             } else if ($KegiatanSeminggu[$i] == 2){
               $Data['Bekerja'] += 1;
-              $Data['Dewasa'] += 1;
             } else {
-              $Data['Dewasa'] += 1;
+              $Data['BukanAngkatanKerja'] += 1;
             }
           }
         }
@@ -473,9 +472,8 @@ class SuperAdmin extends CI_Controller {
     }
     if (count($Pengangguran) > 0) {
       $Data['AngkatanKerja'] = $Data['Bekerja']+$Data['TidakBekerja'];
-      $Data['Pengangguran'] = $Data['TidakBekerja']/($Data['Bekerja']+$Data['TidakBekerja'])*100;
-      $Data['PartisipasiAngkatanKerja'] = ($Data['Bekerja']+$Data['TidakBekerja'])/$Data['Dewasa']*100;
-      $Data['TPT'] = $Data['Terbuka']/($Data['Bekerja']+$Data['TidakBekerja'])*100;
+      $Data['TPT'] = $Data['Terbuka']/$Data['AngkatanKerja']*100;
+      $Data['TPAK'] = $Data['AngkatanKerja']/$Data['Dewasa']*100;
     }
     $this->load->view('SuperAdmin/Header',$Data);
 		$this->load->view('SuperAdmin/Pengangguran',$Data);

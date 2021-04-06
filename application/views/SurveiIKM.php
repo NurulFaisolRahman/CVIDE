@@ -26,38 +26,38 @@
             pelayanan di Kantor Desa harap mengisi kuisioner ini dengan se obyektif mungkin sesuai dengan keadaan yang sebenarnya. 
             <span class="text-danger">**Catatan Penting : Segala informasi isian dari responden dijamin kerahasiaannya oleh konsultan independen.</span></b></p>
         </div>
-        <div class="col-sm-12 text-center">
+        <!-- <div class="col-sm-12 text-center">
           <h2 class="text-primary font-weight-bold">WAKTU PENGISIAN SURVEI TINGGAL</h2>
           <h2 id="Timer" class="text-danger font-weight-bold"></h2>
-        </div>
+        </div> -->
         <div class="col-sm-12">
           <div class="card mt-2">
-            <div class="card-header bg-primary text-light">
+            <div class="card-header bg-primary text-white">
               <b>SURVEY KEPUASAN PELAYANAN DESA</b>
             </div>
             <div style="background-color: yellow;" class="card-body border border-primary">
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-sm-3 my-1">
-                    <div class="input-group">
+                    <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
-                        <label class="input-group-text bg-danger text-light"><b>NIK</b></label>
+                        <label class="input-group-text bg-danger text-white"><b>NIK</b></label>
                       </div>
                       <input class="form-control" type="text" id="NIK" data-inputmask='"mask": "9999999999999999"' data-mask>
                     </div>
                   </div> 
                   <div class="col-sm-3 my-1">
-                    <div class="input-group">
+                    <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
-                        <label class="input-group-text bg-danger text-light"><b>Nama</b></label>
+                        <label class="input-group-text bg-danger text-white"><b>Nama</b></label>
                       </div>
                       <input class="form-control" type="text" id="Nama" placeholder="Nama">
                     </div>
                   </div> 
                   <div class="col-sm-3 my-1">
-                    <div class="input-group">
+                    <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
-                        <label class="input-group-text bg-danger text-light"><b>Jenis Kelamin</b></label>
+                        <label class="input-group-text bg-danger text-white"><b>Jenis Kelamin</b></label>
                       </div>
                       <select class="custom-select" id="Gender">                    
                         <option value="1">Laki-Laki</option>
@@ -66,9 +66,9 @@
                     </div>
                   </div>
                   <div class="col-sm-3 my-1">
-                    <div class="input-group">
+                    <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
-                        <label class="input-group-text bg-danger text-light"><b>Usia</b></label>
+                        <label class="input-group-text bg-danger text-white"><b>Usia</b></label>
                       </div>
                       <select class="custom-select" id="Usia">                    
                       <?php $Usia = array('20 - 25 Tahun','26 - 30 Tahun','31 - 35 Tahun','36 - 40 Tahun','41 - 45 Tahun',
@@ -80,9 +80,9 @@
                     </div>
                   </div>
                   <div class="col-sm-3 my-1">
-                    <div class="input-group">
+                    <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
-                        <label class="input-group-text bg-danger text-light"><b>Pendidikan</b></label>
+                        <label class="input-group-text bg-danger text-white"><b>Pendidikan</b></label>
                       </div>
                       <select class="custom-select" id="Pendidikan">                    
                       <?php $Pendidikan = array('TIDAK SEKOLAH','SD','SLTP SEDERAJAT','SMA SEDERAJAT','D3/D4',
@@ -94,9 +94,9 @@
                     </div>
                   </div>
                   <div class="col-sm-3 my-1">
-                    <div class="input-group">
+                    <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
-                        <label class="input-group-text bg-danger text-light"><b>Kecamatan</b></label>
+                        <label class="input-group-text bg-danger text-white"><b>Kecamatan</b></label>
                       </div>
                       <select class="custom-select" id="Kecamatan">  
                         <?php foreach ($Kecamatan as $key) { ?>
@@ -106,9 +106,9 @@
                     </div>
                   </div>
                   <div class="col-sm-3 my-1">
-                    <div class="input-group">
+                    <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
-                        <label class="input-group-text bg-danger text-light"><b>Desa/Kelurahan</b></label>
+                        <label class="input-group-text bg-danger text-white"><b>Desa/Kelurahan</b></label>
                       </div>
                       <select class="custom-select" id="Desa">                    
                         <?php foreach ($Desa as $key) { ?>
@@ -118,9 +118,9 @@
                     </div>
                   </div>
                   <div class="col-sm-6 my-1">
-                    <div class="input-group">
+                    <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
-                        <label class="input-group-text bg-danger text-light"><b>Pekerjaan</b></label>
+                        <label class="input-group-text bg-danger text-white"><b>Pekerjaan</b></label>
                       </div>
                       <select class="custom-select" id="Pekerjaan">                    
                       <?php $Pekerjaan = array('PNS','TNI / POLRI','PEGAWAI SWASTA','WIRASWASTA','PELAJAR / MAHASISWA',
@@ -133,9 +133,9 @@
                     </div>
                   </div>
                   <div class="col-sm-6 my-1">
-                    <div class="input-group">
+                    <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
-                        <label class="input-group-text bg-danger text-light"><b>KEPERLUAN PENGURUSAN DI DESA</b></label>
+                        <label class="input-group-text bg-danger text-white"><b>KEPERLUAN PENGURUSAN DI DESA</b></label>
                       </div>
                       <input class="form-control" type="text" id="Keperluan">
                     </div>
@@ -166,21 +166,21 @@
                   ?> 
                   <?php for ($j=0; $j < 11; $j++) { ?>
                     <div class="col-sm-6 my-1">
-                      <div class="input-group">
+                      <div class="input-group input-group-sm">
                         <div class="input-group-prepend">
-                          <p class="input-group-text bg-danger text-light text-justify text-wrap"><b><?=$Tanya[$j]?></b></p>
+                          <p class="input-group-text bg-danger text-white text-justify text-wrap"><b><?=$Tanya[$j]?></b></p>
                         </div>
                       </div>
                     </div> 
-                    <div class="col-sm-6 bg-light p-2 my-1">
-                      <div style="font-size: 11pt;" class="text-wrap text-justify font-weight-bold">
+                    <div class="col-sm-6 bg-primary p-2 my-1">
+                      <div style="font-size: 11pt;" class="text-wrap text-justify font-weight-bold text-white">
                       <?=$Opsi[$j]?>
                       </div>
                       <div class="input-group mt-1">
                         <?php for ($i=1; $i <= 4; $i++) { ?>
                           <div class="form-check form-check-inline ml-4">
                             <input style="transform: scale(1.5);" class="form-check-input" type="radio" name="Input<?=($j+1)?>" id="I<?=($j+1).$i?>" value="<?=$i?>">
-                            <label class="form-check-label font-weight-bold" for="I<?=($j+1).$i?>">&nbsp;<?=$i?></label>
+                            <label class="form-check-label font-weight-bold text-white" for="I<?=($j+1).$i?>">&nbsp;<?=$i?></label>
                           </div>
                         <?php } ?>
                       </div>

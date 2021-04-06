@@ -60,9 +60,17 @@
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-warning border border-light p-0">
+                        <div id="Dewasa" style="margin-bottom: 24px;"></div>
+                      </div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Usia Kerja 16 - 65<br>Sebanyak ".number_format($Dewasa,0,",",".")." Penduduk"?></div></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-12 text-center">
+                    <div class="card">
+                      <div class="card-body bg-warning border border-light p-0">
                         <div id="AngkatanKerja" style="margin-bottom: 24px;"></div>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Total Angkatan Kerja <br>".$AngkatanKerja." Responden"?></div></div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Angkatan Kerja<br>Sebanyak ".number_format($AngkatanKerja,0,",",".")." Penduduk"?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
@@ -70,7 +78,7 @@
                       <div class="card-body bg-warning border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/Profil.jpg')?>" alt="GK" width="81%"></a>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Persentase Tingkat Pengangguran <br> Sebesar ".number_format($Pengangguran,2)." %"?></div></div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Tingkat Pengangguran<br>Sebesar ".number_format($TPT,2)." %"?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
@@ -78,15 +86,7 @@
                       <div class="card-body bg-warning border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/Profil.jpg')?>" alt="GK" width="81%"></a>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Tingkat Partisipasi Angkatan <br> Kerja Sebesar ".number_format($PartisipasiAngkatanKerja,2)." %"?></div></div>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-sm-12 text-center">
-                    <div class="card">
-                      <div class="card-body bg-warning border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/Profil.jpg')?>" alt="GK" width="81%"></a>
-                      </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Tingkat Pengangguran Terbuka <br> Kerja Sebesar ".number_format($TPT,2)." %"?></div></div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Tingkat Partisipasi Angkatan<br>Kerja Sebesar ".number_format($TPAK,2)." %"?></div></div>
                     </div>
                   </div>
                 </div>
@@ -127,13 +127,13 @@
         google.charts.load("current", {packages:["corechart"]});
         google.charts.setOnLoadCallback(drawChart);
         function drawChart() {
-          var data = google.visualization.arrayToDataTable([
-            ['Angkatan Kerja', 'Jumlah'],
-            ['Bekerja',<?=$Bekerja?>],
-            ['Tidak Bekerja',<?=$TidakBekerja?>],
+          var dataDewasa = google.visualization.arrayToDataTable([
+            ['Usia Bekerja', 'Jumlah'],
+            ['Angkatan Kerja',<?=$AngkatanKerja?>],
+            ['Bukan Angkatan Kerja',<?=$BukanAngkatanKerja?>],
           ]);
 
-          var options = {
+          var optionsDewasa = {
             pieHole: 0.4,
             sliceVisibilityThreshold : 0,
             chartArea : {left:5,top:20,width: 250, height: 250},
@@ -141,8 +141,24 @@
             backgroundColor: { fill:'transparent' },
           };
 
-          var chart = new google.visualization.PieChart(document.getElementById('AngkatanKerja'));
-          chart.draw(data, options);
+          var chartDewasa = new google.visualization.PieChart(document.getElementById('Dewasa'));
+          chartDewasa.draw(dataDewasa, optionsDewasa);
+          var dataAngkatanKerja = google.visualization.arrayToDataTable([
+            ['Angkatan Kerja', 'Jumlah'],
+            ['Bekerja',<?=$Bekerja?>],
+            ['Tidak Bekerja',<?=$TidakBekerja?>],
+          ]);
+
+          var optionsAngkatanKerja = {
+            pieHole: 0.4,
+            sliceVisibilityThreshold : 0,
+            chartArea : {left:5,top:20,width: 250, height: 250},
+            legend: {position: 'none'},
+            backgroundColor: { fill:'transparent' },
+          };
+
+          var chartAngkatanKerja = new google.visualization.PieChart(document.getElementById('AngkatanKerja'));
+          chartAngkatanKerja.draw(dataAngkatanKerja, optionsAngkatanKerja);
         }
       })
 		</script>

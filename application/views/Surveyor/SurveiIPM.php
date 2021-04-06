@@ -1,5 +1,5 @@
 				<!-- page content -->
-				<div class="right_col" role="main">
+				<div class="right_col" role="main" style="overflow-x: hidden;">
 					<div class="">
             <div class="clearfix"></div>
 							<div class="row">
@@ -62,11 +62,12 @@
                                 <thead class="bg-danger">
                                   <tr style="font-size: 10pt;" class="text-light text-center">
                                     <th style="width: 4%;" class="align-middle">No</th>
-                                    <th style="width: 18%;" class="align-middle">Nama Anggota</th>
+                                    <th style="width: 17%;" class="align-middle">Nama Anggota</th>
                                     <th style="width: 10%;" class="align-middle">Status</th>
                                     <th style="width: 11%;" class="align-middle">Jenis Kelamin</th>
+                                    <th style="width: 5%;" class="align-middle">Usia</th>
                                     <th style="width: 11%;" class="align-middle">Pendapatan<br>Bersih 1 Bulan</th>
-                                    <th style="width: 29%;" class="align-middle">Sumber Pendapatan</th>
+                                    <th style="width: 25%;" class="align-middle">Sumber Pendapatan</th>
                                     <th style="width: 20%;" class="align-middle">Jenis Pekerjaan</th>
                                   </tr>
                                 </thead>
@@ -88,6 +89,7 @@
                                           <option value="2">Perempuan</option>
                                         </select>
                                       </td>
+                                      <td><input class="form-control form-control-sm" type="text" id="<?='Usia'.$i?>"></td>
                                       <td><input class="form-control form-control-sm" type="text" id="<?='Pendapatan'.$i?>"></td>
                                       <td class="form-inline">
                                         <select style="width: 50%;" class="custom-select custom-select-sm" id="<?='SumberPendapatan'.$i?>">
@@ -1113,15 +1115,6 @@
           </div> 
         </div>
         <!-- /page content -->
-        
-        <!-- footer content -->
-        <footer>
-          <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-          </div>
-          <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
       </div>
     </div>
 

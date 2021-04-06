@@ -44,7 +44,7 @@
     <div class="container clearfix">
       <div class="contact-info float-left">
         <i class="icofont-envelope text-success"></i><a href="mailto:cvideconsultan@gmail.com" class="text-success">cvideconsultan@gmail.com</a>
-        <i class="icofont-whatsapp text-success"> 081334411285</i>
+        <!-- <i class="icofont-whatsapp text-success"> 081334411285</i> -->
       </div>
       <div class="social-links float-left">
         <!-- <a href="#" class="instagram font-weight-bold text-primary"><i class="icofont-instagram"></i></a> -->
@@ -171,23 +171,23 @@
 
         <div class="row mt-3">
           <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
+            <div class="icon"><i class="icofont-vehicle-crane"></i></div>
+            <h4 class="title"><a href="" class="text-primary">Economic Development</a></h4>
+            <!-- <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p> -->
+          </div>
+          <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
             <div class="icon"><i class="icofont-bank"></i></div>
-            <h4 class="title"><a href="" class="text-primary">Fiscal Policy</a></h4>
+            <h4 class="title"><a href="" class="text-primary">Fiscal & Public Policy</a></h4>
+            <!-- <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p> -->
+          </div>
+          <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
+            <div class="icon"><i class="icofont-handshake-deal"></i></div>
+            <h4 class="title"><a href="" class="text-primary">Regional Planning</a></h4>
             <!-- <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p> -->
           </div>
           <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
             <div class="icon"><i class="icofont-attachment"></i></div>
             <h4 class="title"><a href="" class="text-primary">Manajemen</a></h4>
-            <!-- <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p> -->
-          </div>
-          <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
-            <div class="icon"><i class="icofont-bank-alt"></i></div>
-            <h4 class="title"><a href="" class="text-primary">Public Policy</a></h4>
-            <!-- <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p> -->
-          </div>
-          <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
-            <div class="icon"><i class="icofont-handshake-deal"></i></div>
-            <h4 class="title"><a href="" class="text-primary">Business Plan</a></h4>
             <!-- <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p> -->
           </div>
         </div>
