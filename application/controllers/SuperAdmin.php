@@ -481,12 +481,19 @@ class SuperAdmin extends CI_Controller {
 		$this->load->view('SuperAdmin/Pengangguran',$Data);
   }
 
-  public function IPMKesehatan(){
-    $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
-    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan'); 
-    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
-    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
-    $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+  public function ExcelALHAMH($FormatData){
+    $Pisah = explode("-",$FormatData);
+    $ALHAMH = array(); $Data['NamaFile'] = ""; 
+    if ($Pisah[0] == 'Desa') {
+      $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm` WHERE Desa="."'".$Pisah[1]."'")->result_array();
+      $Data['NamaFile'] = "Kecamatan".$Pisah[4]."Desa".$Pisah[2];
+    } else if ($Pisah[0] == 'Kecamatan') {
+      $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm` WHERE Kecamatan="."'".$Pisah[3]."'")->result_array();
+      $Data['NamaFile'] = "Kecamatan".$Pisah[4];
+    } else {
+      $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm`")->result_array();
+      $Data['NamaFile'] = "Banyuwangi";
+    }
     $Data['ALHAMH'] = array();
     $Rentang1 = array(0,0,0,0,0,0);
     $Rentang2 = array(0,0,0,0,0,0);
@@ -501,7 +508,115 @@ class SuperAdmin extends CI_Controller {
       if ($ALHAMH[$i]['Fertilitas'] == "") {
         $JumlahAnak = array();
       }
-      if (is_numeric($UsiaIbu[0]) && is_numeric($UsiaIbu[1])) {
+      if (is_numeric($UsiaIbu[0]) && is_numeric($UsiaIbu[1])) { 
+        $Cek1 = true;$Cek2 = true;$Cek3 = true;$Cek4 = true;$Cek5 = true;$Cek6 = true;$Cek7 = true;
+        for ($j=0; $j < count($JumlahAnak); $j++) { 
+          $PisahAnak = explode("|",$JumlahAnak[$j]);
+          if (is_numeric($PisahAnak[3])) {
+            if ($PisahAnak[3] < ($UsiaIbu[0]+$UsiaIbu[1])) {
+              if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) > 14 && (($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 20) {
+                if ($Cek1) {$Rentang1[3] += 1;$Cek1 = false;}
+                $Rentang1[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang1[2] += 1 : $Rentang1[1] += 1;
+              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 25) {
+                if ($Cek2) {$Rentang2[3] += 1;$Cek2 = false;}
+                $Rentang2[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang2[2] += 1 : $Rentang2[1] += 1;
+              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 30) {
+                if ($Cek3) {$Rentang3[3] += 1;$Cek3 = false;}
+                $Rentang3[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang3[2] += 1 : $Rentang3[1] += 1;
+              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 35) {
+                if ($Cek4) {$Rentang4[3] += 1;$Cek4 = false;}
+                $Rentang4[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang4[2] += 1 : $Rentang4[1] += 1;
+              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 40) {
+                if ($Cek5) {$Rentang5[3] += 1;$Cek5 = false;}
+                $Rentang5[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang5[2] += 1 : $Rentang5[1] += 1;
+              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 45) {
+                if ($Cek6) {$Rentang6[3] += 1;$Cek6 = false;}
+                $Rentang6[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang6[2] += 1 : $Rentang6[1] += 1;
+              } else if ((($UsiaIbu[0]+$UsiaIbu[1])-$PisahAnak[3]) < 50) {
+                if ($Cek7) {$Rentang7[3] += 1;$Cek7 = false;}
+                $Rentang7[0] += 1;
+                $PisahAnak[1] == 1 ? $Rentang7[2] += 1 : $Rentang7[1] += 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    if ($Rentang1[3] > 0) {
+      $Rentang1[4] = number_format($Rentang1[0]/$Rentang1[3],2);
+      $Rentang1[5] = number_format($Rentang1[2]/$Rentang1[3],2);
+    }
+    if ($Rentang2[3] > 0) {
+      $Rentang2[4] = number_format($Rentang2[0]/$Rentang2[3],2);
+      $Rentang2[5] = number_format($Rentang2[2]/$Rentang2[3],2);
+    }
+    if ($Rentang3[3] > 0) {
+      $Rentang3[4] = number_format($Rentang3[0]/$Rentang3[3],2);
+      $Rentang3[5] = number_format($Rentang3[2]/$Rentang3[3],2);
+    }
+    if ($Rentang4[3] > 0) {
+      $Rentang4[4] = number_format($Rentang4[0]/$Rentang4[3],2);
+      $Rentang4[5] = number_format($Rentang4[2]/$Rentang4[3],2);
+    }
+    if ($Rentang5[3] > 0) {
+      $Rentang5[4] = number_format($Rentang5[0]/$Rentang5[3],2);
+      $Rentang5[5] = number_format($Rentang5[2]/$Rentang5[3],2);
+    }
+    if ($Rentang6[3] > 0) {
+      $Rentang6[4] = number_format($Rentang6[0]/$Rentang6[3],2);
+      $Rentang6[5] = number_format($Rentang6[2]/$Rentang6[3],2);
+    }
+    if ($Rentang7[3] > 0) {
+      $Rentang7[4] = number_format($Rentang7[0]/$Rentang7[3],2);
+      $Rentang7[5] = number_format($Rentang7[2]/$Rentang7[3],2);
+    }
+    $Data['ALHAMH'][0] = $Rentang1;
+    $Data['ALHAMH'][1] = $Rentang2;
+    $Data['ALHAMH'][2] = $Rentang3;
+    $Data['ALHAMH'][3] = $Rentang4;
+    $Data['ALHAMH'][4] = $Rentang5;
+    $Data['ALHAMH'][5] = $Rentang6;
+    $Data['ALHAMH'][6] = $Rentang7;
+    $Data['TotalIbu'] = $Rentang1[3]+$Rentang2[3]+$Rentang3[3]+$Rentang4[3]+$Rentang5[3]+$Rentang6[3]+$Rentang7[3];
+    $this->load->view('SuperAdmin/ExcelALHAMH',$Data);
+  }
+
+  public function IPMKesehatan(){
+    $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');
+    $Data['KodeKabupaten'] = $this->session->userdata('KodeKabupaten'); 
+    $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.%' AND length(Kode) = 5")->result_array();
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
+    $ALHAMH = array();  
+    if ($this->session->userdata('JenisData') == 'Desa') {
+      $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+    } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
+      $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
+    } else {
+      $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm`")->result_array();
+    }
+    $Data['ALHAMH'] = array();
+    $Rentang1 = array(0,0,0,0,0,0);
+    $Rentang2 = array(0,0,0,0,0,0);
+    $Rentang3 = array(0,0,0,0,0,0);
+    $Rentang4 = array(0,0,0,0,0,0);
+    $Rentang5 = array(0,0,0,0,0,0);
+    $Rentang6 = array(0,0,0,0,0,0);
+    $Rentang7 = array(0,0,0,0,0,0);
+    for ($i=0; $i < count($ALHAMH); $i++) { 
+      $UsiaIbu = explode("|",$ALHAMH[$i]['Pernikahan']);
+      $JumlahAnak = explode("$",$ALHAMH[$i]['Fertilitas']);
+      if ($ALHAMH[$i]['Fertilitas'] == "") {
+        $JumlahAnak = array();
+      }
+      if (is_numeric($UsiaIbu[0]) && is_numeric($UsiaIbu[1])) { 
         $Cek1 = true;$Cek2 = true;$Cek3 = true;$Cek4 = true;$Cek5 = true;$Cek6 = true;$Cek7 = true;
         for ($j=0; $j < count($JumlahAnak); $j++) { 
           $PisahAnak = explode("|",$JumlahAnak[$j]);
@@ -583,10 +698,19 @@ class SuperAdmin extends CI_Controller {
 
   public function IPMPendidikan(){
     $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
-    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan'); 
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');
+    $Data['KodeKabupaten'] = $this->session->userdata('KodeKabupaten'); 
+    $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.%' AND length(Kode) = 5")->result_array();
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
-    $Pendidikan = $this->db->query("SELECT Usia,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,KeluhanPendidikan FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+    $Pendidikan = array();  
+    if ($this->session->userdata('JenisData') == 'Desa') {
+      $Pendidikan = $this->db->query("SELECT Usia,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,KeluhanPendidikan FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+    } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
+      $Pendidikan = $this->db->query("SELECT Usia,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,KeluhanPendidikan FROM `ipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
+    } else {
+      $Pendidikan = $this->db->query("SELECT Usia,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,KeluhanPendidikan FROM `ipm`")->result_array();
+    }
     $KelompokHLS = array(array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0));
     $LamaSekolah = $Penduduk25 = $PendudukSekolah = $Penduduk7 = $Santri = 0;
     $Data['IPMPendidikan'] = array();
@@ -777,24 +901,38 @@ class SuperAdmin extends CI_Controller {
 
   public function IPMPengeluaran(){
     $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
-    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan'); 
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');
+    $Data['KodeKabupaten'] = $this->session->userdata('KodeKabupaten'); 
+    $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.%' AND length(Kode) = 5")->result_array();
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
-    $DataKomoditas = $this->db->query("SELECT NamaAnggota,Banyaknya,Harga,Nilai FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+    $DataKomoditas = array();  
+    if ($this->session->userdata('JenisData') == 'Desa') {
+      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Banyaknya,Harga,Nilai FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+    } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
+      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Banyaknya,Harga,Nilai FROM `ipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
+    } else {
+      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Banyaknya,Harga,Nilai FROM `ipm`")->result_array();
+    }
     $Data['PerKapita'] = $Data['PerKapitaKonstan'] = 0; 
+    $Rata2KomoditasTerpilih = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+    $Rata2KomoditasTerpilihJakarta = array();
+    $PangkatKomoditas = 0.010416;
     $TotalPengeluaran = $TotalIndividu = 0;
     foreach ($DataKomoditas as $key) {
       $TotalIndividu += count(explode("|",$key['NamaAnggota']));
       $Nilai = explode("|",$key['Nilai']);
       for ($i=0; $i < count($Nilai); $i++) { 
-        if (in_array($i,array(0,2,3,4,5,6,7,8,9,10,11,12,13,14,16,19,20,21,23,24,25,36,37,38,39,40,41,41,42,43,49,51,52,53,54,62,63,64,66,68,69,71,72,76,79,84,85,86,87,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,113,114,115,118,121,141))) {
-          $TotalPengeluaran += ((int)$Nilai[$i]*52);
-        } else if (in_array($i,array(107,111,112,142,143))) {
-          $TotalPengeluaran += ((int)$Nilai[$i]*12);
+        if (in_array($i,array(5,6,7,8,9,10,11,12,13,14,16))) {
+          $TotalPengeluaran += (Int)$Nilai[$i]*3*12;
+        } else if (in_array($i,array(0,2,3,4,19,20,21,23,24,25,36,37,38,39,40,41,62,63,64,66,68,69,71,72,76,79,84,85,86,87,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,113,114,115,118,121,141))) {
+          $TotalPengeluaran += (Int)$Nilai[$i]*52;
+        } else if (in_array($i,array(42,43,49,51,52,53,54,107,111,112,142,143))) {
+          $TotalPengeluaran += (Int)$Nilai[$i]*12;
         } else if (in_array($i,array(119,120,136,148))) {
-          $TotalPengeluaran += ((int)$Nilai[$i]*2);
+          $TotalPengeluaran += (Int)$Nilai[$i]*2;
         } else if (in_array($i,array(108,109,110,127,128,129,130,144,145,146,147,149,150,151,152))) {
-          $TotalPengeluaran += (int)$Nilai[$i];
+          $TotalPengeluaran += (Int)$Nilai[$i];
         }
       }
     }

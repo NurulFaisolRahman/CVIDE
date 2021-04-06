@@ -1,6 +1,6 @@
 <?php
   header('Content-Type: application/xls');
-  header('Content-Disposition: attachment; filename=ALHAMH_'.$NamaKecamatan.'_'.$NamaDesa.'.xls');
+  header('Content-Disposition: attachment; filename=ALHAMH_'.$NamaFile.'.xls');
 ?>
 MIME-Version: 1.0
 X-Document-Type: Worksheet

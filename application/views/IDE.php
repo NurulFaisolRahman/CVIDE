@@ -43,11 +43,11 @@
   <section id="topbar" class="d-none d-lg-block">
     <div class="container clearfix">
       <div class="contact-info float-left">
-        <i class="icofont-envelope font-weight-bold text-primary"></i><a href="mailto:cvideconsultan@gmail.com" class="font-weight-bold text-primary">cvideconsultan@gmail.com</a>
-        <i class="icofont-phone font-weight-bold text-primary"> 081334411285</i>
+        <i class="icofont-envelope text-success"></i><a href="mailto:cvideconsultan@gmail.com" class="text-success">cvideconsultan@gmail.com</a>
+        <i class="icofont-whatsapp text-success"> 081334411285</i>
       </div>
       <div class="social-links float-left">
-        <a href="#" class="instagram font-weight-bold text-primary"><i class="icofont-instagram"></i></a>
+        <!-- <a href="#" class="instagram font-weight-bold text-primary"><i class="icofont-instagram"></i></a> -->
       </div>
     </div>
   </section>
@@ -57,9 +57,9 @@
     <div class="container">
 
       <div class="logo float-left">
-        <h1 class="text-primary font-weight-bold">IDE Consultant</h1>
+        <!-- <h1 class="text-primary font-weight-bold">IDE Consultant</h1> -->
         <!-- Uncomment below if you prefer to use an image logo -->
-        <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a> -->
+        <a><img src="assets/img/apple-touch-icon.png" alt="" class="img-fluid"></a>
       </div>
 
       <nav class="nav-menu float-right d-none d-lg-block font-weight-bold">
@@ -130,27 +130,28 @@
 
         <div class="row no-gutters">
           <div class="col-lg-6 video-box">
-            <img src="assets/img/about.jpg" class="img-fluid" alt="">
+            <img src="assets/img/about.png" class="img-fluid" alt="">
             <a href="https://www.youtube.com/watch?v=jDDaplaOz7Q" class="venobox play-btn mb-4" data-vbtype="video" data-autoplay="true"></a>
           </div>
 
           <div class="col-lg-6 d-flex flex-column justify-content-center about-content">
 
-            <div class="section-title mb-3">
-              <h2>PROFIL</h2>
-              <p class="text-justify">Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea.</p>
+            <div class="section-title pt-0">
+              <h2 class="mb-2 text-danger">PROFIL</h2>
+              <p class="text-justify text-primary font-weight-bold">&emsp;&emsp;&emsp;CV Inti Desain Ekonomi (IDE) Consultant, Be A Professional Researcher And Consultant. Berlokasi Di Jalan Simpang Ikan Nila II Perum Nila Residence B6 Kecamatan Blimbing Kota Malang.</p>
             </div>
 
-            <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
-              <div class="icon"><i class="bx bx-fingerprint"></i></div>
-              <h4 class="title"><a href="">VISI</a></h4>
-              <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
+            <div class="icon-box mt-3" data-aos="fade-up" data-aos-delay="100">
+              <div class="icon" data-toggle="modal" data-target="#ModalVisi"><i class="bx bx-fingerprint"></i></div>
+              <h4 class="title"><a class="text-danger">VISI</a></h4>
+              <p class="description text-justify font-weight-bold text-primary">Menjadi Perusahaan Yang Profesional, Berkualitas, Inovatif, Unggul, dan Berdaya Saing Dalam Research & Consulting Bidang Desain Kebijakan Ekonomi di Indonesia</p>
             </div>
 
-            <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
+            <div class="icon-box mt-0" data-aos="fade-up" data-aos-delay="100">
               <div class="icon"><i class="bx bx-gift"></i></div>
-              <h4 class="title"><a href="">MISI</a></h4>
-              <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque</p>
+              <h4 class="title"><a class="text-danger">MISI</a></h4>
+              <p class="description text-justify font-weight-bold text-primary">1. Memberikan pelayanan jasa riset dan konsultasi yang professional berdasarkan metode dan analisa yang tepat serta akurat Bidang Desain Kebijakan Ekonomi  di Indonesia</p>
+              <p class="description text-justify font-weight-bold text-primary mt-0">2. Menghasilkan Hasil Riset dan Konsultasi Yang Berkualitas dan Inovatif Bidang Desain Kebijakan Ekonomi Di Indonesia</p>
             </div>
 
           </div>
@@ -164,25 +165,30 @@
     <section id="services" class="services">
       <div class="container">
 
-        <div class="section-title my-3">
-          <h2>Pelayanan</h2>
+        <div class="section-title my-4">
+          <h2 class="font-weight-bold text-danger">Pelayanan</h2>
         </div>
 
         <div class="row mt-3">
-          <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up">
-            <div class="icon"><i class="icofont-computer"></i></div>
-            <h4 class="title"><a href="">Lorem Ipsum</a></h4>
-            <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
+          <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
+            <div class="icon"><i class="icofont-bank"></i></div>
+            <h4 class="title"><a href="" class="text-primary">Fiscal Policy</a></h4>
+            <!-- <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p> -->
           </div>
-          <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up" data-aos-delay="100">
-            <div class="icon"><i class="icofont-chart-bar-graph"></i></div>
-            <h4 class="title"><a href="">Dolor Sitema</a></h4>
-            <p class="description">Minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat tarad limino ata</p>
+          <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
+            <div class="icon"><i class="icofont-attachment"></i></div>
+            <h4 class="title"><a href="" class="text-primary">Manajemen</a></h4>
+            <!-- <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p> -->
           </div>
-          <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up" data-aos-delay="200">
-            <div class="icon"><i class="icofont-earth"></i></div>
-            <h4 class="title"><a href="">Sed ut perspiciatis</a></h4>
-            <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>
+          <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
+            <div class="icon"><i class="icofont-bank-alt"></i></div>
+            <h4 class="title"><a href="" class="text-primary">Public Policy</a></h4>
+            <!-- <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p> -->
+          </div>
+          <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
+            <div class="icon"><i class="icofont-handshake-deal"></i></div>
+            <h4 class="title"><a href="" class="text-primary">Business Plan</a></h4>
+            <!-- <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p> -->
           </div>
         </div>
 
@@ -221,6 +227,42 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="ModalVisi" tabindex="-1" role="dialog" aria-labelledby="ModalVisiTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <section id="services" class="services">
+            <div class="container-fluid">
+              <div class="row mt-3">
+                <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
+                  <div class="icon"><i class="icofont-live-support"></i></div>
+                  <h4 class="title"><a href="" class="text-primary">Profesional</a></h4>
+                  <p class="description">Memiliki kemampuan tinggi yang didukung dengan SDM Berkualitas serta memegang teguh nilai moral</p>
+                </div>
+                <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
+                  <div class="icon"><i class="icofont-badge"></i></div>
+                  <h4 class="title"><a href="" class="text-primary">Berkualitas</a></h4>
+                  <p class="description">Riset Dan Konsultasi yang didasarkan kepada data, metodologi yang tepat, serta akurat</p>
+                </div>
+                <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
+                  <div class="icon"><i class="icofont-unique-idea"></i></div>
+                  <h4 class="title"><a href="" class="text-primary">Inovatif</a></h4>
+                  <p class="description">Hasil Riset dan konsultasi yang disertai dengan gagasan, ide yang kreatif, serta terbaharukan</p>
+                </div>
+                <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
+                  <div class="icon"><i class="icofont-gym-alt-3"></i></div>
+                  <h4 class="title"><a href="" class="text-primary">Unggul & Berdaya Saing</a></h4>
+                  <p class="description">Menjadi Perusahaan Riset dan Konsultasi yang mampu bersaing dalam skala Nasional dan Internasional</p>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </div>

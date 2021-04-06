@@ -47,15 +47,14 @@
                       <li><a href="<?=base_url('SuperAdmin/Pendidikan')?>"><b>Pendidikan</b> </a></li>
                       <li><a href="<?=base_url('SuperAdmin/GarisKemiskinan')?>"><b>Garis Kemiskinan</b> </a></li>
                       <li><a href="<?=base_url('SuperAdmin/Pengangguran')?>"><b>Pengangguran</b> </a></li>
-                    </ul>
-									</li>
-                </ul>
-                <ul class="nav side-menu">
-                  <li><a><i class="fa fa-tasks"></i> <b>IPM</b> <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="<?=base_url('SuperAdmin/IPMKesehatan')?>"><b>ALH & AMH</b></a></li>
-                      <li><a href="<?=base_url('SuperAdmin/IPMPendidikan')?>"><b>Pendidikan</b></a></li>
-                      <li><a href="<?=base_url('SuperAdmin/IPMPengeluaran')?>"><b>Pengeluaran</b></a></li>
+                      <li><a><b>Dimensi IPM</b><span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li class="sub_menu"><a href="<?=base_url('SuperAdmin/IPMKesehatan')?>"><b>ALH & AMH</b></a></li>
+                          <li><a href="<?=base_url('SuperAdmin/IPMPendidikan')?>"><b>Pendidikan</b></a></li>
+                          <li><a href="<?=base_url('SuperAdmin/IPMPengeluaran')?>"><b>Pengeluaran</b></a></li>
+                        </ul>
+                      </li>
+                      <!-- <li><a href="<?=base_url('SuperAdmin/IPM')?>"><b>IPM</b> </a></li> -->
                     </ul>
 									</li>
                 </ul>
