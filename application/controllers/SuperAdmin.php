@@ -366,12 +366,63 @@ class SuperAdmin extends CI_Controller {
     $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.%' AND length(Kode) = 5")->result_array();
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
-    $DataKomoditas = array();  
+    $DataKomoditas = array();  $Ace = 0;
     if ($this->session->userdata('JenisData') == 'Desa') {
       $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+      if ($Data['KodeDesa'] == "35.10.01.2002") {
+        $Ace = 85000;
+      } else if ($Data['KodeDesa'] == "35.10.01.2010") {
+        $Ace = 170000;
+      } else if ($Data['KodeDesa'] == "35.10.05.2003") {
+        $Ace = 145000;
+      } else if ($Data['KodeDesa'] == "35.10.05.2007") {
+        $Ace = 125000;
+      } else if ($Data['KodeDesa'] == "35.10.09.2001") {
+        $Ace = 145000;
+      } else if ($Data['KodeDesa'] == "35.10.09.2003") {
+        $Ace = 155000;
+      } else if ($Data['KodeDesa'] == "35.10.11.2003") {
+        $Ace = 145000;
+      } else if ($Data['KodeDesa'] == "35.10.11.2006") {
+        $Ace = 102000;
+      } else if ($Data['KodeDesa'] == "35.10.12.2005") {
+        $Ace = 265000;
+      } else if ($Data['KodeDesa'] == "35.10.12.2006") {
+        $Ace = 195000;
+      } else if ($Data['KodeDesa'] == "35.10.13.2001") {
+        $Ace = 0;
+      } else if ($Data['KodeDesa'] == "35.10.13.2013") {
+        $Ace = 175000;
+      } else if ($Data['KodeDesa'] == "35.10.18.2001") {
+        $Ace = 81000;
+      } else if ($Data['KodeDesa'] == "35.10.18.2012") {
+        $Ace = 105000;
+      } else if ($Data['KodeDesa'] == "35.10.24.2003") {
+        $Ace = 245000;
+      } else if ($Data['KodeDesa'] == "35.10.24.2008") {
+        $Ace = 175000;
+      } 
     } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
       $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `ipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
+      if ($Data['KodeKecamatan'] == "35.10.01") {
+        $Ace = 130000;
+      } else if ($Data['KodeKecamatan'] == "35.10.05") {
+        $Ace = 145000;
+      } else if ($Data['KodeKecamatan'] == "35.10.09") {
+        $Ace = 170000;
+      } else if ($Data['KodeKecamatan'] == "35.10.11") {
+        $Ace = 130000;
+      } else if ($Data['KodeKecamatan'] == "35.10.12") {
+        $Ace = 280000;
+      } else if ($Data['KodeKecamatan'] == "35.10.13") {
+        $Ace = 185000;
+      } else if ($Data['KodeKecamatan'] == "35.10.18") {
+        $Ace = 110000;
+      } else if ($Data['KodeKecamatan'] == "35.10.24") {
+        $Ace = 270000;
+      }
     } else {
+      $Ace = 223500;
       $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `ipm`")->result_array();
     }
     $Data['JumlahKK'] = count($DataKomoditas); $Data['GK'] = $Data['GKM'] = $Data['GKNM'] = $Data['Individu'] = array(); 
@@ -418,7 +469,7 @@ class SuperAdmin extends CI_Controller {
       $Data['GKNMRata2'] = $Data['TotalPengeluaranNonMakanan']/$Data['TotalIndividu']; 
       $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       for ($i=0; $i < count($Data['GKM']); $i++) { 
-        if (($Data['GKM'][$i]+$Data['GKNM'][$i]) > ($Data['GKRata2']-223500)) {
+        if (($Data['GKM'][$i]+$Data['GKNM'][$i]) > ($Data['GKRata2']-$Ace)) {
           $Data['KelompokGK'][0] += $Data['Individu'][$i];
         } else {
           $Data['KelompokGK'][1] += $Data['Individu'][$i];
@@ -428,7 +479,7 @@ class SuperAdmin extends CI_Controller {
     $this->load->view('SuperAdmin/Header',$Data);
 		$this->load->view('SuperAdmin/GarisKemiskinan',$Data);
   }
-  
+
   public function Pengangguran(){
     $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
     $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');

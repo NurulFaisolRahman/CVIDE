@@ -76,7 +76,7 @@
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-warning border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/Profil.jpg')?>" alt="GK" width="81%"></a>
+                        <a><img class="my-2" src="<?=base_url('assets/img/TPT.jpg')?>" alt="GK" height="209" ></a>
                       </div>
                     <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Tingkat Pengangguran<br>Sebesar ".number_format($TPT,2)." %"?></div></div>
                     </div>
@@ -84,7 +84,7 @@
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-warning border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/Profil.jpg')?>" alt="GK" width="81%"></a>
+                        <a><img class="my-2" src="<?=base_url('assets/img/TPAK.png')?>" alt="GK" width="209px"></a>
                       </div>
                     <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Tingkat Partisipasi Angkatan<br>Kerja Sebesar ".number_format($TPAK,2)." %"?></div></div>
                     </div>
