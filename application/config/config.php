@@ -23,9 +23,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://192.168.100.225/CVIDE';
+// $config['base_url'] = 'http://192.168.100.225/CVIDE';
 // $config['base_url'] = 'http://localhost/CVIDE';
-// $config['base_url'] = 'http://intidesainekonomi.id';
+$config['base_url'] = 'https://intidesainekonomi.id';
 
 /*
 |--------------------------------------------------------------------------
