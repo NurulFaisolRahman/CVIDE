@@ -86,9 +86,28 @@
                           </tr>
                         <?php } ?>
                         </tbody>
+                        <tfoot class="bg-danger">
+                          <tr style="font-size: 10pt;" class="text-light text-center align-middle">
+                            <th>Total</th>
+                            <th><?=$Total[0]?></th>
+                            <th><?=$Total[1]?></th>
+                            <th><?=$Total[2]?></th>
+                            <th><?=$Total[3]?></th>
+                            <th>-</th>
+                            <th>-</th>
+                          </tr>
+                        </tfoot>
                       </table>
                     </div>
                   </div>
+                  <!-- <div class="col-lg-3 col-sm-12 text-center">
+                    <div class="card">
+                      <div class="card-body bg-primary border border-light p-0">
+                        <a><img class="my-2" src="<?=base_url('assets/img/AHH.png')?>" alt="GK" height="209" ></a>
+                      </div>
+                    <div class="card-footer bg-danger border border-light" style="padding-top: 11px;"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Angka Harapan Hidup ".$AHH?></div></div>
+                    </div>
+                  </div> -->
                 </div>
               </div>
             </div>

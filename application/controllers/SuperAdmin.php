@@ -643,15 +643,16 @@ class SuperAdmin extends CI_Controller {
     $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.%' AND length(Kode) = 5")->result_array();
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
-    $ALHAMH = array();  
+    $ALHAMH = array(); $Data['AHH'] = 0;
     if ($this->session->userdata('JenisData') == 'Desa') {
       $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
     } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
       $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
     } else {
       $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm`")->result_array();
+      $Data['AHH'] = 70.9;
     }
-    $Data['ALHAMH'] = array();
+    $Data['ALHAMH'] = $Data['Total'] = array();
     $Rentang1 = array(0,0,0,0,0,0);
     $Rentang2 = array(0,0,0,0,0,0);
     $Rentang3 = array(0,0,0,0,0,0);
@@ -740,7 +741,10 @@ class SuperAdmin extends CI_Controller {
     $Data['ALHAMH'][4] = $Rentang5;
     $Data['ALHAMH'][5] = $Rentang6;
     $Data['ALHAMH'][6] = $Rentang7;
-    $Data['TotalIbu'] = $Rentang1[3]+$Rentang2[3]+$Rentang3[3]+$Rentang4[3]+$Rentang5[3]+$Rentang6[3]+$Rentang7[3];
+    $Data['Total'][0] = $Rentang1[0]+$Rentang2[0]+$Rentang3[0]+$Rentang4[0]+$Rentang5[0]+$Rentang6[0]+$Rentang7[0];
+    $Data['Total'][1] = $Rentang1[1]+$Rentang2[1]+$Rentang3[1]+$Rentang4[1]+$Rentang5[1]+$Rentang6[1]+$Rentang7[1];
+    $Data['Total'][2] = $Rentang1[2]+$Rentang2[2]+$Rentang3[2]+$Rentang4[2]+$Rentang5[2]+$Rentang6[2]+$Rentang7[2];
+    $Data['Total'][3] = $Rentang1[3]+$Rentang2[3]+$Rentang3[3]+$Rentang4[3]+$Rentang5[3]+$Rentang6[3]+$Rentang7[3];
     $this->load->view('SuperAdmin/Header',$Data);
 		$this->load->view('SuperAdmin/IPMKesehatan',$Data);
   }
@@ -841,42 +845,7 @@ class SuperAdmin extends CI_Controller {
                 if ($Partisipasi[$i] != 1) {
                   $KelompokHLS[1][11] += 1;
                 }
-              } else if ($Usia[$i] == 19) {
-                $KelompokHLS[0][12] += 1;
-                if ($Partisipasi[$i] != 1) {
-                  $KelompokHLS[1][12] += 1;
-                }
-              } else if ($Usia[$i] == 20) {
-                $KelompokHLS[0][13] += 1;
-                if ($Partisipasi[$i] != 1) {
-                  $KelompokHLS[1][13] += 1;
-                }
-              } else if ($Usia[$i] == 21) {
-                $KelompokHLS[0][14] += 1;
-                if ($Partisipasi[$i] != 1) {
-                  $KelompokHLS[1][14] += 1;
-                }
-              } else if ($Usia[$i] == 22) {
-                $KelompokHLS[0][15] += 1;
-                if ($Partisipasi[$i] != 1) {
-                  $KelompokHLS[1][15] += 1;
-                }
-              } else if ($Usia[$i] == 23) {
-                $KelompokHLS[0][16] += 1;
-                if ($Partisipasi[$i] != 1) {
-                  $KelompokHLS[1][16] += 1;
-                }
-              } else if ($Usia[$i] == 24) {
-                $KelompokHLS[0][17] += 1;
-                if ($Partisipasi[$i] != 1) {
-                  $KelompokHLS[1][17] += 1;
-                }
-              } else if ($Usia[$i] == 25) {
-                $KelompokHLS[0][18] += 1;
-                if ($Partisipasi[$i] != 1) {
-                  $KelompokHLS[1][18] += 1;
-                }
-              }
+              } 
             }
             if ($Usia[$i] > 24) {
               $PendudukSekolah += 1;
@@ -957,39 +926,65 @@ class SuperAdmin extends CI_Controller {
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
     $DataKomoditas = array();  
     if ($this->session->userdata('JenisData') == 'Desa') {
-      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Banyaknya,Harga,Nilai FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Harga,Nilai FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
     } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
-      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Banyaknya,Harga,Nilai FROM `ipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
+      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Harga,Nilai FROM `ipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
     } else {
-      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Banyaknya,Harga,Nilai FROM `ipm`")->result_array();
+      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Harga,Nilai FROM `ipm`")->result_array();
     }
     $Data['PerKapita'] = $Data['PerKapitaKonstan'] = 0; 
+    $KomoditasTerpilih = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
     $Rata2KomoditasTerpilih = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-    $Rata2KomoditasTerpilihJakarta = array();
+    $Rata2KomoditasTerpilihJakarta = array(17550,8085,5400,15021,55000,40000,36714,33500,38024,25175,35000,165850,39900,45000,25100,11638,45141,32500,4000,4000,16000,46200,27900,63400,53200,27000,27000,25111,8000,11400,29900,31000,27500,10000,25000,16300,8825,12800,37000,6000,3228,19300,35500,2700,14000,16600,9000,2000,15000,30000,15000,5000,10000,20000,20000,15000,5000,12000,15000,15000,7000,7000,5000,20000,12000,15000,300000,700000,1800000,150000,43341,6367,20722,5000,5000,35000,300000,150000,5000,500000,1000000,200000,150000,500000,8325,4000,50000,150000,150000,50000,5000,180000,1500000,1500000,1500000,1200000);
     $PangkatKomoditas = 0.010416;
     $TotalPengeluaran = $TotalIndividu = 0;
     foreach ($DataKomoditas as $key) {
       $TotalIndividu += count(explode("|",$key['NamaAnggota']));
       $Nilai = explode("|",$key['Nilai']);
+      $Harga = explode("|",$key['Harga']);
+      $Indeks = 0;
       for ($i=0; $i < count($Nilai); $i++) { 
-        if (in_array($i,array(5,6,7,8,9,10,11,12,13,14,16))) {
-          $TotalPengeluaran += (Int)$Nilai[$i]*3*12;
-        } else if (in_array($i,array(0,2,3,4,19,20,21,23,24,25,36,37,38,39,40,41,62,63,64,66,68,69,71,72,76,79,84,85,86,87,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,113,114,115,118,121,141))) {
-          $TotalPengeluaran += (Int)$Nilai[$i]*52;
+        if (in_array($i,array(0,2,3,4,5,6,7,8,9,10,11,12,13,14,16,19,20,21,23,24,25,36,37,38,39,40,41,62,63,64,66,68,69,71,72,76,79,84,85,86,87,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,113,114,115,118,121,141))) {
+          $TotalPengeluaran += (Int)$Nilai[$i]*152;
+          $KomoditasTerpilih[$Indeks] += (Int)$Harga[$i];
+          $Indeks += 1;
         } else if (in_array($i,array(42,43,49,51,52,53,54,107,111,112,142,143))) {
           $TotalPengeluaran += (Int)$Nilai[$i]*12;
+          $KomoditasTerpilih[$Indeks] += (Int)$Harga[$i];
+          $Indeks += 1;
         } else if (in_array($i,array(119,120,136,148))) {
           $TotalPengeluaran += (Int)$Nilai[$i]*2;
+          $KomoditasTerpilih[$Indeks] += (Int)$Harga[$i];
+          $Indeks += 1;
         } else if (in_array($i,array(108,109,110,127,128,129,130,144,145,146,147,149,150,151,152))) {
           $TotalPengeluaran += (Int)$Nilai[$i];
+          $KomoditasTerpilih[$Indeks] += (Int)$Harga[$i];
+          $Indeks += 1;
         }
       }
     }
+    $Data['PPP'] = $Data['IndeksPengeluaran'] = 0;
     if (count($DataKomoditas) > 0) {
       $Data['PerKapita'] = $TotalPengeluaran/$TotalIndividu/1000; 
       $Data['PerKapitaKonstan'] = $Data['PerKapita']/103.59*100.0; 
+      for ($i=0; $i < count($Rata2KomoditasTerpilih); $i++) { 
+        $Rata2KomoditasTerpilih[$i] = round($KomoditasTerpilih[$i]/count($DataKomoditas),0);
+        $Data['PPP'] += pow(($Rata2KomoditasTerpilih[$i]/$Rata2KomoditasTerpilihJakarta[$i]),1/96);
+      }
+      $Data['PPP'] = $Data['PPP']/100;
+      $Pengeluaran = round($Data['PerKapitaKonstan'],2)/round($Data['PPP'],2)*1000;
+      $Data['IndeksPengeluaran'] = (log($Pengeluaran)-log(1007436))/(log(26572352)-log(1007436));
     }
     $this->load->view('SuperAdmin/Header',$Data);
 		$this->load->view('SuperAdmin/IPMPengeluaran',$Data);
+  }
+
+  public function IPM(){
+    $Data['IPMKesehatan'] = 0.78;
+    $Data['IPMPendidikan'] = 0.57;
+    $Data['IPMPengeluaran'] = 0.79;
+    $Data['IPM'] = pow($Data['IPMKesehatan']*$Data['IPMPendidikan']*$Data['IPMPengeluaran'],1/3)*100;
+    $this->load->view('SuperAdmin/Header',$Data);
+		$this->load->view('SuperAdmin/IPM',$Data);
   }
 }

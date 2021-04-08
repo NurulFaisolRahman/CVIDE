@@ -23,7 +23,7 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="<?=base_url('assets/img/SuperAdmin.png')?>" alt="..." class="img-circle profile_img">
+                <img src="<?=base_url('assets/img/Profil.jpg')?>" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
                 <span class="font-weight-bold">Welcome,</span>
@@ -54,7 +54,7 @@
                           <li><a href="<?=base_url('SuperAdmin/IPMPengeluaran')?>"><b>Pengeluaran</b></a></li>
                         </ul>
                       </li>
-                      <!-- <li><a href="<?=base_url('SuperAdmin/IPM')?>"><b>IPM</b> </a></li> -->
+                      <li><a href="<?=base_url('SuperAdmin/IPM')?>"><b>IPM</b> </a></li>
                     </ul>
 									</li>
                 </ul>

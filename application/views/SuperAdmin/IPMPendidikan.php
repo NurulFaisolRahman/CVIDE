@@ -57,12 +57,29 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-lg-6 mb-2">
-                    <h3 class="font-weight-bold text-danger"><?="RLS = ".$IPMPendidikan['RLS']?></h3>
-                    <h3 class="font-weight-bold text-danger"><?="HLS = ".$IPMPendidikan['HLS']?></h3>
-                    <h3 class="font-weight-bold text-danger"><?="IRLS = ".$IPMPendidikan['IRLS']?></h3>
-                    <h3 class="font-weight-bold text-danger"><?="IHLS = ".$IPMPendidikan['IHLS']?></h3>
-                    <h3 class="font-weight-bold text-danger"><?="IPendidikan = ".$IPMPendidikan['IPendidikan']?></h3>
+                  <div class="col-lg-3 col-sm-12 text-center">
+                    <div class="card">
+                      <div class="card-body bg-primary border border-light p-0">
+                        <a><img class="my-2" src="<?=base_url('assets/img/RLS.png')?>" alt="GK" height="209" ></a>
+                      </div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Rata2 Lama Sekolah ".$IPMPendidikan['RLS']."<br>Indeks Rata2 Lama Sekolah ".$IPMPendidikan['IRLS']?></div></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-12 text-center">
+                    <div class="card">
+                      <div class="card-body bg-primary border border-light p-0">
+                        <a><img class="my-2" src="<?=base_url('assets/img/HLS.png')?>" alt="GK" height="210" ></a>
+                      </div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Harapan Lama Sekolah ".$IPMPendidikan['HLS']."<br>Indeks Harapan Lama Sekolah ".$IPMPendidikan['IHLS']?></div></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-12 text-center">
+                    <div class="card">
+                      <div class="card-body bg-primary border border-light p-0">
+                        <a><img class="my-2" src="<?=base_url('assets/img/IndeksPendidikan.png')?>" alt="GK" height="209" ></a>
+                      </div>
+                    <div class="card-footer bg-danger border border-light" style="padding-top: 11px;"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Indeks Pendidikan ".$IPMPendidikan['IPendidikan']?></div></div>
+                    </div>
                   </div>
                 </div>
               </div>

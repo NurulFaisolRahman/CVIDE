@@ -59,7 +59,7 @@
       <div class="logo float-left">
         <!-- <h1 class="text-primary font-weight-bold">IDE Consultant</h1> -->
         <!-- Uncomment below if you prefer to use an image logo -->
-        <a><img src="assets/img/apple-touch-icon.png" alt="" class="img-fluid"></a>
+        <a><img src="assets/img/apple-touch-icon.png" alt="LogoIDE" class="img-fluid"></a>
       </div>
 
       <nav class="nav-menu float-right d-none d-lg-block font-weight-bold">
@@ -130,7 +130,7 @@
 
         <div class="row no-gutters">
           <div class="col-lg-6 video-box">
-            <img src="assets/img/about.png" class="img-fluid" alt="">
+            <img src="assets/img/about.png" class="img-fluid" alt="FotoVideoProfil"`>
             <a href="https://www.youtube.com/watch?v=jDDaplaOz7Q" class="venobox play-btn mb-4" data-vbtype="video" data-autoplay="true"></a>
           </div>
 
