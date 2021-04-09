@@ -1,7 +1,7 @@
 <div class="clearfix"></div>
             <div class="row">
               <div class="col-lg-12">
-                <!-- <div class="row mt-2">
+                <div class="row mt-2">
                   <div class="col-lg-3">
                     <div class="input-group input-group-sm mb-2">
                       <div class="input-group-prepend">
@@ -55,7 +55,7 @@
                   <div class="col-lg-3">
                     <div class="btn btn-sm btn-primary border-light" id="TampilkanData"><b>Tampilkan</b></div>
                   </div>
-                </div> -->
+                </div>
                 <div class="row mt-2">
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
@@ -103,26 +103,26 @@
     <script src="<?=base_url("build/js/custom.min.js")?>"></script>
 		<script>
 			$(document).ready(function(){
-        // var BaseURL = '<?=base_url()?>' 
-        // $("#Kecamatan").change(function (){
-        //   var Desa = { Kode: $("#Kecamatan").val() }
-        //   $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) { 
-        //     $('#Desa').html(Respon)
-        //   })    
-        // })
-        // $("#TampilkanData").click(function() {
-        //   var Data =  { KodeDesa: $("#Desa").val(),
-        //                 KodeKecamatan: $("#Kecamatan").val(),
-        //                 JenisData: $("#JenisData").val() }
-        //   $.post(BaseURL+"SuperAdmin/Session", Data).done(function(Respon) {
-        //     if (Respon == '1') {
-        //       window.location = BaseURL + "SuperAdmin/IPMPendidikan"
-        //     }
-        //     else {
-        //       alert(Respon)
-        //     }
-        //   })                    
-        // })
+        var BaseURL = '<?=base_url()?>' 
+        $("#Kecamatan").change(function (){
+          var Desa = { Kode: $("#Kecamatan").val() }
+          $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) { 
+            $('#Desa').html(Respon)
+          })    
+        })
+        $("#TampilkanData").click(function() {
+          var Data =  { KodeDesa: $("#Desa").val(),
+                        KodeKecamatan: $("#Kecamatan").val(),
+                        JenisData: $("#JenisData").val() }
+          $.post(BaseURL+"SuperAdmin/Session", Data).done(function(Respon) {
+            if (Respon == '1') {
+              window.location = BaseURL + "SuperAdmin/IPMPendidikan"
+            }
+            else {
+              alert(Respon)
+            }
+          })                    
+        })
       })
 		</script>
   </body>

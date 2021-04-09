@@ -97,7 +97,7 @@
                             <th>-</th>
                           </tr>
                         </tfoot>
-                      </table>
+                      </table> 
                     </div>
                   </div>
                   <!-- <div class="col-lg-3 col-sm-12 text-center">
