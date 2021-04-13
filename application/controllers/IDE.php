@@ -593,4 +593,88 @@ class IDE extends CI_Controller {
     $Data['NamaDesa'] = $NamaDesa;
     $this->load->view('ExcelKomoditas',$Data);                      
   }
+
+  public function RekapBPD(){
+    $BPD = $this->db->get('pbpd')->result_array();
+    $Data['BPD'] = array();
+    $JumlahIndikator = array(6,3,2,3,1);
+    foreach ($BPD as $key) {
+      $Average = array(0,0,0,0,0);
+      $DataDesa = array();
+      array_push($DataDesa,$key['NamaDesa']);
+      $Poin = explode("|",$key['Poin']);
+      $Loop = 0;
+      for ($i=0; $i < 5; $i++) { 
+        $Tampung = 0;
+        for ($j=0; $j < $JumlahIndikator[$i]; $j++) { 
+          $Tampung += $Poin[$Loop];
+          $Loop++; 
+        }
+        $Average[$i] += $Tampung;
+      }
+      for ($i=0; $i < 5; $i++) { 
+        $Average[$i] = $Average[$i]/$JumlahIndikator[$i]*25;
+        array_push($DataDesa,$Average[$i]);
+      }
+      $Hasil = array_sum($Average)/5;
+      array_push($DataDesa,$Hasil);
+      if ($Hasil < 43.75) {
+        array_push($DataDesa,'D');
+        array_push($DataDesa,'Tidak Baik');
+      } else if ($Hasil < 62.5) {
+        array_push($DataDesa,'C');
+        array_push($DataDesa,'Kurang Baik');
+      } else if ($Hasil < 81.25) {
+        array_push($DataDesa,'B');
+        array_push($DataDesa,'Baik');
+      } else {
+        array_push($DataDesa,'A');
+        array_push($DataDesa,'Sangat Baik');
+      }
+      array_push($Data['BPD'],$DataDesa);
+    }
+    $this->load->view('RekapBPD',$Data);
+  }
+
+  public function RekapPemDes(){
+    $PemDes = $this->db->get('pkinerjapemdes')->result_array();
+    $Data['PemDes'] = array();
+    $JumlahIndikator = array(7,11,13,6,3);
+    foreach ($PemDes as $key) {
+      $Average = array(0,0,0,0,0);
+      $DataDesa = array();
+      array_push($DataDesa,$key['NamaDesa']);
+      $Poin = explode("|",$key['Poin']);
+      $Loop = 0;
+      for ($i=0; $i < 5; $i++) { 
+        $Tampung = 0;
+        for ($j=0; $j < $JumlahIndikator[$i]; $j++) { 
+          $Tampung += $Poin[$Loop];
+          $Loop++; 
+        }
+        $Average[$i] += $Tampung;
+      }
+      for ($i=0; $i < 5; $i++) { 
+        $Average[$i] = $Average[$i]/$JumlahIndikator[$i]*25;
+        array_push($DataDesa,$Average[$i]);
+      }
+      $Hasil = array_sum($Average)/5;
+      array_push($DataDesa,$Hasil);
+      if ($Hasil < 43.75) {
+        array_push($DataDesa,'D');
+        array_push($DataDesa,'Tidak Baik');
+      } else if ($Hasil < 62.5) {
+        array_push($DataDesa,'C');
+        array_push($DataDesa,'Kurang Baik');
+      } else if ($Hasil < 81.25) {
+        array_push($DataDesa,'B');
+        array_push($DataDesa,'Baik');
+      } else {
+        array_push($DataDesa,'A');
+        array_push($DataDesa,'Sangat Baik');
+      }
+      array_push($Data['PemDes'],$DataDesa);
+    }
+    $this->load->view('RekapPemDes',$Data);
+  }
 }

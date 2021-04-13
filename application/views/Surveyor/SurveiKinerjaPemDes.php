@@ -334,7 +334,7 @@
             } 
             var GabungPoin = ''
             for (let i = 0; i < Poin.length; i++) {
-              i < (Poin.length-1) ? GabungPoin += (Poin[i]+'|') : GabungPoin += Poin[i]
+              i < (Poin.length-1) ? GabungPoin += (Poin[i]+'|') : GabungPoin += Poin[i] 
             }
             var KinerjaPemdes = { Kecamatan: $("#Kecamatan").val(),
                                   Desa: $("#Desa").val(),
