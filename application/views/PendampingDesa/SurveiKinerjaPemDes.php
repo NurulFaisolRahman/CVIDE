@@ -180,16 +180,19 @@
                 alert('Pertanyaan Nomer '+(Input[i]+1)+', Input '+$Pisah[0]+' Tidak Boleh Lebih Besar Dari Input '+$Pisah[1])
                 Cek = false
                 break
-              } else if (parseInt($("#I"+Input[i]+"0").val()) == 0 && parseInt($("#I"+Input[i]+"1").val()) == 0) {
-                $Pisah = Tanya[i].split("|")
-                alert('Pertanyaan Nomer '+(Input[i]+1)+', Input '+$Pisah[0]+' & '+$Pisah[1]+' Tidak boleh 0')
-                Cek = false
-                break
-              }
+              } 
+              // else if (parseInt($("#I"+Input[i]+"0").val()) == 0 && parseInt($("#I"+Input[i]+"1").val()) == 0) {
+              //   $Pisah = Tanya[i].split("|")
+              //   alert('Pertanyaan Nomer '+(Input[i]+1)+', Input '+$Pisah[0]+' & '+$Pisah[1]+' Tidak boleh 0')
+              //   Cek = false
+              //   break
+              // }
             }
           } 
           if (Cek) {
-            if ((parseInt($("#I"+Input[0]+"0").val())/parseInt($("#I"+Input[0]+"1").val())*100) < 40) {
+            if (parseInt($("#I"+Input[0]+"0").val()) == 0 && parseInt($("#I"+Input[0]+"1").val()) == 0) {
+              Poin[Input[0]] = '1'
+            } else if ((parseInt($("#I"+Input[0]+"0").val())/parseInt($("#I"+Input[0]+"1").val())*100) < 40) {
               Poin[Input[0]] = '1'
             } else if ((parseInt($("#I"+Input[0]+"0").val())/parseInt($("#I"+Input[0]+"1").val())*100) < 56) {
               Poin[Input[0]] = '2'
@@ -198,7 +201,9 @@
             } else {
               Poin[Input[0]] = '4'
             } 
-            if ((parseInt($("#I"+Input[1]+"0").val())/parseInt($("#I"+Input[1]+"1").val())*100) < 30) {
+            if (parseInt($("#I"+Input[1]+"0").val()) == 0 && parseInt($("#I"+Input[1]+"1").val()) == 0) {
+              Poin[Input[1]] = '1'
+            } else if ((parseInt($("#I"+Input[1]+"0").val())/parseInt($("#I"+Input[1]+"1").val())*100) < 30) {
               Poin[Input[1]] = '4'
             } else if ((parseInt($("#I"+Input[1]+"0").val())/parseInt($("#I"+Input[1]+"1").val())*100) < 56) {
               Poin[Input[1]] = '3'
@@ -207,7 +212,9 @@
             } else {
               Poin[Input[1]] = '1'
             } 
-            if ((parseInt($("#I"+Input[2]+"0").val())/parseInt($("#I"+Input[2]+"1").val())*100) < 40) {
+            if (parseInt($("#I"+Input[2]+"0").val()) == 0 && parseInt($("#I"+Input[2]+"1").val()) == 0) {
+              Poin[Input[2]] = '1'
+            } else if ((parseInt($("#I"+Input[2]+"0").val())/parseInt($("#I"+Input[2]+"1").val())*100) < 40) {
               Poin[Input[2]] = '1'
             } else if ((parseInt($("#I"+Input[2]+"0").val())/parseInt($("#I"+Input[2]+"1").val())*100) < 56) {
               Poin[Input[2]] = '2'
@@ -216,7 +223,9 @@
             } else {
               Poin[Input[2]] = '4'
             } 
-            if (parseInt($("#I"+Input[3]+"1").val()/parseInt($("#I"+Input[3]+"0").val())) < 3) {
+            if (parseInt($("#I"+Input[3]+"0").val()) == 0 && parseInt($("#I"+Input[3]+"1").val()) == 0) {
+              Poin[Input[3]] = '1'
+            } else if (parseInt($("#I"+Input[3]+"1").val())/parseInt($("#I"+Input[3]+"0").val()) < 3) {
               Poin[Input[3]] = '1'
             } else if (parseInt($("#I"+Input[3]+"1").val())/parseInt($("#I"+Input[3]+"0").val()) < 6) {
               Poin[Input[3]] = '2'
@@ -225,7 +234,9 @@
             } else {
               Poin[Input[3]] = '4'
             } 
-            if (parseInt($("#I"+Input[4]+"0").val()/parseInt($("#I"+Input[4]+"1").val())) < 11) {
+            if (parseInt($("#I"+Input[4]+"0").val()) == 0 && parseInt($("#I"+Input[4]+"1").val()) == 0) {
+              Poin[Input[4]] = '1'
+            } else if (parseInt($("#I"+Input[4]+"0").val())/parseInt($("#I"+Input[4]+"1").val()) < 11) {
               Poin[Input[4]] = '1'
             } else if (parseInt($("#I"+Input[4]+"0").val())/parseInt($("#I"+Input[4]+"1").val()) < 26) {
               Poin[Input[4]] = '2'
@@ -234,7 +245,9 @@
             } else {
               Poin[Input[4]] = '4'
             } 
-            if (parseInt($("#I"+Input[5]+"1").val()/parseInt($("#I"+Input[5]+"0").val())) < 1000) {
+            if (parseInt($("#I"+Input[5]+"0").val()) == 0 && parseInt($("#I"+Input[5]+"1").val()) == 0) {
+              Poin[Input[5]] = '1'
+            } else if (parseInt($("#I"+Input[5]+"1").val())/parseInt($("#I"+Input[5]+"0").val()) < 1000) {
               Poin[Input[5]] = '4'
             } else if (parseInt($("#I"+Input[5]+"1").val())/parseInt($("#I"+Input[5]+"0").val()) < 1501) {
               Poin[Input[5]] = '3'
@@ -243,7 +256,9 @@
             } else {
               Poin[Input[5]] = '1'
             } 
-            if (parseInt($("#I"+Input[6]+"1").val()/parseInt($("#I"+Input[6]+"0").val())) < 2000) {
+            if (parseInt($("#I"+Input[6]+"0").val()) == 0 && parseInt($("#I"+Input[6]+"1").val()) == 0) {
+              Poin[Input[6]] = '1'
+            } else if (parseInt($("#I"+Input[6]+"1").val())/parseInt($("#I"+Input[6]+"0").val()) < 2000) {
               Poin[Input[6]] = '4'
             } else if (parseInt($("#I"+Input[6]+"1").val())/parseInt($("#I"+Input[6]+"0").val()) < 2501) {
               Poin[Input[6]] = '3'
@@ -252,7 +267,9 @@
             } else {
               Poin[Input[6]] = '1'
             }
-            if (parseInt($("#I"+Input[7]+"1").val()/parseInt($("#I"+Input[7]+"0").val())) < 2000) {
+            if (parseInt($("#I"+Input[7]+"0").val()) == 0 && parseInt($("#I"+Input[7]+"1").val()) == 0) {
+              Poin[Input[7]] = '1'
+            } else if (parseInt($("#I"+Input[7]+"1").val())/parseInt($("#I"+Input[7]+"0").val()) < 2000) {
               Poin[Input[7]] = '4'
             } else if (parseInt($("#I"+Input[7]+"1").val())/parseInt($("#I"+Input[7]+"0").val()) < 2501) {
               Poin[Input[7]] = '3'
@@ -261,7 +278,9 @@
             } else {
               Poin[Input[7]] = '1'
             }
-            if (parseInt($("#I"+Input[8]+"1").val()/parseInt($("#I"+Input[8]+"0").val())) < 6000) {
+            if (parseInt($("#I"+Input[8]+"0").val()) == 0 && parseInt($("#I"+Input[8]+"1").val()) == 0) {
+              Poin[Input[8]] = '1'
+            } else if (parseInt($("#I"+Input[8]+"1").val())/parseInt($("#I"+Input[8]+"0").val()) < 6000) {
               Poin[Input[8]] = '4'
             } else if (parseInt($("#I"+Input[8]+"1").val())/parseInt($("#I"+Input[8]+"0").val()) < 7001) {
               Poin[Input[8]] = '3'
@@ -270,7 +289,9 @@
             } else {
               Poin[Input[8]] = '1'
             }
-            if (parseInt($("#I"+Input[9]+"1").val()/parseInt($("#I"+Input[9]+"0").val())) < 6000) {
+            if (parseInt($("#I"+Input[9]+"0").val()) == 0 && parseInt($("#I"+Input[9]+"1").val()) == 0) {
+              Poin[Input[9]] = '1'
+            } else if (parseInt($("#I"+Input[9]+"1").val())/parseInt($("#I"+Input[9]+"0").val()) < 6000) {
               Poin[Input[9]] = '4'
             } else if (parseInt($("#I"+Input[9]+"1").val())/parseInt($("#I"+Input[9]+"0").val()) < 7001) {
               Poin[Input[9]] = '3'
@@ -279,7 +300,9 @@
             } else {
               Poin[Input[9]] = '1'
             }
-            if (parseInt($("#I"+Input[10]+"1").val()/parseInt($("#I"+Input[10]+"0").val())) < 3000) {
+            if (parseInt($("#I"+Input[10]+"0").val()) == 0 && parseInt($("#I"+Input[10]+"1").val()) == 0) {
+              Poin[Input[10]] = '1'
+            } else if (parseInt($("#I"+Input[10]+"1").val())/parseInt($("#I"+Input[10]+"0").val()) < 3000) {
               Poin[Input[10]] = '4'
             } else if (parseInt($("#I"+Input[10]+"1").val())/parseInt($("#I"+Input[10]+"0").val()) < 5001) {
               Poin[Input[10]] = '3'
@@ -288,7 +311,9 @@
             } else {
               Poin[Input[10]] = '1'
             }
-            if ((parseInt($("#I"+Input[11]+"0").val())/parseInt($("#I"+Input[11]+"1").val())*100) < 40) {
+            if (parseInt($("#I"+Input[11]+"0").val()) == 0 && parseInt($("#I"+Input[11]+"1").val()) == 0) {
+              Poin[Input[11]] = '1'
+            } else if ((parseInt($("#I"+Input[11]+"0").val())/parseInt($("#I"+Input[11]+"1").val())*100) < 40) {
               Poin[Input[11]] = '1'
             } else if ((parseInt($("#I"+Input[11]+"0").val())/parseInt($("#I"+Input[11]+"1").val())*100) < 56) {
               Poin[Input[11]] = '2'
