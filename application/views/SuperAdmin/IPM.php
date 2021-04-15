@@ -116,7 +116,7 @@
                         JenisData: $("#JenisData").val() }
           $.post(BaseURL+"SuperAdmin/Session", Data).done(function(Respon) {
             if (Respon == '1') {
-              window.location = BaseURL + "SuperAdmin/IPMPendidikan"
+              window.location = BaseURL + "SuperAdmin/IPM"
             }
             else {
               alert(Respon)
