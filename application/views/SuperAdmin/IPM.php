@@ -62,7 +62,7 @@
                       <div class="card-body bg-primary border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/IndeksPendidikan.png')?>" alt="IndeksPendidikan" height="210" ></a>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Indeks Pendidikan ".$IPMPendidikan?></div></div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Indeks Pendidikan ".number_format($IPMPendidikan,2)?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
@@ -70,7 +70,7 @@
                       <div class="card-body bg-primary border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/IndeksKesehatan.png')?>" alt="IndeksKesehatan" height="210" ></a>
                       </div>
-                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Indeks Kesehatan ".$IPMKesehatan?></div></div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Indeks Kesehatan ".number_format($IPMKesehatan,2)?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
@@ -78,7 +78,7 @@
                       <div class="card-body bg-primary border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/GK.png')?>" alt="IndeksPengeluaran" height="210" ></a>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Indeks Pengeluaran ".$IPMPengeluaran?></div></div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Indeks Pengeluaran ".number_format($IPMPengeluaran,2)?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
