@@ -677,4 +677,109 @@ class IDE extends CI_Controller {
     }
     $this->load->view('RekapPemDes',$Data);
   }
+
+  public function RekapEvaluasiDesa(){
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.01.%'")->result_array();
+    $this->load->view('RekapEvaluasiDesa',$Data);
+  }
+
+  public function ExcelEvaluasiDesa($Filter){
+    $Pisah = explode("-",$Filter);
+    $Data['Desa'] = $Data['Kecamatan'] = array();
+    $Cek = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Pisah[1]."%'")->result_array();
+    array_shift($Cek);
+    if ($Pisah[0] == "BPD") {
+      $Data['NamaFile'] = "BPD_Kecamatan_".$Pisah[2];
+      $JumlahIndikator = array(6,3,2,3,1);
+      $Tabel = "pbpd";
+    } 
+    else if ($Pisah[0] == "PEMDES") {
+      $Data['NamaFile'] = "PemDes_Kecamatan_".$Pisah[2];
+      $JumlahIndikator = array(7,11,13,6,3);
+      $Tabel = "pkinerjapemdes";
+    }
+    $data = $this->db->query("SELECT * FROM ".$Tabel." WHERE KodeDesa LIKE "."'".$Pisah[1]."%'")->result_array();
+    $KodeDesa = array();
+    foreach ($data as $key) {
+      array_push($KodeDesa,$key['KodeDesa']);
+    }
+    $Rata2 = array(0,0,0,0,0,0);
+    $Pembagi = 0;
+    foreach ($Cek as $key) {
+      if (in_array($key['Kode'],$KodeDesa)) {
+        $Pembagi += 1;
+        $data = $this->db->query("SELECT * FROM ".$Tabel." WHERE KodeDesa = "."'".$key['Kode']."'")->row_array();
+        $Average = array(0,0,0,0,0);
+        $Poin = explode("|",$data['Poin']);
+        $Loop = 0;
+        for ($i=0; $i < 5; $i++) { 
+          $Tampung = 0;
+          for ($j=0; $j < $JumlahIndikator[$i]; $j++) { 
+            $Tampung += $Poin[$Loop];
+            $Loop++; 
+          }
+          $Average[$i] += $Tampung;
+        }
+        $DataDesa = array();
+        array_push($DataDesa,$key['Nama']);
+        for ($i=0; $i < 5; $i++) { 
+          $Average[$i] = $Average[$i]/$JumlahIndikator[$i]*25;
+          array_push($DataDesa,number_format($Average[$i],2));
+          $Rata2[$i] += $Average[$i]; 
+        }
+        $Hasil = array_sum($Average)/5;
+        $Rata2[5] += $Hasil;
+        array_push($Average,$Hasil);
+        array_push($DataDesa,number_format($Hasil,2));
+        for ($i=0; $i < 6; $i++) { 
+          if ($Average[$i] < 43.75) {
+            array_push($DataDesa,'Tidak Baik');
+          } else if ($Average[$i] < 62.5) {
+            array_push($DataDesa,'Kurang Baik');
+          } else if ($Average[$i] < 81.25) {
+            array_push($DataDesa,'Baik');
+          } else {
+            array_push($DataDesa,'Sangat Baik');
+          }
+        }
+        array_push($Data['Desa'],join("|",$DataDesa));
+      } else {
+        $DataDesa = $key['Nama']."|0|0|0|0|0|0|-|-|-|-|-|-";
+        array_push($Data['Desa'],$DataDesa);
+      }
+    }
+    if (count($KodeDesa) > 0) {
+      array_push($Data['Kecamatan'],$Pisah[2]);
+      for ($i=0; $i < 6; $i++) { 
+        array_push($Data['Kecamatan'],number_format($Rata2[$i]/$Pembagi,2));
+      }
+      for ($i=0; $i < 6; $i++) { 
+        if (number_format($Rata2[$i]/$Pembagi,2) < 43.75) {
+          array_push($Data['Kecamatan'],'Tidak Baik');
+        } else if (number_format($Rata2[$i]/$Pembagi,2) < 62.5) {
+          array_push($Data['Kecamatan'],'Kurang Baik');
+        } else if (number_format($Rata2[$i]/$Pembagi,2) < 81.25) {
+          array_push($Data['Kecamatan'],'Baik');
+        } else {
+          array_push($Data['Kecamatan'],'Sangat Baik');
+        }
+      }
+    } else {
+      array_push($Data['Kecamatan'],$Pisah[2]);
+      array_push($Data['Kecamatan'],0);
+      array_push($Data['Kecamatan'],0);
+      array_push($Data['Kecamatan'],0);
+      array_push($Data['Kecamatan'],0);
+      array_push($Data['Kecamatan'],0);
+      array_push($Data['Kecamatan'],0);
+      array_push($Data['Kecamatan'],'-');
+      array_push($Data['Kecamatan'],'-');
+      array_push($Data['Kecamatan'],'-');
+      array_push($Data['Kecamatan'],'-');
+      array_push($Data['Kecamatan'],'-');
+      array_push($Data['Kecamatan'],'-');
+    } 
+    $this->load->view('ExcelEvaluasiDesa',$Data);
+  }
 }
