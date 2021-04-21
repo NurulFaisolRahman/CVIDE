@@ -62,6 +62,7 @@
                               <div class="btn btn-sm btn-primary text-light" id="BPD"><b>BPD</b></div>
                               <div class="btn btn-sm btn-primary text-light" id="PEMDES"><b>PEMDES</b></div>
                               <div class="btn btn-sm btn-success text-light" id="EXCEL"><b>EXCEL</b></div>
+                              <div id="Loading" class="spinner-border spinner-border-sm text-white" role="status" style="display: none;"></div>
                             </div>
                             <div class="col-sm-12">
                               <input type="hidden" id="JenisData" value="0">
@@ -107,20 +108,24 @@
         var BaseURL = '<?=base_url()?>'
 
         $("#BPD").click(function() {
+          $("#Loading").show();
           $("#JenisData").val("BPD")
           var Kecamatan = $("#Kecamatan").val().split("|")
           var Data = { Filter: 'BPD-'+Kecamatan[0]+'-'+Kecamatan[1] }
           $.post(BaseURL+"IDE/FilterEvaluasiPerKecamatan", Data).done(function(Respon) {
             $('#Rekap').html(Respon)
+            $("#Loading").hide();
           }) 
         })
 
         $("#PEMDES").click(function() {
+          $("#Loading").show();
           $("#JenisData").val("PEMDES")
           var Kecamatan = $("#Kecamatan").val().split("|")
           var Data = { Filter: 'PEMDES-'+Kecamatan[0]+'-'+Kecamatan[1] }
           $.post(BaseURL+"IDE/FilterEvaluasiPerKecamatan", Data).done(function(Respon) {
             $('#Rekap').html(Respon)
+            $("#Loading").hide();
           }) 
         })
 
