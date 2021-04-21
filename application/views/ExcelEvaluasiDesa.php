@@ -961,54 +961,42 @@ td
     <td height="20" style='height:15.00pt;'></td>
     <td class="xl65" x:str>No</td>
     <td class="xl65" x:str>Desa</td>
-    <td class="xl66" x:num>1</td>
-    <td class="xl66" x:num>2</td>
-    <td class="xl66" x:num>3</td>
-    <td class="xl66" x:num>4</td>
-    <td class="xl66" x:num>5</td>
-    <td class="xl65" x:str>Kesimpulan</td>
+    <td class="xl66" x:num>Indikator 1</td>
+    <td class="xl66" x:num>Indikator 2</td>
+    <td class="xl66" x:num>Indikator 3</td>
+    <td class="xl66" x:num>Indikator 4</td>
+    <td class="xl66" x:num>Indikator 5</td>
+    <td class="xl65" x:str>Nilai Indeks</td>
+		<td class="xl65" x:str>Mutu Pelayanan</td>
+		<td class="xl65" x:str>Kinerja Pelayanan</td>
    </tr>
    <?php for ($i=0; $i < count($Desa); $i++) { $Pisah = explode("|",$Desa[$i]); ?>
    <tr height="20" style='height:15.00pt;'>
     <td height="20" style='height:15.00pt;'></td>
-    <td class="xl67" rowspan="2" style='border-right:.5pt solid windowtext;border-bottom:.5pt solid windowtext;' x:num><?=($i+1)?></td>
-    <td class="xl68" rowspan="2" style='border-right:.5pt solid windowtext;border-bottom:.5pt solid windowtext;' x:str><?=$Pisah[0]?></td>
+    <td class="xl67" style='border-right:.5pt solid windowtext;border-bottom:.5pt solid windowtext;' x:num><?=($i+1)?></td>
+    <td class="xl68" style='border-right:.5pt solid windowtext;border-bottom:.5pt solid windowtext;' x:str><?=$Pisah[0]?></td>
     <td class="xl69" x:str><?=str_replace(".",",",$Pisah[1])?></td>
     <td class="xl69" x:str><?=str_replace(".",",",$Pisah[2])?></td>
     <td class="xl69" x:str><?=str_replace(".",",",$Pisah[3])?></td>
     <td class="xl69" x:str><?=str_replace(".",",",$Pisah[4])?></td>
     <td class="xl69" x:str><?=str_replace(".",",",$Pisah[5])?></td>
     <td class="xl69" x:str><?=str_replace(".",",",$Pisah[6])?></td>
-   </tr>
-   <tr height="20" style='height:15.00pt;'>
-    <td height="20" style='height:15.00pt;'></td>
-    <td class="xl71" x:str><?=$Pisah[7]?></td>
-    <td class="xl71" x:str><?=$Pisah[8]?></td>
-    <td class="xl71" x:str><?=$Pisah[9]?></td>
-    <td class="xl71" x:str><?=$Pisah[10]?></td>
-    <td class="xl71" x:str><?=$Pisah[11]?></td>
-    <td class="xl71" x:str><?=$Pisah[12]?></td>
+		<td class="xl69" x:str><?=str_replace(".",",",$Pisah[7])?></td>
+		<td class="xl69" x:str><?=str_replace(".",",",$Pisah[8])?></td>
    </tr>
    <?php } ?>
    <tr height="20" style='height:15.00pt;'>
     <td height="20" style='height:15.00pt;'></td>
-    <td class="xl72" rowspan="2" style='border-right:.5pt solid windowtext;border-bottom:.5pt solid windowtext;' x:str>#</td>
-    <td class="xl72" rowspan="2" style='border-right:.5pt solid windowtext;border-bottom:.5pt solid windowtext;' x:str><?=$Kecamatan[0]?></td>
+    <td class="xl72" style='border-right:.5pt solid windowtext;border-bottom:.5pt solid windowtext;' x:str>#</td>
+    <td class="xl72" style='border-right:.5pt solid windowtext;border-bottom:.5pt solid windowtext;' x:str><?=$Kecamatan[0]?></td>
     <td class="xl73" x:str><?=str_replace(".",",",$Kecamatan[1])?></td>
     <td class="xl73" x:str><?=str_replace(".",",",$Kecamatan[2])?></td>
     <td class="xl73" x:str><?=str_replace(".",",",$Kecamatan[3])?></td>
     <td class="xl73" x:str><?=str_replace(".",",",$Kecamatan[4])?></td>
     <td class="xl73" x:str><?=str_replace(".",",",$Kecamatan[5])?></td>
     <td class="xl73" x:str><?=str_replace(".",",",$Kecamatan[6])?></td>
-   </tr>
-   <tr height="20" style='height:15.00pt;'>
-    <td height="20" style='height:15.00pt;'></td>
-    <td class="xl75" x:str><?=$Kecamatan[7]?></td>
-    <td class="xl75" x:str><?=$Kecamatan[8]?></td>
-    <td class="xl75" x:str><?=$Kecamatan[9]?></td>
-    <td class="xl75" x:str><?=$Kecamatan[10]?></td>
-    <td class="xl75" x:str><?=$Kecamatan[11]?></td>
-    <td class="xl75" x:str><?=$Kecamatan[12]?></td>
+		<td class="xl73" x:str><?=str_replace(".",",",$Kecamatan[7])?></td>
+		<td class="xl73" x:str><?=str_replace(".",",",$Kecamatan[8])?></td>
    </tr>
    <![if supportMisalignedColumns]>
     <tr width="0" style='display:none;'>
