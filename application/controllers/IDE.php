@@ -846,6 +846,7 @@ class IDE extends CI_Controller {
           array_push($DataDesa,'A');
           array_push($DataDesa,'Sangat Baik');
         }
+
         array_push($Data['Desa'],join("|",$DataDesa));
       } else {
         $DataDesa = $key['Nama']."|0|0|0|0|0|0|-|-";
@@ -885,31 +886,61 @@ class IDE extends CI_Controller {
     $Rekap = "";
     for ($i=0; $i < count($Data['Desa']); $i++) { 
       $Pecah = explode("|",$Data['Desa'][$i]);
-      $Rekap .= "<tr style='color:#0000ff;'>";
-      $Rekap .= '<th scope="row" class="text-center align-middle">'.($i+1).'</th>';
-      $Rekap .= '<th scope="row" class="text-center align-middle">'.str_replace(".",",",$Pecah[0]).'</th>';
+      $Rekap .= "<tr style='color:#000000;'>";
+      $Rekap .= '<th scope="row" rowspan ="2" class="text-center align-middle">'.($i+1).'</th>';
+      $Rekap .= '<th scope="row" rowspan ="2" class="text-center align-middle">'.str_replace(".",",",$Pecah[0]).'</th>';
       $Rekap .= '<th scope="row" class="text-center align-middle">'.str_replace(".",",",$Pecah[1]).'</th>';
       $Rekap .= '<th scope="row" class="text-center align-middle">'.str_replace(".",",",$Pecah[2]).'</th>';
       $Rekap .= '<th scope="row" class="text-center align-middle">'.str_replace(".",",",$Pecah[3]).'</th>';
       $Rekap .= '<th scope="row" class="text-center align-middle">'.str_replace(".",",",$Pecah[4]).'</th>';
       $Rekap .= '<th scope="row" class="text-center align-middle">'.str_replace(".",",",$Pecah[5]).'</th>';
       $Rekap .= '<th scope="row" class="text-center align-middle">'.str_replace(".",",",$Pecah[6]).'</th>';
-      $Rekap .= '<th scope="row" class="text-center align-middle">'.$Pecah[7].'</th>';
-      $Rekap .= '<th scope="row" class="text-center align-middle">'.$Pecah[8].'</th>';
+      $Rekap .= '<th scope="row" rowspan ="2" class="text-center align-middle">'.$Pecah[7].'</th>';
+      $Rekap .= '<th scope="row" rowspan ="2" class="text-center align-middle">'.$Pecah[8].'</th>';
+      $Rekap .= "</tr>";
+      $Rekap .= "<tr style='color:#0000ff;'>";
+      $Rekap .= '<th scope="row" class="text-center align-middle">'.$this->Grade($Pecah[1]).'</th>';
+      $Rekap .= '<th scope="row" class="text-center align-middle">'.$this->Grade($Pecah[2]).'</th>';
+      $Rekap .= '<th scope="row" class="text-center align-middle">'.$this->Grade($Pecah[3]).'</th>';
+      $Rekap .= '<th scope="row" class="text-center align-middle">'.$this->Grade($Pecah[4]).'</th>';
+      $Rekap .= '<th scope="row" class="text-center align-middle">'.$this->Grade($Pecah[5]).'</th>';
+      $Rekap .= '<th scope="row" class="text-center align-middle">'.$this->Grade($Pecah[6]).'</th>';
       $Rekap .= "</tr>";
     }
     $Rekap .= "<tr style='color:#ff0000;'>";
-    $Rekap .= '<th scope="row" class="text-center align-middle">#</th>';
-    $Rekap .= '<th scope="row" class="text-center align-middle">'.str_replace(".",",",$Data['Kecamatan'][0]).'</th>';
+    $Rekap .= '<th scope="row" rowspan ="2" class="text-center align-middle">#</th>';
+    $Rekap .= '<th scope="row" rowspan ="2" class="text-center align-middle">'.str_replace(".",",",$Data['Kecamatan'][0]).'</th>';
     $Rekap .= '<th scope="row" class="text-center align-middle">'.str_replace(".",",",$Data['Kecamatan'][1]).'</th>';
     $Rekap .= '<th scope="row" class="text-center align-middle">'.str_replace(".",",",$Data['Kecamatan'][2]).'</th>';
     $Rekap .= '<th scope="row" class="text-center align-middle">'.str_replace(".",",",$Data['Kecamatan'][3]).'</th>';
     $Rekap .= '<th scope="row" class="text-center align-middle">'.str_replace(".",",",$Data['Kecamatan'][4]).'</th>';
     $Rekap .= '<th scope="row" class="text-center align-middle">'.str_replace(".",",",$Data['Kecamatan'][5]).'</th>';
     $Rekap .= '<th scope="row" class="text-center align-middle">'.str_replace(".",",",$Data['Kecamatan'][6]).'</th>';
-    $Rekap .= '<th scope="row" class="text-center align-middle">'.$Data['Kecamatan'][7].'</th>';
-    $Rekap .= '<th scope="row" class="text-center align-middle">'.$Data['Kecamatan'][8].'</th>';
+    $Rekap .= '<th scope="row" rowspan ="2" class="text-center align-middle">'.$Data['Kecamatan'][7].'</th>';
+    $Rekap .= '<th scope="row" rowspan ="2" class="text-center align-middle">'.$Data['Kecamatan'][8].'</th>';
+    $Rekap .= "</tr>";
+    $Rekap .= "<tr style='color:#0000ff;'>";
+    $Rekap .= '<th scope="row" class="text-center align-middle">'.$this->Grade($Data['Kecamatan'][1]).'</th>';
+    $Rekap .= '<th scope="row" class="text-center align-middle">'.$this->Grade($Data['Kecamatan'][2]).'</th>';
+    $Rekap .= '<th scope="row" class="text-center align-middle">'.$this->Grade($Data['Kecamatan'][3]).'</th>';
+    $Rekap .= '<th scope="row" class="text-center align-middle">'.$this->Grade($Data['Kecamatan'][4]).'</th>';
+    $Rekap .= '<th scope="row" class="text-center align-middle">'.$this->Grade($Data['Kecamatan'][5]).'</th>';
+    $Rekap .= '<th scope="row" class="text-center align-middle">'.$this->Grade($Data['Kecamatan'][6]).'</th>';
     $Rekap .= "</tr>";
     echo $Rekap;
+  }
+
+  public function Grade($Nilai){
+    if ($Nilai == 0){
+      return '-';
+    } else if ($Nilai < 43.75) {
+      return 'Tidak Baik';
+    } else if ($Nilai < 62.5) {
+      return 'Kurang Baik';
+    } else if ($Nilai < 81.25) {
+      return 'Baik';
+    } else {
+      return 'Sangat Baik';
+    }
   }
 }

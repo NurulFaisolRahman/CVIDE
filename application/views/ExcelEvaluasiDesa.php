@@ -970,10 +970,10 @@ td
 		<td class="xl65" x:str>Mutu Pelayanan</td>
 		<td class="xl65" x:str>Kinerja Pelayanan</td>
    </tr>
-   <?php for ($i=0; $i < count($Desa); $i++) { $Pisah = explode("|",$Desa[$i]); ?>
+	 <?php for ($i=0; $i < count($Desa); $i++) { $Pisah = explode("|",$Desa[$i]); ?>
    <tr height="20" style='height:15.00pt;'>
-    <td height="20" style='height:15.00pt;'></td>
-    <td class="xl67" style='border-right:.5pt solid windowtext;border-bottom:.5pt solid windowtext;' x:num><?=($i+1)?></td>
+    <td height="20" rowspan="2" style='height:15.00pt;'></td>
+    <td class="xl67" rowspan="2" style='border-right:.5pt solid windowtext;border-bottom:.5pt solid windowtext;' x:num><?=($i+1)?></td>
     <td class="xl68" style='border-right:.5pt solid windowtext;border-bottom:.5pt solid windowtext;' x:str><?=$Pisah[0]?></td>
     <td class="xl69" x:str><?=str_replace(".",",",$Pisah[1])?></td>
     <td class="xl69" x:str><?=str_replace(".",",",$Pisah[2])?></td>
@@ -981,22 +981,40 @@ td
     <td class="xl69" x:str><?=str_replace(".",",",$Pisah[4])?></td>
     <td class="xl69" x:str><?=str_replace(".",",",$Pisah[5])?></td>
     <td class="xl69" x:str><?=str_replace(".",",",$Pisah[6])?></td>
-		<td class="xl69" x:str><?=str_replace(".",",",$Pisah[7])?></td>
-		<td class="xl69" x:str><?=str_replace(".",",",$Pisah[8])?></td>
+		<td class="xl69" rowspan="2" x:str><?=$Pisah[7]?></td>
+		<td class="xl69" rowspan="2" x:str><?=$Pisah[8]?></td>
+   </tr>
+	 <tr height="20" style='height:15.00pt;'>
+    <td height="20" style='height:15.00pt;'></td>
+    <td class="xl69" x:str><?=$Pisah[1]==0?'-':($Pisah[1]<43.75?'Tidak Baik':($Pisah[1]<62.5?'Kurang Baik':($Pisah[1]<81.25?'Baik':'Sangat Baik')));?></td>
+    <td class="xl69" x:str><?=$Pisah[2]==0?'-':($Pisah[2]<43.75?'Tidak Baik':($Pisah[2]<62.5?'Kurang Baik':($Pisah[2]<81.25?'Baik':'Sangat Baik')));?></td>
+    <td class="xl69" x:str><?=$Pisah[3]==0?'-':($Pisah[3]<43.75?'Tidak Baik':($Pisah[3]<62.5?'Kurang Baik':($Pisah[3]<81.25?'Baik':'Sangat Baik')));?></td>
+    <td class="xl69" x:str><?=$Pisah[4]==0?'-':($Pisah[4]<43.75?'Tidak Baik':($Pisah[4]<62.5?'Kurang Baik':($Pisah[4]<81.25?'Baik':'Sangat Baik')));?></td>
+    <td class="xl69" x:str><?=$Pisah[5]==0?'-':($Pisah[5]<43.75?'Tidak Baik':($Pisah[5]<62.5?'Kurang Baik':($Pisah[5]<81.25?'Baik':'Sangat Baik')));?></td>
+    <td class="xl69" x:str><?=$Pisah[6]==0?'-':($Pisah[6]<43.75?'Tidak Baik':($Pisah[6]<62.5?'Kurang Baik':($Pisah[6]<81.25?'Baik':'Sangat Baik')));?></td>
    </tr>
    <?php } ?>
    <tr height="20" style='height:15.00pt;'>
     <td height="20" style='height:15.00pt;'></td>
-    <td class="xl72" style='border-right:.5pt solid windowtext;border-bottom:.5pt solid windowtext;' x:str>#</td>
-    <td class="xl72" style='border-right:.5pt solid windowtext;border-bottom:.5pt solid windowtext;' x:str><?=$Kecamatan[0]?></td>
+    <td class="xl72" rowspan="2" style='border-right:.5pt solid windowtext;border-bottom:.5pt solid windowtext;' x:str>#</td>
+    <td class="xl72" rowspan="2" style='border-right:.5pt solid windowtext;border-bottom:.5pt solid windowtext;' x:str><?=$Kecamatan[0]?></td>
     <td class="xl73" x:str><?=str_replace(".",",",$Kecamatan[1])?></td>
     <td class="xl73" x:str><?=str_replace(".",",",$Kecamatan[2])?></td>
     <td class="xl73" x:str><?=str_replace(".",",",$Kecamatan[3])?></td>
     <td class="xl73" x:str><?=str_replace(".",",",$Kecamatan[4])?></td>
     <td class="xl73" x:str><?=str_replace(".",",",$Kecamatan[5])?></td>
     <td class="xl73" x:str><?=str_replace(".",",",$Kecamatan[6])?></td>
-		<td class="xl73" x:str><?=str_replace(".",",",$Kecamatan[7])?></td>
-		<td class="xl73" x:str><?=str_replace(".",",",$Kecamatan[8])?></td>
+		<td class="xl73" rowspan="2" x:str><?=str_replace(".",",",$Kecamatan[7])?></td>
+		<td class="xl73" rowspan="2" x:str><?=str_replace(".",",",$Kecamatan[8])?></td>
+   </tr>
+	 <tr height="20" style='height:15.00pt;'>
+    <td height="20" style='height:15.00pt;'></td>
+    <td class="xl73" x:str><?=$Kecamatan[1]==0?'-':($Kecamatan[1]<43.75?'Tidak Baik':($Kecamatan[1]<62.5?'Kurang Baik':($Kecamatan[1]<81.25?'Baik':'Sangat Baik')));?></td>
+    <td class="xl73" x:str><?=$Kecamatan[2]==0?'-':($Kecamatan[2]<43.75?'Tidak Baik':($Kecamatan[2]<62.5?'Kurang Baik':($Kecamatan[2]<81.25?'Baik':'Sangat Baik')));?></td>
+    <td class="xl73" x:str><?=$Kecamatan[3]==0?'-':($Kecamatan[3]<43.75?'Tidak Baik':($Kecamatan[3]<62.5?'Kurang Baik':($Kecamatan[3]<81.25?'Baik':'Sangat Baik')));?></td>
+    <td class="xl73" x:str><?=$Kecamatan[4]==0?'-':($Kecamatan[4]<43.75?'Tidak Baik':($Kecamatan[4]<62.5?'Kurang Baik':($Kecamatan[4]<81.25?'Baik':'Sangat Baik')));?></td>
+    <td class="xl73" x:str><?=$Kecamatan[5]==0?'-':($Kecamatan[5]<43.75?'Tidak Baik':($Kecamatan[5]<62.5?'Kurang Baik':($Kecamatan[5]<81.25?'Baik':'Sangat Baik')));?></td>
+    <td class="xl73" x:str><?=$Kecamatan[6]==0?'-':($Kecamatan[6]<43.75?'Tidak Baik':($Kecamatan[6]<62.5?'Kurang Baik':($Kecamatan[6]<81.25?'Baik':'Sangat Baik')));?></td>
    </tr>
    <![if supportMisalignedColumns]>
     <tr width="0" style='display:none;'>
