@@ -595,12 +595,18 @@ class IDE extends CI_Controller {
   }
 
   public function RekapBPD(){
+    $DataKecamatan = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Kecamatan = array();
+    foreach ($DataKecamatan as $key) {
+      $Kecamatan[$key['Kode']] = $key['Nama'];
+    }
     $BPD = $this->db->get('pbpd')->result_array();
     $Data['BPD'] = array();
     $JumlahIndikator = array(6,3,2,3,1);
     foreach ($BPD as $key) {
       $Average = array(0,0,0,0,0);
       $DataDesa = array();
+      array_push($DataDesa,$Kecamatan[substr($key['KodeDesa'],0,8)]);
       array_push($DataDesa,$key['NamaDesa']);
       $Poin = explode("|",$key['Poin']);
       $Loop = 0;
@@ -637,12 +643,18 @@ class IDE extends CI_Controller {
   }
 
   public function RekapPemDes(){
+    $DataKecamatan = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Kecamatan = array();
+    foreach ($DataKecamatan as $key) {
+      $Kecamatan[$key['Kode']] = $key['Nama'];
+    }
     $PemDes = $this->db->get('pkinerjapemdes')->result_array();
     $Data['PemDes'] = array();
     $JumlahIndikator = array(7,11,13,6,3);
     foreach ($PemDes as $key) {
       $Average = array(0,0,0,0,0);
       $DataDesa = array();
+      array_push($DataDesa,$Kecamatan[substr($key['KodeDesa'],0,8)]);
       array_push($DataDesa,$key['NamaDesa']);
       $Poin = explode("|",$key['Poin']);
       $Loop = 0;

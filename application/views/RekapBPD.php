@@ -29,6 +29,7 @@
                         <thead>
                           <tr class="bg-primary text-light">
                           <th scope="col" class="text-center align-middle">No</th>
+                            <th scope="col" class="text-center align-middle">Kecamatan</th>
                             <th scope="col" class="text-center align-middle">Desa</th>
                             <th scope="col" class="text-center align-middle">V1</th>
                             <th scope="col" class="text-center align-middle">V2</th>
@@ -45,14 +46,15 @@
                             <tr>
                               <th scope="row" class="text-center align-middle"><?=($i+1)?></th>
                               <th scope="row" class="text-center align-middle"><?=$BPD[$i][0]?></th>
-                              <th scope="row" class="text-center align-middle"><?=number_format($BPD[$i][1],2)?></th>
+                              <th scope="row" class="text-center align-middle"><?=$BPD[$i][1]?></th>
                               <th scope="row" class="text-center align-middle"><?=number_format($BPD[$i][2],2)?></th>
                               <th scope="row" class="text-center align-middle"><?=number_format($BPD[$i][3],2)?></th>
                               <th scope="row" class="text-center align-middle"><?=number_format($BPD[$i][4],2)?></th>
                               <th scope="row" class="text-center align-middle"><?=number_format($BPD[$i][5],2)?></th>
                               <th scope="row" class="text-center align-middle"><?=number_format($BPD[$i][6],2)?></th>
-                              <th scope="row" class="text-center align-middle"><?=$BPD[$i][7]?></th>
+                              <th scope="row" class="text-center align-middle"><?=number_format($BPD[$i][7],2)?></th>
                               <th scope="row" class="text-center align-middle"><?=$BPD[$i][8]?></th>
+                              <th scope="row" class="text-center align-middle"><?=$BPD[$i][9]?></th>
                             </tr>
                           <?php } ?>  
                         </tbody>

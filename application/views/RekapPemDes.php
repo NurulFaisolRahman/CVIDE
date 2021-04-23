@@ -25,10 +25,11 @@
                 <div class="row">
                   <div class="col-sm-12 my-1">
                     <div class="table-responsive">
-                      <table class="table table-bordered bg-light">
+                    <table class="table table-bordered bg-light">
                         <thead>
                           <tr class="bg-primary text-light">
                           <th scope="col" class="text-center align-middle">No</th>
+                            <th scope="col" class="text-center align-middle">Kecamatan</th>
                             <th scope="col" class="text-center align-middle">Desa</th>
                             <th scope="col" class="text-center align-middle">V1</th>
                             <th scope="col" class="text-center align-middle">V2</th>
@@ -45,14 +46,15 @@
                             <tr>
                               <th scope="row" class="text-center align-middle"><?=($i+1)?></th>
                               <th scope="row" class="text-center align-middle"><?=$PemDes[$i][0]?></th>
-                              <th scope="row" class="text-center align-middle"><?=number_format($PemDes[$i][1],2)?></th>
+                              <th scope="row" class="text-center align-middle"><?=$PemDes[$i][1]?></th>
                               <th scope="row" class="text-center align-middle"><?=number_format($PemDes[$i][2],2)?></th>
                               <th scope="row" class="text-center align-middle"><?=number_format($PemDes[$i][3],2)?></th>
                               <th scope="row" class="text-center align-middle"><?=number_format($PemDes[$i][4],2)?></th>
                               <th scope="row" class="text-center align-middle"><?=number_format($PemDes[$i][5],2)?></th>
                               <th scope="row" class="text-center align-middle"><?=number_format($PemDes[$i][6],2)?></th>
-                              <th scope="row" class="text-center align-middle"><?=$PemDes[$i][7]?></th>
+                              <th scope="row" class="text-center align-middle"><?=number_format($PemDes[$i][7],2)?></th>
                               <th scope="row" class="text-center align-middle"><?=$PemDes[$i][8]?></th>
+                              <th scope="row" class="text-center align-middle"><?=$PemDes[$i][9]?></th>
                             </tr>
                           <?php } ?>  
                         </tbody>
