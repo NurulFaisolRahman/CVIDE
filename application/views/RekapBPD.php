@@ -42,9 +42,9 @@
                           </tr>
                         </thead>
                         <tbody id="RekapSurvei">
-                          <?php for ($i = 0; $i < count($BPD); $i++) { ?>
+                          <?php $No = count($BPD); for ($i = 0; $i < count($BPD); $i++) { ?>
                             <tr>
-                              <th scope="row" class="text-center align-middle"><?=($i+1)?></th>
+                              <th scope="row" class="text-center align-middle"><?=$No--?></th>
                               <th scope="row" class="text-center align-middle"><?=$BPD[$i][0]?></th>
                               <th scope="row" class="text-center align-middle"><?=$BPD[$i][1]?></th>
                               <th scope="row" class="text-center align-middle"><?=number_format($BPD[$i][2],2)?></th>
