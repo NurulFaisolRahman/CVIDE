@@ -600,7 +600,7 @@ class IDE extends CI_Controller {
     foreach ($DataKecamatan as $key) {
       $Kecamatan[$key['Kode']] = $key['Nama'];
     }
-    $BPD = $this->db->get('pbpd')->result_array();
+    $BPD = $this->db->get("SELECT * FROM `pbpd` ORDER BY `pbpd`.`Time` DESC")->result_array();
     $Data['BPD'] = array();
     $JumlahIndikator = array(6,3,2,3,1);
     foreach ($BPD as $key) {
@@ -648,7 +648,7 @@ class IDE extends CI_Controller {
     foreach ($DataKecamatan as $key) {
       $Kecamatan[$key['Kode']] = $key['Nama'];
     }
-    $PemDes = $this->db->get('pkinerjapemdes')->result_array();
+    $PemDes = $this->db->query("SELECT * FROM `pkinerjapemdes` ORDER BY `pkinerjapemdes`.`Time` DESC")->result_array();
     $Data['PemDes'] = array();
     $JumlahIndikator = array(7,11,13,6,3);
     foreach ($PemDes as $key) {
