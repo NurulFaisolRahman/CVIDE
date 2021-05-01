@@ -10,6 +10,7 @@
     <!-- Vendor CSS Files -->
     <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="../assets/vendor/fontawesome/css/all.min.css" rel="stylesheet">
+    <link href="../assets/datatables-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
   </head>
 
   <body>  
@@ -25,7 +26,7 @@
                 <div class="row">
                   <div class="col-sm-12 my-1">
                     <div class="table-responsive">
-                      <table class="table table-bordered bg-light">
+                      <table id="RekapBPD" class="table table-bordered bg-light">
                         <thead>
                           <tr class="bg-primary text-light">
                           <th scope="col" class="text-center align-middle">No</th>
@@ -71,4 +72,15 @@
   </body>
   <script src="../assets/vendor/jquery/jquery.min.js"></script>
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/datatables/jquery.dataTables.js"></script>
+	<script src="../assets/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+  <script>
+    jQuery(document).ready(function($) {
+			$('#RekapBPD').DataTable( {
+        // dom:'lfrtip',
+        "ordering": true,
+        "lengthMenu": [[5, 10, 50, -1], [5, 10, 50, "All"]]
+      })
+    })
+  </script>
 </html>
