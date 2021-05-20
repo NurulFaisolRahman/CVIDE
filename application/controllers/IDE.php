@@ -600,7 +600,7 @@ class IDE extends CI_Controller {
     foreach ($DataKecamatan as $key) {
       $Kecamatan[$key['Kode']] = $key['Nama'];
     }
-    $BPD = $this->db->query("SELECT * FROM `dumybpd` ORDER BY `dumybpd`.`Time` DESC")->result_array();
+    $BPD = $this->db->query("SELECT * FROM `pbpd` ORDER BY `pbpd`.`Time` DESC")->result_array();
     $Data['BPD'] = array();
     $JumlahIndikator = array(6,3,2,3,1);
     foreach ($BPD as $key) {
@@ -699,7 +699,7 @@ class IDE extends CI_Controller {
     if ($Pisah[0] == "BPD") {
       $Data['NamaFile'] = "BPD_Kecamatan_".$Pisah[2];
       $JumlahIndikator = array(6,3,2,3,1);
-      $Tabel = "dumybpd";
+      $Tabel = "pbpd";
     } 
     else if ($Pisah[0] == "PEMDES") {
       $Data['NamaFile'] = "PemDes_Kecamatan_".$Pisah[2];
@@ -805,7 +805,7 @@ class IDE extends CI_Controller {
     if ($Pisah[0] == "BPD") {
       $Data['NamaFile'] = "BPD_Kecamatan_".$Pisah[2];
       $JumlahIndikator = array(6,3,2,3,1);
-      $Tabel = "dumybpd";
+      $Tabel = "pbpd";
     } 
     else if ($Pisah[0] == "PEMDES") {
       $Data['NamaFile'] = "PemDes_Kecamatan_".$Pisah[2];

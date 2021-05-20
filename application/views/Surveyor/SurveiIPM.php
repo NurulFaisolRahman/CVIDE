@@ -1138,12 +1138,13 @@
           // if ($("#Alamat").val() === "") {
           //   alert('Input Alamat Tidak Boleh Kosong!')
           // } else {
-            var Anggota = 0,NamaAnggota = '',Status = '',Gender = '',Pendapatan = '',SumberPendapatan = '',Pekerjaan = ''
+            var Anggota = 0,NamaAnggota = '',Status = '',Gender = '',Usia = '',Pendapatan = '',SumberPendapatan = '',Pekerjaan = ''
             for (let i = 0; i < 8; i++) {
               if ($("#NamaAnggota"+i).val() != "" && i == 0) {
                 NamaAnggota += $("#NamaAnggota"+i).val()
                 Status += $("#Status"+i).val()
                 Gender += $("#Gender"+i).val()
+                Usia += $("#Usia"+i).val()
                 Pendapatan += $("#Pendapatan"+i).val()
                 Pekerjaan += $("#Pekerjaan"+i).val()
                 if ($("#SumberPendapatan"+i).val() == 8) {
@@ -1151,11 +1152,12 @@
                 } else {
                   SumberPendapatan += $("#SumberPendapatan"+i).val()
                 }
-                Anggota = i
+                Anggota += 1
               } else if ($("#NamaAnggota"+i).val() != "") {
                 NamaAnggota += ('|'+$("#NamaAnggota"+i).val())
                 Status += ('|'+$("#Status"+i).val())
                 Gender += ('|'+$("#Gender"+i).val())
+                Usia += ('|'+$("#Usia"+i).val())
                 Pendapatan += ('|'+$("#Pendapatan"+i).val())
                 Pekerjaan += ('|'+$("#Pekerjaan"+i).val())
                 if ($("#SumberPendapatan"+i).val() == 8) {
@@ -1163,9 +1165,8 @@
                 } else {
                   SumberPendapatan += ('|'+$("#SumberPendapatan"+i).val())
                 }
-                Anggota = i
+                Anggota += 1
               } else {
-                Anggota = i
                 break
               }
             }
@@ -1337,7 +1338,7 @@
               }
             }
             var IPM = { Kecamatan: $("#Kecamatan").val(),Desa: $("#Desa").val(),Alamat: $("#Alamat").val(),
-                        NamaAnggota: NamaAnggota,Status: Status,Gender: Gender,Pendapatan: Pendapatan,
+                        NamaAnggota: NamaAnggota,Status: Status,Gender: Gender,Usia: Usia,Pendapatan: Pendapatan,
                         Pekerjaan: Pekerjaan,SumberPendapatan: SumberPendapatan,KegiatanSeminggu: KegiatanSeminggu,
                         Keahlian: Keahlian,JamKerja: JamKerja,AlasanMencariKerja: AlasanMencariKerja,
                         PenyebabMenganggur: PenyebabMenganggur,MengikutiPelatihan: MengikutiPelatihan,
