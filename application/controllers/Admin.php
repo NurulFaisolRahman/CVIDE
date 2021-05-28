@@ -17,7 +17,7 @@ class Admin extends CI_Controller {
 
   public function GantiPassword(){
     $this->db->where('Username', $this->session->userdata('Username'));
-    $this->db->update('Akun', array('Password' => password_hash($_POST['Password'], PASSWORD_DEFAULT)));
+    $this->db->update('akun', array('Password' => password_hash($_POST['Password'], PASSWORD_DEFAULT)));
     if ($this->db->affected_rows()){
       echo '1';
     } else {
@@ -26,13 +26,13 @@ class Admin extends CI_Controller {
   }
 
 	public function Pengeluaran(){
-    $Data['Pengeluaran'] = $this->db->get('Pengeluaran')->result_array();
+    $Data['Pengeluaran'] = $this->db->get('pengeluaran')->result_array();
     $this->load->view('Admin/Header',$Data);
 		$this->load->view('Admin/Pengeluaran',$Data);
   }
 
   public function Input(){
-    $this->db->insert('Pengeluaran', $_POST);
+    $this->db->insert('pengeluaran', $_POST);
     if ($this->db->affected_rows()){
       echo '1';
     } else {
@@ -43,7 +43,7 @@ class Admin extends CI_Controller {
   public function Edit(){
     $this->db->where('Id',$_POST['Id']);
     unset($_POST['Id']);
-    $this->db->update('Pengeluaran', $_POST);
+    $this->db->update('pengeluaran', $_POST);
 		if ($this->db->affected_rows()){
 			echo '1';
 		} else {
@@ -52,7 +52,7 @@ class Admin extends CI_Controller {
 	}
 
   public function Hapus(){
-		$this->db->delete('Pengeluaran', $_POST);
+		$this->db->delete('pengeluaran', $_POST);
 		if ($this->db->affected_rows()){
 			echo '1';
 		} else {

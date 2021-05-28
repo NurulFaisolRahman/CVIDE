@@ -12,7 +12,7 @@ class IDE extends CI_Controller {
   }
 
   public function CekAuth(){
-		$User = $this->db->get_where('Akun', array('Username' => htmlentities($_POST['Username'])));
+		$User = $this->db->get_where('akun', array('Username' => htmlentities($_POST['Username'])));
 		if($User->num_rows() == 0){
 			echo "Username Salah!";
 		}
