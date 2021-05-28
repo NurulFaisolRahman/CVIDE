@@ -19,7 +19,12 @@ class IDE extends CI_Controller {
 		else{
 			$Akun = $User->result_array();
 			if (password_verify($_POST['Password'], $Akun[0]['Password'])) {
-        if ($Akun[0]['Level'] == 2) {
+        if ($Akun[0]['Level'] == 1) {
+          $Session = array('Super' => true,
+                           'Username' => $Akun[0]['Username']);
+          $this->session->set_userdata($Session);
+          echo '1';
+        } else if ($Akun[0]['Level'] == 2) {
           $Session = array('Admin' => true,
                            'Username' => $Akun[0]['Username']);
           $this->session->set_userdata($Session);

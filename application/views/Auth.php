@@ -90,7 +90,9 @@
           var Akun = { Username: $("#Username").val(),
                        Password: $("#Password").val() }
           $.post(BaseURL+"IDE/CekAuth", Akun).done(function(Respon) {
-            if (Respon == '2') {
+            if (Respon == '1') {
+              window.location = BaseURL+"Super"
+            } else if (Respon == '2') {
               window.location = BaseURL+"Admin"
             }
             else {
