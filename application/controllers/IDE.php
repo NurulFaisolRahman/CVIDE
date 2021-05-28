@@ -6,6 +6,30 @@ class IDE extends CI_Controller {
 	public function index(){
 		$this->load->view('IDE');
   }
+  
+  public function Auth(){
+		$this->load->view('Auth');
+  }
+
+  public function CekAuth(){
+		$User = $this->db->get_where('Akun', array('Username' => htmlentities($_POST['Username'])));
+		if($User->num_rows() == 0){
+			echo "Username Salah!";
+		}
+		else{
+			$Akun = $User->result_array();
+			if (password_verify($_POST['Password'], $Akun[0]['Password'])) {
+        if ($Akun[0]['Level'] == 2) {
+          $Session = array('Admin' => true,
+                           'Username' => $Akun[0]['Username']);
+          $this->session->set_userdata($Session);
+          echo '2';
+        }
+			} else {
+				echo "Password Salah!";
+			}
+		}
+  }
 
   public function PendampingDesa(){
     $this->load->view('AuthPendampingDesa');
