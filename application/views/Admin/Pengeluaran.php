@@ -24,8 +24,8 @@
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>
 														<th scope="row" class="align-middle"><?=$key['Description']?></th>
 														<th scope="row" class="text-center align-middle"><?=$key['Quantity']?></th>
-														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=$key['Price']?></th>
-														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=$key['Amount']?></th>
+														<th scope="row" style="width: 15%;" class="text-center align-middle"><?="Rp ".number_format($key['Price'],0,',','.');?></th>
+														<th scope="row" style="width: 15%;" class="text-center align-middle"><?="Rp ".number_format($key['Amount'],0,',','.');?></th>
 														<th scope="row" style="width: 10%;" class="text-center align-middle"><?=$key['Tanggal']?></th>
 														<th scope="row" style="width: 10%;" class="text-center align-middle">
 															<button Edit="<?=$key['Id']."|".$key['Description']."|".$key['Quantity']."|".$key['Price']."|".$key['Amount']."|".$key['Tanggal']."|".$key['Date']?>" class="btn btn-sm btn-warning Edit"><i class="fa fa-edit"></i></button>

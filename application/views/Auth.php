@@ -72,6 +72,20 @@
     <script>  
       jQuery(document).ready(function($) {
         var BaseURL = '<?=base_url()?>'
+        $('#Username').keypress(function(event){
+          var keycode = (event.keyCode ? event.keyCode : event.which);
+          if(keycode == '13'){
+            event.preventDefault();
+            document.getElementById("Masuk").click();  
+          }
+        });
+        $('#Password').keypress(function(event){
+          var keycode = (event.keyCode ? event.keyCode : event.which);
+          if(keycode == '13'){
+            event.preventDefault();
+            document.getElementById("Masuk").click();  
+          }
+        });
         $("#Masuk").click(function() {
           var Akun = { Username: $("#Username").val(),
                        Password: $("#Password").val() }
