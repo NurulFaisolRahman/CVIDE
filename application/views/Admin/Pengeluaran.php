@@ -1,6 +1,17 @@
 							<div class="row">
-								<div class="col-sm-6 d-flex align-items-center">
-									<button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#ModalInput"><i class="fa fa-plus"></i><b> Input</b></button>
+								<div class="col-lg-auto">
+									<button type="button" class="btn btn-primary border-white mb-2" data-toggle="modal" data-target="#ModalInput"><i class="fa fa-plus"></i><b> Input</b></button>
+								</div>
+								<div class="col-lg-auto">
+									<div class="input-group mb-2">
+										<div class="input-group-prepend">
+											<span class="input-group-text bg-primary text-white"><b>Rekap</b></span>
+										</div>
+										<input type="date" class="form-control" id="Filter" value="<?=date('Y-m-d')?>"> 
+									</div>
+								</div>
+								<div class="col-lg-auto">
+									<button type="button" class="btn btn-danger border-white mb-2" id="Rekap"><i class="fa fa-file-excel-o"></i><b> Excel</b></button>
 								</div>
 							</div>
 							<div class="row">
@@ -24,8 +35,8 @@
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>
 														<th scope="row" class="align-middle"><?=$key['Description']?></th>
 														<th scope="row" class="text-center align-middle"><?=$key['Quantity']?></th>
-														<th scope="row" style="width: 15%;" class="text-center align-middle"><?="Rp ".number_format($key['Price'],0,',','.');?></th>
-														<th scope="row" style="width: 15%;" class="text-center align-middle"><?="Rp ".number_format($key['Amount'],0,',','.');?></th>
+														<th scope="row" style="width: 15%;" class="text-center align-middle"><?="Rp ".number_format($key['Price'],0,',','.')?></th>
+														<th scope="row" style="width: 15%;" class="text-center align-middle"><?="Rp ".number_format($key['Amount'],0,',','.')?></th>
 														<th scope="row" style="width: 10%;" class="text-center align-middle"><?=$key['Tanggal']?></th>
 														<th scope="row" style="width: 10%;" class="text-center align-middle">
 															<button Edit="<?=$key['Id']."|".$key['Description']."|".$key['Quantity']."|".$key['Price']."|".$key['Amount']."|".$key['Tanggal']."|".$key['Date']?>" class="btn btn-sm btn-warning Edit"><i class="fa fa-edit"></i></button>
@@ -154,6 +165,15 @@
 						}
 					}
 				})
+
+				$("#Rekap").click(function() {
+					if ($("#Filter").val() == "") {
+						alert('Input Rekap Belum Benar!')
+					} else {
+						window.location = BaseURL + "Admin/ExcelInvoice/" +$("#Filter").val().substr(0,7) 
+					}
+				})
+				
 				$("#Input").click(function() {
 					if (isNaN($("#Price").val())) {
 						alert('Input Price Belum Benar!')

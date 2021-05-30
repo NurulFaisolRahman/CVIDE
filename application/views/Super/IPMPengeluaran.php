@@ -56,29 +56,37 @@
                     <div class="btn btn-sm btn-primary border-light" id="TampilkanData"><b>Tampilkan</b></div>
                   </div>
                 </div>
-                <div class="row">
+                <div class="row mt-2">
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-primary border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/RLS.png')?>" alt="GK" height="209" ></a>
+                        <a><img class="my-2" src="<?=base_url('assets/img/PerKapita.png')?>" alt="GK" height="210" ></a>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Rata2 Lama Sekolah ".$IPMPendidikan['RLS']."<br>Indeks Rata2 Lama Sekolah ".$IPMPendidikan['IRLS']?></div></div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Rata-rata Pengeluaran<br>PerKapita Per Tahun ".number_format($PerKapita,0,",",".")?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-primary border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/HLS.png')?>" alt="GK" height="210" ></a>
+                        <a><img class="my-2" src="<?=base_url('assets/img/PerKapitaKonstan.png')?>" alt="GK" height="210" ></a>
                       </div>
-                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Harapan Lama Sekolah ".$IPMPendidikan['HLS']."<br>Indeks Harapan Lama Sekolah ".$IPMPendidikan['IHLS']?></div></div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Rata-rata Pengeluaran PerKapita<br>Konstan Per Tahun ".number_format($PerKapitaKonstan,0,",",".")?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-primary border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/IndeksPendidikan.png')?>" alt="GK" height="209" ></a>
+                        <a><img class="my-2" src="<?=base_url('assets/img/PPP.png')?>" alt="GK" height="210" ></a>
                       </div>
-                    <div class="card-footer bg-danger border border-light" style="padding-top: 11px;"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Indeks Pendidikan ".$IPMPendidikan['IPendidikan']?></div></div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Purchasing Power Parity<br>Indeks PPP ".number_format($PPP,2,",",".")?></div></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-12 text-center">
+                    <div class="card">
+                      <div class="card-body bg-primary border border-light p-0">
+                        <a><img class="my-2" src="<?=base_url('assets/img/GK.png')?>" alt="GK" height="210" ></a>
+                      </div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Indeks Pengeluaran ".number_format($IndeksPengeluaran,2,",",".")?></div></div>
                     </div>
                   </div>
                 </div>
@@ -106,9 +114,9 @@
           var Data =  { KodeDesa: $("#Desa").val(),
                         KodeKecamatan: $("#Kecamatan").val(),
                         JenisData: $("#JenisData").val() }
-          $.post(BaseURL+"SuperAdmin/Session", Data).done(function(Respon) {
+          $.post(BaseURL+"Super/Session", Data).done(function(Respon) {
             if (Respon == '1') {
-              window.location = BaseURL + "SuperAdmin/IPMPendidikan"
+              window.location = BaseURL + "Super/IPMPengeluaran"
             }
             else {
               alert(Respon)

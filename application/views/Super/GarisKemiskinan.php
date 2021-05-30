@@ -1,6 +1,6 @@
-<div class="clearfix"></div>
+          <div class="clearfix"></div>
             <div class="row">
-              <div class="col-lg-12">
+              <div class="col-sm-12">
                 <div class="row mt-2">
                   <div class="col-lg-3">
                     <div class="input-group input-group-sm mb-2">
@@ -56,37 +56,37 @@
                     <div class="btn btn-sm btn-primary border-light" id="TampilkanData"><b>Tampilkan</b></div>
                   </div>
                 </div>
-                <div class="row mt-2">
+                <div class="row">
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-primary border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/IndeksPendidikan.png')?>" alt="IndeksPendidikan" height="210" ></a>
+                        <a><img class="my-2" src="<?=base_url('assets/img/GKM.png')?>" alt="GKM" width="81%"></a>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Indeks Pendidikan ".number_format($IPMPendidikan,2)?></div></div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Garis Kemiskinan <br>Makanan Rp ".number_format($GKMRata2,2,",",".")?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-primary border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/IndeksKesehatan.png')?>" alt="IndeksKesehatan" height="210" ></a>
+                        <a><img class="my-2" src="<?=base_url('assets/img/GKNM.png')?>" alt="GKNM" width="81%"></a>
                       </div>
-                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Indeks Kesehatan ".number_format($IPMKesehatan,2)?></div></div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Garis Kemiskinan <br>Non Makanan Rp ".number_format($GKNMRata2,2,",",".")?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-primary border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/GK.png')?>" alt="IndeksPengeluaran" height="210" ></a>
+                        <a><img class="my-2" src="<?=base_url('assets/img/GK.png')?>" alt="GK" width="81%"></a>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Indeks Pengeluaran ".number_format($IPMPengeluaran,2)?></div></div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Garis Kemiskinan <br>Rp ".number_format($GKRata2,2,",",".")?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
-                      <div class="card-body bg-primary border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/IPM.png')?>" alt="IPM" height="210" ></a>
+                      <div class="card-body bg-warning border border-light p-0">
+                        <div id="chart_div" style="margin-bottom: 24px;"></div>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="IPM ".number_format($IPM,2)?></div></div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?=$KelompokGK[0]+$KelompokGK[1]." Responden<br>Dari ".$JumlahKK." Keluarga"?></div></div>
                     </div>
                   </div>
                 </div>
@@ -99,7 +99,8 @@
     </div>
 
     <script src="<?=base_url("vendors/jquery/dist/jquery.min.js")?>"></script>
-   	<script src="<?=base_url("vendors/bootstrap/dist/js/bootstrap.bundle.min.js")?>"></script>
+    <script src="<?=base_url("vendors/bootstrap/dist/js/bootstrap.bundle.min.js")?>"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="<?=base_url("build/js/custom.min.js")?>"></script>
 		<script>
 			$(document).ready(function(){
@@ -114,15 +115,35 @@
           var Data =  { KodeDesa: $("#Desa").val(),
                         KodeKecamatan: $("#Kecamatan").val(),
                         JenisData: $("#JenisData").val() }
-          $.post(BaseURL+"SuperAdmin/Session", Data).done(function(Respon) {
+          $.post(BaseURL+"Super/Session", Data).done(function(Respon) {
             if (Respon == '1') {
-              window.location = BaseURL + "SuperAdmin/IPM"
+              window.location = BaseURL + "Super/GarisKemiskinan"
             }
             else {
               alert(Respon)
             }
           })                    
         })
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Pendidikan', 'Jumlah'],
+            ['Di Atas GK',<?=$KelompokGK[0]?>],
+            ['Di Bawah GK',<?=$KelompokGK[1]?>],
+          ]);
+
+          var options = {
+            pieHole: 0.4,
+            sliceVisibilityThreshold : 0,
+            chartArea : {left:5,top:20,width: 250, height: 250},
+            legend: {position: 'none'},
+            backgroundColor: { fill:'transparent' }
+          };
+
+          var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+          chart.draw(data, options);
+        }
       })
 		</script>
   </body>

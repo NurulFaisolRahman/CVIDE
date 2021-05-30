@@ -42,7 +42,7 @@
 									<li><a href="<?=base_url('Admin/Pengeluaran')?>"><i class="fa fa-usd"></i> <b>Pengeluaran</b> </a></li>
                 </ul>
 								<ul class="nav side-menu">
-									<li><a href="<?=base_url('IDE/Auth')?>"><i class="fa fa-sign-out"></i> <b>Keluar</b> </a></li>
+									<li><a href="<?=base_url('IDE/SignOut')?>"><i class="fa fa-sign-out"></i> <b>Keluar</b> </a></li>
                 </ul>
               </div>
             </div>

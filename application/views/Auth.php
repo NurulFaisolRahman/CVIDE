@@ -69,7 +69,7 @@
     </header>
     <script src="../assets/vendor/jquery/jquery.min.js"></script>
     <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script>  
+    <script>   
       jQuery(document).ready(function($) {
         var BaseURL = '<?=base_url()?>'
         $('#Username').keypress(function(event){
@@ -91,14 +91,15 @@
                        Password: $("#Password").val() }
           $.post(BaseURL+"IDE/CekAuth", Akun).done(function(Respon) {
             if (Respon == '1') {
-              window.location = BaseURL+"Super"
-            } else if (Respon == '2') {
-              window.location = BaseURL+"Admin"
+              window.location = BaseURL + "Surveyor"
+            }
+            else if (Respon == '2') {
+              window.location = BaseURL + "Super"
             }
             else {
               alert(Respon)
             }
-          })                    
+          })                 
         })
       })
     </script>

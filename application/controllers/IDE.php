@@ -12,28 +12,36 @@ class IDE extends CI_Controller {
   }
 
   public function CekAuth(){
-		$User = $this->db->get_where('akun', array('Username' => htmlentities($_POST['Username'])));
-		if($User->num_rows() == 0){
-			echo "Username Salah!";
-		}
-		else{
-			$Akun = $User->result_array();
-			if (password_verify($_POST['Password'], $Akun[0]['Password'])) {
-        if ($Akun[0]['Level'] == 1) {
+		$Akun = $this->db->get_where('surveyor', array('NIK' => $_POST['Username']))->row_array();
+		if (isset($Akun) > 0) {
+      if (password_verify($_POST['Password'], $Akun['Password'])) {
+        $Session = array('Surveyor' => true, 
+                         'NIK' => $_POST['Username'],
+                         'Nama' => $Akun['Nama']);
+        $this->session->set_userdata($Session);
+        echo '1';
+      } else { 
+        echo "Password Salah!";
+      }
+    } else {
+      $Akun = $this->db->get_where('super', array('Username' => $_POST['Username']))->row_array();
+      if (isset($Akun) > 0) {
+        if (password_verify($_POST['Password'], $Akun['Password'])) {
           $Session = array('Super' => true,
-                           'Username' => $Akun[0]['Username']);
-          $this->session->set_userdata($Session);
-          echo '1';
-        } else if ($Akun[0]['Level'] == 2) {
-          $Session = array('Admin' => true,
-                           'Username' => $Akun[0]['Username']);
+                           'Username' => $_POST['Username'],
+                           'KodeKabupaten' => '35.10',
+                           'KodeKecamatan' => '35.10.01',
+                           'KodeDesa' => '35.10.01.2001',
+                           'JenisData' => 'Desa');
           $this->session->set_userdata($Session);
           echo '2';
+        } else {
+          echo "Password Salah!";
         }
-			} else {
-				echo "Password Salah!";
-			}
-		}
+      } else {
+        echo "Username Salah!";
+      }
+    }		
   }
 
   public function PendampingDesa(){
@@ -86,41 +94,38 @@ class IDE extends CI_Controller {
   }
 
   public function SignIn(){  
-    $Akun = $this->db->get_where('surveyor', array('NIK' => $_POST['Username']))->row_array();
-		if (isset($Akun) > 0) {
-      if (password_verify($_POST['Password'], $Akun['Password'])) {
-        $Session = array('Surveyor' => true,
-                         'NIK' => $_POST['Username'],
-                         'Nama' => $Akun['Nama']);
-        $this->session->set_userdata($Session);
-        echo '1';
-      } else { 
-        echo "Password Salah!";
-      }
-    } else {
-      $Akun = $this->db->get_where('superadmin', array('Username' => $_POST['Username']))->row_array();
-      if (isset($Akun) > 0) {
-        if (password_verify($_POST['Password'], $Akun['Password'])) {
+    $User = $this->db->get_where('akun', array('Username' => htmlentities($_POST['Username'])));
+		if ($User->num_rows() == 0) {
+			echo "Username Salah!";
+		}
+		else {
+			$Akun = $User->result_array();
+			if (password_verify($_POST['Password'], $Akun[0]['Password'])) {
+        if ($Akun[0]['Level'] == 1) {
           $Session = array('SuperAdmin' => true,
-                           'Username' => $_POST['Username'],
-                           'KodeKabupaten' => '35.10',
-                           'KodeKecamatan' => '35.10.01',
-                           'KodeDesa' => '35.10.01.2001',
-                           'JenisData' => 'Desa');
+                           'Username' => $Akun[0]['Username']);
+          $this->session->set_userdata($Session);
+          echo '1';
+        } else if ($Akun[0]['Level'] == 2) {
+          $Session = array('Admin' => true,
+                           'Username' => $Akun[0]['Username']);
           $this->session->set_userdata($Session);
           echo '2';
-        } else {
-          echo "Password Salah!";
         }
-      } else {
-        echo "Username Salah!";
-      }
-    }			
+			} else {
+				echo "Password Salah!";
+			}
+		}	
   }
   
   public function SignOut(){
 		$this->session->sess_destroy();
 		redirect(base_url());
+  }
+
+  public function LogOut(){
+		$this->session->sess_destroy();
+		redirect(base_url('IDE/Auth'));
   }
 
   public function DesaSignOut(){

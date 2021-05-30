@@ -282,7 +282,7 @@
   <script>
     var BaseURL = '<?=base_url()?>'
       jQuery(document).ready(function($) {
-        "use strict";
+        "use strict"; 
       $('#Username').keypress(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if(keycode == '13'){
@@ -302,15 +302,14 @@
                      Password: $("#Password").val() }
         $.post(BaseURL+"IDE/SignIn", Akun).done(function(Respon) {
           if (Respon == '1') {
-            window.location = BaseURL + "Surveyor"
-          }
-          else if (Respon == '2') {
-            window.location = BaseURL + "SuperAdmin"
+            window.location = BaseURL+"SuperAdmin"
+          } else if (Respon == '2') {
+            window.location = BaseURL+"Admin"
           }
           else {
             alert(Respon)
           }
-        })                      
+        })                         
       })
     })
   </script>

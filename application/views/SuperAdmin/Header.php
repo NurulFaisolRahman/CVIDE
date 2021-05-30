@@ -12,6 +12,7 @@
     <link href="<?=base_url('vendors/bootstrap/dist/css/bootstrap.min.css')?>" rel="stylesheet">
     <link href="<?=base_url('vendors/font-awesome/css/font-awesome.min.css')?>" rel="stylesheet">
     <link href="<?=base_url('build/css/custom.min.css')?>" rel="stylesheet">
+    <link href="<?=base_url('assets/datatables-bs4/css/dataTables.bootstrap4.css')?>" rel="stylesheet">
   </head>
 
   <body class="nav-md">
@@ -26,8 +27,8 @@
                 <img src="<?=base_url('assets/img/Profil.jpg')?>" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
-                <span class="font-weight-bold">Welcome,</span>
-                <h2 class="font-weight-bold">Super Admin</h2>
+                <span class="font-weight-bold">Admin,</span>
+                <h2 class="font-weight-bold"><?=$this->session->userdata('Username')?></h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -35,30 +36,12 @@
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 <ul class="nav side-menu">
-									<li><a href="<?=base_url('SuperAdmin')?>"><i class="fa fa-user"></i> <b>Profil</b> </a></li>
-                </ul>
-								<ul class="nav side-menu">
-                  <li><a><i class="fa fa-tasks"></i> <b>Data</b> <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="<?=base_url('SuperAdmin/IKM')?>"><b>Kepuasan Pelayanan Desa</b></a></li>           
-											<li><a href="<?=base_url('SuperAdmin/BPD')?>"><b>Kinerja Badan Permusyawaratan Desa</b></a></li>    
-											<li><a href="<?=base_url('SuperAdmin/KinerjaPemDes')?>"><b>Kinerja Penyelenggaraan Pemerintahan Desa</b></a></li>   
-                      <li><a href="<?=base_url('SuperAdmin/KinerjaAparatur')?>"><b>Kinerja Aparatur Desa</b></a></li>   
-                      <li><a href="<?=base_url('SuperAdmin/Pendidikan')?>"><b>Pendidikan</b> </a></li>
-                      <li><a href="<?=base_url('SuperAdmin/GarisKemiskinan')?>"><b>Garis Kemiskinan</b> </a></li>
-                      <li><a href="<?=base_url('SuperAdmin/Pengangguran')?>"><b>Pengangguran</b> </a></li>
-                      <li><a><b>Dimensi IPM</b><span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                          <li class="sub_menu"><a href="<?=base_url('SuperAdmin/IPMKesehatan')?>"><b>ALH & AMH</b></a></li>
-                          <li><a href="<?=base_url('SuperAdmin/IPMPendidikan')?>"><b>Pendidikan</b></a></li>
-                          <li><a href="<?=base_url('SuperAdmin/IPMPengeluaran')?>"><b>Pengeluaran</b></a></li>
-                        </ul>
-                      </li>
-                      <li><a href="<?=base_url('SuperAdmin/IPM')?>"><b>IPM</b> </a></li>
-                    </ul>
-									</li>
+									<li><a href="<?=base_url('SuperAdmin')?>"><i class="fa fa-user"></i> <b>Dashboard</b> </a></li>
                 </ul>
                 <ul class="nav side-menu">
+									<li><a href="<?=base_url('SuperAdmin/Pengeluaran')?>"><i class="fa fa-usd"></i> <b>Pengeluaran</b> </a></li>
+                </ul>
+								<ul class="nav side-menu">
 									<li><a href="<?=base_url('IDE/SignOut')?>"><i class="fa fa-sign-out"></i> <b>Keluar</b> </a></li>
                 </ul>
               </div>
@@ -69,11 +52,15 @@
 
         <!-- top navigation -->
         <div class="top_nav">
-          <div class="nav_menu">
+          <div class="nav_menu bg-primary">
             <div class="nav toggle ml-1">
-              <a id="menu_toggle"><i class="fa fa-bars text-primary"></i></a>
+              &nbsp;&nbsp;<a id="menu_toggle"><i class="fa fa-bars text-white"></i></a>
             </div>
           </div>
         </div>
         <!-- /top navigation -->
-      <div class="right_col bg-success" role="main" style="overflow-x: hidden;">
+
+        <!-- page content -->
+				<div class="right_col bg-success" role="main" style="overflow-x: hidden;">
+					<div class="">
+            <div class="clearfix"></div>

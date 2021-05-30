@@ -54,60 +54,33 @@
                   </div>
                   <div class="col-lg-3">
                     <div class="btn btn-sm btn-primary border-light" id="TampilkanData"><b>Tampilkan</b></div>
-                    <div class="btn btn-sm btn-primary border-light" id="ExcelALHAMH"><i class="fa fa-file-excel-o"></i> <b>Excel</b></div>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-lg-6 mb-2">
-                    <div class="table-responsive mt-1">
-                      <table class="table table-sm table-bordered table-striped">
-                        <thead class="bg-danger">
-                          <tr style="font-size: 10pt;" class="text-light text-center align-middle">
-                            <th>Usia Ibu</th>
-                            <th>Anak Lahir</th>
-                            <th>Anak Mati</th>
-                            <th>Anak Bertahan</th>
-                            <th>Jumlah Ibu</th>
-                            <th>ALH</th>
-                            <th>AMH</th>
-                          </tr>
-                        </thead>
-                        <tbody style="font-size: 12px;" class="bg-primary">
-                        <?php $TingkatPendidikan = array('15 - 19','20 - 24','25 - 29','30 - 34','35 - 39','40 - 44','45 - 49'); 
-                          foreach ($TingkatPendidikan as $key => $value) { ?>
-                          <tr class="text-light align-middle text-center">
-                            <td><?=$value?></td>
-                            <td><?=$ALHAMH[$key][0]?></td>
-                            <td><?=$ALHAMH[$key][1]?></td>
-                            <td><?=$ALHAMH[$key][2]?></td>
-                            <td><?=$ALHAMH[$key][3]?></td>
-                            <td><?=$ALHAMH[$key][4]?></td>
-                            <td><?=$ALHAMH[$key][5]?></td>
-                          </tr>
-                        <?php } ?>
-                        </tbody>
-                        <tfoot class="bg-danger">
-                          <tr style="font-size: 10pt;" class="text-light text-center align-middle">
-                            <th>Total</th>
-                            <th><?=$Total[0]?></th>
-                            <th><?=$Total[1]?></th>
-                            <th><?=$Total[2]?></th>
-                            <th><?=$Total[3]?></th>
-                            <th>-</th>
-                            <th>-</th>
-                          </tr>
-                        </tfoot>
-                      </table> 
-                    </div>
-                  </div>
-                  <!-- <div class="col-lg-3 col-sm-12 text-center">
+                  <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-primary border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/AHH.png')?>" alt="GK" height="209" ></a>
+                        <a><img class="my-2" src="<?=base_url('assets/img/RLS.png')?>" alt="GK" height="209" ></a>
                       </div>
-                    <div class="card-footer bg-danger border border-light" style="padding-top: 11px;"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Angka Harapan Hidup ".$AHH?></div></div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Rata2 Lama Sekolah ".$IPMPendidikan['RLS']."<br>Indeks Rata2 Lama Sekolah ".$IPMPendidikan['IRLS']?></div></div>
                     </div>
-                  </div> -->
+                  </div>
+                  <div class="col-lg-3 col-sm-12 text-center">
+                    <div class="card">
+                      <div class="card-body bg-primary border border-light p-0">
+                        <a><img class="my-2" src="<?=base_url('assets/img/HLS.png')?>" alt="GK" height="210" ></a>
+                      </div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Harapan Lama Sekolah ".$IPMPendidikan['HLS']."<br>Indeks Harapan Lama Sekolah ".$IPMPendidikan['IHLS']?></div></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-12 text-center">
+                    <div class="card">
+                      <div class="card-body bg-primary border border-light p-0">
+                        <a><img class="my-2" src="<?=base_url('assets/img/IndeksPendidikan.png')?>" alt="GK" height="209" ></a>
+                      </div>
+                    <div class="card-footer bg-danger border border-light" style="padding-top: 11px;"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Indeks Pendidikan ".$IPMPendidikan['IPendidikan']?></div></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -133,24 +106,14 @@
           var Data =  { KodeDesa: $("#Desa").val(),
                         KodeKecamatan: $("#Kecamatan").val(),
                         JenisData: $("#JenisData").val() }
-          $.post(BaseURL+"SuperAdmin/Session", Data).done(function(Respon) {
+          $.post(BaseURL+"Super/Session", Data).done(function(Respon) {
             if (Respon == '1') {
-              window.location = BaseURL + "SuperAdmin/IPMKesehatan"
+              window.location = BaseURL + "Super/IPMPendidikan"
             }
             else {
               alert(Respon)
             }
           })                    
-        })
-        $("#ExcelALHAMH").click(function() {
-          var NamaDesa = $("#Desa option:selected").text()
-          var NamaKecamatan = $("#Kecamatan option:selected").text()
-          var NamaKabupaten = $("#Kabupaten option:selected").text()
-          var KodeDesa = $("#Desa").val()
-          var KodeKecamatan = $("#Kecamatan").val()
-          var KodeKabupaten = $("#Kabupaten").val()
-          var JenisData = $("#JenisData").val() 
-          window.location = BaseURL + "SuperAdmin/ExcelALHAMH/"+JenisData+"-"+KodeDesa+"-"+NamaDesa+"-"+KodeKecamatan+"-"+NamaKecamatan
         })
       })
 		</script>

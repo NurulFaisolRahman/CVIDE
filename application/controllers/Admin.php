@@ -6,7 +6,7 @@ class Admin extends CI_Controller {
   function __construct(){
 		parent::__construct();
 		if(!$this->session->userdata('Admin')){
-			redirect(base_url('IDE/Auth')); 
+			redirect(base_url()); 
 		}
   } 
 
@@ -23,6 +23,12 @@ class Admin extends CI_Controller {
     } else {
       echo 'Gagal Mengganti Password!';
     }
+  }
+
+  public function ExcelInvoice($Filter){
+    $Data['NamaFile'] = "Invoice-".$Filter;
+    $Data['Pengeluaran'] = $this->db->query("SELECT * FROM `pengeluaran` WHERE Tanggal LIKE '".$Filter."%' ORDER BY Tanggal ASC")->result_array();
+		$this->load->view('Invoice',$Data);
   }
 
 	public function Pengeluaran(){

@@ -54,40 +54,60 @@
                   </div>
                   <div class="col-lg-3">
                     <div class="btn btn-sm btn-primary border-light" id="TampilkanData"><b>Tampilkan</b></div>
+                    <div class="btn btn-sm btn-primary border-light" id="ExcelALHAMH"><i class="fa fa-file-excel-o"></i> <b>Excel</b></div>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-lg-4 mb-2">
-                    <h6 class="text-white font-weight-bold">Jumlah Responden <?=$Responden?></h6>
+                  <div class="col-lg-6 mb-2">
                     <div class="table-responsive mt-1">
                       <table class="table table-sm table-bordered table-striped">
                         <thead class="bg-danger">
-                          <tr style="font-size: 10pt;" class="text-light text-center">
-                            <th class="align-middle">No</th>
-                            <th class="align-middle">Pendidikan</th>
-                            <th class="align-middle">%</th>
+                          <tr style="font-size: 10pt;" class="text-light text-center align-middle">
+                            <th>Usia Ibu</th>
+                            <th>Anak Lahir</th>
+                            <th>Anak Mati</th>
+                            <th>Anak Bertahan</th>
+                            <th>Jumlah Ibu</th>
+                            <th>ALH</th>
+                            <th>AMH</th>
                           </tr>
                         </thead>
                         <tbody style="font-size: 12px;" class="bg-primary">
-                        <?php $TingkatPendidikan = array('Tidak Pernah Sekolah','SD/Sederajat','SMP/Sederajat','SMA/Sederajat','Diploma','S1','S2','S3'); 
+                        <?php $TingkatPendidikan = array('15 - 19','20 - 24','25 - 29','30 - 34','35 - 39','40 - 44','45 - 49'); 
                           foreach ($TingkatPendidikan as $key => $value) { ?>
-                          <tr class="text-light align-middle">
-                            <td class="align-middle text-center font-weight-bold"><?=($key+1)?></td>
-                            <td class="align-middle font-weight-bold"><?=$value?></td>
-                            <td class="align-middle text-center font-weight-bold"><?=$Pendidikan[$key].'%'?></td>
+                          <tr class="text-light align-middle text-center">
+                            <td><?=$value?></td>
+                            <td><?=$ALHAMH[$key][0]?></td>
+                            <td><?=$ALHAMH[$key][1]?></td>
+                            <td><?=$ALHAMH[$key][2]?></td>
+                            <td><?=$ALHAMH[$key][3]?></td>
+                            <td><?=$ALHAMH[$key][4]?></td>
+                            <td><?=$ALHAMH[$key][5]?></td>
                           </tr>
                         <?php } ?>
                         </tbody>
-                      </table>
+                        <tfoot class="bg-danger">
+                          <tr style="font-size: 10pt;" class="text-light text-center align-middle">
+                            <th>Total</th>
+                            <th><?=$Total[0]?></th>
+                            <th><?=$Total[1]?></th>
+                            <th><?=$Total[2]?></th>
+                            <th><?=$Total[3]?></th>
+                            <th>-</th>
+                            <th>-</th>
+                          </tr>
+                        </tfoot>
+                      </table> 
                     </div>
                   </div>
-                  <div class="col-lg-8 align-self-center">
-                    <div class="row">
-                      <div class="col-lg-12">
-                        <div id="chart_div" style="width: 400px; height: 400px;"></div>
+                  <!-- <div class="col-lg-3 col-sm-12 text-center">
+                    <div class="card">
+                      <div class="card-body bg-primary border border-light p-0">
+                        <a><img class="my-2" src="<?=base_url('assets/img/AHH.png')?>" alt="GK" height="209" ></a>
                       </div>
+                    <div class="card-footer bg-danger border border-light" style="padding-top: 11px;"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Angka Harapan Hidup ".$AHH?></div></div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -100,7 +120,6 @@
     <script src="<?=base_url("vendors/jquery/dist/jquery.min.js")?>"></script>
    	<script src="<?=base_url("vendors/bootstrap/dist/js/bootstrap.bundle.min.js")?>"></script>
     <script src="<?=base_url("build/js/custom.min.js")?>"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 		<script>
 			$(document).ready(function(){
         var BaseURL = '<?=base_url()?>' 
@@ -114,41 +133,25 @@
           var Data =  { KodeDesa: $("#Desa").val(),
                         KodeKecamatan: $("#Kecamatan").val(),
                         JenisData: $("#JenisData").val() }
-          $.post(BaseURL+"SuperAdmin/Session", Data).done(function(Respon) {
+          $.post(BaseURL+"Super/Session", Data).done(function(Respon) {
             if (Respon == '1') {
-              window.location = BaseURL + "SuperAdmin/Pendidikan"
+              window.location = BaseURL + "Super/IPMKesehatan"
             }
             else {
               alert(Respon)
             }
           })                    
         })
-        google.charts.load("current", {packages:["corechart"]});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-          var data = google.visualization.arrayToDataTable([
-            ['Pendidikan', 'Jumlah'],
-            ['Tidak Pernah Sekolah',<?=$JenisPendidikan[0]?>],
-            ['SD/Sederajat',<?=$JenisPendidikan[1]?>],
-            ['SMP/Sederajat',<?=$JenisPendidikan[2]?>],
-            ['SMA/Sederajat',<?=$JenisPendidikan[3]?>],
-            ['Diploma',<?=$JenisPendidikan[4]?>],
-            ['S1',<?=$JenisPendidikan[5]?>],
-            ['S2',<?=$JenisPendidikan[6]?>],
-            ['S3',<?=$JenisPendidikan[7]?>]
-          ]);
-
-          var options = {
-            pieHole: 0.4,
-            sliceVisibilityThreshold : 0,
-            chartArea : {left:15,top:35},
-            legend: {position: 'none'},
-            backgroundColor: { fill:'transparent' }
-          };
-
-          var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-          chart.draw(data, options);
-        }
+        $("#ExcelALHAMH").click(function() {
+          var NamaDesa = $("#Desa option:selected").text()
+          var NamaKecamatan = $("#Kecamatan option:selected").text()
+          var NamaKabupaten = $("#Kabupaten option:selected").text()
+          var KodeDesa = $("#Desa").val()
+          var KodeKecamatan = $("#Kecamatan").val()
+          var KodeKabupaten = $("#Kabupaten").val()
+          var JenisData = $("#JenisData").val() 
+          window.location = BaseURL + "Super/ExcelALHAMH/"+JenisData+"-"+KodeDesa+"-"+NamaDesa+"-"+KodeKecamatan+"-"+NamaKecamatan
+        })
       })
 		</script>
   </body>

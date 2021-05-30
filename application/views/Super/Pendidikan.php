@@ -1,6 +1,6 @@
           <div class="clearfix"></div>
             <div class="row">
-              <div class="col-sm-12">
+              <div class="col-lg-12">
                 <div class="row mt-2">
                   <div class="col-lg-3">
                     <div class="input-group input-group-sm mb-2">
@@ -57,36 +57,35 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-lg-3 col-sm-12 text-center">
-                    <div class="card">
-                      <div class="card-body bg-warning border border-light p-0">
-                        <div id="Dewasa" style="margin-bottom: 24px;"></div>
-                      </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Usia Kerja 16 - 65<br>Sebanyak ".number_format($Dewasa,0,",",".")." Penduduk"?></div></div>
+                  <div class="col-lg-4 mb-2">
+                    <h6 class="text-white font-weight-bold">Jumlah Responden <?=$Responden?></h6>
+                    <div class="table-responsive mt-1">
+                      <table class="table table-sm table-bordered table-striped">
+                        <thead class="bg-danger">
+                          <tr style="font-size: 10pt;" class="text-light text-center">
+                            <th class="align-middle">No</th>
+                            <th class="align-middle">Pendidikan</th>
+                            <th class="align-middle">%</th>
+                          </tr>
+                        </thead>
+                        <tbody style="font-size: 12px;" class="bg-primary">
+                        <?php $TingkatPendidikan = array('Tidak Pernah Sekolah','SD/Sederajat','SMP/Sederajat','SMA/Sederajat','Diploma','S1','S2','S3'); 
+                          foreach ($TingkatPendidikan as $key => $value) { ?>
+                          <tr class="text-light align-middle">
+                            <td class="align-middle text-center font-weight-bold"><?=($key+1)?></td>
+                            <td class="align-middle font-weight-bold"><?=$value?></td>
+                            <td class="align-middle text-center font-weight-bold"><?=$Pendidikan[$key].'%'?></td>
+                          </tr>
+                        <?php } ?>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
-                  <div class="col-lg-3 col-sm-12 text-center">
-                    <div class="card">
-                      <div class="card-body bg-warning border border-light p-0">
-                        <div id="AngkatanKerja" style="margin-bottom: 24px;"></div>
+                  <div class="col-lg-8 align-self-center">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div id="chart_div" style="width: 400px; height: 400px;"></div>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Angkatan Kerja<br>Sebanyak ".number_format($AngkatanKerja,0,",",".")." Penduduk"?></div></div>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-sm-12 text-center">
-                    <div class="card">
-                      <div class="card-body bg-warning border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/TPT.jpg')?>" alt="GK" height="209" ></a>
-                      </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Tingkat Pengangguran<br>Sebesar ".number_format($TPT,2)." %"?></div></div>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-sm-12 text-center">
-                    <div class="card">
-                      <div class="card-body bg-warning border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/TPAK.png')?>" alt="GK" width="209px"></a>
-                      </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Tingkat Partisipasi Angkatan<br>Kerja Sebesar ".number_format($TPAK,2)." %"?></div></div>
                     </div>
                   </div>
                 </div>
@@ -99,9 +98,9 @@
     </div>
 
     <script src="<?=base_url("vendors/jquery/dist/jquery.min.js")?>"></script>
-    <script src="<?=base_url("vendors/bootstrap/dist/js/bootstrap.bundle.min.js")?>"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+   	<script src="<?=base_url("vendors/bootstrap/dist/js/bootstrap.bundle.min.js")?>"></script>
     <script src="<?=base_url("build/js/custom.min.js")?>"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 		<script>
 			$(document).ready(function(){
         var BaseURL = '<?=base_url()?>' 
@@ -115,9 +114,9 @@
           var Data =  { KodeDesa: $("#Desa").val(),
                         KodeKecamatan: $("#Kecamatan").val(),
                         JenisData: $("#JenisData").val() }
-          $.post(BaseURL+"SuperAdmin/Session", Data).done(function(Respon) {
+          $.post(BaseURL+"Super/Session", Data).done(function(Respon) {
             if (Respon == '1') {
-              window.location = BaseURL + "SuperAdmin/Pengangguran"
+              window.location = BaseURL + "Super/Pendidikan"
             }
             else {
               alert(Respon)
@@ -127,38 +126,28 @@
         google.charts.load("current", {packages:["corechart"]});
         google.charts.setOnLoadCallback(drawChart);
         function drawChart() {
-          var dataDewasa = google.visualization.arrayToDataTable([
-            ['Usia Bekerja', 'Jumlah'],
-            ['Angkatan Kerja',<?=$AngkatanKerja?>],
-            ['Bukan Angkatan Kerja',<?=$BukanAngkatanKerja?>],
+          var data = google.visualization.arrayToDataTable([
+            ['Pendidikan', 'Jumlah'],
+            ['Tidak Pernah Sekolah',<?=$JenisPendidikan[0]?>],
+            ['SD/Sederajat',<?=$JenisPendidikan[1]?>],
+            ['SMP/Sederajat',<?=$JenisPendidikan[2]?>],
+            ['SMA/Sederajat',<?=$JenisPendidikan[3]?>],
+            ['Diploma',<?=$JenisPendidikan[4]?>],
+            ['S1',<?=$JenisPendidikan[5]?>],
+            ['S2',<?=$JenisPendidikan[6]?>],
+            ['S3',<?=$JenisPendidikan[7]?>]
           ]);
 
-          var optionsDewasa = {
+          var options = {
             pieHole: 0.4,
             sliceVisibilityThreshold : 0,
-            chartArea : {left:5,top:20,width: 250, height: 250},
+            chartArea : {left:15,top:35},
             legend: {position: 'none'},
-            backgroundColor: { fill:'transparent' },
+            backgroundColor: { fill:'transparent' }
           };
 
-          var chartDewasa = new google.visualization.PieChart(document.getElementById('Dewasa'));
-          chartDewasa.draw(dataDewasa, optionsDewasa);
-          var dataAngkatanKerja = google.visualization.arrayToDataTable([
-            ['Angkatan Kerja', 'Jumlah'],
-            ['Bekerja',<?=$Bekerja?>],
-            ['Tidak Bekerja',<?=$TidakBekerja?>],
-          ]);
-
-          var optionsAngkatanKerja = {
-            pieHole: 0.4,
-            sliceVisibilityThreshold : 0,
-            chartArea : {left:5,top:20,width: 250, height: 250},
-            legend: {position: 'none'},
-            backgroundColor: { fill:'transparent' },
-          };
-
-          var chartAngkatanKerja = new google.visualization.PieChart(document.getElementById('AngkatanKerja'));
-          chartAngkatanKerja.draw(dataAngkatanKerja, optionsAngkatanKerja);
+          var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+          chart.draw(data, options);
         }
       })
 		</script>

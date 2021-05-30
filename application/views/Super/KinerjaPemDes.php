@@ -1,9 +1,9 @@
           <div class="clearfix"></div>
             <div class="row">
               <div class="col-lg-12">
-                <div class="row mt-2">
-                  <div class="col-lg-4">
-                    <div class="table-responsive">
+                <div class="row">
+                  <div class="col-lg-4 mb-2">
+                    <div class="table-responsive mt-1">
                       <table class="table table-sm table-bordered table-striped">
                         <thead class="bg-danger">
                           <tr style="font-size: 10pt;" class="text-light text-center">
@@ -14,7 +14,7 @@
                           </tr>
                         </thead>
                         <tbody style="font-size: 12px;" class="bg-primary">
-                        <?php $Indikator = array('Menggali Aspirasi Masyarakat','Menampung dan Menyalurkan Aspirasi Masyarakat','Menyelenggarakan Musyawarah BPD dan Desa','Gabungan (Penyelenggaraan Pemilihan Kepala Desa)','Melaksanakan Tugas Lain Yang Diatur Dalam Ketentuan Peraturan Perundang Undangan'); 
+                        <?php $Indikator = array('Format Isi Per Bab LPPDes','Aspek Bidang Penyelenggaraan Pemerintahan Desa','Aspek Bidang Pelaksanaan Pembangunan Desa','Aspek Bidang Kemasyarakatan','Aspek Bidang Pemberdayaan Masyarakat'); 
                           foreach ($Indikator as $key => $value) { ?>
                           <tr class="text-light align-middle">
                             <td class="align-middle text-center font-weight-bold"><?=($key+1)?></td>
@@ -119,7 +119,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <embed src="<?=base_url('Kuisioner/BPD.pdf')?>" type="application/pdf" width="100%" height="400"/>
+            <embed src="<?=base_url('Kuisioner/KinerjaPemDes.pdf')?>" type="application/pdf" width="100%" height="400"/>
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-danger" data-dismiss="modal"><b>Tutup</b></button>
@@ -137,7 +137,7 @@
         var BaseURL = '<?=base_url()?>'  
         $("#Kecamatan").change(function (){
           var Desa = { Kode: $("#Kecamatan").val() }
-          $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) {
+          $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) { 
             $('#Desa').html(Respon)
           })    
         })
@@ -145,9 +145,9 @@
           var Data =  { KodeDesa: $("#Desa").val(),
                         KodeKecamatan: $("#Kecamatan").val(),
                         JenisData: $("#JenisData").val() }
-          $.post(BaseURL+"SuperAdmin/Session", Data).done(function(Respon) {
+          $.post(BaseURL+"Super/Session", Data).done(function(Respon) {
             if (Respon == '1') {
-              window.location = BaseURL + "SuperAdmin/BPD"
+              window.location = BaseURL + "Super/KinerjaPemDes"
             }
             else {
               alert(Respon)
@@ -165,7 +165,7 @@
           ]);
 
           var options = {
-            title : 'Grafik Evaluasi Kinerja Badan Permusyawaratan Desa',
+            title : 'Grafik Evaluasi Kinerja Penyelenggaraan Pemerintahan Desa',
             legend: {position: 'none'},
             vAxis: {title: 'Skor'},
             hAxis: {title: 'Indikator'},

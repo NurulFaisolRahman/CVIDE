@@ -1,4 +1,15 @@
 							<div class="row my-2">
+								<div class="col-lg-auto">
+									<div class="input-group mb-2">
+										<div class="input-group-prepend">
+											<span class="input-group-text bg-primary text-white"><b>Rekap</b></span>
+										</div>
+										<input type="date" class="form-control" id="Filter" value="<?=date('Y-m-d')?>"> 
+									</div>
+								</div>
+								<div class="col-lg-auto">
+									<button type="button" class="btn btn-danger border-white mb-2" id="Rekap"><i class="fa fa-file-excel-o"></i><b> Excel</b></button>
+								</div>
 								<div class="col-sm-12">
 									<div class="table-responsive">
 										<table id="TabelPengeluaran" class="table table-sm table-bordered bg-light">
@@ -51,6 +62,14 @@
 							'previous': '<b class="text-white"><</b>',
 							'next': '<b class="text-white">></b>'
 						}
+					}
+				})
+
+				$("#Rekap").click(function() {
+					if ($("#Filter").val() == "") {
+						alert('Input Rekap Belum Benar!')
+					} else {
+						window.location = BaseURL + "SuperAdmin/ExcelInvoice/" +$("#Filter").val().substr(0,7) 
 					}
 				})
 			})
