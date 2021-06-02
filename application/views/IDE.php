@@ -305,6 +305,10 @@
             window.location = BaseURL+"SuperAdmin"
           } else if (Respon == '2') {
             window.location = BaseURL+"Admin"
+          } else if (Respon == '3') {
+            window.location = BaseURL+"Staf"
+          } else if (Respon == '0') {
+            window.location = BaseURL+"Econk"
           }
           else {
             alert(Respon)

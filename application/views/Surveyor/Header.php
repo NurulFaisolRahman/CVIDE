@@ -48,7 +48,7 @@
 									</li>
 								</ul>
 								<ul class="nav side-menu">
-									<li><a href="<?=base_url('IDE/SignOut')?>"><i class="fa fa-sign-out"></i> <b>Keluar</b> </a></li>
+									<li><a href="<?=base_url('IDE/LogOut')?>"><i class="fa fa-sign-out"></i> <b>Keluar</b> </a></li>
                 </ul>
               </div>
             </div>

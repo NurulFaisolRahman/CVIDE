@@ -111,6 +111,16 @@ class IDE extends CI_Controller {
                            'Username' => $Akun[0]['Username']);
           $this->session->set_userdata($Session);
           echo '2';
+        } else if ($Akun[0]['Level'] == 3) {
+          $Session = array('Staf' => true,
+                           'Username' => $Akun[0]['Username']);
+          $this->session->set_userdata($Session);
+          echo '3';
+        } else if ($Akun[0]['Level'] == 0) {
+          $Session = array('Econk' => true,
+                           'Username' => $Akun[0]['Username']);
+          $this->session->set_userdata($Session);
+          echo '0';
         }
 			} else {
 				echo "Password Salah!";
