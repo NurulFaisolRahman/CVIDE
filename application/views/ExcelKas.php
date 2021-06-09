@@ -13,10 +13,10 @@
      <o:Author>WINDOWS 10</o:Author>
      <o:Created>2021-05-29T15:25:34</o:Created>
      <o:LastAuthor>WINDOWS 10</o:LastAuthor>
-     <o:LastSaved>2021-05-30T10:06:07</o:LastSaved>
+     <o:LastSaved>2021-06-09T13:40:11</o:LastSaved>
     </o:DocumentProperties>
     <o:CustomDocumentProperties>
-     <o:KSOProductBuildVer dt:dt="string">1033-11.2.0.10132</o:KSOProductBuildVer>
+     <o:KSOProductBuildVer dt:dt="string">1033-11.2.0.10152</o:KSOProductBuildVer>
     </o:CustomDocumentProperties>
    </xml>
   <![endif]-->
@@ -70,33 +70,24 @@ br
 	mso-generic-font-family:auto;
 	mso-font-charset:134;}
 .font4
-	{color:#000000;
+	{color:#FFFFFF;
 	font-size:11.0pt;
-	font-weight:700;
+	font-weight:400;
 	font-style:normal;
 	text-decoration:none;
 	font-family:"Calibri";
 	mso-generic-font-family:auto;
 	mso-font-charset:0;}
 .font5
-	{color:#7F7F7F;
+	{color:#000000;
 	font-size:11.0pt;
 	font-weight:400;
-	font-style:italic;
+	font-style:normal;
 	text-decoration:none;
 	font-family:"Calibri";
 	mso-generic-font-family:auto;
 	mso-font-charset:0;}
 .font6
-	{color:#44546A;
-	font-size:18.0pt;
-	font-weight:700;
-	font-style:normal;
-	text-decoration:none;
-	font-family:"Calibri";
-	mso-generic-font-family:auto;
-	mso-font-charset:134;}
-.font7
 	{color:#0000FF;
 	font-size:11.0pt;
 	font-weight:400;
@@ -106,43 +97,7 @@ br
 	font-family:"Calibri";
 	mso-generic-font-family:auto;
 	mso-font-charset:0;}
-.font8
-	{color:#FFFFFF;
-	font-size:11.0pt;
-	font-weight:400;
-	font-style:normal;
-	text-decoration:none;
-	font-family:"Calibri";
-	mso-generic-font-family:auto;
-	mso-font-charset:0;}
-.font9
-	{color:#000000;
-	font-size:11.0pt;
-	font-weight:400;
-	font-style:normal;
-	text-decoration:none;
-	font-family:"Calibri";
-	mso-generic-font-family:auto;
-	mso-font-charset:0;}
-.font10
-	{color:#FA7D00;
-	font-size:11.0pt;
-	font-weight:400;
-	font-style:normal;
-	text-decoration:none;
-	font-family:"Calibri";
-	mso-generic-font-family:auto;
-	mso-font-charset:0;}
-.font11
-	{color:#3F3F76;
-	font-size:11.0pt;
-	font-weight:400;
-	font-style:normal;
-	text-decoration:none;
-	font-family:"Calibri";
-	mso-generic-font-family:auto;
-	mso-font-charset:0;}
-.font12
+.font7
 	{color:#800080;
 	font-size:11.0pt;
 	font-weight:400;
@@ -152,8 +107,8 @@ br
 	font-family:"Calibri";
 	mso-generic-font-family:auto;
 	mso-font-charset:0;}
-.font13
-	{color:#9C6500;
+.font8
+	{color:#FA7D00;
 	font-size:11.0pt;
 	font-weight:400;
 	font-style:normal;
@@ -161,7 +116,7 @@ br
 	font-family:"Calibri";
 	mso-generic-font-family:auto;
 	mso-font-charset:0;}
-.font14
+.font9
 	{color:#FFFFFF;
 	font-size:11.0pt;
 	font-weight:700;
@@ -170,52 +125,7 @@ br
 	font-family:"Calibri";
 	mso-generic-font-family:auto;
 	mso-font-charset:0;}
-.font15
-	{color:#3F3F3F;
-	font-size:11.0pt;
-	font-weight:700;
-	font-style:normal;
-	text-decoration:none;
-	font-family:"Calibri";
-	mso-generic-font-family:auto;
-	mso-font-charset:0;}
-.font16
-	{color:#44546A;
-	font-size:11.0pt;
-	font-weight:700;
-	font-style:normal;
-	text-decoration:none;
-	font-family:"Calibri";
-	mso-generic-font-family:auto;
-	mso-font-charset:134;}
-.font17
-	{color:#FF0000;
-	font-size:11.0pt;
-	font-weight:400;
-	font-style:normal;
-	text-decoration:none;
-	font-family:"Calibri";
-	mso-generic-font-family:auto;
-	mso-font-charset:0;}
-.font18
-	{color:#44546A;
-	font-size:13.0pt;
-	font-weight:700;
-	font-style:normal;
-	text-decoration:none;
-	font-family:"Calibri";
-	mso-generic-font-family:auto;
-	mso-font-charset:134;}
-.font19
-	{color:#006100;
-	font-size:11.0pt;
-	font-weight:400;
-	font-style:normal;
-	text-decoration:none;
-	font-family:"Calibri";
-	mso-generic-font-family:auto;
-	mso-font-charset:0;}
-.font20
+.font10
 	{color:#9C0006;
 	font-size:11.0pt;
 	font-weight:400;
@@ -224,7 +134,25 @@ br
 	font-family:"Calibri";
 	mso-generic-font-family:auto;
 	mso-font-charset:0;}
-.font21
+.font11
+	{color:#FA7D00;
+	font-size:11.0pt;
+	font-weight:700;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Calibri";
+	mso-generic-font-family:auto;
+	mso-font-charset:0;}
+.font12
+	{color:#44546A;
+	font-size:13.0pt;
+	font-weight:700;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Calibri";
+	mso-generic-font-family:auto;
+	mso-font-charset:134;}
+.font13
 	{color:#44546A;
 	font-size:15.0pt;
 	font-weight:700;
@@ -233,10 +161,82 @@ br
 	font-family:"Calibri";
 	mso-generic-font-family:auto;
 	mso-font-charset:134;}
-.font22
-	{color:#FA7D00;
+.font14
+	{color:#7F7F7F;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:italic;
+	text-decoration:none;
+	font-family:"Calibri";
+	mso-generic-font-family:auto;
+	mso-font-charset:0;}
+.font15
+	{color:#FF0000;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Calibri";
+	mso-generic-font-family:auto;
+	mso-font-charset:0;}
+.font16
+	{color:#44546A;
+	font-size:18.0pt;
+	font-weight:700;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Calibri";
+	mso-generic-font-family:auto;
+	mso-font-charset:134;}
+.font17
+	{color:#9C6500;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Calibri";
+	mso-generic-font-family:auto;
+	mso-font-charset:0;}
+.font18
+	{color:#3F3F3F;
 	font-size:11.0pt;
 	font-weight:700;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Calibri";
+	mso-generic-font-family:auto;
+	mso-font-charset:0;}
+.font19
+	{color:#3F3F76;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Calibri";
+	mso-generic-font-family:auto;
+	mso-font-charset:0;}
+.font20
+	{color:#44546A;
+	font-size:11.0pt;
+	font-weight:700;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Calibri";
+	mso-generic-font-family:auto;
+	mso-font-charset:134;}
+.font21
+	{color:#000000;
+	font-size:11.0pt;
+	font-weight:700;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Calibri";
+	mso-generic-font-family:auto;
+	mso-font-charset:0;}
+.font22
+	{color:#006100;
+	font-size:11.0pt;
+	font-weight:400;
 	font-style:normal;
 	text-decoration:none;
 	font-family:"Calibri";
@@ -793,19 +793,43 @@ td
 	mso-font-charset:134;
 	border:.5pt solid windowtext;}
 .xl69
+	{mso-style-parent:style17;
+	mso-number-format:"_\(* \#\,\#\#0_\)\;_\(* \\\(\#\,\#\#0\\\)\;_\(* \0022-\0022??_\)\;_\(\@_\)";
+	text-align:center;
+	mso-pattern:auto none;
+	background:#F4B084;
+	font-weight:700;
+	border:.5pt solid windowtext;}
+.xl70
 	{mso-style-parent:style0;
 	text-align:center;
 	font-weight:700;
 	mso-font-charset:134;}
-.xl70
+.xl71
 	{mso-style-parent:style0;
-	text-align:center;
+	text-align:right;
 	mso-pattern:auto none;
 	background:#FFFF00;
 	font-weight:700;
 	mso-font-charset:134;
 	border:.5pt solid windowtext;}
-.xl71
+.xl72
+	{mso-style-parent:style17;
+	mso-number-format:"_\(* \#\,\#\#0_\)\;_\(* \\\(\#\,\#\#0\\\)\;_\(* \0022-\0022??_\)\;_\(\@_\)";
+	text-align:center;
+	mso-pattern:auto none;
+	background:#FFFF00;
+	font-weight:700;
+	border:.5pt solid windowtext;}
+.xl73
+	{mso-style-parent:style17;
+	mso-number-format:"_\(* \#\,\#\#0_\)\;_\(* \\\(\#\,\#\#0\\\)\;_\(* \0022-\0022??_\)\;_\(\@_\)";
+	text-align:center;
+	mso-pattern:auto none;
+	background:#FFFF00;
+	font-weight:700;
+	border:.5pt solid windowtext;}
+.xl74
 	{mso-style-parent:style0;
 	color:#FFFFFF;
 	mso-font-charset:134;}
@@ -818,14 +842,14 @@ td
        <x:Name>Sheet1</x:Name>
        <x:WorksheetOptions>
         <x:DefaultRowHeight>300</x:DefaultRowHeight>
-        <x:StandardWidth>2338</x:StandardWidth>
+        <x:StandardWidth>2335</x:StandardWidth>
         <x:Selected/>
         <x:Panes>
          <x:Pane>
           <x:Number>3</x:Number>
           <x:ActiveCol>1</x:ActiveCol>
-          <x:ActiveRow>1</x:ActiveRow>
-          <x:RangeSelection>B2</x:RangeSelection>
+          <x:ActiveRow>0</x:ActiveRow>
+          <x:RangeSelection>B1</x:RangeSelection>
          </x:Pane>
         </x:Panes>
         <x:ProtectContents>False</x:ProtectContents>
@@ -841,20 +865,20 @@ td
      <x:ProtectStructure>False</x:ProtectStructure>
      <x:ProtectWindows>False</x:ProtectWindows>
      <x:SelectedSheets>0</x:SelectedSheets>
-     <x:WindowHeight>7815</x:WindowHeight>
+     <x:WindowHeight>7860</x:WindowHeight>
      <x:WindowWidth>20490</x:WindowWidth>
     </x:ExcelWorkbook>
    </xml>
   <![endif]-->
  </head>
  <body link="blue" vlink="purple">
-  <table width="793,93" border="0" cellpadding="0" cellspacing="0" style='width:595.45pt;border-collapse:collapse;table-layout:fixed;'>
+  <table width="938,93" border="0" cellpadding="0" cellspacing="0" style='width:704.20pt;border-collapse:collapse;table-layout:fixed;'>
    <col width="26" style='mso-width-source:userset;mso-width-alt:950;'/>
    <col width="40" style='mso-width-source:userset;mso-width-alt:1462;'/>
    <col width="285" style='mso-width-source:userset;mso-width-alt:10422;'/>
    <col width="63,93" style='mso-width-source:userset;mso-width-alt:2338;'/>
    <col width="110" style='mso-width-source:userset;mso-width-alt:4022;'/>
-   <col width="145" style='mso-width-source:userset;mso-width-alt:5302;'/>
+   <col width="145" span="2" style='mso-width-source:userset;mso-width-alt:5302;'/>
    <col width="124" style='mso-width-source:userset;mso-width-alt:4534;'/>
    <tr height="20" style='height:15.00pt;'>
     <td height="20" width="26" style='height:15.00pt;width:19.50pt;'></td>
@@ -862,6 +886,7 @@ td
     <td width="285" style='width:213.75pt;'></td>
     <td width="63,93" style='width:47.95pt;'></td>
     <td width="110" style='width:82.50pt;'></td>
+    <td width="145" style='width:108.75pt;'></td>
     <td width="145" style='width:108.75pt;'></td>
     <td width="124" style='width:93.00pt;'></td>
    </tr>
@@ -871,31 +896,36 @@ td
     <td class="xl66" x:str>Description</td>
     <td class="xl65" x:str>Quantity</td>
     <td class="xl65" x:str>Price</td>
-    <td class="xl65" x:str>Amount</td>
+    <td class="xl65" x:str>Debit</td>
+    <td class="xl65" x:str>Kredit</td>
     <td class="xl65" x:str>Date</td>
    </tr>
-	 <?php $Amount = 0; $No= 1; foreach ($Pengeluaran as $key) { $Amount += $key['Amount'];?> 
-		<tr height="24" style='height:18.00pt;mso-height-source:userset;mso-height-alt:360;'>
-			<td height="24" style='height:18.00pt;'></td>
-			<td class="xl67" x:num><?=$No++?></td>
-			<td class="xl68" x:str><?=$key['Description']?></td>
-			<td class="xl67" x:num><?=$key['Quantity']?></td>
-			<td class="xl67" x:num><?="Rp ".number_format($key['Price'],0,',','.')?></td>
-			<td class="xl67" x:num><?="Rp ".number_format($key['Amount'],0,',','.')?></td>
-			<td class="xl67" x:str><?=$key['Tanggal']?></td>
-		</tr>
+	 <?php $Amount = 0; $No= 1; foreach ($Kas as $key) { $Date = explode("-",$key['Tanggal'])?> 
+   <tr height="24" style='height:18.00pt;mso-height-source:userset;mso-height-alt:360;'>
+    <td height="24" style='height:18.00pt;'></td>
+    <td class="xl67" x:num><?=$No++?></td>
+    <td class="xl68" x:str><?=$key['Description']?></td>
+    <td class="xl67" x:num><?=$key['Quantity']?></td>
+    <td class="xl69" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><?=$key['Price']?><span style='mso-spacerun:yes;'>&nbsp;</span></td>
+    <td class="xl69" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><?=$key['Jenis'] == 'IN' ? $key['Amount'] : '';?><span style='mso-spacerun:yes;'>&nbsp;</span></td>
+    <td class="xl69" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><?=$key['Jenis'] == 'OUT' ? $key['Amount'] : '';?><span style='mso-spacerun:yes;'>&nbsp;</span></td>
+    <td class="xl67" x:str><?=$Date[2].'-'.$Date[1].'-'.$Date[0]?></td>
+   </tr>
 	 <?php } ?>
+	 <?php if (count($Kas) > 0) { ?>
    <tr height="26,67" style='height:20.00pt;mso-height-source:userset;mso-height-alt:400;'>
     <td height="26,67" style='height:20.00pt;'></td>
-    <td class="xl69" colspan="3" style='mso-ignore:colspan;'></td>
-    <td class="xl70" x:str>Total</td>
-    <td class="xl70" x:num><?="Rp ".number_format($Amount,0,',','.')?></td>
-    <td class="xl69"></td>
+    <td class="xl70" colspan="3" style='mso-ignore:colspan;'></td>
+    <td class="xl71" x:str>Total</td>
+    <td class="xl72" x:fmla="=SUM(F3:F<?=2+count($Kas)?>)" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='mso-spacerun:yes;'>&nbsp;</span></td>
+    <td class="xl72" x:fmla="=SUM(G3:G<?=2+count($Kas)?>)" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='mso-spacerun:yes;'>&nbsp;</span></td>
+    <td class="xl73" x:fmla="=F<?=3+count($Kas)?>-G<?=3+count($Kas)?>" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='mso-spacerun:yes;'>&nbsp;</span></td>
    </tr>
+	 <?php } ?>
    <tr height="20" style='height:15.00pt;'>
     <td height="20" colspan="4" style='height:15.00pt;mso-ignore:colspan;'></td>
-    <td class="xl71"></td>
-    <td colspan="2" style='mso-ignore:colspan;'></td>
+    <td class="xl74"></td>
+    <td colspan="3" style='mso-ignore:colspan;'></td>
    </tr>
    <![if supportMisalignedColumns]>
     <tr width="0" style='display:none;'>

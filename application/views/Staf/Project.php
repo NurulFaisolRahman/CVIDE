@@ -11,10 +11,8 @@
 												<tr class="bg-danger text-light">
 													<th scope="col" style="width: 4%;" class="text-center align-middle">No</th>
 													<th scope="col" class="align-middle">Nama Project</th>
-													<th scope="col" class="text-center align-middle">PJ Project</th>
 													<th scope="col" class="text-center align-middle">Deadline Project</th>
 													<th scope="col" class="text-center align-middle">Catatan</th>
-													<th scope="col" class="text-center align-middle">Progres</th>
 													<th scope="col" class="text-center align-middle">Edit</th>
 												</tr>
 											</thead>
@@ -23,13 +21,11 @@
 													<tr>
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>
 														<th scope="row" class="align-middle"><?=$key['NamaProject']?></th>
-														<th scope="row" class="text-center align-middle"><?=$Pj?></th>
 														<th scope="row" class="text-center align-middle"><?=$From[2].'-'.$From[1].'-'.$From[0].' => '.$To[2].'-'.$To[1].'-'.$To[0]?></th>
 														<th scope="row" class="text-center align-middle"><?=$key['Catatan']?></th>
-														<th scope="row" class="text-center align-middle"><?=$key['Progres']?></th>
 														<th scope="row" class="text-center align-middle">
-															<button Edit="<?=$key['Id']."$".$key['NamaProject']."$".$key['Deadline']."$".$key['PJ']?>" class="btn btn-sm btn-warning Edit"><i class="fa fa-edit"></i></button>
-															<button Hapus="<?=$key['Id']?>" class="btn btn-sm btn-danger Hapus"><i class="fa fa-trash"></i></button>
+															<button Edit="<?=$key['Id']."$".$key['NamaProject']."$".$key['Deadline']."$".$key['Catatan']."$".$key['File']?>" class="btn btn-sm btn-warning Edit"><i class="fa fa-edit"></i></button>
+															<button Hapus="<?=$key['Id']."$".$key['File']?>" class="btn btn-sm btn-danger Hapus"><i class="fa fa-trash"></i></button>
 														</th>
 													</tr>
 												<?php } ?>  
@@ -74,23 +70,26 @@
                   </div>
 								</div>
 								<div class="col-sm-12">
-                  <div class="input-group input-group-sm mb-1">
-                    <div class="input-group-prepend">
-											<span class="input-group-text bg-primary text-white"><b>PJ Project</b></span>
-											<?php foreach ($PJ as $key) { ?> 
-												&nbsp;<div class="input-group-text bg-danger text-white font-weight-bold">
-													<input type="checkbox" name="PJ" value="<?=$key['Username']?>">&nbsp;<?=ucfirst($key['Username'])?>
-												</div>
-											<?php } ?>
+									<div class="input-group input-group-sm mb-1">
+										<span class="input-group-text bg-primary text-white"><b>Catatan</b></span>
+										<textarea class="form-control" id="Catatan" rows="2"></textarea>
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="input-group input-group-sm mb-1">
+										<div class="input-group-prepend">
+											<span class="input-group-text bg-primary text-white"><b>File</b></span>
 										</div>
-                  </div>
+										<input class="form-control" type="file" id="File">
+									</div>
 								</div>
               </div>
             </div>
           </div>
           <div class="modal-footer justify-content-between">
+						<button type="submit" class="btn btn-primary" id="Input"><b>Simpan</b></button>
+						<div id="LoadingInput" class="spinner-border text-success" role="status" style="display: none;"></div>
             <button type="button" class="btn btn-danger" data-dismiss="modal"><b>Tutup</b></button>
-            <button type="submit" class="btn btn-primary" id="Input"><b>Simpan</b></button>
           </div>
         </div>
       </div>
@@ -125,16 +124,18 @@
                   </div>
 								</div>
 								<div class="col-sm-12">
-                  <div class="input-group input-group-sm mb-1">
-                    <div class="input-group-prepend">
-											<span class="input-group-text bg-primary text-white"><b>PJ Project</b></span>
-											<?php foreach ($PJ as $key) { ?> 
-												&nbsp;<div class="input-group-text bg-danger text-white font-weight-bold">
-													<input type="checkbox" name="PJ" id="<?=$key['Username']?>" value="<?=$key['Username']?>">&nbsp;<?=ucfirst($key['Username'])?>
-												</div>
-											<?php } ?>
+									<div class="input-group input-group-sm mb-1">
+										<span class="input-group-text bg-primary text-white"><b>Catatan</b></span>
+										<textarea class="form-control" id="EditCatatan" rows="2"></textarea>
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="input-group input-group-sm mb-1">
+										<div class="input-group-prepend">
+											<span class="input-group-text bg-primary text-white"><b>File</b></span>
 										</div>
-                  </div>
+										<input class="form-control" type="file" id="EditFile">
+									</div>
 								</div>
               </div>
             </div>
@@ -167,18 +168,28 @@
 				})
 				
 				$("#Input").click(function() {
-					var PJ = []
-					$.each($("input[name='PJ']:checked"), function(){
-						PJ.push($(this).val())
-					})
-					var Data = { NamaProject: $("#NamaProject").val(),
-											 Deadline: $("#From").val()+'|'+$("#To").val(),
-											 PJ: PJ.join("|") }
-					$.post(BaseURL+"Econk/Input", Data).done(function(Respon) {
-						if (Respon == '1') {
-							window.location = BaseURL + "Econk/Project"
-						} else {
-							alert(Respon)
+					var fd = new FormData()
+					fd.append("File",$('#File')[0].files[0])
+					fd.append('NamaProject',$("#NamaProject").val())
+					fd.append('Deadline',$("#From").val()+'|'+$("#To").val())
+					fd.append('Catatan',$("#Catatan").val())
+					$.ajax({
+						url: BaseURL+'Staf/Input',
+						type: 'post',
+						data: fd,
+						contentType: false,
+						processData: false,
+						beforeSend: function(){
+							$("#LoadingInput").show();
+						},
+						success: function(Respon){
+							if (Respon == '1') {
+								window.location = BaseURL + "Staf/Project"
+							}
+							else {
+								alert(Respon)
+								$("#LoadingInput").hide();
+							}
 						}
 					})
 				})
@@ -207,9 +218,9 @@
 														 Quantity: $("#EditQuantity").val(),
 														 Amount: $("#EditPrice").val()*$("#EditQuantity").val(),
 														 Tanggal: $("#EditDate").val()}
-						$.post(BaseURL+"Econk/Edit", Data).done(function(Respon) {
+						$.post(BaseURL+"Staf/Edit", Data).done(function(Respon) {
 							if (Respon == '1') {
-								window.location = BaseURL + "Econk/Project"
+								window.location = BaseURL + "Staf/Project"
 							} else {
 								alert(Respon)
 							}
@@ -221,9 +232,9 @@
 					var Hapus = {Id: $(this).attr('Hapus')}
 					var Konfirmasi = confirm("Yakin Ingin Menghapus?");
       		if (Konfirmasi == true) {
-						$.post(BaseURL+"Econk/Hapus", Hapus).done(function(Respon) {
+						$.post(BaseURL+"Staf/Hapus", Hapus).done(function(Respon) {
 							if (Respon == '1') {
-								window.location = BaseURL + "Econk/Project"
+								window.location = BaseURL + "Staf/Project"
 							} else {
 								alert(Respon)
 							}

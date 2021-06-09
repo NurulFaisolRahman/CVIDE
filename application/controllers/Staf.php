@@ -25,25 +25,34 @@ class Staf extends CI_Controller {
     }
   }
 
-	public function Pengeluaran(){
-    $Data['Pengeluaran'] = $this->db->get('pengeluaran')->result_array();
+  public function CekFile($File){
+		$Tipe = pathinfo($_FILES['File']['name'],PATHINFO_EXTENSION);
+		$valid_extensions = array("pdf");
+		if(!in_array(strtolower($Tipe),$valid_extensions)) {
+			return false;
+		} 
+		return true;
+	}
+
+	public function Project(){
+    $Data['Project'] = $this->db->get('project')->result_array();
     $this->load->view('Staf/Header',$Data);
-		$this->load->view('Staf/Pengeluaran',$Data);
+		$this->load->view('Staf/Project',$Data);
   }
 
   public function Input(){
-    $this->db->insert('pengeluaran', $_POST);
+    $this->db->insert('project', $_POST);
     if ($this->db->affected_rows()){
       echo '1';
     } else {
-      echo 'Gagal Input Pengeluaran!';
+      echo 'Gagal Input Data!';
     }
   }
 
   public function Edit(){
     $this->db->where('Id',$_POST['Id']);
     unset($_POST['Id']);
-    $this->db->update('pengeluaran', $_POST);
+    $this->db->update('project', $_POST);
 		if ($this->db->affected_rows()){
 			echo '1';
 		} else {
@@ -52,7 +61,7 @@ class Staf extends CI_Controller {
 	}
 
   public function Hapus(){
-		$this->db->delete('pengeluaran', $_POST);
+		$this->db->delete('project', $_POST);
 		if ($this->db->affected_rows()){
 			echo '1';
 		} else {

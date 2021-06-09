@@ -1,45 +1,54 @@
 							<div class="row">
 								<div class="col-lg-auto">
-									<button type="button" class="btn btn-primary border-white mb-2" data-toggle="modal" data-target="#ModalInput"><i class="fa fa-plus"></i><b> Input</b></button>
+									<button type="button" class="btn btn-sm btn-primary border-white mb-2" data-toggle="modal" data-target="#ModalInput"><i class="fa fa-plus"></i><b> Input</b></button>
 								</div>
 								<div class="col-lg-auto">
-									<div class="input-group mb-2">
+									<div class="input-group input-group-sm mb-2">
 										<div class="input-group-prepend">
 											<span class="input-group-text bg-primary text-white"><b>Rekap</b></span>
 										</div>
-										<input type="date" class="form-control" id="Filter" value="<?=date('Y-m-d')?>"> 
+										<div class="input-group-prepend">
+                      <span class="input-group-text bg-danger text-white"><b>From</b></span>
+                    </div>
+										<input type="date" class="form-control" id="From" value="<?=date('Y-m-d')?>"> 
+										<div class="input-group-prepend">
+                      <span class="input-group-text bg-danger text-white"><b>To</b></span>
+                    </div>
+                    <input type="date" class="form-control" id="To" value="<?=date('Y-m-d')?>">  
 									</div>
 								</div>
 								<div class="col-lg-auto">
-									<button type="button" class="btn btn-danger border-white mb-2" id="Rekap"><i class="fa fa-file-excel-o"></i><b> Excel</b></button>
+									<button type="button" class="btn btn-sm btn-danger border-white mb-2" id="Rekap"><i class="fa fa-file-excel-o"></i><b> Excel</b></button>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm-12">
 									<div class="table-responsive">
-										<table id="TabelPengeluaran" class="table table-sm table-bordered bg-light">
+										<table id="TabelKas" class="table table-sm table-bordered bg-light">
 											<thead>
 												<tr class="bg-danger text-light">
 													<th scope="col" style="width: 4%;" class="text-center align-middle">No</th>
 													<th scope="col" class="align-middle">Description</th>
 													<th scope="col" style="width: 7%;" class="text-center align-middle">Quantity</th>
 													<th scope="col" class="text-center align-middle">Price</th>
-													<th scope="col" class="text-center align-middle">Amount</th>
+													<th scope="col" class="text-center align-middle">Debit</th>
+													<th scope="col" class="text-center align-middle">Kredit</th>
 													<th scope="col" class="text-center align-middle">Date</th>
 													<th scope="col" class="text-center align-middle">Edit</th>
 												</tr>
 											</thead>
 											<tbody id="RekapSurvei">
-												<?php $No = 1; foreach ($Pengeluaran as $key) { ?>
+												<?php $No = 1; foreach ($Kas as $key) { $Date = explode("-",$key['Tanggal'])?>
 													<tr>
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>
 														<th scope="row" class="align-middle"><?=$key['Description']?></th>
 														<th scope="row" class="text-center align-middle"><?=$key['Quantity']?></th>
 														<th scope="row" style="width: 15%;" class="text-center align-middle"><?="Rp ".number_format($key['Price'],0,',','.')?></th>
-														<th scope="row" style="width: 15%;" class="text-center align-middle"><?="Rp ".number_format($key['Amount'],0,',','.')?></th>
-														<th scope="row" style="width: 10%;" class="text-center align-middle"><?=$key['Tanggal']?></th>
+														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=$key['Jenis'] == 'IN' ? "Rp ".number_format($key['Amount'],0,',','.') : '';?></th>
+														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=$key['Jenis'] == 'OUT' ? "Rp ".number_format($key['Amount'],0,',','.') : '';?></th>
+														<th scope="row" style="width: 10%;" class="text-center align-middle"><?=$Date[2].'-'.$Date[1].'-'.$Date[0]?></th>
 														<th scope="row" style="width: 10%;" class="text-center align-middle">
-															<button Edit="<?=$key['Id']."|".$key['Description']."|".$key['Quantity']."|".$key['Price']."|".$key['Amount']."|".$key['Tanggal']."|".$key['Date']?>" class="btn btn-sm btn-warning Edit"><i class="fa fa-edit"></i></button>
+															<button Edit="<?=$key['Id']."|".$key['Description']."|".$key['Quantity']."|".$key['Price']."|".$key['Amount']."|".$key['Tanggal']."|".$key['Jenis']?>" class="btn btn-sm btn-warning Edit"><i class="fa fa-edit"></i></button>
 															<button Hapus="<?=$key['Id']?>" class="btn btn-sm btn-danger Hapus"><i class="fa fa-trash"></i></button>
 														</th>
 													</tr>
@@ -66,20 +75,32 @@
 										<textarea class="form-control" id="Description" rows="2" placeholder="Description"></textarea>
 									</div>
 								</div>
+								<div class="col-sm-6">
+                  <div class="input-group input-group-sm mb-1">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-primary text-white"><b>Quantity</b></span>
+                    </div>
+                    <input type="text" class="form-control" id="Quantity"> 
+                  </div>
+								</div>
+								<div class="col-sm-6">
+                  <div class="input-group input-group-sm mb-1">
+                    <div class="input-group-prepend">
+											&nbsp;<div class="input-group-text bg-danger text-white font-weight-bold">
+												<input type="radio" name="Jenis" value="OUT" checked>&nbsp;OUT
+											</div>
+											&nbsp;<div class="input-group-text bg-danger text-white font-weight-bold">
+												<input type="radio" name="Jenis" value="IN">&nbsp;IN
+											</div>
+										</div>
+                  </div>
+								</div>
 								<div class="col-sm-12">
                   <div class="input-group input-group-sm mb-1">
                     <div class="input-group-prepend">
                       <span class="input-group-text bg-primary text-white"><b>Price</b></span>
                     </div>
                     <input type="text" class="form-control" id="Price"> 
-                  </div>
-								</div>
-								<div class="col-sm-12">
-                  <div class="input-group input-group-sm mb-1">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-primary text-white"><b>Quantity</b></span>
-                    </div>
-                    <input type="text" class="form-control" id="Quantity"> 
                   </div>
 								</div>
 								<div class="col-sm-12">
@@ -115,9 +136,14 @@
 								<div class="col-sm-12">
                   <div class="input-group input-group-sm mb-1">
                     <div class="input-group-prepend">
-                      <span class="input-group-text bg-primary text-white"><b>Price</b></span>
-                    </div>
-                    <input type="text" class="form-control" id="EditPrice"> 
+											<span class="input-group-text bg-primary text-white"><b>Jenis</b></span>
+												&nbsp;<div class="input-group-text bg-danger text-white font-weight-bold">
+													<input type="radio" name="EditJenis" id="OUT" value="OUT" checked>&nbsp;OUT
+												</div>
+												&nbsp;<div class="input-group-text bg-danger text-white font-weight-bold">
+													<input type="radio" name="EditJenis" id="IN" value="IN">&nbsp;IN
+												</div>
+										</div>
                   </div>
 								</div>
 								<div class="col-sm-12">
@@ -126,6 +152,14 @@
                       <span class="input-group-text bg-primary text-white"><b>Quantity</b></span>
                     </div>
                     <input type="text" class="form-control" id="EditQuantity"> 
+                  </div>
+								</div>
+								<div class="col-sm-12">
+                  <div class="input-group input-group-sm mb-1">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-primary text-white"><b>Price</b></span>
+                    </div>
+                    <input type="text" class="form-control" id="EditPrice"> 
                   </div>
 								</div>
 								<div class="col-sm-12">
@@ -154,7 +188,7 @@
 		<script>
 			$(document).ready(function(){
 				var BaseURL = '<?=base_url()?>'  
-				$('#TabelPengeluaran').DataTable( {
+				$('#TabelKas').DataTable( {
 					"ordering": true,
 					"bInfo" : false,
 					"lengthMenu": [[10, 30, 50, -1], [10, 30, 50, "All"]],
@@ -167,10 +201,12 @@
 				})
 
 				$("#Rekap").click(function() {
-					if ($("#Filter").val() == "") {
-						alert('Input Rekap Belum Benar!')
+					if ($("#From").val() == "") {
+						alert('Input From Belum Benar!')
+					} else if ($("#To").val() == "") {
+						alert('Input To Belum Benar!')
 					} else {
-						window.location = BaseURL + "Admin/ExcelInvoice/" +$("#Filter").val().substr(0,7) 
+						window.location = BaseURL + "Admin/ExcelKas/" +$("#From").val()+"/"+$("#To").val()
 					}
 				})
 				
@@ -181,13 +217,15 @@
 						alert('Input Quantity Belum Benar!')
 					} else {
 						var Data = { Description: $("#Description").val(),
-														 Price: $("#Price").val(),
-														 Quantity: $("#Quantity").val(),
-														 Amount: $("#Price").val()*$("#Quantity").val(),
-														 Tanggal: $("#Date").val()}
+												 Jenis: $("input[name='Jenis']:checked").val(),
+												 Price: $("#Price").val(),
+												 Quantity: $("#Quantity").val(),
+												 Amount: $("#Price").val()*$("#Quantity").val(),
+												 Tanggal: $("#Date").val()
+											 }
 						$.post(BaseURL+"Admin/Input", Data).done(function(Respon) {
 							if (Respon == '1') {
-								window.location = BaseURL + "Admin/Pengeluaran"
+								window.location = BaseURL + "Admin/Kas"
 							} else {
 								alert(Respon)
 							}
@@ -204,6 +242,7 @@
 					$("#EditPrice").val(Pisah[3])
 					$("#EditAmount").val(Pisah[4])
 					$("#EditDate").val(Pisah[5])
+					Pisah[6] == 'IN' ? $("#IN").prop("checked", true) : $("#OUT").prop("checked", true); 
 					$('#ModalEdit').modal("show")
 				})
 
@@ -215,13 +254,14 @@
 					} else {
 						var Data = { Id: $("#Id").val(),
 														 Description: $("#EditDescription").val(),
+														 Jenis: $("input[name='EditJenis']:checked").val(),
 														 Price: $("#EditPrice").val(),
 														 Quantity: $("#EditQuantity").val(),
 														 Amount: $("#EditPrice").val()*$("#EditQuantity").val(),
 														 Tanggal: $("#EditDate").val()}
 						$.post(BaseURL+"Admin/Edit", Data).done(function(Respon) {
 							if (Respon == '1') {
-								window.location = BaseURL + "Admin/Pengeluaran"
+								window.location = BaseURL + "Admin/Kas"
 							} else {
 								alert(Respon)
 							}
@@ -235,7 +275,7 @@
       		if (Konfirmasi == true) {
 						$.post(BaseURL+"Admin/Hapus", Hapus).done(function(Respon) {
 							if (Respon == '1') {
-								window.location = BaseURL + "Admin/Pengeluaran"
+								window.location = BaseURL + "Admin/Kas"
 							} else {
 								alert(Respon)
 							}

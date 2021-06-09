@@ -1,37 +1,46 @@
 							<div class="row my-2">
 								<div class="col-lg-auto">
-									<div class="input-group mb-2">
+									<div class="input-group input-group-sm mb-2">
 										<div class="input-group-prepend">
 											<span class="input-group-text bg-primary text-white"><b>Rekap</b></span>
 										</div>
-										<input type="date" class="form-control" id="Filter" value="<?=date('Y-m-d')?>"> 
+										<div class="input-group-prepend">
+                      <span class="input-group-text bg-danger text-white"><b>From</b></span>
+                    </div>
+										<input type="date" class="form-control" id="From" value="<?=date('Y-m-d')?>"> 
+										<div class="input-group-prepend">
+                      <span class="input-group-text bg-danger text-white"><b>To</b></span>
+                    </div>
+                    <input type="date" class="form-control" id="To" value="<?=date('Y-m-d')?>">
 									</div>
 								</div>
 								<div class="col-lg-auto">
-									<button type="button" class="btn btn-danger border-white mb-2" id="Rekap"><i class="fa fa-file-excel-o"></i><b> Excel</b></button>
+									<button type="button" class="btn btn-sm btn-danger border-white mb-2" id="Rekap"><i class="fa fa-file-excel-o"></i><b> Excel</b></button>
 								</div>
 								<div class="col-sm-12">
 									<div class="table-responsive">
-										<table id="TabelPengeluaran" class="table table-sm table-bordered bg-light">
+										<table id="TabelKas" class="table table-sm table-bordered bg-light">
 											<thead>
 												<tr class="bg-danger text-light">
 													<th scope="col" style="width: 4%;" class="text-center align-middle">No</th>
 													<th scope="col" class="align-middle">Description</th>
 													<th scope="col" style="width: 7%;" class="text-center align-middle">Quantity</th>
 													<th scope="col" class="text-center align-middle">Price</th>
-													<th scope="col" class="text-center align-middle">Amount</th>
+													<th scope="col" class="text-center align-middle">Debit</th>
+													<th scope="col" class="text-center align-middle">Kredit</th>
 													<th scope="col" class="text-center align-middle">Date</th>
 												</tr>
 											</thead>
 											<tbody id="RekapSurvei">
-												<?php $No = 1; foreach ($Pengeluaran as $key) { ?>
+												<?php $No = 1; foreach ($Kas as $key) { $Date = explode("-",$key['Tanggal'])?>
 													<tr>
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>
 														<th scope="row" class="align-middle"><?=$key['Description']?></th>
 														<th scope="row" class="text-center align-middle"><?=$key['Quantity']?></th>
-														<th scope="row" style="width: 15%;" class="text-center align-middle"><?="Rp ".number_format($key['Price'],0,',','.');?></th>
-														<th scope="row" style="width: 15%;" class="text-center align-middle"><?="Rp ".number_format($key['Amount'],0,',','.');?></th>
-														<th scope="row" style="width: 10%;" class="text-center align-middle"><?=$key['Tanggal']?></th>
+														<th scope="row" style="width: 15%;" class="text-center align-middle"><?="Rp ".number_format($key['Price'],0,',','.')?></th>
+														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=$key['Jenis'] == 'IN' ? "Rp ".number_format($key['Amount'],0,',','.') : '';?></th>
+														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=$key['Jenis'] == 'OUT' ? "Rp ".number_format($key['Amount'],0,',','.') : '';?></th>
+														<th scope="row" style="width: 10%;" class="text-center align-middle"><?=$Date[2].'-'.$Date[1].'-'.$Date[0]?></th>
 													</tr>
 												<?php } ?>  
 											</tbody>
@@ -53,7 +62,7 @@
 		<script>
 			$(document).ready(function(){
 				var BaseURL = '<?=base_url()?>'  
-				$('#TabelPengeluaran').DataTable( {
+				$('#TabelKas').DataTable( {
 					"ordering": true,
 					"bInfo" : false,
 					"lengthMenu": [[10, 30, 50, -1], [10, 30, 50, "All"]],
@@ -66,10 +75,12 @@
 				})
 
 				$("#Rekap").click(function() {
-					if ($("#Filter").val() == "") {
-						alert('Input Rekap Belum Benar!')
+					if ($("#From").val() == "") {
+						alert('Input From Belum Benar!')
+					} else if ($("#To").val() == "") {
+						alert('Input To Belum Benar!')
 					} else {
-						window.location = BaseURL + "SuperAdmin/ExcelInvoice/" +$("#Filter").val().substr(0,7) 
+						window.location = BaseURL + "SuperAdmin/ExcelKas/" +$("#From").val()+"/"+$("#To").val()
 					}
 				})
 			})

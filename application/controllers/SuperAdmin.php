@@ -25,15 +25,15 @@ class SuperAdmin extends CI_Controller {
     }
   }
 
-  public function ExcelInvoice($Filter){
-    $Data['NamaFile'] = "Invoice-".$Filter;
-    $Data['Pengeluaran'] = $this->db->query("SELECT * FROM `pengeluaran` WHERE Tanggal LIKE '".$Filter."%' ORDER BY Tanggal ASC")->result_array();
-		$this->load->view('Invoice',$Data);
+  public function ExcelKas($From,$To){
+    $Data['NamaFile'] = "Kas ".$From." Hingga ".$To;
+    $Data['Kas'] = $this->db->query("SELECT * FROM `kas` WHERE Tanggal >= '".$From."' and Tanggal <= '".$To."' ORDER BY Tanggal ASC")->result_array();
+		$this->load->view('ExcelKas',$Data);
   }
 
-	public function Pengeluaran(){
-    $Data['Pengeluaran'] = $this->db->get('pengeluaran')->result_array();
+	public function Kas(){
+    $Data['Kas'] = $this->db->get('kas')->result_array();
     $this->load->view('SuperAdmin/Header',$Data);
-		$this->load->view('SuperAdmin/Pengeluaran',$Data);
+		$this->load->view('SuperAdmin/Kas',$Data);
   }
 }

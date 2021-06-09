@@ -1,2 +1,3 @@
-./application/config/config.php
-./application/config/database.php
+Project/DosenKontrak/*
+application/config/config.php
+application/config/database.php

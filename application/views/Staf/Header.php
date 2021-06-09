@@ -38,9 +38,9 @@
                 <ul class="nav side-menu">
 									<li><a href="<?=base_url('Staf')?>"><i class="fa fa-user"></i> <b>Dashboard</b> </a></li>
                 </ul>
-                <!-- <ul class="nav side-menu">
-									<li><a href="<?=base_url('Staf/Pengeluaran')?>"><i class="fa fa-usd"></i> <b>Pengeluaran</b> </a></li>
-                </ul> -->
+                <ul class="nav side-menu">
+									<li><a href="<?=base_url('Staf/Project')?>"><i class="fa fa-usd"></i> <b>Project</b> </a></li>
+                </ul>
 								<ul class="nav side-menu">
 									<li><a href="<?=base_url('IDE/SignOut')?>"><i class="fa fa-sign-out"></i> <b>Keluar</b> </a></li>
                 </ul>

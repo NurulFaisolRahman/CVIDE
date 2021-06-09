@@ -25,31 +25,31 @@ class Admin extends CI_Controller {
     }
   }
 
-  public function ExcelInvoice($Filter){
-    $Data['NamaFile'] = "Invoice-".$Filter;
-    $Data['Pengeluaran'] = $this->db->query("SELECT * FROM `pengeluaran` WHERE Tanggal LIKE '".$Filter."%' ORDER BY Tanggal ASC")->result_array();
-		$this->load->view('Invoice',$Data);
+  public function ExcelKas($From,$To){
+    $Data['NamaFile'] = "Kas ".$From." Hingga ".$To;
+    $Data['Kas'] = $this->db->query("SELECT * FROM `kas` WHERE Tanggal >= '".$From."' and Tanggal <= '".$To."' ORDER BY Tanggal ASC")->result_array();
+		$this->load->view('ExcelKas',$Data);
   }
 
-	public function Pengeluaran(){
-    $Data['Pengeluaran'] = $this->db->get('pengeluaran')->result_array();
+	public function Kas(){
+    $Data['Kas'] = $this->db->get('kas')->result_array();
     $this->load->view('Admin/Header',$Data);
-		$this->load->view('Admin/Pengeluaran',$Data);
+		$this->load->view('Admin/Kas',$Data);
   }
 
   public function Input(){
-    $this->db->insert('pengeluaran', $_POST);
+    $this->db->insert('kas', $_POST);
     if ($this->db->affected_rows()){
       echo '1';
     } else {
-      echo 'Gagal Input Pengeluaran!';
+      echo 'Gagal Input Data!';
     }
   }
 
   public function Edit(){
     $this->db->where('Id',$_POST['Id']);
     unset($_POST['Id']);
-    $this->db->update('pengeluaran', $_POST);
+    $this->db->update('kas', $_POST);
 		if ($this->db->affected_rows()){
 			echo '1';
 		} else {
@@ -58,7 +58,7 @@ class Admin extends CI_Controller {
 	}
 
   public function Hapus(){
-		$this->db->delete('pengeluaran', $_POST);
+		$this->db->delete('kas', $_POST);
 		if ($this->db->affected_rows()){
 			echo '1';
 		} else {
