@@ -1,6 +1,6 @@
 							<div class="row">
 								<div class="col-lg-auto">
-									<button type="button" class="btn btn-primary border-white mb-2" data-toggle="modal" data-target="#ModalInput"><i class="fa fa-plus"></i><b> Input</b></button>
+									<button type="button" class="btn btn-sm btn-primary border-white mb-2" data-toggle="modal" data-target="#ModalInput"><i class="fa fa-plus"></i><b> Input</b></button>
 								</div>
 							</div>
 							<div class="row">
@@ -11,9 +11,9 @@
 												<tr class="bg-danger text-light">
 													<th scope="col" style="width: 4%;" class="text-center align-middle">No</th>
 													<th scope="col" class="align-middle">Nama Project</th>
-													<th scope="col" class="text-center align-middle">Deadline Project</th>
-													<th scope="col" class="text-center align-middle">Catatan</th>
-													<th scope="col" class="text-center align-middle">Edit</th>
+													<th scope="col" style="width: 15%;" class="text-center align-middle">Deadline Project</th>
+													<th scope="col" style="width: 35%;" class="align-middle">Catatan</th>
+													<th scope="col" style="width: 12%;" class="text-center align-middle">Edit</th>
 												</tr>
 											</thead>
 											<tbody id="RekapSurvei">
@@ -22,8 +22,11 @@
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>
 														<th scope="row" class="align-middle"><?=$key['NamaProject']?></th>
 														<th scope="row" class="text-center align-middle"><?=$From[2].'-'.$From[1].'-'.$From[0].' => '.$To[2].'-'.$To[1].'-'.$To[0]?></th>
-														<th scope="row" class="text-center align-middle"><?=$key['Catatan']?></th>
+														<th scope="row" class="align-middle"><?=$key['Catatan']?></th>
 														<th scope="row" class="text-center align-middle">
+															<?php if (!empty($key['File'])) { ?>
+																<a href="<?=base_url("Project/".$key['File'])?>" class="btn btn-sm btn-primary" download><i class="fa fa-download"></i></a>
+															<?php } ?>
 															<button Edit="<?=$key['Id']."$".$key['NamaProject']."$".$key['Deadline']."$".$key['Catatan']."$".$key['File']?>" class="btn btn-sm btn-warning Edit"><i class="fa fa-edit"></i></button>
 															<button Hapus="<?=$key['Id']."$".$key['File']?>" class="btn btn-sm btn-danger Hapus"><i class="fa fa-trash"></i></button>
 														</th>
@@ -105,6 +108,8 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text bg-primary text-white"><b>Nama Project</b></span>
                     </div>
+										<input type="hidden" class="form-control" id="Id">
+										<input type="hidden" class="form-control" id="FileLama"> 
                     <input type="text" class="form-control" id="EditNamaProject"> 
                   </div>
 								</div>
@@ -141,8 +146,9 @@
             </div>
           </div>
           <div class="modal-footer justify-content-between">
+						<button type="submit" class="btn btn-primary" id="Edit"><b>Simpan</b></button>
+						<div id="LoadingEdit" class="spinner-border text-success" role="status" style="display: none;"></div>
             <button type="button" class="btn btn-danger" data-dismiss="modal"><b>Tutup</b></button>
-            <button type="submit" class="btn btn-primary" id="Edit"><b>Simpan</b></button>
           </div>
         </div>
       </div>
@@ -158,7 +164,7 @@
 				$('#TabelProject').DataTable( {
 					"ordering": true,
 					"bInfo" : false,
-					"lengthMenu": [[10, 30, 50, -1], [10, 30, 50, "All"]],
+					"lengthMenu": [[7, 30, 50, -1], [7, 30, 50, "All"]],
 					"language": {
 						"paginate": {
 							'previous': '<b class="text-white"><</b>',
@@ -166,10 +172,12 @@
 						}
 					}
 				})
-				
+				 
 				$("#Input").click(function() {
 					var fd = new FormData()
-					fd.append("File",$('#File')[0].files[0])
+					if (!$('#File')[0].files[0] == false) {
+						fd.append("File",$('#File')[0].files[0])	
+					}
 					fd.append('NamaProject',$("#NamaProject").val())
 					fd.append('Deadline',$("#From").val()+'|'+$("#To").val())
 					fd.append('Catatan',$("#Catatan").val())
@@ -198,38 +206,50 @@
 					var Data = $(this).attr('Edit')
 					var Pisah = Data.split("$")
 					var Deadline = Pisah[2].split("|")
-					var Pj = Pisah[3].split("|")
 					$("#Id").val(Pisah[0])
 					$("#EditNamaProject").val(Pisah[1])
 					$("#EditFrom").val(Deadline[0])
 					$("#EditTo").val(Deadline[1])
+					$("#EditCatatan").val(Pisah[3])
+					$("#FileLama").val(Pisah[4])
 					$('#ModalEdit').modal("show")
 				})
 
 				$("#Edit").click(function() {
-					if (isNaN($("#EditPrice").val())) {
-						alert('Input Price Belum Benar!')
-					} else if (isNaN($("#EditQuantity").val())) {
-						alert('Input Quantity Belum Benar!')
-					} else {
-						var Data = { Id: $("#Id").val(),
-														 Description: $("#EditDescription").val(),
-														 Price: $("#EditPrice").val(),
-														 Quantity: $("#EditQuantity").val(),
-														 Amount: $("#EditPrice").val()*$("#EditQuantity").val(),
-														 Tanggal: $("#EditDate").val()}
-						$.post(BaseURL+"Staf/Edit", Data).done(function(Respon) {
+					var fd = new FormData()
+					fd.append('Id',$("#Id").val())
+					fd.append('FileLama',$("#FileLama").val())
+					if (!$('#EditFile')[0].files[0] == false) {
+						fd.append("File",$('#EditFile')[0].files[0])	
+					}
+					fd.append('NamaProject',$("#EditNamaProject").val())
+					fd.append('Deadline',$("#EditFrom").val()+'|'+$("#EditTo").val())
+					fd.append('Catatan',$("#EditCatatan").val())
+					$.ajax({
+						url: BaseURL+'Staf/Edit',
+						type: 'post',
+						data: fd,
+						contentType: false,
+						processData: false,
+						beforeSend: function(){
+							$("#LoadingEdit").show();
+						},
+						success: function(Respon){
 							if (Respon == '1') {
 								window.location = BaseURL + "Staf/Project"
-							} else {
-								alert(Respon)
 							}
-						})
-					}
+							else {
+								alert(Respon)
+								$("#LoadingEdit").hide();
+							}
+						}
+					})
 				})
 
 				$(document).on("click",".Hapus",function(){
-					var Hapus = {Id: $(this).attr('Hapus')}
+					var Data = $(this).attr('Hapus').split("$")
+					var Hapus = { Id: Data[0],
+											  File: Data[1] }
 					var Konfirmasi = confirm("Yakin Ingin Menghapus?");
       		if (Konfirmasi == true) {
 						$.post(BaseURL+"Staf/Hapus", Hapus).done(function(Respon) {

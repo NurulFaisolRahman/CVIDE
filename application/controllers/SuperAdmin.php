@@ -36,4 +36,10 @@ class SuperAdmin extends CI_Controller {
     $this->load->view('SuperAdmin/Header',$Data);
 		$this->load->view('SuperAdmin/Kas',$Data);
   }
+
+  public function Project(){
+    $Data['Project'] = $this->db->get('project')->result_array();
+    $this->load->view('SuperAdmin/Header',$Data);
+		$this->load->view('SuperAdmin/Project',$Data);
+  }
 }
