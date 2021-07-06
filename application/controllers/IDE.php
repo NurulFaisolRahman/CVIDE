@@ -4,11 +4,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class IDE extends CI_Controller {
 
 	public function index(){
-		$this->load->view('IDE');
+    $Data['Kategori'] = $this->db->query('SELECT DISTINCT(Kategori) FROM `portfolio`')->result_array();
+    $Data['Portfolio'] = $this->db->get('portfolio')->result_array();
+		$this->load->view('IDE',$Data);
   }
   
   public function Auth(){
 		$this->load->view('Auth');
+  }
+
+  public function GetPortofolio($Id){
+    echo json_encode($this->db->get_where('portfolio', array('Id' => $Id))->row_array());
   }
 
   public function CekAuth(){

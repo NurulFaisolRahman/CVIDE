@@ -41,11 +41,11 @@ class Staf extends CI_Controller {
         echo 'Gagal Input Data!';
       }  
     } else if (count($_FILES) == 1) {
-			$NamaPdf = date('Ymd',time()).substr(password_hash('Project', PASSWORD_DEFAULT),7,7);
-      $NamaPdf = str_replace("/","E",$NamaPdf);$NamaPdf = str_replace(".","F",$NamaPdf);
+			$NamaFile = date('Ymd',time()).substr(password_hash('Project', PASSWORD_DEFAULT),7,7);
+      $NamaFile = str_replace("/","E",$NamaFile);$NamaFile = str_replace(".","F",$NamaFile);
       $Tipe = pathinfo($_FILES['File']['name'],PATHINFO_EXTENSION);
-      move_uploaded_file($_FILES['File']['tmp_name'], "Project/".$NamaPdf.".".$Tipe);
-      $_POST['File'] = $NamaPdf.".".$Tipe;
+      move_uploaded_file($_FILES['File']['tmp_name'], "Project/".$NamaFile.".".$Tipe);
+      $_POST['File'] = $NamaFile.".".$Tipe;
       $_POST['PJ'] = $this->session->userdata('Username');
       $this->db->insert('project', $_POST);
       if ($this->db->affected_rows()){
@@ -70,11 +70,11 @@ class Staf extends CI_Controller {
       if (!empty($_POST['FileLama'])) {
         unlink('Project/'.$_POST['FileLama']);
       }
-			$NamaPdf = date('Ymd',time()).substr(password_hash('Project', PASSWORD_DEFAULT),7,7);
-      $NamaPdf = str_replace("/","E",$NamaPdf);$NamaPdf = str_replace(".","F",$NamaPdf);
+			$NamaFile = date('Ymd',time()).substr(password_hash('Project', PASSWORD_DEFAULT),7,7);
+      $NamaFile = str_replace("/","E",$NamaFile);$NamaFile = str_replace(".","F",$NamaFile);
       $Tipe = pathinfo($_FILES['File']['name'],PATHINFO_EXTENSION);
-      move_uploaded_file($_FILES['File']['tmp_name'], "Project/".$NamaPdf.".".$Tipe);
-      $_POST['File'] = $NamaPdf.".".$Tipe;
+      move_uploaded_file($_FILES['File']['tmp_name'], "Project/".$NamaFile.".".$Tipe);
+      $_POST['File'] = $NamaFile.".".$Tipe;
       $this->db->where('Id',$_POST['Id']);
       unset($_POST['Id']);unset($_POST['FileLama']);
       $this->db->update('project', $_POST);

@@ -21,10 +21,10 @@
   }
 
   // Stick the header at top on scroll
-  $("#header").sticky({
-    topSpacing: 0,
-    zIndex: '50'
-  });
+  // $("#header").sticky({
+  //   topSpacing: 0,
+  //   zIndex: '50'
+  // });
 
   // Smooth scroll for the navigation menu and links with .scrollto classes
   var scrolltoOffset = $('#header').outerHeight() - 2;

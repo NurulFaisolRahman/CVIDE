@@ -39,34 +39,24 @@
 
 <body>
 
-  <!-- ======= Top Bar ======= -->
-  <section id="topbar" class="d-none d-lg-block">
-    <div class="container clearfix">
-      <div class="contact-info float-left">
-        <i class="icofont-envelope text-success"></i><a href="mailto:cvideconsultan@gmail.com" class="text-success">cvideconsultan@gmail.com</a>
-        <i class="icofont-home text-success"> Jl. Simpang Ikan Nila II Perum Nila Residence B6 Kecamatan Blimbing Kota Malang</i>
-      </div>
-      <div class="social-links float-left">
-        <!-- <a href="#" class="instagram font-weight-bold text-primary"><i class="icofont-instagram"></i></a> -->
-      </div>
-    </div>
-  </section>
-
   <!-- ======= Header ======= -->
   <header id="header">
     <div class="container">
 
       <div class="logo float-left">
-        <!-- <h1 class="text-primary font-weight-bold">IDE Consultant</h1> -->
-        <!-- Uncomment below if you prefer to use an image logo -->
-        <a><img src="assets/img/apple-touch-icon.png" alt="LogoIDE" class="img-fluid"></a>
+        <a><img src="assets/img/apple-touch-icon.png" alt="LogoIDE"></a>
       </div>
-
-      <nav class="nav-menu float-right d-none d-lg-block font-weight-bold">
+      <div class="logo float-left ml-3" style="margin-top: 40px;">
+        <i class="icofont-envelope text-primary"><b> cvideconsultan@gmail.com</b></i><br>
+        <i class="icofont-home text-primary"><b> Perum Nila Residence B6 Blimbing Malang</b></i>
+      </div>
+      <nav class="nav-menu float-right d-none d-lg-block font-weight-bold" style="margin-top: 35px;">
         <ul>
-          <li><a class="text-primary" href="#about">Profil</a></li>
-          <li><a class="text-primary" href="#services">Pelayanan</a></li>
-          <li><a class="text-primary" href="#" data-toggle="modal" data-target="#ModalSignIn">Masuk</a></li>
+          <li><a class="text-primary" href="#about">Profile</a></li>
+          <li><a class="text-primary" href="#services">Services</a></li>
+          <li><a class="text-primary" href="#portfolio">Portfolio</a></li>
+          <!-- <li><a class="text-primary" href="#team">Team</a></li> -->
+          <li><a class="text-primary" href="#" data-toggle="modal" data-target="#ModalSignIn">Sign In</a></li>
         </ul>
       </nav>
       <!-- .nav-menu -->
@@ -99,9 +89,6 @@
           <div class="carousel-item" style="background-image: url('assets/img/slide/Slide2.jpg');">
             <div class="carousel-container">
               <div class="carousel-content container">
-                <!-- <h2 class="animate__animated animate__fadeInDown">Lorem Ipsum Dolor</h2> -->
-                <!-- <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.</p>
-                <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Read More</a> -->
               </div>
             </div>
           </div>
@@ -110,9 +97,6 @@
           <div class="carousel-item" style="background-image: url('assets/img/slide/Slide3.jpg');">
             <div class="carousel-container">
               <div class="carousel-content container">
-                <!-- <h2 class="animate__animated animate__fadeInDown">Lorem Ipsum Dolor</h2> -->
-                <!-- <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.</p>
-                <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Read More</a> -->
               </div>
             </div>
           </div>
@@ -121,9 +105,6 @@
           <div class="carousel-item" style="background-image: url('assets/img/slide/Slide4.jpg');">
             <div class="carousel-container">
               <div class="carousel-content container">
-                <!-- <h2 class="animate__animated animate__fadeInDown">Lorem Ipsum Dolor</h2> -->
-                <!-- <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.</p>
-                <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Read More</a> -->
               </div>
             </div>
           </div>
@@ -132,9 +113,6 @@
           <div class="carousel-item" style="background-image: url('assets/img/slide/Slide5.jpg');">
             <div class="carousel-container">
               <div class="carousel-content container">
-                <!-- <h2 class="animate__animated animate__fadeInDown">Lorem Ipsum Dolor</h2> -->
-                <!-- <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.</p>
-                <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Read More</a> -->
               </div>
             </div>
           </div>
@@ -143,9 +121,6 @@
           <div class="carousel-item" style="background-image: url('assets/img/slide/Slide6.jpg');">
             <div class="carousel-container">
               <div class="carousel-content container">
-                <!-- <h2 class="animate__animated animate__fadeInDown">Lorem Ipsum Dolor</h2> -->
-                <!-- <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.</p>
-                <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Read More</a> -->
               </div>
             </div>
           </div>
@@ -209,36 +184,120 @@
     <section id="services" class="services">
       <div class="container">
 
-        <div class="section-title my-4">
-          <h2 class="font-weight-bold text-danger">Pelayanan</h2>
+        <div class="section-title">
+          <h2 class="font-weight-bold text-danger">Services</h2>
         </div>
 
         <div class="row mt-3">
           <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
             <div class="icon"><i class="icofont-vehicle-crane"></i></div>
-            <h4 class="title"><a href="" class="text-primary">Economic Development</a></h4>
-            <!-- <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p> -->
+            <h4 class="title"><a class="text-primary">Economic Development</a></h4>
           </div>
           <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
             <div class="icon"><i class="icofont-bank"></i></div>
-            <h4 class="title"><a href="" class="text-primary">Fiscal & Public Policy</a></h4>
-            <!-- <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p> -->
+            <h4 class="title"><a class="text-primary">Fiscal & Public Policy</a></h4>
           </div>
           <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
             <div class="icon"><i class="icofont-handshake-deal"></i></div>
-            <h4 class="title"><a href="" class="text-primary">Regional Planning</a></h4>
-            <!-- <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p> -->
+            <h4 class="title"><a class="text-primary">Regional Planning</a></h4>
           </div>
           <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
             <div class="icon"><i class="icofont-attachment"></i></div>
-            <h4 class="title"><a href="" class="text-primary">Manajemen</a></h4>
-            <!-- <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p> -->
+            <h4 class="title"><a class="text-primary">Manajemen</a></h4>
           </div>
         </div>
 
       </div>
     </section>
     <!-- End Services Section -->
+
+    <!-- ======= Our Portfolio Section ======= -->
+    <section id="portfolio" class="portfolio section-bg">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="section-title">
+          <h2 class="font-weight-bold text-danger">Portfolio</h2>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <ul id="portfolio-flters">
+              <li data-filter="*" class="filter-active"><b>All</b></li>
+              <?php foreach ($Kategori as $key) { ?>
+                <li data-filter=".filter-<?=str_replace(array(' ','&'),'',$key['Kategori'])?>"><b><?=$key['Kategori']?></b></li>
+              <?php } ?>
+            </ul>
+          </div>
+        </div>
+
+        <div class="row portfolio-container">
+          <?php foreach ($Portfolio as $key) { ?>
+            <div class="col-lg-4 col-md-6 portfolio-item filter-<?=str_replace(array(' ','&'),'',$key['Kategori'])?>">
+              <div class="portfolio-wrap">
+                <img src="Thumbnail/<?=$key['Thumbnail']?>" class="img-fluid" alt="">
+                <div class="portfolio-info">
+                  <h6><b><?=$key['Kategori']?></b></h6>
+                  <p><?=$key['Judul']?></p>
+                  <div class="portfolio-links">
+                    <a href="Thumbnail/<?=$key['Thumbnail']?>" data-gall="portfolioGallery" class="venobox" title="<?=$key['Judul']?>"><i class="icofont-eye"></i></a>
+                    <a href="#portfolio" Portofolio="<?=$key['Id']?>" class="Portofolio" title="Lihat Portfolio"><i class="icofont-external-link"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <?php } ?>
+        </div>
+      </div>
+    </section><!-- End Our Portfolio Section -->
+
+    <!-- ======= Our Team Section ======= -->
+    <!-- <section id="team" class="team">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Our Team</h2>
+          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem.</p>
+        </div>
+
+        <div class="row">
+
+          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="member">
+              <div class="pic"><img src="assets/img/team/team-1.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Walter White</h4>
+                <span>Chief Executive Officer</span>
+                <div class="social">
+                  <a href=""><i class="icofont-twitter"></i></a>
+                  <a href=""><i class="icofont-facebook"></i></a>
+                  <a href=""><i class="icofont-instagram"></i></a>
+                  <a href=""><i class="icofont-linkedin"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="member">
+              <div class="pic"><img src="assets/img/team/team-2.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Sarah Jhonson</h4>
+                <span>Product Manager</span>
+                <div class="social">
+                  <a href=""><i class="icofont-twitter"></i></a>
+                  <a href=""><i class="icofont-facebook"></i></a>
+                  <a href=""><i class="icofont-instagram"></i></a>
+                  <a href=""><i class="icofont-linkedin"></i></a>
+                </div>
+              </div>
+            </div>
+          </div> 
+
+        </div>
+
+      </div>
+    </section> -->
+    <!-- End Our Team Section -->
 
   </main><!-- End #main -->
 
@@ -286,27 +345,56 @@
               <div class="row mt-3">
                 <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
                   <div class="icon"><i class="icofont-live-support"></i></div>
-                  <h4 class="title"><a href="" class="text-primary">Profesional</a></h4>
-                  <p class="description">Memiliki kemampuan tinggi yang didukung dengan SDM Berkualitas serta memegang teguh nilai moral</p>
+                  <h4 class="title"><a class="text-primary">Profesional</a></h4>
+                  <p class="description font-weight-bold text-danger">Memiliki kemampuan tinggi yang didukung dengan SDM Berkualitas serta memegang teguh nilai moral</p>
                 </div>
                 <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
                   <div class="icon"><i class="icofont-badge"></i></div>
-                  <h4 class="title"><a href="" class="text-primary">Berkualitas</a></h4>
-                  <p class="description">Riset Dan Konsultasi yang didasarkan kepada data, metodologi yang tepat, serta akurat</p>
+                  <h4 class="title"><a class="text-primary">Berkualitas</a></h4>
+                  <p class="description font-weight-bold text-danger">Riset Dan Konsultasi yang didasarkan kepada data, metodologi yang tepat, serta akurat</p>
                 </div>
                 <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
                   <div class="icon"><i class="icofont-unique-idea"></i></div>
-                  <h4 class="title"><a href="" class="text-primary">Inovatif</a></h4>
-                  <p class="description">Hasil Riset dan konsultasi yang disertai dengan gagasan, ide yang kreatif, serta terbaharukan</p>
+                  <h4 class="title"><a class="text-primary">Inovatif</a></h4>
+                  <p class="description font-weight-bold text-danger">Hasil Riset dan konsultasi yang disertai dengan gagasan, ide yang kreatif, serta terbaharukan</p>
                 </div>
                 <div class="col-lg-3 col-md-6 icon-box" data-aos="fade-up">
                   <div class="icon"><i class="icofont-gym-alt-3"></i></div>
-                  <h4 class="title"><a href="" class="text-primary">Unggul & Berdaya Saing</a></h4>
-                  <p class="description">Menjadi Perusahaan Riset dan Konsultasi yang mampu bersaing dalam skala Nasional dan Internasional</p>
+                  <h4 class="title"><a class="text-primary">Unggul & Berdaya Saing</a></h4>
+                  <p class="description font-weight-bold text-danger">Menjadi Perusahaan Riset dan Konsultasi yang mampu bersaing dalam skala Nasional dan Internasional</p>
                 </div>
               </div>
             </div>
           </section>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="ModalPortofolio" tabindex="-1" role="dialog" aria-labelledby="ModalPortofolioTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title font-weight-bold text-primary text-center" id="JudulPortofolio"></h6>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="height: 82vh;">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-4">
+                <pre class="text-danger"><b>Date<br><span class="text-primary" id="TanggalPortofolio">15 Juli 1996</span></b></pre>
+              </div>
+              <div class="col-4">
+                <pre class="text-danger"><b>Category<br><span class="text-primary" id="KategoriPortofolio">Manajemen</span></b></pre>
+              </div>
+              <div class="col-4">
+                <pre class="text-danger"><b>Client<br><span class="text-primary" id="KlienPortofolio">Econk Company</span></b></pre>
+              </div>
+            </div>
+          </div>  
+          <div id="NarasiPortofolio" class="mx-3"></div>
         </div>
       </div>
     </div>
@@ -340,7 +428,7 @@
           event.preventDefault();
           document.getElementById("Masuk").click();  
         }
-      });
+      })
       $("#Masuk").click(function() {
         var Akun = { Username: $("#Username").val(),
                      Password: $("#Password").val() }
@@ -358,6 +446,17 @@
             alert(Respon)
           }
         })                         
+      })
+      $(document).on("click",".Portofolio",function(){
+        $.post(BaseURL+"IDE/GetPortofolio/"+$(this).attr('Portofolio')).done(function(Respon) {
+          var Portofolio = JSON.parse(Respon)
+          $("#JudulPortofolio").html(Portofolio.Judul)
+          $("#TanggalPortofolio").html(Portofolio.Tanggal)
+          $("#KategoriPortofolio").html(Portofolio.Kategori)
+          $("#KlienPortofolio").html(Portofolio.Klien)
+          $("#NarasiPortofolio").html(Portofolio.Narasi)
+          $("#ModalPortofolio").modal('show')
+        })
       })
     })
   </script>

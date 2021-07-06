@@ -102,10 +102,9 @@ h1, h2, h3, h4, h5, h6, .font-primary {
 # Header
 --------------------------------------------------------------*/
 #header {
-  height: 70px;
   transition: all 0.5s;
   transition: all 0.5s;
-  padding: 10px 0;
+  /* padding: 10px 0; */
   background: #fff;
   z-index: 997;
 }
@@ -132,8 +131,8 @@ h1, h2, h3, h4, h5, h6, .font-primary {
 #header .logo img {
   padding: 0;
   margin: 0;
-  max-height: 60px;
-  width: 100px;
+  /* max-height: 60px; */
+  width: 150px;
 }
 
 /*--------------------------------------------------------------
@@ -956,7 +955,7 @@ section {
   padding-bottom: 30px;
 }
 
-.portfolio .portfolio-wrap .portfolio-info h4 {
+.portfolio .portfolio-wrap .portfolio-info h6 {
   font-size: 20px;
   color: #fff;
   font-weight: 600;
@@ -965,7 +964,7 @@ section {
 .portfolio .portfolio-wrap .portfolio-info p {
   color: #fff;
   font-size: 14px;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
 }
 
 .portfolio .portfolio-wrap .portfolio-info a {
@@ -1005,7 +1004,7 @@ section {
 # Portfolio Details
 --------------------------------------------------------------*/
 .portfolio-details {
-  padding-top: 30px;
+  padding-top: 0px;
 }
 
 .portfolio-details .portfolio-details-container {
@@ -1036,13 +1035,14 @@ section {
 }
 
 .portfolio-details .portfolio-info {
-  padding: 30px;
+  padding: 20px;
   position: absolute;
   right: 0;
-  bottom: -70px;
+  bottom: 0px;
   background: #fff;
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
   z-index: 2;
+  opacity: 0.8;
 }
 
 .portfolio-details .portfolio-info h3 {
@@ -1064,7 +1064,7 @@ section {
 }
 
 .portfolio-details .portfolio-description {
-  padding-top: 50px;
+  padding-top: 10px;
 }
 
 .portfolio-details .portfolio-description h2 {
