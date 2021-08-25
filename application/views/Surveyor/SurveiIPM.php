@@ -11,22 +11,46 @@
                     <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
                       <div class="container-fluid">
                         <div class="row">
-                          <div class="col-sm-3 my-1">
+                        <div class="col-sm-4"> 
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-light"><b>Kecamatan</b></label>
+                                <label class="input-group-text bg-danger text-white"><b>Provinsi</b></label>
                               </div>
-                              <select class="custom-select" id="Kecamatan">  
-                                <?php foreach ($Kecamatan as $key) { ?>
-                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option>
+                              <select class="custom-select" id="Provinsi">  
+                                <?php foreach ($Provinsi as $key) { ?>
+                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
                                 <?php } ?>                  
                               </select>
                             </div>
                           </div>
-                          <div class="col-sm-3 my-1">
+                          <div class="col-sm-4">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-light"><b>Desa</b></label>
+                                <label class="input-group-text bg-danger text-white"><b>Kabupaten</b></label>
+                              </div>
+                              <select class="custom-select" id="Kabupaten">  
+                                <?php foreach ($Kabupaten as $key) { ?>
+                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
+                                <?php } ?>                  
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="input-group input-group-sm">
+                              <div class="input-group-prepend">
+                                <label class="input-group-text bg-danger text-white"><b>Kecamatan</b></label>
+                              </div>
+                              <select class="custom-select" id="Kecamatan">  
+                                <?php foreach ($Kecamatan as $key) { ?>
+                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
+                                <?php } ?>                  
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="input-group input-group-sm">
+                              <div class="input-group-prepend">
+                                <label class="input-group-text bg-danger text-white"><b>Desa/Kelurahan</b></label>
                               </div>
                               <select class="custom-select" id="Desa">                    
                                 <?php foreach ($Desa as $key) { ?>
@@ -35,12 +59,20 @@
                               </select>
                             </div>
                           </div>
-                          <div class="col-sm-6 my-1">
+                          <div class="col-sm-4">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-light"><b>Alamat</b></label>
                               </div>
                               <input class="form-control" type="text" id="Alamat" placeholder="Nama Jalan/Gang, RT/RW, Dusun">
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="input-group input-group-sm">
+                              <div class="input-group-prepend">
+                                <label class="input-group-text bg-danger text-white"><b>Tahun Survei</b></label>
+                              </div>
+                              <input class="form-control" type="text" id="Tahun" data-inputmask='"mask": "9999"' data-mask>
                             </div>
                           </div>
                         </div>
@@ -370,7 +402,7 @@
                     <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
                       <div class="container-fluid">
                         <div class="row">
-                          <div class="col-sm-4 my-1">
+                          <div class="col-sm-4">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-light"><b>Usia Saat Pernikahan Pertama</b></label>
@@ -382,7 +414,7 @@
                             </div>
                           </div>
                           <div class="col-sm-8"></div>
-                          <div class="col-sm-5 my-1">
+                          <div class="col-sm-5">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-light"><b>Jumlah Tahun Dalam Ikatan Pernikahan</b></label>
@@ -394,7 +426,7 @@
                             </div>
                           </div>
                           <div class="col-sm-12">
-                            <div class="table-responsive mt-1">
+                            <div class="table-responsive">
                               <table class="table table-sm table-bordered table-striped">
                                 <thead class="bg-danger">
                                   <tr style="font-size: 10pt;" class="text-light text-center">
@@ -653,7 +685,7 @@
                               </table>
                             </div> 
                           </div>
-                          <div class="col-sm-6 my-1">
+                          <div class="col-sm-6">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-light"><b>Apakah ada anggota keluarga yang bersekolah di pesantren?</b></label>
@@ -664,7 +696,7 @@
                               </select>
                             </div>
                           </div>
-                          <div class="col-sm-10 my-1">
+                          <div class="col-sm-10">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-light"><b>Dengan kondisi ekonomi keluarga tingkat pendidikan yang dapat diusahakan adalah sampai tingkat?</b></label>
@@ -679,7 +711,7 @@
                               </select>
                             </div>
                           </div>
-                          <div class="col-sm-9 my-1">
+                          <div class="col-sm-9">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-light"><b>Sebutkan hal yang memberatkan dalam menempuh pendidikan sekolah?</b></label>
@@ -1028,7 +1060,7 @@
                                   </tr>
                                 </thead>
                                 <tbody class="bg-primary">
-                                <?php $Aset = array('Sepeda Motor','Mobil','Lemari Es','AC','Pemanas Air (Watr heater)','Televisi','Sepeda','Komputer/Laptop','Perhiasan/Tabungan>10Gr','Rumah di tempat lain'); 
+                                <?php $Aset = array('Sepeda Motor','Mobil','Lemari Es','AC','Pemanas Air (Water heater)','Televisi','Sepeda','Komputer/Laptop','Perhiasan/Tabungan > 10Gr','Rumah di tempat lain'); 
                                   $No = 1; for ($i=0; $i < count($Aset); $i++) { ?>
                                   <tr class="text-light text-center align-middle">
                                     <td class="align-middle font-weight-bold"><?=$No++?></td>
@@ -1108,7 +1140,7 @@
                   </div>
                 </div>
                 <div class="col-sm-3 my-2">
-                  <button type="button" class="btn btn-primary" id="Kirim"><b>Kirim Survei</b></button>
+                  <button type="button" class="btn btn-primary" id="Simpan"><b>Simpan Survei</b></button>
                 </div>
               </div>
             </div>
@@ -1126,7 +1158,35 @@
 			$(document).ready(function(){
         
         var BaseURL = '<?=base_url()?>'
+
+        $('[data-mask]').inputmask()
         
+        $("#Provinsi").change(function (){
+          var Kabupaten = { Kode: $("#Provinsi").val() }
+          $.post(BaseURL+"IDE/ListKabupaten", Kabupaten).done(function(Respon) {
+            $('#Kabupaten').html(Respon)
+            var Kecamatan = { Kode: $("#Kabupaten").val() }
+            $.post(BaseURL+"IDE/ListKecamatan", Kecamatan).done(function(Respon) {
+              $('#Kecamatan').html(Respon)
+              var Desa = { Kode: $("#Kecamatan").val() }
+              $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) {
+                $('#Desa').html(Respon)
+              })   
+            })
+          }) 
+        }) 
+        
+        $("#Kabupaten").change(function (){
+          var Kecamatan = { Kode: $("#Kabupaten").val() }
+          $.post(BaseURL+"IDE/ListKecamatan", Kecamatan).done(function(Respon) {
+            $('#Kecamatan').html(Respon)
+            var Desa = { Kode: $("#Kecamatan").val() }
+            $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) {
+              $('#Desa').html(Respon)
+            })   
+          }) 
+        }) 
+  
         $("#Kecamatan").change(function (){
           var Desa = { Kode: $("#Kecamatan").val() }
           $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) {
@@ -1134,7 +1194,7 @@
           })    
         })
   
-        $("#Kirim").click(function() {
+        $("#Simpan").click(function() {
           // if ($("#Alamat").val() === "") {
           //   alert('Input Alamat Tidak Boleh Kosong!')
           // } else {

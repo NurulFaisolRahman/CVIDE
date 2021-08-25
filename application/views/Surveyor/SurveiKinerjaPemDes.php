@@ -11,19 +11,43 @@
                     <div style="background-color: yellow;" class="card-body border border-primary pl-0 pr-2 py-2">
                       <div class="container-fluid">
                         <div class="row">
-                          <div class="col-sm-4 my-1">
+                        <div class="col-sm-4"> 
+                            <div class="input-group input-group-sm">
+                              <div class="input-group-prepend">
+                                <label class="input-group-text bg-danger text-white"><b>Provinsi</b></label>
+                              </div>
+                              <select class="custom-select" id="Provinsi">  
+                                <?php foreach ($Provinsi as $key) { ?>
+                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
+                                <?php } ?>                  
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="input-group input-group-sm">
+                              <div class="input-group-prepend">
+                                <label class="input-group-text bg-danger text-white"><b>Kabupaten</b></label>
+                              </div>
+                              <select class="custom-select" id="Kabupaten">  
+                                <?php foreach ($Kabupaten as $key) { ?>
+                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
+                                <?php } ?>                  
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-white"><b>Kecamatan</b></label>
                               </div>
                               <select class="custom-select" id="Kecamatan">  
                                 <?php foreach ($Kecamatan as $key) { ?>
-                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option>
+                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
                                 <?php } ?>                  
                               </select>
                             </div>
                           </div>
-                          <div class="col-sm-4 my-1">
+                          <div class="col-sm-4">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-white"><b>Desa/Kelurahan</b></label>
@@ -35,6 +59,14 @@
                               </select>
                             </div>
                           </div>
+                          <div class="col-sm-4">
+                            <div class="input-group input-group-sm">
+                              <div class="input-group-prepend">
+                                <label class="input-group-text bg-danger text-white"><b>Tahun Survei</b></label>
+                              </div>
+                              <input class="form-control" type="text" id="Tahun" data-inputmask='"mask": "9999"' data-mask>
+                            </div>
+                          </div> 
                           <?php 
                             $Tanya =  array('Apakah visi dan misi penyelenggaraan pemerintahan desa yang dituangkan dalam LPPDes sesuai dengan RPJMDes?',
                                             'Apakah arah dan strategi yang dituangkan dalam LPPDes selaras dengan RKPDes dan APBDes yang telah disusun?',
@@ -148,7 +180,8 @@
                             </div> 
                           <?php } ?>
                           <div class="col-sm-12 mt-2 d-flex justify-content-center">
-                            <button type="button" class="btn btn-primary" id="Kirim"><b>Kirim Survei</b></button>
+                            <button type="button" class="btn btn-primary" id="Simpan"><b>Simpan Survei</b></button>
+                            <div id="LoadingInput" class="spinner-border text-success" role="status" style="display: none;"></div>
                           </div> 
                         </div>
                       </div>
@@ -173,6 +206,32 @@
         var BaseURL = '<?=base_url()?>'  
   
         $('[data-mask]').inputmask()
+
+        $("#Provinsi").change(function (){
+          var Kabupaten = { Kode: $("#Provinsi").val() }
+          $.post(BaseURL+"IDE/ListKabupaten", Kabupaten).done(function(Respon) {
+            $('#Kabupaten').html(Respon)
+            var Kecamatan = { Kode: $("#Kabupaten").val() }
+            $.post(BaseURL+"IDE/ListKecamatan", Kecamatan).done(function(Respon) {
+              $('#Kecamatan').html(Respon)
+              var Desa = { Kode: $("#Kecamatan").val() }
+              $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) {
+                $('#Desa').html(Respon)
+              })   
+            })
+          }) 
+        }) 
+        
+        $("#Kabupaten").change(function (){
+          var Kecamatan = { Kode: $("#Kabupaten").val() }
+          $.post(BaseURL+"IDE/ListKecamatan", Kecamatan).done(function(Respon) {
+            $('#Kecamatan').html(Respon)
+            var Desa = { Kode: $("#Kecamatan").val() }
+            $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) {
+              $('#Desa').html(Respon)
+            })   
+          }) 
+        }) 
   
         $("#Kecamatan").change(function (){
           var Desa = { Kode: $("#Kecamatan").val() }
@@ -181,200 +240,212 @@
           })    
         })
   
-        $("#Kirim").click(function() {
-          var Poin = []
-          var Cek = true
-          var Radio = [0,1,4,5,6,7,8,9,12,13,14,15,16,17,18,20,26,28,29,31,32,33,34,35,36,37,38,39]
-          for (let i = 0; i < Radio.length; i++) {
-            if ($("input[name='I"+Radio[i]+"']:checked").val() == undefined) {
-              Cek = false
-              alert('Pertanyaan Nomer '+(Radio[i]+1)+' Wajib Di Isi!')
-              break
-            } else {
-              Poin[Radio[i]] = $("input[name='I"+Radio[i]+"']:checked").val()
-            }
-          }
-          if (Cek) {
-            var Input = [2,3,10,11,19,21,22,23,24,25,27,30]
-            var Tanya = ['PADes|Dana Desa','Penghasilan tetap aparatur desa|Total belanja pembangunan','Target|Realisasi',
-                         'Jumlah hansip|Jumlah penduduk','Panjang jalan|Luas wilayah','Jumlah TK|Jumlah siswa TK',
-                         'Jumlah SD|Jumlah siswa SD','Jumlah SMP|Jumlah siswa SMP','Jumlah SMA/SMK/MA|Jumlah siswa SMA/SMK/MA',
-                         'Jumlah ketersediaan pesantren/madrasah|Jumlah penduduk yang menuntut ilmu di pesantren/madrasah',
-                         'Jumlah Fasilitas Kesehatan|Jumlah penduduk','Jumlah industri yang ada di Desa|Jumlah penduduk yang bekerja di industri tersebut']
-            for (let i = 0; i < Input.length; i++) {
-              if (isNaN(parseInt($("#I"+Input[i]+"0").val()))) {
-                alert('Input Pertanyaan Nomer '+(Input[i]+1)+' Hanya Boleh Angka!')
+        $("#Simpan").click(function() {
+          if (isNaN($("#Tahun").val()) || $("#Tahun").val() === "") {
+            alert('Input Tahun Belum Benar!')
+          } else {
+            var Poin = []
+            var Cek = true
+            var Radio = [0,1,4,5,6,7,8,9,12,13,14,15,16,17,18,20,26,28,29,31,32,33,34,35,36,37,38,39]
+            for (let i = 0; i < Radio.length; i++) {
+              if ($("input[name='I"+Radio[i]+"']:checked").val() == undefined) {
                 Cek = false
+                alert('Pertanyaan Nomer '+(Radio[i]+1)+' Wajib Di Isi!')
                 break
-              } else if (isNaN(parseInt($("#I"+Input[i]+"1").val()))) {
-                alert('Input Pertanyaan Nomer '+(Input[i]+1)+' Hanya Boleh Angka!')
-                Cek = false
-                break
-              } else if (parseInt($("#I"+Input[i]+"0").val()) > parseInt($("#I"+Input[i]+"1").val()) && i != 4) {
-                $Pisah = Tanya[i].split("|")
-                alert('Pertanyaan Nomer '+(Input[i]+1)+', Input '+$Pisah[0]+' Tidak Boleh Lebih Besar Dari Input '+$Pisah[1])
-                Cek = false
-                break
-              } 
-              // else if (parseInt($("#I"+Input[i]+"0").val()) == 0 && parseInt($("#I"+Input[i]+"1").val()) == 0) {
-              //   $Pisah = Tanya[i].split("|")
-              //   alert('Pertanyaan Nomer '+(Input[i]+1)+', Input '+$Pisah[0]+' & '+$Pisah[1]+' Tidak boleh 0')
-              //   Cek = false
-              //   break
-              // }
-            }
-          } 
-          if (Cek) {
-            if (parseInt($("#I"+Input[0]+"0").val()) == 0 && parseInt($("#I"+Input[0]+"1").val()) == 0) {
-              Poin[Input[0]] = '1'
-            } else if ((parseInt($("#I"+Input[0]+"0").val())/parseInt($("#I"+Input[0]+"1").val())*100) < 40) {
-              Poin[Input[0]] = '1'
-            } else if ((parseInt($("#I"+Input[0]+"0").val())/parseInt($("#I"+Input[0]+"1").val())*100) < 56) {
-              Poin[Input[0]] = '2'
-            } else if ((parseInt($("#I"+Input[0]+"0").val())/parseInt($("#I"+Input[0]+"1").val())*100) < 76) {
-              Poin[Input[0]] = '3'
-            } else {
-              Poin[Input[0]] = '4'
-            } 
-            if (parseInt($("#I"+Input[1]+"0").val()) == 0 && parseInt($("#I"+Input[1]+"1").val()) == 0) {
-              Poin[Input[1]] = '1'
-            } else if ((parseInt($("#I"+Input[1]+"0").val())/parseInt($("#I"+Input[1]+"1").val())*100) < 30) {
-              Poin[Input[1]] = '4'
-            } else if ((parseInt($("#I"+Input[1]+"0").val())/parseInt($("#I"+Input[1]+"1").val())*100) < 56) {
-              Poin[Input[1]] = '3'
-            } else if ((parseInt($("#I"+Input[1]+"0").val())/parseInt($("#I"+Input[1]+"1").val())*100) < 76) {
-              Poin[Input[1]] = '2'
-            } else {
-              Poin[Input[1]] = '1'
-            } 
-            if (parseInt($("#I"+Input[2]+"0").val()) == 0 && parseInt($("#I"+Input[2]+"1").val()) == 0) {
-              Poin[Input[2]] = '1'
-            } else if ((parseInt($("#I"+Input[2]+"0").val())/parseInt($("#I"+Input[2]+"1").val())*100) < 40) {
-              Poin[Input[2]] = '1'
-            } else if ((parseInt($("#I"+Input[2]+"0").val())/parseInt($("#I"+Input[2]+"1").val())*100) < 56) {
-              Poin[Input[2]] = '2'
-            } else if ((parseInt($("#I"+Input[2]+"0").val())/parseInt($("#I"+Input[2]+"1").val())*100) < 76) {
-              Poin[Input[2]] = '3'
-            } else {
-              Poin[Input[2]] = '4'
-            } 
-            if (parseInt($("#I"+Input[3]+"0").val()) == 0 && parseInt($("#I"+Input[3]+"1").val()) == 0) {
-              Poin[Input[3]] = '1'
-            } else if (parseInt($("#I"+Input[3]+"1").val())/parseInt($("#I"+Input[3]+"0").val()) < 3) {
-              Poin[Input[3]] = '1'
-            } else if (parseInt($("#I"+Input[3]+"1").val())/parseInt($("#I"+Input[3]+"0").val()) < 6) {
-              Poin[Input[3]] = '2'
-            } else if (parseInt($("#I"+Input[3]+"1").val())/parseInt($("#I"+Input[3]+"0").val()) < 11) {
-              Poin[Input[3]] = '3'
-            } else {
-              Poin[Input[3]] = '4'
-            } 
-            if (parseInt($("#I"+Input[4]+"0").val()) == 0 && parseInt($("#I"+Input[4]+"1").val()) == 0) {
-              Poin[Input[4]] = '1'
-            } else if (parseInt($("#I"+Input[4]+"0").val())/parseInt($("#I"+Input[4]+"1").val()) < 11) {
-              Poin[Input[4]] = '1'
-            } else if (parseInt($("#I"+Input[4]+"0").val())/parseInt($("#I"+Input[4]+"1").val()) < 26) {
-              Poin[Input[4]] = '2'
-            } else if (parseInt($("#I"+Input[4]+"0").val())/parseInt($("#I"+Input[4]+"1").val()) < 36) {
-              Poin[Input[4]] = '3'
-            } else {
-              Poin[Input[4]] = '4'
-            } 
-            if (parseInt($("#I"+Input[5]+"0").val()) == 0 && parseInt($("#I"+Input[5]+"1").val()) == 0) {
-              Poin[Input[5]] = '1'
-            } else if (parseInt($("#I"+Input[5]+"1").val())/parseInt($("#I"+Input[5]+"0").val()) < 1000) {
-              Poin[Input[5]] = '4'
-            } else if (parseInt($("#I"+Input[5]+"1").val())/parseInt($("#I"+Input[5]+"0").val()) < 1501) {
-              Poin[Input[5]] = '3'
-            } else if (parseInt($("#I"+Input[5]+"1").val())/parseInt($("#I"+Input[5]+"0").val()) < 2001) {
-              Poin[Input[5]] = '2'
-            } else {
-              Poin[Input[5]] = '1'
-            } 
-            if (parseInt($("#I"+Input[6]+"0").val()) == 0 && parseInt($("#I"+Input[6]+"1").val()) == 0) {
-              Poin[Input[6]] = '1'
-            } else if (parseInt($("#I"+Input[6]+"1").val())/parseInt($("#I"+Input[6]+"0").val()) < 2000) {
-              Poin[Input[6]] = '4'
-            } else if (parseInt($("#I"+Input[6]+"1").val())/parseInt($("#I"+Input[6]+"0").val()) < 2501) {
-              Poin[Input[6]] = '3'
-            } else if (parseInt($("#I"+Input[6]+"1").val())/parseInt($("#I"+Input[6]+"0").val()) < 3001) {
-              Poin[Input[6]] = '2'
-            } else {
-              Poin[Input[6]] = '1'
-            }
-            if (parseInt($("#I"+Input[7]+"0").val()) == 0 && parseInt($("#I"+Input[7]+"1").val()) == 0) {
-              Poin[Input[7]] = '1'
-            } else if (parseInt($("#I"+Input[7]+"1").val())/parseInt($("#I"+Input[7]+"0").val()) < 2000) {
-              Poin[Input[7]] = '4'
-            } else if (parseInt($("#I"+Input[7]+"1").val())/parseInt($("#I"+Input[7]+"0").val()) < 2501) {
-              Poin[Input[7]] = '3'
-            } else if (parseInt($("#I"+Input[7]+"1").val())/parseInt($("#I"+Input[7]+"0").val()) < 3001) {
-              Poin[Input[7]] = '2'
-            } else {
-              Poin[Input[7]] = '1'
-            }
-            if (parseInt($("#I"+Input[8]+"0").val()) == 0 && parseInt($("#I"+Input[8]+"1").val()) == 0) {
-              Poin[Input[8]] = '1'
-            } else if (parseInt($("#I"+Input[8]+"1").val())/parseInt($("#I"+Input[8]+"0").val()) < 6000) {
-              Poin[Input[8]] = '4'
-            } else if (parseInt($("#I"+Input[8]+"1").val())/parseInt($("#I"+Input[8]+"0").val()) < 7001) {
-              Poin[Input[8]] = '3'
-            } else if (parseInt($("#I"+Input[8]+"1").val())/parseInt($("#I"+Input[8]+"0").val()) < 9001) {
-              Poin[Input[8]] = '2'
-            } else {
-              Poin[Input[8]] = '1'
-            }
-            if (parseInt($("#I"+Input[9]+"0").val()) == 0 && parseInt($("#I"+Input[9]+"1").val()) == 0) {
-              Poin[Input[9]] = '1'
-            } else if (parseInt($("#I"+Input[9]+"1").val())/parseInt($("#I"+Input[9]+"0").val()) < 6000) {
-              Poin[Input[9]] = '4'
-            } else if (parseInt($("#I"+Input[9]+"1").val())/parseInt($("#I"+Input[9]+"0").val()) < 7001) {
-              Poin[Input[9]] = '3'
-            } else if (parseInt($("#I"+Input[9]+"1").val())/parseInt($("#I"+Input[9]+"0").val()) < 9001) {
-              Poin[Input[9]] = '2'
-            } else {
-              Poin[Input[9]] = '1'
-            }
-            if (parseInt($("#I"+Input[10]+"0").val()) == 0 && parseInt($("#I"+Input[10]+"1").val()) == 0) {
-              Poin[Input[10]] = '1'
-            } else if (parseInt($("#I"+Input[10]+"1").val())/parseInt($("#I"+Input[10]+"0").val()) < 3000) {
-              Poin[Input[10]] = '4'
-            } else if (parseInt($("#I"+Input[10]+"1").val())/parseInt($("#I"+Input[10]+"0").val()) < 5001) {
-              Poin[Input[10]] = '3'
-            } else if (parseInt($("#I"+Input[10]+"1").val())/parseInt($("#I"+Input[10]+"0").val()) < 9001) {
-              Poin[Input[10]] = '2'
-            } else {
-              Poin[Input[10]] = '1'
-            }
-            if (parseInt($("#I"+Input[11]+"0").val()) == 0 && parseInt($("#I"+Input[11]+"1").val()) == 0) {
-              Poin[Input[11]] = '1'
-            } else if ((parseInt($("#I"+Input[11]+"0").val())/parseInt($("#I"+Input[11]+"1").val())*100) < 40) {
-              Poin[Input[11]] = '1'
-            } else if ((parseInt($("#I"+Input[11]+"0").val())/parseInt($("#I"+Input[11]+"1").val())*100) < 56) {
-              Poin[Input[11]] = '2'
-            } else if ((parseInt($("#I"+Input[11]+"0").val())/parseInt($("#I"+Input[11]+"1").val())*100) < 76) {
-              Poin[Input[11]] = '3'
-            } else {
-              Poin[Input[11]] = '4'
-            } 
-            var GabungPoin = ''
-            for (let i = 0; i < Poin.length; i++) {
-              i < (Poin.length-1) ? GabungPoin += (Poin[i]+'|') : GabungPoin += Poin[i] 
-            }
-            var KinerjaPemdes = { Kecamatan: $("#Kecamatan").val(),
-                                  Desa: $("#Desa").val(),
-                                  Poin: GabungPoin }
-            $.post(BaseURL+"Surveyor/InputKinerjaPemDes", KinerjaPemdes).done(function(Respon) {
-              if (Respon == '1') {
-                alert('Survei Berhasil Di Simpan!')
-                window.location = BaseURL + "Surveyor/SurveiKinerjaPemDes"
-              } else { 
-                alert(Respon)
+              } else {
+                Poin[Radio[i]] = $("input[name='I"+Radio[i]+"']:checked").val()
               }
-            })
+            }
+            if (Cek) {
+              var Input = [2,3,10,11,19,21,22,23,24,25,27,30]
+              var Tanya = ['PADes|Dana Desa','Penghasilan tetap aparatur desa|Total belanja pembangunan','Target|Realisasi',
+                          'Jumlah hansip|Jumlah penduduk','Panjang jalan|Luas wilayah','Jumlah TK|Jumlah siswa TK',
+                          'Jumlah SD|Jumlah siswa SD','Jumlah SMP|Jumlah siswa SMP','Jumlah SMA/SMK/MA|Jumlah siswa SMA/SMK/MA',
+                          'Jumlah ketersediaan pesantren/madrasah|Jumlah penduduk yang menuntut ilmu di pesantren/madrasah',
+                          'Jumlah Fasilitas Kesehatan|Jumlah penduduk','Jumlah industri yang ada di Desa|Jumlah penduduk yang bekerja di industri tersebut']
+              for (let i = 0; i < Input.length; i++) {
+                if (isNaN(parseInt($("#I"+Input[i]+"0").val()))) {
+                  alert('Input Pertanyaan Nomer '+(Input[i]+1)+' Hanya Boleh Angka!')
+                  Cek = false
+                  break
+                } else if (isNaN(parseInt($("#I"+Input[i]+"1").val()))) {
+                  alert('Input Pertanyaan Nomer '+(Input[i]+1)+' Hanya Boleh Angka!')
+                  Cek = false
+                  break
+                } else if (parseInt($("#I"+Input[i]+"0").val()) > parseInt($("#I"+Input[i]+"1").val()) && i != 4) {
+                  $Pisah = Tanya[i].split("|")
+                  alert('Pertanyaan Nomer '+(Input[i]+1)+', Input '+$Pisah[0]+' Tidak Boleh Lebih Besar Dari Input '+$Pisah[1])
+                  Cek = false
+                  break
+                } 
+                // else if (parseInt($("#I"+Input[i]+"0").val()) == 0 && parseInt($("#I"+Input[i]+"1").val()) == 0) {
+                //   $Pisah = Tanya[i].split("|")
+                //   alert('Pertanyaan Nomer '+(Input[i]+1)+', Input '+$Pisah[0]+' & '+$Pisah[1]+' Tidak boleh 0')
+                //   Cek = false
+                //   break
+                // }
+              }
+            } 
+            if (Cek) {
+              if (parseInt($("#I"+Input[0]+"0").val()) == 0 && parseInt($("#I"+Input[0]+"1").val()) == 0) {
+                Poin[Input[0]] = '1'
+              } else if ((parseInt($("#I"+Input[0]+"0").val())/parseInt($("#I"+Input[0]+"1").val())*100) < 40) {
+                Poin[Input[0]] = '1'
+              } else if ((parseInt($("#I"+Input[0]+"0").val())/parseInt($("#I"+Input[0]+"1").val())*100) < 56) {
+                Poin[Input[0]] = '2'
+              } else if ((parseInt($("#I"+Input[0]+"0").val())/parseInt($("#I"+Input[0]+"1").val())*100) < 76) {
+                Poin[Input[0]] = '3'
+              } else {
+                Poin[Input[0]] = '4'
+              } 
+              if (parseInt($("#I"+Input[1]+"0").val()) == 0 && parseInt($("#I"+Input[1]+"1").val()) == 0) {
+                Poin[Input[1]] = '1'
+              } else if ((parseInt($("#I"+Input[1]+"0").val())/parseInt($("#I"+Input[1]+"1").val())*100) < 30) {
+                Poin[Input[1]] = '4'
+              } else if ((parseInt($("#I"+Input[1]+"0").val())/parseInt($("#I"+Input[1]+"1").val())*100) < 56) {
+                Poin[Input[1]] = '3'
+              } else if ((parseInt($("#I"+Input[1]+"0").val())/parseInt($("#I"+Input[1]+"1").val())*100) < 76) {
+                Poin[Input[1]] = '2'
+              } else {
+                Poin[Input[1]] = '1'
+              } 
+              if (parseInt($("#I"+Input[2]+"0").val()) == 0 && parseInt($("#I"+Input[2]+"1").val()) == 0) {
+                Poin[Input[2]] = '1'
+              } else if ((parseInt($("#I"+Input[2]+"0").val())/parseInt($("#I"+Input[2]+"1").val())*100) < 40) {
+                Poin[Input[2]] = '1'
+              } else if ((parseInt($("#I"+Input[2]+"0").val())/parseInt($("#I"+Input[2]+"1").val())*100) < 56) {
+                Poin[Input[2]] = '2'
+              } else if ((parseInt($("#I"+Input[2]+"0").val())/parseInt($("#I"+Input[2]+"1").val())*100) < 76) {
+                Poin[Input[2]] = '3'
+              } else {
+                Poin[Input[2]] = '4'
+              } 
+              if (parseInt($("#I"+Input[3]+"0").val()) == 0 && parseInt($("#I"+Input[3]+"1").val()) == 0) {
+                Poin[Input[3]] = '1'
+              } else if (parseInt($("#I"+Input[3]+"1").val())/parseInt($("#I"+Input[3]+"0").val()) < 3) {
+                Poin[Input[3]] = '1'
+              } else if (parseInt($("#I"+Input[3]+"1").val())/parseInt($("#I"+Input[3]+"0").val()) < 6) {
+                Poin[Input[3]] = '2'
+              } else if (parseInt($("#I"+Input[3]+"1").val())/parseInt($("#I"+Input[3]+"0").val()) < 11) {
+                Poin[Input[3]] = '3'
+              } else {
+                Poin[Input[3]] = '4'
+              } 
+              if (parseInt($("#I"+Input[4]+"0").val()) == 0 && parseInt($("#I"+Input[4]+"1").val()) == 0) {
+                Poin[Input[4]] = '1'
+              } else if (parseInt($("#I"+Input[4]+"0").val())/parseInt($("#I"+Input[4]+"1").val()) < 11) {
+                Poin[Input[4]] = '1'
+              } else if (parseInt($("#I"+Input[4]+"0").val())/parseInt($("#I"+Input[4]+"1").val()) < 26) {
+                Poin[Input[4]] = '2'
+              } else if (parseInt($("#I"+Input[4]+"0").val())/parseInt($("#I"+Input[4]+"1").val()) < 36) {
+                Poin[Input[4]] = '3'
+              } else {
+                Poin[Input[4]] = '4'
+              } 
+              if (parseInt($("#I"+Input[5]+"0").val()) == 0 && parseInt($("#I"+Input[5]+"1").val()) == 0) {
+                Poin[Input[5]] = '1'
+              } else if (parseInt($("#I"+Input[5]+"1").val())/parseInt($("#I"+Input[5]+"0").val()) < 1000) {
+                Poin[Input[5]] = '4'
+              } else if (parseInt($("#I"+Input[5]+"1").val())/parseInt($("#I"+Input[5]+"0").val()) < 1501) {
+                Poin[Input[5]] = '3'
+              } else if (parseInt($("#I"+Input[5]+"1").val())/parseInt($("#I"+Input[5]+"0").val()) < 2001) {
+                Poin[Input[5]] = '2'
+              } else {
+                Poin[Input[5]] = '1'
+              } 
+              if (parseInt($("#I"+Input[6]+"0").val()) == 0 && parseInt($("#I"+Input[6]+"1").val()) == 0) {
+                Poin[Input[6]] = '1'
+              } else if (parseInt($("#I"+Input[6]+"1").val())/parseInt($("#I"+Input[6]+"0").val()) < 2000) {
+                Poin[Input[6]] = '4'
+              } else if (parseInt($("#I"+Input[6]+"1").val())/parseInt($("#I"+Input[6]+"0").val()) < 2501) {
+                Poin[Input[6]] = '3'
+              } else if (parseInt($("#I"+Input[6]+"1").val())/parseInt($("#I"+Input[6]+"0").val()) < 3001) {
+                Poin[Input[6]] = '2'
+              } else {
+                Poin[Input[6]] = '1'
+              }
+              if (parseInt($("#I"+Input[7]+"0").val()) == 0 && parseInt($("#I"+Input[7]+"1").val()) == 0) {
+                Poin[Input[7]] = '1'
+              } else if (parseInt($("#I"+Input[7]+"1").val())/parseInt($("#I"+Input[7]+"0").val()) < 2000) {
+                Poin[Input[7]] = '4'
+              } else if (parseInt($("#I"+Input[7]+"1").val())/parseInt($("#I"+Input[7]+"0").val()) < 2501) {
+                Poin[Input[7]] = '3'
+              } else if (parseInt($("#I"+Input[7]+"1").val())/parseInt($("#I"+Input[7]+"0").val()) < 3001) {
+                Poin[Input[7]] = '2'
+              } else {
+                Poin[Input[7]] = '1'
+              }
+              if (parseInt($("#I"+Input[8]+"0").val()) == 0 && parseInt($("#I"+Input[8]+"1").val()) == 0) {
+                Poin[Input[8]] = '1'
+              } else if (parseInt($("#I"+Input[8]+"1").val())/parseInt($("#I"+Input[8]+"0").val()) < 6000) {
+                Poin[Input[8]] = '4'
+              } else if (parseInt($("#I"+Input[8]+"1").val())/parseInt($("#I"+Input[8]+"0").val()) < 7001) {
+                Poin[Input[8]] = '3'
+              } else if (parseInt($("#I"+Input[8]+"1").val())/parseInt($("#I"+Input[8]+"0").val()) < 9001) {
+                Poin[Input[8]] = '2'
+              } else {
+                Poin[Input[8]] = '1'
+              }
+              if (parseInt($("#I"+Input[9]+"0").val()) == 0 && parseInt($("#I"+Input[9]+"1").val()) == 0) {
+                Poin[Input[9]] = '1'
+              } else if (parseInt($("#I"+Input[9]+"1").val())/parseInt($("#I"+Input[9]+"0").val()) < 6000) {
+                Poin[Input[9]] = '4'
+              } else if (parseInt($("#I"+Input[9]+"1").val())/parseInt($("#I"+Input[9]+"0").val()) < 7001) {
+                Poin[Input[9]] = '3'
+              } else if (parseInt($("#I"+Input[9]+"1").val())/parseInt($("#I"+Input[9]+"0").val()) < 9001) {
+                Poin[Input[9]] = '2'
+              } else {
+                Poin[Input[9]] = '1'
+              }
+              if (parseInt($("#I"+Input[10]+"0").val()) == 0 && parseInt($("#I"+Input[10]+"1").val()) == 0) {
+                Poin[Input[10]] = '1'
+              } else if (parseInt($("#I"+Input[10]+"1").val())/parseInt($("#I"+Input[10]+"0").val()) < 3000) {
+                Poin[Input[10]] = '4'
+              } else if (parseInt($("#I"+Input[10]+"1").val())/parseInt($("#I"+Input[10]+"0").val()) < 5001) {
+                Poin[Input[10]] = '3'
+              } else if (parseInt($("#I"+Input[10]+"1").val())/parseInt($("#I"+Input[10]+"0").val()) < 9001) {
+                Poin[Input[10]] = '2'
+              } else {
+                Poin[Input[10]] = '1'
+              }
+              if (parseInt($("#I"+Input[11]+"0").val()) == 0 && parseInt($("#I"+Input[11]+"1").val()) == 0) {
+                Poin[Input[11]] = '1'
+              } else if ((parseInt($("#I"+Input[11]+"0").val())/parseInt($("#I"+Input[11]+"1").val())*100) < 40) {
+                Poin[Input[11]] = '1'
+              } else if ((parseInt($("#I"+Input[11]+"0").val())/parseInt($("#I"+Input[11]+"1").val())*100) < 56) {
+                Poin[Input[11]] = '2'
+              } else if ((parseInt($("#I"+Input[11]+"0").val())/parseInt($("#I"+Input[11]+"1").val())*100) < 76) {
+                Poin[Input[11]] = '3'
+              } else {
+                Poin[Input[11]] = '4'
+              } 
+              var GabungPoin = Poin.join("|")
+              var Tampung = []
+              for (let i = 0; i < Input.length; i++) {
+                Tampung.push(parseInt($("#I"+Input[i]+"0").val())+"$"+parseInt($("#I"+Input[i]+"1").val()))
+              }
+              var Info = Tampung.join("|")
+              var KinerjaPemdes = { Provinsi: $("#Provinsi").val(),
+                                    Kabupaten: $("#Kabupaten").val(),
+                                    Kecamatan: $("#Kecamatan").val(),
+                                    Desa: $("#Desa").val(),
+                                    Tahun: $("#Tahun").val(), 
+                                    Poin: GabungPoin, Info: Info }
+              $("#Simpan").attr("disabled", true);                              
+              $("#LoadingInput").show();
+              $.post(BaseURL+"Surveyor/Input/surveipemdes", KinerjaPemdes).done(function(Respon) {
+                if (Respon == '1') {
+                  alert('Survei Berhasil Di Simpan!')
+                  window.location = BaseURL + "Surveyor/SurveiKinerjaPemDes"
+                } else { 
+                  alert(Respon)
+                  $("#LoadingInput").hide();
+                  $("#Simpan").attr("disabled", false);    
+                }
+              })
+            }
           }
         })
-        
       })
 		</script>
   </body>

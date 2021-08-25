@@ -52,7 +52,7 @@
       </div>
       <nav class="nav-menu float-right d-none d-lg-block font-weight-bold" style="margin-top: 35px;">
         <ul>
-          <li><a class="text-primary" href="#about">Profile</a></li>
+          <li><a class="text-primary" href="#about">About Us</a></li>
           <li><a class="text-primary" href="#services">Services</a></li>
           <li><a class="text-primary" href="#portfolio">Portfolio</a></li>
           <!-- <li><a class="text-primary" href="#team">Team</a></li> -->
@@ -156,7 +156,7 @@
           <div class="col-lg-6 d-flex flex-column justify-content-center about-content">
 
             <div class="section-title pt-0">
-              <h2 class="mb-2 text-danger">PROFIL</h2>
+              <h2 class="mb-2 text-danger">About Us</h2>
               <p class="text-justify text-primary font-weight-bold">&emsp;&emsp;&emsp;CV Inti Desain Ekonomi (IDE) Consultant, Be A Professional Researcher And Consultant. Berlokasi Di Jalan Simpang Ikan Nila II Perum Nila Residence B6 Kecamatan Blimbing Kota Malang.</p>
             </div>
 
@@ -249,55 +249,6 @@
         </div>
       </div>
     </section><!-- End Our Portfolio Section -->
-
-    <!-- ======= Our Team Section ======= -->
-    <!-- <section id="team" class="team">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>Our Team</h2>
-          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem.</p>
-        </div>
-
-        <div class="row">
-
-          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
-            <div class="member">
-              <div class="pic"><img src="assets/img/team/team-1.jpg" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Walter White</h4>
-                <span>Chief Executive Officer</span>
-                <div class="social">
-                  <a href=""><i class="icofont-twitter"></i></a>
-                  <a href=""><i class="icofont-facebook"></i></a>
-                  <a href=""><i class="icofont-instagram"></i></a>
-                  <a href=""><i class="icofont-linkedin"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-            <div class="member">
-              <div class="pic"><img src="assets/img/team/team-2.jpg" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Sarah Jhonson</h4>
-                <span>Product Manager</span>
-                <div class="social">
-                  <a href=""><i class="icofont-twitter"></i></a>
-                  <a href=""><i class="icofont-facebook"></i></a>
-                  <a href=""><i class="icofont-instagram"></i></a>
-                  <a href=""><i class="icofont-linkedin"></i></a>
-                </div>
-              </div>
-            </div>
-          </div> 
-
-        </div>
-
-      </div>
-    </section> -->
-    <!-- End Our Team Section -->
 
   </main><!-- End #main -->
 
@@ -404,7 +355,7 @@
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/jquery.easing/jquery.easing.min.js"></script>
   <script src="assets/vendor/jquery-sticky/jquery.sticky.js"></script>
-  <script src="assets/vendor/venobox/venobox.min.js"></script>
+  <script src="assets/vendor/venobox/venobox.min.js"></script>`
   <script src="assets/vendor/counterup/counterup.min.js"></script>
   <script src="assets/vendor/owl.carousel/owl.carousel.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>

@@ -11,19 +11,43 @@
                     <div style="background-color: yellow;" class="card-body border border-primary pl-0 pr-2 py-2">
                       <div class="container-fluid">
                         <div class="row">
-                          <div class="col-sm-4 my-1">
+                          <div class="col-sm-4"> 
+                            <div class="input-group input-group-sm">
+                              <div class="input-group-prepend">
+                                <label class="input-group-text bg-danger text-white"><b>Provinsi</b></label>
+                              </div>
+                              <select class="custom-select" id="Provinsi">  
+                                <?php foreach ($Provinsi as $key) { ?>
+                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
+                                <?php } ?>                  
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="input-group input-group-sm">
+                              <div class="input-group-prepend">
+                                <label class="input-group-text bg-danger text-white"><b>Kabupaten</b></label>
+                              </div>
+                              <select class="custom-select" id="Kabupaten">  
+                                <?php foreach ($Kabupaten as $key) { ?>
+                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
+                                <?php } ?>                  
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-white"><b>Kecamatan</b></label>
                               </div>
                               <select class="custom-select" id="Kecamatan">  
                                 <?php foreach ($Kecamatan as $key) { ?>
-                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option>
+                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
                                 <?php } ?>                  
                               </select>
                             </div>
                           </div>
-                          <div class="col-sm-4 my-1">
+                          <div class="col-sm-4">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-white"><b>Desa/Kelurahan</b></label>
@@ -35,15 +59,16 @@
                               </select>
                             </div>
                           </div>
-                          <div class="col-sm-4 my-1">
+                          <div class="col-sm-4">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-white"><b>Jumlah Dusun</b></label>
+                                <label class="input-group-text bg-danger text-white"><b>Tahun Survei</b></label>
                               </div>
-                              <input class="form-control" type="text" id="Dusun" data-inputmask='"mask": "99"' data-mask>
+                              <input class="form-control" type="text" id="Tahun" data-inputmask='"mask": "9999"' data-mask>
                             </div>
-                          </div> 
-                          <b class="ml-3 my-2 text-dark">Kepala Desa</b>
+                          </div>
+                          <div class="col-sm-4"></div>
+                          <b class="ml-3 btn btn-sm btn-primary my-2 text-white font-weight-bold">Kepala Desa</b>
                           <div class="col-sm-12">
                             <div class="table-responsive mt-1">
                               <table class="table table-sm table-bordered table-striped">
@@ -93,7 +118,7 @@
                               </table>
                             </div> 
                           </div>
-                          <b class="ml-3 my-2 text-dark">SEKERTARIS DESA</b>
+                          <b class="ml-3 btn btn-sm btn-primary my-2 text-white font-weight-bold">SEKERTARIS DESA</b>
                           <div class="col-sm-12">
                             <div class="table-responsive mt-1">
                               <table class="table table-sm table-bordered table-striped">
@@ -155,7 +180,7 @@
                               </table>
                             </div> 
                           </div>
-                          <b class="ml-3 my-2 text-dark">KEPALA URUSAN TATA USAHA DAN UMUM</b>
+                          <b class="ml-3 btn btn-sm btn-primary my-2 text-white font-weight-bold">KEPALA URUSAN TATA USAHA DAN UMUM</b>
                           <div class="col-sm-12">
                             <div class="table-responsive mt-1">
                               <table class="table table-sm table-bordered table-striped">
@@ -239,7 +264,7 @@
                               </table>
                             </div> 
                           </div>
-                          <b class="ml-3 my-2 text-dark">KEPALA URUSAN KEUANGAN</b>
+                          <b class="ml-3 btn btn-sm btn-primary my-2 text-white font-weight-bold">KEPALA URUSAN KEUANGAN</b>
                           <div class="col-sm-12">
                             <div class="table-responsive mt-1">
                               <table class="table table-sm table-bordered table-striped">
@@ -293,7 +318,7 @@
                               </table>
                             </div> 
                           </div>
-                          <b class="ml-3 my-2 text-dark">KEPALA URUSAN PERENCANAAN</b>
+                          <b class="ml-3 btn btn-sm btn-primary my-2 text-white font-weight-bold">KEPALA URUSAN PERENCANAAN</b>
                           <div class="col-sm-12">
                             <div class="table-responsive mt-1">
                               <table class="table table-sm table-bordered table-striped">
@@ -357,7 +382,7 @@
                               </table>
                             </div> 
                           </div>
-                          <b class="ml-3 my-2 text-dark">KASI PEMERINTAHAN</b>
+                          <b class="ml-3 btn btn-sm btn-primary my-2 text-white font-weight-bold">KASI PEMERINTAHAN</b>
                           <div class="col-sm-12">
                             <div class="table-responsive mt-1">
                               <table class="table table-sm table-bordered table-striped">
@@ -479,7 +504,7 @@
                               </table>
                             </div> 
                           </div>
-                          <b class="ml-3 my-2 text-dark">KEPALA SEKSI KESEJAHTERAAN</b>
+                          <b class="ml-3 btn btn-sm btn-primary my-2 text-white font-weight-bold">KEPALA SEKSI KESEJAHTERAAN</b>
                           <div class="col-sm-12">
                             <div class="table-responsive mt-1">
                               <table class="table table-sm table-bordered table-striped">
@@ -625,7 +650,7 @@
                               </table>
                             </div> 
                           </div>
-                          <b class="ml-3 my-2 text-dark">KASI PELAYANAN</b>
+                          <b class="ml-3 btn btn-sm btn-primary my-2 text-white font-weight-bold">KASI PELAYANAN</b>
                           <div class="col-sm-12">
                             <div class="table-responsive mt-1">
                               <table class="table table-sm table-bordered table-striped">
@@ -830,7 +855,8 @@
                             </div> 
                           </div>
                           <div class="col-sm-12 mt-2 d-flex justify-content-center">
-                            <button type="button" class="btn btn-primary" id="Kirim"><b>Kirim Survei</b></button>
+                            <button type="button" class="btn btn-primary" id="Simpan"><b>Simpan Survei</b></button>
+                            <div id="LoadingInput" class="spinner-border text-success" role="status" style="display: none;"></div>
                           </div> 
                         </div>
                       </div>
@@ -855,6 +881,32 @@
         var BaseURL = '<?=base_url()?>'  
   
         $('[data-mask]').inputmask()
+
+        $("#Provinsi").change(function (){
+          var Kabupaten = { Kode: $("#Provinsi").val() }
+          $.post(BaseURL+"IDE/ListKabupaten", Kabupaten).done(function(Respon) {
+            $('#Kabupaten').html(Respon)
+            var Kecamatan = { Kode: $("#Kabupaten").val() }
+            $.post(BaseURL+"IDE/ListKecamatan", Kecamatan).done(function(Respon) {
+              $('#Kecamatan').html(Respon)
+              var Desa = { Kode: $("#Kecamatan").val() }
+              $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) {
+                $('#Desa').html(Respon)
+              })   
+            })
+          }) 
+        }) 
+        
+        $("#Kabupaten").change(function (){
+          var Kecamatan = { Kode: $("#Kabupaten").val() }
+          $.post(BaseURL+"IDE/ListKecamatan", Kecamatan).done(function(Respon) {
+            $('#Kecamatan').html(Respon)
+            var Desa = { Kode: $("#Kecamatan").val() }
+            $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) {
+              $('#Desa').html(Respon)
+            })   
+          }) 
+        }) 
   
         $("#Kecamatan").change(function (){
           var Desa = { Kode: $("#Kecamatan").val() }
@@ -863,12 +915,12 @@
           })    
         })
   
-        $("#Kirim").click(function() {
-          if (isNaN(parseInt($("#Dusun").val())) || $("#Dusun").val() === "") {
-            alert('Input Jumlah Dusun Hanya Boleh Angka Positif!')
-          } 
-          else {
+        $("#Simpan").click(function() {
+          if (isNaN($("#Tahun").val()) || $("#Tahun").val() === "") {
+            alert('Input Tahun Belum Benar!')
+          } else {
             //Kepala Desa
+            var Tampung = []
             var KepalaDesa = ''
             var Cek = false
             var Tanya = 0
@@ -888,6 +940,7 @@
                 alert('Kepala Desa, Pertanyaan Nomer 4 Input Pendapatan Asli Desa Harus Lebih Kecil Dari Total Penerimaan Desa!')
                 return true
               } else {
+                Tampung.push(parseInt($("#KepalaDesa30").val())+"$"+parseInt($("#KepalaDesa31").val()))
                 KepalaDesa += ($("input[name='KepalaDesa0']:checked").val()+"|"+
                               $("input[name='KepalaDesa1']:checked").val()+"|"+
                               $("input[name='KepalaDesa2']:checked").val()+"|")
@@ -962,7 +1015,10 @@
                   SekertarisDesa += '|3'
                 } else {
                   SekertarisDesa += '|4'
-                }           
+                }          
+                Tampung.push(parseInt($("#SekertarisDesa70").val())+"$"+parseInt($("#SekertarisDesa71").val())) 
+                Tampung.push(parseInt($("#SekertarisDesa80").val())+"$"+parseInt($("#SekertarisDesa81").val())) 
+                Tampung.push(parseInt($("#SekertarisDesa90").val())+"$"+parseInt($("#SekertarisDesa91").val())) 
               }
             }
             //KEPALA URUSAN TATA USAHA DAN UMUM
@@ -1012,6 +1068,7 @@
                 } else {
                   TU += '|4'
                 } 
+                Tampung.push(parseInt($("#TU"+i+"0").val())+"$"+parseInt($("#TU"+i+"1").val())) 
               }     
               for (let i = 5; i < 20; i++) {
                 if (parseInt($("#TU"+i+"0").val()) / parseInt($("#TU"+i+"1").val()) * 100 > 100 || isNaN(parseInt($("#TU"+i+"0").val()) / parseInt($("#TU"+i+"1").val()) * 100) || parseInt($("#TU"+i+"0").val()) / parseInt($("#TU"+i+"1").val()) * 100 == Infinity) {
@@ -1023,6 +1080,7 @@
                 } else {
                   TU += '|4'
                 } 
+                Tampung.push(parseInt($("#TU"+i+"0").val())+"$"+parseInt($("#TU"+i+"1").val())) 
               }
               TU += ("|"+$("input[name='TU20']:checked").val())     
             }
@@ -1073,6 +1131,8 @@
                 } else {
                   Keuangan += '4|'
                 }          
+                Tampung.push(parseInt($("#Keuangan30").val())+"$"+parseInt($("#Keuangan31").val())) 
+                Tampung.push(parseInt($("#Keuangan40").val())+"$"+parseInt($("#Keuangan41").val())) 
                 Keuangan += $("input[name='Keuangan5']:checked").val()
               }
             }
@@ -1123,6 +1183,7 @@
                   } else {
                     Perencanaan += '|4'
                   } 
+                  Tampung.push(parseInt($("#Perencanaan"+i+"0").val())+"$"+parseInt($("#Perencanaan"+i+"1").val()))
                 }     
                 for (let i = 5; i < 10; i++) {
                   if (parseInt($("#Perencanaan"+i+"0").val()) / parseInt($("#Perencanaan"+i+"1").val()) * 100 > 100 || isNaN(parseInt($("#Perencanaan"+i+"0").val()) / parseInt($("#Perencanaan"+i+"1").val()) * 100) || parseInt($("#Perencanaan"+i+"0").val()) / parseInt($("#Perencanaan"+i+"1").val()) * 100 == Infinity) {
@@ -1134,6 +1195,7 @@
                   } else {
                     Perencanaan += '|4'
                   } 
+                  Tampung.push(parseInt($("#Perencanaan"+i+"0").val())+"$"+parseInt($("#Perencanaan"+i+"1").val()))
                 }
                 Perencanaan += ("|"+$("input[name='Perencanaan10']:checked").val())    
               }
@@ -1185,6 +1247,7 @@
                   } else {
                     Pemerintahan += '|4'
                   } 
+                  Tampung.push(parseInt($("#Pemerintahan"+i+"0").val())+"$"+parseInt($("#Pemerintahan"+i+"1").val()))
                 }     
                 for (let i = 5; i < 39; i++) {
                   if (parseInt($("#Pemerintahan"+i+"0").val()) / parseInt($("#Pemerintahan"+i+"1").val()) * 100 > 100 || isNaN(parseInt($("#Pemerintahan"+i+"0").val()) / parseInt($("#Pemerintahan"+i+"1").val()) * 100) || parseInt($("#Pemerintahan"+i+"0").val()) / parseInt($("#Pemerintahan"+i+"1").val()) * 100 == Infinity) {
@@ -1196,6 +1259,7 @@
                   } else {
                     Pemerintahan += '|4'
                   } 
+                  Tampung.push(parseInt($("#Pemerintahan"+i+"0").val())+"$"+parseInt($("#Pemerintahan"+i+"1").val()))
                 }
                 if (parseInt($("#Pemerintahan"+39+"0").val()) / parseInt($("#Pemerintahan"+39+"1").val()) * 100 < 26 || isNaN(parseInt($("#Pemerintahan"+39+"0").val()) / parseInt($("#Pemerintahan"+39+"1").val()) * 100) || parseInt($("#Pemerintahan"+39+"0").val()) / parseInt($("#Pemerintahan"+39+"1").val()) * 100 == Infinity) {
                   Pemerintahan += '|1'
@@ -1206,6 +1270,7 @@
                 } else {
                   Pemerintahan += '|4'
                 } 
+                Tampung.push(parseInt($("#Pemerintahan"+39+"0").val())+"$"+parseInt($("#Pemerintahan"+39+"1").val()))
               }
             }
             // Kesejahteraan
@@ -1255,6 +1320,7 @@
                   } else {
                     Kesejahteraan += '|4'
                   } 
+                  Tampung.push(parseInt($("#Kesejahteraan"+i+"0").val())+"$"+parseInt($("#Kesejahteraan"+i+"1").val()))
                 }     
                 for (let i = 5; i < 51; i++) {
                   if (parseInt($("#Kesejahteraan"+i+"0").val()) / parseInt($("#Kesejahteraan"+i+"1").val()) * 100 > 100 || isNaN(parseInt($("#Kesejahteraan"+i+"0").val()) / parseInt($("#Kesejahteraan"+i+"1").val()) * 100) || parseInt($("#Kesejahteraan"+i+"0").val()) / parseInt($("#Kesejahteraan"+i+"1").val()) * 100 == Infinity) {
@@ -1266,6 +1332,7 @@
                   } else {
                     Kesejahteraan += '|4'
                   } 
+                  Tampung.push(parseInt($("#Kesejahteraan"+i+"0").val())+"$"+parseInt($("#Kesejahteraan"+i+"1").val()))
                 }
                 if (parseInt($("#Kesejahteraan"+51+"0").val()) / parseInt($("#Kesejahteraan"+51+"1").val()) * 100 < 26 || isNaN(parseInt($("#Kesejahteraan"+51+"0").val()) / parseInt($("#Kesejahteraan"+51+"1").val()) * 100) || parseInt($("#Kesejahteraan"+51+"0").val()) / parseInt($("#Kesejahteraan"+51+"1").val()) * 100 == Infinity) {
                   Kesejahteraan += '|1'
@@ -1276,6 +1343,7 @@
                 } else {
                   Kesejahteraan += '|4'
                 } 
+                Tampung.push(parseInt($("#Kesejahteraan"+51+"0").val())+"$"+parseInt($("#Kesejahteraan"+51+"1").val()))
               }
             }
             // Pelayanan
@@ -1334,6 +1402,7 @@
                   } else {
                     Pelayanan += '|4'
                   } 
+                  Tampung.push(parseInt($("#Pelayanan"+i+"0").val())+"$"+parseInt($("#Pelayanan"+i+"1").val()))
                 }     
                 for (let i = 5; i < 77; i++) {
                   if (parseInt($("#Pelayanan"+i+"0").val()) / parseInt($("#Pelayanan"+i+"1").val()) * 100 > 100 || isNaN(parseInt($("#Pelayanan"+i+"0").val()) / parseInt($("#Pelayanan"+i+"1").val()) * 100) || parseInt($("#Pelayanan"+i+"0").val()) / parseInt($("#Pelayanan"+i+"1").val()) * 100 == Infinity) {
@@ -1345,6 +1414,7 @@
                   } else {
                     Pelayanan += '|4'
                   } 
+                  Tampung.push(parseInt($("#Pelayanan"+i+"0").val())+"$"+parseInt($("#Pelayanan"+i+"1").val()))
                 }
                 if (parseInt($("#Pelayanan770").val()) / parseInt($("#Pelayanan771").val()) * 100 > 36 || isNaN(parseInt($("#Pelayanan770").val()) / parseInt($("#Pelayanan771").val()) * 100) || parseInt($("#Pelayanan770").val()) / parseInt($("#Pelayanan771").val()) * 100 == Infinity) {
                   Pelayanan += '|1'
@@ -1382,19 +1452,29 @@
                 } else {
                   Pelayanan += '|4'
                 }
+                Tampung.push(parseInt($("#Pelayanan770").val())+"$"+parseInt($("#Pelayanan771").val()))
+                Tampung.push(parseInt($("#Pelayanan780").val())+"$"+parseInt($("#Pelayanan781").val()))
+                Tampung.push(parseInt($("#Pelayanan790").val())+"$"+parseInt($("#Pelayanan791").val()))
+                Tampung.push(parseInt($("#Pelayanan800").val())+"$"+parseInt($("#Pelayanan801").val()))
               }
             }
-            var KinerjaAparatur = { Kecamatan: $("#Kecamatan").val(),
+            var KinerjaAparatur = { Provinsi: $("#Provinsi").val(),
+                                    Kabupaten: $("#Kabupaten").val(),
+                                    Kecamatan: $("#Kecamatan").val(),
                                     Desa: $("#Desa").val(),
-                                    JumlahDusun: parseInt($("#Dusun").val()),
-                                    KepalaDesa: KepalaDesa,SekertarisDesa: SekertarisDesa,TU: TU, Keuangan: Keuangan,
+                                    Tahun: $("#Tahun").val(), 
+                                    KepalaDesa: KepalaDesa,SekertarisDesa: SekertarisDesa,TU: TU, Keuangan: Keuangan,Info: Tampung.join("|"),
                                     Perencanaan: Perencanaan,Pemerintahan: Pemerintahan,Kesejahteraan: Kesejahteraan,Pelayanan: Pelayanan }
-            $.post(BaseURL+"Surveyor/InputKinerjaAparatur", KinerjaAparatur).done(function(Respon) {
+            $("#Simpan").attr("disabled", true);                              
+            $("#LoadingInput").show();
+            $.post(BaseURL+"Surveyor/Input/surveiaparatur", KinerjaAparatur).done(function(Respon) {
               if (Respon == '1') {
                 alert('Survei Berhasil Di Simpan!')
                 window.location = BaseURL + "Surveyor/SurveiKinerjaAparatur"
               } else { 
                 alert(Respon)
+                $("#LoadingInput").hide();
+                $("#Simpan").attr("disabled", false);    
               }
             })
           }

@@ -11,7 +11,31 @@
                     <div style="background-color: yellow;" class="card-body border border-primary pl-0 pr-2 py-2">
                       <div class="container-fluid">
                         <div class="row">
-                          <div class="col-sm-4 my-1">
+                          <div class="col-sm-4"> 
+                            <div class="input-group input-group-sm">
+                              <div class="input-group-prepend">
+                                <label class="input-group-text bg-danger text-white"><b>Provinsi</b></label>
+                              </div>
+                              <select class="custom-select" id="Provinsi">  
+                                <?php foreach ($Provinsi as $key) { ?>
+                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
+                                <?php } ?>                  
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="input-group input-group-sm">
+                              <div class="input-group-prepend">
+                                <label class="input-group-text bg-danger text-white"><b>Kabupaten</b></label>
+                              </div>
+                              <select class="custom-select" id="Kabupaten">  
+                                <?php foreach ($Kabupaten as $key) { ?>
+                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
+                                <?php } ?>                  
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-white"><b>Kecamatan</b></label>
@@ -23,7 +47,7 @@
                               </select>
                             </div>
                           </div>
-                          <div class="col-sm-4 my-1">
+                          <div class="col-sm-4">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-white"><b>Desa/Kelurahan</b></label>
@@ -35,12 +59,12 @@
                               </select>
                             </div>
                           </div>
-                          <div class="col-sm-4 my-1">
+                          <div class="col-sm-4">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-white"><b>Jumlah Dusun</b></label>
+                                <label class="input-group-text bg-danger text-white"><b>Tahun Survei</b></label>
                               </div>
-                              <input class="form-control" type="text" id="Dusun" data-inputmask='"mask": "99"' data-mask>
+                              <input class="form-control" type="text" id="Tahun" data-inputmask='"mask": "9999"' data-mask>
                             </div>
                           </div> 
                           <?php 
@@ -106,7 +130,8 @@
                             </div> 
                           <?php } ?>
                           <div class="col-sm-12 mt-2 d-flex justify-content-center">
-                            <button type="button" class="btn btn-primary" id="Kirim"><b>Kirim Survei</b></button>
+                            <button type="button" class="btn btn-primary" id="Simpan"><b>Simpan Survei</b></button>
+                            <div id="LoadingInput" class="spinner-border text-success" role="status" style="display: none;"></div>
                           </div> 
                         </div>
                       </div>
@@ -131,19 +156,44 @@
         var BaseURL = '<?=base_url()?>'  
   
         $('[data-mask]').inputmask()
+
+        $("#Provinsi").change(function (){
+          var Kabupaten = { Kode: $("#Provinsi").val() }
+          $.post(BaseURL+"IDE/ListKabupaten", Kabupaten).done(function(Respon) {
+            $('#Kabupaten').html(Respon)
+            var Kecamatan = { Kode: $("#Kabupaten").val() }
+            $.post(BaseURL+"IDE/ListKecamatan", Kecamatan).done(function(Respon) {
+              $('#Kecamatan').html(Respon)
+              var Desa = { Kode: $("#Kecamatan").val() }
+              $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) {
+                $('#Desa').html(Respon)
+              })   
+            })
+          }) 
+        }) 
+        
+        $("#Kabupaten").change(function (){
+          var Kecamatan = { Kode: $("#Kabupaten").val() }
+          $.post(BaseURL+"IDE/ListKecamatan", Kecamatan).done(function(Respon) {
+            $('#Kecamatan').html(Respon)
+            var Desa = { Kode: $("#Kecamatan").val() }
+            $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) {
+              $('#Desa').html(Respon)
+            })   
+          }) 
+        }) 
   
         $("#Kecamatan").change(function (){
           var Desa = { Kode: $("#Kecamatan").val() }
           $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) {
             $('#Desa').html(Respon)
           })    
-        })
+        }) 
   
-        $("#Kirim").click(function() {
-          if (isNaN(parseInt($("#Dusun").val())) || $("#Dusun").val() === "") {
-            alert('Input Jumlah Dusun Hanya Boleh Angka Positif!')
-          } 
-          else {
+        $("#Simpan").click(function() {
+          if (isNaN($("#Tahun").val()) || $("#Tahun").val() === "") {
+            alert('Input Tahun Belum Benar!')
+          } else {
             var Cek = false
             var Tanya = 0
             var Radio = [0,5,9,10,11,12,13,14]
@@ -191,6 +241,17 @@
                 var JumlahAspirasiyangditampung = parseInt($("#I60").val())
                 var JumlahAspirasiYangDisampaikan = parseInt($("#I70").val())
                 var JumlahAspirasiYangDisalurkan = parseInt($("#I80").val())
+                var Info =  parseInt($("#I10").val()) + '|' + 
+                            parseInt($("#I11").val()) + '|' + 
+                            parseInt($("#I20").val()) + '|' + 
+                            parseInt($("#I21").val()) + '|' + 
+                            parseInt($("#I30").val()) + '|' + 
+                            parseInt($("#I31").val()) + '|' + 
+                            parseInt($("#I40").val()) + '|' + 
+                            parseInt($("#I41").val()) + '|' + 
+                            parseInt($("#I60").val()) + '|' + 
+                            parseInt($("#I70").val()) + '|' + 
+                            parseInt($("#I80").val())
                 if (JumlahAspirasiMasyarakatMiskin > JumlahMasyarakatMiskin) {
                   alert('Input Jumlah Aspirasi Masyarakat Miskin Harus Lebih Kecil Dari '+(JumlahMasyarakatMiskin+1))
                 } else if (JumlahAspirasiMasyarakatBerkebutuhanKhusus > JumlahMasyarakatBerkebutuhanKhusus) {
@@ -278,16 +339,22 @@
                   Poin += ($("input[name='I12']:checked").val() + '|')
                   Poin += ($("input[name='I13']:checked").val() + '|')
                   Poin += ($("input[name='I14']:checked").val())
-                  var BPD = { Kecamatan: $("#Kecamatan").val(),
+                  var BPD = { Provinsi: $("#Provinsi").val(),
+                              Kabupaten: $("#Kabupaten").val(),
+                              Kecamatan: $("#Kecamatan").val(),
                               Desa: $("#Desa").val(),
-                              JumlahDusun: parseInt($("#Dusun").val()),
-                              Poin: Poin }
-                  $.post(BaseURL+"Surveyor/InputBPD", BPD).done(function(Respon) {
+                              Tahun: $("#Tahun").val(), 
+                              Poin: Poin, Info: Info }
+                  $("#Simpan").attr("disabled", true);                              
+                  $("#LoadingInput").show();
+                  $.post(BaseURL+"Surveyor/Input/surveibpd", BPD).done(function(Respon) {
                     if (Respon == '1') {
                       alert('Survei Berhasil Di Simpan!')
                       window.location = BaseURL + "Surveyor/SurveiBPD"
                     } else { 
                       alert(Respon)
+                      $("#LoadingInput").hide();
+                      $("#Simpan").attr("disabled", false);                              
                     }
                   })
                 }
