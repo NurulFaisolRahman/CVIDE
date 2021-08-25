@@ -331,7 +331,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body" style="height: 82vh;">
+        <div class="modal-body overflow-auto" style="height: 82vh;">
           <div class="container-fluid">
             <div class="row">
               <div class="col-4">
@@ -345,7 +345,7 @@
               </div>
             </div>
           </div>  
-          <div id="NarasiPortofolio" class="mx-3"></div>
+          <div id="NarasiPortofolio" class="mx-3" style="overflow: auto;"></div>
         </div>
       </div>
     </div>
