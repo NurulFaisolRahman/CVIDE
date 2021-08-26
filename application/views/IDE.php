@@ -55,7 +55,7 @@
           <li><a class="text-primary" href="#about">About Us</a></li>
           <li><a class="text-primary" href="#services">Services</a></li>
           <li><a class="text-primary" href="#portfolio">Portfolio</a></li>
-          <!-- <li><a class="text-primary" href="#team">Team</a></li> -->
+          <li><a class="text-primary" href="#team">Team</a></li>
           <li><a class="text-primary" href="#" data-toggle="modal" data-target="#ModalSignIn">Sign In</a></li>
         </ul>
       </nav>
@@ -248,9 +248,93 @@
           <?php } ?>
         </div>
       </div>
-    </section><!-- End Our Portfolio Section -->
+    </section>
+    <!-- End Our Portfolio Section -->
 
-  </main><!-- End #main -->
+    <!-- ======= Our Team Section ======= -->
+    <section id="team" class="team p-1">
+      <div class="container">
+        <div class="section-title">
+          <h2 class="font-weight-bold text-danger">Team</h2>
+        </div>
+        <div class="row">
+          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="member">
+              <div class="pic"><img src="assets/img/team/PakTitov.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Titov Chuk’s Mayvani S.E., M.E</h4>
+                <span>Pembina dan Penasehat</span>
+                <button type="button" class="btn btn-sm btn-primary mt-2" id="Simpan"><b>Info</b></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="member">
+              <div class="pic"><img src="assets/img/team/Rifta.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Rifta Amelia Pratiwi S.E</h4>
+                <span>Asisten Tenaga Ahli</span>
+                <button type="button" class="btn btn-sm btn-primary mt-2" id="Simpan"><b>Info</b></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="member">
+              <div class="pic"><img src="assets/img/team/Rizka.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Rizka Firstiani S.E</h4>
+                <span>Asisten Tenaga Ahli</span>
+                <button type="button" class="btn btn-sm btn-primary mt-2" id="Simpan"><b>Info</b></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="member">
+              <div class="pic"><img src="assets/img/team/Serly.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Sherly Novita<br>Anggrianti S.E</h4>
+                <span>Asisten Tenaga Ahli</span>
+                <button type="button" class="btn btn-sm btn-primary mt-2" id="Simpan"><b>Info</b></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="member">
+              <div class="pic"><img src="assets/img/team/Ibnu.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Ibnu Dwi Prasetya S.E</h4>
+                <span>Asisten Tenaga Ahli</span>
+                <button type="button" class="btn btn-sm btn-primary mt-2" id="Simpan"><b>Info</b></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="member">
+              <div class="pic"><img src="assets/img/team/Noven.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Noventianus Reonaldi Werang S.E</h4>
+                <span>Asisten Tenaga Ahli</span>
+                <button type="button" class="btn btn-sm btn-primary mt-2" id="Simpan"><b>Info</b></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="member">
+              <div class="pic"><img src="assets/img/team/Faisol.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Nurul Faisol<br>Rahman S.Kom</h4>
+                <span>Tenaga IT</span>
+                <button type="button" class="btn btn-sm btn-primary mt-2" id="Simpan"><b>Info</b></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Our Team Section -->
+
+  </main>
+  <!-- End #main -->
 
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
@@ -345,7 +429,7 @@
               </div>
             </div>
           </div>  
-          <div id="NarasiPortofolio" class="mx-3" style="overflow: auto;"></div>
+          <div id="NarasiPortofolio" class="mx-3"></div>
         </div>
       </div>
     </div>
