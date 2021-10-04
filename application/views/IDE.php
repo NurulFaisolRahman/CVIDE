@@ -52,11 +52,11 @@
       </div>
       <nav class="nav-menu float-right d-none d-lg-block font-weight-bold" style="margin-top: 35px;">
         <ul>
-          <li><a class="text-primary" href="#about">About Us</a></li>
-          <li><a class="text-primary" href="#services">Services</a></li>
-          <li><a class="text-primary" href="#portfolio">Portfolio</a></li>
-          <li><a class="text-primary" href="#team">Team</a></li>
-          <li><a class="text-primary" href="#" data-toggle="modal" data-target="#ModalSignIn">Sign In</a></li>
+          <li><a class="text-danger" href="#about">About Us</a></li>
+          <li><a class="text-danger" href="#services">Services</a></li>
+          <li><a class="text-danger" href="#portfolio">Portfolio</a></li>
+          <li><a class="text-danger" href="#team">Team</a></li>
+          <li><a class="text-danger" href="#" data-toggle="modal" data-target="#ModalSignIn">Sign In</a></li>
         </ul>
       </nav>
       <!-- .nav-menu -->
@@ -74,13 +74,21 @@
 
         <div class="carousel-inner" role="listbox">
 
-          <!-- Slide 1 -->
-          <div class="carousel-item active" style="background-image: url('assets/img/slide/Slide1.jpg');">
+          <!-- Slide 7 -->
+          <div class="carousel-item active" style="background-image: url('assets/img/slide/Slide7.jpg');">
             <div class="carousel-container">
               <div class="carousel-content container">
-                <h2 class="animate__animated animate__fadeInDown" style="color: #FF0000;text-shadow: -1px -1px 0 #ff0, 1px -1px 0 #ff0, -1px 1px 0 #ff0, 1px 1px 0 #ff0;">Welcome to <span>IDE Consultant</span></h2>
+              <!-- <h2 class="animate__animated animate__fadeInDown" style="color: #FF0000;text-shadow: -1px -1px 0 #ff0, 1px -1px 0 #ff0, -1px 1px 0 #ff0, 1px 1px 0 #ff0;">Welcome to <span>IDE Consultant</span></h2> -->
                 <!-- <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.</p> -->
                 <!-- <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Read More</a> -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 1 -->
+          <div class="carousel-item" style="background-image: url('assets/img/slide/Slide1.jpg');">
+            <div class="carousel-container">
+              <div class="carousel-content container">
               </div>
             </div>
           </div>
@@ -150,7 +158,7 @@
         <div class="row no-gutters">
           <div class="col-lg-6 video-box">
             <img src="assets/img/about.png" class="img-fluid" alt="FotoVideoProfil"`>
-            <a href="https://www.youtube.com/watch?v=jDDaplaOz7Q" class="venobox play-btn mb-4" data-vbtype="video" data-autoplay="true"></a>
+            <a href="https://youtu.be/bipPIXtv7pA" class="venobox play-btn mb-4" data-vbtype="video" data-autoplay="true"></a>
           </div>
 
           <div class="col-lg-6 d-flex flex-column justify-content-center about-content">
@@ -262,39 +270,9 @@
             <div class="member">
               <div class="pic"><img src="assets/img/team/PakTitov.jpg" class="img-fluid" alt=""></div>
               <div class="member-info">
-                <h4>Titov Chuk’s Mayvani S.E., M.E</h4>
+                <h4>Titov Chuk’s<br>Mayvani S.E., M.E</h4>
                 <span>Pembina dan Penasehat</span>
-                <button type="button" class="btn btn-sm btn-primary mt-2" id="Simpan"><b>Info</b></button>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
-            <div class="member">
-              <div class="pic"><img src="assets/img/team/Rifta.jpg" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Rifta Amelia Pratiwi S.E</h4>
-                <span>Asisten Tenaga Ahli</span>
-                <button type="button" class="btn btn-sm btn-primary mt-2" id="Simpan"><b>Info</b></button>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
-            <div class="member">
-              <div class="pic"><img src="assets/img/team/Rizka.jpg" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Rizka Firstiani S.E</h4>
-                <span>Asisten Tenaga Ahli</span>
-                <button type="button" class="btn btn-sm btn-primary mt-2" id="Simpan"><b>Info</b></button>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
-            <div class="member">
-              <div class="pic"><img src="assets/img/team/Serly.jpg" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Sherly Novita<br>Anggrianti S.E</h4>
-                <span>Asisten Tenaga Ahli</span>
-                <button type="button" class="btn btn-sm btn-primary mt-2" id="Simpan"><b>Info</b></button>
+                <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVTitov"><b>Info</b></button>
               </div>
             </div>
           </div>
@@ -304,7 +282,7 @@
               <div class="member-info">
                 <h4>Ibnu Dwi Prasetya S.E</h4>
                 <span>Asisten Tenaga Ahli</span>
-                <button type="button" class="btn btn-sm btn-primary mt-2" id="Simpan"><b>Info</b></button>
+                <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVIbnu"><b>Info</b></button>
               </div>
             </div>
           </div>
@@ -314,7 +292,7 @@
               <div class="member-info">
                 <h4>Noventianus Reonaldi Werang S.E</h4>
                 <span>Asisten Tenaga Ahli</span>
-                <button type="button" class="btn btn-sm btn-primary mt-2" id="Simpan"><b>Info</b></button>
+                <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVNoven"><b>Info</b></button>
               </div>
             </div>
           </div>
@@ -324,7 +302,37 @@
               <div class="member-info">
                 <h4>Nurul Faisol<br>Rahman S.Kom</h4>
                 <span>Tenaga IT</span>
-                <button type="button" class="btn btn-sm btn-primary mt-2" id="Simpan"><b>Info</b></button>
+                <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVFaisol"><b>Info</b></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="member">
+              <div class="pic"><img src="assets/img/team/Rifta.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Rifta Amelia Pratiwi S.E</h4>
+                <span>Asisten Tenaga Ahli</span>
+                <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVRifta"><b>Info</b></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="member">
+              <div class="pic"><img src="assets/img/team/Rizka.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Rizka Firstiani S.E</h4>
+                <span>Asisten Tenaga Ahli</span>
+                <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVRizka"><b>Info</b></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="member">
+              <div class="pic"><img src="assets/img/team/Sherly.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Sherly Novita<br>Anggrianti S.E</h4>
+                <span>Asisten Tenaga Ahli</span>
+                <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVSherly"><b>Info</b></button>
               </div>
             </div>
           </div>
@@ -338,6 +346,7 @@
 
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
+  <!-- Modal Sign In -->
   <div class="modal fade" id="ModalSignIn">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content bg-transparent">
@@ -370,7 +379,7 @@
     </div>
   </div>
 
-  <!-- Modal -->
+  <!-- Modal Visi-->
   <div class="modal fade" id="ModalVisi" tabindex="-1" role="dialog" aria-labelledby="ModalVisiTitle" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -405,7 +414,7 @@
       </div>
     </div>
   </div>
-  <!-- Modal -->
+  <!-- Modal Portfolio-->
   <div class="modal fade" id="ModalPortofolio" tabindex="-1" role="dialog" aria-labelledby="ModalPortofolioTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -434,12 +443,318 @@
       </div>
     </div>
   </div>
+  <!-- CV Titov -->
+  <!-- <div class="modal fade" id="CVTitov" tabindex="-1" role="dialog" aria-labelledby="ModalPortofolioTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body overflow-auto" style="height: 90vh;">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-4">
+                <img src="assets/img/team/Titov.jpg" alt="Foto CV" class="img-thumbnail" id="FotoCV">
+                <h6 class="text-danger mt-2 mb-0"><b>Skill Hightlight</b></h6>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>Economic Development</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-success" style="width: 80%;"></div>
+                </div>
+              </div>
+              <div class="col-8">
+                <h6 class="font-weight-bold text-success mt-2 mb-0">Titov Chuk’s Mayvani S.E., M.E</h6>
+                <pre class="text-primary" style="font-size: 15px;"><b>Pembina dan Penasehat</b></pre>
+                <h6 class="font-weight-bold text-primary">Project Experience</h6>
+                <pre class="text-danger text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. Aplikasi Disposisi Surat Berbasis Android Di Dinas Komunikasi dan Informatika Kabupaten Bangkalan (2018)</b></pre>
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <!-- CV Ibnu -->
+  <!-- <div class="modal fade" id="CVIbnu" tabindex="-1" role="dialog" aria-labelledby="ModalPortofolioTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body overflow-auto" style="height: 90vh;">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-4">
+                <img src="assets/img/team/Ibnu.jpg" alt="Foto CV" class="img-thumbnail" id="FotoCV">
+                <h6 class="text-danger mt-2 mb-0"><b>Skill Hightlight</b></h6>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>Economic Development</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-success" style="width: 80%;"></div>
+                </div>
+              </div>
+              <div class="col-8">
+                <h6 class="font-weight-bold text-success mt-2 mb-0">Ibnu Dwi Prasetya S.E</h6>
+                <pre class="text-primary" style="font-size: 15px;"><b>Asisten Tenaga Ahli</b></pre>
+                <h6 class="font-weight-bold text-danger mb-0">Education</h6>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. S1 Ekonomi Pembangunan Universitas Trunojoyo Madura (2020)</b></pre>
+                <h6 class="font-weight-bold text-danger mt-2">Project Experience</h6>
+                <h6 class="font-weight-bold text-success mb-0 mt-1">CV Inti Desain Ekonomi Consultant (Malang, Jawa Timur)</h6>
+                <h6 class="text-danger font-weight-bold my-1">◉ Staff Administrasi (Juni 2020 - Agustus 2021)</h6>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. karyawan</b></pre>
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <!-- CV Noven -->
+  <!-- <div class="modal fade" id="CVNoven" tabindex="-1" role="dialog" aria-labelledby="ModalPortofolioTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body overflow-auto" style="height: 90vh;">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-4">
+                <img src="assets/img/team/Noven.jpg" alt="Foto CV" class="img-thumbnail" id="FotoCV">
+                <h6 class="text-danger mt-2 mb-0"><b>Skill Hightlight</b></h6>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>Economic Development</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-success" style="width: 80%;"></div>
+                </div>
+              </div>
+              <div class="col-8">
+                <h6 class="font-weight-bold text-success mt-2 mb-0">Noventianus Reonaldi Werang S.E</h6>
+                <pre class="text-primary" style="font-size: 15px;"><b>Asisten Tenaga Ahli</b></pre>
+                <h6 class="font-weight-bold text-danger mb-0">Education</h6>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. S1 Ekonomi Pembangunan Universitas Trunojoyo Madura (2020)</b></pre>
+                <h6 class="font-weight-bold text-danger mt-2">Project Experience</h6>
+                <h6 class="font-weight-bold text-success mb-0 mt-1">CV Inti Desain Ekonomi Consultant (Malang, Jawa Timur)</h6>
+                <h6 class="text-danger font-weight-bold my-1">◉ Staff Administrasi (Juni 2020 - Agustus 2021)</h6>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. karyawan</b></pre>
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <!-- CV Faisol -->
+  <div class="modal fade" id="CVFaisol" tabindex="-1" role="dialog" aria-labelledby="ModalPortofolioTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body overflow-auto" style="height: 90vh;">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-4">
+                <img src="assets/img/team/Faisol.jpg" alt="Foto CV" class="img-thumbnail" id="FotoCV">
+                <h6 class="text-danger mt-2 mb-0"><b>Skill Hightlight</b></h6>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>Full Stack Developer</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-success" style="width: 80%;"></div>
+                </div>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>Mobile Android Developer</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-warning" style="width: 60%;"></div>
+                </div>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>Desktop Developer</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-danger" style="width: 40%;"></div>
+                </div>
+              </div>
+              <div class="col-8">
+                <h6 class="font-weight-bold text-success mt-2 mb-0">Nurul Faisol Rahman S.Kom</h6>
+                <pre class="text-primary" style="font-size: 15px;"><b>Tenaga IT</b></pre>
+                <h6 class="font-weight-bold text-danger mb-0">Education</h6>
+                <pre class="text-primary text-wrap mb-0" style="font-size: 15px;"><b>1. S1 Teknik Informatika Universitas Trunojoyo Madura (2019)</b></pre>
+                <h6 class="font-weight-bold text-danger mb-0 mt-2">Project Experience</h6>
+                <pre class="text-primary text-justify text-wrap my-0" style="font-size: 15px;"><b>1. Website Dinas Perindustrian dan Perdagangan Kabupaten Banyuwangi (2019)</b></pre>
+                <pre class="text-primary text-justify text-wrap my-0" style="font-size: 15px;"><b>2. Sistem Monitoring Pajak Berbasis Web Dan Desktop di BP2D Kota Malang (2020)</b></pre>
+                <pre class="text-primary text-justify text-wrap my-0" style="font-size: 15px;"><b>3. Sistem Informasi Kinerja dan Rencana Kerja Jurusan Ilmu Ekonomi UTM (2021)</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>4. Aplikasi Disposisi Surat Berbasis Android Di Diskominfo Bangkalan (2018)</b></pre>
+                <h6 class="font-weight-bold text-danger mb-0 mt-2">Full Stack Developer</h6>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. Front End : HTML, Bootstrap, Vue Js</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>2. Back End : PHP, Javascript, JQuery</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>3. Database : Mysql, Postgre, Firebird</b></pre>
+                <h6 class="font-weight-bold text-danger mb-0 mt-2">Mobile Android Developer</h6>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. Java Android Studio</b></pre>
+                <h6 class="font-weight-bold text-danger mb-0 mt-2">Desktop Developer</h6>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. Electron Full Javascript</b></pre>
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- CV Rifta -->
+  <div class="modal fade" id="CVRifta" tabindex="-1" role="dialog" aria-labelledby="ModalPortofolioTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body overflow-auto" style="height: 90vh;">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-4">
+                <img src="assets/img/team/Rifta.jpg" alt="Foto CV" class="img-thumbnail" id="FotoCV">
+                <h6 class="text-danger mt-2 mb-0"><b>Skill Hightlight</b></h6>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>Microsoft Office</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-success" style="width: 80%;"></div>
+                </div>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>Manajemen Data</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-success" style="width: 75%;"></div>
+                </div>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>Efaktur System</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-warning" style="width: 70%;"></div>
+                </div>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>LPSE System</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-warning" style="width: 70%;"></div>
+                </div>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>BPJS & Edabu System</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-warning" style="width: 65%;"></div>
+                </div>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>Financial Report</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-danger" style="width: 50%;"></div>
+                </div>
+              </div>
+              <div class="col-8">
+                <h6 class="font-weight-bold text-success mt-2 mb-0">Rifta Amelia Pratiwi S.E</h6>
+                <pre class="text-primary" style="font-size: 15px;"><b>Asisten Tenaga Ahli</b></pre>
+                <h6 class="font-weight-bold text-danger mb-0">Education</h6>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. S1 Ekonomi Pembangunan Universitas Trunojoyo Madura (2020)</b></pre>
+                <h6 class="font-weight-bold text-danger mt-2 mb-0">Project Experience</h6>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. BEKRAF</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>2. Produk Unggulan Kawasan Perdesaan</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>3. Strategi Penanggulangan Kemiskinan Daerah</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>4. Rencana Pembangunan Industri Kabupaten</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>5. RPJMD Kabupaten Blitar</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>6. Profil Dinas Sosial</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>7. IKM Kabupaten Banyuwangi</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>8. IO Pertamina</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>9. Kinerja Aparatur Desa Banyuwangi</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>10. Pembinaan & Pengawasan </b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>11. Evaluasi Indikator Kinerja Urusan Sosial</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>12. Pemekaran Desa</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>13. RPJMD Provinsi Kalimantan Tengah (2021)</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>14. RPJMD Kota Surabaya</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>15. Rencana Pembangunan Kawasan Perdesaan SUKAMADE</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>16. Isu Kesejahteraan Sosial</b></pre>
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- CV Rizka -->
+  <!-- <div class="modal fade" id="CVRizka" tabindex="-1" role="dialog" aria-labelledby="ModalPortofolioTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body overflow-auto" style="height: 90vh;">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-4">
+                <img src="assets/img/team/Rizka.jpg" alt="Foto CV" class="img-thumbnail" id="FotoCV">
+                <h6 class="text-danger mt-2 mb-0"><b>Skill Hightlight</b></h6>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>Data Analyst</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-success" style="width: 80%;"></div>
+                </div>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>Microsoft Office</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-success" style="width: 80%;"></div>
+                </div>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>Aplikasi Stata </b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-warning" style="width: 70%;"></div>
+                </div>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>Aplikasi Eviews</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-warning" style="width: 70%;"></div>
+                </div>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>Graphic Design Photoshop</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-warning" style="width: 60%;"></div>
+                </div>
+              </div>
+              <div class="col-8">
+                <h6 class="font-weight-bold text-success mt-2 mb-0">Rizka Firstiani S.E</h6>
+                <pre class="text-primary" style="font-size: 15px;"><b>Asisten Tenaga Ahli</b></pre>
+                <h6 class="font-weight-bold text-danger mb-0">Education</h6>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. S1 Ekonomi Pembangunan Universitas Trunojoyo Madura (2020)</b></pre>
+                <h6 class="font-weight-bold text-danger mt-2">Project Experience</h6>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. Praktik Kerja Lapang di Dinas Perindustrian dan Perdagangan Kabupaten Lamongan (Juni - Juli 2018)</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>2. Prkatik Kerja Lapang di Dinas Koperasi dan UMKM Kabupaten Lamongan (Desember 2018 – Januari 2019)</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>3. Asisten Praktikum Laboratorium Ekonomi Publik (Agustus – Desember 2019)</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>4. Asisten Jurusan Ilmu Ekonomi FEB Universitas Trunojoyo Madura (Februari 2019 – Maret 2020)</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>5. CV. IDE Consultant Economics Research (Juni 2020 - sekarang)</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>6. Presenter of paper in International Conference of Project Management (ICPM)</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>7. Pemakalah paper dalam seminar nasional dinamika dan strategi penanggulangan kemiskinan di Jawa Timur di masa dan pasca pandemi covid.</b></pre>
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <!-- CV Sherly -->
+  <!-- <div class="modal fade" id="CVSherly" tabindex="-1" role="dialog" aria-labelledby="ModalPortofolioTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body overflow-auto" style="height: 90vh;">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-4">
+                <img src="assets/img/team/Sherly.jpg" alt="Foto CV" class="img-thumbnail" id="FotoCV">
+                <h6 class="text-danger mt-2 mb-0"><b>Skill Hightlight</b></h6>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>Microsoft Office</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-success" style="width: 80%;"></div>
+                </div>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>Aplikasi Stata</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-warning" style="width: 75%;"></div>
+                </div>
+                <pre class="text-primary my-0" style="font-size: 15px;"><b>Aplikasi Eviews</b></pre>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped bg-warning" style="width: 70%;"></div>
+                </div>
+              </div>
+              <div class="col-8">
+                <h6 class="font-weight-bold text-success mt-2 mb-0">Sherly Novita Anggrianti S.E</h6>
+                <pre class="text-primary" style="font-size: 15px;"><b>Asisten Tenaga Ahli</b></pre>
+                <h6 class="font-weight-bold text-danger mb-0">Education</h6>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. S1 Ekonomi Pembangunan Universitas Trunojoyo Madura (2020)</b></pre>
+                <h6 class="font-weight-bold text-danger mt-2">Project Experience</h6>
+                <h6 class="font-weight-bold text-success mb-0 mt-1">CV Inti Desain Ekonomi Consultant (Malang, Jawa Timur)</h6>
+                <h6 class="text-danger font-weight-bold my-1">◉ Asisten Tenaga Ahli (Juni 2020 - Agustus 2021)</h6>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. Mengumpulkan, mengelola dan menganalisa semua data yang diperoleh dari berbagai sumber terkait sebagai bahan laporan</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>2. Menganalisis berbagai isu perekonomian dan menemukan solusi dari berbagai persoalan ekonomi secara kritis, kreatif dan inovatif</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>3. Melakukan kajian aspek ekonomi yang berhubungan dengan perkembangan perkotaan dan pedesaan</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>4. Memastikan kelengkapan dan kesesuaian dokumen</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>5. Mempersiapkan dokumen-dokumen perusahaan yang diperlukan</b></pre>
+                <h6 class="font-weight-bold text-success mb-0 mt-1">PT Bank Tabungan Negara, Bangkalan</h6>
+                <h6 class="text-danger font-weight-bold my-1">◉ Sekretaris [Magang] (Desember 2018 – Januari 2019)</h6>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. Melakukan aktivitas pengarsipan seperti memeriksa surat keluar dan surat masuk</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>2. Merekap kwitansi-kwitansi biaya ke dalam buku laporan biaya</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>3. Menerima panggilan telfon dan memeriksa absensi karyawan</b></pre>
+                <h6 class="font-weight-bold text-success mb-0 mt-1">Universitas Trunojoyo Madura</h6>
+                <h6 class="text-danger font-weight-bold my-1">◉ Asisten Laboratorium Statistik [Data Entry] (2018 – 2019)</h6>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. Melakukan penginputan data dari berbagai sumber</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>2. Memeriksa dan memastikan keakuratan data yang sudah dimasukkan kedalam database</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>3. Melakukan pengolahan data yang sudah di input untuk dijadikan laporan</b></pre>
+
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div>
+    </div>
+  </div> -->
   <!-- Vendor JS Files -->
   <script src="assets/vendor/jquery/jquery.min.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/jquery.easing/jquery.easing.min.js"></script>
   <script src="assets/vendor/jquery-sticky/jquery.sticky.js"></script>
-  <script src="assets/vendor/venobox/venobox.min.js"></script>`
+  <script src="assets/vendor/venobox/venobox.min.js"></script>
   <script src="assets/vendor/counterup/counterup.min.js"></script>
   <script src="assets/vendor/owl.carousel/owl.carousel.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>

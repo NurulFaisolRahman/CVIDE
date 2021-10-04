@@ -736,8 +736,8 @@
                                   </tr>
                                 </thead>
                                 <tbody class="bg-primary">
-                                  <?php $Program = array('Kartu Indonesia Pintar (KIP)','Program keluarga Harapan (PKH)','PBI JKN','BPJS Ketenagakerjaan'); 
-                                    $No = 1; for ($i=0; $i < 4; $i++) { ?>
+                                  <?php $Program = array('Kartu Indonesia Pintar (KIP)','Program keluarga Harapan (PKH)','PBI JKN','BPJS Ketenagakerjaan','BLT Dana Desa','Bantuan Sosial Tunai (BST)','Bantuan Presiden (BanPres)','Bantuan UMKM','Bantuan Untuk Pekerja','Bantuan Pendidikan Anak'); 
+                                    $No = 1; for ($i=0; $i < count($Program); $i++) { ?>
                                     <tr class="text-light text-center align-middle">
                                       <td class="align-middle font-weight-bold"><?=$No++?></td>
                                       <td class="align-middle font-weight-bold"><?=$Program[$i]?></td>
@@ -750,7 +750,7 @@
                                     </tr>
                                   <?php } ?>
                                     <tr class="text-light text-center align-middle">
-                                      <td class="align-middle font-weight-bold">5</td>
+                                      <td class="align-middle font-weight-bold">11</td>
                                       <td class="align-middle font-weight-bold">Asuransi Kesehatan Lainnya</td>
                                       <td class="align-middle font-weight-bold d-flex justify-content-center">
                                         <input style="width: 90%;" placeholder="Sebutkan" class="form-control form-control-sm" type="text" id="Program4">
@@ -807,7 +807,7 @@
                                                           'Air PAM','LPG','Minyak tanah','Lainnya(batu baterai,aki,korek,obat nyamuk dll)',
                                                           'Perawatan Kendaraan (servis/lainnya)','Biaya paket data','Perlengkapan mandi','Barang kecantikan',
                                                           'Perawatan kulit,muka,kuku,rambut','Sabun cuci','Lainnya (handuk, ikat pinggang,semir sepatu, dasi, dan lainnya)',
-                                                          'Hotel, Penginapan, sandiwara, dekoder, dan rekreasi lain (tidak termasuk transport dan pembelian barang rekreasi)',
+                                                          'Hotel, Penginapan, dekoder, dan rekreasi lain (tidak termasuk transport dan pembelian barang rekreasi)',
                                                           'Pembantu Rumah tangga dan sopir (gaji/upah)','Barang lainnya (tissue, kapur barus, daun pisang, daun kelapa, tusuk sate, dan lainnya )',
                                                           'Jasa lainnya (KTP, SIM, akte kelahiran, foto copy, foto, dan lainnya)','Biaya RS Pemerintah','Biaya RS Swasta','Puskesmas/pustu',
                                                           'Praktek dokter/poliklinik','Posyandu/Kader','Bidan/mantri/perawat praktek','Dukun/tabib','Beli obat dengan resep dokter',
@@ -849,199 +849,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-12 mt-2">
-                  <div class="card">
-                    <div class="card-header bg-primary text-light py-2">
-                      <b>Keterangan Kondisi Rumah (Ditanyakan Untuk 1 Keluarga)</b>
-                    </div>
-                    <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
-                      <div class="container-fluid">
-                        <div class="row">
-                          <div class="col-sm-12">
-                            <div style="width: 70%;" class="table-responsive mt-1">
-                              <table class="table table-sm table-bordered table-striped">
-                                <thead class="bg-danger">
-                                  <tr style="font-size: 10pt;" class="text-light text-center">
-                                    <th style="width: 4%;" class="align-middle">No</th>
-                                    <th style="width: 50%;"class="align-middle">Perumahan</th>
-                                    <th class="align-middle">Keterangan</th>
-                                  </tr>
-                                </thead>
-                                <tbody class="bg-primary">
-                                  <tr class="text-light text-center align-middle">
-                                    <td class="align-middle font-weight-bold">1</td>
-                                    <td class="align-middle font-weight-bold">Status Bangunan Tinggal</td>
-                                    <td class="form-inline">
-                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah0">              
-                                        <option value="1">Milik sendiri</option>
-                                        <option value="2">Kontrak/sewa</option>
-                                        <option value="3">Bebas sewa</option>
-                                        <option value="4">Dinas</option>
-                                        <option value="5">Lainnya</option>
-                                      </select>  
-                                      <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah0Lainnya">
-                                    </td>
-                                  </tr>
-                                  <tr class="text-light text-center align-middle">
-                                    <td class="align-middle font-weight-bold">2</td>
-                                    <td class="align-middle font-weight-bold">Status Lahan Tinggal</td>
-                                    <td class="form-inline">
-                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah1">              
-                                        <option value="1">Milik sendiri</option>
-                                        <option value="2">Orang lain</option>
-                                        <option value="3">Tanah negara</option>
-                                        <option value="4">Lainnya</option>
-                                      </select>  
-                                      <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah1Lainnya">
-                                    </td>
-                                  </tr>
-                                  <tr class="text-light text-center align-middle">
-                                    <td class="align-middle font-weight-bold">3</td>
-                                    <td class="align-middle font-weight-bold">Jenis Lantai</td>
-                                    <td class="form-inline">
-                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah2">              
-                                        <option value="1">Marmer</option>
-                                        <option value="2">Keramik</option>
-                                        <option value="3">Ubin/Semen</option>
-                                        <option value="4">Kayu</option>
-                                        <option value="5">Lainnya</option>
-                                      </select>  
-                                      <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah2Lainnya">
-                                    </td>
-                                  </tr>
-                                  <tr class="text-light text-center align-middle">
-                                    <td class="align-middle font-weight-bold">4</td>
-                                    <td class="align-middle font-weight-bold">Kondisi Lantai</td>
-                                    <td class="form-inline">
-                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah3">              
-                                        <option value="1">Bagus/Kualitas Tinggi</option>
-                                        <option value="2">Jelek/Kualitas Rendah</option>
-                                      </select>  
-                                    </td>
-                                  </tr>
-                                  <tr class="text-light text-center align-middle">
-                                    <td class="align-middle font-weight-bold">5</td>
-                                    <td class="align-middle font-weight-bold">Jenis Dinding</td>
-                                    <td class="form-inline">
-                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah4">              
-                                        <option value="1">Tembok</option>
-                                        <option value="2">Plesteran anyaman bambu</option>
-                                        <option value="3">Kayu</option>
-                                        <option value="4">Lainnya</option>
-                                      </select>  
-                                      <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah4Lainnya">
-                                    </td>
-                                  </tr>
-                                  <tr class="text-light text-center align-middle">
-                                    <td class="align-middle font-weight-bold">6</td>
-                                    <td class="align-middle font-weight-bold">Kondisi Dinding</td>
-                                    <td class="form-inline">
-                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah5">              
-                                        <option value="1">Bagus/Kualitas Tinggi</option>
-                                        <option value="2">Jelek/Kualitas Rendah</option>
-                                      </select>  
-                                    </td>
-                                  </tr>
-                                  <tr class="text-light text-center align-middle">
-                                    <td class="align-middle font-weight-bold">7</td>
-                                    <td class="align-middle font-weight-bold">Jenis Atap</td>
-                                    <td class="form-inline">
-                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah6">              
-                                        <option value="1">Genteng Beton</option>
-                                        <option value="2">Genteng keramik</option>
-                                        <option value="3">Genteng tanah liat</option>
-                                        <option value="4">Asbes</option>
-                                        <option value="5">Lainnya</option>
-                                      </select>  
-                                      <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah6Lainnya">
-                                    </td>
-                                  </tr>
-                                  <tr class="text-light text-center align-middle">
-                                    <td class="align-middle font-weight-bold">8</td>
-                                    <td class="align-middle font-weight-bold">Kondisi Atap</td>
-                                    <td class="form-inline">
-                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah7">              
-                                        <option value="1">Bagus/Kualitas Tinggi</option>
-                                        <option value="2">Jelek/Kualitas Rendah</option>
-                                      </select>  
-                                    </td>
-                                  </tr>
-                                  <tr class="text-light text-center align-middle">
-                                    <td class="align-middle font-weight-bold">9</td>
-                                    <td class="align-middle font-weight-bold">Sumber air minum</td>
-                                    <td class="form-inline">
-                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah8">              
-                                        <option value="1">Air kemasan/Air isi ulang</option>
-                                        <option value="2">Leding meteran/eceran</option>
-                                        <option value="3">Sumur Bor/Pompa</option>
-                                        <option value="4">Sumur terlindung</option>
-                                        <option value="5">Sumur tak terlindung</option>
-                                        <option value="6">Air sungai</option>
-                                        <option value="7">Lainnya</option>
-                                      </select>  
-                                      <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah8Lainnya">
-                                    </td>
-                                  </tr>
-                                  <tr class="text-light text-center align-middle">
-                                    <td class="align-middle font-weight-bold">10</td>
-                                    <td class="align-middle font-weight-bold">Sumber Penerangan</td>
-                                    <td class="form-inline">
-                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah9">              
-                                        <option value="1">Listrik PLN</option>
-                                        <option value="2">Listrik non PLN</option>
-                                        <option value="3">Bukan Listrik</option>
-                                      </select>  
-                                    </td>
-                                  </tr>
-                                  <tr class="text-light text-center align-middle">
-                                    <td class="align-middle font-weight-bold">11</td>
-                                    <td class="align-middle font-weight-bold">Daya listrik terpasang</td>
-                                    <td class="form-inline">
-                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah10">              
-                                        <option value="1">450 watt</option>
-                                        <option value="2">900 watt</option>
-                                        <option value="3">1300 watt</option>
-                                        <option value="4">> 1300 watt</option>
-                                        <option value="5">Tanpa meteran</option>
-                                      </select>  
-                                    </td>
-                                  </tr>
-                                  <tr class="text-light text-center align-middle">
-                                    <td class="align-middle font-weight-bold">12</td>
-                                    <td class="align-middle font-weight-bold">Status sanitasi BAB</td>
-                                    <td class="form-inline">
-                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah11">              
-                                        <option value="1">Sendiri</option>
-                                        <option value="2">Bersama</option>
-                                        <option value="3">Umum</option>
-                                        <option value="4">Tidak ada</option>
-                                      </select>  
-                                    </td>
-                                  </tr>
-                                  <tr class="text-light text-center align-middle">
-                                    <td class="align-middle font-weight-bold">13</td>
-                                    <td class="align-middle font-weight-bold">TPA Tinja</td>
-                                    <td class="form-inline">
-                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah12">              
-                                        <option value="1">Tangki</option>
-                                        <option value="2">SPAL</option>
-                                        <option value="3">Lubang tanah</option>
-                                        <option value="4">Sungai</option>
-                                        <option value="5">Lainnya</option>
-                                      </select>  
-                                      <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah12Lainnya">
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div> 
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-12 mt-2">
+                <div class="col-sm-6 mt-2">
                   <div class="card">
                     <div class="card-header bg-primary text-light py-2">
                       <b>Kepemilikan Aset (Ditanyakan Untuk 1 Keluarga)</b>
@@ -1050,7 +858,7 @@
                       <div class="container-fluid">
                         <div class="row">
                           <div class="col-sm-12">
-                            <div style="width: 40%;" class="table-responsive mt-1">
+                            <div class="table-responsive mt-1">
                               <table class="table table-sm table-bordered table-striped">
                                 <thead class="bg-danger">
                                   <tr style="font-size: 10pt;" class="text-light text-center">
@@ -1139,8 +947,222 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-3 my-2">
-                  <button type="button" class="btn btn-primary" id="Simpan"><b>Simpan Survei</b></button>
+                <div class="col-sm-6 mt-2">
+                  <div class="card">
+                    <div class="card-header bg-primary text-light py-2">
+                      <b>Keterangan Kondisi Rumah (Ditanyakan Untuk 1 Keluarga)</b>
+                    </div>
+                    <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <div class="table-responsive mt-1">
+                              <table class="table table-sm table-bordered table-striped">
+                                <thead class="bg-danger">
+                                  <tr style="font-size: 10pt;" class="text-light text-center">
+                                    <th style="width: 4%;" class="align-middle">No</th>
+                                    <th style="width: 35%;"class="align-middle">Perumahan</th>
+                                    <th class="align-middle">Keterangan</th>
+                                  </tr>
+                                </thead>
+                                <tbody class="bg-primary">
+                                  <tr class="text-light text-center align-middle">
+                                    <td class="align-middle font-weight-bold">1</td>
+                                    <td class="align-middle font-weight-bold">Status Bangunan Tinggal</td>
+                                    <td class="form-inline">
+                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah0">              
+                                        <option value="1">Milik sendiri</option>
+                                        <option value="2">Kontrak/sewa</option>
+                                        <option value="3">Bebas sewa</option>
+                                        <option value="4">Dipinjami</option>
+                                        <option value="5">Dinas</option>
+                                        <option value="6">Lainnya</option>
+                                      </select>  
+                                      <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah0Lainnya">
+                                    </td>
+                                  </tr>
+                                  <tr class="text-light text-center align-middle">
+                                    <td class="align-middle font-weight-bold">2</td>
+                                    <td class="align-middle font-weight-bold">Status Lahan Tinggal</td>
+                                    <td class="form-inline">
+                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah1">              
+                                        <option value="1">Milik sendiri</option>
+                                        <option value="2">Orang lain</option>
+                                        <option value="3">Tanah negara</option>
+                                        <option value="4">Lainnya</option>
+                                      </select>  
+                                      <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah1Lainnya">
+                                    </td>
+                                  </tr>
+                                  <tr class="text-light text-center align-middle">
+                                    <td class="align-middle font-weight-bold">3</td>
+                                    <td class="align-middle font-weight-bold">Jenis Lantai</td>
+                                    <td class="form-inline">
+                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah2">              
+                                        <option value="1">Marmer/Granit</option>
+                                        <option value="2">Keramik</option>
+                                        <option value="3">Parket/Vinil/Permadani</option>
+                                        <option value="4">Ubin/Tegel/Teraso</option>
+                                        <option value="5">Kayu/Papan Kualitas Tinggi</option>
+                                        <option value="6">Semen/Bata Merah</option>
+                                        <option value="7">Bambu</option>
+                                        <option value="8">Kayu/Papan Kualitas Rendah</option>
+                                        <option value="9">Lainnya</option>
+                                      </select>  
+                                      <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah2Lainnya">
+                                    </td>
+                                  </tr>
+                                  <tr class="text-light text-center align-middle">
+                                    <td class="align-middle font-weight-bold">4</td>
+                                    <td class="align-middle font-weight-bold">Kondisi Lantai</td>
+                                    <td class="form-inline">
+                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah3">              
+                                        <option value="1">Bagus/Kualitas Tinggi</option>
+                                        <option value="2">Jelek/Berkualitas Rendah</option>
+                                      </select>  
+                                      <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah3Lainnya">
+                                    </td>
+                                  </tr>
+                                  <tr class="text-light text-center align-middle">
+                                    <td class="align-middle font-weight-bold">5</td>
+                                    <td class="align-middle font-weight-bold">Jenis Dinding</td>
+                                    <td class="form-inline">
+                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah4">              
+                                        <option value="1">Tembok/Beton</option>
+                                        <option value="2">Kayu Kualitas Tinggi</option>
+                                        <option value="3">Kayu Berkualitas Rendah</option>
+                                        <option value="4">Plesteran anyaman bambu</option>
+                                        <option value="5">Lainnya</option>
+                                      </select>  
+                                      <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah4Lainnya">
+                                    </td>
+                                  </tr>
+                                  <tr class="text-light text-center align-middle">
+                                    <td class="align-middle font-weight-bold">6</td>
+                                    <td class="align-middle font-weight-bold">Kondisi Dinding</td>
+                                    <td class="form-inline">
+                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah5">              
+                                        <option value="1">Bagus/Kualitas Tinggi</option>
+                                        <option value="2">Jelek/Kualitas Rendah</option>
+                                      </select>  
+                                    </td>
+                                  </tr>
+                                  <tr class="text-light text-center align-middle">
+                                    <td class="align-middle font-weight-bold">7</td>
+                                    <td class="align-middle font-weight-bold">Jenis Atap</td>
+                                    <td class="form-inline">
+                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah6">              
+                                        <option value="1">Genteng Beton</option>
+                                        <option value="2">Genteng keramik</option>
+                                        <option value="3">Genteng tanah liat</option>
+                                        <option value="4">Asbes</option>
+                                        <option value="5">Kayu/Jerami</option>
+                                        <option value="6">Lainnya</option>
+                                      </select>  
+                                      <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah6Lainnya">
+                                    </td>
+                                  </tr>
+                                  <tr class="text-light text-center align-middle">
+                                    <td class="align-middle font-weight-bold">8</td>
+                                    <td class="align-middle font-weight-bold">Kondisi Atap</td>
+                                    <td class="form-inline">
+                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah7">              
+                                        <option value="1">Bagus/Kualitas Tinggi</option>
+                                        <option value="2">Jelek/Kualitas Rendah</option>
+                                      </select>  
+                                    </td>
+                                  </tr>
+                                  <tr class="text-light text-center align-middle">
+                                    <td class="align-middle font-weight-bold">9</td>
+                                    <td class="align-middle font-weight-bold">Sumber Air Minum</td>
+                                    <td class="form-inline">
+                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah8">              
+                                        <option value="1">Air kemasan/Air isi ulang</option>
+                                        <option value="2">Leding meteran/eceran</option>
+                                        <option value="3">Sumur Bor/Pompa</option>
+                                        <option value="4">Sumur terlindung</option>
+                                        <option value="5">Sumur tak terlindung</option>
+                                        <option value="6">Air sungai</option>
+                                        <option value="7">Lainnya</option>
+                                      </select>  
+                                      <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah8Lainnya">
+                                    </td>
+                                  </tr>
+                                  <tr class="text-light text-center align-middle">
+                                    <td class="align-middle font-weight-bold">10</td>
+                                    <td class="align-middle font-weight-bold">Sumber Penerangan</td>
+                                    <td class="form-inline">
+                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah9">              
+                                        <option value="1">Listrik PLN</option>
+                                        <option value="2">Listrik non PLN</option>
+                                        <option value="3">Lampu Minyak/Lilin</option>
+                                        <option value="4">Tidak Ada</option>
+                                        <option value="5">Lainnya</option>
+                                      </select> 
+                                      <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah9Lainnya"> 
+                                    </td>
+                                  </tr>
+                                  <tr class="text-light text-center align-middle">
+                                    <td class="align-middle font-weight-bold">11</td>
+                                    <td class="align-middle font-weight-bold">Daya Listrik Terpasang</td>
+                                    <td class="form-inline">
+                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah10">              
+                                        <option value="1">450 watt</option>
+                                        <option value="2">900 watt</option>
+                                        <option value="3">1300 watt</option>
+                                        <option value="4">> 1300 watt</option>
+                                        <option value="5">Tanpa meteran</option>
+                                      </select>  
+                                    </td>
+                                  </tr>
+                                  <tr class="text-light text-center align-middle">
+                                    <td class="align-middle font-weight-bold">12</td>
+                                    <td class="align-middle font-weight-bold">Status Sanitasi BAB</td>
+                                    <td class="form-inline">
+                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah11">              
+                                        <option value="1">Sendiri</option>
+                                        <option value="2">Bersama</option>
+                                        <option value="3">Umum</option>
+                                        <option value="4">Tidak ada</option>
+                                      </select>  
+                                    </td>
+                                  </tr>
+                                  <tr class="text-light text-center align-middle">
+                                    <td class="align-middle font-weight-bold">13</td>
+                                    <td class="align-middle font-weight-bold">TPA Tinja</td>
+                                    <td class="form-inline">
+                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah12">              
+                                        <option value="1">Tangki</option>
+                                        <option value="2">SPAL</option>
+                                        <option value="3">Lubang tanah</option>
+                                        <option value="4">Sungai</option>
+                                        <option value="5">Lainnya</option>
+                                      </select>  
+                                      <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah12Lainnya">
+                                    </td>
+                                  </tr>
+                                  <tr class="text-light text-center align-middle">
+                                    <td class="align-middle font-weight-bold">14</td>
+                                    <td class="align-middle font-weight-bold">Energi Untuk Memasak</td>
+                                    <td class="form-inline">
+                                      <select style="width: 50%;" class="custom-select custom-select-sm" id="Rumah13">              
+                                        <option value="1">Gas/LPG/Biogas</option>
+                                        <option value="2">Minyak Tanah/Batu Bara</option>
+                                        <option value="3">Kayu Bakar</option>
+                                        <option value="4">Lainnya</option>
+                                      </select>  
+                                      <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah13Lainnya">
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-primary mt-2" id="Simpan"><b>Simpan Survei</b></button>
                 </div>
               </div>
             </div>
@@ -1348,7 +1370,7 @@
               }
             }
             var Rumah = ''
-            if ($("#Rumah0").val() == 5) {
+            if ($("#Rumah0").val() == 6) {
               Rumah += $("#Rumah0Lainnya").val()
             } else {
               Rumah += $("#Rumah0").val()
@@ -1358,19 +1380,19 @@
             } else {
               Rumah += ("|"+$("#Rumah1").val())
             }
-            if ($("#Rumah2").val() == 5) {
+            if ($("#Rumah2").val() == 9) {
               Rumah += ("|"+$("#Rumah2Lainnya").val())
             } else {
               Rumah += ("|"+$("#Rumah2").val())
             }
             Rumah += ("|"+$("#Rumah3").val())
-            if ($("#Rumah4").val() == 4) {
+            if ($("#Rumah4").val() == 5) {
               Rumah += ("|"+$("#Rumah4Lainnya").val())
             } else {
               Rumah += ("|"+$("#Rumah4").val())
             }
             Rumah += ("|"+$("#Rumah5").val())
-            if ($("#Rumah6").val() == 5) {
+            if ($("#Rumah6").val() == 6) {
               Rumah += ("|"+$("#Rumah6Lainnya").val())
             } else {
               Rumah += ("|"+$("#Rumah6").val())
@@ -1381,7 +1403,11 @@
             } else {
               Rumah += ("|"+$("#Rumah8").val())
             }
-            Rumah += ("|"+$("#Rumah9").val())
+            if ($("#Rumah9").val() == 5) {
+              Rumah += ("|"+$("#Rumah9Lainnya").val())
+            } else {
+              Rumah += ("|"+$("#Rumah9").val())
+            }
             Rumah += ("|"+$("#Rumah10").val())
             Rumah += ("|"+$("#Rumah11").val())
             if ($("#Rumah12").val() == 5) {
@@ -1497,7 +1523,7 @@
           })
         <?php } ?>
         
-        <?php $Rumah = [0,1,2,4,6,8,12]; $OpsiRumah = [5,4,5,4,5,7,5]; for ($i=0; $i < count($Rumah); $i++) { ?>
+        <?php $Rumah = [0,1,2,4,6,8,9,12]; $OpsiRumah = [6,4,9,5,6,7,5,5]; for ($i=0; $i < count($Rumah); $i++) { ?>
           $("#Rumah<?=$Rumah[$i]?>").change(function (){
             if ($("#Rumah<?=$Rumah[$i]?>").val() == <?=$OpsiRumah[$i]?>) {
               $("#Rumah<?=$Rumah[$i]?>Lainnya").prop('disabled', false)
