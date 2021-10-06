@@ -23,7 +23,7 @@
             Kabupaten Banyuwangi sedang melakukan Survei Kepuasan Masyarakat terhadap pelayanan Desa dan Kelurahan. Survei Kepuasan Pelayanan 
             Desa dan Kelurahan ini bertujuan untuk mengukur tingkat kepuasan masyarakat sebagai pengguna layanan Desa dan sebagai masukan dalam 
             kebijakan meningkatkan kualitas penyelenggaraan pelayanan publik Desa. <b>Kami mengharap Saudara/i sekalian yang pernah melakukan 
-            pelayanan di Kantor Desa harap mengisi kuisioner ini dengan se obyektif mungkin sesuai dengan keadaan yang sebenarnya. 
+            pelayanan di Kantor Desa harap mengisi kuisioner ini dengan se objektif mungkin sesuai dengan keadaan yang sebenarnya. 
             <span class="text-danger">**Catatan Penting : Segala informasi yang diberikan oleh responden dijamin kerahasiaannya oleh konsultan independen.</span></b></p>
         </div>
         <!-- <div class="col-sm-12 text-center">
@@ -186,8 +186,8 @@
                       </div>
                     </div> 
                   <?php } ?>
-                  <div class="col-sm-6 offset-sm-6 mt-2">
-                    <button type="button" class="btn btn-primary" id="Kirim"><b>Kirim Survei</b></button>
+                  <div class="col-sm-6 offset-sm-6">
+                    <button type="button" class="btn btn-primary" id="Kirim"><b>Kirim Survei</b> <div id="LoadingInput" class="spinner-border spinner-border-sm text-white" style="display: none;" role="status"></div></button>
                   </div> 
                 </div>
               </div>
@@ -264,12 +264,16 @@
                         Pekerjaan: $("#Pekerjaan").val(),
                         Keperluan: $("#Keperluan").val(),
                         Poin: Poin }
+            $("#Kirim").attr("disabled", true);                              
+            $("#LoadingInput").show();
             $.post(BaseURL+"IDE/InputIKM", IKM).done(function(Respon) {
               if (Respon == '1') {
                 alert('Terima Kasih')
                 window.location = BaseURL + "IDE/SurveiIKM"
               } else {
                 alert(Respon)
+                $("#LoadingInput").hide();
+                $("#Kirim").attr("disabled", false);   
               }
             })
           } 
