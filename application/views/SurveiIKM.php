@@ -19,12 +19,12 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-12 mt-2"> 
-          <p class="text-justify">&emsp;&emsp;&emsp;Dengan Hormat, Inti Desain Ekonomi Konsultan Beserta Bagian Pemerintahan Desa 
-            Kabupaten Banyuwangi sedang melakukan Survey Kepuasan Masyarakat terhadap pelayanan desa dan kelurahan. Survey Kepuasan Pelayanan 
-            Desa dan Kelurahan bertujuan untuk mengukur tingkat kepuasan masyarakat sebagai pengguna layanan desa dan sebagai masukan dalam 
-            kebijakan meningkatkan kualitas penyelenggaraan pelayanan publik desa. <b>Kami mengharap Saudara/i sekalian yang pernah melakukan 
+          <p class="text-justify">&emsp;&emsp;&emsp;Dengan Hormat, Inti Desain Ekonomi Konsultan Beserta Pemerintahan Desa 
+            Kabupaten Banyuwangi sedang melakukan Survei Kepuasan Masyarakat terhadap pelayanan Desa dan Kelurahan. Survei Kepuasan Pelayanan 
+            Desa dan Kelurahan ini bertujuan untuk mengukur tingkat kepuasan masyarakat sebagai pengguna layanan Desa dan sebagai masukan dalam 
+            kebijakan meningkatkan kualitas penyelenggaraan pelayanan publik Desa. <b>Kami mengharap Saudara/i sekalian yang pernah melakukan 
             pelayanan di Kantor Desa harap mengisi kuisioner ini dengan se obyektif mungkin sesuai dengan keadaan yang sebenarnya. 
-            <span class="text-danger">**Catatan Penting : Segala informasi isian dari responden dijamin kerahasiaannya oleh konsultan independen.</span></b></p>
+            <span class="text-danger">**Catatan Penting : Segala informasi yang diberikan oleh responden dijamin kerahasiaannya oleh konsultan independen.</span></b></p>
         </div>
         <!-- <div class="col-sm-12 text-center">
           <h2 class="text-primary font-weight-bold">WAKTU PENGISIAN SURVEI TINGGAL</h2>
@@ -33,7 +33,7 @@
         <div class="col-sm-12">
           <div class="card mt-2">
             <div class="card-header bg-primary text-white">
-              <b>SURVEY KEPUASAN PELAYANAN DESA</b>
+              <b>SURVEI KEPUASAN PELAYANAN DESA</b>
             </div>
             <div style="background-color: yellow;" class="card-body border border-primary">
               <div class="container-fluid">
@@ -272,33 +272,33 @@
                 alert(Respon)
               }
             })
-          }
+          } 
         }
       })
       
       // Set the date we're counting down to
-      var countDownDate = new Date("Nov 27, 2020 12:00:00").getTime();
+      // var countDownDate = new Date("Nov 27, 2020 12:00:00").getTime();
       // Update the count down every 1 second
-      var x = setInterval(function() {
+      // var x = setInterval(function() {
         // Get today's date and time
-        var now = new Date().getTime();
+        // var now = new Date().getTime();
         // Find the distance between now and the count down date
-        var distance = countDownDate - now;
+        // var distance = countDownDate - now;
         // Time calculations for days, hours, minutes and seconds
-        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        // var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        // var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        // var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        // var seconds = Math.floor((distance % (1000 * 60)) / 1000);
         // Output the result in an element with id="demo"
-        document.getElementById("Timer").innerHTML = days + " HARI " + hours + " JAM "
-        + minutes + " MENIT " + seconds + " DETIK ";
+        // document.getElementById("Timer").innerHTML = days + " HARI " + hours + " JAM "
+        // + minutes + " MENIT " + seconds + " DETIK ";
         // If the count down is over, write some text 
-        if (distance < 0) {
-          clearInterval(x);
-          document.getElementById("Timer").innerHTML = "SURVEI DITUTUP";
-          $("#Kirim").remove();
-        }
-      }, 1000);
+      //   if (distance < 0) {
+      //     clearInterval(x);
+      //     document.getElementById("Timer").innerHTML = "SURVEI DITUTUP";
+      //     $("#Kirim").remove();
+      //   }
+      // }, 1000);
     })
   </script>
 </html>

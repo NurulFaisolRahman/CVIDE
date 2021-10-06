@@ -681,13 +681,8 @@
                 <h6 class="font-weight-bold text-danger mb-0">Education</h6>
                 <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. S1 Ekonomi Pembangunan Universitas Trunojoyo Madura (2020)</b></pre>
                 <h6 class="font-weight-bold text-danger mt-2">Project Experience</h6>
-                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. Praktik Kerja Lapang di Dinas Perindustrian dan Perdagangan Kabupaten Lamongan (Juni - Juli 2018)</b></pre>
-                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>2. Prkatik Kerja Lapang di Dinas Koperasi dan UMKM Kabupaten Lamongan (Desember 2018 – Januari 2019)</b></pre>
-                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>3. Asisten Praktikum Laboratorium Ekonomi Publik (Agustus – Desember 2019)</b></pre>
-                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>4. Asisten Jurusan Ilmu Ekonomi FEB Universitas Trunojoyo Madura (Februari 2019 – Maret 2020)</b></pre>
-                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>5. CV. IDE Consultant Economics Research (Juni 2020 - sekarang)</b></pre>
-                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>6. Presenter of paper in International Conference of Project Management (ICPM)</b></pre>
-                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>7. Pemakalah paper dalam seminar nasional dinamika dan strategi penanggulangan kemiskinan di Jawa Timur di masa dan pasca pandemi covid.</b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>1. </b></pre>
+                <pre class="text-primary text-justify text-wrap mb-0" style="font-size: 15px;"><b>2. </b></pre>
               </div>
             </div>
           </div>  
