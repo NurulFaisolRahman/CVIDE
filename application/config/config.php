@@ -24,8 +24,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 // $config['base_url'] = 'http://192.168.100.225/CVIDE';
-// $config['base_url'] = 'https://localhost/CVIDE';
-$config['base_url'] = 'https://www.intidesainekonomi.id';
+$config['base_url'] = 'https://localhost/CVIDE';
+// $config['base_url'] = 'https://www.intidesainekonomi.id';
 
 /*
 |--------------------------------------------------------------------------
@@ -102,7 +102,7 @@ $config['charset'] = 'UTF-8';
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
-$config['enable_hooks'] = TRUE;
+$config['enable_hooks'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------
