@@ -163,6 +163,21 @@ class IDE extends CI_Controller {
     }
     $this->load->view('RekapDesaSurveiIKM',$Data);
   }
+
+  public function RekapIKM(){
+    $Data['Rekap'] = array();
+    $Kecamatan = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    foreach ($Kecamatan as $key) {
+      $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$key['Kode'].".%"."'")->result_array();
+      foreach ($Desa as $KEY) {
+        $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `surveiikm` WHERE Desa = "."'".$KEY['Kode']."'")->row_array()['Total'];
+        if ($Total > 355) {
+          array_push($Data['Rekap'],$KEY['Nama']."|".$key['Nama']."|".$Total);
+        } 
+      }
+    }
+    $this->load->view('RekapIKM',$Data);
+  }
   
   public function RekapSurveiIKM(){
     ini_set('max_execution_time', 0); 
@@ -606,7 +621,7 @@ class IDE extends CI_Controller {
     $this->load->view('ExcelSimulasi',$Data);
   }
 
-  public function RekapIKM(){
+  public function RekapSurveyorIKM(){
     $Data['Surveyor'] = $this->db->get("surveyor")->result_array();
     $this->load->view('RekapSurveyorIKM',$Data);
   }
