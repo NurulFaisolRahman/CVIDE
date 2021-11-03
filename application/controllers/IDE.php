@@ -157,7 +157,7 @@ class IDE extends CI_Controller {
     foreach ($Kecamatan as $key) {
       $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$key['Kode'].".%"."'")->result_array();
       foreach ($Desa as $KEY) {
-        $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikm` WHERE Desa = "."'".$KEY['Kode']."'")->row_array()['Total'];
+        $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `surveiikm` WHERE Desa = "."'".$KEY['Kode']."'")->row_array()['Total'];
         array_push($Data['Rekap'],$KEY['Nama']."|".$key['Nama']."|".$Total);
       }
     }
