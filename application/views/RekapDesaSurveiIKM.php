@@ -21,7 +21,7 @@
         <div class="col-sm-12">
           <div class="card mt-2">
             <div class="card-header bg-primary text-light">
-              <b>REKAPITULASI DESA YANG BELUM MENYELESAIKAN SURVEI KEPUASAN PELAYANAN DESA TAHUN 2021</b>
+              <b>REKAPITULASI SURVEI KEPUASAN PELAYANAN DESA TAHUN 2021</b>
             </div>
             <div style="background-color: yellow;padding: 0.5rem;" class="card-body border border-primary">
               <div class="container-fluid">
@@ -39,7 +39,7 @@
                         </thead>
                         <tbody>
                           <?php foreach ($Rekap as $key => $value) { $Pecah = explode("|",$value); ?>
-                            <tr>
+                            <?=$Pecah[2] > 355 ? '<tr class="bg-success">' : '<tr>';?>
                               <td scope="row" class="text-center align-middle"><?=($key+1)?></td>
                               <td scope="row" class="text-center align-middle"><?=$Pecah[0]?></td>
                               <td scope="row" class="text-center align-middle"><?=$Pecah[1]?></td>

@@ -150,33 +150,18 @@ class IDE extends CI_Controller {
   }
 
   public function RekapDesaSurveiIKM(){
+    ini_set('max_execution_time', 0); 
+    ini_set('memory_limit','2048M');
     $Data['Rekap'] = array();
     $Kecamatan = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     foreach ($Kecamatan as $key) {
       $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$key['Kode'].".%"."'")->result_array();
       foreach ($Desa as $KEY) {
-        $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `surveiikm` WHERE Desa = "."'".$KEY['Kode']."'")->row_array()['Total'];
-        if ($Total < 356) {
-          array_push($Data['Rekap'],$KEY['Nama']."|".$key['Nama']."|".$Total);
-        } 
+        $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikm` WHERE Desa = "."'".$KEY['Kode']."'")->row_array()['Total'];
+        array_push($Data['Rekap'],$KEY['Nama']."|".$key['Nama']."|".$Total);
       }
     }
     $this->load->view('RekapDesaSurveiIKM',$Data);
-  }
-
-  public function RekapIKM(){
-    $Data['Rekap'] = array();
-    $Kecamatan = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
-    foreach ($Kecamatan as $key) {
-      $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$key['Kode'].".%"."'")->result_array();
-      foreach ($Desa as $KEY) {
-        $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `surveiikm` WHERE Desa = "."'".$KEY['Kode']."'")->row_array()['Total'];
-        if ($Total > 355) {
-          array_push($Data['Rekap'],$KEY['Nama']."|".$key['Nama']."|".$Total);
-        } 
-      }
-    }
-    $this->load->view('RekapIKM',$Data);
   }
   
   public function RekapSurveiIKM(){
