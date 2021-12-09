@@ -410,7 +410,7 @@ class IDE extends CI_Controller {
       $Responden += $Titip;
       $_Responden += $Responden;
       for ($i=0; $i < 11; $i++) { 
-        $DataIKMDesa .= ("|".number_format(($Tampung[$i]/$Responden)*25,2));
+        $DataIKMDesa .= ("|".number_format(($Tampung[$i]/$Responden)*(1/11),2));
         $Konversi[$i] = ($Tampung[$i]/$Responden)*(1/11)*25;
       }
       $NilaiIndeks = number_format(array_sum($Konversi),2);
@@ -419,7 +419,7 @@ class IDE extends CI_Controller {
     }
     array_push($Data['IKMKecamatan'],$NamaKecamatan);
     for ($i=0; $i < 11; $i++) { 
-      array_push($Data['IKMKecamatan'],number_format(($_Tampung[$i]/$_Responden)*25,2));
+      array_push($Data['IKMKecamatan'],number_format(($_Tampung[$i]/$_Responden)*(1/11),2));
       $_Konversi[$i] = ($_Tampung[$i]/$_Responden)*(1/11)*25;
     }
     $NilaiIndeks = number_format(array_sum($_Konversi),2);
