@@ -384,35 +384,33 @@ class IDE extends CI_Controller {
     $_Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
     $_Konversi = array(0,0,0,0,0,0,0,0,0,0,0);
     $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$KodeKecamatan.".%'")->result_array();
-    foreach ($Desa as $KEY) {
+    for ($j = 0; $j < count($Desa); $j++) { 
       $Responden = 0;
       $Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
       $Konversi = array(0,0,0,0,0,0,0,0,0,0,0);
       $Titip = 0;
-      $DataIKMDesa = $KEY['Nama'];
-      for ($j = 0; $j < count($Desa); $j++) { 
-        $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `surveiikm` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->row_array()['Total'];
-        $RespondenDesa = $this->db->query("SELECT * FROM `surveiikm` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->result_array();
-        foreach ($RespondenDesa as $key) {
-          $Pecah = explode("|",$key['Poin']);
-          for ($i=0; $i < 11; $i++) { 
-            $Tampung[$i] += $Pecah[$i];
-            $_Tampung[$i] += $Pecah[$i];
-          }
+      $DataIKMDesa = $Desa[$j]['Nama'];
+      $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `surveiikm` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->row_array()['Total'];
+      $RespondenDesa = $this->db->query("SELECT * FROM `surveiikm` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->result_array();
+      foreach ($RespondenDesa as $key) {
+        $Pecah = explode("|",$key['Poin']);
+        for ($i=0; $i < 11; $i++) { 
+          $Tampung[$i] += $Pecah[$i];
+          $_Tampung[$i] += $Pecah[$i];
         }
-        if ($Total < 356) {
-          for ($k=0; $k < 11; $k++) { 
-            $Tampung[$k] += (3*(356-$Total));
-            $_Tampung[$k] += (3*(356-$Total));
-          }
-          $Titip += 356-$Total;
-        }
-        $Responden += $Total;
       }
+      if ($Total < 356) {
+        for ($k=0; $k < 11; $k++) { 
+          $Tampung[$k] += (3*(356-$Total));
+          $_Tampung[$k] += (3*(356-$Total));
+        }
+        $Titip += 356-$Total;
+      }
+      $Responden += $Total;
       $Responden += $Titip;
       $_Responden += $Responden;
       for ($i=0; $i < 11; $i++) { 
-        $DataIKMDesa .= ("|".number_format(($Tampung[$i]/$Responden)*(1/11),2));
+        $DataIKMDesa .= ("|".number_format(($Tampung[$i]/$Responden)*25,2));
         $Konversi[$i] = ($Tampung[$i]/$Responden)*(1/11)*25;
       }
       $NilaiIndeks = number_format(array_sum($Konversi),2);
@@ -421,7 +419,7 @@ class IDE extends CI_Controller {
     }
     array_push($Data['IKMKecamatan'],$NamaKecamatan);
     for ($i=0; $i < 11; $i++) { 
-      array_push($Data['IKMKecamatan'],number_format(($_Tampung[$i]/$_Responden)*(1/11),2));
+      array_push($Data['IKMKecamatan'],number_format(($_Tampung[$i]/$_Responden)*25,2));
       $_Konversi[$i] = ($_Tampung[$i]/$_Responden)*(1/11)*25;
     }
     $NilaiIndeks = number_format(array_sum($_Konversi),2);
