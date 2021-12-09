@@ -67,8 +67,9 @@
                                   <?php } ?>                  
                                 </select>
                               </div>
-                              <div class="btn btn-success text-light" id="Unduh"><b>Desa</b></div>
-                              <div class="btn btn-warning text-light" id="Rekap"><b>Kecamatan</b></div>
+                              <div class="btn btn-success text-light" id="RekapDesa"><b>Desa</b></div>
+                              <div class="btn btn-warning text-light" id="RekapKecamatan"><b>Kecamatan</b></div>
+                              <div class="btn btn-danger text-light" id="Rekap"><b>Rekap</b></div>
                             </div>
                           </div>
                         </div>
@@ -97,14 +98,19 @@
           })    
         })
 
-        $("#Unduh").click(function() {
+        $("#RekapDesa").click(function() {
           var Kecamatan = $("#Kecamatan").val().split("|")
           window.location = BaseURL + 'IDE/ExcelIKM/'+Kecamatan[1]+'/'+$("#Desa").val()
         })
 
-        $("#Rekap").click(function() {
+        $("#RekapKecamatan").click(function() {
           var Kecamatan = $("#Kecamatan").val().split("|")
           window.location = BaseURL + 'IDE/ExcelIKMKecamatan/'+Kecamatan[0]+'/'+Kecamatan[1]
+        })
+
+        $("#Rekap").click(function() {
+          var Kecamatan = $("#Kecamatan").val().split("|")
+          window.location = BaseURL + 'IDE/RekapExcelIKMKecamatan/'+Kecamatan[0]+'/'+Kecamatan[1]
         })
 
       })
