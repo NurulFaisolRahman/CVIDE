@@ -1,4 +1,4 @@
-Project/*
-Thumbnail/*
-application/config/config.php
-application/config/database.php
+./Project/*
+./Thumbnail/*
+./application/config/config.php
+./application/config/database.php

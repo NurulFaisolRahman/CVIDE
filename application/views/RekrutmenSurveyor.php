@@ -44,7 +44,7 @@
                     <div class="card border border-light">
                       <div class="card-header border border-white bg-primary"><b class="text-light">DAFTAR SEBAGAI SURVEYOR</b></div>
                       <div class="card-body border border-white bg-danger">
-                        <pre class="text-white"><b>SYARAT & KETENTUAN : <br>1. BERSEDIA BEKERJA SESUAI SOP & TARGET<br>2. SURVEYOR WAJIB MEMILIKI SIM C</b></pre>
+                        <pre class="text-white text-wrap"><b>SYARAT & KETENTUAN : <br>1. SURVEYOR BERSEDIA BEKERJA SESUAI SOP & TARGET<br>2. SURVEYOR WAJIB MEMILIKI SIM C AKTIF & HP ANDROID</b></pre>
                         <div class="input-group input-group-sm mb-2">
                           <div class="input-group-prepend">
                             <span class="input-group-text bg-primary text-light"><b>Nama</b></span>
@@ -63,9 +63,9 @@
                           </div>
                           <input type="file" class="form-control" id="CV" onchange="Upload()">
                         </div>
-                        <pre class="text-white mb-2"><b>Format CV jpg/png/pdf Maksimal 5 Mb</b></pre>
+                        <pre class="text-white mb-2 text-wrap"><b>Format CV jpg/png/pdf Maksimal 5 Mb</b></pre>
                         <div class="btn border border-light btn-primary" id="Daftar"><b>Daftar <div id="LoadingInput" class="spinner-border spinner-border-sm text-white" style="display: none;" role="status"></div></b></div>
-                        <pre class="text-white mb-0 mt-1"><b>Setelah Berhasil Mendaftar, Admin Kami Akan<br>Menghubungi Anda Untuk Informasi Lebih Lanjut</b></pre>
+                        <pre class="text-white mb-0 mt-1 text-wrap"><b>Setelah Berhasil Mendaftar, Admin Kami Akan<br>Menghubungi Anda Untuk Informasi Lebih Lanjut</b></pre>
                       </div>
                     </div>
                   </div>
