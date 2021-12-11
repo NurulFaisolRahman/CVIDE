@@ -8,6 +8,29 @@ class IDE extends CI_Controller {
     $Data['Portfolio'] = $this->db->get('portfolio')->result_array();
 		$this->load->view('IDE',$Data);
   }
+
+  public function RekrutmenSurveyor(){
+		$this->load->view('RekrutmenSurveyor');
+  }
+  
+  public function Rekrutmen(){
+    $Data['Rekrutmen'] = $this->db->get('rekrutmen')->result_array();
+		$this->load->view('Rekrutmen',$Data);
+  }
+  
+  public function Daftar(){
+    $NamaFile = date('Ymd',time()).substr(password_hash('Rekrutmen', PASSWORD_DEFAULT),7,7);
+    $NamaFile = str_replace("/","E",$NamaFile);$NamaFile = str_replace(".","F",$NamaFile);
+    $Tipe = pathinfo($_FILES['CV']['name'],PATHINFO_EXTENSION);
+    move_uploaded_file($_FILES['CV']['tmp_name'], "Rekrutmen/".$NamaFile.".".$Tipe);
+    $_POST['CV'] = $NamaFile.".".$Tipe;
+    $this->db->insert('rekrutmen', $_POST);
+    if ($this->db->affected_rows()){
+      echo '1';
+    } else {
+      echo "Pendaftaran Gagal!";
+    }  
+  }
   
   public function Auth(){
 		$this->load->view('Auth');
