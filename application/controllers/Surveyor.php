@@ -68,17 +68,19 @@ class Surveyor extends CI_Controller {
   }
 
   public function SurveiIPM(){
-		$Data['Provinsi'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE length(Kode) = 2")->result_array();
-    $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '11.%' AND length(Kode) = 5")->result_array();
-    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '11.01.%' AND length(Kode) = 8")->result_array();
-    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '11.01.01.%'")->result_array();
+		// $Data['Provinsi'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE length(Kode) = 2")->result_array();
+    // $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '11.%' AND length(Kode) = 5")->result_array();
+    // $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '11.01.%' AND length(Kode) = 8")->result_array();
+    // $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '11.01.01.%'")->result_array();
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.01.%'")->result_array();
     $this->load->view('Surveyor/Header',$Data);
 		$this->load->view('Surveyor/SurveiIPM',$Data);
   }
 
   public function InputIPM(){
     $_POST['NIK'] = $this->session->userdata('NIK');
-    $this->db->insert('ipm',$_POST);
+    $this->db->insert('surveiipm',$_POST);
     if ($this->db->affected_rows()){
       echo '1';
     } else {

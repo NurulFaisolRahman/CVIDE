@@ -22,7 +22,7 @@
           height: 100vh;
       }
       body{
-        overflow: auto;
+         overflow: auto;
       }
       #intro {
         background: url(../assets/img/BgIKM.jpg) no-repeat center center fixed;

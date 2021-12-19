@@ -11,30 +11,6 @@
                     <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
                       <div class="container-fluid">
                         <div class="row">
-                        <div class="col-sm-4"> 
-                            <div class="input-group input-group-sm">
-                              <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-white"><b>Provinsi</b></label>
-                              </div>
-                              <select class="custom-select" id="Provinsi">  
-                                <?php foreach ($Provinsi as $key) { ?>
-                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
-                                <?php } ?>                  
-                              </select>
-                            </div>
-                          </div>
-                          <div class="col-sm-4">
-                            <div class="input-group input-group-sm">
-                              <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-white"><b>Kabupaten</b></label>
-                              </div>
-                              <select class="custom-select" id="Kabupaten">  
-                                <?php foreach ($Kabupaten as $key) { ?>
-                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
-                                <?php } ?>                  
-                              </select>
-                            </div>
-                          </div>
                           <div class="col-sm-4">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
@@ -67,14 +43,6 @@
                               <input class="form-control" type="text" id="Alamat" placeholder="Nama Jalan/Gang, RT/RW, Dusun">
                             </div>
                           </div>
-                          <div class="col-sm-4">
-                            <div class="input-group input-group-sm">
-                              <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-white"><b>Tahun Survei</b></label>
-                              </div>
-                              <input class="form-control" type="text" id="Tahun" data-inputmask='"mask": "9999"' data-mask>
-                            </div>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -99,7 +67,6 @@
                                     <th style="width: 11%;" class="align-middle">Jenis Kelamin</th>
                                     <th style="width: 5%;" class="align-middle">Usia</th>
                                     <th style="width: 11%;" class="align-middle">Pendapatan<br>Bersih 1 Bulan</th>
-                                    <th style="width: 25%;" class="align-middle">Sumber Pendapatan</th>
                                     <th style="width: 20%;" class="align-middle">Jenis Pekerjaan</th>
                                   </tr>
                                 </thead>
@@ -113,6 +80,7 @@
                                           <option value="1">Suami</option>
                                           <option value="2">Istri</option>
                                           <option value="3">Anak</option>
+                                          <option value="4">Family</option>
                                         </select>
                                       </td>
                                       <td>
@@ -123,19 +91,6 @@
                                       </td>
                                       <td><input class="form-control form-control-sm" type="text" id="<?='Usia'.$i?>"></td>
                                       <td><input class="form-control form-control-sm" type="text" id="<?='Pendapatan'.$i?>"></td>
-                                      <td class="form-inline">
-                                        <select style="width: 50%;" class="custom-select custom-select-sm" id="<?='SumberPendapatan'.$i?>">
-                                          <option value="1">Pertanian</option>
-                                          <option value="2">Non Pertanian</option>
-                                          <option value="3">Industri</option>
-                                          <option value="4">Pensiunan</option>
-                                          <option value="5">Pendapatan Bunga</option>
-                                          <option value="6">Sewa</option>
-                                          <option value="7">Kiriman</option>
-                                          <option value="8">Lainnya</option>
-                                        </select>
-                                        <input disabled placeholder="Jika Lainnya" style="width: 50%;" class="form-control form-control-sm" type="text" id="<?='SumberPendapatanLainnya'.$i?>">
-                                      </td>
                                       <td>
                                         <select class="custom-select custom-select-sm" id="<?='Pekerjaan'.$i?>">              
                                           <option value="1">Pegawai level bawah (staff, Pegawai negeri gol II, Tentara gol letnan bawah)</option>
@@ -164,11 +119,9 @@
                                   <tr style="font-size: 10pt;" class="text-light text-center">
                                     <th style="width: 2%;" class="align-middle">No</th>
                                     <th style="width: 10%;" class="align-middle">Kegiatan<br>Seminggu Lalu</th>
-                                    <th style="width: 10%;" class="align-middle">Keahlian<br>Yang Dimiliki</th>
                                     <th style="width: 1%;" class="align-middle">Jumlah Jam Kerja<br>Dalam Seminggu</th>
                                     <th style="width: 18%;" class="align-middle">Alasan Mencari<br>Pekerjaan</th>
                                     <th style="width: 18%;" class="align-middle">Penyebab Pengangguran<br>di Keluarga Anda</th>
-                                    <th style="width: 1%;" class="align-middle">Apakah Pernah<br>Mengikuti Pelatihan</th>
                                     <th style="width: 11%;" class="align-middle">Lokasi Pekerjaan</th>
                                   </tr>
                                 </thead>
@@ -185,7 +138,6 @@
                                           <option value="5">Mencari Pekerjaan</option>
                                         </select>
                                       </td>
-                                      <td><input class="form-control form-control-sm" type="text" id="<?='Keahlian'.$i?>"></td>
                                       <td><input class="form-control form-control-sm" type="text" id="<?='JamKerja'.$i?>"></td>
                                       <td>
                                         <div class="form-inline">
@@ -209,12 +161,6 @@
                                         </div>
                                       </td>
                                       <td>
-                                        <select class="custom-select custom-select-sm" id="<?='MengikutiPelatihan'.$i?>">              
-                                          <option value="1">Ya</option>
-                                          <option value="2">Tidak</option>
-                                        </select>
-                                      </td>
-                                      <td>
                                         <select class="custom-select custom-select-sm" id="<?='LokasiPekerjaan'.$i?>">              
                                           <option value="1">Dalam Kabupaten</option>
                                           <option value="2">Luar Kabupaten</option>
@@ -223,102 +169,6 @@
                                       </td>
                                     </tr>
                                   <?php } ?>
-                                </tbody>
-                              </table>
-                            </div> 
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-12">
-                  <div class="card mt-2">
-                    <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
-                      <div class="container-fluid">
-                        <div class="row">
-                          <div class="col-sm-12">
-                            <div class="table-responsive mt-1">
-                              <table class="table table-sm table-bordered table-striped">
-                                <thead class="bg-danger">
-                                  <tr style="font-size: 10pt;" class="text-light">
-                                    <th style="width: 3%;" class="align-middle">No</th>
-                                    <th style="width: 70%;" class="align-middle">Pertanyaan</th>
-                                    <th style="width: 27%;" class="align-middle">Keterangan</th>
-                                  </tr>
-                                </thead>
-                                <tbody class="bg-primary text-light font-weight-bold">
-                                  <tr>
-                                    <td class="align-middle text-center">1</td>
-                                    <td class="align-middle">Apakah bapak/ibu mempunyai sebuah usaha?</td>
-                                    <td>
-                                      <select style="width: 30%;" class="custom-select custom-select-sm" id="PunyaUsaha">              
-                                        <option value="Ya">Ya</option>
-                                        <option value="Tidak">Tidak</option>
-                                      </select>  
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td class="align-middle text-center">2</td>
-                                    <td class="align-middle">Jika Ya, apakah bapak/ibu mempunyai karyawan?</td>
-                                    <td class="form-inline">
-                                      <select style="width: 30%;" class="custom-select custom-select-sm" id="PunyaKaryawan">              
-                                        <option value="Ya">Ya</option>
-                                        <option value="Tidak">Tidak</option>
-                                      </select>  
-                                      <input placeholder="Sebutkan Total Karyawan" style="width: 70%;" class="form-control form-control-sm" type="text" id="JumlahKaryawan">
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td class="align-middle text-center">3</td>
-                                    <td class="align-middle">Apakah bapak/ibu mempunyai keinginan untuk membuka suatu usaha? (*Bagi yang tidak punya usaha)</td>
-                                    <td>
-                                      <select style="width: 30%;" class="custom-select custom-select-sm" id="BukaUsaha">              
-                                        <option value="Ya">Ya</option>
-                                        <option value="Tidak">Tidak</option>
-                                      </select>  
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td class="align-middle text-center">4</td>
-                                    <td class="align-middle">Apakah bapak/ibu berminat untuk berinvestasi?</td>
-                                    <td>
-                                      <select style="width: 30%;" class="custom-select custom-select-sm" id="MinatInvest">              
-                                        <option value="Ya">Ya</option>
-                                        <option value="Tidak">Tidak</option>
-                                      </select>  
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td class="align-middle text-center">5</td>
-                                    <td class="align-middle">Apakah bapak/ibu mempunyai tabungan?</td>
-                                    <td>
-                                      <select style="width: 30%;" class="custom-select custom-select-sm" id="Tabungan">              
-                                        <option value="Ya">Ya</option>
-                                        <option value="Tidak">Tidak</option>
-                                      </select>  
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td class="align-middle text-center">6</td>
-                                    <td class="align-middle">Apakah Bapak Ibu Pernah Mengajukan Kredit (KUR, KUBE dsb)</td>
-                                    <td>
-                                      <select style="width: 30%;" class="custom-select custom-select-sm" id="MengajukanKredit">              
-                                        <option value="Ya">Ya</option>
-                                        <option value="Tidak">Tidak</option>
-                                      </select>  
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td class="align-middle text-center">7</td>
-                                    <td class="align-middle">Apakah Bapak Dan ibu Berhasil Mendapatkan Kredit?</td>
-                                    <td>
-                                      <select style="width: 30%;" class="custom-select custom-select-sm" id="DapatKredit">              
-                                        <option value="Ya">Ya</option>
-                                        <option value="Tidak">Tidak</option>
-                                      </select>  
-                                    </td>
-                                  </tr>
                                 </tbody>
                               </table>
                             </div> 
@@ -479,62 +329,6 @@
                 <div class="col-sm-12 mt-2">
                   <div class="card">
                     <div class="card-header bg-primary text-light py-2">
-                      <b>Ketercukupan, Keterlayanan dan Prioritas Fasilitas Kesehatan (Harapan Kesehatan)</b>
-                    </div>
-                    <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
-                      <div class="container-fluid">
-                        <div class="row">
-                          <div class="col-sm-12">
-                            <div class="table-responsive mt-1">
-                              <table class="table table-sm table-bordered table-striped">
-                                <thead class="bg-danger">
-                                  <tr style="font-size: 10pt;" class="text-light text-center">
-                                    <th style="width: 4%;" class="align-middle">No</th>
-                                    <th style="width: 25%;"class="align-middle">Fasililitas / Pelayanan</th>
-                                    <th class="align-middle">Ketercukupan</th>
-                                    <th class="align-middle">Keterlayanan</th>
-                                    <th class="align-middle">Prioritas Dikembangkan</th>
-                                  </tr>
-                                </thead>
-                                <tbody class="bg-primary">
-                                  <?php $Kesehatan = array('Dokter','Bidan Desa','Polides','Peralatan Persalinan','RS Swasta','Klinik Bersalin Swasta','Puskesmas',
-                                            'Posyandu','Pemeriksaan Kehamilan','Vaksinasi','Pemberian Vitamin','Obat-Obatan','Biaya Persalinan'); 
-                                    $No = 1; for ($i=0; $i < 13; $i++) { ?>
-                                    <tr class="text-light text-center align-middle">
-                                      <td class="align-middle font-weight-bold"><?=$No++?></td>
-                                      <td class="align-middle font-weight-bold"><?=$Kesehatan[$i]?></td>
-                                      <td>
-                                        <select style="width: 40%;" class="custom-select custom-select-sm" id="<?='KetercukupanKesehatan'.$i?>">                    
-                                          <option value="1">Ya</option>
-                                          <option value="2">Tidak</option>
-                                        </select>
-                                      </td>
-                                      <td>
-                                        <select style="width: 40%;" class="custom-select custom-select-sm" id="<?='KeterlayananKesehatan'.$i?>">                    
-                                          <option value="1">Ya</option>
-                                          <option value="2">Tidak</option>
-                                        </select>
-                                      </td>
-                                      <td>
-                                        <select style="width: 25%;" class="custom-select custom-select-sm" id="<?='PrioritasDikembangkanKesehatan'.$i?>">                    
-                                          <option value="1">Ya</option>
-                                          <option value="2">Tidak</option>
-                                        </select>
-                                      </td>
-                                    </tr>
-                                  <?php } ?>
-                                </tbody>
-                              </table>
-                            </div> 
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-12 mt-2">
-                  <div class="card">
-                    <div class="card-header bg-primary text-light py-2">
                       <b>Kondisi Pendidikan (Ditanyakan Untuk Seluruh Anggota Keluarga Di Mulai Dari Kepala Keluarga)</b>
                     </div>
                     <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
@@ -629,6 +423,18 @@
                                 </tbody>
                               </table>
                             </div> 
+                            <div class="col-sm-8">
+                              <div class="input-group input-group-sm">
+                                <div class="input-group-prepend">
+                                  <label class="input-group-text bg-danger text-light"><b>Apakah ada anggota keluarga yang bersekolah di pesantren?</b></label>
+                                </div>
+                                <select class="custom-select custom-select-sm" id="Santri">                    
+                                  <option value="Tidak">Tidak</option>
+                                  <option value="Ya">Ya</option>
+                                </select>
+                                <input class="form-control form-control-sm" type="text" id="JumlahSantri" disabled>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -638,7 +444,7 @@
                 <div class="col-sm-12 mt-2">
                   <div class="card">
                     <div class="card-header bg-primary text-light py-2">
-                      <b>Ketercukupan, Keterlayanan dan Prioritas Fasilitas Pendidikan</b>
+                      <b>Kepesertaan Program & Informasi Usaha (Ditanyakan untuk satu keluarga)</b>
                     </div>
                     <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
                       <div class="container-fluid">
@@ -649,34 +455,31 @@
                                 <thead class="bg-danger">
                                   <tr style="font-size: 10pt;" class="text-light text-center">
                                     <th style="width: 4%;" class="align-middle">No</th>
-                                    <th style="width: 25%;"class="align-middle">Fasililitas / Pelayanan</th>
-                                    <th class="align-middle">Ketercukupan</th>
-                                    <th class="align-middle">Keterlayanan</th>
-                                    <th class="align-middle">Prioritas Dikembangkan</th>
+                                    <th class="align-middle">Program</th>
+                                    <th class="align-middle">Kepesertaan</th>
+                                    <th style="width: 4%;" class="align-middle">No</th>
+                                    <th class="align-middle">Program</th>
+                                    <th class="align-middle">Kepesertaan</th>
                                   </tr>
                                 </thead>
                                 <tbody class="bg-primary">
-                                  <?php $Pendidikan = array('Gedung Sekolah','Ruang Kelas','Guru','Buku Pelajaran','Jarak','Sekolah Swasta','Biaya Sekolah'); 
-                                    $No = 1; for ($i=0; $i < 7; $i++) { ?>
+                                  <?php $Program = array('Kartu Indonesia Pintar (KIP)','Program keluarga Harapan (PKH)','PBI JKN','BPJS Ketenagakerjaan','BLT Dana Desa','Bantuan Sosial Tunai (BST)','Bantuan Presiden (BanPres)','Bantuan UMKM','Bantuan Untuk Pekerja','Asuransi Kesehatan Lainnya'); 
+                                    $No = 1; for ($i=0; $i < count($Program)/2; $i++) { ?>
                                     <tr class="text-light text-center align-middle">
                                       <td class="align-middle font-weight-bold"><?=$No++?></td>
-                                      <td class="align-middle font-weight-bold"><?=$Pendidikan[$i]?></td>
+                                      <td class="align-middle font-weight-bold"><?=$Program[$i]?></td>
                                       <td>
-                                        <select style="width: 40%;" class="custom-select custom-select-sm" id="<?='KetercukupanPendidikan'.$i?>">                    
-                                          <option value="1">Ya</option>
-                                          <option value="2">Tidak</option>
+                                        <select style="width: 75%;" class="custom-select custom-select-sm" id="<?='Program'.$i?>">                    
+                                          <option value="1">Tidak</option>
+                                          <option value="2">Ya</option>
                                         </select>
                                       </td>
+                                      <td class="align-middle font-weight-bold"><?=$i+6?></td>
+                                      <td class="align-middle font-weight-bold"><?=$Program[$i+5]?></td>
                                       <td>
-                                        <select style="width: 40%;" class="custom-select custom-select-sm" id="<?='KeterlayananPendidikan'.$i?>">                    
-                                          <option value="1">Ya</option>
-                                          <option value="2">Tidak</option>
-                                        </select>
-                                      </td>
-                                      <td>
-                                        <select style="width: 25%;" class="custom-select custom-select-sm" id="<?='PrioritasDikembangkanPendidikan'.$i?>">                    
-                                          <option value="1">Ya</option>
-                                          <option value="2">Tidak</option>
+                                        <select style="width: 75%;" class="custom-select custom-select-sm" id="<?='Program'.($i+5)?>">                    
+                                          <option value="1">Tidak</option>
+                                          <option value="2">Ya</option>
                                         </select>
                                       </td>
                                     </tr>
@@ -685,77 +488,88 @@
                               </table>
                             </div> 
                           </div>
-                          <div class="col-sm-6">
-                            <div class="input-group input-group-sm">
-                              <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-light"><b>Apakah ada anggota keluarga yang bersekolah di pesantren?</b></label>
-                              </div>
-                              <select class="custom-select custom-select-sm" id="Santri">                    
-                                <option value="1">Ya</option>
-                                <option value="2">Tidak</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div class="col-sm-10">
-                            <div class="input-group input-group-sm">
-                              <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-light"><b>Dengan kondisi ekonomi keluarga tingkat pendidikan yang dapat diusahakan adalah sampai tingkat?</b></label>
-                              </div>
-                              <select class="custom-select custom-select-sm" id="UsahaPendidikan">                    
-                                <option value="1">SD/MI</option>
-                                <option value="2">SLTP/M.Ts</option>
-                                <option value="3">SMU/MA</option>
-                                <option value="4">Diploma</option>
-                                <option value="5">Sarjana</option>
-                                <option value="6">Pasca Sarjana</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div class="col-sm-9">
-                            <div class="input-group input-group-sm">
-                              <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-light"><b>Sebutkan hal yang memberatkan dalam menempuh pendidikan sekolah?</b></label>
-                              </div>
-                              <select class="custom-select custom-select-sm" id="KeluhanPendidikan">                    
-                                <option value="1">Kurikulum Pendidikan</option>
-                                <option value="2">Biaya Sekolah</option>
-                                <option value="3">Ketersediaan Fasilitas Pendidikan</option>
-                                <option value="4">Jarak Fasilitas Pendidikan</option>
-                                <option value="5">Minat Bersekolah</option>
-                              </select>
-                            </div>
-                          </div>
                           <div class="col-sm-12">
-                            <div style="width: 70%;" class="table-responsive mt-1">
+                            <div class="table-responsive mt-1">
                               <table class="table table-sm table-bordered table-striped">
                                 <thead class="bg-danger">
-                                  <tr style="font-size: 10pt;" class="text-light text-center">
-                                    <th style="width: 4%;" class="align-middle">No</th>
-                                    <th style="width: 50%;"class="align-middle">Program</th>
-                                    <th class="align-middle">Kepesertaan</th>
+                                  <tr style="font-size: 10pt;" class="text-light">
+                                    <th style="width: 3%;" class="align-middle">No</th>
+                                    <th style="width: 70%;" class="align-middle">Pertanyaan</th>
+                                    <th style="width: 27%;" class="align-middle">Keterangan</th>
                                   </tr>
                                 </thead>
-                                <tbody class="bg-primary">
-                                  <?php $Program = array('Kartu Indonesia Pintar (KIP)','Program keluarga Harapan (PKH)','PBI JKN','BPJS Ketenagakerjaan','BLT Dana Desa','Bantuan Sosial Tunai (BST)','Bantuan Presiden (BanPres)','Bantuan UMKM','Bantuan Untuk Pekerja','Bantuan Pendidikan Anak'); 
-                                    $No = 1; for ($i=0; $i < count($Program); $i++) { ?>
-                                    <tr class="text-light text-center align-middle">
-                                      <td class="align-middle font-weight-bold"><?=$No++?></td>
-                                      <td class="align-middle font-weight-bold"><?=$Program[$i]?></td>
-                                      <td>
-                                        <select style="width: 25%;" class="custom-select custom-select-sm" id="<?='Program'.$i?>">                    
-                                          <option value="1">Ya</option>
-                                          <option value="2">Tidak</option>
-                                        </select>
-                                      </td>
-                                    </tr>
-                                  <?php } ?>
-                                    <tr class="text-light text-center align-middle">
-                                      <td class="align-middle font-weight-bold">11</td>
-                                      <td class="align-middle font-weight-bold">Asuransi Kesehatan Lainnya</td>
-                                      <td class="align-middle font-weight-bold d-flex justify-content-center">
-                                        <input style="width: 90%;" placeholder="Sebutkan" class="form-control form-control-sm" type="text" id="Program4">
-                                      </td>
-                                    </tr>
+                                <tbody class="bg-primary text-light font-weight-bold">
+                                  <tr>
+                                    <td class="align-middle text-center">1</td>
+                                    <td class="align-middle">Apakah bapak/ibu mempunyai sebuah usaha?</td>
+                                    <td>
+                                      <select style="width: 30%;" class="custom-select custom-select-sm" id="PunyaUsaha">              
+                                        <option value="Tidak">Tidak</option>
+                                        <option value="Ya">Ya</option>  
+                                      </select>  
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="align-middle text-center">2</td>
+                                    <td class="align-middle">Jika Ya, apakah bapak/ibu mempunyai karyawan?</td>
+                                    <td class="form-inline">
+                                      <select style="width: 30%;" class="custom-select custom-select-sm" id="PunyaKaryawan">              
+                                        <option value="Tidak">Tidak</option>
+                                        <option value="Ya">Ya</option>
+                                      </select>  
+                                      <input style="width: 70%;" class="form-control form-control-sm" type="text" id="JumlahKaryawan" disabled>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="align-middle text-center">3</td>
+                                    <td class="align-middle">Apakah bapak/ibu mempunyai keinginan untuk membuka suatu usaha? (*Bagi yang tidak punya usaha)</td>
+                                    <td>
+                                      <select style="width: 30%;" class="custom-select custom-select-sm" id="BukaUsaha">              
+                                        <option value="Tidak">Tidak</option>
+                                        <option value="Ya">Ya</option>
+                                      </select>  
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="align-middle text-center">4</td>
+                                    <td class="align-middle">Apakah bapak/ibu berminat untuk berinvestasi?</td>
+                                    <td>
+                                      <select style="width: 30%;" class="custom-select custom-select-sm" id="MinatInvest">              
+                                        <option value="Tidak">Tidak</option>
+                                        <option value="Ya">Ya</option>
+                                      </select>  
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="align-middle text-center">5</td>
+                                    <td class="align-middle">Apakah bapak/ibu mempunyai tabungan?</td>
+                                    <td>
+                                      <select style="width: 30%;" class="custom-select custom-select-sm" id="Tabungan">              
+                                        <option value="Tidak">Tidak</option>
+                                        <option value="Ya">Ya</option>
+                                      </select>  
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="align-middle text-center">6</td>
+                                    <td class="align-middle">Apakah Bapak Ibu Pernah Mengajukan Kredit (KUR, KUBE dsb)</td>
+                                    <td>
+                                      <select style="width: 30%;" class="custom-select custom-select-sm" id="MengajukanKredit">              
+                                        <option value="Tidak">Tidak</option>
+                                        <option value="Ya">Ya</option>
+                                      </select>  
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="align-middle text-center">7</td>
+                                    <td class="align-middle">Apakah Bapak Dan ibu Berhasil Mendapatkan Kredit?</td>
+                                    <td>
+                                      <select style="width: 30%;" class="custom-select custom-select-sm" id="DapatKredit">              
+                                        <option value="Tidak">Tidak</option>
+                                        <option value="Ya">Ya</option>
+                                      </select>  
+                                    </td>
+                                  </tr>
                                 </tbody>
                               </table>
                             </div> 
@@ -1162,7 +976,7 @@
                       </div>
                     </div>
                   </div>
-                  <button type="button" class="btn btn-primary mt-2" id="Simpan"><b>Simpan Survei</b></button>
+                  <button type="button" class="btn btn-primary mt-2" id="Simpan"><b>Simpan Survei <div id="LoadingInput" class="spinner-border spinner-border-sm text-white" style="display: none;" role="status"></b></button>
                 </div>
               </div>
             </div>
@@ -1182,32 +996,6 @@
         var BaseURL = '<?=base_url()?>'
 
         $('[data-mask]').inputmask()
-        
-        $("#Provinsi").change(function (){
-          var Kabupaten = { Kode: $("#Provinsi").val() }
-          $.post(BaseURL+"IDE/ListKabupaten", Kabupaten).done(function(Respon) {
-            $('#Kabupaten').html(Respon)
-            var Kecamatan = { Kode: $("#Kabupaten").val() }
-            $.post(BaseURL+"IDE/ListKecamatan", Kecamatan).done(function(Respon) {
-              $('#Kecamatan').html(Respon)
-              var Desa = { Kode: $("#Kecamatan").val() }
-              $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) {
-                $('#Desa').html(Respon)
-              })   
-            })
-          }) 
-        }) 
-        
-        $("#Kabupaten").change(function (){
-          var Kecamatan = { Kode: $("#Kabupaten").val() }
-          $.post(BaseURL+"IDE/ListKecamatan", Kecamatan).done(function(Respon) {
-            $('#Kecamatan').html(Respon)
-            var Desa = { Kode: $("#Kecamatan").val() }
-            $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) {
-              $('#Desa').html(Respon)
-            })   
-          }) 
-        }) 
   
         $("#Kecamatan").change(function (){
           var Desa = { Kode: $("#Kecamatan").val() }
@@ -1217,62 +1005,35 @@
         })
   
         $("#Simpan").click(function() {
-          // if ($("#Alamat").val() === "") {
-          //   alert('Input Alamat Tidak Boleh Kosong!')
-          // } else {
-            var Anggota = 0,NamaAnggota = '',Status = '',Gender = '',Usia = '',Pendapatan = '',SumberPendapatan = '',Pekerjaan = ''
+          if ($("#Alamat").val() === "") {
+            alert('Input Alamat Tidak Boleh Kosong!')
+          } else {
+            var Anggota = 0,NamaAnggota = Status = Gender = Usia = Pendapatan = Pekerjaan = ''
             for (let i = 0; i < 8; i++) {
-              if ($("#NamaAnggota"+i).val() != "" && i == 0) {
-                NamaAnggota += $("#NamaAnggota"+i).val()
-                Status += $("#Status"+i).val()
-                Gender += $("#Gender"+i).val()
-                Usia += $("#Usia"+i).val()
-                Pendapatan += $("#Pendapatan"+i).val()
-                Pekerjaan += $("#Pekerjaan"+i).val()
-                if ($("#SumberPendapatan"+i).val() == 8) {
-                  SumberPendapatan += $("#SumberPendapatanLainnya"+i).val()
-                } else {
-                  SumberPendapatan += $("#SumberPendapatan"+i).val()
-                }
-                Anggota += 1
-              } else if ($("#NamaAnggota"+i).val() != "") {
+              if ($("#NamaAnggota"+i).val() != "" && i > 0) {
                 NamaAnggota += ('|'+$("#NamaAnggota"+i).val())
                 Status += ('|'+$("#Status"+i).val())
                 Gender += ('|'+$("#Gender"+i).val())
                 Usia += ('|'+$("#Usia"+i).val())
                 Pendapatan += ('|'+$("#Pendapatan"+i).val())
                 Pekerjaan += ('|'+$("#Pekerjaan"+i).val())
-                if ($("#SumberPendapatan"+i).val() == 8) {
-                  SumberPendapatan += ('|'+$("#SumberPendapatanLainnya"+i).val())
-                } else {
-                  SumberPendapatan += ('|'+$("#SumberPendapatan"+i).val())
-                }
+                Anggota += 1
+              } else if ($("#NamaAnggota"+i).val() != "" && i == 0) {
+                NamaAnggota += $("#NamaAnggota"+i).val()
+                Status += $("#Status"+i).val()
+                Gender += $("#Gender"+i).val()
+                Usia += $("#Usia"+i).val()
+                Pendapatan += $("#Pendapatan"+i).val()
+                Pekerjaan += $("#Pekerjaan"+i).val()
                 Anggota += 1
               } else {
                 break
               }
             }
-            var KegiatanSeminggu = '',Keahlian = '',JamKerja = '',AlasanMencariKerja = '',PenyebabMenganggur = '',MengikutiPelatihan = '',LokasiPekerjaan = ''
+            var KegiatanSeminggu = JamKerja = AlasanMencariKerja = PenyebabMenganggur = LokasiPekerjaan = ''
             for (let i = 0; i < Anggota; i++) {
-              if (i == 0) {
-                KegiatanSeminggu += $("#KegiatanSeminggu"+i).val()
-                Keahlian += $("#Keahlian"+i).val()
-                JamKerja += $("#JamKerja"+i).val()
-                if ($("#AlasanMencariKerja"+i).val() == 3) {
-                  AlasanMencariKerja += $("#AlasanMencariKerjaLainnya"+i).val()
-                } else {
-                  AlasanMencariKerja += $("#AlasanMencariKerja"+i).val()
-                }
-                if ($("#PenyebabMenganggur"+i).val() == 4) {
-                  PenyebabMenganggur += $("#PenyebabMenganggurLainnya"+i).val()
-                } else {
-                  PenyebabMenganggur += $("#PenyebabMenganggur"+i).val()
-                }
-                MengikutiPelatihan += $("#MengikutiPelatihan"+i).val()
-                LokasiPekerjaan += $("#LokasiPekerjaan"+i).val()
-              } else {
+              if (i > 0) {
                 KegiatanSeminggu += ('|'+$("#KegiatanSeminggu"+i).val())
-                Keahlian += ('|'+$("#Keahlian"+i).val())
                 JamKerja += ('|'+$("#JamKerja"+i).val())
                 if ($("#AlasanMencariKerja"+i).val() == 3) {
                   AlasanMencariKerja += ('|'+$("#AlasanMencariKerjaLainnya"+i).val())
@@ -1284,9 +1045,80 @@
                 } else {
                   PenyebabMenganggur += ('|'+$("#PenyebabMenganggur"+i).val())
                 }
-                MengikutiPelatihan += ('|'+$("#MengikutiPelatihan"+i).val())
                 LokasiPekerjaan += ('|'+$("#LokasiPekerjaan"+i).val())
+              } else {
+                KegiatanSeminggu += $("#KegiatanSeminggu"+i).val()
+                JamKerja += $("#JamKerja"+i).val()
+                if ($("#AlasanMencariKerja"+i).val() == 3) {
+                  AlasanMencariKerja += $("#AlasanMencariKerjaLainnya"+i).val()
+                } else {
+                  AlasanMencariKerja += $("#AlasanMencariKerja"+i).val()
+                }
+                if ($("#PenyebabMenganggur"+i).val() == 4) {
+                  PenyebabMenganggur += $("#PenyebabMenganggurLainnya"+i).val()
+                } else {
+                  PenyebabMenganggur += $("#PenyebabMenganggur"+i).val()
+                }
+                LokasiPekerjaan += $("#LokasiPekerjaan"+i).val()
               } 
+            }
+            var PertolonganLahir = Asi = Imunisasi = JaminanKesehatan = ''
+            for (let i = 0; i < Anggota; i++) {
+              if (i > 0) {
+                PertolonganLahir += ("|"+$("#PertolonganLahir"+i).val())
+                Asi += ("|"+$("#Asi"+i).val())
+                Imunisasi += ("|"+$("#Imunisasi"+i).val())
+                JaminanKesehatan += ("|"+$("#JaminanKesehatan"+i).val())
+              } else {
+                PertolonganLahir += $("#PertolonganLahir"+i).val()
+                Asi += $("#Asi"+i).val()
+                Imunisasi += $("#Imunisasi"+i).val()
+                JaminanKesehatan += $("#JaminanKesehatan"+i).val()
+              } 
+            }
+            var Pernikahan = Fertilitas = ''
+            Pernikahan += ($("#UsiaIstriMenikah").val()+"|")
+            Pernikahan += ($("#UsiaPernikahan").val())
+            for (let i = 0; i < 6; i++) {
+              if ($("#AnakLahirHidup"+i).val() != 0) {
+                if (i > 0) {
+                  Fertilitas += ("$"+$("#AnakLahirHidup"+i).val()+"|"+$("#AnakMasihHidup"+i).val()+"|"+$("#AnakSudahMeninggal"+i).val()+"|"+$("#UsiaAnak"+i).val())
+                } else {
+                  Fertilitas += ($("#AnakLahirHidup"+i).val()+"|"+$("#AnakMasihHidup"+i).val()+"|"+$("#AnakSudahMeninggal"+i).val()+"|"+$("#UsiaAnak"+i).val())
+                }
+              } else {
+                break
+              }
+            }
+            var PartisipasiSekolah = PendidikanTertinggi = StatusSekolah = IjazahTertinggi = BacaTulis = ''
+            for (let i = 0; i < Anggota; i++) {
+              if (i > 0) {
+                PartisipasiSekolah += ("|"+$("#PartisipasiSekolah"+i).val())
+                PendidikanTertinggi += ("|"+$("#PendidikanTertinggi"+i).val())
+                StatusSekolah += ("|"+$("#StatusSekolah"+i).val())
+                IjazahTertinggi += ("|"+$("#IjazahTertinggi"+i).val())
+                BacaTulis += ("|"+$("#BacaTulis"+i).val())
+              } else {
+                PartisipasiSekolah += $("#PartisipasiSekolah"+i).val()
+                PendidikanTertinggi += $("#PendidikanTertinggi"+i).val()
+                StatusSekolah += $("#StatusSekolah"+i).val()
+                IjazahTertinggi += $("#IjazahTertinggi"+i).val()
+                BacaTulis += $("#BacaTulis"+i).val()
+              } 
+            }
+            var KeluhanPendidikan = ''
+            if ($("#Santri").val() == 'Tidak') {
+              KeluhanPendidikan += $("#Santri").val()
+            } else {
+              KeluhanPendidikan += $("#JumlahSantri").val()
+            }
+            var KepesertaanProgram = ''
+            for (let i = 0; i < 10; i++) {
+              if (i > 0) {
+                KepesertaanProgram += ("|"+$("#Program"+i).val())
+              } else {
+                KepesertaanProgram += $("#Program"+i).val()
+              }
             }
             var Usaha = $("#PunyaUsaha").val()
             if ($("#PunyaKaryawan").val() == "Ya") {
@@ -1295,69 +1127,7 @@
               Usaha += ("|"+$("#PunyaKaryawan").val())
             }
             Usaha += ("|"+$("#BukaUsaha").val()+"|"+$("#MinatInvest").val()+"|"+$("#Tabungan").val()+"|"+$("#MengajukanKredit").val()+"|"+$("#DapatKredit").val())
-            var PertolonganLahir = '',Asi = '',Imunisasi = '',JaminanKesehatan = ''
-            for (let i = 0; i < Anggota; i++) {
-              if (i == 0) {
-                PertolonganLahir += $("#PertolonganLahir"+i).val()
-                Asi += $("#Asi"+i).val()
-                Imunisasi += $("#Imunisasi"+i).val()
-                JaminanKesehatan += parseInt($("#JaminanKesehatan"+i).val())
-              } else {
-                PertolonganLahir += ("|"+$("#PertolonganLahir"+i).val())
-                Asi += ("|"+$("#Asi"+i).val())
-                Imunisasi += ("|"+$("#Imunisasi"+i).val())
-                JaminanKesehatan += ("|"+parseInt($("#JaminanKesehatan"+i).val()))
-              } 
-            }
-            var Pernikahan = '',Fertilitas = ''
-            Pernikahan += ($("#UsiaIstriMenikah").val()+"|")
-            Pernikahan += ($("#UsiaPernikahan").val())
-            for (let i = 0; i < 6; i++) {
-              if ($("#AnakLahirHidup"+i).val() != 0) {
-                if (i == 0) {
-                  Fertilitas += ($("#AnakLahirHidup"+i).val()+"|"+$("#AnakMasihHidup"+i).val()+"|"+$("#AnakSudahMeninggal"+i).val()+"|"+$("#UsiaAnak"+i).val())
-                } else {
-                  Fertilitas += ("$"+$("#AnakLahirHidup"+i).val()+"|"+$("#AnakMasihHidup"+i).val()+"|"+$("#AnakSudahMeninggal"+i).val()+"|"+$("#UsiaAnak"+i).val())
-                }
-              } else {
-                break
-              }
-            }
-            var FasilitasKesehatan = ''
-            for (let i = 0; i < 13; i++) {
-              if (i == 0) {
-                FasilitasKesehatan += ($("#KetercukupanKesehatan"+i).val()+"|"+$("#KeterlayananKesehatan"+i).val()+"|"+$("#PrioritasDikembangkanKesehatan"+i).val())
-              } else {
-                FasilitasKesehatan += ("$"+$("#KetercukupanKesehatan"+i).val()+"|"+$("#KeterlayananKesehatan"+i).val()+"|"+$("#PrioritasDikembangkanKesehatan"+i).val())
-              }
-            }
-            var PartisipasiSekolah = '',PendidikanTertinggi = '',StatusSekolah = '',IjazahTertinggi = '',BacaTulis = ''
-            for (let i = 0; i < Anggota; i++) {
-              if (i == 0) {
-                PartisipasiSekolah += $("#PartisipasiSekolah"+i).val()
-                PendidikanTertinggi += $("#PendidikanTertinggi"+i).val()
-                StatusSekolah += $("#StatusSekolah"+i).val()
-                IjazahTertinggi += parseInt($("#IjazahTertinggi"+i).val())
-                BacaTulis += parseInt($("#BacaTulis"+i).val())
-              } else {
-                PartisipasiSekolah += ("|"+$("#PartisipasiSekolah"+i).val())
-                PendidikanTertinggi += ("|"+$("#PendidikanTertinggi"+i).val())
-                StatusSekolah += ("|"+$("#StatusSekolah"+i).val())
-                IjazahTertinggi += ("|"+parseInt($("#IjazahTertinggi"+i).val()))
-                BacaTulis += ("|"+parseInt($("#BacaTulis"+i).val()))
-              } 
-            }
-            var FasilitasPendidikan = ''
-            for (let i = 0; i < 7; i++) {
-              if (i == 0) {
-                FasilitasPendidikan += ($("#KetercukupanPendidikan"+i).val()+"|"+$("#KeterlayananPendidikan"+i).val()+"|"+$("#PrioritasDikembangkanPendidikan"+i).val())
-              } else {
-                FasilitasPendidikan += ("$"+$("#KetercukupanPendidikan"+i).val()+"|"+$("#KeterlayananPendidikan"+i).val()+"|"+$("#PrioritasDikembangkanPendidikan"+i).val())
-              }
-            }
-            var KeluhanPendidikan = $("#Santri").val()+"|"+$("#UsahaPendidikan").val()+"|"+$("#KeluhanPendidikan").val()
-            var KepesertaanProgram = $("#Program0").val()+"|"+$("#Program1").val()+"|"+$("#Program2").val()+"|"+$("#Program3").val()+"|"+$("#Program4").val()
-            var Banyaknya = '',Harga = '',Nilai = ''
+            var Banyaknya = Harga = Nilai = ''
             for (let i = 0; i < 154; i++) {
               if (i == 0) {
                 Banyaknya += $("#Banyaknya"+i).val().replace(',','.')
@@ -1417,47 +1187,34 @@
             }
             var Aset = ''
             for (let i = 0; i < 15; i++) {
-              if (i == 0) {
-                Aset += $("#Aset"+i).val()
-              } else {
+              if (i > 0) {
                 Aset += ("|"+$("#Aset"+i).val())
+              } else {
+                Aset += $("#Aset"+i).val()
               }
             }
             var IPM = { Kecamatan: $("#Kecamatan").val(),Desa: $("#Desa").val(),Alamat: $("#Alamat").val(),
-                        NamaAnggota: NamaAnggota,Status: Status,Gender: Gender,Usia: Usia,Pendapatan: Pendapatan,
-                        Pekerjaan: Pekerjaan,SumberPendapatan: SumberPendapatan,KegiatanSeminggu: KegiatanSeminggu,
-                        Keahlian: Keahlian,JamKerja: JamKerja,AlasanMencariKerja: AlasanMencariKerja,
-                        PenyebabMenganggur: PenyebabMenganggur,MengikutiPelatihan: MengikutiPelatihan,
-                        LokasiPekerjaan: LokasiPekerjaan,Usaha: Usaha,PertolonganLahir: PertolonganLahir,
-                        Asi: Asi,Imunisasi: Imunisasi,JaminanKesehatan: JaminanKesehatan,Pernikahan: Pernikahan,
-                        Fertilitas: Fertilitas,FasilitasKesehatan: FasilitasKesehatan,BacaTulis: BacaTulis,
-                        PartisipasiSekolah: PartisipasiSekolah,PendidikanTertinggi: PendidikanTertinggi,
-                        StatusSekolah: StatusSekolah,IjazahTertinggi: IjazahTertinggi,FasilitasPendidikan:FasilitasPendidikan,
-                        KeluhanPendidikan: KeluhanPendidikan,KepesertaanProgram: KepesertaanProgram,
-                        Banyaknya: Banyaknya,Harga: Harga, Nilai: Nilai,Rumah: Rumah,Aset: Aset }             
+                        NamaAnggota: NamaAnggota,Status: Status,Gender: Gender,Usia: Usia,Pendapatan: Pendapatan,Pekerjaan: Pekerjaan,
+                        KegiatanSeminggu: KegiatanSeminggu,JamKerja: JamKerja,AlasanMencariKerja: AlasanMencariKerja,Aset: Aset,
+                        PenyebabMenganggur: PenyebabMenganggur,LokasiPekerjaan: LokasiPekerjaan,PertolonganLahir: PertolonganLahir,
+                        Asi: Asi,Imunisasi: Imunisasi,JaminanKesehatan: JaminanKesehatan,Pernikahan: Pernikahan,Fertilitas: Fertilitas,
+                        PartisipasiSekolah: PartisipasiSekolah,PendidikanTertinggi: PendidikanTertinggi,StatusSekolah: StatusSekolah,
+                        IjazahTertinggi: IjazahTertinggi,BacaTulis: BacaTulis,KeluhanPendidikan: KeluhanPendidikan,Rumah: Rumah,
+                        KepesertaanProgram: KepesertaanProgram,Usaha: Usaha,Banyaknya: Banyaknya,Harga: Harga, Nilai: Nilai }    
+            $("#Simpan").attr("disabled", true);                              
+            $("#LoadingInput").show();         
             $.post(BaseURL+"Surveyor/InputIPM", IPM).done(function(Respon) {
               if (Respon == '1') {
                 alert('Survei Berhasil Di Simpan!')
                 window.location = BaseURL + "Surveyor/SurveiIPM"
               } else { 
                 alert(Respon)
+                $("#LoadingInput").hide();
+                $("#Daftar").attr("disabled", false);   
               }
             })
-          // } 
+          } 
         })
-  
-        <?php for ($i=0; $i < 8; $i++) { ?>
-          $("#SumberPendapatan<?=$i?>").change(function (){
-            if ($("#SumberPendapatan<?=$i?>").val() == 8) {
-              $("#SumberPendapatanLainnya<?=$i?>").prop('disabled', false)
-              $("#SumberPendapatanLainnya<?=$i?>").attr("placeholder", "Sebutkan")
-            } else {
-              $("#SumberPendapatanLainnya<?=$i?>").prop('disabled', true)
-              $("#SumberPendapatanLainnya<?=$i?>").val("")
-              $("#SumberPendapatanLainnya<?=$i?>").attr("placeholder", "Jika Lainnya")
-            }
-          })
-        <?php } ?>
   
         <?php for ($i=0; $i < 8; $i++) { ?>
           $("#AlasanMencariKerja<?=$i?>").change(function (){
@@ -1484,7 +1241,7 @@
             }
           })
         <?php } ?>
-  
+
         $("#PunyaKaryawan").change(function (){
           if ($("#PunyaKaryawan").val() == "Ya") {
             $("#JumlahKaryawan").prop('disabled', false)
@@ -1492,9 +1249,22 @@
           } else {
             $("#JumlahKaryawan").prop('disabled', true)
             $("#JumlahKaryawan").val("")
+            $("#JumlahKaryawan").attr("placeholder", "")
           }
         })
-  
+
+        $("#Santri").change(function (){
+          if ($("#Santri").val() == "Ya") {
+            $("#JumlahSantri").prop('disabled', false)
+            $("#JumlahSantri").attr("placeholder", "Sebutkan")
+            $("#JumlahSantri").val(1)
+          } else {
+            $("#JumlahSantri").prop('disabled', true)
+            $("#JumlahSantri").val("")
+            $("#JumlahSantri").attr("placeholder", "")
+          }
+        })
+
         <?php for ($i=0; $i < 6; $i++) { ?>
           $("#AnakLahirHidup<?=$i?>").change(function (){
             if ($('#AnakLahirHidup<?=$i?>').val() == 1) {
