@@ -104,6 +104,7 @@
                                           <option value="9">Pemilik usaha (Petani, petambak, Peternak dll)</option>
                                           <option value="10">Pensiunan</option>
                                           <option value="11">Tidak Bekerja</option>      
+                                          <option value="12">Lainnya</option>      
                                         </select>
                                       </td>
                                     </tr>
@@ -1106,11 +1107,11 @@
                 BacaTulis += $("#BacaTulis"+i).val()
               } 
             }
-            var KeluhanPendidikan = ''
+            var Santri = ''
             if ($("#Santri").val() == 'Tidak') {
-              KeluhanPendidikan += $("#Santri").val()
+              Santri += $("#Santri").val()
             } else {
-              KeluhanPendidikan += $("#JumlahSantri").val()
+              Santri += $("#JumlahSantri").val()
             }
             var KepesertaanProgram = ''
             for (let i = 0; i < 10; i++) {
@@ -1199,7 +1200,7 @@
                         PenyebabMenganggur: PenyebabMenganggur,LokasiPekerjaan: LokasiPekerjaan,PertolonganLahir: PertolonganLahir,
                         Asi: Asi,Imunisasi: Imunisasi,JaminanKesehatan: JaminanKesehatan,Pernikahan: Pernikahan,Fertilitas: Fertilitas,
                         PartisipasiSekolah: PartisipasiSekolah,PendidikanTertinggi: PendidikanTertinggi,StatusSekolah: StatusSekolah,
-                        IjazahTertinggi: IjazahTertinggi,BacaTulis: BacaTulis,KeluhanPendidikan: KeluhanPendidikan,Rumah: Rumah,
+                        IjazahTertinggi: IjazahTertinggi,BacaTulis: BacaTulis,Santri: Santri,Rumah: Rumah,
                         KepesertaanProgram: KepesertaanProgram,Usaha: Usaha,Banyaknya: Banyaknya,Harga: Harga, Nilai: Nilai }    
             $("#Simpan").attr("disabled", true);                              
             $("#LoadingInput").show();         
