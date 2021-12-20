@@ -1,5 +1,5 @@
-./Project/*
-./Thumbnail/*
-./Rekrutmen/*
-./application/config/config.php
-./application/config/database.php
+Project/
+Thumbnail/
+Rekrutmen/
+application/config/config.php
+application/config/database.php

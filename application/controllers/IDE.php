@@ -685,7 +685,7 @@ class IDE extends CI_Controller {
   }
 
   public function RekapSurveyor(){
-    $Data['Surveyor'] = $this->db->query("select surveyor.nama,count(ipm.nik) as total from surveyor left join ipm on (surveyor.nik = ipm.nik) group by surveyor.nik")->result_array();
+    $Data['Surveyor'] = $this->db->query("select surveyor.nama,count(surveiipm.nik) as total from surveiipm left join surveyor on (surveyor.nik = surveiipm.nik) group by surveyor.nik")->result_array();
     $this->load->view('RekapSurveyor',$Data);
   }
 

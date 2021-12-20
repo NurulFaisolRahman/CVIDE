@@ -52,7 +52,7 @@
                                   <thead class="bg-danger">
                                     <tr style="font-size: 10pt;" class="text-light text-center">
                                       <th class="align-middle">No</th>
-                                      <th class="align-middle">Surveyor</th>
+                                      <th class="align-middle">Nama</th>
                                       <th class="align-middle">Total</th>
                                     </tr>
                                   </thead>
