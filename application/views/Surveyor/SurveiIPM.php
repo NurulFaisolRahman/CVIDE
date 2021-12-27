@@ -631,14 +631,14 @@
                                                           'Pos dan Telekomunikasi','Pakaian jadi laki-laki dewasa','Pakaian jadi perempuan dewasa','Pakaian jadi anak-anak','Alas kaki',
                                                           'Minyak Pelumas','Meubelair','Peralatan Rumah Tangga','Perlengkapan perabot rumah tangga','Alat-alat Dapur/Makan',
                                                           'Lembaga Keuangan (Kredit, Premi, dll)'); 
-                                        $Satuan = array('Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','kg','Kg','Kg','kg','Ml','Gram','Gram','Gram',
-                                                        'Kg','Kg','Kg','Kg','kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg',
-                                                        'Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Liter','Liter','Butir','Ons','Kg','Kg','Ons',
-                                                        'Ons','Ons','Ons','Ml','Gram','Ons','Ons','Ons','Gram','Ons','Bungkus','Ons','Bungkus','Bungkus','Gram','Bungkus','Ons',
-                                                        'Buah','Bungkus','Bungkus','Bungkus','Bungkus','Bungkus','Bungkus','Bungkus','Piring','Piring','Piring','Bungkus','Kg',
-                                                        'Kg','Bungkus','Galon','Ml','Ml','Bungkus','Bungkus','Bungkus','Rp','Rp','Rp','Rp','Rp','M3','Kg','Liter','Rp','Rp','Rp',
-                                                        'Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp',
-                                                        'Rp','Rp','Rp','Rp','Rp','Rp','Liter','Rp','Rp','Rp','Rp','Rp');
+                                        $Satuan = array('Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','ml','Gram','Gram','Gram',
+                                        'Ikat','Ikat','Ikat','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Potong','Potong','Kg','Kg','Kg','Kg','Kg','Kg',
+                                        'Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Kg','Liter','Liter','Butir','Ons','Kg','Kg','Bungkus','Bungkus',
+                                        'Bungkus','Bungkus','Bungkus','Ons','Bungkus','Ons','Bungkus','Bungkus','Bungkus','Bungkus','Ons','Bungkus','Bungkus','Gram','Bungkus',
+                                        'Bungkus','Bungkus','Biji','Porsi','Porsi','Porsi','Porsi','Porsi','Porsi','Porsi','Porsi','Porsi','Bungkus','Porsi','Porsi','Porsi',
+                                        'Galon','Ml','Ml','Bungkus','Bungkus','Bungkus','Rp','Rp','Rp','Rp','Rp','Rp','Tabung','Liter','Rp','Rp','Rp','Rp','Rp','Rp','Rp',
+                                        'Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Rp','Liter','Rp','Rp','Rp','Rp','Rp','Rp',
+                                        'Liter','Rp','Rp','Rp','Rp','Rp');
                                   $No = 1; for ($i=0; $i < count($Komoditas); $i++) { ?>
                                     <tr class="text-light text-center align-middle">
                                       <td class="align-middle font-weight-bold"><?=$No++?></td>
@@ -956,7 +956,7 @@
                                       <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah12Lainnya">
                                     </td>
                                   </tr>
-                                  <tr class="text-light text-center align-middle">
+                                  <!-- <tr class="text-light text-center align-middle">
                                     <td class="align-middle font-weight-bold">14</td>
                                     <td class="align-middle font-weight-bold">Energi Untuk Memasak</td>
                                     <td class="form-inline">
@@ -968,7 +968,7 @@
                                       </select>  
                                       <input disabled style="width: 50%;" class="form-control form-control-sm" type="text" id="Rumah13Lainnya">
                                     </td>
-                                  </tr>
+                                  </tr> -->
                                 </tbody>
                               </table>
                             </div> 
@@ -1200,8 +1200,8 @@
                         PenyebabMenganggur: PenyebabMenganggur,LokasiPekerjaan: LokasiPekerjaan,PertolonganLahir: PertolonganLahir,
                         Asi: Asi,Imunisasi: Imunisasi,JaminanKesehatan: JaminanKesehatan,Pernikahan: Pernikahan,Fertilitas: Fertilitas,
                         PartisipasiSekolah: PartisipasiSekolah,PendidikanTertinggi: PendidikanTertinggi,StatusSekolah: StatusSekolah,
-                        IjazahTertinggi: IjazahTertinggi,BacaTulis: BacaTulis,Santri: Santri,Rumah: Rumah,
-                        KepesertaanProgram: KepesertaanProgram,Usaha: Usaha,Banyaknya: Banyaknya,Harga: Harga, Nilai: Nilai }    
+                        IjazahTertinggi: IjazahTertinggi,BacaTulis: BacaTulis,Santri: Santri,Rumah: Rumah,Nilai: Nilai,
+                        KepesertaanProgram: KepesertaanProgram,Usaha: Usaha,Banyaknya: Banyaknya,Harga: Harga }    
             $("#Simpan").attr("disabled", true);                              
             $("#LoadingInput").show();         
             $.post(BaseURL+"Surveyor/InputIPM", IPM).done(function(Respon) {
@@ -1211,8 +1211,12 @@
               } else { 
                 alert(Respon)
                 $("#LoadingInput").hide();
-                $("#Daftar").attr("disabled", false);   
+                $("#Simpan").attr("disabled", false);   
               }
+            }).fail(function() {
+              alert('Gagal Menyimpan!')
+              $("#LoadingInput").hide();
+              $("#Simpan").attr("disabled", false);   
             })
           } 
         })
