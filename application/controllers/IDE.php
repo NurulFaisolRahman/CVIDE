@@ -680,7 +680,7 @@ class IDE extends CI_Controller {
   }
 
   public function RekapSurveyorIKM(){
-    $Data['Surveyor'] = $this->db->get("surveyor")->result_array();
+    $Data['Surveyor'] = $this->db->query("select surveyor.nik as NIK, surveyor.nama as Nama from surveiipm left join surveyor on (surveyor.nik = surveiipm.nik) group by surveyor.nik")->result_array();
     $this->load->view('RekapSurveyorIKM',$Data);
   }
 
