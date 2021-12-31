@@ -691,7 +691,7 @@ class IDE extends CI_Controller {
   }
 
   public function Rekap($NIK,$Surveyor){
-    $Data['IPM'] = $this->db->query("SELECT NamaAnggota FROM `ipm` WHERE NIK='".$NIK."'")->result_array();
+    $Data['IPM'] = $this->db->query("SELECT NamaAnggota FROM `surveiipm` WHERE NIK='".$NIK."'")->result_array();
     $Data['Surveyor'] = $Surveyor;
     $this->load->view('ExcelSurveyorIKM',$Data);                     
   }
