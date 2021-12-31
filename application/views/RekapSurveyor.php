@@ -43,10 +43,11 @@
                   <div class="col-sm-12">
                     <div class="card border border-warning">
                       <div class="card-header bg-danger"><b class="text-light">Rekap Survei</b></div>
-                      <div class="card-body bg-primary">
+                      <div class="card-body bg-primary overflow-auto" style="height: 500px;">
                         <div class="container-fluid p-0">
                           <div class="row">
                             <div class="col-sm-12">
+                              <pre class="mb-1 text-white"><b>Total = <?=$Total?></b></pre>
                               <div class="table-responsive mt-1">
                                 <table class="table table-sm table-bordered table-striped">
                                   <thead class="bg-danger">
@@ -57,7 +58,7 @@
                                     </tr>
                                   </thead>
                                   <tbody style="font-size: 12px;" class="bg-primary">
-                                  <?php unset($Surveyor[4]); $No = 1; foreach ($Surveyor as $key) { ?>
+                                  <?php $No = 1; foreach ($Surveyor as $key) { ?>
                                     <tr class="text-light align-middle">
                                       <td class="align-middle text-center font-weight-bold"><?=$No++?></td>
                                       <td class="align-middle font-weight-bold"><?=$key['nama']?></td>
