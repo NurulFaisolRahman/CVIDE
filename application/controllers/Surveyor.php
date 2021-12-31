@@ -14,7 +14,7 @@ class Surveyor extends CI_Controller {
     $this->load->view('Surveyor/Header');
 		$this->load->view('Surveyor/Profil');
   }
-
+  // $2y$10$nhEvPNxmjSLuZMzDn6y5QuFOqDN6gXcN5sPrLMba8I.wVbECFkqda 12345678
   public function GantiPassword(){
     $this->db->where('NIK', $this->session->userdata('NIK'));
     $this->db->update('surveyor', array('Password' => password_hash($_POST['Password'], PASSWORD_DEFAULT)));
