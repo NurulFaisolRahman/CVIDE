@@ -315,11 +315,11 @@ class Super extends CI_Controller {
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
     $Pendidikan = array();  
     if ($this->session->userdata('JenisData') == 'Desa') {
-      $Pendidikan = $this->db->query("SELECT PartisipasiSekolah,PendidikanTertinggi FROM `ipm` WHERE Desa = "."'".$Data['KodeDesa']."'")->result_array();
+      $Pendidikan = $this->db->query("SELECT PartisipasiSekolah,PendidikanTertinggi FROM `surveiipm` WHERE Desa = "."'".$Data['KodeDesa']."'")->result_array();
     } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
-      $Pendidikan = $this->db->query("SELECT PartisipasiSekolah,PendidikanTertinggi FROM `ipm` WHERE Kecamatan = "."'".$Data['KodeKecamatan']."'")->result_array();
+      $Pendidikan = $this->db->query("SELECT PartisipasiSekolah,PendidikanTertinggi FROM `surveiipm` WHERE Kecamatan = "."'".$Data['KodeKecamatan']."'")->result_array();
     } else {
-      $Pendidikan = $this->db->query("SELECT PartisipasiSekolah,PendidikanTertinggi FROM `ipm`")->result_array();
+      $Pendidikan = $this->db->query("SELECT PartisipasiSekolah,PendidikanTertinggi FROM `surveiipm`")->result_array();
     }
     $Data['JenisPendidikan'] = array(0,0,0,0,0,0,0,0);
     $Data['Responden'] = 0;
@@ -368,7 +368,7 @@ class Super extends CI_Controller {
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
     $DataKomoditas = array();  $Ace = 0;
     if ($this->session->userdata('JenisData') == 'Desa') {
-      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `surveiipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
       if ($Data['KodeDesa'] == "35.10.01.2002") {
         $Ace = 85000;
       } else if ($Data['KodeDesa'] == "35.10.01.2010") {
@@ -403,7 +403,7 @@ class Super extends CI_Controller {
         $Ace = 175000;
       } 
     } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
-      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `ipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
+      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `surveiipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
       if ($Data['KodeKecamatan'] == "35.10.01") {
         $Ace = 130000;
       } else if ($Data['KodeKecamatan'] == "35.10.05") {
@@ -423,7 +423,7 @@ class Super extends CI_Controller {
       }
     } else {
       $Ace = 223500;
-      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `ipm`")->result_array();
+      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `surveiipm`")->result_array();
     }
     $Data['JumlahKK'] = count($DataKomoditas); $Data['GK'] = $Data['GKM'] = $Data['GKNM'] = $Data['Individu'] = array(); 
     $Data['GKRata2'] = $Data['GKMRata2'] = $Data['GKNMRata2'] = 0; $Data['KelompokGK'] = array(0,0);
@@ -489,11 +489,11 @@ class Super extends CI_Controller {
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
     $Pengangguran = array();  
     if ($this->session->userdata('JenisData') == 'Desa') {
-      $Pengangguran = $this->db->query("SELECT Usia,KegiatanSeminggu,PenyebabMenganggur FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+      $Pengangguran = $this->db->query("SELECT Usia,KegiatanSeminggu,PenyebabMenganggur FROM `surveiipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
     } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
-      $Pengangguran = $this->db->query("SELECT Usia,KegiatanSeminggu,PenyebabMenganggur FROM `ipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
+      $Pengangguran = $this->db->query("SELECT Usia,KegiatanSeminggu,PenyebabMenganggur FROM `surveiipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
     } else {
-      $Pengangguran = $this->db->query("SELECT Usia,KegiatanSeminggu,PenyebabMenganggur FROM `ipm`")->result_array();
+      $Pengangguran = $this->db->query("SELECT Usia,KegiatanSeminggu,PenyebabMenganggur FROM `surveiipm`")->result_array();
     }
     $Data['Dewasa'] = $Data['Bekerja'] = $Data['TidakBekerja'] = $Data['AngkatanKerja'] = 0;
     $Data['Terbuka'] =  $Data['BukanAngkatanKerja'] = $Data['TPAK'] = $Data['TPT'] = 0;
@@ -534,13 +534,13 @@ class Super extends CI_Controller {
     $Pisah = explode("-",$FormatData);
     $ALHAMH = array(); $Data['NamaFile'] = ""; 
     if ($Pisah[0] == 'Desa') {
-      $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm` WHERE Desa="."'".$Pisah[1]."'")->result_array();
+      $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `surveiipm` WHERE Desa="."'".$Pisah[1]."'")->result_array();
       $Data['NamaFile'] = "Kecamatan".$Pisah[4]."Desa".$Pisah[2];
     } else if ($Pisah[0] == 'Kecamatan') {
-      $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm` WHERE Kecamatan="."'".$Pisah[3]."'")->result_array();
+      $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `surveiipm` WHERE Kecamatan="."'".$Pisah[3]."'")->result_array();
       $Data['NamaFile'] = "Kecamatan".$Pisah[4];
     } else {
-      $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm`")->result_array();
+      $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `surveiipm`")->result_array();
       $Data['NamaFile'] = "Banyuwangi";
     }
     $Data['ALHAMH'] = array();
@@ -645,11 +645,11 @@ class Super extends CI_Controller {
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
     $ALHAMH = array(); $Data['AHH'] = 0;
     if ($this->session->userdata('JenisData') == 'Desa') {
-      $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+      $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `surveiipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
     } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
-      $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
+      $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `surveiipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
     } else {
-      $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `ipm`")->result_array();
+      $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `surveiipm`")->result_array();
       $Data['AHH'] = 70.9;
     }
     $Data['ALHAMH'] = $Data['Total'] = array();
@@ -758,11 +758,11 @@ class Super extends CI_Controller {
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
     $Pendidikan = array();  
     if ($this->session->userdata('JenisData') == 'Desa') {
-      $Pendidikan = $this->db->query("SELECT Usia,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,KeluhanPendidikan FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+      $Pendidikan = $this->db->query("SELECT Usia,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,KeluhanPendidikan FROM `surveiipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
     } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
-      $Pendidikan = $this->db->query("SELECT Usia,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,KeluhanPendidikan FROM `ipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
+      $Pendidikan = $this->db->query("SELECT Usia,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,KeluhanPendidikan FROM `surveiipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
     } else {
-      $Pendidikan = $this->db->query("SELECT Usia,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,KeluhanPendidikan FROM `ipm`")->result_array();
+      $Pendidikan = $this->db->query("SELECT Usia,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,KeluhanPendidikan FROM `surveiipm`")->result_array();
     }
     $KelompokHLS = array(array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0));
     $LamaSekolah = $Penduduk25 = $PendudukSekolah = $Penduduk7 = $Santri = 0;
@@ -926,11 +926,11 @@ class Super extends CI_Controller {
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
     $DataKomoditas = array();  
     if ($this->session->userdata('JenisData') == 'Desa') {
-      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Harga,Nilai FROM `ipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Harga,Nilai FROM `surveiipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
     } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
-      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Harga,Nilai FROM `ipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
+      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Harga,Nilai FROM `surveiipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
     } else {
-      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Harga,Nilai FROM `ipm`")->result_array();
+      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Harga,Nilai FROM `surveiipm`")->result_array();
     }
     $Data['PerKapita'] = $Data['PerKapitaKonstan'] = 0; 
     $KomoditasTerpilih = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
