@@ -758,11 +758,11 @@ class Super extends CI_Controller {
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
     $Pendidikan = array();  
     if ($this->session->userdata('JenisData') == 'Desa') {
-      $Pendidikan = $this->db->query("SELECT Usia,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,KeluhanPendidikan FROM `surveiipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+      $Pendidikan = $this->db->query("SELECT Usia,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,Santri FROM `surveiipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
     } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
-      $Pendidikan = $this->db->query("SELECT Usia,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,KeluhanPendidikan FROM `surveiipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
+      $Pendidikan = $this->db->query("SELECT Usia,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,Santri FROM `surveiipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
     } else {
-      $Pendidikan = $this->db->query("SELECT Usia,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,KeluhanPendidikan FROM `surveiipm`")->result_array();
+      $Pendidikan = $this->db->query("SELECT Usia,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,Santri FROM `surveiipm`")->result_array();
     }
     $KelompokHLS = array(array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0));
     $LamaSekolah = $Penduduk25 = $PendudukSekolah = $Penduduk7 = $Santri = 0;
@@ -778,8 +778,8 @@ class Super extends CI_Controller {
         $Jenjang = explode("|",$key['PendidikanTertinggi']);
         $Tingkat = explode("|",$key['StatusSekolah']);
         $Usia = explode("|",$key['Usia']);
-        if ($key['KeluhanPendidikan'][0] == 1) {
-          $Santri += 1;  
+        if (is_int($key['Santri'])) {
+          $Santri += (int)$key['Santri'];  
         }
         for ($i=0; $i < count($Partisipasi); $i++) { 
           if (count($Partisipasi) == count($Usia)) {
@@ -936,6 +936,7 @@ class Super extends CI_Controller {
     $KomoditasTerpilih = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
     $Rata2KomoditasTerpilih = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
     $Rata2KomoditasTerpilihJakarta = array(17550,8085,5400,15021,55000,40000,36714,33500,38024,25175,35000,165850,39900,45000,25100,11638,45141,32500,4000,4000,16000,46200,27900,63400,53200,27000,27000,25111,8000,11400,29900,31000,27500,10000,25000,16300,8825,12800,37000,6000,3228,19300,35500,2700,14000,16600,9000,2000,15000,30000,15000,5000,10000,20000,20000,15000,5000,12000,15000,15000,7000,7000,5000,20000,12000,15000,300000,700000,1800000,150000,43341,6367,20722,5000,5000,35000,300000,150000,5000,500000,1000000,200000,150000,500000,8325,4000,50000,150000,150000,50000,5000,180000,1500000,1500000,1500000,1200000);
+    $IndeksKomoditasTerpilih = array(0,2,3,4,5,6,7,8,9,10,11,12,13,14,16,19,20,21,23,24,25,36,37,38,39,40,41,42,43,49,51,52,53,54,62,63,64,66,68,69,71,72,76,79,84,85,86,87,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,118,119,120,121,127,128,129,130,136,141,142,143,144,145,146,147,148,149,150,151,152);
     $PangkatKomoditas = 0.010416;
     $TotalPengeluaran = $TotalIndividu = 0;
     foreach ($DataKomoditas as $key) {
@@ -944,23 +945,26 @@ class Super extends CI_Controller {
       $Harga = explode("|",$key['Harga']);
       $Indeks = 0;
       for ($i=0; $i < count($Nilai); $i++) { 
-        if (in_array($i,array(0,2,3,4,5,6,7,8,9,10,11,12,13,14,16,19,20,21,23,24,25,36,37,38,39,40,41,62,63,64,66,68,69,71,72,76,79,84,85,86,87,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,113,114,115,118,121,141))) {
-          $TotalPengeluaran += (Int)$Nilai[$i]*152;
-          $KomoditasTerpilih[$Indeks] += (Int)$Harga[$i];
-          $Indeks += 1;
-        } else if (in_array($i,array(42,43,49,51,52,53,54,107,111,112,142,143))) {
-          $TotalPengeluaran += (Int)$Nilai[$i]*12;
-          $KomoditasTerpilih[$Indeks] += (Int)$Harga[$i];
-          $Indeks += 1;
-        } else if (in_array($i,array(119,120,136,148))) {
-          $TotalPengeluaran += (Int)$Nilai[$i]*2;
-          $KomoditasTerpilih[$Indeks] += (Int)$Harga[$i];
-          $Indeks += 1;
-        } else if (in_array($i,array(108,109,110,127,128,129,130,144,145,146,147,149,150,151,152))) {
           $TotalPengeluaran += (Int)$Nilai[$i];
           $KomoditasTerpilih[$Indeks] += (Int)$Harga[$i];
           $Indeks += 1;
-        }
+        // if (in_array($i,array(0,2,3,4,5,6,7,8,9,10,11,12,13,14,16,19,20,21,23,24,25,36,37,38,39,40,41,62,63,64,66,68,69,71,72,76,79,84,85,86,87,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,113,114,115,118,121,141))) {
+        //   $TotalPengeluaran += (Int)$Nilai[$i]*152;
+        //   $KomoditasTerpilih[$Indeks] += (Int)$Harga[$i];
+        //   $Indeks += 1;
+        // } else if (in_array($i,array(42,43,49,51,52,53,54,107,111,112,142,143))) {
+        //   $TotalPengeluaran += (Int)$Nilai[$i]*12;
+        //   $KomoditasTerpilih[$Indeks] += (Int)$Harga[$i];
+        //   $Indeks += 1;
+        // } else if (in_array($i,array(119,120,136,148))) {
+        //   $TotalPengeluaran += (Int)$Nilai[$i]*2;
+        //   $KomoditasTerpilih[$Indeks] += (Int)$Harga[$i];
+        //   $Indeks += 1;
+        // } else if (in_array($i,array(108,109,110,127,128,129,130,144,145,146,147,149,150,151,152))) {
+        //   $TotalPengeluaran += (Int)$Nilai[$i];
+        //   $KomoditasTerpilih[$Indeks] += (Int)$Harga[$i];
+        //   $Indeks += 1;
+        // }
       }
     }
     $Data['PPP'] = $Data['IndeksPengeluaran'] = 0;
@@ -969,7 +973,7 @@ class Super extends CI_Controller {
       $Data['PerKapitaKonstan'] = $Data['PerKapita']/103.59*100.0; 
       for ($i=0; $i < count($Rata2KomoditasTerpilih); $i++) { 
         $Rata2KomoditasTerpilih[$i] = round($KomoditasTerpilih[$i]/count($DataKomoditas),0);
-        $Data['PPP'] += pow(($Rata2KomoditasTerpilih[$i]/$Rata2KomoditasTerpilihJakarta[$i]),1/96);
+        $Data['PPP'] += pow(($Rata2KomoditasTerpilih[$i]/$Rata2KomoditasTerpilihJakarta[$i]),$PangkatKomoditas);
       }
       $Data['PPP'] = $Data['PPP']/100;
       $Pengeluaran = round($Data['PerKapitaKonstan'],2)/round($Data['PPP'],2)*1000;
