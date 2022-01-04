@@ -62,7 +62,7 @@
                       <div class="card-body bg-warning border border-light p-0">
                         <div id="Dewasa" style="margin-bottom: 24px;"></div>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Usia Kerja 16 - 65<br>Sebanyak ".number_format($Dewasa,0,",",".")." Penduduk"?></div></div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Angkatan Kerja ".number_format($AngkatanKerja/($AngkatanKerja+$BukanAngkatanKerja),2,",",".")."<br>Bukan Angkatan Kerja ".number_format($BukanAngkatanKerja/($AngkatanKerja+$BukanAngkatanKerja),0,",",".")?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
@@ -70,7 +70,7 @@
                       <div class="card-body bg-warning border border-light p-0">
                         <div id="AngkatanKerja" style="margin-bottom: 24px;"></div>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Angkatan Kerja<br>Sebanyak ".number_format($AngkatanKerja,0,",",".")." Penduduk"?></div></div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Persentase Bekerja ".number_format($Bekerja/($Bekerja+$TidakBekerja),2,",",".")."<br>Persentase Tidak Bekerja ".number_format($TidakBekerja/($Bekerja+$TidakBekerja),2,",",".")?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
@@ -78,7 +78,7 @@
                       <div class="card-body bg-warning border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/TPT.jpg')?>" alt="GK" height="209" ></a>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Tingkat Pengangguran<br>Sebesar ".number_format($TPT,2)." %"?></div></div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Tingkat Pengangguran<br>Sebesar ".number_format($TPT,2,",",".")." %"?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
@@ -86,7 +86,7 @@
                       <div class="card-body bg-warning border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/TPAK.png')?>" alt="GK" width="209px"></a>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Tingkat Partisipasi Angkatan<br>Kerja Sebesar ".number_format($TPAK,2)." %"?></div></div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Tingkat Partisipasi Angkatan<br>Kerja Sebesar ".number_format($TPAK,2,",",".")." %"?></div></div>
                     </div>
                   </div>
                 </div>

@@ -438,7 +438,7 @@ class Super extends CI_Controller {
         if ($Usia[$i] > 15 && $Usia[$i] < 66) {
           if (isset($Usia[$i]) && isset($KegiatanSeminggu[$i])) {
             $Data['Dewasa'] += 1;
-            if ($KegiatanSeminggu[$i] == 2 || is_int($JamKerja[$i])){
+            if ($KegiatanSeminggu[$i] == 2 || $JamKerja[$i] != ''){
               $Data['Bekerja'] += 1;
             } else if ($KegiatanSeminggu[$i] == 1 || $KegiatanSeminggu[$i] == 5) {
               $Data['TidakBekerja'] += 1;
@@ -448,9 +448,6 @@ class Super extends CI_Controller {
                 $Data['Terbuka'] += 1;
               }
             } 
-            // else if ($KegiatanSeminggu[$i] == 2){
-            //   $Data['Bekerja'] += 1;
-            // } 
             else {
               $Data['BukanAngkatanKerja'] += 1;
             }
