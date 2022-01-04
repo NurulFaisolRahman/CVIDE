@@ -468,11 +468,11 @@ Content-Type: text/html; charset="us-ascii"
    </tr>
    <?php for ($j=0; $j < count($IPM); $j++) { ?>
    <tr height=3D"20" style=3D'height:15.00pt;'>
-    <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:str><?=$IPM[$j]['Id']?></td>
-		<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:str><?=count(explode("|",$IPM[$j]['NamaAnggota']))?></td>
+    <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=$IPM[$j]['Id']?></td>
+		<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=count(explode("|",$IPM[$j]['NamaAnggota']))?></td>
     <?php $Jumlah = explode("|",$IPM[$j]['Nilai']); for ($i=0; $i < 154; $i++) { ?>
 			<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=(int)$Jumlah[$i]?></td>
-    <?php } ?> */
+    <?php } ?>
    </tr>
    <?php } ?>
    <![if supportMisalignedColumns]>
