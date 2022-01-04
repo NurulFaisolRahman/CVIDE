@@ -435,27 +435,28 @@ class Super extends CI_Controller {
       $TotalPengeluaranMakanan = $TotalPengeluaranNonMakanan = 0;
       for ($i=0; $i < count($Nilai); $i++) { 
         if ($i < 107) {
-          if ($i > 4 && $i < 19) {
-            $TotalPengeluaranMakanan += (int)$Nilai[$i]*3;
-          } 
-          else if ($i > 41 && $i < 62) {
-            $TotalPengeluaranMakanan += (int)$Nilai[$i];
-          }
-          else {
-            $TotalPengeluaranMakanan += (int)$Nilai[$i]*4;
-          }
+          $TotalPengeluaranMakanan += (int)$Nilai[$i]/12;
+          // if ($i > 4 && $i < 19) {
+          //   $TotalPengeluaranMakanan += (int)$Nilai[$i]*3;
+          // } 
+          // else if ($i > 41 && $i < 62) {
+          //   $TotalPengeluaranMakanan += (int)$Nilai[$i];
+          // }
+          // else {
+          //   $TotalPengeluaranMakanan += (int)$Nilai[$i]*4;
+          // }
         }
-        else if (in_array($i,array(113,114,115,118,121,141))) {
-          $TotalPengeluaranNonMakanan += (int)$Nilai[$i]*4;
-        }  
-        else if (in_array($i,array(116,119,120,136,138,140,148))) {
-          $TotalPengeluaranNonMakanan += round((int)$Nilai[$i]/6);
-        } 
-        else if (in_array($i,array(108,109,110,122,123,126,127,128,129,130,131,132,133,134,135,137,139,144,145,146,147,149,150,151,152))){
-          $TotalPengeluaranNonMakanan += round((int)$Nilai[$i]/12);
-        }
+        // else if (in_array($i,array(113,114,115,118,121,141))) {
+        //   $TotalPengeluaranNonMakanan += (int)$Nilai[$i]*4;
+        // }  
+        // else if (in_array($i,array(116,119,120,136,138,140,148))) {
+        //   $TotalPengeluaranNonMakanan += round((int)$Nilai[$i]/6);
+        // } 
+        // else if (in_array($i,array(108,109,110,122,123,126,127,128,129,130,131,132,133,134,135,137,139,144,145,146,147,149,150,151,152))){
+        //   $TotalPengeluaranNonMakanan += round((int)$Nilai[$i]/12);
+        // }
         else {
-          $TotalPengeluaranNonMakanan += (int)$Nilai[$i];
+          $TotalPengeluaranNonMakanan += (int)$Nilai[$i]/12;
         }
       }
       array_push($Data['Individu'],$TotalIndividuKeluarga);
@@ -469,7 +470,8 @@ class Super extends CI_Controller {
       $Data['GKNMRata2'] = $Data['TotalPengeluaranNonMakanan']/$Data['TotalIndividu']; 
       $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       for ($i=0; $i < count($Data['GKM']); $i++) { 
-        if (($Data['GKM'][$i]+$Data['GKNM'][$i]) > ($Data['GKRata2']-$Ace)) {
+        // if (($Data['GKM'][$i]+$Data['GKNM'][$i]) > ($Data['GKRata2']-$Ace)) {
+        if (($Data['GKM'][$i]+$Data['GKNM'][$i]) > ($Data['GKRata2'])) {
           $Data['KelompokGK'][0] += $Data['Individu'][$i];
         } else {
           $Data['KelompokGK'][1] += $Data['Individu'][$i];
@@ -970,9 +972,10 @@ class Super extends CI_Controller {
       }
     }
     $Data['PPP'] = $Data['IndeksPengeluaran'] = 0;
+    $IHK = 105.69;
     if (count($DataKomoditas) > 0) {
       $Data['PerKapita'] = $TotalPengeluaran/$TotalIndividu/1000; 
-      $Data['PerKapitaKonstan'] = $Data['PerKapita']/103.59*100.0; 
+      $Data['PerKapitaKonstan'] = $Data['PerKapita']/$IHK*100.0; 
       for ($i=0; $i < count($Rata2KomoditasTerpilih); $i++) { 
         $Rata2KomoditasTerpilih[$i] = round($KomoditasTerpilih[$i]/count($DataKomoditas),0);
         $Data['PPP'] += pow(($Rata2KomoditasTerpilih[$i]/$Rata2KomoditasTerpilihJakarta[$i]),$PangkatKomoditas);
