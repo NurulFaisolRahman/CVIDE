@@ -472,22 +472,6 @@ Content-Type: text/html; charset="us-ascii"
 		<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:str><?=count(explode("|",$IPM[$j]['NamaAnggota']))?></td>
     <?php $Jumlah = explode("|",$IPM[$j]['Nilai']); for ($i=0; $i < 154; $i++) { ?>
 			<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=(int)$Jumlah[$i]?></td>
-		/* <?php if ($i < 107) { ?>
-			<?php if ($i > 4 && $i < 19) { ?>
-				<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=(int)$Jumlah[$i]*3?></td>
-			<?php } else if ($i > 41 && $i < 62) { ?>
-				<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=(int)$Jumlah[$i]?></td>
-			<?php } else { ?>
-				<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=(int)$Jumlah[$i]*4?></td>
-		<?php }} else if (in_array($i,array(113,114,115,118,121,141))) { ?>
-			<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=(int)$Jumlah[$i]*4?></td>
-		<?php } else if (in_array($i,array(116,119,120,136,138,140,148))) { ?>
-			<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=round((int)$Jumlah[$i]/6)?></td>
-		<?php } else if (in_array($i,array(108,109,110,122,123,126,127,128,129,130,131,132,133,134,135,137,139,144,145,146,147,149,150,151,152))){ ?>
-			<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=round((int)$Jumlah[$i]/12)?></td>
-		<?php } else { ?>	
-      <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=(int)$Jumlah[$i]?></td>
-    <?php }} ?> */
    </tr>
    <?php } ?>
    <![if supportMisalignedColumns]>
