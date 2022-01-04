@@ -866,7 +866,7 @@ td
    <tr height=3D"20" style=3D'height:15.00pt;'>
     <td height=3D"20" style=3D'height:15.00pt;'></td>
     <td colspan=3D"3" style=3D'mso-ignore:colspan;'></td>
-    <td class=3D"xl68" x:num><?=$TotalIbu[3]?></td>
+    <td class=3D"xl68" x:num><?=$TotalIbu?></td>
     <td colspan=3D"2" style=3D'mso-ignore:colspan;'></td>
    </tr>
    <![if supportMisalignedColumns]>
