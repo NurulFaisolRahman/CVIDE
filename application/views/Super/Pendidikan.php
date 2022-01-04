@@ -58,7 +58,7 @@
                 </div>
                 <div class="row">
                   <div class="col-lg-4 mb-2">
-                    <h6 class="text-white font-weight-bold">Jumlah Responden <?=$Responden?></h6>
+                    <!-- <h6 class="text-white font-weight-bold">Jumlah Responden <?=$Responden?></h6> -->
                     <div class="table-responsive mt-1">
                       <table class="table table-sm table-bordered table-striped">
                         <thead class="bg-danger">

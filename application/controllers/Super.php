@@ -913,111 +913,16 @@ class Super extends CI_Controller {
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
     $Data['IPMKesehatan'] = $Data['IPMPendidikan'] = $Data['IPMPengeluaran'] = 0;
-    if ($this->session->userdata('JenisData') == 'Desa') {
-      if ($Data['KodeDesa'] == "35.10.01.2002") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.57;
-        // $Data['IPMPengeluaran'] = 0.83;
-      } else if ($Data['KodeDesa'] == "35.10.01.2010") {
-        $Data['IPMKesehatan'] = 0.39;
-        $Data['IPMPendidikan'] = 0.60;
-        $Data['IPMPengeluaran'] = 0.84;
-      } else if ($Data['KodeDesa'] == "35.10.05.2003") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.50;
-        // $Data['IPMPengeluaran'] = 0.89;
-      } else if ($Data['KodeDesa'] == "35.10.05.2007") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.61;
-        // $Data['IPMPengeluaran'] = 0.88;
-      } else if ($Data['KodeDesa'] == "35.10.09.2001") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.62;
-        // $Data['IPMPengeluaran'] = 0.93;
-      } else if ($Data['KodeDesa'] == "35.10.09.2003") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.66;
-        // $Data['IPMPengeluaran'] = 0.91;
-      } else if ($Data['KodeDesa'] == "35.10.11.2003") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.59;
-        // $Data['IPMPengeluaran'] = 0.79;
-      } else if ($Data['KodeDesa'] == "35.10.11.2006") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.57;
-        // $Data['IPMPengeluaran'] = 0.91;
-      } else if ($Data['KodeDesa'] == "35.10.12.2005") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.62;
-        // $Data['IPMPengeluaran'] = 0.90;
-      } else if ($Data['KodeDesa'] == "35.10.12.2006") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.48;
-        // $Data['IPMPengeluaran'] = 0.97;
-      } else if ($Data['KodeDesa'] == "35.10.13.2001") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // 
-        // $Data['IPMPengeluaran'] = 1.12;
-      } else if ($Data['KodeDesa'] == "35.10.13.2013") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.71;
-        // $Data['IPMPengeluaran'] = 0.98;
-      } else if ($Data['KodeDesa'] == "35.10.18.2001") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.32;
-        // $Data['IPMPengeluaran'] = 0.84;
-      } else if ($Data['KodeDesa'] == "35.10.18.2012") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.52;
-        // $Data['IPMPengeluaran'] = 0.88;
-      } else if ($Data['KodeDesa'] == "35.10.24.2003") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.50;
-        // $Data['IPMPengeluaran'] = 0.96;
-      } else if ($Data['KodeDesa'] == "35.10.24.2008") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.58;
-        // $Data['IPMPengeluaran'] = 0.99;
-      } 
-    } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
-      if ($Data['KodeKecamatan'] == "35.10.01") {
-        $Data['IPMKesehatan'] = 0.68;
-        $Data['IPMPendidikan'] = 0.59;
-        $Data['IPMPengeluaran'] = 0.77;
-      } else if ($Data['KodeKecamatan'] == "35.10.05") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.56;
-        // $Data['IPMPengeluaran'] = 0.84;
-      } else if ($Data['KodeKecamatan'] == "35.10.09") {
-        $Data['IPMKesehatan'] = 0.70;
-        $Data['IPMPendidikan'] = 0.64;
-        $Data['IPMPengeluaran'] = 0.90;
-      } else if ($Data['KodeKecamatan'] == "35.10.11") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.58;
-        // $Data['IPMPengeluaran'] = 0.78;
-      } else if ($Data['KodeKecamatan'] == "35.10.12") {
-        $Data['IPMKesehatan'] = 0.72;
-        $Data['IPMPendidikan'] = 0.57;
-        $Data['IPMPengeluaran'] = 0.90;
-      } else if ($Data['KodeKecamatan'] == "35.10.13") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.71;
-        // $Data['IPMPengeluaran'] = 0.98;
-      } else if ($Data['KodeKecamatan'] == "35.10.18") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.42;
-        // $Data['IPMPengeluaran'] = 0.82;
-      } else if ($Data['KodeKecamatan'] == "35.10.24") {
-        // $Data['IPMKesehatan'] = 0.78;
-        // $Data['IPMPendidikan'] = 0.54;
-        // $Data['IPMPengeluaran'] = 0.94;
-      }
-    } else {
-      $Data['IPMKesehatan'] = 0.78;
-      $Data['IPMPendidikan'] = 0.57;
-      $Data['IPMPengeluaran'] = 0.79;
-    }
+    // if ($this->session->userdata('JenisData') == 'Desa') {
+    // } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
+    // } else {
+    //   $Data['IPMKesehatan'] = 0.78;
+    //   $Data['IPMPendidikan'] = 0.57;
+    //   $Data['IPMPengeluaran'] = 0.79;
+    // }
+    $Data['IPMKesehatan'] = 0.79;
+    $Data['IPMPendidikan'] = 0.61;
+    $Data['IPMPengeluaran'] = 0.82;
     $Data['IPM'] = pow($Data['IPMKesehatan']*$Data['IPMPendidikan']*$Data['IPMPengeluaran'],1/3)*100;
     $this->load->view('Super/Header',$Data);
 		$this->load->view('Super/IPM',$Data);
