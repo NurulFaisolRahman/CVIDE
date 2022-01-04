@@ -99,12 +99,12 @@
 
         $("#Unduh").click(function() {
           var Kecamatan = $("#Kecamatan").val().split("|")
-          window.location = BaseURL + 'IDE/ExcelIndikatorKesejahteraan/'+Kecamatan[0]+'/'+Kecamatan[1]+'/'+$("#Desa").val()+'/'+$("#Desa option:selected").text()
+          window.location = BaseURL + 'IDE/ExcelIndikatorKesejahteraan/'+Kecamatan[0]+'/'+Kecamatan[1]
         })
 
         $("#Komoditas").click(function() {
           var Kecamatan = $("#Kecamatan").val().split("|")
-          window.location = BaseURL + 'IDE/ExcelKomoditas/'+Kecamatan[0]+'/'+Kecamatan[1]+'/'+$("#Desa").val()+'/'+$("#Desa option:selected").text()
+          window.location = BaseURL + 'IDE/ExcelKomoditas/'+Kecamatan[0]+'/'+Kecamatan[1]
         })
 
       })

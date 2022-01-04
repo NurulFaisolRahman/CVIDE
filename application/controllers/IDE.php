@@ -702,19 +702,19 @@ class IDE extends CI_Controller {
     $this->load->view('RekapIndikatorKesejahteraan',$Data);
   }
 
-  public function ExcelIndikatorKesejahteraan($KodeKecamatan,$Kecamatan,$Desa,$NamaDesa){
+  public function ExcelIndikatorKesejahteraan($KodeKecamatan,$Kecamatan){
     $Data['IPM'] = $this->db->query("SELECT * FROM surveiipm WHERE Kecamatan='".$KodeKecamatan."'")->result_array();
     // $Data['IPM'] = $this->db->query("SELECT * FROM surveiipm WHERE Id=208")->result_array();
     $Data['NamaKecamatan'] = $Kecamatan;
-    $Data['NamaDesa'] = $NamaDesa;
+    // $Data['NamaDesa'] = $NamaDesa;
     // print_r($Data['IPM']);
     $this->load->view('ExcelIndikatorKesejahteraan',$Data);                     
   }
 
-  public function ExcelKomoditas($KodeKecamatan,$Kecamatan,$Desa,$NamaDesa){
+  public function ExcelKomoditas($KodeKecamatan,$Kecamatan){
     $Data['IPM'] = $this->db->query("SELECT Id,NamaAnggota,Banyaknya,Harga,Nilai FROM surveiipm WHERE Kecamatan='".$KodeKecamatan."'")->result_array();
     $Data['NamaKecamatan'] = $Kecamatan;
-    $Data['NamaDesa'] = $NamaDesa;
+    // $Data['NamaDesa'] = $NamaDesa;
     $this->load->view('ExcelKomoditas',$Data);                      
   }
 

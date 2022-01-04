@@ -1,6 +1,6 @@
 <?php
   header('Content-Type: application/xls');
-  header('Content-Disposition: attachment; filename=DataSurveiIndikatorKesejahteraan_'.$NamaKecamatan.'_'.$NamaDesa.'.xls');
+  header('Content-Disposition: attachment; filename=DataSurveiIndikatorKesejahteraan_'.$NamaKecamatan.'.xls');
 ?>
 MIME-Version: 1.0
 X-Document-Type: Worksheet
