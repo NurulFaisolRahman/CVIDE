@@ -471,7 +471,8 @@ Content-Type: text/html; charset="us-ascii"
     <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:str><?=$IPM[$j]['Id']?></td>
 		<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:str><?=count(explode("|",$IPM[$j]['NamaAnggota']))?></td>
     <?php $Jumlah = explode("|",$IPM[$j]['Nilai']); for ($i=0; $i < 154; $i++) { ?>
-		<?php if ($i < 107) { ?>
+			<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=(int)$Jumlah[$i]?></td>
+		/* <?php if ($i < 107) { ?>
 			<?php if ($i > 4 && $i < 19) { ?>
 				<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=(int)$Jumlah[$i]*3?></td>
 			<?php } else if ($i > 41 && $i < 62) { ?>
@@ -486,7 +487,7 @@ Content-Type: text/html; charset="us-ascii"
 			<td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=round((int)$Jumlah[$i]/12)?></td>
 		<?php } else { ?>	
       <td class=3D"xl65" height=3D"20" width=3D"64" style=3D'height:15.00pt;width:48.00pt;' x:num><?=(int)$Jumlah[$i]?></td>
-    <?php }} ?>
+    <?php }} ?> */
    </tr>
    <?php } ?>
    <![if supportMisalignedColumns]>
