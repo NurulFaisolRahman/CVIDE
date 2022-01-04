@@ -369,60 +369,60 @@ class Super extends CI_Controller {
     $DataKomoditas = array();  $Ace = 0;
     if ($this->session->userdata('JenisData') == 'Desa') {
       $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `surveiipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
-      if ($Data['KodeDesa'] == "35.10.01.2002") {
-        $Ace = 85000;
-      } else if ($Data['KodeDesa'] == "35.10.01.2010") {
-        $Ace = 170000;
-      } else if ($Data['KodeDesa'] == "35.10.05.2003") {
-        $Ace = 145000;
-      } else if ($Data['KodeDesa'] == "35.10.05.2007") {
-        $Ace = 125000;
-      } else if ($Data['KodeDesa'] == "35.10.09.2001") {
-        $Ace = 145000;
-      } else if ($Data['KodeDesa'] == "35.10.09.2003") {
-        $Ace = 155000;
-      } else if ($Data['KodeDesa'] == "35.10.11.2003") {
-        $Ace = 145000;
-      } else if ($Data['KodeDesa'] == "35.10.11.2006") {
-        $Ace = 102000;
-      } else if ($Data['KodeDesa'] == "35.10.12.2005") {
-        $Ace = 265000;
-      } else if ($Data['KodeDesa'] == "35.10.12.2006") {
-        $Ace = 195000;
-      } else if ($Data['KodeDesa'] == "35.10.13.2001") {
-        $Ace = 0;
-      } else if ($Data['KodeDesa'] == "35.10.13.2013") {
-        $Ace = 175000;
-      } else if ($Data['KodeDesa'] == "35.10.18.2001") {
-        $Ace = 81000;
-      } else if ($Data['KodeDesa'] == "35.10.18.2012") {
-        $Ace = 105000;
-      } else if ($Data['KodeDesa'] == "35.10.24.2003") {
-        $Ace = 245000;
-      } else if ($Data['KodeDesa'] == "35.10.24.2008") {
-        $Ace = 175000;
-      } 
+      // if ($Data['KodeDesa'] == "35.10.01.2002") {
+      //   $Ace = 85000;
+      // } else if ($Data['KodeDesa'] == "35.10.01.2010") {
+      //   $Ace = 170000;
+      // } else if ($Data['KodeDesa'] == "35.10.05.2003") {
+      //   $Ace = 145000;
+      // } else if ($Data['KodeDesa'] == "35.10.05.2007") {
+      //   $Ace = 125000;
+      // } else if ($Data['KodeDesa'] == "35.10.09.2001") {
+      //   $Ace = 145000;
+      // } else if ($Data['KodeDesa'] == "35.10.09.2003") {
+      //   $Ace = 155000;
+      // } else if ($Data['KodeDesa'] == "35.10.11.2003") {
+      //   $Ace = 145000;
+      // } else if ($Data['KodeDesa'] == "35.10.11.2006") {
+      //   $Ace = 102000;
+      // } else if ($Data['KodeDesa'] == "35.10.12.2005") {
+      //   $Ace = 265000;
+      // } else if ($Data['KodeDesa'] == "35.10.12.2006") {
+      //   $Ace = 195000;
+      // } else if ($Data['KodeDesa'] == "35.10.13.2001") {
+      //   $Ace = 0;
+      // } else if ($Data['KodeDesa'] == "35.10.13.2013") {
+      //   $Ace = 175000;
+      // } else if ($Data['KodeDesa'] == "35.10.18.2001") {
+      //   $Ace = 81000;
+      // } else if ($Data['KodeDesa'] == "35.10.18.2012") {
+      //   $Ace = 105000;
+      // } else if ($Data['KodeDesa'] == "35.10.24.2003") {
+      //   $Ace = 245000;
+      // } else if ($Data['KodeDesa'] == "35.10.24.2008") {
+      //   $Ace = 175000;
+      // } 
     } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
       $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `surveiipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
-      if ($Data['KodeKecamatan'] == "35.10.01") {
-        $Ace = 130000;
-      } else if ($Data['KodeKecamatan'] == "35.10.05") {
-        $Ace = 145000;
-      } else if ($Data['KodeKecamatan'] == "35.10.09") {
-        $Ace = 170000;
-      } else if ($Data['KodeKecamatan'] == "35.10.11") {
-        $Ace = 130000;
-      } else if ($Data['KodeKecamatan'] == "35.10.12") {
-        $Ace = 280000;
-      } else if ($Data['KodeKecamatan'] == "35.10.13") {
-        $Ace = 185000;
-      } else if ($Data['KodeKecamatan'] == "35.10.18") {
-        $Ace = 110000;
-      } else if ($Data['KodeKecamatan'] == "35.10.24") {
-        $Ace = 270000;
-      }
+      // if ($Data['KodeKecamatan'] == "35.10.01") {
+      //   $Ace = 130000;
+      // } else if ($Data['KodeKecamatan'] == "35.10.05") {
+      //   $Ace = 145000;
+      // } else if ($Data['KodeKecamatan'] == "35.10.09") {
+      //   $Ace = 170000;
+      // } else if ($Data['KodeKecamatan'] == "35.10.11") {
+      //   $Ace = 130000;
+      // } else if ($Data['KodeKecamatan'] == "35.10.12") {
+      //   $Ace = 280000;
+      // } else if ($Data['KodeKecamatan'] == "35.10.13") {
+      //   $Ace = 185000;
+      // } else if ($Data['KodeKecamatan'] == "35.10.18") {
+      //   $Ace = 110000;
+      // } else if ($Data['KodeKecamatan'] == "35.10.24") {
+      //   $Ace = 270000;
+      // }
     } else {
-      $Ace = 223500;
+      // $Ace = 223500;
       $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `surveiipm`")->result_array();
     }
     $Data['JumlahKK'] = count($DataKomoditas); $Data['GK'] = $Data['GKM'] = $Data['GKNM'] = $Data['Individu'] = array(); 
@@ -491,11 +491,11 @@ class Super extends CI_Controller {
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
     $Pengangguran = array();  
     if ($this->session->userdata('JenisData') == 'Desa') {
-      $Pengangguran = $this->db->query("SELECT Usia,KegiatanSeminggu,PenyebabMenganggur FROM `surveiipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+      $Pengangguran = $this->db->query("SELECT Usia,KegiatanSeminggu,PenyebabMenganggur,JamKerja FROM `surveiipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
     } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
-      $Pengangguran = $this->db->query("SELECT Usia,KegiatanSeminggu,PenyebabMenganggur FROM `surveiipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
+      $Pengangguran = $this->db->query("SELECT Usia,KegiatanSeminggu,PenyebabMenganggur,JamKerja FROM `surveiipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
     } else {
-      $Pengangguran = $this->db->query("SELECT Usia,KegiatanSeminggu,PenyebabMenganggur FROM `surveiipm`")->result_array();
+      $Pengangguran = $this->db->query("SELECT Usia,KegiatanSeminggu,PenyebabMenganggur,JamKerja FROM `surveiipm`")->result_array();
     }
     $Data['Dewasa'] = $Data['Bekerja'] = $Data['TidakBekerja'] = $Data['AngkatanKerja'] = 0;
     $Data['Terbuka'] =  $Data['BukanAngkatanKerja'] = $Data['TPAK'] = $Data['TPT'] = 0;
@@ -503,20 +503,25 @@ class Super extends CI_Controller {
       $Usia = explode("|",$key['Usia']);
       $KegiatanSeminggu = explode("|",$key['KegiatanSeminggu']);
       $PenyebabMenganggur = explode("|",$key['PenyebabMenganggur']);
+      $JamKerja = explode("|",$key['JamKerja']);
       for ($i=0; $i < count($Usia); $i++) { 
         if ($Usia[$i] > 15 && $Usia[$i] < 66) {
           if (isset($Usia[$i]) && isset($KegiatanSeminggu[$i])) {
             $Data['Dewasa'] += 1;
-            if ($KegiatanSeminggu[$i] == 1 || $KegiatanSeminggu[$i] == 5) {
+            if ($KegiatanSeminggu[$i] == 2 || is_int($JamKerja[$i])){
+              $Data['Bekerja'] += 1;
+            } else if ($KegiatanSeminggu[$i] == 1 || $KegiatanSeminggu[$i] == 5) {
               $Data['TidakBekerja'] += 1;
               if ($KegiatanSeminggu[$i] == 1 && $PenyebabMenganggur[$i] == 2 || $PenyebabMenganggur[$i] == 3) {
                 $Data['Terbuka'] += 1;
               } else if($KegiatanSeminggu[$i] == 5){
                 $Data['Terbuka'] += 1;
               }
-            } else if ($KegiatanSeminggu[$i] == 2){
-              $Data['Bekerja'] += 1;
-            } else {
+            } 
+            // else if ($KegiatanSeminggu[$i] == 2){
+            //   $Data['Bekerja'] += 1;
+            // } 
+            else {
               $Data['BukanAngkatanKerja'] += 1;
             }
           }
