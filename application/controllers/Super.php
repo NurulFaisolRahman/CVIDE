@@ -384,21 +384,21 @@ class Super extends CI_Controller {
       $TotalPengeluaranMakanan = $TotalPengeluaranNonMakanan = 0;
       for ($i=0; $i < count($Nilai); $i++) { 
         if ($i < 107) {
-          $TotalPengeluaranMakanan += (int)$Nilai[$i]/12;
+          $TotalPengeluaranMakanan += intval((int)$Nilai[$i]/12);
         }
         else {
-          $TotalPengeluaranNonMakanan += (int)$Nilai[$i]/12;
+          $TotalPengeluaranNonMakanan += intval((int)$Nilai[$i]/12);
         }
       }
       array_push($Data['Individu'],$TotalIndividuKeluarga);
-      array_push($Data['GKM'],($TotalPengeluaranMakanan/$TotalIndividuKeluarga));
-      array_push($Data['GKNM'],($TotalPengeluaranNonMakanan/$TotalIndividuKeluarga));
+      array_push($Data['GKM'],intval($TotalPengeluaranMakanan/$TotalIndividuKeluarga));
+      array_push($Data['GKNM'],intval($TotalPengeluaranNonMakanan/$TotalIndividuKeluarga));
       $Data['TotalPengeluaranMakanan'] += $TotalPengeluaranMakanan;
       $Data['TotalPengeluaranNonMakanan'] += $TotalPengeluaranNonMakanan;
     }
     if (count($DataKomoditas) > 0) {
-      $Data['GKMRata2'] = $Data['TotalPengeluaranMakanan']/$Data['TotalIndividu']; 
-      $Data['GKNMRata2'] = $Data['TotalPengeluaranNonMakanan']/$Data['TotalIndividu']; 
+      $Data['GKMRata2'] = intval($Data['TotalPengeluaranMakanan']/$Data['TotalIndividu']); 
+      $Data['GKNMRata2'] = intval($Data['TotalPengeluaranNonMakanan']/$Data['TotalIndividu']); 
       $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       for ($i=0; $i < count($Data['GKM']); $i++) { 
         if (($Data['GKM'][$i]+$Data['GKNM'][$i]) > ($Data['GKRata2'])) {
