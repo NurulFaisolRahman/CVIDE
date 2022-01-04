@@ -702,17 +702,17 @@ class IDE extends CI_Controller {
     $this->load->view('RekapIndikatorKesejahteraan',$Data);
   }
 
-  public function ExcelIndikatorKesejahteraan($Kecamatan,$Desa,$NamaDesa){
-    $Data['IPM'] = $this->db->query("SELECT * FROM `ipm` WHERE Desa='".$Desa."'")->result_array();
-    // $Data['IPM'] = $this->db->query("SELECT * FROM `ipm` WHERE Id=208")->result_array();
+  public function ExcelIndikatorKesejahteraan($KodeKecamatan,$Kecamatan,$Desa,$NamaDesa){
+    $Data['IPM'] = $this->db->query("SELECT * FROM surveiipm WHERE Kecamatan='".$KodeKecamatan."'")->result_array();
+    // $Data['IPM'] = $this->db->query("SELECT * FROM surveiipm WHERE Id=208")->result_array();
     $Data['NamaKecamatan'] = $Kecamatan;
     $Data['NamaDesa'] = $NamaDesa;
     // print_r($Data['IPM']);
     $this->load->view('ExcelIndikatorKesejahteraan',$Data);                     
   }
 
-  public function ExcelKomoditas($Kecamatan,$Desa,$NamaDesa){
-    $Data['IPM'] = $this->db->query("SELECT Id,NamaAnggota,Banyaknya,Harga,Nilai FROM `ipm` WHERE Desa='".$Desa."'")->result_array();
+  public function ExcelKomoditas($KodeKecamatan,$Kecamatan,$Desa,$NamaDesa){
+    $Data['IPM'] = $this->db->query("SELECT Id,NamaAnggota,Banyaknya,Harga,Nilai FROM surveiipm WHERE Kecamatan='".$KodeKecamatan."'")->result_array();
     $Data['NamaKecamatan'] = $Kecamatan;
     $Data['NamaDesa'] = $NamaDesa;
     $this->load->view('ExcelKomoditas',$Data);                      
