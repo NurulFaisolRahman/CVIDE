@@ -62,7 +62,7 @@
                       <div class="card-body bg-primary border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/PerKapita.png')?>" alt="GK" height="210" ></a>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Rata-rata Pengeluaran<br>PerKapita Per Tahun ".number_format($PerKapita,0,",",".")?></div></div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Rata-rata Pengeluaran<br>PerKapita Per Tahun ".number_format($PerKapita*100,0,",",".")?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
@@ -70,7 +70,7 @@
                       <div class="card-body bg-primary border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/PerKapitaKonstan.png')?>" alt="GK" height="210" ></a>
                       </div>
-                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Rata-rata Pengeluaran PerKapita<br>Konstan Per Tahun ".number_format($PerKapitaKonstan,0,",",".")?></div></div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Rata-rata Pengeluaran PerKapita<br>Konstan Per Tahun ".number_format($PerKapitaKonstan*100,0,",",".")?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">

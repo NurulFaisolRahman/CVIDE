@@ -999,7 +999,7 @@ class Super extends CI_Controller {
       $Indeks = 0;
       for ($i=0; $i < count($Nilai); $i++) { 
         if (in_array($i,$IndeksKomoditasTerpilih)) {
-          $TotalPengeluaran += (Int)$Nilai[$i];
+          $TotalPengeluaran += (Int)$Nilai[$i]+113000;
           $KomoditasTerpilih[$Indeks] += (Int)$Harga[$i];
           $Indeks += 1;
         }
