@@ -1133,9 +1133,9 @@ class Super extends CI_Controller {
         $Data['IPMPengeluaran'] = 0.77;
       }
     } else if ($this->session->userdata('JenisData') == 'Kabupaten') {
-      $Data['IPMPendidikan'] = 0.60;
+      $Data['IPMPendidikan'] = 0.63;
       $Data['IPMKesehatan'] = 0.78;
-      $Data['IPMPengeluaran'] = 0.77;
+      $Data['IPMPengeluaran'] = 0.73;
     }
     $Data['IPM'] = pow($Data['IPMKesehatan']*$Data['IPMPendidikan']*$Data['IPMPengeluaran'],1/3)*100;
     $this->load->view('Super/Header',$Data);
