@@ -408,6 +408,113 @@ class Super extends CI_Controller {
         }
       }
     }
+    if ($this->session->userdata('JenisData') == 'Kecamatan') {
+      if ($Data['KodeKecamatan'] == '35.10.01') {
+        $Data['IPMPendidikan'] = 0.57;
+        $Data['IPMKesehatan'] = 0.72;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.02') {
+        $Data['IPMPendidikan'] = 0.61;
+        $Data['IPMKesehatan'] = 0.68;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.03') {
+        $Data['IPMPendidikan'] = 0.64;
+        $Data['IPMKesehatan'] = 0.71;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.04') {
+        $Data['IPMPendidikan'] = 0.49;
+        $Data['IPMKesehatan'] = 0.56;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.05') {
+        $Data['IPMPendidikan'] = 0.70;
+        $Data['IPMKesehatan'] = 0.71;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.06') {
+        $Data['IPMPendidikan'] = 0.59;
+        $Data['IPMKesehatan'] = 0.66;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.07') {
+        $Data['IPMPendidikan'] = 0.60;
+        $Data['IPMKesehatan'] = 0.66;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.08') {
+        $Data['IPMPendidikan'] = 0.60;
+        $Data['IPMKesehatan'] = 0.75;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.09') {
+        $Data['IPMPendidikan'] = 0.68;
+        $Data['IPMKesehatan'] = 0.70;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.10') {
+        $Data['IPMPendidikan'] = 0.60;
+        $Data['IPMKesehatan'] = 0.65;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.11') {
+        $Data['IPMPendidikan'] = 0.54;
+        $Data['IPMKesehatan'] = 0.67;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.12') {
+        $Data['IPMPendidikan'] = 0.56;
+        $Data['IPMKesehatan'] = 0.65;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.13') {
+        $Data['IPMPendidikan'] = 0.67;
+        $Data['IPMKesehatan'] = 0.63;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.14') {
+        $Data['IPMPendidikan'] = 0.56;
+        $Data['IPMKesehatan'] = 0.68;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.15') {
+        $Data['IPMPendidikan'] = 0.48;
+        $Data['IPMKesehatan'] = 0.60;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.16') {
+        $Data['IPMPendidikan'] = 0.61;
+        $Data['IPMKesehatan'] = 0.68;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.17') {
+        $Data['IPMPendidikan'] = 0.62;
+        $Data['IPMKesehatan'] = 0.62;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.18') {
+        $Data['IPMPendidikan'] = 0.67;
+        $Data['IPMKesehatan'] = 0.75;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.19') {
+        $Data['IPMPendidikan'] = 0.54;
+        $Data['IPMKesehatan'] = 0.72;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.20') {
+        $Data['IPMPendidikan'] = 0.60;
+        $Data['IPMKesehatan'] = 0.75;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.21') {
+        $Data['IPMPendidikan'] = 0.49;
+        $Data['IPMKesehatan'] = 0.66;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.22') {
+        $Data['IPMPendidikan'] = 0.60;
+        $Data['IPMKesehatan'] = 0.67;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.23') {
+        $Data['IPMPendidikan'] = 0.64;
+        $Data['IPMKesehatan'] = 0.68;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.24') {
+        $Data['IPMPendidikan'] = 0.60;
+        $Data['IPMKesehatan'] = 0.52;
+        $Data['IPMPengeluaran'] = 0.77;
+      } else if ($Data['KodeKecamatan'] == '35.10.25') {
+        $Data['IPMPendidikan'] = 0.60;
+        $Data['IPMKesehatan'] = 0.63;
+        $Data['IPMPengeluaran'] = 0.77;
+      }
+    } else if ($this->session->userdata('JenisData') == 'Kabupaten') {
+      $Data['GKMRata2'] = 310187; 
+      $Data['GKNMRata2'] = 77803; 
+      $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+    }
     $this->load->view('Super/Header',$Data);
 		$this->load->view('Super/GarisKemiskinan',$Data);
   }
@@ -1025,7 +1132,7 @@ class Super extends CI_Controller {
         $Data['IPMKesehatan'] = 0.63;
         $Data['IPMPengeluaran'] = 0.77;
       }
-    } else {
+    } else if ($this->session->userdata('JenisData') == 'Kabupaten') {
       $Data['IPMPendidikan'] = 0.60;
       $Data['IPMKesehatan'] = 0.78;
       $Data['IPMPengeluaran'] = 0.77;
