@@ -410,109 +410,109 @@ class Super extends CI_Controller {
     }
     if ($this->session->userdata('JenisData') == 'Kecamatan') {
       if ($Data['KodeKecamatan'] == '35.10.01') {
-        $Data['IPMPendidikan'] = 0.57;
-        $Data['IPMKesehatan'] = 0.72;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 292513; 
+        $Data['GKNMRata2'] = 73709; 
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.02') {
-        $Data['IPMPendidikan'] = 0.61;
-        $Data['IPMKesehatan'] = 0.68;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 289814; 
+        $Data['GKNMRata2'] = 82002; 
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.03') {
-        $Data['IPMPendidikan'] = 0.64;
-        $Data['IPMKesehatan'] = 0.71;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 294793;
+        $Data['GKNMRata2'] = 71748;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.04') {
-        $Data['IPMPendidikan'] = 0.49;
-        $Data['IPMKesehatan'] = 0.56;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 289081; 
+        $Data['GKNMRata2'] = 87957;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.05') {
-        $Data['IPMPendidikan'] = 0.70;
-        $Data['IPMKesehatan'] = 0.71;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 299712;
+        $Data['GKNMRata2'] = 74572;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.06') {
-        $Data['IPMPendidikan'] = 0.59;
-        $Data['IPMKesehatan'] = 0.66;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 291132;
+        $Data['GKNMRata2'] = 83427;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.07') {
-        $Data['IPMPendidikan'] = 0.60;
-        $Data['IPMKesehatan'] = 0.66;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 295314;
+        $Data['GKNMRata2'] = 70368;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.08') {
-        $Data['IPMPendidikan'] = 0.60;
-        $Data['IPMKesehatan'] = 0.75;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 289769;
+        $Data['GKNMRata2'] = 89400;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.09') {
-        $Data['IPMPendidikan'] = 0.68;
-        $Data['IPMKesehatan'] = 0.70;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 302437;
+        $Data['GKNMRata2'] = 72805;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.10') {
-        $Data['IPMPendidikan'] = 0.60;
-        $Data['IPMKesehatan'] = 0.65;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 286286;
+        $Data['GKNMRata2'] = 85079;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.11') {
-        $Data['IPMPendidikan'] = 0.54;
-        $Data['IPMKesehatan'] = 0.67;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 295692;
+        $Data['GKNMRata2'] = 77889;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.12') {
-        $Data['IPMPendidikan'] = 0.56;
-        $Data['IPMKesehatan'] = 0.65;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 291048;
+        $Data['GKNMRata2'] = 80251;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.13') {
-        $Data['IPMPendidikan'] = 0.67;
-        $Data['IPMKesehatan'] = 0.63;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 297709;
+        $Data['GKNMRata2'] = 74384;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.14') {
-        $Data['IPMPendidikan'] = 0.56;
-        $Data['IPMKesehatan'] = 0.68;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 293203;
+        $Data['GKNMRata2'] = 72088;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.15') {
-        $Data['IPMPendidikan'] = 0.48;
-        $Data['IPMKesehatan'] = 0.60;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 301138;
+        $Data['GKNMRata2'] = 68281;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.16') {
-        $Data['IPMPendidikan'] = 0.61;
-        $Data['IPMKesehatan'] = 0.68;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 299076;
+        $Data['GKNMRata2'] = 75493;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.17') {
-        $Data['IPMPendidikan'] = 0.62;
-        $Data['IPMKesehatan'] = 0.62;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 291417;
+        $Data['GKNMRata2'] = 78296;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.18') {
-        $Data['IPMPendidikan'] = 0.67;
-        $Data['IPMKesehatan'] = 0.75;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 299047;
+        $Data['GKNMRata2'] = 78786;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.19') {
-        $Data['IPMPendidikan'] = 0.54;
-        $Data['IPMKesehatan'] = 0.72;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 294465;
+        $Data['GKNMRata2'] = 83745;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.20') {
-        $Data['IPMPendidikan'] = 0.60;
-        $Data['IPMKesehatan'] = 0.75;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 289909;
+        $Data['GKNMRata2'] = 85915;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.21') {
-        $Data['IPMPendidikan'] = 0.49;
-        $Data['IPMKesehatan'] = 0.66;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 290753;
+        $Data['GKNMRata2'] = 81027;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.22') {
-        $Data['IPMPendidikan'] = 0.60;
-        $Data['IPMKesehatan'] = 0.67;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 302607;
+        $Data['GKNMRata2'] = 71724;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.23') {
-        $Data['IPMPendidikan'] = 0.64;
-        $Data['IPMKesehatan'] = 0.68;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 291698;
+        $Data['GKNMRata2'] = 78619;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.24') {
-        $Data['IPMPendidikan'] = 0.60;
-        $Data['IPMKesehatan'] = 0.52;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 300012;
+        $Data['GKNMRata2'] = 69668;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       } else if ($Data['KodeKecamatan'] == '35.10.25') {
-        $Data['IPMPendidikan'] = 0.60;
-        $Data['IPMKesehatan'] = 0.63;
-        $Data['IPMPengeluaran'] = 0.77;
+        $Data['GKMRata2'] = 294577;
+        $Data['GKNMRata2'] = 74071;
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
       }
     } else if ($this->session->userdata('JenisData') == 'Kabupaten') {
       $Data['GKMRata2'] = 310187; 
-      $Data['GKNMRata2'] = 77803; 
+      $Data['GKNMRata2'] = 75803; 
       $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
     }
     $this->load->view('Super/Header',$Data);
