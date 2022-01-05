@@ -701,7 +701,7 @@ class Super extends CI_Controller {
       $Pendidikan = $this->db->query("SELECT Usia,Fertilitas,PartisipasiSekolah,PendidikanTertinggi,StatusSekolah,Santri FROM `surveiipm`")->result_array();
     }
     $KelompokHLS = array(array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0));
-    $LamaSekolah = $Penduduk25 = $PendudukSekolah = $Penduduk7 = $Santri = 0;
+    $LamaSekolah = $Penduduk25 = $Penduduk7 = $Santri = 0;
     $Data['IPMPendidikan'] = array();
     $Data['IPMPendidikan']['RLS'] = 0;
     $Data['IPMPendidikan']['HLS'] = 0;
@@ -715,7 +715,7 @@ class Super extends CI_Controller {
         $Tingkat = explode("|",$key['StatusSekolah']);
         $Usia = explode("|",$key['Usia']);
         if (is_int($key['Santri'])) {
-          $Santri += (int)$key['Santri'];  
+          $Santri += intval($key['Santri']);  
         }
         for ($i=0; $i < count($Partisipasi); $i++) { 
           if (count($Partisipasi) == count($Usia)) {
@@ -781,29 +781,34 @@ class Super extends CI_Controller {
                 if ($Partisipasi[$i] != 1) {
                   $KelompokHLS[1][11] += 1;
                 }
+              } else if ($Usia[$i] == 19) {
+                $KelompokHLS[0][12] += 1;
+                if ($Partisipasi[$i] != 1) {
+                  $KelompokHLS[1][12] += 1;
+                }
               } 
             }
             if ($Usia[$i] > 24) {
-              $PendudukSekolah += 1;
               if ($Partisipasi[$i] == 1) {
                 $Penduduk25 += 1;
-              } else if ($Jenjang[$i] < 4) {
+              } 
+              if ($Jenjang[$i] < 4) {
                 if ($Tingkat[$i] == 9) {
                   $LamaSekolah += 6; $Penduduk25 += 1;
                 } else {
-                  $LamaSekolah += ($Tingkat[$i]-1); $Penduduk25 += 1;
+                  $LamaSekolah += ($Tingkat[$i]-4); $Penduduk25 += 1;
                 }
               } else if ($Jenjang[$i] < 7) {
                 if ($Tingkat[$i] == 9) {
                   $LamaSekolah += 9; $Penduduk25 += 1;
                 } else {
-                  $LamaSekolah += (5+$Tingkat[$i]); $Penduduk25 += 1;
+                  $LamaSekolah += (5+$Tingkat[$i]-4); $Penduduk25 += 1;
                 }
               } else if ($Jenjang[$i] < 11) {
                 if ($Tingkat[$i] == 9) {
                   $LamaSekolah += 12; $Penduduk25 += 1;
                 } else {
-                  $LamaSekolah += (8+$Tingkat[$i]); $Penduduk25 += 1;
+                  $LamaSekolah += (8+$Tingkat[$i]-4); $Penduduk25 += 1;
                 }
               } else if ($Jenjang[$i] == 11) {
                 if ($Tingkat[$i] == 9) {
