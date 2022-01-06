@@ -81,14 +81,14 @@
                       <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Garis Kemiskinan <br>Rp ".number_format($GKRata2,2,",",".")?></div></div>
                     </div>
                   </div>
-                  <div class="col-lg-3 col-sm-12 text-center">
+                  <!-- <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-warning border border-light p-0">
                         <div id="chart_div" style="margin-bottom: 24px;"></div>
                       </div>
                     <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Persentase Kemiskinan ".number_format($KelompokGK[1]/($KelompokGK[0]+$KelompokGK[1])*100,2,",",".")."%"?></div></div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -128,26 +128,26 @@
             })                    
           }
         })
-        google.charts.load("current", {packages:["corechart"]});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-          var data = google.visualization.arrayToDataTable([
-            ['Pendidikan', 'Jumlah'],
-            ['Di Atas GK',<?=number_format($KelompokGK[0]/($KelompokGK[0]+$KelompokGK[1])*100,2)?>],
-            ['Di Bawah GK',<?=number_format($KelompokGK[1]/($KelompokGK[0]+$KelompokGK[1])*100,2)?>],
-          ]);
+        // google.charts.load("current", {packages:["corechart"]});
+        // google.charts.setOnLoadCallback(drawChart);
+        // function drawChart() {
+        //   var data = google.visualization.arrayToDataTable([
+        //     ['Pendidikan', 'Jumlah'],
+        //     ['Di Atas GK',<?=number_format($KelompokGK[0]/($KelompokGK[0]+$KelompokGK[1])*100,2)?>],
+        //     ['Di Bawah GK',<?=number_format($KelompokGK[1]/($KelompokGK[0]+$KelompokGK[1])*100,2)?>],
+        //   ]);
 
-          var options = {
-            pieHole: 0.2,
-            sliceVisibilityThreshold : 0,
-            chartArea : {left:5,top:20,width: 250, height: 250},
-            legend: {position: 'none'},
-            backgroundColor: { fill:'transparent' }
-          };
+        //   var options = {
+        //     pieHole: 0.2,
+        //     sliceVisibilityThreshold : 0,
+        //     chartArea : {left:5,top:20,width: 250, height: 250},
+        //     legend: {position: 'none'},
+        //     backgroundColor: { fill:'transparent' }
+        //   };
 
-          var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-          chart.draw(data, options);
-        }
+        //   var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        //   chart.draw(data, options);
+        // }
       })
 		</script>
   </body>
