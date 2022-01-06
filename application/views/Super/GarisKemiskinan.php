@@ -86,7 +86,7 @@
                       <div class="card-body bg-warning border border-light p-0">
                         <div id="chart_div" style="margin-bottom: 24px;"></div>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Persentase Kemiskinan ".number_format($KelompokGK[1]/($KelompokGK[0]+$KelompokGK[1])*100,2,",",".")?></div></div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Persentase Kemiskinan ".number_format($KelompokGK[1]/($KelompokGK[0]+$KelompokGK[1])*100,2,",",".")."%"?></div></div>
                     </div>
                   </div>
                 </div>
@@ -112,17 +112,21 @@
           })    
         })
         $("#TampilkanData").click(function() {
-          var Data =  { KodeDesa: $("#Desa").val(),
-                        KodeKecamatan: $("#Kecamatan").val(),
-                        JenisData: $("#JenisData").val() }
-          $.post(BaseURL+"Super/Session", Data).done(function(Respon) {
-            if (Respon == '1') {
-              window.location = BaseURL + "Super/GarisKemiskinan"
-            }
-            else {
-              alert(Respon)
-            }
-          })                    
+          if ($("#JenisData").val() == 'Desa') {
+            alert('Data Garis Kemiskinan Desa Belum Tersedia')
+          } else {
+            var Data =  { KodeDesa: $("#Desa").val(),
+                          KodeKecamatan: $("#Kecamatan").val(),
+                          JenisData: $("#JenisData").val() }
+            $.post(BaseURL+"Super/Session", Data).done(function(Respon) {
+              if (Respon == '1') {
+                window.location = BaseURL + "Super/GarisKemiskinan"
+              }
+              else {
+                alert(Respon)
+              }
+            })                    
+          }
         })
         google.charts.load("current", {packages:["corechart"]});
         google.charts.setOnLoadCallback(drawChart);

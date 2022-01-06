@@ -413,102 +413,154 @@ class Super extends CI_Controller {
         $Data['GKMRata2'] = 292513; 
         $Data['GKNMRata2'] = 73709; 
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(5.14*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.02') {
         $Data['GKMRata2'] = 289814; 
         $Data['GKNMRata2'] = 82002; 
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(6.82*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.03') {
         $Data['GKMRata2'] = 294793;
         $Data['GKNMRata2'] = 71748;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(5.07*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.04') {
         $Data['GKMRata2'] = 289081; 
         $Data['GKNMRata2'] = 87957;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(6.14*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.05') {
         $Data['GKMRata2'] = 299712;
         $Data['GKNMRata2'] = 74572;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(7.14*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.06') {
         $Data['GKMRata2'] = 291132;
         $Data['GKNMRata2'] = 83427;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(5.57*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.07') {
         $Data['GKMRata2'] = 295314;
         $Data['GKNMRata2'] = 70368;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(6.82*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.08') {
         $Data['GKMRata2'] = 289769;
         $Data['GKNMRata2'] = 89400;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(7.48*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.09') {
         $Data['GKMRata2'] = 302437;
         $Data['GKNMRata2'] = 72805;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(6.31*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.10') {
         $Data['GKMRata2'] = 286286;
         $Data['GKNMRata2'] = 85079;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(7.17*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.11') {
         $Data['GKMRata2'] = 295692;
         $Data['GKNMRata2'] = 77889;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(6.58*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.12') {
         $Data['GKMRata2'] = 291048;
         $Data['GKNMRata2'] = 80251;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(7.49*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.13') {
         $Data['GKMRata2'] = 297709;
         $Data['GKNMRata2'] = 74384;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(5.70*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.14') {
         $Data['GKMRata2'] = 293203;
         $Data['GKNMRata2'] = 72088;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(7.17*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.15') {
         $Data['GKMRata2'] = 301138;
         $Data['GKNMRata2'] = 68281;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(7.03*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.16') {
         $Data['GKMRata2'] = 299076;
         $Data['GKNMRata2'] = 75493;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(5.62*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.17') {
         $Data['GKMRata2'] = 291417;
         $Data['GKNMRata2'] = 78296;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(5.87*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.18') {
         $Data['GKMRata2'] = 299047;
         $Data['GKNMRata2'] = 78786;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(7.09*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.19') {
         $Data['GKMRata2'] = 294465;
         $Data['GKNMRata2'] = 83745;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(5.18*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.20') {
         $Data['GKMRata2'] = 289909;
         $Data['GKNMRata2'] = 85915;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(7.90*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.21') {
         $Data['GKMRata2'] = 290753;
         $Data['GKNMRata2'] = 81027;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(7.54*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.22') {
         $Data['GKMRata2'] = 302607;
         $Data['GKNMRata2'] = 71724;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(6.85*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.23') {
         $Data['GKMRata2'] = 291698;
         $Data['GKNMRata2'] = 78619;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(6.95*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.24') {
         $Data['GKMRata2'] = 300012;
         $Data['GKNMRata2'] = 69668;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(5.23*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.25') {
         $Data['GKMRata2'] = 294577;
         $Data['GKNMRata2'] = 74071;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+        $Data['KelompokGK'][1] = intval(6.98*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       }
     } else if ($this->session->userdata('JenisData') == 'Kabupaten') {
       $Data['GKMRata2'] = 310187; 

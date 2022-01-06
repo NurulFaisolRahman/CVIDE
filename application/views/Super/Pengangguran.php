@@ -112,17 +112,21 @@
           })    
         })
         $("#TampilkanData").click(function() {
-          var Data =  { KodeDesa: $("#Desa").val(),
-                        KodeKecamatan: $("#Kecamatan").val(),
-                        JenisData: $("#JenisData").val() }
-          $.post(BaseURL+"Super/Session", Data).done(function(Respon) {
-            if (Respon == '1') {
-              window.location = BaseURL + "Super/Pengangguran"
-            }
-            else {
-              alert(Respon)
-            }
-          })                    
+          if ($("#JenisData").val() == 'Desa') {
+            alert('Data Pengangguran Desa Belum Tersedia')
+          } else {
+            var Data =  { KodeDesa: $("#Desa").val(),
+                          KodeKecamatan: $("#Kecamatan").val(),
+                          JenisData: $("#JenisData").val() }
+            $.post(BaseURL+"Super/Session", Data).done(function(Respon) {
+              if (Respon == '1') {
+                window.location = BaseURL + "Super/Pengangguran"
+              }
+              else {
+                alert(Respon)
+              }
+            })                    
+          }
         })
         google.charts.load("current", {packages:["corechart"]});
         google.charts.setOnLoadCallback(drawChart);
