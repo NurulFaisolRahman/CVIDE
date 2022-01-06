@@ -81,14 +81,14 @@
                       <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Garis Kemiskinan <br>Rp ".number_format($GKRata2,2,",",".")?></div></div>
                     </div>
                   </div>
-                  <!-- <div class="col-lg-3 col-sm-12 text-center">
+                  <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-warning border border-light p-0">
                         <div id="chart_div" style="margin-bottom: 24px;"></div>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?=$KelompokGK[0]+$KelompokGK[1]." Responden<br>Dari ".$JumlahKK." Keluarga"?></div></div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Persentase Kemiskinan ".number_format($KelompokGK[1]/($KelompokGK[0]+$KelompokGK[1]),2,",",".")?></div></div>
                     </div>
-                  </div> -->
+                  </div>
                 </div>
               </div>
             </div>
@@ -124,26 +124,26 @@
             }
           })                    
         })
-        // google.charts.load("current", {packages:["corechart"]});
-        // google.charts.setOnLoadCallback(drawChart);
-        // function drawChart() {
-        //   var data = google.visualization.arrayToDataTable([
-        //     ['Pendidikan', 'Jumlah'],
-        //     ['Di Atas GK',<?=$KelompokGK[0]?>],
-        //     ['Di Bawah GK',<?=$KelompokGK[1]?>],
-        //   ]);
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Pendidikan', 'Jumlah'],
+            ['Di Atas GK',<?=$KelompokGK[0]?>],
+            ['Di Bawah GK',<?=$KelompokGK[1]?>],
+          ]);
 
-        //   var options = {
-        //     pieHole: 0.4,
-        //     sliceVisibilityThreshold : 0,
-        //     chartArea : {left:5,top:20,width: 250, height: 250},
-        //     legend: {position: 'none'},
-        //     backgroundColor: { fill:'transparent' }
-        //   };
+          var options = {
+            pieHole: 0.4,
+            sliceVisibilityThreshold : 0,
+            chartArea : {left:5,top:20,width: 250, height: 250},
+            legend: {position: 'none'},
+            backgroundColor: { fill:'transparent' }
+          };
 
-        //   var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-        //   chart.draw(data, options);
-        // }
+          var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+          chart.draw(data, options);
+        }
       })
 		</script>
   </body>

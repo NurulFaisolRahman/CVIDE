@@ -514,6 +514,8 @@ class Super extends CI_Controller {
       $Data['GKMRata2'] = 310187; 
       $Data['GKNMRata2'] = 75803; 
       $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+      $Data['KelompokGK'][1] = intval(8.07*$Data['TotalIndividu']/100);
+      $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
     }
     $this->load->view('Super/Header',$Data);
 		$this->load->view('Super/GarisKemiskinan',$Data);
