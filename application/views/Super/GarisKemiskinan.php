@@ -129,8 +129,8 @@
         function drawChart() {
           var data = google.visualization.arrayToDataTable([
             ['Pendidikan', 'Jumlah'],
-            ['Di Atas GK',<?=number_format($KelompokGK[0]/($KelompokGK[0]+$KelompokGK[1]),2)?>],
-            ['Di Bawah GK',<?=number_format($KelompokGK[1]/($KelompokGK[0]+$KelompokGK[1]),2)?>],
+            ['Di Atas GK',<?=number_format($KelompokGK[0]/($KelompokGK[0]+$KelompokGK[1])*100,2)?>],
+            ['Di Bawah GK',<?=number_format($KelompokGK[1]/($KelompokGK[0]+$KelompokGK[1])*100,2)?>],
           ]);
 
           var options = {
