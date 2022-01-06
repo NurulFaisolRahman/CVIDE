@@ -134,7 +134,7 @@
           ]);
 
           var options = {
-            // pieHole: 0.2,
+            pieHole: 0.2,
             sliceVisibilityThreshold : 0,
             chartArea : {left:5,top:20,width: 250, height: 250},
             legend: {position: 'none'},
