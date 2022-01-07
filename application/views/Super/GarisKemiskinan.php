@@ -128,26 +128,26 @@
             })                    
           }
         })
-        // google.charts.load("current", {packages:["corechart"]});
-        // google.charts.setOnLoadCallback(drawChart);
-        // function drawChart() {
-        //   var data = google.visualization.arrayToDataTable([
-        //     ['Pendidikan', 'Jumlah'],
-        //     ['Di Atas GK',<?=number_format($KelompokGK[0]/($KelompokGK[0]+$KelompokGK[1])*100,2)?>],
-        //     ['Di Bawah GK',<?=number_format($KelompokGK[1]/($KelompokGK[0]+$KelompokGK[1])*100,2)?>],
-        //   ]);
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Pendidikan', 'Jumlah'],
+            ['Di Atas GK',<?=number_format($KelompokGK[0]/($KelompokGK[0]+$KelompokGK[1])*100,2)?>],
+            ['Di Bawah GK',<?=number_format($KelompokGK[1]/($KelompokGK[0]+$KelompokGK[1])*100,2)?>],
+          ]);
 
-        //   var options = {
-        //     pieHole: 0.2,
-        //     sliceVisibilityThreshold : 0,
-        //     chartArea : {left:5,top:20,width: 250, height: 250},
-        //     legend: {position: 'none'},
-        //     backgroundColor: { fill:'transparent' }
-        //   };
+          var options = {
+            pieHole: 0.2,
+            sliceVisibilityThreshold : 0,
+            chartArea : {left:5,top:20,width: 250, height: 250},
+            legend: {position: 'none'},
+            backgroundColor: { fill:'transparent' }
+          };
 
-        //   var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-        //   chart.draw(data, options);
-        // }
+          var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+          chart.draw(data, options);
+        }
       })
 		</script>
   </body>
