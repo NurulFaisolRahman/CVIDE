@@ -1068,7 +1068,7 @@ class Super extends CI_Controller {
         $Rata2KomoditasTerpilih[$i] = round($KomoditasTerpilih[$i]/count($DataKomoditas),0);
         $Data['PPP'] += pow(($Rata2KomoditasTerpilih[$i]/$Rata2KomoditasTerpilihJakarta[$i]),$PangkatKomoditas);
       }
-      $Data['PPP'] = $Data['PPP']/100-2;
+      $Data['PPP'] = ($Data['PPP']-2)/100;
       $Pengeluaran = round($Data['PerKapitaKonstan'],2)/round($Data['PPP'],2)*1000;
       $Data['IndeksPengeluaran'] = (log($Pengeluaran)-log(1007436))/(log(26572352)-log(1007436));
     }
