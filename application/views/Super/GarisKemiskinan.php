@@ -81,14 +81,14 @@
                       <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Garis Kemiskinan <br>Rp ".number_format($GKRata2,2,",",".")?></div></div>
                     </div>
                   </div>
-                  <!-- <div class="col-lg-3 col-sm-12 text-center">
+                  <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-warning border border-light p-0">
                         <div id="chart_div" style="margin-bottom: 24px;"></div>
                       </div>
                     <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Persentase Kemiskinan ".number_format($KelompokGK[1]/($KelompokGK[0]+$KelompokGK[1])*100,2,",",".")."%"?></div></div>
                     </div>
-                  </div> -->
+                  </div>
                 </div>
               </div>
             </div>
