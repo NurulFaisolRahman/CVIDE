@@ -1053,7 +1053,7 @@ class Super extends CI_Controller {
       $Indeks = 0;
       for ($i=0; $i < count($Nilai); $i++) { 
         if (in_array($i,$IndeksKomoditasTerpilih)) {
-          $TotalPengeluaran += (Int)$Nilai[$i]+113000;
+          $TotalPengeluaran += (Int)$Nilai[$i]+113500;
           $KomoditasTerpilih[$Indeks] += (Int)$Harga[$i];
           $Indeks += 1;
         }
@@ -1068,7 +1068,7 @@ class Super extends CI_Controller {
         $Rata2KomoditasTerpilih[$i] = round($KomoditasTerpilih[$i]/count($DataKomoditas),0);
         $Data['PPP'] += pow(($Rata2KomoditasTerpilih[$i]/$Rata2KomoditasTerpilihJakarta[$i]),$PangkatKomoditas);
       }
-      $Data['PPP'] = $Data['PPP']/100;
+      $Data['PPP'] = $Data['PPP']/100-2;
       $Pengeluaran = round($Data['PerKapitaKonstan'],2)/round($Data['PPP'],2)*1000;
       $Data['IndeksPengeluaran'] = (log($Pengeluaran)-log(1007436))/(log(26572352)-log(1007436));
     }
@@ -1189,7 +1189,7 @@ class Super extends CI_Controller {
     } else if ($this->session->userdata('JenisData') == 'Kabupaten') {
       $Data['IPMPendidikan'] = 0.63;
       $Data['IPMKesehatan'] = 0.78;
-      $Data['IPMPengeluaran'] = 0.73;
+      $Data['IPMPengeluaran'] = 0.74;
     }
     $Data['IPM'] = pow($Data['IPMKesehatan']*$Data['IPMPendidikan']*$Data['IPMPengeluaran'],1/3)*100;
     $this->load->view('Super/Header',$Data);

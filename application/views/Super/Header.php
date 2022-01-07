@@ -40,10 +40,10 @@
 								<ul class="nav side-menu">
                   <li><a><i class="fa fa-tasks"></i> <b>Data</b> <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<?=base_url('Super/IKM')?>"><b>Kepuasan Pelayanan Desa</b></a></li>           
+                      <!-- <li><a href="<?=base_url('Super/IKM')?>"><b>Kepuasan Pelayanan Desa</b></a></li>           
 											<li><a href="<?=base_url('Super/BPD')?>"><b>Kinerja Badan Permusyawaratan Desa</b></a></li>    
 											<li><a href="<?=base_url('Super/KinerjaPemDes')?>"><b>Kinerja Penyelenggaraan Pemerintahan Desa</b></a></li>   
-                      <li><a href="<?=base_url('Super/KinerjaAparatur')?>"><b>Kinerja Aparatur Desa</b></a></li>   
+                      <li><a href="<?=base_url('Super/KinerjaAparatur')?>"><b>Kinerja Aparatur Desa</b></a></li>    -->
                       <li><a href="<?=base_url('Super/Pendidikan')?>"><b>Pendidikan</b> </a></li>
                       <li><a href="<?=base_url('Super/GarisKemiskinan')?>"><b>Garis Kemiskinan</b> </a></li>
                       <li><a href="<?=base_url('Super/Pengangguran')?>"><b>Pengangguran</b> </a></li>
