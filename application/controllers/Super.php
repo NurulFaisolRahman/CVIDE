@@ -431,7 +431,7 @@ class Super extends CI_Controller {
         $Data['GKMRata2'] = 289081; 
         $Data['GKNMRata2'] = 87957;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
-        $Data['KelompokGK'][1] = intval(6.14*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][1] = intval(6.39*$Data['TotalIndividu']/100);
         $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.05') {
         $Data['GKMRata2'] = 299712;
@@ -441,7 +441,7 @@ class Super extends CI_Controller {
         $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.06') {
         $Data['GKMRata2'] = 291132;
-        $Data['GKNMRata2'] = 83427;
+        $Data['GKNMRata2'] = 73427;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
         $Data['KelompokGK'][1] = intval(5.57*$Data['TotalIndividu']/100);
         $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
@@ -467,7 +467,7 @@ class Super extends CI_Controller {
         $Data['GKMRata2'] = 286286;
         $Data['GKNMRata2'] = 85079;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
-        $Data['KelompokGK'][1] = intval(7.17*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][1] = intval(7.15*$Data['TotalIndividu']/100);
         $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.11') {
         $Data['GKMRata2'] = 295692;
@@ -491,7 +491,7 @@ class Super extends CI_Controller {
         $Data['GKMRata2'] = 293203;
         $Data['GKNMRata2'] = 72088;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
-        $Data['KelompokGK'][1] = intval(7.17*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][1] = intval(6.17*$Data['TotalIndividu']/100);
         $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.15') {
         $Data['GKMRata2'] = 301138;
@@ -509,7 +509,7 @@ class Super extends CI_Controller {
         $Data['GKMRata2'] = 291417;
         $Data['GKNMRata2'] = 78296;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
-        $Data['KelompokGK'][1] = intval(5.87*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][1] = intval(6.87*$Data['TotalIndividu']/100);
         $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.18') {
         $Data['GKMRata2'] = 299047;
@@ -534,14 +534,14 @@ class Super extends CI_Controller {
         $Data['GKNMRata2'] = 81027;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
-        $Data['KelompokGK'][1] = intval(7.54*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][1] = intval(6.85*$Data['TotalIndividu']/100);
         $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.22') {
         $Data['GKMRata2'] = 302607;
         $Data['GKNMRata2'] = 71724;
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
         $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
-        $Data['KelompokGK'][1] = intval(6.85*$Data['TotalIndividu']/100);
+        $Data['KelompokGK'][1] = intval(7.54*$Data['TotalIndividu']/100);
         $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       } else if ($Data['KodeKecamatan'] == '35.10.23') {
         $Data['GKMRata2'] = 291698;
@@ -563,10 +563,10 @@ class Super extends CI_Controller {
         $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
       }
     } else if ($this->session->userdata('JenisData') == 'Kabupaten') {
-      $Data['GKMRata2'] = 310187; 
-      $Data['GKNMRata2'] = 75803; 
+      $Data['GKMRata2'] = 310196; 
+      $Data['GKNMRata2'] = 76715; 
       $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
-      $Data['KelompokGK'][1] = intval(8.06*$Data['TotalIndividu']/100);
+      $Data['KelompokGK'][1] = intval(8.07*$Data['TotalIndividu']/100);
       $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
     }
     $this->load->view('Super/Header',$Data);
