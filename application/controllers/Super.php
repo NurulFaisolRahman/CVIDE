@@ -1014,6 +1014,7 @@ class Super extends CI_Controller {
             $Sigma += (number_format($KelompokHLS[1][$i]/$KelompokHLS[0][$i],2));
           }
         }
+        $Data['IPMPendidikan']['FK'] = $FK;
         $Data['IPMPendidikan']['HLS'] = number_format(($FK*$Sigma),2);
         $Data['IPMPendidikan']['IHLS'] = number_format($Data['IPMPendidikan']['HLS']/18,2);
         $Data['IPMPendidikan']['IRLS'] = number_format($Data['IPMPendidikan']['RLS']/15,2);

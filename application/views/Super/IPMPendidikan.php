@@ -54,6 +54,7 @@
                   </div>
                   <div class="col-lg-3">
                     <div class="btn btn-sm btn-primary border-light" id="TampilkanData"><b>Tampilkan</b></div>
+                    <a href="<?=base_url('/Rekap/RekapDimensiPendidikan.xlsx')?>" class="btn btn-sm btn-danger border-light"><b>Unduh Rekap</b></a>
                   </div>
                 </div>
                 <div class="row">
