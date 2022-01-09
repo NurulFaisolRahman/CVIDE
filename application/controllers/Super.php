@@ -596,10 +596,8 @@ class Super extends CI_Controller {
       $PenyebabMenganggur = explode("|",$key['PenyebabMenganggur']);
       $JamKerja = explode("|",$key['JamKerja']);
       for ($i=0; $i < count($Usia); $i++) { 
-        if ($Usia[$i] > 9) {
-          $Data['Dewasa'] += 1;
-        }
         if ($Usia[$i] > 14) {
+          $Data['Dewasa'] += 1;
           if (isset($Usia[$i]) && isset($KegiatanSeminggu[$i])) {
             if ($KegiatanSeminggu[$i] == 2 || $JamKerja[$i] != ''){
               $Data['Bekerja'] += 1;
