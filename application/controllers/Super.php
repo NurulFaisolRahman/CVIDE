@@ -743,9 +743,11 @@ class Super extends CI_Controller {
       $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `surveiipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
     } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
       $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `surveiipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
+      $AHHKecamatan = array(66.8,64.5,66.6,56.8,66.7,63.4,63.5,69.3,66.1,62.3,64.1,62.5,61.4,64.4,59.0,64.7,60.8,69.0,67.4,69.2,63.2,63.6,64.8,54.4,61.5);
+      $Data['AHH'] = $AHHKecamatan[(int)substr($Data['KodeKecamatan'],-2)];
     } else {
       $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `surveiipm`")->result_array();
-      $Data['AHH'] = 70.9;
+      $Data['AHH'] = 71.06;
     }
     $Data['ALHAMH'] = $Data['Total'] = array();
     $Rentang1 = array(0,0,0,0,0,0);

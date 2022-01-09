@@ -54,7 +54,8 @@
                   </div>
                   <div class="col-lg-3">
                     <div class="btn btn-sm btn-primary border-light" id="TampilkanData"><b>Tampilkan</b></div>
-                    <div class="btn btn-sm btn-primary border-light" id="ExcelALHAMH"><i class="fa fa-file-excel-o"></i> <b>Excel</b></div>
+                    <div class="btn btn-sm btn-success border-light" id="ExcelALHAMH"><i class="fa fa-file-excel-o"></i> <b>Excel</b></div>
+                    <a href="<?=base_url('/Rekap/RekapAHH.xlsx')?>" class="btn btn-sm btn-danger border-light"><b>Rekap</b></a>
                   </div>
                 </div>
                 <div class="row">
@@ -100,14 +101,14 @@
                       </table> 
                     </div>
                   </div>
-                  <!-- <div class="col-lg-3 col-sm-12 text-center">
+                  <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-primary border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/AHH.png')?>" alt="GK" height="209" ></a>
                       </div>
                     <div class="card-footer bg-danger border border-light" style="padding-top: 11px;"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Angka Harapan Hidup ".$AHH?></div></div>
                     </div>
-                  </div> -->
+                  </div>
                 </div>
               </div>
             </div>
