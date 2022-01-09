@@ -55,7 +55,7 @@
                   <div class="col-lg-3">
                     <div class="btn btn-sm btn-primary border-light" id="TampilkanData"><b>Tampilkan</b></div>
                     <div class="btn btn-sm btn-success border-light" id="ExcelALHAMH"><i class="fa fa-file-excel-o"></i> <b>Excel</b></div>
-                    <a href="<?=base_url('/Rekap/RekapAHH.xlsx')?>" class="btn btn-sm btn-danger border-light"><b>Rekap</b></a>
+                    <a href="<?=base_url('/Rekap/RekapDimensiKesehatan.xlsx')?>" class="btn btn-sm btn-danger border-light"><b>Rekap</b></a>
                   </div>
                 </div>
                 <div class="row">

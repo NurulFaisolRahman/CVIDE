@@ -49,8 +49,8 @@
                       <li><a href="<?=base_url('Super/Pengangguran')?>"><b>Pengangguran</b> </a></li>
                       <li><a><b>Dimensi IPM</b><span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                          <li class="sub_menu"><a href="<?=base_url('Super/IPMKesehatan')?>"><b>ALH & AMH</b></a></li>
-                          <li><a href="<?=base_url('Super/IPMPendidikan')?>"><b>Pendidikan</b></a></li>
+                          <li class="sub_menu"><a href="<?=base_url('Super/IPMPendidikan')?>"><b>Pendidikan</b></a></li>
+                          <li><a href="<?=base_url('Super/IPMKesehatan')?>"><b>Kesehatan</b></a></li>
                           <li><a href="<?=base_url('Super/IPMPengeluaran')?>"><b>Pengeluaran</b></a></li>
                         </ul>
                       </li>
