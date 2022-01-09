@@ -1078,8 +1078,8 @@ class Super extends CI_Controller {
       $Data['IndeksPengeluaran'] = $IndeksPengeluaran[(int)substr($Data['KodeKecamatan'],-2)-1];
     }
     if ($this->session->userdata('JenisData') == 'Kabupaten') {
-      $Data['PerKapita'] = 10759;
-      $Data['PerKapitaKonstan'] = 10180;
+      $Data['PerKapita'] = 10759.10;
+      $Data['PerKapitaKonstan'] = 10179.87;
       $Data['IndeksPengeluaran'] = 0.74;
     }
     $this->load->view('Super/Header',$Data);
