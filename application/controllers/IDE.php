@@ -9,6 +9,29 @@ class IDE extends CI_Controller {
 		$this->load->view('IDE',$Data);
   }
 
+  public function Asisten(){
+		$this->load->view('Asisten');
+  }
+
+  public function InputAsisten(){
+    $NamaFile = date('Ymd',time()).substr(password_hash('Asisten', PASSWORD_DEFAULT),7,7);
+    $NamaFile = str_replace("/","E",$NamaFile);$NamaFile = str_replace(".","F",$NamaFile);
+    $Tipe = pathinfo($_FILES['CV']['name'],PATHINFO_EXTENSION);
+    move_uploaded_file($_FILES['CV']['tmp_name'], "Asisten/".$NamaFile.".".$Tipe);
+    $_POST['CV'] = $NamaFile.".".$Tipe;
+    $this->db->insert('asisten', $_POST);
+    if ($this->db->affected_rows()){
+      echo '1';
+    } else {
+      echo "Pendaftaran Gagal!";
+    }  
+  }
+
+  public function ListAsisten(){
+    $Data['Asisten'] = $this->db->get('asisten')->result_array();
+		$this->load->view('ListAsisten',$Data);
+  }
+
   public function RekrutmenSurveyor(){
 		$this->load->view('RekrutmenSurveyor');
   }
@@ -34,6 +57,10 @@ class IDE extends CI_Controller {
   
   public function Auth(){
 		$this->load->view('Auth');
+  }
+
+  public function DataCenter(){
+		$this->load->view('DataCenter');
   }
 
   public function GetPortofolio($Id){
