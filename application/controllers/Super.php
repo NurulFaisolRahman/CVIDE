@@ -926,7 +926,7 @@ class Super extends CI_Controller {
       }
       $Data['PPP'] = (0.01*(int)(($Data['PPP']-2)/100*100));
       if ($this->session->userdata('JenisData') == 'Kecamatan') {
-        $IndeksPPP = array(0.66,0.62,0.68,0.62,0.67,0.92,0.75,0.79,0.67,0.68,0.92,0.85,0.84,0.86,0.94,0.77,0.96,0.76,0.88,0.73,0.96,0.87,0.71,0.86,0.89);
+        $IndeksPPP = array(0.66,0.62,0.68,0.62,0.67,0.92,0.75,0.79,0.67,0.68,0.92,0.85,0.84,0.86,0.94,0.77,0.96,0.81,0.88,0.73,0.96,0.87,0.71,0.86,0.89);
         $Data['PPP'] = $IndeksPPP[(int)substr($Data['KodeKecamatan'],-2)-1];
       }
       $Pengeluaran = round($Data['PerKapitaKonstan'],2)/round($Data['PPP'],2)*1000;
@@ -1025,7 +1025,7 @@ class Super extends CI_Controller {
       } else if ($Data['KodeKecamatan'] == '35.10.18') {
         $Data['IPMPendidikan'] = 0.70;
         $Data['IPMKesehatan'] = 0.75;
-        $Data['IPMPengeluaran'] = 0.73;
+        $Data['IPMPengeluaran'] = 0.71;
       } else if ($Data['KodeKecamatan'] == '35.10.19') {
         $Data['IPMPendidikan'] = 0.56;
         $Data['IPMKesehatan'] = 0.72;
