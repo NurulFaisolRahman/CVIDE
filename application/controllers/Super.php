@@ -590,11 +590,14 @@ class Super extends CI_Controller {
       $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `surveiipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
     } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
       $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `surveiipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
-      $AHHKecamatan = array(66.8,64.5,66.6,56.8,66.7,63.4,63.5,69.3,66.1,62.3,64.1,62.5,61.4,64.4,59.0,65.5,60.8,69.0,67.4,69.2,63.2,63.6,64.8,54.4,61.5);
+      $AHHKecamatan = array(66.8,64.5,66.6,56.8,66.7,63.4,63.5,69.3,66.1,62.3,64.1,62.5,61.4,64.4,59.0,65.5,60.8,62.5,67.4,69.2,63.2,63.6,64.8,54.4,61.5);
+      $IndeksKesehatan = array(0.72,0.68,0.71,0.56,0.71,0.66,0.66,0.75,0.70,0.65,0.67,0.65,0.63,0.68,0.60,0.70 ,0.62,0.65,0.72,0.75,0.66,0.67,0.68,0.52,0.63);
       $Data['AHH'] = $AHHKecamatan[(int)substr($Data['KodeKecamatan'],-2)-1];
+      $Data['IndeksKesehatan'] = $IndeksKesehatan[(int)substr($Data['KodeKecamatan'],-2)-1];
     } else {
       $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `surveiipm`")->result_array();
       $Data['AHH'] = 70.55;
+      $Data['IndeksKesehatan'] = 0.78;
     }
     $Data['ALHAMH'] = $Data['Total'] = array();
     $Rentang1 = array(0,0,0,0,0,0);
@@ -1025,7 +1028,7 @@ class Super extends CI_Controller {
         $Data['IPMPengeluaran'] = 0.76;
       } else if ($Data['KodeKecamatan'] == '35.10.18') {
         $Data['IPMPendidikan'] = 0.67;
-        $Data['IPMKesehatan'] = 0.75;
+        $Data['IPMKesehatan'] = 0.65;
         $Data['IPMPengeluaran'] = 0.71;
       } else if ($Data['KodeKecamatan'] == '35.10.19') {
         $Data['IPMPendidikan'] = 0.56;
