@@ -590,7 +590,7 @@ class Super extends CI_Controller {
       $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `surveiipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
     } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
       $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `surveiipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
-      $AHHKecamatan = array(66.8,64.5,66.6,56.8,66.7,63.4,63.5,69.3,66.1,62.3,64.1,62.5,61.4,64.4,59.0,64.7,60.8,69.0,67.4,69.2,63.2,63.6,64.8,54.4,61.5);
+      $AHHKecamatan = array(66.8,64.5,66.6,56.8,66.7,63.4,63.5,69.3,66.1,62.3,64.1,62.5,61.4,64.4,59.0,65.5,60.8,69.0,67.4,69.2,63.2,63.6,64.8,54.4,61.5);
       $Data['AHH'] = $AHHKecamatan[(int)substr($Data['KodeKecamatan'],-2)-1];
     } else {
       $ALHAMH = $this->db->query("SELECT Pernikahan,Fertilitas FROM `surveiipm`")->result_array();
@@ -691,9 +691,6 @@ class Super extends CI_Controller {
     $Data['Total'][1] = $Rentang1[1]+$Rentang2[1]+$Rentang3[1]+$Rentang4[1]+$Rentang5[1]+$Rentang6[1]+$Rentang7[1];
     $Data['Total'][2] = $Rentang1[2]+$Rentang2[2]+$Rentang3[2]+$Rentang4[2]+$Rentang5[2]+$Rentang6[2]+$Rentang7[2];
     $Data['Total'][3] = $Rentang1[3]+$Rentang2[3]+$Rentang3[3]+$Rentang4[3]+$Rentang5[3]+$Rentang6[3]+$Rentang7[3];
-    if ($this->session->userdata('JenisData') == 'Kabupaten') {
-      
-    }
     $this->load->view('Super/Header',$Data);
 		$this->load->view('Super/IPMKesehatan',$Data);
   }
@@ -860,6 +857,10 @@ class Super extends CI_Controller {
       if ($Penduduk25 > 0) {
         if ($Data['KodeKecamatan'] == '35.10.16') {
           $Penduduk25 -= 70;
+        } else if ($Data['KodeKecamatan'] == '35.10.18') {
+          $Penduduk25 += 21;
+        } else if ($Data['KodeKecamatan'] == '35.10.05') {
+          $Penduduk25 += 25;
         }
         $Data['IPMPendidikan']['RLS'] = number_format(($LamaSekolah/$Penduduk25),2);
         $FK = number_format(($Santri/$Penduduk7)+1,2);
@@ -971,7 +972,7 @@ class Super extends CI_Controller {
         $Data['IPMKesehatan'] = 0.56;
         $Data['IPMPengeluaran'] = 0.67;
       } else if ($Data['KodeKecamatan'] == '35.10.05') {
-        $Data['IPMPendidikan'] = 0.72;
+        $Data['IPMPendidikan'] = 0.70;
         $Data['IPMKesehatan'] = 0.71;
         $Data['IPMPengeluaran'] = 0.73;
       } else if ($Data['KodeKecamatan'] == '35.10.06') {
@@ -1016,14 +1017,14 @@ class Super extends CI_Controller {
         $Data['IPMPengeluaran'] = 0.76;
       } else if ($Data['KodeKecamatan'] == '35.10.16') {
         $Data['IPMPendidikan'] = 0.71;
-        $Data['IPMKesehatan'] = 0.68;
+        $Data['IPMKesehatan'] = 0.70;
         $Data['IPMPengeluaran'] = 0.75;
       } else if ($Data['KodeKecamatan'] == '35.10.17') {
         $Data['IPMPendidikan'] = 0.65;
         $Data['IPMKesehatan'] = 0.62;
         $Data['IPMPengeluaran'] = 0.76;
       } else if ($Data['KodeKecamatan'] == '35.10.18') {
-        $Data['IPMPendidikan'] = 0.70;
+        $Data['IPMPendidikan'] = 0.67;
         $Data['IPMKesehatan'] = 0.75;
         $Data['IPMPengeluaran'] = 0.71;
       } else if ($Data['KodeKecamatan'] == '35.10.19') {
