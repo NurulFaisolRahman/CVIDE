@@ -400,13 +400,17 @@ class Super extends CI_Controller {
       $Data['GKMRata2'] = intval($Data['TotalPengeluaranMakanan']/$Data['TotalIndividu']); 
       $Data['GKNMRata2'] = intval($Data['TotalPengeluaranNonMakanan']/$Data['TotalIndividu']); 
       $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
+      $P0 = $P1 = $P2 = 0;
       for ($i=0; $i < count($Data['GKM']); $i++) { 
-        if (($Data['GKM'][$i]+$Data['GKNM'][$i]) > ($Data['GKRata2'])) {
-          $Data['KelompokGK'][0] += $Data['Individu'][$i];
-        } else {
-          $Data['KelompokGK'][1] += $Data['Individu'][$i];
-        }
+        if (($Data['GKM'][$i]+$Data['GKNM'][$i]) < $Data['GKRata2']) {
+          $P0 += (pow($Data['GKRata2']-($Data['GKM'][$i]+$Data['GKNM'][$i])/$Data['GKRata2'],0));
+          $P1 += (pow($Data['GKRata2']-($Data['GKM'][$i]+$Data['GKNM'][$i])/$Data['GKRata2'],1));
+          $P2 += (pow($Data['GKRata2']-($Data['GKM'][$i]+$Data['GKNM'][$i])/$Data['GKRata2'],2));
+        } 
       }
+      $Data['P0'] = $P0/$Data['TotalIndividu'];
+      $Data['P1'] = $P1/$Data['TotalIndividu'];
+      $Data['P2'] = $P2/$Data['TotalIndividu'];
     }
     if ($this->session->userdata('JenisData') == 'Kecamatan') {
       $GKRata2 = array(322076,364776,323370,360005,330298,362500,372242,374490,397038,325831,335569,348088,367862,322512,378699,412327,405676,321254,347186,340031,362045,381063,332944,384425,346314);
@@ -415,12 +419,18 @@ class Super extends CI_Controller {
       $Data['GKNMRata2'] = 0.45*$Data['GKRata2'];
       $Data['KelompokGK'][1] = intval(10.86*$Data['TotalIndividu']/100);
       $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
+      $P1 = array(1.28,1.25,1.34,1.27,1.31,1.29,1.25,1.27,1.29,1.33,1.31,1.32,1.32,1.31,1.25,1.26,1.25,1.32,1.26,1.26,1.34,1.3,1.25,1.32,1.29);
+      $P2 = array(0.33,0.27,0.33,0.26,0.24,0.25,0.26,0.33,0.23,0.31,0.26,0.3,0.24,0.24,0.32,0.24,0.25,0.32,0.32,0.28,0.29,0.29,0.25,0.23,0.31);
+      $Data['P1'] = $P1[(int)substr($Data['KodeKecamatan'],-2)-1];
+      $Data['P2'] = $P2[(int)substr($Data['KodeKecamatan'],-2)-1];
     } else if ($this->session->userdata('JenisData') == 'Kabupaten') {
       $Data['GKRata2'] = 386911;
       $Data['GKMRata2'] = 0.55*$Data['GKRata2'];
       $Data['GKNMRata2'] = 0.45*$Data['GKRata2'];
       $Data['KelompokGK'][1] = intval(8.07*$Data['TotalIndividu']/100);
       $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
+      $Data['P1'] = 1.31;
+      $Data['P2'] = 0.29;
     }
     $this->load->view('Super/Header',$Data);
 		$this->load->view('Super/GarisKemiskinan',$Data);
