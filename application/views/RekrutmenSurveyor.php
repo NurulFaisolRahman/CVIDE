@@ -44,7 +44,7 @@
                     <div class="card border border-light">
                       <div class="card-header border border-white bg-primary"><b class="text-light">DAFTAR SEBAGAI SURVEYOR</b></div>
                       <div class="card-body border border-white bg-danger">
-                        <pre class="text-white text-wrap"><b>SYARAT & KETENTUAN : <br>1. SURVEYOR BERSEDIA BEKERJA SESUAI SOP & TARGET<br>2. SURVEYOR WAJIB MEMILIKI SIM C AKTIF & HP ANDROID</b></pre>
+                        <!-- <pre class="text-white text-wrap"><b>SYARAT & KETENTUAN : <br>1. SURVEYOR BERSEDIA BEKERJA SESUAI SOP & TARGET<br>2. SURVEYOR WAJIB MEMILIKI SIM C AKTIF & HP ANDROID</b></pre> -->
                         <div class="input-group input-group-sm mb-2">
                           <div class="input-group-prepend">
                             <span class="input-group-text bg-primary text-light"><b>Nama</b></span>
