@@ -37,7 +37,7 @@ class IDE extends CI_Controller {
   }
   
   public function Rekrutmen(){
-    $Data['Rekrutmen'] = $this->db->get_where('rekrutmen', array('Id' => '> 34'))->result_array();
+    $Data['Rekrutmen'] = $this->db->query('SELECT * FROM `rekrutmen` WHERE Id > 34')->result_array();
 		$this->load->view('Rekrutmen',$Data);
   }
   
