@@ -42,17 +42,21 @@ class IDE extends CI_Controller {
   }
   
   public function Daftar(){
-    $NamaFile = date('Ymd',time()).substr(password_hash('Rekrutmen', PASSWORD_DEFAULT),7,7);
-    $NamaFile = str_replace("/","E",$NamaFile);$NamaFile = str_replace(".","F",$NamaFile);
-    $Tipe = pathinfo($_FILES['CV']['name'],PATHINFO_EXTENSION);
-    move_uploaded_file($_FILES['CV']['tmp_name'], "Rekrutmen/".$NamaFile.".".$Tipe);
-    $_POST['CV'] = $NamaFile.".".$Tipe;
-    $this->db->insert('rekrutmen', $_POST);
-    if ($this->db->affected_rows()){
-      echo '1';
+    if ($this->db->get_where('rekrutmen', array('WA' => $_POST['WA']))->num_rows() == 0) {
+      $NamaFile = date('Ymd',time()).substr(password_hash('Rekrutmen', PASSWORD_DEFAULT),7,7);
+      $NamaFile = str_replace("/","E",$NamaFile);$NamaFile = str_replace(".","F",$NamaFile);
+      $Tipe = pathinfo($_FILES['CV']['name'],PATHINFO_EXTENSION);
+      move_uploaded_file($_FILES['CV']['tmp_name'], "Rekrutmen/".$NamaFile.".".$Tipe);
+      $_POST['CV'] = $NamaFile.".".$Tipe;
+      $this->db->insert('rekrutmen', $_POST);
+      if ($this->db->affected_rows()){
+        echo '1';
+      } else {
+        echo "Pendaftaran Gagal!";
+      }  
     } else {
-      echo "Pendaftaran Gagal!";
-    }  
+      echo 'Anda Sudah Terdaftar!';
+    }
   }
   
   public function Auth(){

@@ -87,5 +87,39 @@ class Surveyor extends CI_Controller {
       echo 'Gagal Menyimpan Survei!';
     }
   }
+
+  public function SurveiHargaKonsumenPerdesaan(){
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.24.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.24.01.%'")->result_array();
+    $this->load->view('Surveyor/Header',$Data);
+		$this->load->view('Surveyor/SurveiHargaKonsumenPerdesaan',$Data);
+  }
+
+  public function InputNTPKonsumen(){
+    $_POST['NIK'] = $this->session->userdata('NIK');
+    $this->db->insert('ntpkonsumen',$_POST);
+    if ($this->db->affected_rows()){
+      echo '1';
+    } else {
+      echo 'Gagal Menyimpan Survei!';
+    }
+  }
+
+  public function SurveiHargaProdusenPerdesaan(){
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.24.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.24.01.%'")->result_array();
+    $this->load->view('Surveyor/Header',$Data);
+		$this->load->view('Surveyor/SurveiHargaProdusenPerdesaan',$Data);
+  }
+
+  public function InputNTPProdusen(){
+    $_POST['NIK'] = $this->session->userdata('NIK');
+    $this->db->insert('ntpprodusen',$_POST);
+    if ($this->db->affected_rows()){
+      echo '1';
+    } else {
+      echo 'Gagal Menyimpan Survei!';
+    }
+  }
   
 }

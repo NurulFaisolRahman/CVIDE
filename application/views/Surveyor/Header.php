@@ -38,12 +38,20 @@
 									<li><a href="<?=base_url('Surveyor')?>"><i class="fa fa-user"></i> <b>Profil</b> </a></li>
 								</ul>
 								<ul class="nav side-menu">
-                  <li><a><i class="fa fa-tasks"></i> <b>Survei</b> <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-tasks"></i> <b>Survei Desa</b> <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
 											<li><a href="<?=base_url('Surveyor/SurveiBPD')?>"><b>Kinerja Badan Permusyawaratan Desa</b></a></li>           
 											<li><a href="<?=base_url('Surveyor/SurveiKinerjaPemDes')?>"><b>Kinerja Penyelenggaraan Pemerintahan Desa</b></a></li>   
 											<li><a href="<?=base_url('Surveyor/SurveiKinerjaAparatur')?>"><b>Kinerja Aparatur Desa</b></a></li>   
 											<li><a href="<?=base_url('Surveyor/SurveiIPM')?>"><b>Indikator Kesejahteraan Masyarakat</b></a></li>   
+                    </ul>
+									</li>
+								</ul>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-tasks"></i> <b>Survei NTP</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/SurveiHargaKonsumenPerdesaan')?>"><b>Harga Konsumen Perdesaan</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/SurveiHargaProdusenPerdesaan')?>"><b>Harga Produsen Perdesaan</b></a></li>   
                     </ul>
 									</li>
 								</ul>

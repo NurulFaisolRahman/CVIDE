@@ -107,7 +107,7 @@
             alert('Wajib Upload CV!')
           } else {
             var fd = new FormData()
-            fd.append("Nama", $('#Nama').val())
+            fd.append("Nama", $('#Nama').val().replace('.',''))
             fd.append("WA", $('#WA').val())
             fd.append('CV',$('#CV')[0].files[0])
             $("#Daftar").attr("disabled", true);                              
