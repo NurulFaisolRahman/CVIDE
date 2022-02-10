@@ -11,7 +11,7 @@
                     <div style="background-color: yellow;" class="card-body border border-primary pl-0 pr-2 py-2">
                       <div class="container-fluid">
                         <div class="row">
-                          <div class="col-sm-4">
+                          <div class="col-sm-3">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-white"><b>Kecamatan</b></label>
@@ -23,19 +23,7 @@
                               </select>
                             </div>
                           </div>
-                          <div class="col-sm-4">
-                            <div class="input-group input-group-sm">
-                              <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-white"><b>Desa/Kelurahan</b></label>
-                              </div>
-                              <select class="custom-select" id="Desa">                    
-                                <?php foreach ($Desa as $key) { ?>
-                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option>
-                                <?php } ?>                  
-                              </select>
-                            </div>
-                          </div>
-                          <div class="col-sm-4">
+                          <div class="col-sm-3">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-white"><b>Tanggal Survei</b></label>
@@ -43,7 +31,7 @@
                               <input class="form-control" type="date" id="TanggalSurvei">
                             </div>
                           </div> 
-                          <div class="col-sm-6">
+                          <div class="col-sm-3">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-white"><b>Nama Responden</b></label>
@@ -51,7 +39,7 @@
                               <input class="form-control" type="text" id="NamaResponden">
                             </div>
                           </div> 
-                          <div class="col-sm-6">
+                          <div class="col-sm-3">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <label class="input-group-text bg-danger text-white"><b>Alamat Responden</b></label>
@@ -235,13 +223,6 @@
         
         var BaseURL = '<?=base_url()?>'  
   
-        $("#Kecamatan").change(function (){
-          var Desa = { Kode: $("#Kecamatan").val() }
-          $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) {
-            $('#Desa').html(Respon)
-          })    
-        }) 
-  
         $("#Simpan").click(function() {
           if ($("#TanggalSurvei").val() == "") {
             alert('Mohon Input Tanggal Survei!')
@@ -372,7 +353,6 @@
               }
             }
             var NTP = { Kecamatan: $("#Kecamatan").val(),
-                        Desa: $("#Desa").val(),
                         TanggalSurvei: $("#TanggalSurvei").val(),
                         NamaResponden: $("#NamaResponden").val(),
                         Alamat: $("#Alamat").val(),
