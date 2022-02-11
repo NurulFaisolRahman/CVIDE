@@ -91,6 +91,7 @@ class Surveyor extends CI_Controller {
   public function SurveiHargaKonsumenPerdesaan(){
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.24.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.24.01.%'")->result_array();
+    $Data['Data'] = $this->db->query("SELECT kodewilayah.Nama as NamaKecamatan,ntpkonsumen.* FROM kodewilayah,ntpkonsumen WHERE ntpkonsumen.Kecamatan=kodewilayah.Kode")->result_array();
     $this->load->view('Surveyor/Header',$Data);
 		$this->load->view('Surveyor/SurveiHargaKonsumenPerdesaan',$Data);
   }
@@ -105,9 +106,21 @@ class Surveyor extends CI_Controller {
     }
   }
 
+  public function EditNTPKonsumen(){
+    $this->db->where('Id',$_POST['Id']);
+    unset($_POST['Id']);
+    $this->db->update('ntpkonsumen', $_POST);
+    if ($this->db->affected_rows()){
+      echo '1';
+    } else {
+      echo 'Gagal Update Data Survei!';
+    }
+  }
+
   public function SurveiHargaProdusenPerdesaan(){
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.24.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.24.01.%'")->result_array();
+    $Data['Data'] = $this->db->query("SELECT kodewilayah.Nama as NamaKecamatan,ntpprodusen.* FROM kodewilayah,ntpprodusen WHERE ntpprodusen.Kecamatan=kodewilayah.Kode")->result_array();
     $this->load->view('Surveyor/Header',$Data);
 		$this->load->view('Surveyor/SurveiHargaProdusenPerdesaan',$Data);
   }
@@ -119,6 +132,17 @@ class Surveyor extends CI_Controller {
       echo '1';
     } else {
       echo 'Gagal Menyimpan Survei!';
+    }
+  }
+
+  public function EditNTPProdusen(){
+    $this->db->where('Id',$_POST['Id']);
+    unset($_POST['Id']);
+    $this->db->update('ntpprodusen', $_POST);
+    if ($this->db->affected_rows()){
+      echo '1';
+    } else {
+      echo 'Gagal Update Data Survei!';
     }
   }
   

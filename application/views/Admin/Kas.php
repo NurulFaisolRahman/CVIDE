@@ -37,7 +37,7 @@
 													<th scope="col" class="text-center align-middle">Edit</th>
 												</tr>
 											</thead>
-											<tbody id="RekapSurvei">
+											<tbody>
 												<?php $No = 1; foreach ($Kas as $key) { $Date = explode("-",$key['Tanggal'])?>
 													<tr>
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>

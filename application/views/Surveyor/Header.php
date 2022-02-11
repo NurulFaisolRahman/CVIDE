@@ -12,6 +12,7 @@
     <link href="<?=base_url('vendors/bootstrap/dist/css/bootstrap.min.css')?>" rel="stylesheet">
     <link href="<?=base_url('vendors/font-awesome/css/font-awesome.min.css')?>" rel="stylesheet">
     <link href="<?=base_url('build/css/custom.min.css')?>" rel="stylesheet">
+    <link href="<?=base_url('assets/datatables-bs4/css/dataTables.bootstrap4.css')?>" rel="stylesheet">
   </head>
 
   <body class="nav-md">
