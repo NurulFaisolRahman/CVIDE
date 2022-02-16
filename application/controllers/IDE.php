@@ -710,6 +710,20 @@ class IDE extends CI_Controller {
     $this->load->view('ExcelSimulasi',$Data);
   }
 
+  public function RekapSurveyorNTP(){
+    $Produsen = $this->db->query("SELECT ntpprodusen.NIK,surveyor.Nama,COUNT(*) AS Total FROM ntpprodusen,surveyor WHERE ntpprodusen.NIK=surveyor.NIK GROUP BY ntpprodusen.NIK")->result_array();
+    $Konsumen = $this->db->query("SELECT ntpkonsumen.NIK,surveyor.Nama,COUNT(*) AS Total FROM ntpkonsumen,surveyor WHERE ntpkonsumen.NIK=surveyor.NIK GROUP BY ntpkonsumen.NIK")->result_array();
+    foreach ($Konsumen as $key) {
+      for ($i=0; $i < count($Produsen); $i++) { 
+          if ($key['NIK'] == $Produsen[$i]['NIK']) {
+            $Produsen[$i]['Total'] += $key['Total'];
+          }
+        }
+    }
+    $Data['Rekap'] = $Produsen;
+    $this->load->view('RekapSurveyorNTP',$Data);
+  }
+
   public function RekapSurveyorIKM(){
     $Data['Surveyor'] = $this->db->query("select surveyor.nik as NIK, surveyor.nama as Nama from surveiipm left join surveyor on (surveyor.nik = surveiipm.nik) group by surveyor.nik")->result_array();
     $this->load->view('RekapSurveyorIKM',$Data);
