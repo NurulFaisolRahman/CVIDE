@@ -310,7 +310,7 @@
                           <th class="align-middle">Harga Bulan Sebelumnya</th>
                         </tr>
                       </thead>
-                    <?php for ($i=0; $i < 709; $i++) { ?>
+                    <?php for ($i=0; $i < 880; $i++) { ?>
                       <tr class="text-white bg-primary">
                         <td class="text-center align-middle font-weight-bold"><?=$Kode[$i]?></td>
                         <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Edit<?=$Kode[$i]?>"></td>
@@ -330,7 +330,7 @@
                           <th class="align-middle">Harga Bulan Sebelumnya</th>
                         </tr>
                       </thead>
-                    <?php for ($i=709; $i < 1417; $i++) { ?>
+                    <?php for ($i=880; $i < 1759; $i++) { ?>
                       <tr class="text-white bg-primary">
                         <td class="text-center align-middle font-weight-bold"><?=$Kode[$i]?></td>
                         <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Edit<?=$Kode[$i]?>"></td>
