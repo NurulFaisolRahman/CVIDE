@@ -40,7 +40,8 @@
 								<ul class="nav side-menu">
                   <li><a><i class="fa fa-tasks"></i> <b>Data</b> <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <?php if ($this->session->userdata('Username') == 'superadmin') { ?>
+                      <?php $Username = $this->session->userdata('Username'); 
+                      if ($Username == 'superadmin' || $Username == 'bappedakesra') { if ($Username == 'superadmin') { ?>
                         <li><a href="<?=base_url('Super/IKM')?>"><b>Kepuasan Pelayanan Desa</b></a></li>           
                         <li><a href="<?=base_url('Super/BPD')?>"><b>Kinerja Badan Permusyawaratan Desa</b></a></li>    
                         <li><a href="<?=base_url('Super/KinerjaPemDes')?>"><b>Kinerja Penyelenggaraan Pemerintahan Desa</b></a></li>   
@@ -57,6 +58,9 @@
                         </ul>
                       </li>
                       <li><a href="<?=base_url('Super/IPM')?>"><b>IPM</b> </a></li>
+                      <?php } if ($Username == 'superadmin') { ?> 
+                        <!-- <li><a href="<?=base_url('Super/NTP')?>"><b>Nilai Tukar Petani (NTP)</b> </a></li> -->
+                      <?php } ?>
                     </ul>
 									</li>
                 </ul>
