@@ -560,18 +560,14 @@ class IDE extends CI_Controller {
       }
       $Data['Responden'][0] += $Total;
     }
-    // if ($Total > 0) {
-      for ($k=0; $k < 7; $k++) { 
-        $Pendidikan[$k] = str_replace(".",",",round(($TampungPendidikan[$k]/$Data['Responden'][0]*100),2));
-        $Pekerjaan[$k] = str_replace(".",",",round(($TampungPekerjaan[$k]/$Data['Responden'][0]*100),2));
-      }
-    // }
+    for ($k=0; $k < 7; $k++) { 
+      $Pendidikan[$k] = str_replace(".",",",round(($TampungPendidikan[$k]/$Data['Responden'][0]*100),2));
+      $Pekerjaan[$k] = str_replace(".",",",round(($TampungPekerjaan[$k]/$Data['Responden'][0]*100),2));
+    }
     array_push($Data['Pendidikan'], $Pendidikan);
     array_push($Data['Pekerjaan'], $Pekerjaan);
-    // if ($Total > 0) {
-      $Gender[0] = str_replace(".",",",round(($Pria/$Data['Responden'][0]*100),2));
-      $Gender[1] = str_replace(".",",",round(($Wanita/$Data['Responden'][0]*100),2));
-    // } 
+    $Gender[0] = str_replace(".",",",round(($Pria/$Data['Responden'][0]*100),2));
+    $Gender[1] = str_replace(".",",",round(($Wanita/$Data['Responden'][0]*100),2));
     array_push($Data['Gender'], $Gender);
     $Data['Responden'][0] += $Titip;
     for ($i=0; $i < 11; $i++) { 
@@ -595,7 +591,7 @@ class IDE extends CI_Controller {
       $Data['MutuPelayanan'][0] = 'A';
       $Data['KinerjaUnit'][0] = 'Sangat Baik';
     }
-    // $this->load->view('ExcelSurveiIKM',$Data);
+    $this->load->view('ExcelSurveiIKM',$Data);
   }
 
   public function InfoSurveiIKM(){
