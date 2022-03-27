@@ -470,6 +470,65 @@ class Super extends CI_Controller {
 		$this->load->view('Super/Pendidikan',$Data);
   }
 
+  public function APS(){
+    $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');
+    $Data['KodeKabupaten'] = $this->session->userdata('KodeKabupaten'); 
+    $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.%' AND length(Kode) = 5")->result_array();
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
+    if ($this->session->userdata('JenisData') == 'Desa') {
+      $APS = $this->db->query("SELECT Usia,PartisipasiSekolah FROM `surveiipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+    } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
+      $APS = $this->db->query("SELECT Usia,PartisipasiSekolah FROM `surveiipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
+    } else {
+      $APS = $this->db->query("SELECT Usia,PartisipasiSekolah FROM `surveiipm`")->result_array();
+    }
+    $Sekolah = $Penduduk = array(0,0,0,0);  
+    foreach ($APS as $key) {
+      $Usia = explode("|",$key['Usia']);
+      $PartisipasiSekolah = explode("|",$key['PartisipasiSekolah']);
+      for ($i=0; $i < count($Usia); $i++) { 
+        if ($Usia[$i] > 6 && $Usia[$i] < 13) {
+          if ($PartisipasiSekolah[$i] == '2') {
+            $Sekolah[0] += 1;
+            $Penduduk[0] += 1;
+          } else {
+            $Penduduk[0] += 1;
+          }
+        } else if ($Usia[$i] < 16) {
+          if ($PartisipasiSekolah[$i] == '2') {
+            $Sekolah[1] += 1;
+            $Penduduk[1] += 1;
+          } else {
+            $Penduduk[1] += 1;
+          } 
+        } else if ($Usia[$i] < 19) {
+          if ($PartisipasiSekolah[$i] == '2') {
+            $Sekolah[2] += 1;
+            $Penduduk[2] += 1;
+          } else {
+            $Penduduk[2] += 1;
+          } 
+        } else if ($Usia[$i] < 25) {
+          if ($PartisipasiSekolah[$i] == '2') {
+            $Sekolah[3] += 1;
+            $Penduduk[3] += 1;
+          } else {
+            $Penduduk[3] += 1;
+          } 
+        } 
+      }
+    }
+    $Data['APS'] = array(0,0,0,0);
+    $Data['APS'][0] = $Sekolah[0]/$Penduduk[0]*100;
+    $Data['APS'][1] = $Sekolah[1]/$Penduduk[1]*100;
+    $Data['APS'][2] = $Sekolah[2]/$Penduduk[2]*100;
+    $Data['APS'][3] = $Sekolah[3]/$Penduduk[3]*100;
+    $this->load->view('Super/Header',$Data);
+		$this->load->view('Super/APS',$Data);
+  }
+
   public function GarisKemiskinan(){
     $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
     $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');
