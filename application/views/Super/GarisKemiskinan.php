@@ -82,12 +82,20 @@
                       <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Garis Kemiskinan <br>Rp ".number_format($GKRata2,2,",",".")?></div></div>
                     </div>
                   </div>
+                  <div class="col-lg-3 col-sm-12 text-center">
+                    <div class="card">
+                      <div class="card-body bg-warning border border-light p-0">
+                        <div id="Miskin" style="margin-bottom: 5px;"></div>
+                      </div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Penduduk Miskin ".number_format($KelompokGK[1]/($KelompokGK[0]+$KelompokGK[1])*100,2,",",".")."%"?></div></div>
+                    </div>
+                  </div>
                 </div>
                 <div class="row mt-2">
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-primary border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/Perkapita.png')?>" alt="GKM" width="65%"></a>
+                        <a><img class="my-2" src="<?=base_url('assets/img/PerKapita.png')?>" alt="GKM" width="65%"></a>
                       </div>
                       <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Indeks Kedalaman<br>Kemiskinan (P1) = ".number_format($P1,2,",",".")?></div></div>
                     </div>
@@ -103,9 +111,9 @@
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-warning border border-light p-0">
-                        <div id="chart_div" style="margin-bottom: 5px;"></div>
+                        <div id="MiskinEkstrim" style="margin-bottom: 5px;"></div>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Persentase Kemiskinan ".number_format($KelompokGK[1]/($KelompokGK[0]+$KelompokGK[1])*100,2,",",".")."%"?></div></div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Kemiskinan Ekstrim ".number_format($P3,2,",",".")."%"?></div></div>
                     </div>
                   </div>
                 </div>
@@ -150,12 +158,6 @@
         google.charts.load("current", {packages:["corechart"]});
         google.charts.setOnLoadCallback(drawChart);
         function drawChart() {
-          var data = google.visualization.arrayToDataTable([
-            ['Pendidikan', 'Jumlah'],
-            ['Di Atas GK',<?=number_format($KelompokGK[0]/($KelompokGK[0]+$KelompokGK[1])*100,2)?>],
-            ['Di Bawah GK',<?=number_format($KelompokGK[1]/($KelompokGK[0]+$KelompokGK[1])*100,2)?>],
-          ]);
-
           var options = {
             pieHole: 0.2,
             sliceVisibilityThreshold : 0,
@@ -163,8 +165,19 @@
             legend: {position: 'none'},
             backgroundColor: { fill:'transparent' }
           };
-
-          var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+          var data = google.visualization.arrayToDataTable([
+            ['Kemiskinan', 'Jumlah'],
+            ['Di Atas GK',<?=number_format($KelompokGK[0],2)?>],
+            ['Di Bawah GK',<?=number_format($KelompokGK[1],2)?>],
+          ]);
+          var chart = new google.visualization.PieChart(document.getElementById('Miskin'));
+          chart.draw(data, options);
+          var data = google.visualization.arrayToDataTable([
+            ['Kemiskinan Ekstrim', 'Jumlah'],
+            ['Diatas Kemiskinan Ekstrim',<?=100-$P3?>],
+            ['Dibawah Kemiskinan Ekstrim',<?=$P3?>],
+          ]);
+          var chart = new google.visualization.PieChart(document.getElementById('MiskinEkstrim'));
           chart.draw(data, options);
         }
       })

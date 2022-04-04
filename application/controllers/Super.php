@@ -766,11 +766,12 @@ class Super extends CI_Controller {
       $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `surveiipm`")->result_array();
     }
     $Data['JumlahKK'] = count($DataKomoditas); $Data['GK'] = $Data['GKM'] = $Data['GKNM'] = $Data['Individu'] = array(); 
-    $Data['GKRata2'] = $Data['GKMRata2'] = $Data['GKNMRata2'] = 0; $Data['KelompokGK'] = array(0,0);
+    $Data['GKRata2'] = $Data['GKMRata2'] = $Data['GKNMRata2'] = 0; $Data['KelompokGK'] = array(0,0); $IndividuPerKK = array();
     $Data['TotalIndividu'] = $Data['TotalPengeluaranMakanan'] = $Data['TotalPengeluaranNonMakanan'] = 0;
     foreach ($DataKomoditas as $key) {
       $TotalIndividuKeluarga = count(explode("|",$key['NamaAnggota']));
       $Data['TotalIndividu'] += $TotalIndividuKeluarga;
+      array_push($IndividuPerKK,$TotalIndividuKeluarga);
       $Nilai = explode("|",$key['Nilai']);
       $TotalPengeluaranMakanan = $TotalPengeluaranNonMakanan = 0;
       for ($i=0; $i < count($Nilai); $i++) { 
@@ -791,37 +792,45 @@ class Super extends CI_Controller {
       $Data['GKMRata2'] = intval($Data['TotalPengeluaranMakanan']/$Data['TotalIndividu']); 
       $Data['GKNMRata2'] = intval($Data['TotalPengeluaranNonMakanan']/$Data['TotalIndividu']); 
       $Data['GKRata2'] = $Data['GKMRata2']+$Data['GKNMRata2']; 
-      $P0 = $P1 = $P2 = 0;
+      $P0 = $P1 = $P2 = $P3 = 0;
       for ($i=0; $i < count($Data['GKM']); $i++) { 
         if (($Data['GKM'][$i]+$Data['GKNM'][$i]) < $Data['GKRata2']) {
           $P0 += (pow($Data['GKRata2']-($Data['GKM'][$i]+$Data['GKNM'][$i])/$Data['GKRata2'],0));
           $P1 += (pow($Data['GKRata2']-($Data['GKM'][$i]+$Data['GKNM'][$i])/$Data['GKRata2'],1));
           $P2 += (pow($Data['GKRata2']-($Data['GKM'][$i]+$Data['GKNM'][$i])/$Data['GKRata2'],2));
         } 
+        if (($Data['GKM'][$i]+$Data['GKNM'][$i]) < 0.8*$Data['GKRata2']) {
+          $P3 += $IndividuPerKK[$i];
+        }
       }
       $Data['P0'] = $P0/$Data['TotalIndividu'];
       $Data['P1'] = $P1/$Data['TotalIndividu'];
       $Data['P2'] = $P2/$Data['TotalIndividu'];
+      $Data['P3'] = $P3/$Data['TotalIndividu'];
     }
     if ($this->session->userdata('JenisData') == 'Kecamatan') {
       $GKRata2 = array(322076,364776,323370,360005,330298,362500,372242,374490,397038,325831,335569,348088,367862,322512,378699,412327,405676,321254,347186,340031,362045,381063,332944,384425,346314);
+      $GKMiskin = array(10.86,5.70,10.05,4.56,14.93,6.32,4.89,6.71,5.08,9.02,9.33,9.47,5.09,10.70,7.64,7.37,4.65,7.31,7.78,13.16,6.15,6.05,10.12,8.83,7.69);
+      $GKEkstrim = array(7.93,4.62,7.64,3.83,9.56,5.37,4.25,5.77,4.32,6.58,7.09,7.01,4.22,7.17,5.88,5.53,4.09,5.41,5.60,8.69,4.98,5.02,7.19,6.71,6.23);
       $Data['GKRata2'] = $GKRata2[(int)substr($Data['KodeKecamatan'],-2)-1];
       $Data['GKMRata2'] = 0.55*$Data['GKRata2'];
       $Data['GKNMRata2'] = 0.45*$Data['GKRata2'];
-      $Data['KelompokGK'][1] = intval(10.86*$Data['TotalIndividu']/100);
-      $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
+      $Data['KelompokGK'][1] = $GKMiskin[(int)substr($Data['KodeKecamatan'],-2)-1];
+      $Data['KelompokGK'][0] = 100-$Data['KelompokGK'][1];
       $P1 = array(1.28,1.25,1.34,1.27,1.31,1.29,1.25,1.27,1.29,1.33,1.31,1.32,1.29,1.31,1.25,1.26,1.25,1.32,1.26,1.31,1.34,1.3,1.25,1.32,1.29);
       $P2 = array(0.33,0.27,0.33,0.26,0.24,0.25,0.26,0.33,0.23,0.31,0.26,0.3,0.24,0.23,0.32,0.24,0.25,0.30,0.32,0.28,0.27,0.29,0.25,0.23,0.31);
       $Data['P1'] = $P1[(int)substr($Data['KodeKecamatan'],-2)-1];
       $Data['P2'] = $P2[(int)substr($Data['KodeKecamatan'],-2)-1];
+      $Data['P3'] = $GKEkstrim[(int)substr($Data['KodeKecamatan'],-2)-1];
     } else if ($this->session->userdata('JenisData') == 'Kabupaten') {
       $Data['GKRata2'] = 386911;
       $Data['GKMRata2'] = 0.55*$Data['GKRata2'];
       $Data['GKNMRata2'] = 0.45*$Data['GKRata2'];
-      $Data['KelompokGK'][1] = intval(8.07*$Data['TotalIndividu']/100);
-      $Data['KelompokGK'][0] = $Data['TotalIndividu']-$Data['KelompokGK'][1];
+      $Data['KelompokGK'][1] = 8.07;
+      $Data['KelompokGK'][0] = 100-8.07;
       $Data['P1'] = 1.31;
       $Data['P2'] = 0.29;
+      $Data['P3'] = 6.38;
     }
     $this->load->view('Super/Header',$Data);
 		$this->load->view('Super/GarisKemiskinan',$Data);
