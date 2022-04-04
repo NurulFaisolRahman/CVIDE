@@ -155,7 +155,7 @@
                           JenisData: $("#JenisData").val() }
             $.post(BaseURL+"Super/Session", Data).done(function(Respon) {
               if (Respon == '1') {
-                window.location = BaseURL + "Super/GarisKemiskinan"
+                window.location = BaseURL + "Super/KondisiRumah"
               }
               else {
                 alert(Respon)
@@ -175,81 +175,81 @@
           };
           var BangunanTinggal = google.visualization.arrayToDataTable([
             ['Bangunan Tinggal', 'Persentase'],
-            ['Milik Sendiri',<?=$BangunanTinggal[0]?>],
-            ['Kontrak',<?=$BangunanTinggal[1]?>],
-            ['Bebas Sewa',<?=$BangunanTinggal[2]?>],
-            ['Dinas',<?=$BangunanTinggal[3]?>],
-            ['Lainnya',<?=$BangunanTinggal[4]?>],
+            ['Milik Sendiri',<?=number_format($BangunanTinggal[0]/array_sum($BangunanTinggal)*100,2)?>],
+            ['Kontrak',<?=number_format($BangunanTinggal[1]/array_sum($BangunanTinggal)*100,2)?>],
+            ['Bebas Sewa',<?=number_format($BangunanTinggal[2]/array_sum($BangunanTinggal)*100,2)?>],
+            ['Dinas',<?=number_format($BangunanTinggal[3]/array_sum($BangunanTinggal)*100,2)?>],
+            ['Lainnya',<?=number_format($BangunanTinggal[4]/array_sum($BangunanTinggal)*100,2)?>],
           ]);
           var chart = new google.visualization.PieChart(document.getElementById('BangunanTinggal'));
           chart.draw(BangunanTinggal, options);
           var LahanTinggal = google.visualization.arrayToDataTable([
             ['Lahan Tinggal', 'Persentase'],
-            ['Milik Sendiri',<?=$LahanTinggal[0]?>],
-            ['Orang Lain',<?=$LahanTinggal[1]?>],
-            ['Tanah Negara',<?=$LahanTinggal[2]?>],
-            ['Lainnya',<?=$LahanTinggal[3]?>],
+            ['Milik Sendiri',<?=number_format($LahanTinggal[0]/array_sum($LahanTinggal)*100,2)?>],
+            ['Orang Lain',<?=number_format($LahanTinggal[1]/array_sum($LahanTinggal)*100,2)?>],
+            ['Tanah Negara',<?=number_format($LahanTinggal[2]/array_sum($LahanTinggal)*100,2)?>],
+            ['Lainnya',<?=number_format($LahanTinggal[3]/array_sum($LahanTinggal)*100,2)?>],
           ]);
           var chart = new google.visualization.PieChart(document.getElementById('LahanTinggal'));
           chart.draw(LahanTinggal, options);
           var JenisLantai = google.visualization.arrayToDataTable([
             ['Jenis Lantai', 'Persentase'],
-            ['Marmer',<?=$JenisLantai[0]?>],
-            ['Keramik',<?=$JenisLantai[1]?>],
-            ['Ubin/Semen',<?=$JenisLantai[2]?>],
-            ['Kayu',<?=$JenisLantai[3]?>],
-            ['Lainnya',<?=$JenisLantai[4]?>],
+            ['Marmer',<?=number_format($JenisLantai[0]/array_sum($JenisLantai)*100,2)?>],
+            ['Keramik',<?=number_format($JenisLantai[1]/array_sum($JenisLantai)*100,2)?>],
+            ['Ubin/Semen',<?=number_format($JenisLantai[2]/array_sum($JenisLantai)*100,2)?>],
+            ['Kayu',<?=number_format($JenisLantai[3]/array_sum($JenisLantai)*100,2)?>],
+            ['Lainnya',<?=number_format($JenisLantai[4]/array_sum($JenisLantai)*100,2)?>],
           ]);
           var chart = new google.visualization.PieChart(document.getElementById('JenisLantai'));
           chart.draw(JenisLantai, options);
           var JenisDinding = google.visualization.arrayToDataTable([
             ['Jenis Dinding', 'Persentase'],
-            ['Tembok',<?=$JenisDinding[0]?>],
-            ['Kayu',<?=$JenisDinding[1]?>],
-            ['Anyaman Bambu',<?=$JenisDinding[2]?>],
-            ['Lainnya',<?=$JenisDinding[3]?>],
+            ['Tembok',<?=number_format($JenisDinding[0]/array_sum($JenisDinding)*100,2)?>],
+            ['Kayu',<?=number_format($JenisDinding[1]/array_sum($JenisDinding)*100,2)?>],
+            ['Anyaman Bambu',<?=number_format($JenisDinding[2]/array_sum($JenisDinding)*100,2)?>],
+            ['Lainnya',<?=number_format($JenisDinding[3]/array_sum($JenisDinding)*100,2)?>],
           ]);
           var chart = new google.visualization.PieChart(document.getElementById('JenisDinding'));
           chart.draw(JenisDinding, options);
           var JenisAtap = google.visualization.arrayToDataTable([
             ['Jenis Atap', 'Persentase'],
-            ['Genteng Beton',<?=$JenisAtap[0]?>],
-            ['Genteng Keramik',<?=$JenisAtap[1]?>],
-            ['Genteng Tanah Liat',<?=$JenisAtap[2]?>],
-            ['Asbes',<?=$JenisAtap[3]?>],
-            ['Lainnya',<?=$JenisAtap[4]?>],
+            ['Genteng Beton',<?=number_format($JenisAtap[0]/array_sum($JenisAtap)*100,2)?>],
+            ['Genteng Keramik',<?=number_format($JenisAtap[1]/array_sum($JenisAtap)*100,2)?>],
+            ['Genteng Tanah Liat',<?=number_format($JenisAtap[2]/array_sum($JenisAtap)*100,2)?>],
+            ['Asbes',<?=number_format($JenisAtap[3]/array_sum($JenisAtap)*100,2)?>],
+            ['Lainnya',<?=number_format($JenisAtap[4]/array_sum($JenisAtap)*100,2)?>],
           ]);
           var chart = new google.visualization.PieChart(document.getElementById('JenisAtap'));
           chart.draw(JenisAtap, options);
           var SumberAir = google.visualization.arrayToDataTable([
             ['Sumber Air', 'Persentase'],
-            ['Air kemasan/Air isi ulang',<?=$SumberAir[0]?>],
-            ['Leding meteran/Eceran',<?=$SumberAir[1]?>],
-            ['Sumur Bor/Pompa',<?=$SumberAir[2]?>],
-            ['Sumur Terlindung',<?=$SumberAir[3]?>],
-            ['Sumur Tak Terlindung',<?=$SumberAir[4]?>],
-            ['Air Sungai',<?=$SumberAir[5]?>],
-            ['Lainnya',<?=$SumberAir[6]?>],
+            ['Air kemasan/Air isi ulang',<?=number_format($SumberAir[0]/array_sum($SumberAir)*100,2)?>],
+            ['Leding meteran/Eceran',<?=number_format($SumberAir[1]/array_sum($SumberAir)*100,2)?>],
+            ['Sumur Bor/Pompa',<?=number_format($SumberAir[2]/array_sum($SumberAir)*100,2)?>],
+            ['Sumur Terlindung',<?=number_format($SumberAir[3]/array_sum($SumberAir)*100,2)?>],
+            ['Sumur Tak Terlindung',<?=number_format($SumberAir[4]/array_sum($SumberAir)*100,2)?>],
+            ['Air Sungai',<?=number_format($SumberAir[5]/array_sum($SumberAir)*100,2)?>],
+            ['Lainnya',<?=number_format($SumberAir[6]/array_sum($SumberAir)*100,2)?>],
           ]);
           var chart = new google.visualization.PieChart(document.getElementById('SumberAir'));
           chart.draw(SumberAir, options);
           var JenisPenerangan = google.visualization.arrayToDataTable([
             ['Jenis Penerangan', 'Persentase'],
-            ['450 Watt',<?=$JenisPenerangan[0]?>],
-            ['900 Watt',<?=$JenisPenerangan[1]?>],
-            ['1300 Watt',<?=$JenisPenerangan[2]?>],
-            ['>1300 Watt',<?=$JenisPenerangan[3]?>],
-            ['Tanpa Meteran',<?=$JenisPenerangan[4]?>],
+            ['450 Watt',<?=number_format($JenisPenerangan[0]/array_sum($JenisPenerangan)*100,2)?>],
+            ['900 Watt',<?=number_format($JenisPenerangan[1]/array_sum($JenisPenerangan)*100,2)?>],
+            ['1300 Watt',<?=number_format($JenisPenerangan[2]/array_sum($JenisPenerangan)*100,2)?>],
+            ['>1300 Watt',<?=number_format($JenisPenerangan[3]/array_sum($JenisPenerangan)*100,2)?>],
+            ['Tanpa Meteran',<?=number_format($JenisPenerangan[4]/array_sum($JenisPenerangan)*100,2)?>],
           ]);
           var chart = new google.visualization.PieChart(document.getElementById('JenisPenerangan'));
           chart.draw(JenisPenerangan, options);
           var JenisJamban = google.visualization.arrayToDataTable([
             ['Jenis Jamban', 'Persentase'],
-            ['Tangki',<?=$JenisJamban[0]?>],
-            ['SPAL',<?=$JenisJamban[1]?>],
-            ['Lubang Tanah',<?=$JenisJamban[2]?>],
-            ['Sungai',<?=$JenisJamban[3]?>],
-            ['Lainnya',<?=$JenisJamban[4]?>],
+            ['Tangki',<?=number_format($JenisJamban[0]/array_sum($JenisJamban)*100,2)?>],
+            ['SPAL',<?=number_format($JenisJamban[1]/array_sum($JenisJamban)*100,2)?>],
+            ['Lubang Tanah',<?=number_format($JenisJamban[2]/array_sum($JenisJamban)*100,2)?>],
+            ['Sungai',<?=number_format($JenisJamban[3]/array_sum($JenisJamban)*100,2)?>],
+            ['Lainnya',<?=number_format($JenisJamban[4]/array_sum($JenisJamban)*100,2)?>],
           ]);
           var chart = new google.visualization.PieChart(document.getElementById('JenisJamban'));
           chart.draw(JenisJamban, options);
