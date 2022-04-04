@@ -54,7 +54,7 @@
                   </div>
                   <div class="col-lg-3">
                     <div class="btn btn-sm btn-primary border-light" id="TampilkanData"><b>Tampilkan</b></div>
-                    <!-- <a href="<?=base_url('/Rekap/RekapKondisiRumah.xlsx')?>" class="btn btn-sm btn-danger border-light"><b>Unduh Rekap</b></a> -->
+                    <a href="<?=base_url('/Rekap/RekapKondisiRumah.xlsx')?>" class="btn btn-sm btn-danger border-light"><b>Unduh Rekap</b></a>
                   </div>
                 </div>
                 <div class="row">
@@ -235,9 +235,11 @@
           chart.draw(SumberAir, options);
           var JenisPenerangan = google.visualization.arrayToDataTable([
             ['Jenis Penerangan', 'Persentase'],
-            ['Listrik PLN',<?=$JenisPenerangan[0]?>],
-            ['Listrik Non PLN',<?=$JenisPenerangan[1]?>],
-            ['Lainnya',<?=$JenisPenerangan[2]?>],
+            ['450 Watt',<?=$JenisPenerangan[0]?>],
+            ['900 Watt',<?=$JenisPenerangan[1]?>],
+            ['1300 Watt',<?=$JenisPenerangan[2]?>],
+            ['>1300 Watt',<?=$JenisPenerangan[3]?>],
+            ['Tanpa Meteran',<?=$JenisPenerangan[4]?>],
           ]);
           var chart = new google.visualization.PieChart(document.getElementById('JenisPenerangan'));
           chart.draw(JenisPenerangan, options);

@@ -529,27 +529,15 @@ class Super extends CI_Controller {
 		$this->load->view('Super/APS',$Data);
   }
 
-  public function KondisiRumah(){
-    $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
-    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');
-    $Data['KodeKabupaten'] = $this->session->userdata('KodeKabupaten'); 
-    $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.%' AND length(Kode) = 5")->result_array();
-    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
-    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
-    if ($this->session->userdata('JenisData') == 'Desa') {
-      $KondisiRumah = $this->db->query("SELECT Rumah FROM `surveiipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
-    } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
-      $KondisiRumah = $this->db->query("SELECT Rumah FROM `surveiipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
-    } else {
-      $KondisiRumah = $this->db->query("SELECT Rumah FROM `surveiipm`")->result_array();
-    }
+  public function ExcelKondisiRumah($KodeKecamatan){
+    $KondisiRumah = $this->db->query("SELECT Rumah FROM `surveiipm`")->result_array();
     $Data['BangunanTinggal'] = array(0,0,0,0,0);
     $Data['LahanTinggal'] = array(0,0,0,0);
     $Data['JenisLantai'] = array(0,0,0,0,0);
     $Data['JenisDinding'] = array(0,0,0,0);
     $Data['JenisAtap'] = array(0,0,0,0,0);
     $Data['SumberAir'] = array(0,0,0,0,0,0,0);
-    $Data['JenisPenerangan'] = array(0,0,0);
+    $Data['JenisPenerangan'] = array(0,0,0,0,0);
     $Data['JenisJamban'] = array(0,0,0,0,0);
     foreach ($KondisiRumah as $key) {
       $Pisah = explode("|",$key['Rumah']);
@@ -619,12 +607,132 @@ class Super extends CI_Controller {
       } else if ($Pisah[8] == 7) {
         $Data['SumberAir'][6] += 1;
       }
-      if ($Pisah[9] == 1) {
+      if ($Pisah[10] == 1) {
         $Data['JenisPenerangan'][0] += 1;
-      } else if ($Pisah[9] == 2) {
+      } else if ($Pisah[10] == 2) {
         $Data['JenisPenerangan'][1] += 1;
-      } else if ($Pisah[9] == 5) {
+      } else if ($Pisah[10] == 3) {
         $Data['JenisPenerangan'][2] += 1;
+      } else if ($Pisah[10] == 4) {
+        $Data['JenisPenerangan'][3] += 1;
+      } else if ($Pisah[10] == 5) {
+        $Data['JenisPenerangan'][4] += 1;
+      }
+      if ($Pisah[12] == 1) {
+        $Data['JenisJamban'][0] += 1;
+      } else if ($Pisah[12] == 2) {
+        $Data['JenisJamban'][1] += 1;
+      } else if ($Pisah[12] == 3) {
+        $Data['JenisJamban'][2] += 1;
+      } else if ($Pisah[12] == 4) {
+        $Data['JenisJamban'][3] += 1;
+      } else if ($Pisah[12] == 5) {
+        $Data['JenisJamban'][4] += 1;
+      }
+    }
+    $this->load->view('Super/ExcelKondisiRumah',$Data);		
+  }
+
+  public function KondisiRumah(){
+    $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');
+    $Data['KodeKabupaten'] = $this->session->userdata('KodeKabupaten'); 
+    $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.%' AND length(Kode) = 5")->result_array();
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
+    if ($this->session->userdata('JenisData') == 'Desa') {
+      $KondisiRumah = $this->db->query("SELECT Rumah FROM `surveiipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+    } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
+      $KondisiRumah = $this->db->query("SELECT Rumah FROM `surveiipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
+    } else {
+      $KondisiRumah = $this->db->query("SELECT Rumah FROM `surveiipm`")->result_array();
+    }
+    $Data['BangunanTinggal'] = array(0,0,0,0,0);
+    $Data['LahanTinggal'] = array(0,0,0,0);
+    $Data['JenisLantai'] = array(0,0,0,0,0);
+    $Data['JenisDinding'] = array(0,0,0,0);
+    $Data['JenisAtap'] = array(0,0,0,0,0);
+    $Data['SumberAir'] = array(0,0,0,0,0,0,0);
+    $Data['JenisPenerangan'] = array(0,0,0,0,0);
+    $Data['JenisJamban'] = array(0,0,0,0,0);
+    foreach ($KondisiRumah as $key) {
+      $Pisah = explode("|",$key['Rumah']);
+      if ($Pisah[0] == 1) {
+        $Data['BangunanTinggal'][0] += 1;
+      } else if ($Pisah[0] == 2) {
+        $Data['BangunanTinggal'][1] += 1;
+      } else if ($Pisah[0] == 3) {
+        $Data['BangunanTinggal'][2] += 1;
+      } else if ($Pisah[0] == 5) {
+        $Data['BangunanTinggal'][3] += 1;
+      } else if ($Pisah[0] == 6) {
+        $Data['BangunanTinggal'][4] += 1;
+      }
+      if ($Pisah[1] == 1) {
+        $Data['LahanTinggal'][0] += 1;
+      } else if ($Pisah[1] == 2) {
+        $Data['LahanTinggal'][1] += 1;
+      } else if ($Pisah[1] == 3) {
+        $Data['LahanTinggal'][2] += 1;
+      } else if ($Pisah[1] == 4) {
+        $Data['LahanTinggal'][3] += 1;
+      }
+      if ($Pisah[2] == 1) {
+        $Data['JenisLantai'][0] += 1;
+      } else if ($Pisah[2] == 2) {
+        $Data['JenisLantai'][1] += 1;
+      } else if ($Pisah[2] == 4 || $Pisah[2] == 6) {
+        $Data['JenisLantai'][2] += 1;
+      } else if ($Pisah[2] == 5) {
+        $Data['JenisLantai'][3] += 1;
+      } else if ($Pisah[2] == 9) {
+        $Data['JenisLantai'][4] += 1;
+      }
+      if ($Pisah[4] == 1) {
+        $Data['JenisDinding'][0] += 1;
+      } else if ($Pisah[4] == 2 || $Pisah[4] == 3) {
+        $Data['JenisDinding'][1] += 1;
+      } else if ($Pisah[4] == 4) {
+        $Data['JenisDinding'][2] += 1;
+      } else if ($Pisah[4] == 5) {
+        $Data['JenisDinding'][3] += 1;
+      }
+      if ($Pisah[6] == 1) {
+        $Data['JenisAtap'][0] += 1;
+      } else if ($Pisah[6] == 2) {
+        $Data['JenisAtap'][1] += 1;
+      } else if ($Pisah[6] == 3) {
+        $Data['JenisAtap'][2] += 1;
+      } else if ($Pisah[6] == 4) {
+        $Data['JenisAtap'][3] += 1;
+      } else if ($Pisah[6] == 6) {
+        $Data['JenisAtap'][4] += 1;
+      }
+      if ($Pisah[8] == 1) {
+        $Data['SumberAir'][0] += 1;
+      } else if ($Pisah[8] == 2) {
+        $Data['SumberAir'][1] += 1;
+      } else if ($Pisah[8] == 3) {
+        $Data['SumberAir'][2] += 1;
+      } else if ($Pisah[8] == 4) {
+        $Data['SumberAir'][3] += 1;
+      } else if ($Pisah[8] == 5) {
+        $Data['SumberAir'][4] += 1;
+      } else if ($Pisah[8] == 6) {
+        $Data['SumberAir'][5] += 1;
+      } else if ($Pisah[8] == 7) {
+        $Data['SumberAir'][6] += 1;
+      }
+      if ($Pisah[10] == 1) {
+        $Data['JenisPenerangan'][0] += 1;
+      } else if ($Pisah[10] == 2) {
+        $Data['JenisPenerangan'][1] += 1;
+      } else if ($Pisah[10] == 3) {
+        $Data['JenisPenerangan'][2] += 1;
+      } else if ($Pisah[10] == 4) {
+        $Data['JenisPenerangan'][3] += 1;
+      } else if ($Pisah[10] == 5) {
+        $Data['JenisPenerangan'][4] += 1;
       }
       if ($Pisah[12] == 1) {
         $Data['JenisJamban'][0] += 1;
