@@ -463,7 +463,7 @@ class Super extends CI_Controller {
     $Data['Pendidikan'] = array(0,0,0,0,0,0,0,0);
     if ($Data['Responden'] > 0) {
       for ($i=0; $i < count($Data['JenisPendidikan']); $i++) { 
-        $Data['Pendidikan'][$i] = number_format($Data['JenisPendidikan'][$i]/$Data['Responden']*100,1);
+        $Data['Pendidikan'][$i] = number_format($Data['JenisPendidikan'][$i]/$Data['Responden']*100,2);
       }
     }
     $this->load->view('Super/Header',$Data);

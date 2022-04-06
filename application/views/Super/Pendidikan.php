@@ -54,11 +54,13 @@
                   </div>
                   <div class="col-lg-3">
                     <div class="btn btn-sm btn-primary border-light" id="TampilkanData"><b>Tampilkan</b></div>
+                    <a href="<?=base_url('/Rekap/RekapTingkatPendidikan.xlsx')?>" class="btn btn-sm btn-danger border-light"><b>Unduh Rekap</b></a>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-lg-4 mb-2">
                     <!-- <h6 class="text-white font-weight-bold">Jumlah Responden <?=$Responden?></h6> -->
+                    <!-- <?php foreach ($Pendidikan as $key => $value) { echo $value.','; }?> -->
                     <div class="table-responsive mt-1">
                       <table class="table table-sm table-bordered table-striped">
                         <thead class="bg-danger">
@@ -132,14 +134,14 @@
         function drawChart() {
           var data = google.visualization.arrayToDataTable([
             ['Pendidikan', 'Jumlah'],
-            ['Tidak Pernah Sekolah',<?=$JenisPendidikan[0]?>],
-            ['SD/Sederajat',<?=$JenisPendidikan[1]?>],
-            ['SMP/Sederajat',<?=$JenisPendidikan[2]?>],
-            ['SMA/Sederajat',<?=$JenisPendidikan[3]?>],
-            ['Diploma',<?=$JenisPendidikan[4]?>],
-            ['S1',<?=$JenisPendidikan[5]?>],
-            ['S2',<?=$JenisPendidikan[6]?>],
-            ['S3',<?=$JenisPendidikan[7]?>]
+            ['Tidak Pernah Sekolah',<?=number_format($JenisPendidikan[0]/array_sum($JenisPendidikan)*100,2)?>],
+            ['SD/Sederajat',<?=number_format($JenisPendidikan[1]/array_sum($JenisPendidikan)*100,2)?>],
+            ['SMP/Sederajat',<?=number_format($JenisPendidikan[2]/array_sum($JenisPendidikan)*100,2)?>],
+            ['SMA/Sederajat',<?=number_format($JenisPendidikan[3]/array_sum($JenisPendidikan)*100,2)?>],
+            ['Diploma',<?=number_format($JenisPendidikan[4]/array_sum($JenisPendidikan)*100,2)?>],
+            ['S1',<?=number_format($JenisPendidikan[5]/array_sum($JenisPendidikan)*100,2)?>],
+            ['S2',<?=number_format($JenisPendidikan[6]/array_sum($JenisPendidikan)*100,2)?>],
+            ['S3',<?=number_format($JenisPendidikan[7]/array_sum($JenisPendidikan)*100,2)?>],
           ]);
 
           var options = {
