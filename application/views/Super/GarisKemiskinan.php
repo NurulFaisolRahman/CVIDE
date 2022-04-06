@@ -63,7 +63,7 @@
                       <div class="card-body bg-primary border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/GKM.png')?>" alt="GKM" width="65%"></a>
                       </div>
-                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Garis Kemiskinan <br>Makanan Rp ".number_format($GKMRata2,2,",",".")?></div></div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Garis Kemiskinan <br>Makanan Rp ".number_format($GKMRata2,0,",",".")?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
@@ -71,7 +71,7 @@
                       <div class="card-body bg-primary border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/GKNM.png')?>" alt="GKNM" width="65%"></a>
                       </div>
-                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Garis Kemiskinan <br>Non Makanan Rp ".number_format($GKNMRata2,2,",",".")?></div></div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Garis Kemiskinan <br>Non Makanan Rp ".number_format($GKNMRata2,0,",",".")?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
@@ -79,7 +79,7 @@
                       <div class="card-body bg-primary border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/GK.png')?>" alt="GK" width="65%"></a>
                       </div>
-                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Garis Kemiskinan <br>Rp ".number_format($GKRata2,2,",",".")?></div></div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Garis Kemiskinan <br>Rp ".number_format($GKRata2,0,",",".")?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
