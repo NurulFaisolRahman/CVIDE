@@ -54,9 +54,13 @@
                   </div>
                   <div class="col-lg-3">
                     <div class="btn btn-sm btn-primary border-light" id="TampilkanData"><b>Tampilkan</b></div>
-                    <a href="<?=base_url('/Rekap/RekapPengangguran.xlsx')?>" class="btn btn-sm btn-danger border-light"><b>Unduh Rekap</b></a>
+                    <a href="<?=base_url('/Rekap/RekapAngkaPartisipasiSekolah.xlsx')?>" class="btn btn-sm btn-danger border-light"><b>Unduh Rekap</b></a>
                   </div>
                 </div>
+                <?php 
+                  if ($APS[1] > $APS[0]) {$Temp=$APS[0];$APS[0]=$APS[1];$APS[1]=$Temp;} 
+                  if ($APS[2] > $APS[1]) {$Temp=$APS[1];$APS[1]=$APS[2];$APS[2]=$Temp;} 
+                  if ($APS[1] > $APS[0]) {$Temp=$APS[0];$APS[0]=$APS[1];$APS[1]=$Temp;} ?>
                 <div class="row">
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">

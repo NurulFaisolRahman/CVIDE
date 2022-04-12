@@ -470,6 +470,181 @@ class Super extends CI_Controller {
 		$this->load->view('Super/Pendidikan',$Data);
   }
 
+  public function Pendapatan(){
+    $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');
+    $Data['KodeKabupaten'] = $this->session->userdata('KodeKabupaten'); 
+    $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.%' AND length(Kode) = 5")->result_array();
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
+    $Pendapatan = array();  
+    if ($this->session->userdata('JenisData') == 'Desa') {
+      $Pendapatan = $this->db->query("SELECT Pendapatan FROM `surveiipm` WHERE Desa = "."'".$Data['KodeDesa']."'")->result_array();
+    } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
+      $Pendapatan = $this->db->query("SELECT Pendapatan FROM `surveiipm` WHERE Kecamatan = "."'".$Data['KodeKecamatan']."'")->result_array();
+    } else {
+      $Pendapatan = $this->db->query("SELECT Pendapatan FROM `surveiipm`")->result_array();
+    }
+    $Data['KelompokPendapatan'] = array(0,0,0,0,0,0);
+    for ($i=0; $i < count($Pendapatan); $i++) { 
+      $Pecah = explode("|",$Pendapatan[$i]['Pendapatan']);
+      for ($j=0; $j < count($Pecah); $j++) { 
+        if ($Pecah[$j] > 0) {
+          if ($Pecah[$j] <= 500000) {
+            $Data['KelompokPendapatan'][0] += 1;
+          } else if ($Pecah[$j] <= 1000000) {
+            $Data['KelompokPendapatan'][1] += 1;
+          } else if ($Pecah[$j] <= 1500000) {
+            $Data['KelompokPendapatan'][2] += 1;
+          } else if ($Pecah[$j] <= 2000000) {
+            $Data['KelompokPendapatan'][3] += 1;
+          } else if ($Pecah[$j] <= 2500000) {
+            $Data['KelompokPendapatan'][4] += 1;
+          } else if ($Pecah[$j] > 2500000) {
+            $Data['KelompokPendapatan'][5] += 1;
+          } 
+        }
+      }
+    }
+    // for ($i=0; $i < count($Data['KelompokPendapatan']); $i++) { 
+    //   echo number_format($Data['KelompokPendapatan'][$i]/array_sum($Data['KelompokPendapatan'])*100,2).'|';
+    // }
+    // $this->load->view('Super/Header',$Data);
+		// $this->load->view('Super/Pendidikan',$Data);
+  }
+
+  public function JenisPekerjaan(){
+    $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');
+    $Data['KodeKabupaten'] = $this->session->userdata('KodeKabupaten'); 
+    $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.%' AND length(Kode) = 5")->result_array();
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
+    $Pekerjaan = array();  
+    if ($this->session->userdata('JenisData') == 'Desa') {
+      $Pekerjaan = $this->db->query("SELECT Pekerjaan FROM `surveiipm` WHERE Desa = "."'".$Data['KodeDesa']."'")->result_array();
+    } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
+      $Pekerjaan = $this->db->query("SELECT Pekerjaan FROM `surveiipm` WHERE Kecamatan = "."'".$Data['KodeKecamatan']."'")->result_array();
+    } else {
+      $Pekerjaan = $this->db->query("SELECT Pekerjaan FROM `surveiipm`")->result_array();
+    }
+    $Data['Pekerjaan'] = array(0,0,0,0,0,0,0,0,0,0,0,0);
+    for ($i=0; $i < count($Pekerjaan); $i++) { 
+      $Pisah = explode("|",$Pekerjaan[$i]['Pekerjaan']);
+      for ($j=0; $j < count($Pisah); $j++) { 
+        if ($Pisah[$j] == 1) {
+          $Data['Pekerjaan'][0] += 1;
+        } else if ($Pisah[$j] == 2) {
+          $Data['Pekerjaan'][1] += 1;
+        } else if ($Pisah[$j] == 3) {
+          $Data['Pekerjaan'][2] += 1;
+        } else if ($Pisah[$j] == 4) {
+          $Data['Pekerjaan'][3] += 1;
+        } else if ($Pisah[$j] == 5) {
+          $Data['Pekerjaan'][4] += 1;
+        } else if ($Pisah[$j] == 6) {
+          $Data['Pekerjaan'][5] += 1;
+        } else if ($Pisah[$j] == 7) {
+          $Data['Pekerjaan'][6] += 1;
+        } else if ($Pisah[$j] == 8) {
+          $Data['Pekerjaan'][7] += 1;
+        } else if ($Pisah[$j] == 9) {
+          $Data['Pekerjaan'][8] += 1;
+        } else if ($Pisah[$j] == 10) {
+          $Data['Pekerjaan'][9] += 1;
+        } else if ($Pisah[$j] == 11) {
+          $Data['Pekerjaan'][10] += 1;
+        } else if ($Pisah[$j] == 12) {
+          $Data['Pekerjaan'][11] += 1;
+        }
+      }
+    }
+    for ($i=0; $i < count($Data['Pekerjaan']); $i++) { 
+      echo number_format($Data['Pekerjaan'][$i]/array_sum($Data['Pekerjaan'])*100,2,",",".").'.';
+    }
+    // $this->load->view('Super/Header',$Data);
+		// $this->load->view('Super/Pendidikan',$Data);
+  }
+
+  public function GiniRasio(){
+    $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
+    $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');
+    $Data['KodeKabupaten'] = $this->session->userdata('KodeKabupaten'); 
+    $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.%' AND length(Kode) = 5")->result_array();
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
+    $Pendapatan = array();  
+    if ($this->session->userdata('JenisData') == 'Desa') {
+      $Pendapatan = $this->db->query("SELECT Pendapatan FROM `surveiipm` WHERE Desa = "."'".$Data['KodeDesa']."'")->result_array();
+    } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
+      $Pendapatan = $this->db->query("SELECT Pendapatan FROM `surveiipm` WHERE Kecamatan = "."'".$Data['KodeKecamatan']."'")->result_array();
+    } else {
+      $Pendapatan = $this->db->query("SELECT Pendapatan FROM `surveiipm`")->result_array();
+    }
+    $Data['KelompokPendapatan'] = array(0,0,0,0,0,0,0);
+    $Data['KelompokIndividu'] = array(0,0,0,0,0,0,0);
+    for ($i=0; $i < count($Pendapatan); $i++) { 
+      $Pecah = explode("|",$Pendapatan[$i]['Pendapatan']);
+      for ($j=0; $j < count($Pecah); $j++) { 
+        if ($Pecah[$j] > 0) {
+          if ($Pecah[$j] <= 500000) {
+            $Data['KelompokPendapatan'][0] += $Pecah[$j];
+            $Data['KelompokIndividu'][0] += 1;
+          } else if ($Pecah[$j] <= 1000000) {
+            $Data['KelompokPendapatan'][1] += $Pecah[$j];
+            $Data['KelompokIndividu'][1] += 1;
+          } else if ($Pecah[$j] <= 1500000) {
+            $Data['KelompokPendapatan'][2] += $Pecah[$j];
+            $Data['KelompokIndividu'][2] += 1;
+          } else if ($Pecah[$j] <= 2000000) {
+            $Data['KelompokPendapatan'][3] += $Pecah[$j];
+            $Data['KelompokIndividu'][3] += 1;
+          } else if ($Pecah[$j] <= 2500000) {
+            $Data['KelompokPendapatan'][4] += $Pecah[$j];
+            $Data['KelompokIndividu'][4] += 1;
+          } else if ($Pecah[$j] <= 3000000) {
+            $Data['KelompokPendapatan'][5] += $Pecah[$j];
+            $Data['KelompokIndividu'][5] += 1;
+          } else if ($Pecah[$j] > 3000000) {
+            $Data['KelompokPendapatan'][6] += $Pecah[$j];
+            $Data['KelompokIndividu'][6] += 1;
+          } 
+        }
+      }
+    }
+    $Data['IndividuRelatif'] = array(0,0,0,0,0,0,0);
+    for ($i=0; $i < 7; $i++) { 
+      $Data['IndividuRelatif'][$i] = number_format($Data['KelompokIndividu'][$i]/array_sum($Data['KelompokIndividu']),3);
+    }
+    $Data['IndividuKumulatif'] = array(0,0,0,0,0,0,0);
+    $Data['IndividuKumulatif'][0] = $Data['IndividuRelatif'][0];
+    for ($i=1; $i < 7; $i++) { 
+      $Data['IndividuKumulatif'][$i] = $Data['IndividuRelatif'][$i]+$Data['IndividuKumulatif'][$i-1];
+    }
+    $Data['PendapatanRelatif'] = array(0,0,0,0,0,0,0);
+    for ($i=0; $i < 7; $i++) { 
+      $Data['PendapatanRelatif'][$i] = number_format($Data['KelompokPendapatan'][$i]/array_sum($Data['KelompokPendapatan']),3);
+    }
+    $Data['PendapatanKumulatif'] = array(0,0,0,0,0,0,0);
+    $Data['PendapatanKumulatif'][0] = $Data['PendapatanRelatif'][0];
+    for ($i=1; $i < 7; $i++) { 
+      $Data['PendapatanKumulatif'][$i] = $Data['PendapatanRelatif'][$i]+$Data['PendapatanKumulatif'][$i-1];
+    }
+    $Data['Xj'] = array(0,0,0,0,0,0,0);
+    $Data['Xj'][0] = $Data['PendapatanKumulatif'][0];
+    for ($i=1; $i < 7; $i++) { 
+      $Data['Xj'][$i] = $Data['PendapatanKumulatif'][$i]+$Data['PendapatanKumulatif'][$i-1];
+    }
+    $Data['IJ'] = array(0,0,0,0,0,0,0);
+    for ($i=0; $i < 7; $i++) { 
+      $Data['IJ'][$i] = $Data['IndividuRelatif'][$i]*$Data['Xj'][$i];
+    }
+    $Data['GiniRasio'] = number_format(1-array_sum($Data['IJ']),2,",",".");
+    echo $Data['GiniRasio'];
+    // $this->load->view('Super/Header',$Data);
+		// $this->load->view('Super/Pendidikan',$Data);
+  }
+
   public function APS(){
     $Data['KodeDesa'] = $this->session->userdata('KodeDesa');
     $Data['KodeKecamatan'] = $this->session->userdata('KodeKecamatan');
@@ -492,31 +667,23 @@ class Super extends CI_Controller {
         if ($Usia[$i] > 6 && $Usia[$i] < 13) {
           if ($PartisipasiSekolah[$i] == '2') {
             $Sekolah[0] += 1;
-            $Penduduk[0] += 1;
-          } else {
-            $Penduduk[0] += 1;
           }
-        } else if ($Usia[$i] < 16) {
+          $Penduduk[0] += 1;
+        } else if ($Usia[$i] > 12 && $Usia[$i] < 16) {
           if ($PartisipasiSekolah[$i] == '2') {
             $Sekolah[1] += 1;
-            $Penduduk[1] += 1;
-          } else {
-            $Penduduk[1] += 1;
           } 
-        } else if ($Usia[$i] < 19) {
+          $Penduduk[1] += 1;
+        } else if ($Usia[$i] > 15 && $Usia[$i] < 19) {
           if ($PartisipasiSekolah[$i] == '2') {
             $Sekolah[2] += 1;
-            $Penduduk[2] += 1;
-          } else {
-            $Penduduk[2] += 1;
           } 
-        } else if ($Usia[$i] < 25) {
+          $Penduduk[2] += 1;
+        } else if ($Usia[$i] > 18 && $Usia[$i] < 25) {
           if ($PartisipasiSekolah[$i] == '2') {
             $Sekolah[3] += 1;
-            $Penduduk[3] += 1;
-          } else {
-            $Penduduk[3] += 1;
           } 
+          $Penduduk[3] += 1;
         } 
       }
     }
