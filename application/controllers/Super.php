@@ -926,15 +926,17 @@ class Super extends CI_Controller {
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$Data['KodeKecamatan'].".%'")->result_array();
     $DataKomoditas = array();  $Ace = 0;
     if ($this->session->userdata('JenisData') == 'Desa') {
-      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `surveiipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
+      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Pendapatan,Nilai FROM `surveiipm` WHERE Desa='".$Data['KodeDesa']."'")->result_array();
     } else if ($this->session->userdata('JenisData') == 'Kecamatan') {
-      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `surveiipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
+      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Pendapatan,Nilai FROM `surveiipm` WHERE Kecamatan='".$Data['KodeKecamatan']."'")->result_array();
     } else {
-      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `surveiipm`")->result_array();
+      $DataKomoditas = $this->db->query("SELECT NamaAnggota,Pendapatan,Nilai FROM `surveiipm`")->result_array();
     }
     $Data['JumlahKK'] = count($DataKomoditas); $Data['GK'] = $Data['GKM'] = $Data['GKNM'] = $Data['Individu'] = array(); 
     $Data['GKRata2'] = $Data['GKMRata2'] = $Data['GKNMRata2'] = 0; $Data['KelompokGK'] = array(0,0); $IndividuPerKK = array();
     $Data['TotalIndividu'] = $Data['TotalPengeluaranMakanan'] = $Data['TotalPengeluaranNonMakanan'] = 0;
+    $Data['KelompokPendapatan'] = array(0,0,0,0,0,0,0);
+    $Data['KelompokIndividu'] = array(0,0,0,0,0,0,0);
     foreach ($DataKomoditas as $key) {
       $TotalIndividuKeluarga = count(explode("|",$key['NamaAnggota']));
       $Data['TotalIndividu'] += $TotalIndividuKeluarga;
@@ -954,6 +956,33 @@ class Super extends CI_Controller {
       array_push($Data['GKNM'],intval($TotalPengeluaranNonMakanan/$TotalIndividuKeluarga));
       $Data['TotalPengeluaranMakanan'] += $TotalPengeluaranMakanan;
       $Data['TotalPengeluaranNonMakanan'] += $TotalPengeluaranNonMakanan;
+      $Pecah = explode("|",$key['Pendapatan']);
+      for ($j=0; $j < count($Pecah); $j++) { 
+        if ($Pecah[$j] > 0) {
+          if ($Pecah[$j] <= 500000) {
+            $Data['KelompokPendapatan'][0] += $Pecah[$j];
+            $Data['KelompokIndividu'][0] += 1;
+          } else if ($Pecah[$j] <= 1000000) {
+            $Data['KelompokPendapatan'][1] += $Pecah[$j];
+            $Data['KelompokIndividu'][1] += 1;
+          } else if ($Pecah[$j] <= 1500000) {
+            $Data['KelompokPendapatan'][2] += $Pecah[$j];
+            $Data['KelompokIndividu'][2] += 1;
+          } else if ($Pecah[$j] <= 2000000) {
+            $Data['KelompokPendapatan'][3] += $Pecah[$j];
+            $Data['KelompokIndividu'][3] += 1;
+          } else if ($Pecah[$j] <= 2500000) {
+            $Data['KelompokPendapatan'][4] += $Pecah[$j];
+            $Data['KelompokIndividu'][4] += 1;
+          } else if ($Pecah[$j] <= 3000000) {
+            $Data['KelompokPendapatan'][5] += $Pecah[$j];
+            $Data['KelompokIndividu'][5] += 1;
+          } else if ($Pecah[$j] > 3000000) {
+            $Data['KelompokPendapatan'][6] += $Pecah[$j];
+            $Data['KelompokIndividu'][6] += 1;
+          } 
+        }
+      }
     }
     if (count($DataKomoditas) > 0) {
       $Data['GKMRata2'] = intval($Data['TotalPengeluaranMakanan']/$Data['TotalIndividu']); 
@@ -975,6 +1004,34 @@ class Super extends CI_Controller {
       $Data['P2'] = $P2/$Data['TotalIndividu'];
       $Data['P3'] = $P3/$Data['TotalIndividu'];
     }
+    $Data['IndividuRelatif'] = array(0,0,0,0,0,0,0);
+    for ($i=0; $i < 7; $i++) { 
+      $Data['IndividuRelatif'][$i] = number_format($Data['KelompokIndividu'][$i]/array_sum($Data['KelompokIndividu']),3);
+    }
+    $Data['IndividuKumulatif'] = array(0,0,0,0,0,0,0);
+    $Data['IndividuKumulatif'][0] = $Data['IndividuRelatif'][0];
+    for ($i=1; $i < 7; $i++) { 
+      $Data['IndividuKumulatif'][$i] = $Data['IndividuRelatif'][$i]+$Data['IndividuKumulatif'][$i-1];
+    }
+    $Data['PendapatanRelatif'] = array(0,0,0,0,0,0,0);
+    for ($i=0; $i < 7; $i++) { 
+      $Data['PendapatanRelatif'][$i] = number_format($Data['KelompokPendapatan'][$i]/array_sum($Data['KelompokPendapatan']),3);
+    }
+    $Data['PendapatanKumulatif'] = array(0,0,0,0,0,0,0);
+    $Data['PendapatanKumulatif'][0] = $Data['PendapatanRelatif'][0];
+    for ($i=1; $i < 7; $i++) { 
+      $Data['PendapatanKumulatif'][$i] = $Data['PendapatanRelatif'][$i]+$Data['PendapatanKumulatif'][$i-1];
+    }
+    $Data['Xj'] = array(0,0,0,0,0,0,0);
+    $Data['Xj'][0] = $Data['PendapatanKumulatif'][0];
+    for ($i=1; $i < 7; $i++) { 
+      $Data['Xj'][$i] = $Data['PendapatanKumulatif'][$i]+$Data['PendapatanKumulatif'][$i-1];
+    }
+    $Data['IJ'] = array(0,0,0,0,0,0,0);
+    for ($i=0; $i < 7; $i++) { 
+      $Data['IJ'][$i] = $Data['IndividuRelatif'][$i]*$Data['Xj'][$i];
+    }
+    $Data['GiniRasio'] = number_format(1-array_sum($Data['IJ']),2,",",".");
     if ($this->session->userdata('JenisData') == 'Kecamatan') {
       $GKRata2 = array(322076,364776,323370,360005,330298,362500,372242,374490,397038,325831,335569,348088,367862,322512,378699,412327,405676,321254,347186,340031,362045,381063,332944,384425,346314);
       $GKMiskin = array(10.86,5.70,10.05,4.56,14.93,6.32,4.89,6.71,5.08,9.02,9.33,9.47,5.09,10.70,7.64,7.37,4.65,7.31,7.78,13.16,6.15,6.05,10.12,8.83,7.69);

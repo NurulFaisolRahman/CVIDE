@@ -95,7 +95,7 @@
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-primary border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/PerKapita.png')?>" alt="GKM" width="65%"></a>
+                        <a><img class="my-2" src="<?=base_url('assets/img/PerKapita.png')?>" alt="P1" width="65%"></a>
                       </div>
                       <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Indeks Kedalaman<br>Kemiskinan (P1) = ".number_format($P1,2,",",".")?></div></div>
                     </div>
@@ -103,9 +103,17 @@
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
                       <div class="card-body bg-primary border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/PerKapitaKonstan.png')?>" alt="GKNM" width="65%"></a>
+                        <a><img class="my-2" src="<?=base_url('assets/img/PerKapitaKonstan.png')?>" alt="P2" width="65%"></a>
                       </div>
                       <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Indeks Keparahan<br>Kemiskinan (P2) = ".number_format($P2,2,",",".")?></div></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-12 text-center">
+                    <div class="card">
+                      <div class="card-body bg-primary border border-light p-0">
+                        <a><img class="my-2" src="<?=base_url('assets/img/GiniRasio.png')?>" alt="GiniRasio" width="65%"></a>
+                      </div>
+                      <div class="card-footer bg-danger border border-light py-2"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Gini Rasio = ".$GiniRasio?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-12 text-center">
