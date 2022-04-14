@@ -71,7 +71,7 @@
                           </tr>
                         </thead>
                         <tbody style="font-size: 12px;" class="bg-primary">
-                        <?php $TingkatPendidikan = array('Tidak Pernah Sekolah','SD/Sederajat','SMP/Sederajat','SMA/Sederajat','Diploma','S1','S2','S3'); 
+                        <?php $TingkatPendidikan = array('Tidak Pernah Sekolah','SD/Sederajat','SMP/Sederajat','SMA/Sederajat','Perguruan Tinggi'); 
                           foreach ($TingkatPendidikan as $key => $value) { ?>
                           <tr class="text-light align-middle">
                             <td class="align-middle text-center font-weight-bold"><?=($key+1)?></td>
@@ -134,20 +134,17 @@
         function drawChart() {
           var data = google.visualization.arrayToDataTable([
             ['Pendidikan', 'Jumlah'],
-            ['Tidak Pernah Sekolah',<?=number_format($JenisPendidikan[0]/array_sum($JenisPendidikan)*100,2)?>],
-            ['SD/Sederajat',<?=number_format($JenisPendidikan[1]/array_sum($JenisPendidikan)*100,2)?>],
-            ['SMP/Sederajat',<?=number_format($JenisPendidikan[2]/array_sum($JenisPendidikan)*100,2)?>],
-            ['SMA/Sederajat',<?=number_format($JenisPendidikan[3]/array_sum($JenisPendidikan)*100,2)?>],
-            ['Diploma',<?=number_format($JenisPendidikan[4]/array_sum($JenisPendidikan)*100,2)?>],
-            ['S1',<?=number_format($JenisPendidikan[5]/array_sum($JenisPendidikan)*100,2)?>],
-            ['S2',<?=number_format($JenisPendidikan[6]/array_sum($JenisPendidikan)*100,2)?>],
-            ['S3',<?=number_format($JenisPendidikan[7]/array_sum($JenisPendidikan)*100,2)?>],
+            ['Tidak Pernah Sekolah',<?=number_format($IjazahTertinggi[0]/array_sum($IjazahTertinggi)*100,2)?>],
+            ['SD/Sederajat',<?=number_format($IjazahTertinggi[1]/array_sum($IjazahTertinggi)*100,2)?>],
+            ['SMP/Sederajat',<?=number_format($IjazahTertinggi[2]/array_sum($IjazahTertinggi)*100,2)?>],
+            ['SMA/Sederajat',<?=number_format($IjazahTertinggi[3]/array_sum($IjazahTertinggi)*100,2)?>],
+            ['Perguruan Tinggi',<?=number_format($IjazahTertinggi[4]/array_sum($IjazahTertinggi)*100,2)?>],
           ]);
 
           var options = {
-            pieHole: 0.4,
+            pieHole: 0.3,
             sliceVisibilityThreshold : 0,
-            chartArea : {left:15,top:35},
+            chartArea : {left:15,top:5},
             legend: {position: 'none'},
             backgroundColor: { fill:'transparent' }
           };

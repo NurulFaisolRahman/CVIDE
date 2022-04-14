@@ -9,6 +9,519 @@ class IDE extends CI_Controller {
 		$this->load->view('IDE',$Data);
   }
 
+  public function Harga(){
+    // $Harga = $this->db->query("SELECT Harga FROM `surveiipm`")->result_array();
+    $Harga = $this->db->query("SELECT Harga FROM `surveiipm` WHERE Kecamatan='35.10.02'")->result_array();
+    $Total = $Jumlah = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+    foreach ($Harga as $key) {
+      $Pisah = explode("|",$key['Harga']);
+      for ($i=0; $i < 154; $i++) { 
+        if (intval($Pisah[$i]) > 0) {
+          // if ($i == 0) {
+          //   echo $Pisah[$i].'<br>';
+          // }
+          $Total[$i] += intval($Pisah[$i]);
+          $Jumlah[$i] += 1;
+        }
+      }
+    }
+    for ($i=0; $i < 154; $i++) { 
+      if ($Total[$i] > 0) {
+        echo intval($Total[$i]/$Jumlah[$i]).'<br>';
+      } else {
+        echo '0<br>';
+      }
+    }
+  }
+
+  public function Pendapatan(){
+    $No = 0;
+    for ($k=1; $k < 26; $k++) { 
+      if ($k < 10) {
+        $No = '0'.$k;
+      } else {
+        $No = $k; 
+      }
+      $Pendapatan = $this->db->query("SELECT Pendapatan FROM `surveiipm` WHERE Kecamatan="."'35.10.".$No."'")->result_array();
+      $KelompokPendapatan = array(0,0,0,0);
+      foreach ($Pendapatan as $key) {
+        $Pecah = explode("|",$key['Pendapatan']);
+        for ($j=0; $j < count($Pecah); $j++) { 
+          if ($Pecah[$j] > 0) {
+            if ($Pecah[$j] <= 1500000) {
+              $KelompokPendapatan[0] += 1;
+            } else if ($Pecah[$j] <= 2500000) {
+              $KelompokPendapatan[1] += 1;
+            } else if ($Pecah[$j] <= 3500000) {
+              $KelompokPendapatan[2] += 1;
+            } else if ($Pecah[$j] > 3500000) {
+              $KelompokPendapatan[3] += 1;
+            }
+          }
+        }
+      }
+      for ($i=0; $i < 4; $i++) { 
+        echo number_format($KelompokPendapatan[$i]/array_sum($KelompokPendapatan)*100,2,",",".").'|';
+      }
+      echo '<br>';
+    }
+    $Pendapatan = $this->db->query("SELECT Pendapatan FROM `surveiipm`")->result_array();
+    $KelompokPendapatan = array(0,0,0,0);
+    foreach ($Pendapatan as $key) {
+      $Pecah = explode("|",$key['Pendapatan']);
+      for ($j=0; $j < count($Pecah); $j++) { 
+        if ($Pecah[$j] > 0) {
+          if ($Pecah[$j] <= 1500000) {
+            $KelompokPendapatan[0] += 1;
+          } else if ($Pecah[$j] <= 2500000) {
+            $KelompokPendapatan[1] += 1;
+          } else if ($Pecah[$j] <= 3500000) {
+            $KelompokPendapatan[2] += 1;
+          } else if ($Pecah[$j] > 3500000) {
+            $KelompokPendapatan[3] += 1;
+          }
+        }
+      }
+    }
+    for ($i=0; $i < 4; $i++) { 
+      echo number_format($KelompokPendapatan[$i]/array_sum($KelompokPendapatan)*100,2,",",".").'|';
+    }
+  }
+
+  public function PerKapita(){
+    $Pendapatan = $this->db->query("SELECT Pendapatan FROM `surveiipm`")->result_array();
+    $Total = $Jumlah = 0;
+    foreach ($Pendapatan as $key) {
+      $Pisah = explode("|",$key['Pendapatan']);
+      for ($i=0; $i < count($Pisah); $i++) { 
+        if (intval($Pisah[$i]) > 0) {
+          $Total += intval($Pisah[$i]);
+          $Jumlah += 1;
+        }
+      }
+    }
+    echo intval($Total/$Jumlah).'|'.$Total.'|'.$Jumlah;
+    // $No = 0;
+    // for ($j=1; $j < 26; $j++) { 
+    //   if ($j < 10) {
+    //     $No = '0'.$j;
+    //   } else {
+    //     $No = $j; 
+    //   }
+    //   $Total = $Jumlah = 0;
+    //   $Pendapatan = $this->db->query("SELECT Pendapatan FROM `surveiipm` WHERE Kecamatan="."'35.10.".$No."'")->result_array();
+    //   foreach ($Pendapatan as $key) {
+    //     $Pisah = explode("|",$key['Pendapatan']);
+    //     for ($i=0; $i < count($Pisah); $i++) { 
+    //       if (intval($Pisah[$i]) > 0) {
+    //         $Total += intval($Pisah[$i]);
+    //         $Jumlah += 1;
+    //       }
+    //     }
+    //   }
+    //   echo intval($Total/$Jumlah).'|'.$Total.'|'.$Jumlah.'<br>';
+    // }
+  }
+
+  public function Imunisasi(){
+    $Imunisasi = $this->db->query("SELECT Imunisasi FROM `surveiipm`")->result_array();
+    $Total = $Jumlah = 0;
+    foreach ($Imunisasi as $key) {
+      $Pisah = explode("|",$key['Imunisasi']);
+      $Jumlah += count($Pisah);
+      for ($i=0; $i < count($Pisah); $i++) { 
+        if (intval($Pisah[$i]) < 2) {
+          $Total += 1;
+        }
+      }
+    }
+    echo number_format($Total/$Jumlah*100,2,",",".").'|'.$Total.'|'.$Jumlah;
+    // $No = 0;
+    // for ($j=1; $j < 26; $j++) { 
+    //   if ($j < 10) {
+    //     $No = '0'.$j;
+    //   } else {
+    //     $No = $j; 
+    //   }
+    //   $Total = $Jumlah = 0;
+    //   $Imunisasi = $this->db->query("SELECT Imunisasi FROM `surveiipm` WHERE Kecamatan="."'35.10.".$No."'")->result_array();
+    //   foreach ($Imunisasi as $key) {
+    //     $Pisah = explode("|",$key['Imunisasi']);
+    //     $Jumlah += count($Pisah);
+    //     for ($i=0; $i < count($Pisah); $i++) { 
+    //       if (intval($Pisah[$i]) < 2) {
+    //         $Total += 1;
+    //       }
+    //     }
+    //   }
+    //   echo number_format($Total/$Jumlah*100,2,",",".").'|'.$Total.'|'.$Jumlah.'<br>';
+    // }
+  }
+
+  public function JamKes(){
+    // $JamKes = $this->db->query("SELECT JaminanKesehatan FROM `surveiipm`")->result_array();
+    // $Total = $Jumlah = 0;
+    // foreach ($JamKes as $key) {
+    //   $Pisah = explode("|",$key['JaminanKesehatan']);
+    //   $Jumlah += count($Pisah);
+    //   for ($i=0; $i < count($Pisah); $i++) { 
+    //     if (intval($Pisah[$i]) > 0) {
+    //       $Total += 1;
+    //     }
+    //   }
+    // }
+    // echo number_format($Total/$Jumlah*100,2,",",".").'|'.$Total.'|'.$Jumlah;
+    $No = 0;
+    for ($j=1; $j < 26; $j++) { 
+      if ($j < 10) {
+        $No = '0'.$j;
+      } else {
+        $No = $j; 
+      }
+      $Total = $Jumlah = 0;
+      $JamKes = $this->db->query("SELECT JaminanKesehatan FROM `surveiipm` WHERE Kecamatan="."'35.10.".$No."'")->result_array();
+      foreach ($JamKes as $key) {
+        $Pisah = explode("|",$key['JaminanKesehatan']);
+        $Jumlah += count($Pisah);
+        for ($i=0; $i < count($Pisah); $i++) { 
+          if (intval($Pisah[$i]) > 0) {
+            $Total += 1;
+          }
+        }
+      }
+      echo number_format($Total/$Jumlah*100,2,",",".").'|'.$Total.'|'.$Jumlah.'<br>';
+    }
+  }
+
+  public function SMP(){
+    $No = 0;
+    for ($j=1; $j < 26; $j++) { 
+      if ($j < 10) {
+        $No = '0'.$j;
+      } else {
+        $No = $j; 
+      }
+      $Total = $Jumlah = 0;
+      $SMP = $this->db->query("SELECT Usia,IjazahTertinggi FROM `surveiipm` WHERE Kecamatan="."'35.10.".$No."'")->result_array();
+      foreach ($SMP as $key) {
+        $Usia = explode("|",$key['Usia']);
+        $IjazahTertinggi = explode("|",$key['IjazahTertinggi']);
+        for ($i=0; $i < count($Usia); $i++) { 
+          if (intval($IjazahTertinggi[$i]) > 4 && intval($IjazahTertinggi[$i]) < 8) {
+            $Total += 1;
+            $Jumlah += 1;
+          } else if (intval($Usia[$i]) > 14) {
+            $Jumlah += 1;
+          }
+        }
+      }
+      echo number_format($Total/$Jumlah*100,2,",",".").'|'.$Total.'|'.$Jumlah.'<br>';
+    }
+    $SMP = $this->db->query("SELECT Usia,IjazahTertinggi FROM `surveiipm`")->result_array();
+    $Total = $Jumlah = 0;
+    foreach ($SMP as $key) {
+      $Usia = explode("|",$key['Usia']);
+      $IjazahTertinggi = explode("|",$key['IjazahTertinggi']);
+      for ($i=0; $i < count($Usia); $i++) { 
+        if (intval($IjazahTertinggi[$i]) > 4 && intval($IjazahTertinggi[$i]) < 8) {
+          $Total += 1;
+          $Jumlah += 1;
+        } else if (intval($Usia[$i]) > 14) {
+          $Jumlah += 1;
+        }
+      }
+    }
+    echo number_format($Total/$Jumlah*100,2,",",".").'|'.$Total.'|'.$Jumlah;
+  }
+
+  public function Bantuan(){
+    $No = 0;
+    for ($j=1; $j < 26; $j++) { 
+      if ($j < 10) {
+        $No = '0'.$j;
+      } else {
+        $No = $j; 
+      }
+      $Total = $Jumlah = 0;
+      $Bantuan = $this->db->query("SELECT KepesertaanProgram FROM `surveiipm` WHERE Kecamatan="."'35.10.".$No."'")->result_array();
+      foreach ($Bantuan as $key) {
+        $Pisah = explode("|",$key['KepesertaanProgram']);
+        if (array_sum($Pisah) > 10) {
+          $Total += 1;
+          $Jumlah += 1;
+        } else {
+          $Jumlah += 1;
+        }
+      }
+      echo number_format($Total/$Jumlah*100,2,",",".").'|'.$Total.'|'.$Jumlah.'<br>';
+    }
+    $Bantuan = $this->db->query("SELECT KepesertaanProgram FROM `surveiipm`")->result_array();
+    $Total = $Jumlah = 0;
+    foreach ($Bantuan as $key) {
+      $Pisah = explode("|",$key['KepesertaanProgram']);
+      if (array_sum($Pisah) > 10) {
+        $Total += 1;
+        $Jumlah += 1;
+      } else {
+        $Jumlah += 1;
+      }
+    }
+    echo number_format($Total/$Jumlah*100,2,",",".").'|'.$Total.'|'.$Jumlah;
+  }
+
+  public function PLN(){
+    $No = 0;
+    for ($j=1; $j < 26; $j++) { 
+      if ($j < 10) {
+        $No = '0'.$j;
+      } else {
+        $No = $j; 
+      }
+      $Total = $Jumlah = 0;
+      $PLN = $this->db->query("SELECT Rumah FROM `surveiipm` WHERE Kecamatan="."'35.10.".$No."'")->result_array();
+      foreach ($PLN as $key) {
+        $Pisah = explode("|",$key['Rumah']);
+        if (intval($Pisah[9]) == 1) {
+          $Total += 1;
+          $Jumlah += 1;
+        } else {
+          $Jumlah += 1;
+        }
+      }
+      echo number_format($Total/$Jumlah*100,2,",",".").'|'.$Total.'|'.$Jumlah.'<br>';
+    }
+    $PLN = $this->db->query("SELECT Rumah FROM `surveiipm`")->result_array();
+    $Total = $Jumlah = 0;
+    foreach ($PLN as $key) {
+      $Pisah = explode("|",$key['Rumah']);
+      if (intval($Pisah[9]) == 1) {
+        $Total += 1;
+        $Jumlah += 1;
+      } else {
+        $Jumlah += 1;
+      }
+    }
+    echo number_format($Total/$Jumlah*100,2,",",".").'|'.$Total.'|'.$Jumlah;
+  }
+
+  public function Ijazah(){
+    $No = 0;
+    for ($k=1; $k < 26; $k++) { 
+      if ($k < 10) {
+        $No = '0'.$k;
+      } else {
+        $No = $k; 
+      }
+      $Total = [0,0,0,0,0,0,0,0];
+      $Ijazah = $this->db->query("SELECT PartisipasiSekolah,IjazahTertinggi FROM `surveiipm` WHERE Kecamatan="."'35.10.".$No."'")->result_array();
+      foreach ($Ijazah as $key) {
+        $PartisipasiSekolah = explode("|",$key['PartisipasiSekolah']);
+        $IjazahTertinggi = explode("|",$key['IjazahTertinggi']);
+        for ($j=0; $j < count($PartisipasiSekolah); $j++) { 
+          if ($PartisipasiSekolah[$j] == 1) {
+            $Total[0] += 1;
+          } else if ($IjazahTertinggi[$j] < 5) {
+            $Total[1] += 1;
+          } else if ($IjazahTertinggi[$j] < 8) {
+            $Total[2] += 1;
+          } else if ($IjazahTertinggi[$j] < 12) {
+            $Total[3] += 1;
+          } else if ($IjazahTertinggi[$j] < 14) {
+            $Total[4] += 1;
+          } else if ($IjazahTertinggi[$j] == 14) {
+            $Total[5] += 1;
+          } else if ($IjazahTertinggi[$j] == 15) {
+            $Total[6] += 1;
+          } else if ($IjazahTertinggi[$j] == 16) {
+            $Total[7] += 1;
+          } 
+        }
+      }
+      for ($i=0; $i < 8; $i++) { 
+        echo number_format($Total[$i]/array_sum($Total)*100,2,",",".").'|';
+      }
+      echo '<br>';
+    }
+    $Total = [0,0,0,0,0,0,0,0];
+    $Ijazah = $this->db->query("SELECT PartisipasiSekolah,IjazahTertinggi FROM `surveiipm`")->result_array();
+    foreach ($Ijazah as $key) {
+      $PartisipasiSekolah = explode("|",$key['PartisipasiSekolah']);
+      $IjazahTertinggi = explode("|",$key['IjazahTertinggi']);
+      for ($j=0; $j < count($PartisipasiSekolah); $j++) { 
+        if ($PartisipasiSekolah[$j] == 1) {
+          $Total[0] += 1;
+        } else if ($IjazahTertinggi[$j] < 5) {
+          $Total[1] += 1;
+        } else if ($IjazahTertinggi[$j] < 8) {
+          $Total[2] += 1;
+        } else if ($IjazahTertinggi[$j] < 12) {
+          $Total[3] += 1;
+        } else if ($IjazahTertinggi[$j] < 14) {
+          $Total[4] += 1;
+        } else if ($IjazahTertinggi[$j] == 14) {
+          $Total[5] += 1;
+        } else if ($IjazahTertinggi[$j] == 15) {
+          $Total[6] += 1;
+        } else if ($IjazahTertinggi[$j] == 16) {
+          $Total[7] += 1;
+        } 
+      }
+    }
+    for ($i=0; $i < 8; $i++) { 
+      echo number_format($Total[$i]/array_sum($Total)*100,2,",",".").'|';
+    }
+  }
+
+  public function Pengeluaran(){
+    $No = 0;
+    for ($j=1; $j < 26; $j++) { 
+      if ($j < 10) {
+        $No = '0'.$j;
+      } else {
+        $No = $j; 
+      }
+      $Kelompok = [0,0,0,0,0,0,0];
+      $Pengeluaran = $this->db->query("SELECT NamaAnggota,Nilai FROM `surveiipm` WHERE Kecamatan="."'35.10.".$No."'")->result_array();
+      foreach ($Pengeluaran as $key) {
+        $Nilai = explode("|",$key['Nilai']);
+        $NamaAnggota = explode("|",$key['NamaAnggota']);
+        $Bulan = intval(array_sum($Nilai)/12);
+        if ($Bulan < 150000) {
+          $Kelompok[0] += 1;
+        } else if ($Bulan < 200000) {
+          $Kelompok[1] += 1;
+        } else if ($Bulan < 300000) {
+          $Kelompok[2] += 1;
+        } else if ($Bulan < 500000) {
+          $Kelompok[3] += 1;
+        } else if ($Bulan < 750000) {
+          $Kelompok[4] += 1;
+        } else if ($Bulan < 1000000) {
+          $Kelompok[5] += 1;
+        } else {
+          $Kelompok[6] += 1;
+        }
+      }
+      for ($i=0; $i < 7; $i++) { 
+        echo number_format($Kelompok[$i]/array_sum($Kelompok)*100,2,",",".").'|';
+      }
+      echo '<br>';
+    }
+    $Kelompok = [0,0,0,0,0,0,0];
+    $Pengeluaran = $this->db->query("SELECT NamaAnggota,Nilai FROM `surveiipm`")->result_array();
+    foreach ($Pengeluaran as $key) {
+      $Nilai = explode("|",$key['Nilai']);
+      $NamaAnggota = explode("|",$key['NamaAnggota']);
+      $Bulan = intval(array_sum($Nilai)/12);
+      if ($Bulan < 150000) {
+        $Kelompok[0] += 1;
+      } else if ($Bulan < 200000) {
+        $Kelompok[1] += 1;
+      } else if ($Bulan < 300000) {
+        $Kelompok[2] += 1;
+      } else if ($Bulan < 500000) {
+        $Kelompok[3] += 1;
+      } else if ($Bulan < 750000) {
+        $Kelompok[4] += 1;
+      } else if ($Bulan < 1000000) {
+        $Kelompok[5] += 1;
+      } else {
+        $Kelompok[6] += 1;
+      }
+    }
+    for ($i=0; $i < 7; $i++) { 
+      echo number_format($Kelompok[$i]/array_sum($Kelompok)*100,2,",",".").'|';
+    }
+  }
+
+  public function JenisPekerjaan(){
+    $No = 0;
+    for ($k=1; $k < 26; $k++) { 
+      if ($k < 10) {
+        $No = '0'.$k;
+      } else {
+        $No = $k; 
+      }
+      $Pekerjaan = $this->db->query("SELECT Usia,Pekerjaan FROM `surveiipm` WHERE Kecamatan = "."'35.10.".$No."'")->result_array();
+      $Data['Pekerjaan'] = array(0,0,0,0,0,0,0,0,0,0,0,0);
+      for ($i=0; $i < count($Pekerjaan); $i++) { 
+        $Pisah = explode("|",$Pekerjaan[$i]['Pekerjaan']);
+        $Usia = explode("|",$Pekerjaan[$i]['Usia']);
+        for ($j=0; $j < count($Pisah); $j++) { 
+          if ($Pisah[$j] == 1) {
+            $Data['Pekerjaan'][0] += 1;
+          } else if ($Pisah[$j] == 2) {
+            $Data['Pekerjaan'][1] += 1;
+          } else if ($Pisah[$j] == 3) {
+            $Data['Pekerjaan'][2] += 1;
+          } else if ($Pisah[$j] == 4) {
+            $Data['Pekerjaan'][3] += 1;
+          } else if ($Pisah[$j] == 5) {
+            $Data['Pekerjaan'][4] += 1;
+          } else if ($Pisah[$j] == 6) {
+            $Data['Pekerjaan'][5] += 1;
+          } else if ($Pisah[$j] == 7) {
+            $Data['Pekerjaan'][6] += 1;
+          } else if ($Pisah[$j] == 8) {
+            $Data['Pekerjaan'][7] += 1;
+          } else if ($Pisah[$j] == 9) {
+            $Data['Pekerjaan'][8] += 1;
+          } else if ($Pisah[$j] == 10) {
+            $Data['Pekerjaan'][9] += 1;
+          } else if ($Pisah[$j] == 11) {
+            if ($Usia[$j] > 25) {
+              $Data['Pekerjaan'][10] += 1;
+            } 
+          } else if ($Pisah[$j] == 12) {
+            $Data['Pekerjaan'][11] += 1;
+          }
+        }
+      }
+      for ($i=0; $i < count($Data['Pekerjaan']); $i++) { 
+        echo number_format($Data['Pekerjaan'][$i]/array_sum($Data['Pekerjaan'])*100,2,",",".").'|';
+      }
+      echo '<br>';
+    }
+    $Pekerjaan = $this->db->query("SELECT Usia,Pekerjaan FROM `surveiipm`")->result_array();
+    $Data['Pekerjaan'] = array(0,0,0,0,0,0,0,0,0,0,0,0);
+    for ($i=0; $i < count($Pekerjaan); $i++) { 
+      $Pisah = explode("|",$Pekerjaan[$i]['Pekerjaan']);
+      $Usia = explode("|",$Pekerjaan[$i]['Usia']);
+      for ($j=0; $j < count($Pisah); $j++) { 
+        if ($Pisah[$j] == 1) {
+          $Data['Pekerjaan'][0] += 1;
+        } else if ($Pisah[$j] == 2) {
+          $Data['Pekerjaan'][1] += 1;
+        } else if ($Pisah[$j] == 3) {
+          $Data['Pekerjaan'][2] += 1;
+        } else if ($Pisah[$j] == 4) {
+          $Data['Pekerjaan'][3] += 1;
+        } else if ($Pisah[$j] == 5) {
+          $Data['Pekerjaan'][4] += 1;
+        } else if ($Pisah[$j] == 6) {
+          $Data['Pekerjaan'][5] += 1;
+        } else if ($Pisah[$j] == 7) {
+          $Data['Pekerjaan'][6] += 1;
+        } else if ($Pisah[$j] == 8) {
+          $Data['Pekerjaan'][7] += 1;
+        } else if ($Pisah[$j] == 9) {
+          $Data['Pekerjaan'][8] += 1;
+        } else if ($Pisah[$j] == 10) {
+          $Data['Pekerjaan'][9] += 1;
+        } else if ($Pisah[$j] == 11) {
+          if ($Usia[$j] > 25) {
+            $Data['Pekerjaan'][10] += 1;
+          } 
+        } else if ($Pisah[$j] == 12) {
+          $Data['Pekerjaan'][11] += 1;
+        }
+      }
+    }
+    for ($i=0; $i < count($Data['Pekerjaan']); $i++) { 
+      echo number_format($Data['Pekerjaan'][$i]/array_sum($Data['Pekerjaan'])*100,2,",",".").'|';
+    }
+  }
+
   public function Asisten(){
 		$this->load->view('Asisten');
   }

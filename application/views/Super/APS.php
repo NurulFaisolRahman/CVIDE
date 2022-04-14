@@ -57,10 +57,6 @@
                     <a href="<?=base_url('/Rekap/RekapAngkaPartisipasiSekolah.xlsx')?>" class="btn btn-sm btn-danger border-light"><b>Unduh Rekap</b></a>
                   </div>
                 </div>
-                <?php 
-                  if ($APS[1] > $APS[0]) {$Temp=$APS[0];$APS[0]=$APS[1];$APS[1]=$Temp;} 
-                  if ($APS[2] > $APS[1]) {$Temp=$APS[1];$APS[1]=$APS[2];$APS[2]=$Temp;} 
-                  if ($APS[1] > $APS[0]) {$Temp=$APS[0];$APS[0]=$APS[1];$APS[1]=$Temp;} ?>
                 <div class="row">
                   <div class="col-lg-3 col-sm-12 text-center">
                     <div class="card">
@@ -84,14 +80,6 @@
                         <a><img class="my-2" src="<?=base_url('assets/img/SMA.png')?>" alt="SMA" height="209" ></a>
                       </div>
                       <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Angka Partisipasi Sekolah<br>Usia 16 - 18 Tahun = ".number_format($APS[2],2,",",".")."%"?></div></div>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-sm-12 text-center">
-                    <div class="card">
-                      <div class="card-body bg-warning border border-light p-0">
-                        <a><img class="my-2" src="<?=base_url('assets/img/Kuliah.png')?>" alt="Kuliah" width="209px"></a>
-                      </div>
-                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Angka Partisipasi Sekolah<br>Usia 19 - 24 Tahun = ".number_format($APS[3],2,",",".")."%"?></div></div>
                     </div>
                   </div>
                 </div>
