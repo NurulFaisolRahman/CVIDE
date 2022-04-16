@@ -50,7 +50,7 @@
                       <li><a href="<?=base_url('Super/Pendidikan')?>"><b>Tingkat Pendidikan</b> </a></li>
                       <li><a href="<?=base_url('Super/APS')?>"><b>Angka Partisipasi Sekolah</b> </a></li>
                       <li><a href="<?=base_url('Super/GarisKemiskinan')?>"><b>Kemiskinan</b> </a></li>
-                      <li><a href="<?=base_url('Super/KondisiRumah')?>"><b>Kondisi Rumah</b> </a></li>
+                      <!-- <li><a href="<?=base_url('Super/KondisiRumah')?>"><b>Kondisi Rumah</b> </a></li> -->
                       <li><a href="<?=base_url('Super/Pengangguran')?>"><b>Pengangguran</b> </a></li>
                       <li><a><b>Dimensi IPM</b><span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">

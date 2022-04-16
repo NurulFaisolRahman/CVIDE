@@ -304,6 +304,126 @@ class IDE extends CI_Controller {
     echo number_format($Total/$Jumlah*100,2,",",".").'|'.$Total.'|'.$Jumlah;
   }
 
+  public function Medis(){
+    $No = 0;
+    for ($j=1; $j < 26; $j++) { 
+      if ($j < 10) {
+        $No = '0'.$j;
+      } else {
+        $No = $j; 
+      }
+      $Total = array(0,0);
+      $Medis = $this->db->query("SELECT `PertolonganLahir`,`Status` FROM `surveiipm` WHERE Kecamatan="."'35.10.".$No."'")->result_array();
+      foreach ($Medis as $key) {
+        $Pisah = explode("|",$key['PertolonganLahir']);
+        $Status = explode("|",$key['Status']);
+        for ($i=0; $i < count($Pisah); $i++) { 
+          if ($Status[$i] == 3) {
+            if ($Pisah[$i] < 3) {
+              $Total[0] += 1;
+            } else {
+              $Total[1] += 1;
+            }
+          }
+        }
+      }
+      echo number_format($Total[0]/array_sum($Total)*100,2,",",".").'|'.number_format($Total[1]/array_sum($Total)*100,2,",",".").'<br>';
+    }
+    $Total = array(0,0);
+    $Medis = $this->db->query("SELECT `PertolonganLahir`,`Status` FROM `surveiipm`")->result_array();
+    foreach ($Medis as $key) {
+      $Pisah = explode("|",$key['PertolonganLahir']);
+      $Status = explode("|",$key['Status']);
+      for ($i=0; $i < count($Pisah); $i++) { 
+        if ($Status[$i] == 3) {
+          if ($Pisah[$i] < 3) {
+            $Total[0] += 1;
+          } else {
+            $Total[1] += 1;
+          }
+        }
+      }
+    }
+    echo number_format($Total[0]/array_sum($Total)*100,2,",",".").'|'.number_format($Total[1]/array_sum($Total)*100,2,",",".");
+  }
+
+  public function DataResponden(){
+    // ini_set('max_execution_time', 0); 
+    // ini_set('memory_limit','2048M');
+    $No = 0;$Kode = 0;$Data['Responden'] = array();
+    for ($k=1; $k < 26; $k++) { 
+      if ($k < 10) {
+        $Kode = '0'.$k;
+      } else {
+        $Kode = $k; 
+      }
+      $DataPerKecamatan = $this->db->query("SELECT `Kecamatan`,`Id`,`Status`,`Usia`,`Pendapatan`,`Pekerjaan`,`JamKerja`,`IjazahTertinggi` FROM `surveiipm` WHERE Kecamatan="."'35.10.".$Kode."'")->result_array();
+      foreach ($DataPerKecamatan as $key) {
+        $Status = explode("|",$key['Status']);
+        $Usia = explode("|",$key['Usia']);
+        $Pendapatan = explode("|",$key['Pendapatan']);
+        $Pekerjaan = explode("|",$key['Pekerjaan']);
+        $JamKerja = explode("|",$key['JamKerja']);
+        $IjazahTertinggi = explode("|",$key['IjazahTertinggi']);
+        $DataKK = array(0,0,0,0,0,0,0,0,0,0);
+        for ($i=0; $i < count($Status); $i++) { 
+          $No += 1;
+          $DataKK[0] = $No;
+          $DataKK[1] = substr($key['Kecamatan'],-2);
+          $DataKK[2] = $key['Id'];
+          $DataKK[3] = (int)$Status[$i];
+          $DataKK[4] = (int)$Usia[$i];
+          $DataKK[5] = (int)$Pendapatan[$i];
+          $DataKK[6] = (int)$Pekerjaan[$i];
+          $DataKK[7] = (int)$JamKerja[$i];
+          $DataKK[8] = (int)$IjazahTertinggi[$i];
+          if ($Status[$i] == 1) {
+            $DataKK[9] = count($Status)-1;
+          } else if (!in_array(1,$Status)) {
+            if ($Status[$i] == 2) {
+              $DataKK[9] = count($Status)-1;
+            } else {
+              $DataKK[9] = 0;
+            }
+          } else {
+            $DataKK[9] = 0;
+          }
+          array_push($Data['Responden'],$DataKK);
+        }
+      }
+    }
+    $this->load->view('DataResponden',$Data);
+  }
+
+  public function Komoditas(){
+    $No = 0;
+    for ($j=1; $j < 26; $j++) { 
+      if ($j < 10) {
+        $No = '0'.$j;
+      } else {
+        $No = $j; 
+      }
+      $Total = array(0,0);$Jumlah = 0;
+      $Komoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `surveiipm` WHERE Kecamatan="."'35.10.".$No."'")->result_array();
+      foreach ($Komoditas as $key) {
+        $Jumlah += count(explode("|",$key['NamaAnggota']));
+        $Nilai = explode("|",$key['Nilai']);
+        $Total[0] += (int)array_sum(array_slice($Nilai,0,107))/12;
+        $Total[1] += (int)array_sum(array_slice($Nilai,107,47))/12;
+      }
+      echo number_format($Total[0]/$Jumlah,2,",",".").'|'.number_format($Total[1]/$Jumlah,2,",",".").'<br>';
+    }
+    $Total = array(0,0);$Jumlah = 0;
+    $Komoditas = $this->db->query("SELECT NamaAnggota,Nilai FROM `surveiipm`")->result_array();
+    foreach ($Komoditas as $key) {
+      $Jumlah += count(explode("|",$key['NamaAnggota']));
+      $Nilai = explode("|",$key['Nilai']);
+      $Total[0] += (int)array_sum(array_slice($Nilai,0,107))/12;
+      $Total[1] += (int)array_sum(array_slice($Nilai,107,47))/12;
+    }
+    echo number_format($Total[0]/$Jumlah,2,",",".").'|'.number_format($Total[1]/$Jumlah,2,",",".");
+  }
+
   public function Ijazah(){
     $No = 0;
     for ($k=1; $k < 26; $k++) { 
