@@ -619,7 +619,7 @@
           }
 					$('#ModalCopy').modal("show")
 				})
-
+        
         $("#Copy").click(function() {
 					var KodeKualitas = []
           var Harga = []
@@ -642,10 +642,10 @@
                       _Harga: _Harga.join('|') }
           $("#Copy").attr("disabled", true);                              
           $("#LoadingCopy").show();
-          $.post(BaseURL+"Surveyor/CopyNTPProdusen", NTP).done(function(Respon) {
+          $.post(BaseURL+"Surveyor/CopyNTPKonsumen", NTP).done(function(Respon) {
             if (Respon == '1') {
               alert('Data Survei Berhasil Di Simpan!')
-              window.location = BaseURL + "Surveyor/SurveiHargaProdusenPerdesaan"
+              window.location = BaseURL + "Surveyor/SurveiHargaKonsumenPerdesaan"
             } else {
               alert(Respon)
               $("#LoadingCopy").hide();
