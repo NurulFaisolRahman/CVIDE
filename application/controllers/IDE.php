@@ -304,6 +304,41 @@ class IDE extends CI_Controller {
     echo number_format($Total/$Jumlah*100,2,",",".").'|'.$Total.'|'.$Jumlah;
   }
 
+  public function BAB(){
+    $No = 0;
+    for ($j=1; $j < 26; $j++) { 
+      if ($j < 10) {
+        $No = '0'.$j;
+      } else {
+        $No = $j; 
+      }
+      $Total = $Jumlah = 0;
+      $BAB = $this->db->query("SELECT Rumah FROM `surveiipm` WHERE Kecamatan="."'35.10.".$No."'")->result_array();
+      foreach ($BAB as $key) {
+        $Pisah = explode("|",$key['Rumah']);
+        if (intval($Pisah[11]) == 1) {
+          $Total += 1;
+          $Jumlah += 1;
+        } else {
+          $Jumlah += 1;
+        }
+      }
+      echo number_format($Total/$Jumlah*100,2,",",".").'|'.$Total.'|'.$Jumlah.'<br>';
+    }
+    $BAB = $this->db->query("SELECT Rumah FROM `surveiipm`")->result_array();
+    $Total = $Jumlah = 0;
+    foreach ($BAB as $key) {
+      $Pisah = explode("|",$key['Rumah']);
+      if (intval($Pisah[11]) == 1) {
+        $Total += 1;
+        $Jumlah += 1;
+      } else {
+        $Jumlah += 1;
+      }
+    }
+    echo number_format($Total/$Jumlah*100,2,",",".").'|'.$Total.'|'.$Jumlah;
+  }
+
   public function Medis(){
     $No = 0;
     for ($j=1; $j < 26; $j++) { 

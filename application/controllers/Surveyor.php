@@ -90,8 +90,8 @@ class Surveyor extends CI_Controller {
 
   public function SurveiHargaKonsumenPerdesaan(){
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.24.%' AND length(Kode) = 8")->result_array();
-    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.24.01.%'")->result_array();
-    $Data['Data'] = $this->db->query("SELECT kodewilayah.Nama as NamaKecamatan,ntpkonsumen.* FROM kodewilayah,ntpkonsumen WHERE ntpkonsumen.Kecamatan=kodewilayah.Kode AND NIK = ".$this->session->userdata('NIK'))->result_array();
+    // $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.24.01.%'")->result_array();
+    $Data['Data'] = $this->db->query("SELECT kodewilayah.Nama as NamaKecamatan,ntpkonsumen.* FROM kodewilayah,ntpkonsumen WHERE ntpkonsumen.Kecamatan=kodewilayah.Kode AND NIK = ".$this->session->userdata('NIK')." ORDER BY TanggalSurvei DESC")->result_array();
     $this->load->view('Surveyor/Header',$Data);
 		$this->load->view('Surveyor/SurveiHargaKonsumenPerdesaan',$Data);
   }
@@ -117,15 +117,35 @@ class Surveyor extends CI_Controller {
     }
   }
 
+  public function CopyNTPKonsumen(){
+    $_POST['NIK'] = $this->session->userdata('NIK');
+    $this->db->insert('ntpkonsumen',$_POST);
+    if ($this->db->affected_rows()){
+      echo '1';
+    } else {
+      echo 'Gagal Menyimpan Survei!';
+    }
+  }
+
   public function SurveiHargaProdusenPerdesaan(){
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.24.%' AND length(Kode) = 8")->result_array();
-    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.24.01.%'")->result_array();
-    $Data['Data'] = $this->db->query("SELECT kodewilayah.Nama as NamaKecamatan,ntpprodusen.* FROM kodewilayah,ntpprodusen WHERE ntpprodusen.Kecamatan=kodewilayah.Kode AND NIK = ".$this->session->userdata('NIK'))->result_array();
+    // $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.24.01.%'")->result_array();
+    $Data['Data'] = $this->db->query("SELECT kodewilayah.Nama as NamaKecamatan,ntpprodusen.* FROM kodewilayah,ntpprodusen WHERE ntpprodusen.Kecamatan=kodewilayah.Kode AND NIK = ".$this->session->userdata('NIK')." ORDER BY TanggalSurvei DESC")->result_array();
     $this->load->view('Surveyor/Header',$Data);
 		$this->load->view('Surveyor/SurveiHargaProdusenPerdesaan',$Data);
   }
 
   public function InputNTPProdusen(){
+    $_POST['NIK'] = $this->session->userdata('NIK');
+    $this->db->insert('ntpprodusen',$_POST);
+    if ($this->db->affected_rows()){
+      echo '1';
+    } else {
+      echo 'Gagal Menyimpan Survei!';
+    }
+  }
+
+  public function CopyNTPProdusen(){
     $_POST['NIK'] = $this->session->userdata('NIK');
     $this->db->insert('ntpprodusen',$_POST);
     if ($this->db->affected_rows()){

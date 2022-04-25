@@ -33,7 +33,7 @@
                                       <th scope="row" class="align-middle"><?=$key['NamaResponden']?></th>
                                       <th scope="row" style="width: 10%;" class="text-center align-middle">
                                         <button Edit="<?=$key['Id'].'$'.$key['Kecamatan'].'$'.$key['TanggalSurvei'].'$'.$key['NamaResponden'].'$'.$key['Alamat'].'$'.$key['KodeKualitas'].'$'.$key['Harga'].'$'.$key['_Harga']?>" class="btn btn-sm btn-warning Edit"><i class="fa fa-edit"></i></button>
-                                        <!-- <button Hapus="<?=$key['Id']?>" class="btn btn-sm btn-danger Hapus"><i class="fa fa-trash"></i></button> -->
+                                        <button Copy="<?=$key['Id'].'$'.$key['Kecamatan'].'$'.$key['TanggalSurvei'].'$'.$key['NamaResponden'].'$'.$key['Alamat'].'$'.$key['KodeKualitas'].'$'.$key['Harga'].'$'.$key['_Harga']?>?>" class="btn btn-sm btn-primary Copy"><i class="fa fa-copy"></i></button>
                                       </th>
                                     </tr>
                                   <?php } ?>  
@@ -348,6 +348,98 @@
           </div>
         </div>
       </div>
+    </div>
+    
+    <div class="modal fade" id="ModalCopy">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content bg-warning">
+          <div class="modal-body">
+            <div class="container">
+							<div class="row">
+                <div class="col-sm-3">
+                  <div class="input-group input-group-sm">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text bg-danger text-white"><b>Kecamatan</b></label>
+                    </div>
+                    <select class="custom-select" id="CopyKecamatan">  
+                      <?php foreach ($Kecamatan as $key) { ?>
+                        <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
+                      <?php } ?>                  
+                    </select>
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="input-group input-group-sm">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text bg-danger text-white"><b>Tanggal Survei</b></label>
+                    </div>
+                    <input class="form-control" type="date" id="CopyTanggalSurvei">
+                  </div>
+                </div> 
+                <div class="col-sm-3">
+                  <div class="input-group input-group-sm">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text bg-danger text-white"><b>Nama Responden</b></label>
+                    </div>
+                    <input class="form-control" type="text" id="CopyNamaResponden">
+                  </div>
+                </div> 
+                <div class="col-sm-3">
+                  <div class="input-group input-group-sm">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text bg-danger text-white"><b>Alamat Responden</b></label>
+                    </div>
+                    <input class="form-control" type="text" id="CopyAlamat">
+                  </div>
+                </div>  
+                <div class="col-sm-6">
+                  <div class="table-responsive mt-1">
+                    <table class="table table-sm table-bordered table-striped">
+                      <thead class="bg-danger">
+                        <tr style="font-size: 10pt;" class="text-white text-center">
+                          <th class="align-middle">Kode Kualitas</th>
+                          <th class="align-middle">Harga Bulan Pencacahan</th>
+                          <th class="align-middle">Harga Bulan Sebelumnya</th>
+                        </tr>
+                      </thead>
+                    <?php for ($i=0; $i < 880; $i++) { ?>
+                      <tr class="text-white bg-primary">
+                        <td class="text-center align-middle font-weight-bold"><?=$Kode[$i]?></td>
+                        <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Copy<?=$Kode[$i]?>"></td>
+                        <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Copy<?='_'.$Kode[$i]?>"></td>
+                      </tr>
+                    <?php } ?>
+                    </table>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="table-responsive mt-1">
+                    <table class="table table-sm table-bordered table-striped">
+                      <thead class="bg-danger">
+                        <tr style="font-size: 10pt;" class="text-white text-center">
+                          <th class="align-middle">Kode Kualitas</th>
+                          <th class="align-middle">Harga Bulan Pencacahan</th>
+                          <th class="align-middle">Harga Bulan Sebelumnya</th>
+                        </tr>
+                      </thead>
+                    <?php for ($i=880; $i < 1759; $i++) { ?>
+                      <tr class="text-white bg-primary">
+                        <td class="text-center align-middle font-weight-bold"><?=$Kode[$i]?></td>
+                        <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Copy<?=$Kode[$i]?>"></td>
+                        <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Copy<?='_'.$Kode[$i]?>"></td>
+                      </tr>
+                    <?php } ?>
+                    </table>
+                  </div>
+                </div>
+                <div class="col-sm-12 mt-2 d-flex justify-content-center">
+                  <button type="button" class="btn btn-primary" id="Copy"><b>Simpan Survei&nbsp;</b><div id="LoadingCopy" class="spinner-border spinner-border-sm text-white" role="status" style="display: none;"></div></button>
+                </div> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 		</div>
 
     <script src="<?=base_url("vendors/jquery/dist/jquery.min.js")?>"></script>
@@ -483,6 +575,65 @@
                     'UG005002','UG006001','UG006002','UG006003','UG007001','UG007002','UG007003','UG008001','UG604001','UG604002','UG605001','UG606001','UH201101','UH201102','UH201103','UH301101',
                     'UH301102','UH301103','UH401101','UH401102','UH401103','UH501101','UH501102','UH501103','UH601101','UH601102','UH601103','UH701101','UH701102','UH701103','UH011101','UH011102',
                     'UH011103']  
+        $(document).on("click",".Copy",function(){
+					var Data = $(this).attr('Copy')
+					var Pisah = Data.split("$")
+					// $("#Id").val(Pisah[0])
+					$("#CopyKecamatan").val(Pisah[1])
+          var SplitDate = Pisah[2].split("-");
+          var Bulan = parseInt(SplitDate[1])+1
+          if (Bulan > 12) {
+            $("#CopyTanggalSurvei").val((parseInt(SplitDate[0])+1)+'-01-'+SplitDate[2]) 
+          } else {
+            if (Bulan < 10) {
+              $("#CopyTanggalSurvei").val(SplitDate[0]+'-0'+Bulan+'-'+SplitDate[2]) 
+            } else {
+              $("#CopyTanggalSurvei").val(SplitDate[0]+'-'+Bulan+'-'+SplitDate[2])
+            }
+          }
+					$("#CopyNamaResponden").val(Pisah[3])
+					$("#CopyAlamat").val(Pisah[4])
+          var CopyKode = Pisah[5].split('|')
+          var CopyHarga = Pisah[6].split('|')
+          // var Copy_Harga = Pisah[7].split('|')
+          for (let i = 0; i < CopyKode.length; i++) {
+            $("#Copy_"+CopyKode[i]).val(CopyHarga[i])
+            // $("#Copy_"+CopyKode[i]).val(Copy_Harga[i])
+          }
+					$('#ModalCopy').modal("show")
+				})
+
+        $("#Copy").click(function() {
+					var KodeKualitas = []
+          var Harga = []
+          var _Harga = []
+          for (let i = 0; i < Kode.length; i++) {
+            if ($("#Copy"+Kode[i]).val() > 0) {
+              KodeKualitas.push(Kode[i])
+              Harga.push($("#Copy"+Kode[i]).val())
+              _Harga.push($("#Copy_"+Kode[i]).val())
+            }
+          }
+          var NTP = { Kecamatan: $("#CopyKecamatan").val(),
+                      TanggalSurvei: $("#CopyTanggalSurvei").val(),
+                      NamaResponden: $("#CopyNamaResponden").val(),
+                      Alamat: $("#CopyAlamat").val(),
+                      KodeKualitas: KodeKualitas.join('|'),
+                      Harga: Harga.join('|'),
+                      _Harga: _Harga.join('|') }
+          $("#Copy").attr("disabled", true);                              
+          $("#LoadingCopy").show();
+          $.post(BaseURL+"Surveyor/CopyNTPProdusen", NTP).done(function(Respon) {
+            if (Respon == '1') {
+              alert('Data Survei Berhasil Di Simpan!')
+              window.location = BaseURL + "Surveyor/SurveiHargaProdusenPerdesaan"
+            } else {
+              alert(Respon)
+              $("#LoadingCopy").hide();
+              $("#Copy").attr("disabled", false);    
+            }
+          })
+				})
 
         $(document).on("click",".Edit",function(){
 					var Data = $(this).attr('Edit')
