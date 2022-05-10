@@ -7,19 +7,12 @@
                         <div class="input-group-prepend">
                           <label class="input-group-text bg-danger text-light"><b>Data Bulan</b></label>
                         </div>
-                        <select class="custom-select" id="Bulan">                    
-                          <option value="01">Januari</option>
-                          <option value="02">Februari</option>
-                          <option value="03">Maret</option>
-                          <option value="04">April</option>
-                          <option value="05">Mei</option>
-                          <option value="06">Juni</option>
-                          <option value="07">Juli</option>
-                          <option value="08">Agustus</option>
-                          <option value="09">September</option>
-                          <option value="10">Oktober</option>
-                          <option value="11">November</option>
-                          <option value="12">Desember</option>
+                        <select class="custom-select" id="BulanNTP">                    
+                          <?php $BulanNTP = array('01' => 'Januari','02' => 'Februari','03' => 'Maret','04' => 'April','05' => 'Mei','06' => 'Juni',
+                                                  '07' => 'Juli','08' => 'Agustus','09' => 'September','10' => 'Oktober','11' => 'November','12' => 'Desember'); 
+                          foreach ($BulanNTP as $key => $value) { ?>
+                            <option value="<?=$key?>" <?=$this->session->userdata('BulanNTP')==$key?'selected':'';?>><?=$value?></option>
+                          <?php } ?>
                         </select>
                       </div>
                     </div>
@@ -75,7 +68,7 @@
                       <div class="card-body bg-primary border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/NTP.png')?>" alt="NTP" height="200" ></a>
                       </div>
-                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Nilai Tukar Petani ".number_format(115,2,",",".")?></div></div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Nilai Tukar Petani ".number_format($NTP,2,",",".")?></div></div>
                     </div>
                   </div>
                 </div>
@@ -93,28 +86,16 @@
 		<script>
 			$(document).ready(function(){
         var BaseURL = '<?=base_url()?>' 
-        $("#Kecamatan").change(function (){
-          var Desa = { Kode: $("#Kecamatan").val() }
-          $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) { 
-            $('#Desa').html(Respon)
-          })    
-        })
         $("#TampilkanData").click(function() {
-          if ($("#JenisData").val() == 'Desa') {
-            alert('Data Pengeluaran Desa Belum Tersedia')
-          } else {
-            var Data =  { KodeDesa: $("#Desa").val(),
-                          KodeKecamatan: $("#Kecamatan").val(),
-                          JenisData: $("#JenisData").val() }
-            $.post(BaseURL+"Super/Session", Data).done(function(Respon) {
-              if (Respon == '1') {
-                window.location = BaseURL + "Super/IPMPengeluaran"
-              }
-              else {
-                alert(Respon)
-              }
-            })      
-          }              
+          var Data =  { BulanNTP: $("#BulanNTP").val() }
+          $.post(BaseURL+"Super/Session", Data).done(function(Respon) {
+            if (Respon == '1') {
+              window.location = BaseURL + "Super/NTP"
+            }
+            else {
+              alert(Respon)
+            }
+          })                   
         })
       })
 		</script>

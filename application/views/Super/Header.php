@@ -61,7 +61,7 @@
                       </li>
                       <li><a href="<?=base_url('Super/IPM')?>"><b>IPM</b> </a></li>
                       <?php } if ($Username == 'superadmin') { ?> 
-                        <!-- <li><a href="<?=base_url('Super/NTP')?>"><b>Nilai Tukar Petani (NTP)</b> </a></li> -->
+                        <li><a href="<?=base_url('Super/NTP')?>"><b>Nilai Tukar Petani (NTP)</b> </a></li>
                       <?php } ?>
                     </ul>
 									</li>

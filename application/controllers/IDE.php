@@ -760,7 +760,8 @@ class IDE extends CI_Controller {
                            'KodeKabupaten' => '35.10',
                            'KodeKecamatan' => '35.10.01',
                            'KodeDesa' => '35.10.01.2001',
-                           'JenisData' => 'Kabupaten');
+                           'JenisData' => 'Kabupaten',
+                           'BulanNTP' => '01');
           $this->session->set_userdata($Session);
           echo '2';
         } else {
