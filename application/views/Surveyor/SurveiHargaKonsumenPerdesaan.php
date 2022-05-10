@@ -625,11 +625,14 @@
           var Harga = []
           var _Harga = []
           for (let i = 0; i < Kode.length; i++) {
-            if ($("#Copy"+Kode[i]).val() > 0) {
+            if ($("#Copy_"+Kode[i]).val() > 0 && $("#Copy"+Kode[i]).val() == "") {
+              alert('Input Kode Kualitas '+Kode[i]+' Belum Benar!')
+              return
+            } else if ($("#Copy"+Kode[i]).val() > 0) {
               KodeKualitas.push(Kode[i])
               Harga.push($("#Copy"+Kode[i]).val())
               _Harga.push($("#Copy_"+Kode[i]).val())
-            }
+            } 
           }
           var NTP = { Kecamatan: $("#CopyKecamatan").val(),
                       TanggalSurvei: $("#CopyTanggalSurvei").val(),
