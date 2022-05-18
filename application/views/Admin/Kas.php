@@ -27,9 +27,10 @@
 										<table id="TabelKas" class="table table-sm table-bordered bg-light">
 											<thead>
 												<tr class="bg-danger text-light">
-													<th scope="col" style="width: 4%;" class="text-center align-middle">No</th>
+													<th scope="col" class="text-center align-middle">No</th>
 													<th scope="col" class="align-middle">Description</th>
-													<th scope="col" style="width: 7%;" class="text-center align-middle">Quantity</th>
+													<th scope="col" class="align-middle">Category</th>
+													<th scope="col" class="text-center align-middle">Quantity</th>
 													<th scope="col" class="text-center align-middle">Price</th>
 													<th scope="col" class="text-center align-middle">Debit</th>
 													<th scope="col" class="text-center align-middle">Kredit</th>
@@ -42,13 +43,14 @@
 													<tr>
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>
 														<th scope="row" class="align-middle"><?=$key['Description']?></th>
+														<th scope="row" class="align-middle"><?=$key['Category']?></th>
 														<th scope="row" class="text-center align-middle"><?=$key['Quantity']?></th>
 														<th scope="row" style="width: 15%;" class="text-center align-middle"><?="Rp ".number_format($key['Price'],0,',','.')?></th>
 														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=$key['Jenis'] == 'IN' ? "Rp ".number_format($key['Amount'],0,',','.') : '';?></th>
 														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=$key['Jenis'] == 'OUT' ? "Rp ".number_format($key['Amount'],0,',','.') : '';?></th>
 														<th scope="row" style="width: 10%;" class="text-center align-middle"><?=$Date[2].'-'.$Date[1].'-'.$Date[0]?></th>
 														<th scope="row" style="width: 10%;" class="text-center align-middle">
-															<button Edit="<?=$key['Id']."|".$key['Description']."|".$key['Quantity']."|".$key['Price']."|".$key['Amount']."|".$key['Tanggal']."|".$key['Jenis']?>" class="btn btn-sm btn-warning Edit"><i class="fa fa-edit"></i></button>
+															<button Edit="<?=$key['Id']."|".$key['Description']."|".$key['Quantity']."|".$key['Price']."|".$key['Amount']."|".$key['Tanggal']."|".$key['Jenis']."|".$key['Category']?>" class="btn btn-sm btn-warning Edit"><i class="fa fa-edit"></i></button>
 															<button Hapus="<?=$key['Id']?>" class="btn btn-sm btn-danger Hapus"><i class="fa fa-trash"></i></button>
 														</th>
 													</tr>
@@ -70,6 +72,20 @@
           <div class="modal-body">
             <div class="container">
 							<div class="row">
+								<div class="col-sm-12">
+									<div class="input-group input-group-sm mb-1">
+										<div class="input-group-prepend">
+                      <span class="input-group-text bg-primary text-white"><b>Category</b></span>
+                    </div>
+										<select class="custom-select" id="Category">  
+											<?php 
+												$Category = array('Makanan','Operasional Kantor','Transportasi','Tagihan','Honorarium','Peti Cash','Lainnya'); 
+												for ($i=0; $i < count($Category); $i++) { ?>
+												<option value="<?=$Category[$i]?>"><?=$Category[$i]?></option>
+											<?php } ?>                  
+										</select>
+									</div>
+								</div>
                 <div class="col-sm-12">
 									<div class="input-group input-group-sm mb-1">
 										<textarea class="form-control" id="Description" rows="2" placeholder="Description"></textarea>
@@ -127,6 +143,20 @@
           <div class="modal-body">
             <div class="container">
 							<div class="row">
+								<div class="col-sm-12">
+									<div class="input-group input-group-sm mb-1">
+										<div class="input-group-prepend">
+                      <span class="input-group-text bg-primary text-white"><b>Category</b></span>
+                    </div>
+										<select class="custom-select" id="EditCategory">  
+											<?php 
+												$Category = array('Makanan','Operasional Kantor','Transportasi','Tagihan','Honorarium','Peti Cash','Lainnya'); 
+												for ($i=0; $i < count($Category); $i++) { ?>
+												<option value="<?=$Category[$i]?>"><?=$Category[$i]?></option>
+											<?php } ?>                  
+										</select>
+									</div>
+								</div>
                 <div class="col-sm-12">
 									<div class="input-group input-group-sm mb-1">
 										<input type="hidden" class="form-control" id="Id">
@@ -190,7 +220,7 @@
 				var BaseURL = '<?=base_url()?>'  
 				$('#TabelKas').DataTable( {
 					"ordering": true,
-					"bInfo" : false,
+					"bInfo" : true,
 					"lengthMenu": [[7, 30, 50, -1], [7, 30, 50, "All"]],
 					"language": {
 						"paginate": {
@@ -216,7 +246,8 @@
 					} else if (isNaN($("#Quantity").val())) {
 						alert('Input Quantity Belum Benar!')
 					} else {
-						var Data = { Description: $("#Description").val(),
+						var Data = { Category: $("#Category").val(),
+												 Description: $("#Description").val(),
 												 Jenis: $("input[name='Jenis']:checked").val(),
 												 Price: $("#Price").val(),
 												 Quantity: $("#Quantity").val(),
@@ -243,6 +274,7 @@
 					$("#EditAmount").val(Pisah[4])
 					$("#EditDate").val(Pisah[5])
 					Pisah[6] == 'IN' ? $("#IN").prop("checked", true) : $("#OUT").prop("checked", true); 
+					$("#EditCategory").val(Pisah[7])
 					$('#ModalEdit').modal("show")
 				})
 
@@ -253,12 +285,13 @@
 						alert('Input Quantity Belum Benar!')
 					} else {
 						var Data = { Id: $("#Id").val(),
-														 Description: $("#EditDescription").val(),
-														 Jenis: $("input[name='EditJenis']:checked").val(),
-														 Price: $("#EditPrice").val(),
-														 Quantity: $("#EditQuantity").val(),
-														 Amount: $("#EditPrice").val()*$("#EditQuantity").val(),
-														 Tanggal: $("#EditDate").val()}
+												 Category: $("#Edit	Category").val(),
+												 Description: $("#EditDescription").val(),
+												 Jenis: $("input[name='EditJenis']:checked").val(),
+												 Price: $("#EditPrice").val(),
+												 Quantity: $("#EditQuantity").val(),
+												 Amount: $("#EditPrice").val()*$("#EditQuantity").val(),
+												 Tanggal: $("#EditDate").val()}
 						$.post(BaseURL+"Admin/Edit", Data).done(function(Respon) {
 							if (Respon == '1') {
 								window.location = BaseURL + "Admin/Kas"

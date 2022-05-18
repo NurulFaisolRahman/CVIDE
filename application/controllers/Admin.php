@@ -32,6 +32,7 @@ class Admin extends CI_Controller {
   }
 
 	public function Kas(){
+    $this->db->order_by('Date', 'DESC');
     $Data['Kas'] = $this->db->get('kas')->result_array();
     $this->load->view('Admin/Header',$Data);
 		$this->load->view('Admin/Kas',$Data);
