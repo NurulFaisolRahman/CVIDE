@@ -17,6 +17,19 @@
 								<div class="col-lg-auto">
 									<button type="button" class="btn btn-sm btn-danger border-white mb-2" id="Rekap"><i class="fa fa-file-excel-o"></i><b> Excel</b></button>
 								</div>
+								<div class="col-lg-auto">
+									<div class="input-group input-group-sm mb-2">
+										<div class="input-group-prepend">
+											<span class="input-group-text bg-primary text-white"><b><?="Rp ".number_format($In,0,',','.')?></b></span>
+										</div>
+										<div class="input-group-prepend">
+                      <span class="input-group-text bg-danger text-white"><b><?="Rp ".number_format($Out,0,',','.')?></b></span>
+										</div>
+										<div class="input-group-prepend">
+											<span class="input-group-text bg-warning text-white"><b><?="Rp ".number_format($In-$Out,0,',','.')?></b></span>
+                    </div>
+									</div>
+								</div>
 								<div class="col-sm-12">
 									<div class="table-responsive">
 										<table id="TabelKas" class="table table-sm table-bordered bg-light">
@@ -24,6 +37,7 @@
 												<tr class="bg-danger text-light">
 													<th scope="col" style="width: 4%;" class="text-center align-middle">No</th>
 													<th scope="col" class="align-middle">Description</th>
+													<th scope="col" class="align-middle">Category</th>
 													<th scope="col" style="width: 7%;" class="text-center align-middle">Quantity</th>
 													<th scope="col" class="text-center align-middle">Price</th>
 													<th scope="col" class="text-center align-middle">Debit</th>
@@ -36,6 +50,7 @@
 													<tr>
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>
 														<th scope="row" class="align-middle"><?=$key['Description']?></th>
+														<th scope="row" class="align-middle"><?=$key['Category']?></th>
 														<th scope="row" class="text-center align-middle"><?=$key['Quantity']?></th>
 														<th scope="row" style="width: 15%;" class="text-center align-middle"><?="Rp ".number_format($key['Price'],0,',','.')?></th>
 														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=$key['Jenis'] == 'IN' ? "Rp ".number_format($key['Amount'],0,',','.') : '';?></th>

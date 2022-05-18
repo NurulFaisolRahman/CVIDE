@@ -32,6 +32,9 @@ class SuperAdmin extends CI_Controller {
   }
 
 	public function Kas(){
+    $Data['In'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='IN' AND `Date` LIKE "."'".date('Y-m')."%'")->row_array()['Total'];
+    $Data['Out'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='OUT' AND `Date` LIKE "."'".date('Y-m')."%'")->row_array()['Total'];
+    $this->db->order_by('Date', 'DESC');
     $Data['Kas'] = $this->db->get('kas')->result_array();
     $this->load->view('SuperAdmin/Header',$Data);
 		$this->load->view('SuperAdmin/Kas',$Data);
