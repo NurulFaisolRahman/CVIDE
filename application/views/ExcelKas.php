@@ -893,7 +893,6 @@ td
    <tr height="24" style='height:18.00pt;mso-height-source:userset;mso-height-alt:360;'>
     <td height="24" style='height:18.00pt;'></td>
     <td class="xl65" x:str>No</td>
-		<td class="xl66" x:str>Category</td>
     <td class="xl66" x:str>Description</td>
     <td class="xl65" x:str>Quantity</td>
     <td class="xl65" x:str>Price</td>
@@ -905,7 +904,6 @@ td
    <tr height="24" style='height:18.00pt;mso-height-source:userset;mso-height-alt:360;'>
     <td height="24" style='height:18.00pt;'></td>
     <td class="xl67" x:num><?=$No++?></td>
-		<td class="xl68" x:str><?=$key['Category']?></td>
     <td class="xl68" x:str><?=$key['Description']?></td>
     <td class="xl67" x:num><?=$key['Quantity']?></td>
     <td class="xl69" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><?=$key['Price']?><span style='mso-spacerun:yes;'>&nbsp;</span></td>
