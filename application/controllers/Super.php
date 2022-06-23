@@ -170,7 +170,7 @@ class Super extends CI_Controller {
       $ITNTP = $ITHargaNTP/$IT_HargaNTP*100;
       $IBNTP = $IBHargaNTP/$IB_HargaNTP*100;
       $Data['ITNTP'] = $ITNTP;
-      $Data['ITNTP'] = $IBNTP;
+      $Data['IBNTP'] = $IBNTP;
       $Data['NTP'] = $ITNTP/$IBNTP*100;
     } 
     $this->load->view('Super/Header');
