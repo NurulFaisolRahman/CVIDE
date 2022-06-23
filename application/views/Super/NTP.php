@@ -26,7 +26,7 @@
                       <div class="card-body bg-primary border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/Pangan.png')?>" alt="Pangan" height="200" ></a>
                       </div>
-                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="NTP Tanaman Pangan  ".number_format($NTPTanamanPangan,2,",",".")?></div></div>
+                    <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="IT = ".number_format($ITTanamanPangan,2,",",".")." dan IB = ".number_format($IBTanamanPangan,2,",",".")."<br>NTP Tanaman Pangan ".number_format($NTPTanamanPangan,2,",",".")?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 mb-1 col-sm-12 text-center">
@@ -34,7 +34,7 @@
                       <div class="card-body bg-primary border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/Hortikultura.png')?>" alt="Hortikultura" height="200" ></a>
                       </div>
-                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="NTP Hortikultura ".number_format($NTPHortikultura,2,",",".")?></div></div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="IT = ".number_format($ITHortikultura,2,",",".")." dan IB = ".number_format($IBHortikultura,2,",",".")."<br>NTP Hortikultura ".number_format($NTPHortikultura,2,",",".")?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 mb-1 col-sm-12 text-center">
@@ -42,7 +42,7 @@
                       <div class="card-body bg-primary border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/Perkebunan.png')?>" alt="Perkebunan" height="200" ></a>
                       </div>
-                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="NTP Perkebunan ".number_format($NTPPerkebunan,2,",",".")?></div></div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="IT = ".number_format($ITPerkebunan,2,",",".")." dan IB = ".number_format($IBPerkebunan,2,",",".")."<br>NTP Perkebunan ".number_format($NTPPerkebunan,2,",",".")?></div></div>
                     </div>
                   </div>
                 </div>
@@ -52,7 +52,7 @@
                       <div class="card-body bg-primary border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/Peternakan.png')?>" alt="Peternakan" height="200" ></a>
                       </div>
-                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="NTP Peternakan ".number_format($NTPPeternakan,2,",",".")?></div></div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="IT = ".number_format($ITPeternakan,2,",",".")." dan IB = ".number_format($IBPeternakan,2,",",".")."<br>NTP Peternakan ".number_format($NTPPeternakan,2,",",".")?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 mb-1 col-sm-12 text-center">
@@ -60,7 +60,7 @@
                       <div class="card-body bg-primary border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/Perikanan.png')?>" alt="Perikanan" height="200" ></a>
                       </div>
-                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="NTP Perikanan ".number_format($NTPPerikanan,2,",",".")?></div></div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="IT = ".number_format($ITPerikanan,2,",",".")." dan IB = ".number_format($IBPerikanan,2,",",".")."<br>NTP Perikanan ".number_format($NTPPerikanan,2,",",".")?></div></div>
                     </div>
                   </div>
                   <div class="col-lg-3 mb-1 col-sm-12 text-center">
@@ -68,7 +68,7 @@
                       <div class="card-body bg-primary border border-light p-0">
                         <a><img class="my-2" src="<?=base_url('assets/img/NTP.png')?>" alt="NTP" height="200" ></a>
                       </div>
-                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="Nilai Tukar Petani ".number_format($NTP,2,",",".")?></div></div>
+                      <div class="card-footer bg-danger border border-light p-0"><div class="font-weight-bold text-white" style="font-size: 15px;"><?="IT = ".number_format($ITNTP,2,",",".")." dan IB = ".number_format($IBNTP,2,",",".")."<br>Nilai Tukar Petani ".number_format($NTP,2,",",".")?></div></div>
                     </div>
                   </div>
                 </div>

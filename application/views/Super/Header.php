@@ -47,8 +47,8 @@
                         <li><a href="<?=base_url('Super/KinerjaPemDes')?>"><b>Kinerja Penyelenggaraan Pemerintahan Desa</b></a></li>   
                         <li><a href="<?=base_url('Super/KinerjaAparatur')?>"><b>Kinerja Aparatur Desa</b></a></li>   
                       <?php } ?>
-                      <li><a href="<?=base_url('Super/Pendidikan')?>"><b>Tingkat Pendidikan</b> </a></li>
-                      <li><a href="<?=base_url('Super/APS')?>"><b>Angka Partisipasi Sekolah</b> </a></li>
+                      <!--<li><a href="<?=base_url('Super/Pendidikan')?>"><b>Tingkat Pendidikan</b> </a></li>-->
+                      <!--<li><a href="<?=base_url('Super/APS')?>"><b>Angka Partisipasi Sekolah</b> </a></li>-->
                       <li><a href="<?=base_url('Super/GarisKemiskinan')?>"><b>Kemiskinan</b> </a></li>
                       <!-- <li><a href="<?=base_url('Super/KondisiRumah')?>"><b>Kondisi Rumah</b> </a></li> -->
                       <li><a href="<?=base_url('Super/Pengangguran')?>"><b>Pengangguran</b> </a></li>
