@@ -39,19 +39,19 @@ class Super extends CI_Controller {
 
   public function NTP(){
     $Bulan = $this->session->userdata('BulanNTP');
-    $DataKonsumen = $this->db->query("SELECT KodeKualitas,Harga,_Harga FROM `ntpkonsumen` WHERE TanggalSurvei LIKE '2022-".$Bulan."%'")->result_array();    
+    // $DataKonsumen = $this->db->query("SELECT KodeKualitas,Harga,_Harga FROM `ntpkonsumen` WHERE TanggalSurvei LIKE '2022-".$Bulan."%'")->result_array();    
     $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga,_Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-".$Bulan."%'")->result_array();    
     $Data['NTPTanamanPangan'] = $Data['NTPHortikultura'] = $Data['NTPPerkebunan'] = $Data['NTPPeternakan'] = $Data['NTPPerikanan'] = $Data['NTP'] = 0;
     if (count($DataProdusen) > 0) {
       $ITHargaNTP = $IT_HargaNTP = $IBHargaNTP = $IB_HargaNTP = $HargaPasar = $_HargaPasar = 0;
-      foreach ($DataKonsumen as $key) {
-        $Pisah = explode("|",$key['KodeKualitas']);
-        $Harga = explode("|",$key['Harga']);
-        $_Harga = explode("|",$key['_Harga']);
-        for ($i=0; $i < count($Pisah) ; $i++) { 
-          $HargaPasar += (int)$Harga[$i];$_HargaPasar += (int)$_Harga[$i];
-        }
-      }
+      // foreach ($DataKonsumen as $key) {
+      //   $Pisah = explode("|",$key['KodeKualitas']);
+      //   $Harga = explode("|",$key['Harga']);
+      //   $_Harga = explode("|",$key['_Harga']);
+      //   for ($i=0; $i < count($Pisah) ; $i++) { 
+      //     $HargaPasar += (int)$Harga[$i];$_HargaPasar += (int)$_Harga[$i];
+      //   }
+      // }
       $KodeITTanamanPangan = array('IA001001','IA001002','IA001003','IA001004','IA001005','IA001006','IA002001','IA002002','IA002003','IA002004','IA002005','IA002006','IA003001','IA003002','IA003003','IA003004','IA003005','IA003006','IA004001','IA004002','IA005001','IA005002','IB001001','IB001002','IB002001','IB002002','IB001003','IB003001','IB005001','IB005002','IB006001','IB006002','IB007001','IB007002','IB008001','IB008002','IB008003','IB009001','IB009002','IB010001','IB011001','IB012001');  
       $KodeIBTanamanPangan = array('JA101001','JA101002','JA101003','JA101004','JA102001','JA102002','JA102003','JA102004','JA201001','JA201002','JA202001','JA203001','JA204001','JA205001','JA206001','JA207001','JA208001','JB001001','JB001002','JB001003','JB002001','JB002002','JB004001','JB005001','JB006001','JB007001','JB008001','JB011001','JB012001','JB012002','JB012003','JB013001','JB014001','JB015001','JB101001','JB101002','JB101003','JB102001','JB102002','JB102003','JB103001','JB103002','JB103003','JB104001','JB104002','JB104003','JB105001','JB105002','JB105003','JB106001','JB106002','JB106003','JB107001','JB107002','JC001001','JC001002','JC001003','JC002001','JC002002','JC002003','JC006001','JC007001','JC007002','JC008001','JC008002','JC009001','JC009002','JC010001','JC011001','JC013001','JC014001','JC015001','JC016001','JC017001','JD001001','JD001002','JD001003','JD002001','JD002002','JD002003','JD002004','JD003002','JD003003','JD003004','JD003005','JD004001','JD004002','JD005001','JD005002','JD005003','JD006001','JD006002','JD006003','JD007001','JD007002','JD008001','JD008002','JD010001','JD010002','JD011001','JD011002','JD012001','JD013001','JD014001','JD016001','JD016002','JD017001','JD017002','JD018001','JF001001','JF002001','JF002002','JF003001','JF003002','JF004001','JF005001','JF005002','JF006001','JF006002','JF007001','JF008001','JF009001','JF009002','JF010001','JF010002','JF011001','JF012001','JF013001','JF016001','JF017001','JF017002','JF018001','JF019001','JF019002','JF020001','JF023001','JF024001','JF025001','JF026001','JF027001','JF028001','JF029001','JF030001','JF031001','JF032001','JF033001','JF034001','JF035001','JG003001','JG004001','JG005001','JG005002','JG006001','JG007001','JG009001','JG010001','JG011001','JG009001','JG012001','JG012002','JG013001','JG013002','JG014001','JG015001','JG016001','JG017001','KA101101','KA101102','KA101103','KA201101','KA201102','KA201103','KA301101','KA301102','KA301103','KA401101','KA401102','KA401103','KA501101','KA501102','KA501103','KA601101','KA601102','KA601103','KA701101','KA701102','KA701103','KA801101','KA801102','KA801103','KA901101','KA901102','KA901103','KA911101','KA911102','KA911103','KA921101','KA921102','KA921103','KA941101','KA941102','KA941103','KA951101','KA951102','KA951103','KA961101','KA961102','KA961103');
       $ITHarga = $IT_Harga = $IBHarga = $IB_Harga = 0;
@@ -63,7 +63,7 @@ class Super extends CI_Controller {
           if (in_array($Pisah[$i],$KodeITTanamanPangan)) {
             $ITHarga += (int)$Harga[$i];$IT_Harga += (int)$_Harga[$i];
           }
-          if (in_array($Pisah[$i],$KodeIBTanamanPangan)) {
+          else if (in_array($Pisah[$i],$KodeIBTanamanPangan)) {
             $IBHarga += (int)$Harga[$i];$IB_Harga += (int)$_Harga[$i];
           }
         }
@@ -86,7 +86,7 @@ class Super extends CI_Controller {
           if (in_array($Pisah[$i],$KodeITHortikultura)) {
             $ITHarga += (int)$Harga[$i];$IT_Harga += (int)$_Harga[$i];
           }
-          if (in_array($Pisah[$i],$KodeIBHortikultura)) {
+          else if (in_array($Pisah[$i],$KodeIBHortikultura)) {
             $IBHarga += (int)$Harga[$i];$IB_Harga += (int)$_Harga[$i];
           }
         }
@@ -109,7 +109,7 @@ class Super extends CI_Controller {
           if (in_array($Pisah[$i],$KodeITPerkebunan)) {
             $ITHarga += (int)$Harga[$i];$IT_Harga += (int)$_Harga[$i];
           }
-          if (in_array($Pisah[$i],$KodeIBPerkebunan)) {
+          else if (in_array($Pisah[$i],$KodeIBPerkebunan)) {
             $IBHarga += (int)$Harga[$i];$IB_Harga += (int)$_Harga[$i];
           }
         }
@@ -132,7 +132,7 @@ class Super extends CI_Controller {
           if (in_array($Pisah[$i],$KodeITPeternakan)) {
             $ITHarga += (int)$Harga[$i];$IT_Harga += (int)$_Harga[$i];
           }
-          if (in_array($Pisah[$i],$KodeIBPeternakan)) {
+          else if (in_array($Pisah[$i],$KodeIBPeternakan)) {
             $IBHarga += (int)$Harga[$i];$IB_Harga += (int)$_Harga[$i];
           }
         }
@@ -155,7 +155,7 @@ class Super extends CI_Controller {
           if (in_array($Pisah[$i],$KodeITPerikanan)) {
             $ITHarga += (int)$Harga[$i];$IT_Harga += (int)$_Harga[$i];
           }
-          if (in_array($Pisah[$i],$KodeIBPerikanan)) {
+          else if (in_array($Pisah[$i],$KodeIBPerikanan)) {
             $IBHarga += (int)$Harga[$i];$IB_Harga += (int)$_Harga[$i];
           }
         }
