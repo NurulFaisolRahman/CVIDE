@@ -22,30 +22,30 @@
                       <?php for ($i=0; $i < count($NTP); $i++) { ?>
                         <tr class="text-light align-middle">
                           <td class="align-middle"><b>IT <?=$Sektor[$i]?></b></td>
-                          <td class="align-middle"><b><?=number_format($IT[$i][0],2)?></b></td>
-                          <td class="align-middle"><b><?=number_format($IT[$i][1],2)?></b></td>
-                          <td class="align-middle"><b><?=number_format($IT[$i][2],2)?></b></td>
-                          <td class="align-middle"><b><?=number_format($IT[$i][3],2)?></b></td>
-                          <td class="align-middle"><b><?=number_format($IT[$i][4],2)?></b></td>
-                          <td class="align-middle"><b><?=number_format($IT[$i][5],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($IT[0][$i],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($IT[1][$i],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($IT[2][$i],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($IT[3][$i],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($IT[4][$i],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($IT[5][$i],2)?></b></td>
                         </tr>
                         <tr class="text-light align-middle">
                           <td class="align-middle"><b>IB <?=$Sektor[$i]?></b></td>
-                          <td class="align-middle"><b><?=number_format($IB[$i][0],2)?></b></td>
-                          <td class="align-middle"><b><?=number_format($IB[$i][1],2)?></b></td>
-                          <td class="align-middle"><b><?=number_format($IB[$i][2],2)?></b></td>
-                          <td class="align-middle"><b><?=number_format($IB[$i][3],2)?></b></td>
-                          <td class="align-middle"><b><?=number_format($IB[$i][4],2)?></b></td>
-                          <td class="align-middle"><b><?=number_format($IB[$i][5],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($IB[0][$i],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($IB[1][$i],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($IB[2][$i],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($IB[3][$i],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($IB[4][$i],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($IB[5][$i],2)?></b></td>
                         </tr>
                         <tr class="text-light align-middle">
                           <td class="align-middle"><b>NTP <?=$Sektor[$i]?></b></td>
-                          <td class="align-middle"><b><?=number_format($NTP[$i][0],2)?></b></td>
-                          <td class="align-middle"><b><?=number_format($NTP[$i][1],2)?></b></td>
-                          <td class="align-middle"><b><?=number_format($NTP[$i][2],2)?></b></td>
-                          <td class="align-middle"><b><?=number_format($NTP[$i][3],2)?></b></td>
-                          <td class="align-middle"><b><?=number_format($NTP[$i][4],2)?></b></td>
-                          <td class="align-middle"><b><?=number_format($NTP[$i][5],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($NTP[0][$i],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($NTP[1][$i],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($NTP[2][$i],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($NTP[3][$i],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($NTP[4][$i],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($NTP[5][$i],2)?></b></td>
                         </tr>
                         <tr><td colspan="7" class="bg-warning"></td></tr>
                       <?php } ?>
