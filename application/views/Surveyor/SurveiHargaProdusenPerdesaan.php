@@ -596,6 +596,10 @@
           var CopyKode = Pisah[5].split('|')
           var CopyHarga = Pisah[6].split('|')
           // var Copy_Harga = Pisah[7].split('|')
+          for (let i = 0; i < Kode.length; i++) {
+            $("#Edit"+Kode[i]).val("")
+            $("#Edit_"+Kode[i]).val("")
+          }
           for (let i = 0; i < CopyKode.length; i++) {
             $("#Copy_"+CopyKode[i]).val(CopyHarga[i])
             // $("#Copy_"+CopyKode[i]).val(Copy_Harga[i])
@@ -649,6 +653,10 @@
           var EditKode = Pisah[5].split('|')
           var EditHarga = Pisah[6].split('|')
           var Edit_Harga = Pisah[7].split('|')
+          for (let i = 0; i < Kode.length; i++) {
+            $("#Edit"+Kode[i]).val("")
+            $("#Edit_"+Kode[i]).val("")
+          }
           for (let i = 0; i < EditKode.length; i++) {
             $("#Edit"+EditKode[i]).val(EditHarga[i])
             $("#Edit_"+EditKode[i]).val(Edit_Harga[i])
