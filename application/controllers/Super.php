@@ -46,7 +46,7 @@ class Super extends CI_Controller {
     $Sektor = $this->uri->segment('3');
     $Data['Fluktuasi'] = array();
     if ($Sektor == 1) {
-      for ($k=1; $k <= 6; $k++) { 
+      for ($k=1; $k <= 7; $k++) { 
         $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga,_Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-0".$k."%'")->result_array();    
         $DataHarga = array();
         for ($j=0; $j < count($TanamanPangan); $j++) { 
@@ -69,7 +69,7 @@ class Super extends CI_Controller {
         array_push($Data['Fluktuasi'],$Average);
       }
     } else if ($Sektor == 2) {
-      for ($k=1; $k <= 6; $k++) { 
+      for ($k=1; $k <= 7; $k++) { 
         $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga,_Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-0".$k."%'")->result_array();    
         $DataHarga = array();
         for ($j=0; $j < count($Hortikultura); $j++) { 
@@ -92,7 +92,7 @@ class Super extends CI_Controller {
         array_push($Data['Fluktuasi'],$Average);
       }
     } else if ($Sektor == 3) {
-      for ($k=1; $k <= 6; $k++) { 
+      for ($k=1; $k <= 7; $k++) { 
         $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga,_Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-0".$k."%'")->result_array();    
         $DataHarga = array();
         for ($j=0; $j < count($Perkebunan); $j++) { 
@@ -115,7 +115,7 @@ class Super extends CI_Controller {
         array_push($Data['Fluktuasi'],$Average);
       }
     } else if ($Sektor == 4) {
-      for ($k=1; $k <= 6; $k++) { 
+      for ($k=1; $k <= 7; $k++) { 
         $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga,_Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-0".$k."%'")->result_array();    
         $DataHarga = array();
         for ($j=0; $j < count($Peternakan); $j++) { 
@@ -138,7 +138,7 @@ class Super extends CI_Controller {
         array_push($Data['Fluktuasi'],$Average);
       }
     } else if ($Sektor == 5) {
-      for ($k=1; $k <= 6; $k++) { 
+      for ($k=1; $k <= 7; $k++) { 
         $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga,_Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-0".$k."%'")->result_array();    
         $DataHarga = array();
         for ($j=0; $j < count($Perikanan); $j++) { 

@@ -40,6 +40,7 @@
                             <th class="align-middle">April</th>
                             <th class="align-middle">Mei</th>
                             <th class="align-middle">Juni</th>
+                            <th class="align-middle">Juli</th>
                           </tr>
                         </thead>
                         <tbody style="font-size: 12px;" class="bg-primary">
@@ -65,6 +66,7 @@
                               <td class="align-middle"><b><?=$Fluktuasi[3][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[4][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[5][$i]?></b></td>
+                              <td class="align-middle"><b><?=$Fluktuasi[6][$i]?></b></td>
                             </tr>
                           <?php } ?>
                         </tbody>
