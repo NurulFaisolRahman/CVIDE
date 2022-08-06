@@ -65,7 +65,7 @@
                           <ul class="nav child_menu">
                             <li><a href="<?=base_url('Super/NTP')?>"><b>Data Bulanan</b></a></li>
                             <li><a href="<?=base_url('Super/NTPSeries')?>"><b>Data Series</b></a></li>
-                            <li><a href="<?=base_url('Super/NTPFluktuasi')?>"><b>Data Fluktuasi</b></a></li>
+                            <li><a href="<?=base_url('Super/NTPFluktuasi/1')?>"><b>Data Fluktuasi</b></a></li>
                           </ul>
                         </li>
                       <?php } ?>
