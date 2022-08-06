@@ -1,8 +1,5 @@
-				<!-- page content -->
-				<div class="right_col" role="main" style="overflow-x: hidden;">
-					<div class="">
             <div class="clearfix"></div>
-							<div class="row">
+              <div class="row">
                 <div class="col-lg-8 col-sm-12">
                   <div class="table-responsive">
                     <table class="table table-sm table-bordered table-striped">
@@ -62,16 +59,14 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </div> 
+          </div>
         </div>
         <!-- /page content -->
       </div>
     </div>
 
     <script src="<?=base_url("vendors/jquery/dist/jquery.min.js")?>"></script>
-    <script src="<?=base_url("vendors/bootstrap/dist/js/bootstrap.bundle.min.js")?>"></script>
-    <script src="<?=base_url('assets/inputmask/min/jquery.inputmask.bundle.min.js')?>"></script>
-		<script src="<?=base_url("build/js/custom.min.js")?>"></script>
+   	<script src="<?=base_url("vendors/bootstrap/dist/js/bootstrap.bundle.min.js")?>"></script>
+    <script src="<?=base_url("build/js/custom.min.js")?>"></script>
   </body>
 </html>
