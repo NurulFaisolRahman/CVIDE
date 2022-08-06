@@ -61,7 +61,13 @@
                       </li>
                       <li><a href="<?=base_url('Super/IPM')?>"><b>IPM</b> </a></li>
                       <?php } if ($Username == 'superadmin') { ?> 
-                        <li><a href="<?=base_url('Super/NTP')?>"><b>Nilai Tukar Petani (NTP)</b> </a></li>
+                        <li><a><b>Nilai Tukar Petani (NTP)</b><span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+                            <li><a href="<?=base_url('Super/NTP')?>"><b>Data Bulanan</b></a></li>
+                            <li><a href="<?=base_url('Super/NTPSeries')?>"><b>Data Series</b></a></li>
+                            <li><a href="<?=base_url('Super/NTPFluktuasi')?>"><b>Data Fluktuasi</b></a></li>
+                          </ul>
+                        </li>
                       <?php } ?>
                     </ul>
 									</li>

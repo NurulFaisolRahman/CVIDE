@@ -53,7 +53,7 @@
                     <ul class="nav child_menu">
                       <li><a href="<?=base_url('Surveyor/SurveiHargaKonsumenPerdesaan')?>"><b>Harga Konsumen Perdesaan</b></a></li>   
                       <li><a href="<?=base_url('Surveyor/SurveiHargaProdusenPerdesaan')?>"><b>Harga Produsen Perdesaan</b></a></li>   
-                      <li><a href="<?=base_url('Surveyor/NTPProdusen')?>"><b>NTP Produsen HTD Januari</b></a></li>
+                      <!-- <li><a href="<?=base_url('Surveyor/NTPProdusen')?>"><b>NTP Produsen HTD Januari</b></a></li> -->
                       <li><a href="<?=base_url('Surveyor/NTPProdusenHTD')?>"><b>NTP Produsen HTD 2018</b></a></li>   
                     </ul>
 									</li>
