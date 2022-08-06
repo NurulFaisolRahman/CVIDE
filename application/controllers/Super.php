@@ -41,6 +41,8 @@ class Super extends CI_Controller {
     $Bulan = $this->session->userdata('BulanNTP');
     $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga,_Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-".$Bulan."%'")->result_array();    
     $Data['NTPTanamanPangan'] = $Data['NTPHortikultura'] = $Data['NTPPerkebunan'] = $Data['NTPPeternakan'] = $Data['NTPPerikanan'] = $Data['NTP'] = 0;
+    $Data['ITTanamanPangan'] = $Data['ITHortikultura'] = $Data['ITPerkebunan'] = $Data['ITPeternakan'] = $Data['ITPerikanan'] = 0;
+    $Data['IBTanamanPangan'] = $Data['IBHortikultura'] = $Data['IBPerkebunan'] = $Data['IBPeternakan'] = $Data['IBPerikanan'] = 0;
     if (count($DataProdusen) > 0) {
       $ITHargaNTP = $IT_HargaNTP = $IBHargaNTP = $IB_HargaNTP = 0;
       $KodeITTanamanPangan = array('IA001001','IA001002','IA001003','IA001004','IA001005','IA001006','IA002001','IA002002','IA002003','IA002004','IA002005','IA002006','IA003001','IA003002','IA003003','IA003004','IA003005','IA003006','IA004001','IA004002','IA005001','IA005002','IB001001','IB001002','IB002001','IB002002','IB001003','IB003001','IB005001','IB005002','IB006001','IB006002','IB007001','IB007002','IB008001','IB008002','IB008003','IB009001','IB009002','IB010001','IB011001','IB012001');  
