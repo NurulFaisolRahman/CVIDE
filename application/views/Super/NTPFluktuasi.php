@@ -70,13 +70,13 @@
                             </tr>
                             <tr class="text-light align-middle">
                               <td class="align-middle"><b>Laju</b></td>
+                              <td class="align-middle"><b>0</b></td>
                               <td class="align-middle"><b><?=$Laju[0][$i]?></b></td>
                               <td class="align-middle"><b><?=$Laju[1][$i]?></b></td>
                               <td class="align-middle"><b><?=$Laju[2][$i]?></b></td>
                               <td class="align-middle"><b><?=$Laju[3][$i]?></b></td>
                               <td class="align-middle"><b><?=$Laju[4][$i]?></b></td>
                               <td class="align-middle"><b><?=$Laju[5][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Laju[6][$i]?></b></td>
                             </tr>
                           <?php } ?>
                         </tbody>
