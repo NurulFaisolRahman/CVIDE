@@ -161,6 +161,16 @@ class Super extends CI_Controller {
         array_push($Data['Fluktuasi'],$Average);
       }
     }
+    $Data['Laju'] = array();
+    for ($i=0; $i < count($Data['Fluktuasi']); $i++) { 
+      $Temp = array(0);
+      for ($j=1; $j < 7; $j++) { 
+        $Harga = $Data['Fluktuasi'][$i][$j];
+        $_Harga = $Data['Fluktuasi'][$i][$j-1];
+        array_push($Temp,number_format(($Harga-$_Harga)/$Harga*100,2,",","."));
+      }
+      array_push($Data['Laju'],$Temp);
+    }
     $this->load->view('Super/Header',$Data);
 		$this->load->view('Super/NTPFluktuasi',$Data);
   }

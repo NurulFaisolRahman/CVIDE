@@ -68,6 +68,16 @@
                               <td class="align-middle"><b><?=$Fluktuasi[5][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[6][$i]?></b></td>
                             </tr>
+                            <tr class="text-light align-middle">
+                              <td class="align-middle"><b>Laju</b></td>
+                              <td class="align-middle"><b><?=$Laju[$i][0]?></b></td>
+                              <td class="align-middle"><b><?=$Laju[$i][1]?></b></td>
+                              <td class="align-middle"><b><?=$Laju[$i][2]?></b></td>
+                              <td class="align-middle"><b><?=$Laju[$i][3]?></b></td>
+                              <td class="align-middle"><b><?=$Laju[$i][4]?></b></td>
+                              <td class="align-middle"><b><?=$Laju[$i][5]?></b></td>
+                              <td class="align-middle"><b><?=$Laju[$i][6]?></b></td>
+                            </tr>
                           <?php } ?>
                         </tbody>
                       </table>
