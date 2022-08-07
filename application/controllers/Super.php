@@ -167,7 +167,7 @@ class Super extends CI_Controller {
       for ($j=1; $j < 7; $j++) { 
         $Harga = $Data['Fluktuasi'][$i][$j];
         $_Harga = $Data['Fluktuasi'][$i][$j-1];
-        array_push($Temp,number_format(($Harga-$_Harga)/$Harga*100,2,",","."));
+        array_push($Temp,number_format((($Harga-$_Harga)/$Harga*100),2,",","."));
       }
       array_push($Data['Laju'],$Temp);
     }
