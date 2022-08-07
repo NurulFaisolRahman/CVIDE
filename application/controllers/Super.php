@@ -162,11 +162,11 @@ class Super extends CI_Controller {
       }
     }
     $Data['Laju'] = array();
-    for ($i=0; $i < count($Data['Fluktuasi'][0]); $i++) { 
+    for ($j=1; $j < 7; $j++) { 
       $Temp = array(0);
-      for ($j=1; $j < 7; $j++) { 
-        $Harga = $Data['Fluktuasi'][$i][$j];
-        $_Harga = $Data['Fluktuasi'][$i][$j-1];
+      for ($i=0; $i < count($Data['Fluktuasi'][0]); $i++) { 
+        $Harga = $Data['Fluktuasi'][$j][$i];
+        $_Harga = $Data['Fluktuasi'][$j-1][$i];
         array_push($Temp,number_format((($Harga-$_Harga)/$Harga*100),2,",","."));
       }
       array_push($Data['Laju'],$Temp);
