@@ -75,6 +75,16 @@
                             <td class="align-middle"><b><?=number_format($IUpahBuruh[5],2)?></b></td>
                             <td class="align-middle"><b><?=number_format($IUpahBuruh[6],2)?></b></td>
                           </tr>
+                          </tr><tr class="text-light align-middle">
+                            <td class="align-middle"><b>Indeks IBPPBM</b></td>
+                            <td class="align-middle"><b><?=number_format($IIBPPBM[0],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IIBPPBM[1],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IIBPPBM[2],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IIBPPBM[3],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IIBPPBM[4],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IIBPPBM[5],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IIBPPBM[6],2)?></b></td>
+                          </tr>
                         </tbody>
                       </table>
                     </div>
