@@ -90,13 +90,13 @@
                           </tr>
                           </tr><tr class="text-light align-middle">
                             <td class="align-middle"><b>IKRT</b></td>
-                            <td class="align-middle"><b><?=number_format($IIKRT[0],2)?></b></td>
-                            <td class="align-middle"><b><?=number_format($IIKRT[1],2)?></b></td>
-                            <td class="align-middle"><b><?=number_format($IIKRT[2],2)?></b></td>
-                            <td class="align-middle"><b><?=number_format($IIKRT[3],2)?></b></td>
-                            <td class="align-middle"><b><?=number_format($IIKRT[4],2)?></b></td>
-                            <td class="align-middle"><b><?=number_format($IIKRT[5],2)?></b></td>
-                            <td class="align-middle"><b><?=number_format($IIKRT[6],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IKRT[0],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IKRT[1],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IKRT[2],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IKRT[3],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IKRT[4],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IKRT[5],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IKRT[6],2)?></b></td>
                           </tr>
                         </tbody>
                       </table>
