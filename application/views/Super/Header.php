@@ -66,6 +66,8 @@
                             <li><a href="<?=base_url('Super/NTP')?>"><b>Data Bulanan</b></a></li>
                             <li><a href="<?=base_url('Super/NTPSeries')?>"><b>Data Series</b></a></li>
                             <li><a href="<?=base_url('Super/NTPFluktuasi/1')?>"><b>Data Fluktuasi</b></a></li>
+                            <li><a href="<?=base_url('Super/NTPIBPPBM')?>"><b>IBPPBM</b></a></li>
+                            <li><a href="<?=base_url('Super/NTPIKRT')?>"><b>IKRT</b></a></li>
                           </ul>
                         </li>
                       <?php } ?>
