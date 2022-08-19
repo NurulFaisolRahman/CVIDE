@@ -564,7 +564,7 @@ class Super extends CI_Controller {
     $Data['IKRT'] = $Data['IBahanMakanan'] = $Data['IMakananJadi'] = $Data['IPerumahan'] = $Data['ISandang'] = $Data['IKesehatan'] = $Data['IPendidikan'] = $Data['ITransportasi'] = array();
     for ($k=1; $k <= 7; $k++) { 
       $IKRT = $_IKRT = $BahanMakanan = $_BahanMakanan = $MakananJadi = $_MakananJadi = $Perumahan = $_Perumahan = $Sandang = $_Sandang = $Kesehatan = $_Kesehatan = $Pendidikan = $_Pendidikan = $Transportasi = $_Transportasi = 0;
-      $DataKonsumen = $this->db->query("SELECT KodeKualitas,Harga,_Harga FROM `ntpKonsumen` WHERE TanggalSurvei LIKE '2022-0".$k."%'")->result_array(); 
+      $DataKonsumen = $this->db->query("SELECT KodeKualitas,Harga,_Harga FROM `ntpkonsumen` WHERE TanggalSurvei LIKE '2022-0".$k."%'")->result_array(); 
       // if (count($DataKonsumen) > 0) {
         foreach ($DataKonsumen as $key) {
           $Pisah = explode("|",$key['KodeKualitas']);
