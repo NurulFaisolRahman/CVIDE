@@ -28,7 +28,7 @@
                   $Perikanan = array('RB020001','RB037001','RB040001','RB042005','RB047001','RB053001','RB055001','RB056001','RB072004','RB096001','RB099001','RB104001','RB109004','RB111001','RB113001','RB131001','SB002003','SB003002','SB007002','SC010004','SC011004','SC016001','SC018001','SC020001','SC021001','SC025001','SC028001','SC038001','SF501101','TB003005','TC001001','TC007001','TC011002','UA102005','UA201001','UA206001','UA210002','UB001002','UB002002','UB003001','UB061001','UB102001','UB104001','UB105001','UB202002','UB204001','UC001001','UD002003','UD003002','UD005003','UE005001','UE007001','UE032001','UE606001','UE609001','UH011101','UH201101','UH301101','UH401101','UH501101','UH601101');
                 ?>
                 <div class="row mt-1">
-                  <div class="col-lg-6 col-sm-12">
+                  <div class="col-lg-8 col-sm-12">
                     <div class="table-responsive">
                       <table class="table table-sm table-bordered table-striped">
                         <thead class="bg-danger">
