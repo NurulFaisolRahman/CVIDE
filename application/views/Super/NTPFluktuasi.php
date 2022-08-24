@@ -33,11 +33,12 @@
                   $NamaPerikanan = array('Cucut','Kapasan (Kapas-kapas)','Kembung(Kombong/Sumbo','Kerapu (Garopa/Groper)','Kurisi (Kerisi)','Layang (Malalugis/Momar)','Layur (Beladang)','Lemuru (Dencis)','Pari (Hidung Sekop)','Tenggiri','Teri','Tongkol','Udang (Laut) (Windu)','Kepiting Laut','Cumi-cumi','Kakap (Merah)','Bensin ( Pertalite)','Solar (Solar)','Gas LPG (Pertamina)','Perangkap','Keranjang ( Plastik )','Senter','Jerigen','Aki/Accu','Termos','Pelampung','Serok','Terpal ','Upah Penangkapan (Laki-laki)','Kerapu Budidaya','Bandeng','Nila','Udang (Vannamei)','Bibit Kerapu Budidaya','Bandeng/Nener (< 5 Cm)','Nila','Udang (Vannamei)','Urea (Gresik )','Triple Super Phosphate/Super Phosphate(TSP/SP 36) (SP 36 )','Zwavalezure Ammoniak (ZA)','Nitrogen Phospate Kalium (NPK)','Thiodan','Pembasmi kuman /Bakteri (Saponin)','Vitamin','Pelet','Ikan Segar/Rucah','Sewa Tanah Untuk Tambak/Kolam','Bensin Eceran (Pertalite)','Solar (Solar)','Tarif Pulsa Ponsel ( Paket Data)','Jaring Angkat','Perangkap ( Sero)','Drum Plastik/Blong','Ember','Selang','Upah Pengolahan Lahan ( Laki-laki)','Upah Penebaran Benih (Laki-laki)','Upah Pemupukan (Laki-laki )','Upah Pembenihan Pakan/Obat-Obatan (Laki-laki)','Upah Penjagaan Areal Budidaya ( Laki-laki)','Upah Pemanenan ( Laki-laki)');
                 ?>
                 <div class="row mt-1">
-                  <div class="col-lg-8 col-sm-12">
+                  <div class="col-lg-10 col-sm-12">
                     <div class="table-responsive">
                       <table class="table table-sm table-bordered table-striped">
                         <thead class="bg-danger">
                           <tr style="font-size: 10pt;" class="text-light text-center">
+                            <th class="align-middle">Nama</th>
                             <th class="align-middle">Kode</th>
                             <th class="align-middle">Januari</th>
                             <th class="align-middle">Februari</th>
