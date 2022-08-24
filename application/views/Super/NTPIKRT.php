@@ -15,6 +15,7 @@
                             <th class="align-middle">Mei</th>
                             <th class="align-middle">Juni</th>
                             <th class="align-middle">Juli</th>
+                            <th class="align-middle">Agustus</th>
                           </tr>
                         </thead>
                         <tbody style="font-size: 12px;" class="bg-primary">
@@ -27,6 +28,7 @@
                             <td class="align-middle"><b><?=number_format($IBahanMakanan[4],2)?></b></td>
                             <td class="align-middle"><b><?=number_format($IBahanMakanan[5],2)?></b></td>
                             <td class="align-middle"><b><?=number_format($IBahanMakanan[6],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IBahanMakanan[7],2)?></b></td>
                           </tr>
                           <tr class="text-light align-middle">
                             <td class="align-middle"><b>Makanan, Minuman, Rokok & Tembakau</b></td>
@@ -37,6 +39,7 @@
                             <td class="align-middle"><b><?=number_format($IMakananJadi[4],2)?></b></td>
                             <td class="align-middle"><b><?=number_format($IMakananJadi[5],2)?></b></td>
                             <td class="align-middle"><b><?=number_format($IMakananJadi[6],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IMakananJadi[7],2)?></b></td>
                           </tr>
                           <tr class="text-light align-middle">
                             <td class="align-middle"><b>Perumahan</b></td>
@@ -47,6 +50,7 @@
                             <td class="align-middle"><b><?=number_format($IPerumahan[4],2)?></b></td>
                             <td class="align-middle"><b><?=number_format($IPerumahan[5],2)?></b></td>
                             <td class="align-middle"><b><?=number_format($IPerumahan[6],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IPerumahan[7],2)?></b></td>
                           </tr>
                           <tr class="text-light align-middle">
                             <td class="align-middle"><b>Sandang</b></td>
@@ -57,6 +61,7 @@
                             <td class="align-middle"><b><?=number_format($ISandang[4],2)?></b></td>
                             <td class="align-middle"><b><?=number_format($ISandang[5],2)?></b></td>
                             <td class="align-middle"><b><?=number_format($ISandang[6],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($ISandang[7],2)?></b></td>
                           </tr>
                           <tr class="text-light align-middle">
                             <td class="align-middle"><b>Kesehatan</b></td>
@@ -67,6 +72,7 @@
                             <td class="align-middle"><b><?=number_format($IKesehatan[4],2)?></b></td>
                             <td class="align-middle"><b><?=number_format($IKesehatan[5],2)?></b></td>
                             <td class="align-middle"><b><?=number_format($IKesehatan[6],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IKesehatan[7],2)?></b></td>
                           </tr>
                           </tr>
                           <tr class="text-light align-middle">
@@ -78,6 +84,7 @@
                             <td class="align-middle"><b><?=number_format($IPendidikan[4],2)?></b></td>
                             <td class="align-middle"><b><?=number_format($IPendidikan[5],2)?></b></td>
                             <td class="align-middle"><b><?=number_format($IPendidikan[6],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IPendidikan[7],2)?></b></td>
                           </tr><tr class="text-light align-middle">
                             <td class="align-middle"><b>Transportasi & Komunikasi</b></td>
                             <td class="align-middle"><b><?=number_format($ITransportasi[0],2)?></b></td>
@@ -87,6 +94,7 @@
                             <td class="align-middle"><b><?=number_format($ITransportasi[4],2)?></b></td>
                             <td class="align-middle"><b><?=number_format($ITransportasi[5],2)?></b></td>
                             <td class="align-middle"><b><?=number_format($ITransportasi[6],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($ITransportasi[7],2)?></b></td>
                           </tr>
                           </tr><tr class="text-light align-middle">
                             <td class="align-middle"><b>IKRT</b></td>
@@ -97,6 +105,7 @@
                             <td class="align-middle"><b><?=number_format($IKRT[4],2)?></b></td>
                             <td class="align-middle"><b><?=number_format($IKRT[5],2)?></b></td>
                             <td class="align-middle"><b><?=number_format($IKRT[6],2)?></b></td>
+                            <td class="align-middle"><b><?=number_format($IKRT[7],2)?></b></td>
                           </tr>
                         </tbody>
                       </table>
