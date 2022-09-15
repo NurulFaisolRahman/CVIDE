@@ -33,7 +33,7 @@
         <div class="col-sm-12">
           <div class="card mt-2">
             <div class="card-header bg-primary text-white">
-              <b>SURVEI KEPUASAN PELAYANAN DESA</b>
+              <b>SURVEI KEPUASAN PELAYANAN DESA 2022</b>
             </div>
             <div style="background-color: yellow;" class="card-body border border-primary">
               <div class="container-fluid">
