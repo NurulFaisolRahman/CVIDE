@@ -797,7 +797,7 @@ class IDE extends CI_Controller {
   }
 
   public function InputIKM(){
-    if($this->db->get_where('surveiikm', array('NIK' => $_POST['NIK']))->num_rows() === 0){
+    if($this->db->get_where('ikmdesa', array('NIK' => $_POST['NIK']))->num_rows() === 0){
       $_POST['Nama'] = htmlentities($_POST['Nama']);
       $_POST['Pekerjaan'] = htmlentities($_POST['Pekerjaan']);
       $_POST['Keperluan'] = htmlentities($_POST['Keperluan']);
