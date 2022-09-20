@@ -345,7 +345,7 @@ class IDE extends CI_Controller {
     foreach ($Kecamatan as $key) {
       $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$key['Kode'].".%"."'")->result_array();
       foreach ($Desa as $KEY) {
-        $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `surveiikm` WHERE Desa = "."'".$KEY['Kode']."'")->row_array()['Total'];
+        $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikmdesa` WHERE Desa = "."'".$KEY['Kode']."'")->row_array()['Total'];
         array_push($Data['Rekap'],$KEY['Nama']."|".$key['Nama']."|".$Total);
       }
     }
@@ -369,8 +369,8 @@ class IDE extends CI_Controller {
       $DataIKMKecamatan = array();
       array_push($DataIKMKecamatan,$KEY['Nama']);
       for ($j = 0; $j < count($Desa); $j++) { 
-        $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `surveiikm` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->row_array()['Total'];
-        $RespondenDesa = $this->db->query("SELECT * FROM `surveiikm` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->result_array();
+        $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikmdesa` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->row_array()['Total'];
+        $RespondenDesa = $this->db->query("SELECT * FROM `ikmdesa` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->result_array();
         foreach ($RespondenDesa as $key) {
           $Pecah = explode("|",$key['Poin']);
           for ($i=0; $i < 11; $i++) { 
@@ -465,10 +465,10 @@ class IDE extends CI_Controller {
     $Data['Gender'] = array();
     $Data['Pendidikan'] = array();
     $Data['Pekerjaan'] = array();
-    $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `surveiikm` WHERE Desa = "."'".$Desa."'")->row_array()['Total'];
+    $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikmdesa` WHERE Desa = "."'".$Desa."'")->row_array()['Total'];
     array_push($Data['Responden'], $Total);
     $Data['NilaiIndeks'][0] = 0;
-    $RespondenDesa = $this->db->query("SELECT * FROM `surveiikm` WHERE Desa = "."'".$Desa."'")->result_array();
+    $RespondenDesa = $this->db->query("SELECT * FROM `ikmdesa` WHERE Desa = "."'".$Desa."'")->result_array();
     $Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
     $Average = array(0,0,0,0,0,0,0,0,0,0,0);
     $Tertimbang = array(0,0,0,0,0,0,0,0,0,0,0);
@@ -584,8 +584,8 @@ class IDE extends CI_Controller {
       $Konversi = array(0,0,0,0,0,0,0,0,0,0,0);
       $Titip = 0;
       $DataIKMDesa = $Desa[$j]['Nama'];
-      $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `surveiikm` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->row_array()['Total'];
-      $RespondenDesa = $this->db->query("SELECT * FROM `surveiikm` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->result_array();
+      $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikmdesa` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->row_array()['Total'];
+      $RespondenDesa = $this->db->query("SELECT * FROM `ikmdesa` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->result_array();
       foreach ($RespondenDesa as $key) {
         $Pecah = explode("|",$key['Poin']);
         for ($i=0; $i < 11; $i++) { 
@@ -647,8 +647,8 @@ class IDE extends CI_Controller {
     $Titip = 0;
     $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$KodeKecamatan.".%'")->result_array();
     for ($j = 0; $j < count($Desa); $j++) { 
-      $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `surveiikm` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->row_array()['Total'];
-      $RespondenDesa = $this->db->query("SELECT * FROM `surveiikm` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->result_array();
+      $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikmdesa` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->row_array()['Total'];
+      $RespondenDesa = $this->db->query("SELECT * FROM `ikmdesa` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->result_array();
       foreach ($RespondenDesa as $key) {
         $Pecah = explode("|",$key['Poin']);
         for ($i=0; $i < 11; $i++) { 
@@ -738,16 +738,16 @@ class IDE extends CI_Controller {
       $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.01.%'")->result_array();
       $Data['KodeKecamatan'] = '35.10.01';
     }
-    $Data['Total'] = $this->db->query("SELECT COUNT(*) AS Total FROM `surveiikm`")->row_array()['Total'];
+    $Data['Total'] = $this->db->query("SELECT COUNT(*) AS Total FROM `ikmdesa`")->row_array()['Total'];
     $Data['Responden'] = array();
     $Data['NilaiIndeks'] = array();
     $Data['MutuPelayanan'] = array();
     $Data['KinerjaUnit'] = array();
     for ($j = 0; $j < count($Data['Desa']); $j++) { 
-      $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `surveiikm` WHERE Desa = "."'".$Data['Desa'][$j]['Kode']."'")->row_array()['Total'];
+      $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikmdesa` WHERE Desa = "."'".$Data['Desa'][$j]['Kode']."'")->row_array()['Total'];
       array_push($Data['Responden'], $Total);
       $Data['NilaiIndeks'][$j] = 0;
-      $RespondenDesa = $this->db->query("SELECT Poin FROM `surveiikm` WHERE Desa = "."'".$Data['Desa'][$j]['Kode']."'")->result_array();
+      $RespondenDesa = $this->db->query("SELECT Poin FROM `ikmdesa` WHERE Desa = "."'".$Data['Desa'][$j]['Kode']."'")->result_array();
       $Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
       $Average = array(0,0,0,0,0,0,0,0,0,0,0);
       foreach ($RespondenDesa as $key) {
