@@ -48,6 +48,7 @@
                             <th class="align-middle">Juni</th>
                             <th class="align-middle">Juli</th>
                             <th class="align-middle">Agustus</th>
+                            <th class="align-middle">September</th>
                           </tr>
                         </thead>
                         <tbody style="font-size: 12px;" class="bg-primary">
@@ -81,6 +82,7 @@
                               <td class="align-middle"><b><?=$Fluktuasi[5][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[6][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[7][$i]?></b></td>
+                              <td class="align-middle"><b><?=$Fluktuasi[8][$i]?></b></td>
                             </tr>
                             <tr class="text-light align-middle">
                               <td class="align-middle"><b>#</b></td>
@@ -93,6 +95,7 @@
                               <td class="align-middle"><b><?=$Laju[4][$i]?></b></td>
                               <td class="align-middle"><b><?=$Laju[5][$i]?></b></td>
                               <td class="align-middle"><b><?=$Laju[6][$i]?></b></td>
+                              <td class="align-middle"><b><?=$Laju[7][$i]?></b></td>
                             </tr>
                           <?php } ?>
                         </tbody>
