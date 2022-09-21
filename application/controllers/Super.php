@@ -162,7 +162,7 @@ class Super extends CI_Controller {
       }
     }
     $Data['Laju'] = array();
-    for ($j=1; $j < 8; $j++) { 
+    for ($j=1; $j < 9; $j++) { 
       $Temp = array();
       for ($i=0; $i < count($Data['Fluktuasi'][0]); $i++) { 
         $Harga = $Data['Fluktuasi'][$j][$i];
