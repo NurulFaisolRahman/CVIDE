@@ -21,7 +21,7 @@
         <div class="col-sm-12">
           <div class="card mt-2">
             <div class="card-header bg-primary text-light">
-              <b>REKAPITULASI SURVEI KEPUASAN PELAYANAN DESA TAHUN 2021</b>
+              <b>REKAPITULASI SURVEI KEPUASAN PELAYANAN DESA TAHUN 2022</b>
             </div>
             <div style="background-color: yellow;padding: 0.5rem;" class="card-body border border-primary">
               <div class="container-fluid">
