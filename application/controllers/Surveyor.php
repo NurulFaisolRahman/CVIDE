@@ -15,10 +15,6 @@ class Surveyor extends CI_Controller {
 		$this->load->view('Surveyor/Profil');
   }
   // $2y$10$nhEvPNxmjSLuZMzDn6y5QuFOqDN6gXcN5sPrLMba8I.wVbECFkqda 12345678
-  // $2y$10$ciwZeZyTcchoHb9/pusoB.HpZWwJcZDF1bAvjTDz8DlCyVJg6xOtK anita
-  // $2y$10$SLqS8gwwx6gtVkQ8gDpDGeZCqcpPTKBzAbsYy8dtgt2d9YtT7eCEi arfi yakup kasiman herusasanto Koslik darsono ismanan
-  // $2y$10$nhEvPNxmjSLuZMzDn6y5QuFOqDN6gXcN5sPrLMba8I.wVbECFkqda kiki
-  // $2y$10$31BUT8ggyd.Brh8jhOXXC.lA8v.nUpX5/0117bTG3t1DRE.q5o.Be masrori 
   public function GantiPassword(){
     $this->db->where('NIK', $this->session->userdata('NIK'));
     $this->db->update('surveyor', array('Password' => password_hash($_POST['Password'], PASSWORD_DEFAULT)));
@@ -27,6 +23,11 @@ class Surveyor extends CI_Controller {
     } else {
       echo 'Gagal Mengganti Password!';
     }
+  }
+
+  public function PendampingBPNT(){
+    $this->load->view('Surveyor/Header');
+		$this->load->view('Surveyor/PendampingBPNT');
   }
 
 	public function SurveiBPD(){
@@ -54,6 +55,16 @@ class Surveyor extends CI_Controller {
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '11.01.01.%'")->result_array();
     $this->load->view('Surveyor/Header',$Data);
 		$this->load->view('Surveyor/SurveiKinerjaAparatur',$Data);
+  }
+
+  public function InputPendampingBPNT(){
+    $_POST['NIK'] = $this->session->userdata('NIK');
+    $this->db->insert('pendampingbpnt',$_POST);
+    if ($this->db->affected_rows()){
+      echo '1';
+    } else {
+      echo 'Gagal Menyimpan Survei!';
+    }
   }
 
   public function Input($Tabel){

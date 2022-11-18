@@ -374,7 +374,7 @@
             for (let i = 1; i <= 40; i++) {
               Poin.push($("input[name='Input"+i+"']:checked").val())
             }
-            Nilai = Poin.join("|");
+            var Nilai = Poin.join("|")
             var Data = { Nama: $("#Nama").val(),
                         Gender: $("#Gender").val(),
                         Usia: $("#Usia").val(),
