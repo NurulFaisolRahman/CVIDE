@@ -73,8 +73,11 @@
                         <label class="input-group-text bg-danger text-white"><b>Instansi</b></label>
                       </div>
                       <select class="custom-select" id="Instansi" onchange="Instansi()">                    
-                        <option value="1">Organisasi Perangkat Daerah</option>
-                        <option value="2">Kecamatan/Kelurahan/Desa</option>
+                        <option value="1">OPD</option>
+                        <option value="2">Kecamatan</option>
+                        <option value="3">Kelurahan</option>
+                        <option value="4">Desa</option>
+                        <option value="5">Lainnya</option>
                       </select>
                     </div>
                   </div>
@@ -120,186 +123,202 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN PORTAL DATA</b></div> 
-                  <?php 
-                    $Tanya = array('1. Apakah persyaratan yang harus dipenuhi untuk mendapatkan pelayanan di Portal Data Kabupaten Banyuwangi sudah sesuai?',
-                                   '2. Bagaimanakah kemudahan prosedur pelayanan di Portal Data Kabupaten Banyuwangi?',
-                                   '3. Bagaimanakah kecepatan pelayanan di Portal Data Kabupaten Banyuwangi?',
-                                   '4. Bagaimanakah kewajaran biaya (apabila dikenakan biaya) terhadap jenis pelayanan untuk mengakses Portal Data Kabupaten Banyuwangi?',
-                                   '5. Apakah Portal Data Kabupaten Banyuwangi sesuai dengan kebutuhan yang diinginkan oleh pengguna/pemohon data?',
-                                   '6. Bagaimanakah penanganan terhadap pengaduan, saran & masukan pelayanan Portal Data yang dilakukan Dinas Kominfo & Persandian Kabupaten Banyuwangi?',
-                                   '7. Bagaimanakah kemampuan petugas Dinas Kominfo & Persandian Kabupaten Banyuwangi dalam memberikan pelayanan?',
-                                   '8. Bagaimanakah sikap (kesopanan & keramahan) petugas Dinas Kominfo & Persandian Kabupaten Banyuwangi dalam memberikan pelayanan?',
-                                   '9. Bagaimanakah kelengkapan fitur (kolom pencarian data, download/upload, login, request data, dll) yang dimiliki Portal Data Kabupaten Banyuwangi?',
-                                   '10. Menurut anda, bagaimanakah keamanan Portal Data di Dinas Kominfo dan Persandian Kabupaten Banyuwangi?'); 
-                    $Opsi = array('1. Sangat Tidak Sesuai 2. Tidak Sesuai 3. Kurang Sesuai 4. Sesuai 5. Sangat Sesuai 6. Sangat Sesuai Sekali',
-                                  '1. Sangat Tidak Mudah 2. Tidak Mudah 3. Kurang Mudah 4. Mudah 5. Sangat Mudah 6. Sangat Mudah Sekali',
-                                  '1. Sangat Tidak Cepat 2. Tidak Cepat 3. Kurang Cepat 4. Cepat 5. Sangat Cepat 6. Sangat Cepat Sekali',
-                                  '1. Sangat Tidak Wajar 2. Tidak Wajar 3. Kurang Wajar 4. Wajar 5. Sangat Wajar 6. Sangat Wajar Sekali',
-                                  '1. Sangat Tidak Sesuai 2. Tidak Sesuai 3. Kurang Sesuai 4. Sesuai 5. Sangat Sesuai 6. Sangat Sesuai Sekali',
-                                  '1. Sangat Tidak Memuaskan 2. Tidak Memuaskan 3. Kurang Memuaskan 4. Memuaskan 5. Sangat Memuaskan 6. Sangat Memuaskan Sekali',
-                                  '1. Sangat Tidak Mampu 2. Tidak Mampu 3. Kurang Mampu 4. Mampu 5. Sangat Mampu 6. Sangat Mampu Sekali',
-                                  '1. Sangat Tidak Sopan & Sangat Tidak Ramah 2. Tidak Sopan & Tidak Ramah 3. Kurang Sopan & Kurang Ramah 4. Sopan & Ramah 5. Sangat Sopan & Sangat Ramah 6. Sangat Sopan Sekali & Sangat Ramah Sekali',
-                                  '1. Sangat Tidak Lengkap 2. Tidak Lengkap 3. Kurang Lengkap 4. Lengkap 5. Sangat Lengkap 6. Sangat Lengkap Sekali',
-                                  '1. Sangat Tidak Aman 2. Tidak Aman 3. Kurang Aman 4. Aman 5. Sangat Aman 6. Sangat Aman Sekali'); 
-                  ?>
-                  <?php for ($j=0; $j < count($Tanya); $j++) { ?>
-                    <div class="col-sm-6 my-1">
-                      <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                          <p class="input-group-text bg-danger text-white text-justify text-wrap"><b><?=$Tanya[$j]?></b></p>
-                        </div>
-                      </div>
-                    </div> 
-                    <div class="col-sm-6 bg-primary p-2 my-1">
-                      <div style="font-size: 11pt;" class="text-wrap text-justify font-weight-bold text-white">
-                      <?=$Opsi[$j]?>
-                      </div>
-                      <div class="input-group mt-1">
-                        <?php for ($i=1; $i <= 6; $i++) { ?>
-                          <div class="form-check form-check-inline ml-4">
-                            <input style="transform: scale(1.5);" class="form-check-input" type="radio" name="Input<?=($j+1)?>" id="I<?=($j+1).$i?>" value="<?=$i?>">
-                            <label class="form-check-label font-weight-bold text-white" for="I<?=($j+1).$i?>">&nbsp;<?=$i?></label>
+                  <div class="col-sm-12 my-1" id="Portal">
+                    <div class="row">
+                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN PORTAL DATA</b></div> 
+                      <?php 
+                        $Tanya = array('Apakah persyaratan yang harus dipenuhi untuk mendapatkan pelayanan di Portal Data Kabupaten Banyuwangi sudah sesuai?',
+                                      'Bagaimanakah kemudahan prosedur pelayanan di Portal Data Kabupaten Banyuwangi?',
+                                      'Bagaimanakah kecepatan pelayanan di Portal Data Kabupaten Banyuwangi?',
+                                      'Bagaimanakah kewajaran biaya (apabila dikenakan biaya) terhadap jenis pelayanan untuk mengakses Portal Data Kabupaten Banyuwangi?',
+                                      'Apakah Portal Data Kabupaten Banyuwangi sesuai dengan kebutuhan yang diinginkan oleh pengguna/pemohon data?',
+                                      'Bagaimanakah penanganan terhadap pengaduan, saran & masukan pelayanan Portal Data yang dilakukan Dinas Kominfo & Persandian Kabupaten Banyuwangi?',
+                                      'Bagaimanakah kemampuan petugas Dinas Kominfo & Persandian Kabupaten Banyuwangi dalam memberikan pelayanan?',
+                                      'Bagaimanakah sikap (kesopanan & keramahan) petugas Dinas Kominfo & Persandian Kabupaten Banyuwangi dalam memberikan pelayanan?',
+                                      'Bagaimanakah kelengkapan fitur (kolom pencarian data, download/upload, login, request data, dll) yang dimiliki Portal Data Kabupaten Banyuwangi?',
+                                      'Menurut anda, bagaimanakah keamanan Portal Data di Dinas Kominfo dan Persandian Kabupaten Banyuwangi?'); 
+                        $Opsi = array('1. Sangat Tidak Sesuai 2. Tidak Sesuai 3. Kurang Sesuai 4. Sesuai 5. Sangat Sesuai 6. Sangat Sesuai Sekali',
+                                      '1. Sangat Tidak Mudah 2. Tidak Mudah 3. Kurang Mudah 4. Mudah 5. Sangat Mudah 6. Sangat Mudah Sekali',
+                                      '1. Sangat Tidak Cepat 2. Tidak Cepat 3. Kurang Cepat 4. Cepat 5. Sangat Cepat 6. Sangat Cepat Sekali',
+                                      '1. Sangat Tidak Wajar 2. Tidak Wajar 3. Kurang Wajar 4. Wajar 5. Sangat Wajar 6. Sangat Wajar Sekali',
+                                      '1. Sangat Tidak Sesuai 2. Tidak Sesuai 3. Kurang Sesuai 4. Sesuai 5. Sangat Sesuai 6. Sangat Sesuai Sekali',
+                                      '1. Sangat Tidak Memuaskan 2. Tidak Memuaskan 3. Kurang Memuaskan 4. Memuaskan 5. Sangat Memuaskan 6. Sangat Memuaskan Sekali',
+                                      '1. Sangat Tidak Mampu 2. Tidak Mampu 3. Kurang Mampu 4. Mampu 5. Sangat Mampu 6. Sangat Mampu Sekali',
+                                      '1. Sangat Tidak Sopan & Sangat Tidak Ramah 2. Tidak Sopan & Tidak Ramah 3. Kurang Sopan & Kurang Ramah 4. Sopan & Ramah 5. Sangat Sopan & Sangat Ramah 6. Sangat Sopan Sekali & Sangat Ramah Sekali',
+                                      '1. Sangat Tidak Lengkap 2. Tidak Lengkap 3. Kurang Lengkap 4. Lengkap 5. Sangat Lengkap 6. Sangat Lengkap Sekali',
+                                      '1. Sangat Tidak Aman 2. Tidak Aman 3. Kurang Aman 4. Aman 5. Sangat Aman 6. Sangat Aman Sekali'); 
+                      ?>
+                      <?php for ($j=0; $j < count($Tanya); $j++) { ?>
+                        <div class="col-sm-6 my-1">
+                          <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                              <p class="input-group-text bg-danger text-white text-justify text-wrap"><b><?=$Tanya[$j]?></b></p>
+                            </div>
                           </div>
-                        <?php } ?>
-                      </div>
-                    </div> 
-                  <?php } ?>
-                  <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN PUBLIKASI DAN KOMUNIKASI PUBLIK</b></div> 
-                  <?php 
-                    $Tanya = array('11. Apakah menurut anda persyaratan yang harus dipenuhi untuk mendapatkan pelayanan publikasi dan komunikasi publik dari Dinas Kominfo dan Persandian Kabupaten Banyuwangi sudah sesuai?',
-                                   '12. Bagaimanakah kemudahan prosedur pelayanan publikasi dan komunikasi publik di Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
-                                   '13. Bagaimanakah kecepatan pelayanan publikasi dan komunikasi publik di Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
-                                   '14. Bagaimanakah kewajaran biaya (apabila dikenakan biaya) terhadap jenis pelayanan publikasi dan komunikasi publik yang diberikan oleh Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
-                                   '15. Apakah hasil pelayanan publikasi dan komunikasi publik yang diberikan oleh Dinas Kominfo dan Persandian sudah sesuai dengan yang Anda harapkan/inginkan?',
-                                   '16. Bagaimanakah kemampuan petugas Dinas Kominfo dan Persandian Kabupaten Banyuwangi dalam memberikan pelayanan?',
-                                   '17. Bagaimanakah sikap (kesopanan dan keramahan) petugas Dinas Kominfo dan Persandian Kabupaten Banyuwangi dalam memberikan pelayanan?',
-                                   '18. Bagaimanakah sarana dan prasarana pelayanan publik yang dimiliki Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
-                                   '19. Bagaimanakah penanganan terhadap pengaduan, saran dan masukan pelayanan yang dilakukan Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
-                                   '20. Bagaimanakah situasi keamanan pelayanan di Dinas Kominfo dan Persandian Kabupaten Banyuwangi?'); 
-                    $Opsi = array('1. Sangat Tidak Sesuai 2. Tidak Sesuai 3. Kurang Sesuai 4. Sesuai 5. Sangat Sesuai 6. Sangat Sesuai Sekali',
-                                  '1. Sangat Tidak Mudah 2. Tidak Mudah 3. Kurang Mudah 4. Mudah 5. Sangat Mudah 6. Sangat Mudah Sekali',
-                                  '1. Sangat Tidak Cepat 2. Tidak Cepat 3. Kurang Cepat 4. Cepat 5. Sangat Cepat 6. Sangat Cepat Sekali',
-                                  '1. Sangat Tidak Wajar 2. Tidak Wajar 3. Kurang Wajar 4. Wajar 5. Sangat Wajar 6. Sangat Wajar Sekali',
-                                  '1. Sangat Tidak Sesuai 2. Tidak Sesuai 3. Kurang Sesuai 4. Sesuai 5. Sangat Sesuai 6. Sangat Sesuai Sekali',
-                                  '1. Sangat Tidak Mampu 2. Tidak Mampu 3. Kurang Mampu 4. Mampu 5. Sangat Mampu 6. Sangat Mampu Sekali',
-                                  '1. Sangat Tidak Sopan & Sangat Tidak Ramah 2. Tidak Sopan & Tidak Ramah 3. Kurang Sopan & Kurang Ramah 4. Sopan & Ramah 5. Sangat Sopan & Sangat Ramah 6. Sangat Sopan Sekali & Sangat Ramah Sekali',
-                                  '1. Sangat Tidak Lengkap 2. Tidak Lengkap 3. Kurang Lengkap 4. Lengkap 5. Sangat Lengkap 6. Sangat Lengkap Sekali',
-                                  '1. Sangat Tidak Memuaskan 2. Tidak Memuaskan 3. Kurang Memuaskan 4. Memuaskan 5. Sangat Memuaskan 6. Sangat Memuaskan Sekali',
-                                  '1. Sangat Tidak Aman 2. Tidak Aman 3. Kurang Aman 4. Aman 5. Sangat Aman 6. Sangat Aman Sekali'); 
-                  ?>
-                  <?php for ($j=0; $j < count($Tanya); $j++) { ?>
-                    <div class="col-sm-6 my-1">
-                      <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                          <p class="input-group-text bg-danger text-white text-justify text-wrap"><b><?=$Tanya[$j]?></b></p>
-                        </div>
-                      </div>
-                    </div> 
-                    <div class="col-sm-6 bg-primary p-2 my-1">
-                      <div style="font-size: 11pt;" class="text-wrap text-justify font-weight-bold text-white">
-                      <?=$Opsi[$j]?>
-                      </div>
-                      <div class="input-group mt-1">
-                        <?php for ($i=1; $i <= 6; $i++) { ?>
-                          <div class="form-check form-check-inline ml-4">
-                            <input style="transform: scale(1.5);" class="form-check-input" type="radio" name="Input<?=($j+11)?>" id="I<?=($j+1).$i?>" value="<?=$i?>">
-                            <label class="form-check-label font-weight-bold text-white" for="I<?=($j+1).$i?>">&nbsp;<?=$i?></label>
+                        </div> 
+                        <div class="col-sm-6 bg-primary p-2 my-1">
+                          <div style="font-size: 11pt;" class="text-wrap text-justify font-weight-bold text-white">
+                          <?=$Opsi[$j]?>
                           </div>
-                        <?php } ?>
-                      </div>
-                    </div> 
-                  <?php } ?>
-                  <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN TANDA TANGAN ELEKTRONIK (TTE) DAN KEAMANAN INFORMASI</b></div> 
-                  <?php 
-                    $Tanya = array('21. Apakah regulasi/persyaratan yang harus dipenuhi untuk mendapatkan pelayanan TTE sudah sesuai?',
-                                   '22. Bagaimanakah kemudahan prosedur pelayanan TTE di Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
-                                   '23. Bagaimanakah kecepatan pelayanan petugas dalam memberikan pelayanan TTE (ketika pendaftaran TTE maupun dalam menangani pengaduan)?',
-                                   '24. Bagaimanakah kewajaran biaya (apabila dikenakan biaya) yang diberikan oleh Dinas Kominfo dan Persandian Kabupaten Banyuwangi dalam pelayanan TTE?',
-                                   '25. Apakah hasil pelayanan TTE yang diberikan dengan yang anda harapkan/inginkan sudah sesuai?',
-                                   '26. Bagaimanakah penanganan terhadap pengaduan, saran dan masukan yang dilakukan Dinas Kominfo dan Persandian Kabupaten Banyuwangi terhadap pelayanan TTE?',
-                                   '27. Bagaimanakah kemampuan petugas Dinas Kominfo dan Persandian Kabupaten Banyuwangi dalam memberikan pelayanan TTE?',
-                                   '28. Bagaimanakah sikap (kesopanan dan keramahan) petugas Dinas Kominfo dan Persandian Kabupaten Banyuwangi dalam memberikan pelayanan TTE?',
-                                   '29. Bagaimanakah sarana dan prasarana yang dimiliki Dinas Kominfo dan Persandian Kabupaten Banyuwangi dalam menunjang pelayanan TTE?',
-                                   '30. Pada saat terjadi gangguan dan dilakukan pemulihan, data dan informasi mengenai dokumen TTE masih tersedia dengan baik?'); 
-                    $Opsi = array('1. Sangat Tidak Sesuai 2. Tidak Sesuai 3. Kurang Sesuai 4. Sesuai 5. Sangat Sesuai 6. Sangat Sesuai Sekali',
-                                  '1. Sangat Tidak Mudah 2. Tidak Mudah 3. Kurang Mudah 4. Mudah 5. Sangat Mudah 6. Sangat Mudah Sekali',
-                                  '1. Sangat Tidak Cepat 2. Tidak Cepat 3. Kurang Cepat 4. Cepat 5. Sangat Cepat 6. Sangat Cepat Sekali',
-                                  '1. Sangat Tidak Wajar 2. Tidak Wajar 3. Kurang Wajar 4. Wajar 5. Sangat Wajar 6. Sangat Wajar Sekali',
-                                  '1. Sangat Tidak Sesuai 2. Tidak Sesuai 3. Kurang Sesuai 4. Sesuai 5. Sangat Sesuai 6. Sangat Sesuai Sekali',
-                                  '1. Sangat Tidak Memuaskan 2. Tidak Memuaskan 3. Kurang Memuaskan 4. Memuaskan 5. Sangat Memuaskan 6. Sangat Memuaskan Sekali',
-                                  '1. Sangat Tidak Mampu 2. Tidak Mampu 3. Kurang Mampu 4. Mampu 5. Sangat Mampu 6. Sangat Mampu Sekali',
-                                  '1. Sangat Tidak Sopan & Sangat Tidak Ramah 2. Tidak Sopan & Tidak Ramah 3. Kurang Sopan & Kurang Ramah 4. Sopan & Ramah 5. Sangat Sopan & Sangat Ramah 6. Sangat Sopan Sekali & Sangat Ramah Sekali',
-                                  '1. Sangat Tidak Lengkap 2. Tidak Lengkap 3. Kurang Lengkap 4. Lengkap 5. Sangat Lengkap 6. Sangat Lengkap Sekali',
-                                  '1. Sangat Tidak Setuju 2. Tidak Setuju 3. Kurang Setuju 4. Setuju 5. Sangat Setuju 6. Sangat Setuju Sekali'); 
-                  ?>
-                  <?php for ($j=0; $j < count($Tanya); $j++) { ?>
-                    <div class="col-sm-6 my-1">
-                      <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                          <p class="input-group-text bg-danger text-white text-justify text-wrap"><b><?=$Tanya[$j]?></b></p>
-                        </div>
-                      </div>
-                    </div> 
-                    <div class="col-sm-6 bg-primary p-2 my-1">
-                      <div style="font-size: 11pt;" class="text-wrap text-justify font-weight-bold text-white">
-                      <?=$Opsi[$j]?>
-                      </div>
-                      <div class="input-group mt-1">
-                        <?php for ($i=1; $i <= 6; $i++) { ?>
-                          <div class="form-check form-check-inline ml-4">
-                            <input style="transform: scale(1.5);" class="form-check-input" type="radio" name="Input<?=($j+21)?>" id="I<?=($j+1).$i?>" value="<?=$i?>">
-                            <label class="form-check-label font-weight-bold text-white" for="I<?=($j+1).$i?>">&nbsp;<?=$i?></label>
+                          <div class="input-group mt-1">
+                            <?php for ($i=1; $i <= 6; $i++) { ?>
+                              <div class="form-check form-check-inline ml-4">
+                                <input style="transform: scale(1.5);" class="form-check-input" <?=$i==4?'checked':'';?> type="radio" name="Input<?=($j+1)?>" id="I<?=($j+1).$i?>" value="<?=$i?>">
+                                <label class="form-check-label font-weight-bold text-white" for="I<?=($j+1).$i?>">&nbsp;<?=$i?></label>
+                              </div>
+                            <?php } ?>
                           </div>
-                        <?php } ?>
-                      </div>
-                    </div> 
-                  <?php } ?>
-                  <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN MONEV JARINGAN DAN PENGEMBANGAN APLIKASI</b></div> 
-                  <?php 
-                    $Tanya = array('31. Bagaimanakah menurut anda terhadap kesesuaian persyaratan yang harus dipenuhi untuk mendapatkan pelayanan monev jaringan dan pengembangan aplikasi dari Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
-                                   '32. Bagaimanakah kemudahan prosedur pelayanan monev jaringan dan pengembangan aplikasi di Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
-                                   '33. Bagaimanakah kecepatan pelayanan monev jaringan dan pengembangan aplikasi di Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
-                                   '34. Bagaimanakah kewajaran biaya (apabila dikenakan biaya) terhadap jenis pelayanan monev jaringan dan pengembangan aplikasi yang diberikan oleh Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
-                                   '35. Bagaimanakah kesesuaian antara hasil pelayanan monev jaringan dan pengembangan aplikasi yang diberikan oleh Dinas Kominfo dan Persandian Kabupaten Banyuwangi dengan ketentuan yang telah ditetapkan / permintaan awal pemohon?',
-                                   '36. Bagaimanakah kemampuan petugas Dinas Kominfo dan Persandian Kabupaten Banyuwangi dalam memberikan pelayanan monev jaringan dan pengembangan aplikasi?',
-                                   '37. Bagaimanakah sikap (kesopanan dan keramahan) petugas Dinas Kominfo dan Persandian Kabupaten Banyuwangi dalam memberikan pelayanan monev jaringan dan pengembangan aplikasi?',
-                                   '38. Bagaimanakah sarana dan prasarana yang dimiliki Dinas Kominfo dan Persandian Kabupaten Banyuwangi dalam menunjang pelayanan monev jaringan dan pengembangan aplikasi?',
-                                   '39. Bagaimanakah penanganan terhadap pengaduan, saran dan masukan pelayanan monev jaringan dan pengembangan aplikasi yang dilakukan Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
-                                   '40. Bagaimanakah situasi keamanan pelayanan di Dinas Kominfo dan Persandian Kabupaten Banyuwangi?'); 
-                    $Opsi = array('1. Sangat Tidak Sesuai 2. Tidak Sesuai 3. Kurang Sesuai 4. Sesuai 5. Sangat Sesuai 6. Sangat Sesuai Sekali',
-                                  '1. Sangat Tidak Mudah 2. Tidak Mudah 3. Kurang Mudah 4. Mudah 5. Sangat Mudah 6. Sangat Mudah Sekali',
-                                  '1. Sangat Tidak Cepat 2. Tidak Cepat 3. Kurang Cepat 4. Cepat 5. Sangat Cepat 6. Sangat Cepat Sekali',
-                                  '1. Sangat Tidak Wajar 2. Tidak Wajar 3. Kurang Wajar 4. Wajar 5. Sangat Wajar 6. Sangat Wajar Sekali',
-                                  '1. Sangat Tidak Sesuai 2. Tidak Sesuai 3. Kurang Sesuai 4. Sesuai 5. Sangat Sesuai 6. Sangat Sesuai Sekali',
-                                  '1. Sangat Tidak Mampu 2. Tidak Mampu 3. Kurang Mampu 4. Mampu 5. Sangat Mampu 6. Sangat Mampu Sekali',
-                                  '1. Sangat Tidak Sopan & Sangat Tidak Ramah 2. Tidak Sopan & Tidak Ramah 3. Kurang Sopan & Kurang Ramah 4. Sopan & Ramah 5. Sangat Sopan & Sangat Ramah 6. Sangat Sopan Sekali & Sangat Ramah Sekali',
-                                  '1. Sangat Tidak Lengkap 2. Tidak Lengkap 3. Kurang Lengkap 4. Lengkap 5. Sangat Lengkap 6. Sangat Lengkap Sekali',
-                                  '1. Sangat Tidak Memuaskan 2. Tidak Memuaskan 3. Kurang Memuaskan 4. Memuaskan 5. Sangat Memuaskan 6. Sangat Memuaskan Sekali',
-                                  '1. Sangat Tidak Aman 2. Tidak Aman 3. Kurang Aman 4. Aman 5. Sangat Aman 6. Sangat Aman Sekali'); 
-                  ?>
-                  <?php for ($j=0; $j < count($Tanya); $j++) { ?>
-                    <div class="col-sm-6 my-1">
-                      <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                          <p class="input-group-text bg-danger text-white text-justify text-wrap"><b><?=$Tanya[$j]?></b></p>
-                        </div>
-                      </div>
-                    </div> 
-                    <div class="col-sm-6 bg-primary p-2 my-1">
-                      <div style="font-size: 11pt;" class="text-wrap text-justify font-weight-bold text-white">
-                      <?=$Opsi[$j]?>
-                      </div>
-                      <div class="input-group mt-1">
-                        <?php for ($i=1; $i <= 6; $i++) { ?>
-                          <div class="form-check form-check-inline ml-4">
-                            <input style="transform: scale(1.5);" class="form-check-input" type="radio" name="Input<?=($j+31)?>" id="I<?=($j+1).$i?>" value="<?=$i?>">
-                            <label class="form-check-label font-weight-bold text-white" for="I<?=($j+1).$i?>">&nbsp;<?=$i?></label>
+                        </div> 
+                      <?php } ?>
+                    </div>          
+                  </div>
+                  <div class="col-sm-12 my-1" id="Publikasi" style="display: none;">
+                    <div class="row">
+                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN PUBLIKASI DAN KOMUNIKASI PUBLIK</b></div> 
+                      <?php 
+                        $Tanya = array('Apakah menurut anda persyaratan yang harus dipenuhi untuk mendapatkan pelayanan publikasi dan komunikasi publik dari Dinas Kominfo dan Persandian Kabupaten Banyuwangi sudah sesuai?',
+                                      'Bagaimanakah kemudahan prosedur pelayanan publikasi dan komunikasi publik di Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
+                                      'Bagaimanakah kecepatan pelayanan publikasi dan komunikasi publik di Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
+                                      'Bagaimanakah kewajaran biaya (apabila dikenakan biaya) terhadap jenis pelayanan publikasi dan komunikasi publik yang diberikan oleh Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
+                                      'Apakah hasil pelayanan publikasi dan komunikasi publik yang diberikan oleh Dinas Kominfo dan Persandian sudah sesuai dengan yang Anda harapkan/inginkan?',
+                                      'Bagaimanakah kemampuan petugas Dinas Kominfo dan Persandian Kabupaten Banyuwangi dalam memberikan pelayanan?',
+                                      'Bagaimanakah sikap (kesopanan dan keramahan) petugas Dinas Kominfo dan Persandian Kabupaten Banyuwangi dalam memberikan pelayanan?',
+                                      'Bagaimanakah sarana dan prasarana pelayanan publik yang dimiliki Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
+                                      'Bagaimanakah penanganan terhadap pengaduan, saran dan masukan pelayanan yang dilakukan Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
+                                      'Bagaimanakah situasi keamanan pelayanan di Dinas Kominfo dan Persandian Kabupaten Banyuwangi?'); 
+                        $Opsi = array('1. Sangat Tidak Sesuai 2. Tidak Sesuai 3. Kurang Sesuai 4. Sesuai 5. Sangat Sesuai 6. Sangat Sesuai Sekali',
+                                      '1. Sangat Tidak Mudah 2. Tidak Mudah 3. Kurang Mudah 4. Mudah 5. Sangat Mudah 6. Sangat Mudah Sekali',
+                                      '1. Sangat Tidak Cepat 2. Tidak Cepat 3. Kurang Cepat 4. Cepat 5. Sangat Cepat 6. Sangat Cepat Sekali',
+                                      '1. Sangat Tidak Wajar 2. Tidak Wajar 3. Kurang Wajar 4. Wajar 5. Sangat Wajar 6. Sangat Wajar Sekali',
+                                      '1. Sangat Tidak Sesuai 2. Tidak Sesuai 3. Kurang Sesuai 4. Sesuai 5. Sangat Sesuai 6. Sangat Sesuai Sekali',
+                                      '1. Sangat Tidak Mampu 2. Tidak Mampu 3. Kurang Mampu 4. Mampu 5. Sangat Mampu 6. Sangat Mampu Sekali',
+                                      '1. Sangat Tidak Sopan & Sangat Tidak Ramah 2. Tidak Sopan & Tidak Ramah 3. Kurang Sopan & Kurang Ramah 4. Sopan & Ramah 5. Sangat Sopan & Sangat Ramah 6. Sangat Sopan Sekali & Sangat Ramah Sekali',
+                                      '1. Sangat Tidak Lengkap 2. Tidak Lengkap 3. Kurang Lengkap 4. Lengkap 5. Sangat Lengkap 6. Sangat Lengkap Sekali',
+                                      '1. Sangat Tidak Memuaskan 2. Tidak Memuaskan 3. Kurang Memuaskan 4. Memuaskan 5. Sangat Memuaskan 6. Sangat Memuaskan Sekali',
+                                      '1. Sangat Tidak Aman 2. Tidak Aman 3. Kurang Aman 4. Aman 5. Sangat Aman 6. Sangat Aman Sekali'); 
+                      ?>
+                      <?php for ($j=0; $j < count($Tanya); $j++) { ?>
+                        <div class="col-sm-6 my-1">
+                          <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                              <p class="input-group-text bg-danger text-white text-justify text-wrap"><b><?=$Tanya[$j]?></b></p>
+                            </div>
                           </div>
-                        <?php } ?>
-                      </div>
-                    </div> 
-                  <?php } ?>
+                        </div> 
+                        <div class="col-sm-6 bg-primary p-2 my-1">
+                          <div style="font-size: 11pt;" class="text-wrap text-justify font-weight-bold text-white">
+                          <?=$Opsi[$j]?>
+                          </div>
+                          <div class="input-group mt-1">
+                            <?php for ($i=1; $i <= 6; $i++) { ?>
+                              <div class="form-check form-check-inline ml-4">
+                                <input style="transform: scale(1.5);" class="form-check-input" <?=$i==4?'checked':'';?> type="radio" name="Input<?=($j+11)?>" id="I<?=($j+1).$i?>" value="<?=$i?>">
+                                <label class="form-check-label font-weight-bold text-white" for="I<?=($j+1).$i?>">&nbsp;<?=$i?></label>
+                              </div>
+                            <?php } ?>
+                          </div>
+                        </div> 
+                      <?php } ?>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 my-1" id="TTE" style="display: none;">
+                    <div class="row">
+                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN TANDA TANGAN ELEKTRONIK (TTE) DAN KEAMANAN INFORMASI</b></div> 
+                      <?php 
+                        $Tanya = array('Apakah regulasi/persyaratan yang harus dipenuhi untuk mendapatkan pelayanan TTE sudah sesuai?',
+                                      'Bagaimanakah kemudahan prosedur pelayanan TTE di Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
+                                      'Bagaimanakah kecepatan pelayanan petugas dalam memberikan pelayanan TTE (ketika pendaftaran TTE maupun dalam menangani pengaduan)?',
+                                      'Bagaimanakah kewajaran biaya (apabila dikenakan biaya) yang diberikan oleh Dinas Kominfo dan Persandian Kabupaten Banyuwangi dalam pelayanan TTE?',
+                                      'Apakah hasil pelayanan TTE yang diberikan dengan yang anda harapkan/inginkan sudah sesuai?',
+                                      'Bagaimanakah penanganan terhadap pengaduan, saran dan masukan yang dilakukan Dinas Kominfo dan Persandian Kabupaten Banyuwangi terhadap pelayanan TTE?',
+                                      'Bagaimanakah kemampuan petugas Dinas Kominfo dan Persandian Kabupaten Banyuwangi dalam memberikan pelayanan TTE?',
+                                      'Bagaimanakah sikap (kesopanan dan keramahan) petugas Dinas Kominfo dan Persandian Kabupaten Banyuwangi dalam memberikan pelayanan TTE?',
+                                      'Bagaimanakah sarana dan prasarana yang dimiliki Dinas Kominfo dan Persandian Kabupaten Banyuwangi dalam menunjang pelayanan TTE?',
+                                      'Pada saat terjadi gangguan dan dilakukan pemulihan, data dan informasi mengenai dokumen TTE masih tersedia dengan baik?'); 
+                        $Opsi = array('1. Sangat Tidak Sesuai 2. Tidak Sesuai 3. Kurang Sesuai 4. Sesuai 5. Sangat Sesuai 6. Sangat Sesuai Sekali',
+                                      '1. Sangat Tidak Mudah 2. Tidak Mudah 3. Kurang Mudah 4. Mudah 5. Sangat Mudah 6. Sangat Mudah Sekali',
+                                      '1. Sangat Tidak Cepat 2. Tidak Cepat 3. Kurang Cepat 4. Cepat 5. Sangat Cepat 6. Sangat Cepat Sekali',
+                                      '1. Sangat Tidak Wajar 2. Tidak Wajar 3. Kurang Wajar 4. Wajar 5. Sangat Wajar 6. Sangat Wajar Sekali',
+                                      '1. Sangat Tidak Sesuai 2. Tidak Sesuai 3. Kurang Sesuai 4. Sesuai 5. Sangat Sesuai 6. Sangat Sesuai Sekali',
+                                      '1. Sangat Tidak Memuaskan 2. Tidak Memuaskan 3. Kurang Memuaskan 4. Memuaskan 5. Sangat Memuaskan 6. Sangat Memuaskan Sekali',
+                                      '1. Sangat Tidak Mampu 2. Tidak Mampu 3. Kurang Mampu 4. Mampu 5. Sangat Mampu 6. Sangat Mampu Sekali',
+                                      '1. Sangat Tidak Sopan & Sangat Tidak Ramah 2. Tidak Sopan & Tidak Ramah 3. Kurang Sopan & Kurang Ramah 4. Sopan & Ramah 5. Sangat Sopan & Sangat Ramah 6. Sangat Sopan Sekali & Sangat Ramah Sekali',
+                                      '1. Sangat Tidak Lengkap 2. Tidak Lengkap 3. Kurang Lengkap 4. Lengkap 5. Sangat Lengkap 6. Sangat Lengkap Sekali',
+                                      '1. Sangat Tidak Setuju 2. Tidak Setuju 3. Kurang Setuju 4. Setuju 5. Sangat Setuju 6. Sangat Setuju Sekali'); 
+                      ?>
+                      <?php for ($j=0; $j < count($Tanya); $j++) { ?>
+                        <div class="col-sm-6 my-1">
+                          <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                              <p class="input-group-text bg-danger text-white text-justify text-wrap"><b><?=$Tanya[$j]?></b></p>
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-sm-6 bg-primary p-2 my-1">
+                          <div style="font-size: 11pt;" class="text-wrap text-justify font-weight-bold text-white">
+                          <?=$Opsi[$j]?>
+                          </div>
+                          <div class="input-group mt-1">
+                            <?php for ($i=1; $i <= 6; $i++) { ?>
+                              <div class="form-check form-check-inline ml-4">
+                                <input style="transform: scale(1.5);" class="form-check-input" <?=$i==4?'checked':'';?> type="radio" name="Input<?=($j+21)?>" id="I<?=($j+1).$i?>" value="<?=$i?>">
+                                <label class="form-check-label font-weight-bold text-white" for="I<?=($j+1).$i?>">&nbsp;<?=$i?></label>
+                              </div>
+                            <?php } ?>
+                          </div>
+                        </div> 
+                      <?php } ?>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 my-1" id="Jaringan">
+                    <div class="row">
+                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN MONEV JARINGAN DAN PENGEMBANGAN APLIKASI</b></div> 
+                      <?php 
+                        $Tanya = array('Bagaimanakah menurut anda terhadap kesesuaian persyaratan yang harus dipenuhi untuk mendapatkan pelayanan monev jaringan dan pengembangan aplikasi dari Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
+                                      'Bagaimanakah kemudahan prosedur pelayanan monev jaringan dan pengembangan aplikasi di Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
+                                      'Bagaimanakah kecepatan pelayanan monev jaringan dan pengembangan aplikasi di Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
+                                      'Bagaimanakah kewajaran biaya (apabila dikenakan biaya) terhadap jenis pelayanan monev jaringan dan pengembangan aplikasi yang diberikan oleh Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
+                                      'Bagaimanakah kesesuaian antara hasil pelayanan monev jaringan dan pengembangan aplikasi yang diberikan oleh Dinas Kominfo dan Persandian Kabupaten Banyuwangi dengan ketentuan yang telah ditetapkan / permintaan awal pemohon?',
+                                      'Bagaimanakah kemampuan petugas Dinas Kominfo dan Persandian Kabupaten Banyuwangi dalam memberikan pelayanan monev jaringan dan pengembangan aplikasi?',
+                                      'Bagaimanakah sikap (kesopanan dan keramahan) petugas Dinas Kominfo dan Persandian Kabupaten Banyuwangi dalam memberikan pelayanan monev jaringan dan pengembangan aplikasi?',
+                                      'Bagaimanakah sarana dan prasarana yang dimiliki Dinas Kominfo dan Persandian Kabupaten Banyuwangi dalam menunjang pelayanan monev jaringan dan pengembangan aplikasi?',
+                                      'Bagaimanakah penanganan terhadap pengaduan, saran dan masukan pelayanan monev jaringan dan pengembangan aplikasi yang dilakukan Dinas Kominfo dan Persandian Kabupaten Banyuwangi?',
+                                      'Bagaimanakah situasi keamanan pelayanan di Dinas Kominfo dan Persandian Kabupaten Banyuwangi?'); 
+                        $Opsi = array('1. Sangat Tidak Sesuai 2. Tidak Sesuai 3. Kurang Sesuai 4. Sesuai 5. Sangat Sesuai 6. Sangat Sesuai Sekali',
+                                      '1. Sangat Tidak Mudah 2. Tidak Mudah 3. Kurang Mudah 4. Mudah 5. Sangat Mudah 6. Sangat Mudah Sekali',
+                                      '1. Sangat Tidak Cepat 2. Tidak Cepat 3. Kurang Cepat 4. Cepat 5. Sangat Cepat 6. Sangat Cepat Sekali',
+                                      '1. Sangat Tidak Wajar 2. Tidak Wajar 3. Kurang Wajar 4. Wajar 5. Sangat Wajar 6. Sangat Wajar Sekali',
+                                      '1. Sangat Tidak Sesuai 2. Tidak Sesuai 3. Kurang Sesuai 4. Sesuai 5. Sangat Sesuai 6. Sangat Sesuai Sekali',
+                                      '1. Sangat Tidak Mampu 2. Tidak Mampu 3. Kurang Mampu 4. Mampu 5. Sangat Mampu 6. Sangat Mampu Sekali',
+                                      '1. Sangat Tidak Sopan & Sangat Tidak Ramah 2. Tidak Sopan & Tidak Ramah 3. Kurang Sopan & Kurang Ramah 4. Sopan & Ramah 5. Sangat Sopan & Sangat Ramah 6. Sangat Sopan Sekali & Sangat Ramah Sekali',
+                                      '1. Sangat Tidak Lengkap 2. Tidak Lengkap 3. Kurang Lengkap 4. Lengkap 5. Sangat Lengkap 6. Sangat Lengkap Sekali',
+                                      '1. Sangat Tidak Memuaskan 2. Tidak Memuaskan 3. Kurang Memuaskan 4. Memuaskan 5. Sangat Memuaskan 6. Sangat Memuaskan Sekali',
+                                      '1. Sangat Tidak Aman 2. Tidak Aman 3. Kurang Aman 4. Aman 5. Sangat Aman 6. Sangat Aman Sekali'); 
+                      ?>
+                      <?php for ($j=0; $j < count($Tanya); $j++) { ?>
+                        <div class="col-sm-6 my-1">
+                          <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                              <p class="input-group-text bg-danger text-white text-justify text-wrap"><b><?=$Tanya[$j]?></b></p>
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-sm-6 bg-primary p-2 my-1">
+                          <div style="font-size: 11pt;" class="text-wrap text-justify font-weight-bold text-white">
+                          <?=$Opsi[$j]?>
+                          </div>
+                          <div class="input-group mt-1">
+                            <?php for ($i=1; $i <= 6; $i++) { ?>
+                              <div class="form-check form-check-inline ml-4">
+                                <input style="transform: scale(1.5);" class="form-check-input" <?=$i==4?'checked':'';?> type="radio" name="Input<?=($j+31)?>" id="I<?=($j+1).$i?>" value="<?=$i?>">
+                                <label class="form-check-label font-weight-bold text-white" for="I<?=($j+1).$i?>">&nbsp;<?=$i?></label>
+                              </div>
+                            <?php } ?>
+                          </div>
+                        </div> 
+                      <?php } ?>
+                    </div>
+                  </div>
                   <div class="col-sm-6 my-1">
                     <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
@@ -330,12 +349,38 @@
     function Instansi() {
       if ($("#Instansi").val() == '1') {
         document.getElementById("InputOPD").style.display = 'block' 
+        document.getElementById("Portal").style.display = 'block' 
+        document.getElementById("Jaringan").style.display = 'block' 
+        document.getElementById("TTE").style.display = 'none' 
+        document.getElementById("Publikasi").style.display = 'none' 
         document.getElementById("InputKecamatan").style.display = 'none' 
         document.getElementById("InputDesa").style.display = 'none' 
+
       } else {
         document.getElementById("InputKecamatan").style.display = 'block' 
         document.getElementById("InputDesa").style.display = 'block' 
-        document.getElementById("InputOPD").style.display = 'none'   
+        document.getElementById("InputOPD").style.display = 'none'  
+        if ($("#Instansi").val() == '2') {
+          document.getElementById("Portal").style.display = 'block' 
+          document.getElementById("Jaringan").style.display = 'block' 
+          document.getElementById("TTE").style.display = 'none' 
+          document.getElementById("Publikasi").style.display = 'none'  
+        } else if ($("#Instansi").val() == '3') {
+          document.getElementById("Portal").style.display = 'none' 
+          document.getElementById("Jaringan").style.display = 'none' 
+          document.getElementById("TTE").style.display = 'block' 
+          document.getElementById("Publikasi").style.display = 'block'  
+        } else if ($("#Instansi").val() == '4') {
+          document.getElementById("Portal").style.display = 'none' 
+          document.getElementById("Jaringan").style.display = 'block' 
+          document.getElementById("TTE").style.display = 'block' 
+          document.getElementById("Publikasi").style.display = 'none'  
+        } else if ($("#Instansi").val() == '5') {
+          document.getElementById("Portal").style.display = 'block' 
+          document.getElementById("Jaringan").style.display = 'none' 
+          document.getElementById("TTE").style.display = 'none' 
+          document.getElementById("Publikasi").style.display = 'none'  
+        }
       }
       
     }
@@ -357,19 +402,19 @@
         if ($("#Nama").val() === "") {
           alert('Input Nama Belum Benar!')
         } else {
-          var Cek = false
-          var Tanya = 0
-          for (let i = 1; i <= 40; i++) {
-            if ($("input[name='Input"+i+"']:checked").val() == undefined) {
-              Cek = true
-              Tanya = i
-              break
-            }
-          }
-          if (Cek) {
-            alert('Pertanyaan Nomer '+Tanya+' Wajib Di Isi!')
-          } 
-          else {
+          // var Cek = false
+          // var Tanya = 0
+          // for (let i = 1; i <= 40; i++) {
+          //   if ($("input[name='Input"+i+"']:checked").val() == undefined) {
+          //     Cek = true
+          //     Tanya = i
+          //     break
+          //   }
+          // }
+          // if (Cek) {
+          //   alert('Pertanyaan Nomer '+Tanya+' Wajib Di Isi!')
+          // } 
+          // else {
             var Poin = []
             for (let i = 1; i <= 40; i++) {
               Poin.push($("input[name='Input"+i+"']:checked").val())
@@ -396,7 +441,7 @@
               }
             })
           } 
-        }
+        // }
       })
       
       // Set the date we're counting down to
