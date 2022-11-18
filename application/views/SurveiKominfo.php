@@ -72,16 +72,31 @@
                       <div class="input-group-prepend">
                         <label class="input-group-text bg-danger text-white"><b>Instansi</b></label>
                       </div>
-                      <select class="custom-select" id="Instansi">                    
-                        <option value="1">OPD</option>
-                        <option value="2">Kecamatan</option>
-                        <option value="3">Kelurahan</option>
-                        <option value="4">Desa</option>
-                        <option value="5">Lainnya</option>
+                      <select class="custom-select" id="Instansi" onchange="Instansi()">                    
+                        <option value="1">Organisasi Perangkat Daerah</option>
+                        <option value="2">Kecamatan/Kelurahan/Desa</option>
                       </select>
                     </div>
                   </div>
-                  <div class="col-sm-4 my-1">
+                  <div class="col-sm-4 my-1" id="InputOPD">
+                    <div class="input-group input-group-sm">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text bg-danger text-white"><b>Nama OPD</b></label>
+                      </div>
+                      <select class="custom-select" id="OPD">                    
+                      <?php $OPD = array('Dinas Pendidikan','Dinas Kesehatan','DPUCKPR & Perumahan Pemukiman','Dinas Pekerjaan Umum Pengairan','DPMPTSP','Dinas Pertanian & Pangan',
+                                          'Dinas Sosial',' Pemberdayaan Perempuan & KB','Dinas Ketenagakerjaan',' Transmigrasi & Perindustrian','Dinas Perikanan','Dinas Lingkungan Hidup',
+                                          'Dinas Kependudukan & Pencatatan Sipil','Dinas Pemberdayaan Masyarakat & Desa','Dinas Perhubungan','Dinas Komunikasi Informatika & Persandian',
+                                          'Dinas Koperasi',' Usaha Mikro & Perdagangan','Dinas Pemuda & Olahraga','Dinas Kebudayaan & Pariwisata','Dinas Perpustakaan & Kearsipan','Inspektorat',
+                                          'BPBD','Bakesbangpol','Badan Kepegawaian Pendidikan & Pelatihan','BPKAD','BAPPEDA','BAPENDA','Satuan Polisi Pamong Praja',
+                                          'Dinas Pemadam Kebakaran & Penyelamatan','RSUD Blambangan','RSUD Genteng','Sekretariat DPRD','Sekretariat Daerah'); 
+                      foreach ($OPD as $key) { ?>
+                        <option value="<?=$key?>"><?=$key?></option>
+                      <?php }?>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-sm-4 my-1" id="InputKecamatan" style="display: none;">
                     <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
                         <label class="input-group-text bg-danger text-white"><b>Kecamatan</b></label>
@@ -93,7 +108,7 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-sm-4 my-1">
+                  <div class="col-sm-4 my-1" id="InputDesa" style="display: none;">
                     <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
                         <label class="input-group-text bg-danger text-white"><b>Desa/Kelurahan</b></label>
@@ -312,6 +327,19 @@
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/inputmask/min/jquery.inputmask.bundle.min.js"></script>
   <script>
+    function Instansi() {
+      if ($("#Instansi").val() == '1') {
+        document.getElementById("InputOPD").style.display = 'block' 
+        document.getElementById("InputKecamatan").style.display = 'none' 
+        document.getElementById("InputDesa").style.display = 'none' 
+      } else {
+        document.getElementById("InputKecamatan").style.display = 'block' 
+        document.getElementById("InputDesa").style.display = 'block' 
+        document.getElementById("InputOPD").style.display = 'none'   
+      }
+      
+    }
+
     $(document).ready(function(){
         
       var BaseURL = '<?=base_url()?>'  
@@ -350,7 +378,7 @@
             var Data = { Nama: $("#Nama").val(),
                         Gender: $("#Gender").val(),
                         Usia: $("#Usia").val(),
-                        Instansi: $("#Instansi").val(),
+                        Instansi: $("#Instansi").val() == '1' ? $("#OPD").val() : $("#Instansi").val(),
                         Kecamatan: $("#Kecamatan").val(),
                         Desa: $("#Desa").val(),
                         Saran: $("#Saran").val(),
