@@ -796,6 +796,16 @@ class IDE extends CI_Controller {
     $this->session->set_userdata('KodeKecamatanIKM', $_POST['Kecamatan']);
   }
 
+  public function InputKominfo(){
+    $_POST['Nama'] = htmlentities($_POST['Nama']);
+    $this->db->insert('kominfo',$_POST);
+    if ($this->db->affected_rows()){
+      echo '1';
+    } else {
+      echo 'Gagal Mengirim Survei!';
+    }
+  }
+
   public function InputIKM(){
     if($this->db->get_where('ikmdesa', array('NIK' => $_POST['NIK']))->num_rows() === 0){
       $_POST['Nama'] = htmlentities($_POST['Nama']);

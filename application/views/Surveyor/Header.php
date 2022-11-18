@@ -58,6 +58,16 @@
                     </ul>
 									</li>
 								</ul>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-tasks"></i> <b>Survei BPNT</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/PKPM')?>"><b>Keluarga Penerima Manfaat</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/BankPenyalur')?>"><b>Bank Penyalur</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/Ewarung')?>"><b>E-Warung</b></a></li> 
+                      <li><a href="<?=base_url('Surveyor/PendampingBPNT')?>"><b>Pendamping BPNT</b></a></li>   
+                    </ul>
+									</li>
+								</ul>
 								<ul class="nav side-menu">
 									<li><a href="<?=base_url('IDE/LogOut')?>"><i class="fa fa-sign-out"></i> <b>Keluar</b> </a></li>
                 </ul>
