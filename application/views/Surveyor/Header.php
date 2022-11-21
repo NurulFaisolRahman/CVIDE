@@ -64,7 +64,7 @@
                       <li><a href="<?=base_url('Surveyor/PKPM')?>"><b>Keluarga Penerima Manfaat</b></a></li>   
                       <li><a href="<?=base_url('Surveyor/BankPenyalur')?>"><b>Bank Penyalur</b></a></li>   
                       <li><a href="<?=base_url('Surveyor/PendampingBPNT')?>"><b>Pendamping BPNT</b></a></li>   
-                      <!-- <li><a href="<?=base_url('Surveyor/Ewarung')?>"><b>E-Warung</b></a></li>  -->
+                      <li><a href="<?=base_url('Surveyor/EWarung')?>"><b>E-Warung</b></a></li> 
                     </ul>
 									</li>
 								</ul>

@@ -40,6 +40,11 @@ class Surveyor extends CI_Controller {
 		$this->load->view('Surveyor/BankPenyalur');
   }
 
+  public function EWarung(){
+    $this->load->view('Surveyor/Header');
+		$this->load->view('Surveyor/EWarung');
+  }
+
 	public function SurveiBPD(){
     $Data['Provinsi'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE length(Kode) = 2")->result_array();
     $Data['Kabupaten'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '11.%' AND length(Kode) = 5")->result_array();
@@ -90,6 +95,16 @@ class Surveyor extends CI_Controller {
   public function InputBankPenyalur(){
     $_POST['NIK'] = $this->session->userdata('NIK');
     $this->db->insert('bankpenyalur',$_POST);
+    if ($this->db->affected_rows()){
+      echo '1';
+    } else {
+      echo 'Gagal Menyimpan Survei!';
+    }
+  }
+
+  public function InputEWarung(){
+    $_POST['NIK'] = $this->session->userdata('NIK');
+    $this->db->insert('ewarung',$_POST);
     if ($this->db->affected_rows()){
       echo '1';
     } else {
