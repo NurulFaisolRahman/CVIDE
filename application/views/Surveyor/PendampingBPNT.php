@@ -85,11 +85,11 @@
                             <div class="col-sm-6 bg-primary p-2 my-1">
                               <div class="input-group input-group-sm">
                                 <select class="custom-select custom-select-sm" id="SDM">                    
-                                  <option value="Tenaga kesejahteraan sosial kecamatan">Tenaga kesejahteraan sosial kecamatan</option>
-                                  <option value="Pekerja sosial masyarakat">Pekerja sosial masyarakat</option>
-                                  <option value="Pengurus karang taruna">Pengurus karang taruna</option>
-                                  <option value="Penyuluh sosial masyarakat">Penyuluh sosial masyarakat</option>
-                                  <option value="Potensi dan sumber kesejahteraan sosial lainnya">Potensi dan sumber kesejahteraan sosial lainnya</option>
+                                  <option value="1">Tenaga kesejahteraan sosial kecamatan</option>
+                                  <option value="2">Pekerja sosial masyarakat</option>
+                                  <option value="3">Pengurus karang taruna</option>
+                                  <option value="4">Penyuluh sosial masyarakat</option>
+                                  <option value="5">Potensi dan sumber kesejahteraan sosial lainnya</option>
                                 </select>
                               </div>
                             </div> 

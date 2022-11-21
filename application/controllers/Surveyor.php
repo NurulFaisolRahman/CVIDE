@@ -25,6 +25,11 @@ class Surveyor extends CI_Controller {
     }
   }
 
+  public function PKPM(){
+    $this->load->view('Surveyor/Header');
+		$this->load->view('Surveyor/PKPM');
+  }
+
   public function PendampingBPNT(){
     $this->load->view('Surveyor/Header');
 		$this->load->view('Surveyor/PendampingBPNT');
@@ -60,6 +65,16 @@ class Surveyor extends CI_Controller {
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '11.01.01.%'")->result_array();
     $this->load->view('Surveyor/Header',$Data);
 		$this->load->view('Surveyor/SurveiKinerjaAparatur',$Data);
+  }
+
+  public function InputPKPM(){
+    $_POST['NIK'] = $this->session->userdata('NIK');
+    $this->db->insert('pkpm',$_POST);
+    if ($this->db->affected_rows()){
+      echo '1';
+    } else {
+      echo 'Gagal Menyimpan Survei!';
+    }
   }
 
   public function InputPendampingBPNT(){
