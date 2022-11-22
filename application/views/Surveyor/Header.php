@@ -67,6 +67,14 @@
                       <li><a href="<?=base_url('Surveyor/EWarung')?>"><b>E-Warung</b></a></li> 
                     </ul>
 									</li>
+                </ul>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-tasks"></i> <b>Survei BBM</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <!-- <li><a href="<?=base_url('Surveyor/DesaBBM')?>"><b>Pemerintah Desa</b></a></li>  -->
+                      <!-- <li><a href="<?=base_url('Surveyor/DampakBBM')?>"><b>Dampak BBM</b></a></li>  -->
+                    </ul>
+									</li>
 								</ul>
 								<ul class="nav side-menu">
 									<li><a href="<?=base_url('IDE/LogOut')?>"><i class="fa fa-sign-out"></i> <b>Keluar</b> </a></li>
