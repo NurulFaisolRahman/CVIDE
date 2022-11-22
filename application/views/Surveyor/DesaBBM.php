@@ -38,6 +38,22 @@
                               </select>
                             </div>
                           </div>
+                          <div class="col-sm-4 my-1">
+                            <div class="input-group input-group-sm">
+                              <div class="input-group-prepend">
+                                <label class="input-group-text bg-danger text-white"><b>Pendidikan</b></label>
+                              </div>
+                              <input class="form-control" type="text" id="Pendidikan">
+                            </div>
+                          </div>
+                          <div class="col-sm-4 my-1">
+                            <div class="input-group input-group-sm">
+                              <div class="input-group-prepend">
+                                <label class="input-group-text bg-danger text-white"><b>Jabatan</b></label>
+                              </div>
+                              <input class="form-control" type="text" id="Jabatan">
+                            </div>
+                          </div>
                           <div class="col-sm-4">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
@@ -79,7 +95,7 @@
                           </div> 
                           <div class="col-sm-6 bg-primary p-2 my-1">
                             <div class="input-group input-group-sm">
-                              <select class="custom-select custom-select-sm" id="Jaringan">                    
+                              <select class="custom-select custom-select-sm" id="JaringanPLN">                    
                                 <option value="1">Ya</option>
                                 <option value="2">Tidak</option>
                               </select>
@@ -134,7 +150,7 @@
                           </div> 
                           <div class="col-sm-6 bg-primary p-2 my-1">
                             <div class="input-group input-group-sm">
-                              <select class="custom-select custom-select-sm" id="Jaringan">                    
+                              <select class="custom-select custom-select-sm" id="PasarDesa">                    
                                 <option value="1">Ya</option>
                                 <option value="2">Tidak</option>
                               </select>
@@ -148,8 +164,15 @@
                             </div>
                           </div> 
                           <div class="col-sm-6 bg-primary p-2 my-1">
+                            <?php $NoPasar = array('Pasar Desa Sebelah','Pasar Kecamatan','Toko Sekitar','Warung'); ?>
+                            <?php for ($j=0; $j < count($NoPasar); $j++) { ?>
+                              <div class="form-check my-2 ml-3">
+                                <input class="form-check-input" type="checkbox" value="<?=$NoPasar[$j]?>" name="NoPasar" id="NoPasar<?=$j?>">
+                                <label class="form-check-label text-white font-weight-bold" for="NoPasar<?=$j?>"><?=$NoPasar[$j]?></label>
+                              </div>
+                            <?php } ?>
                             <div class="input-group input-group-sm">
-                              <input class="form-control" type="text" id="NoPasar">
+                              <input class="form-control form-control-sm" type="text" id="NoPasarLainnya" placeholder="Sebutkan Lainnya">
                             </div>
                           </div>
                           <div class="col-sm-6 my-1">
@@ -382,14 +405,15 @@
                             </div>
                           </div> 
                           <div class="col-sm-6 bg-primary p-2 my-1">
+                            <?php $Faskes = array('Poskesdes','Polindes','Praktik Dokter'); ?>
+                            <?php for ($j=0; $j < count($Faskes); $j++) { ?>
+                              <div class="form-check my-2 ml-3">
+                                <input class="form-check-input" type="checkbox" value="<?=$Faskes[$j]?>" name="Faskes" id="Faskes<?=$j?>">
+                                <label class="form-check-label text-white font-weight-bold" for="Faskes<?=$j?>"><?=$Faskes[$j]?></label>
+                              </div>
+                            <?php } ?>
                             <div class="input-group input-group-sm">
-                              <select class="custom-select custom-select-sm" id="Faskes" style="width: 50%;">
-                                <option value="1">Poskesdes</option>
-                                <option value="2">Polindes</option>
-                                <option value="3">Dokter</option>
-                                <option value="4">Lainnya</option>
-                              </select>
-                              <input class="form-control" type="text" id="FaskesLainnya" placeholder="Sebutkan" style="width: 50%;">
+                              <input class="form-control form-control-sm" type="text" id="FaskesLainnya" placeholder="Sebutkan Lainnya">
                             </div>
                           </div>
                           <div class="col-sm-6 my-1">
@@ -429,8 +453,15 @@
                             </div>
                           </div> 
                           <div class="col-sm-6 bg-primary p-2 my-1">
+                            <?php $FasilitasPendidikan = array('PAUD','SD/Sederajat','SMP/Sederajat','SMA/Sederajat','Perguruan Tinggi','Pondok Pesantren'); ?>
+                            <?php for ($j=0; $j < count($FasilitasPendidikan); $j++) { ?>
+                              <div class="form-check my-2 ml-3">
+                                <input class="form-check-input" type="checkbox" value="<?=$FasilitasPendidikan[$j]?>" name="FasilitasPendidikan" id="FasilitasPendidikan<?=$j?>">
+                                <label class="form-check-label text-white font-weight-bold" for="FasilitasPendidikan<?=$j?>"><?=$FasilitasPendidikan[$j]?></label>
+                              </div>
+                            <?php } ?>
                             <div class="input-group input-group-sm">
-                              <input class="form-control" type="text" id="Faislitas Pendidikan">
+                              <input class="form-control form-control-sm" type="text" id="FasilitasPendidikanLainnya" placeholder="Sebutkan Lainnya">
                             </div>
                           </div>
                           <div class="col-sm-6 my-1">
@@ -462,7 +493,7 @@
                               <input class="form-control" type="text" id="JumlahPendidik" placeholder="Input Hanya Boleh Angka">
                             </div>
                           </div>
-                          <!-- <div class="col-sm-6 my-1">
+                          <div class="col-sm-6 my-1">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <p class="input-group-text bg-danger text-white text-justify text-wrap"><b>Kriteria apa yang dipakai untuk mengidentifikasi keluarga yang pantas untuk menerima program pengentasan kemiskinan?</b></p>
@@ -470,15 +501,18 @@
                             </div>
                           </div> 
                           <div class="col-sm-6 bg-primary p-2 my-1">
+                            <?php $Kriteria = array('Tidak memiliki tanah','Kualitas tempat tinggal rendah','Tidak ada toilet/toilet bersama','Tidak ada listrik','Menggunakan kayu untuk memasak',
+                                                    'Makan kurang dari 2 kali sehari','Tidak mampu membayar pelayanan kesehatan','Kesehatan buruk','Duda/janda','Tidak punya pekerjaan tetap'); ?>
+                            <?php for ($j=0; $j < count($Kriteria); $j++) { ?>
+                              <div class="form-check my-2 ml-3">
+                                <input class="form-check-input" type="checkbox" value="<?=$Kriteria[$j]?>" name="Kriteria" id="Kriteria<?=$j?>">
+                                <label class="form-check-label text-white font-weight-bold" for="Kriteria<?=$j?>"><?=$Kriteria[$j]?></label>
+                              </div>
+                            <?php } ?>
                             <div class="input-group input-group-sm">
-                              <select class="custom-select custom-select-sm" id="Kriteria" style="width: 50%;">
-                                <option value="1">Sangat Baik</option>
-                                <option value="2">Baik</option>
-                                <option value="3">Kurang Baik</option>
-                                <option value="4">Tidak Baik</option>
-                              </select>
+                              <input class="form-control form-control-sm" type="text" id="KriteriaLainnya" placeholder="Sebutkan Lainnya">
                             </div>
-                          </div> -->
+                          </div>
                           <div class="col-sm-6 my-1">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
@@ -487,17 +521,15 @@
                             </div>
                           </div> 
                           <div class="col-sm-6 bg-primary p-2 my-1">
-                            <div class="input-group input-group-sm">
-                              <select class="custom-select custom-select-sm" id="Mekanisme" style="width: 50%;">
-                                <option value="1">Melapor ke kketua RT/RW</option>
-                                <option value="2">Melapor ke desa</option>
-                                <option value="3">Melapor ke kecamatan</option>
-                                <option value="4">Tergantung jenis program</option>
-                                <option value="5">Tidak Ada Mekanisme</option>
-                              </select>
-                            </div>
+                            <?php $Mekanisme = array('Melapor ke kketua RT/RW','Melapor ke desa','Melapor ke kecamatan','Tergantung jenis program','Tidak Ada Mekanisme'); ?>
+                            <?php for ($j=0; $j < count($Mekanisme); $j++) { ?>
+                              <div class="form-check my-2 ml-3">
+                                <input class="form-check-input" type="checkbox" value="<?=$Mekanisme[$j]?>" name="Mekanisme" id="Mekanisme<?=$j?>">
+                                <label class="form-check-label text-white font-weight-bold" for="Mekanisme<?=$j?>"><?=$Mekanisme[$j]?></label>
+                              </div>
+                            <?php } ?>
                           </div>
-                          <!-- <div class="col-sm-6 my-1">
+                          <div class="col-sm-6 my-1">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
                                 <p class="input-group-text bg-danger text-white text-justify text-wrap"><b>Jenis program penanggulangan kemiskinan apa yang terdapat di desa ini? (boleh lebih dari satu)</b></p>
@@ -505,22 +537,17 @@
                             </div>
                           </div> 
                           <div class="col-sm-6 bg-primary p-2 my-1">
+                            <?php $JenisBPNT = array('KIS','Raskin','Rastra','PKH','BPNT','BLT DD','BLT BBM','Kanggo Riko','Gancang Aron','Rantang Kasih'); ?>
+                            <?php for ($j=0; $j < count($JenisBPNT); $j++) { ?>
+                              <div class="form-check my-2 ml-3">
+                                <input class="form-check-input" type="checkbox" value="<?=$JenisBPNT[$j]?>" name="JenisBPNT" id="JenisBPNT<?=$j?>">
+                                <label class="form-check-label text-white font-weight-bold" for="JenisBPNT<?=$j?>"><?=$JenisBPNT[$j]?></label>
+                              </div>
+                            <?php } ?>
                             <div class="input-group input-group-sm">
-                              <select class="custom-select custom-select-sm" id="JenisBPNT" style="width: 50%;">
-                                <option value="1">KIS</option>
-                                <option value="2">Raskin</option>
-                                <option value="3">Rastra</option>
-                                <option value="4">PKH</option>
-                                <option value="5">BPNT</option>
-                                <option value="6">BLT DD</option>
-                                <option value="7">BLT BBM</option>
-                                <option value="8">Kanggo riko</option>
-                                <option value="9">Gancang Aron</option>
-                                <option value="10">Rantang Kasih</option>
-                                <option value="11">Lainnya</option>
-                              </select>
+                              <input class="form-control form-control-sm" type="text" id="JenisBPNTLainnya" placeholder="Sebutkan Lainnya">
                             </div>
-                          </div> -->
+                          </div>
                           <div class="col-sm-6 my-1">
                             <div class="input-group input-group-sm">
                               <div class="input-group-prepend">
@@ -595,26 +622,75 @@
         
         $("#Simpan").click(function() {
           var Poin = []
-          Poin.push($("#Status").val())
-          Poin.push($("#NamaWarung").val())
-          $("#Jenis").val() == '6' ? Poin.push($("#JenisLainnya").val()) : Poin.push($("#Jenis").val())
-          Poin.push($("#Waktu").val())
-          Poin.push($("#EDC").val())
-          Poin.push($("#Belanja").val())
-          var Pangan = []
-          for (let i = 0; i < 10; i++) {
-            Pangan.push($("#Jual"+i).val()+'#'+$("#Pasokan"+i).val()+'#'+$("#Stok"+i).val()+'#'+$("#Defisit"+i).val())
-          }
-          Poin.push(Pangan.join("$"))
-          var Dimensi = []
-          for (let i = 0; i < 11; i++) {
-            Dimensi.push($("#Performance"+i).val()+'#'+$("#Importance"+i).val())
-          }
-          Poin.push(Dimensi.join("$"))
+          Poin.push($("#JaringanPLN").val())
+          Poin.push($("#PersentasePLN").val())
+          Poin.push($("#DayaPLN").val())
+          Poin.push($("#Jaringan").val())
+          Poin.push($("#PasarDesa").val())
+          var Tampung = []
+          $.each($("input[name='NoPasar']:checked"), function(){
+            Tampung.push($(this).val())
+          })
+          Tampung.push($("#NoPasarLainnya").val())
+          Poin.push(Tampung.join("$"))
+          Poin.push($("#JarakPasar").val())
+          Poin.push($("#Toko").val())
+          Poin.push($("#JumlahToko").val())
+          Poin.push($("#ATM").val())
+          Poin.push($("#JarakATM").val())
+          $("#SumberAir").val() == '3' ? Poin.push($("#SumberAirLainnya").val()) : Poin.push($("#SumberAir").val())
+          Poin.push($("#AirLayak").val())
+          Poin.push($("#HanyaMandi").val())
+          Poin.push($("#MCK").val())
+          Poin.push($("#JumlahMCK").val())
+          $("#BAB").val() == '2' ? Poin.push($("#BABLainnya").val()) : Poin.push($("#BAB").val())
+          Poin.push($("#MCKUmum").val())
+          Poin.push($("#JumlahMCKUmum").val())
+          Poin.push($("#PersentaseJalanBaik").val())
+          Poin.push($("#PersentaseJalanBuruk").val())
+          $("#Sampah").val() == '4' ? Poin.push($("#SampahLainnya").val()) : Poin.push($("#Sampah").val())
+          var Tampung = []
+          $.each($("input[name='Faskes']:checked"), function(){
+            Tampung.push($(this).val())
+          })
+          Tampung.push($("#FaskesLainnya").val())
+          Poin.push(Tampung.join("$"))
+          Poin.push($("#KondisiFaskes").val())
+          Poin.push($("#TenagaMedis").val())
+          var Tampung = []
+          $.each($("input[name='FasilitasPendidikan']:checked"), function(){
+            Tampung.push($(this).val())
+          })
+          Tampung.push($("#FasilitasPendidikanLainnya").val())
+          Poin.push(Tampung.join("$"))
+          Poin.push($("#KondisiPendidikan").val())
+          Poin.push($("#JumlahPendidik").val())
+          var Tampung = []
+          $.each($("input[name='Kriteria']:checked"), function(){
+            Tampung.push($(this).val())
+          })
+          Tampung.push($("#KriteriaLainnya").val())
+          Poin.push(Tampung.join("$"))
+          var Tampung = []
+          $.each($("input[name='Mekanisme']:checked"), function(){
+            Tampung.push($(this).val())
+          })
+          Poin.push(Tampung.join("$"))
+          var Tampung = []
+          $.each($("input[name='JenisBPNT']:checked"), function(){
+            Tampung.push($(this).val())
+          })
+          Tampung.push($("#JenisBPNTLainnya").val())
+          Poin.push(Tampung.join("$"))
+          Poin.push($("#ProgramDesa").val())
+          $("#Sustain").val() == '2' ? Poin.push($("#SustainLainnya").val()) : Poin.push($("#Sustain").val())
+          Poin.push($("#Dampak").val())
           var Nilai = Poin.join("|")
           var BPNT = { Nama: $("#Nama").val(),
                       Usia: $("#Usia").val(),
                       Gender: $("#Gender").val(),
+                      Pendidikan: $("#Pendidikan").val(),
+                      Jabatan: $("#Jabatan").val(),
                       Kecamatan: $("#Kecamatan").val(),
                       Desa: $("#Desa").val(),
                       Alamat: $("#Alamat").val(),

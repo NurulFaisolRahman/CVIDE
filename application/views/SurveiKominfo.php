@@ -39,7 +39,7 @@
                       <div class="input-group-prepend">
                         <label class="input-group-text bg-danger text-white"><b>Nama</b></label>
                       </div>
-                      <input class="form-control" type="text" id="Nama" placeholder="Nama">
+                      <input class="form-control" type="text" id="Nama" placeholder="Wajib Isi Nama">
                     </div>
                   </div> 
                   <div class="col-sm-4 my-1">
@@ -48,6 +48,7 @@
                         <label class="input-group-text bg-danger text-white"><b>Jenis Kelamin</b></label>
                       </div>
                       <select class="custom-select" id="Gender">                    
+                        <option value="0">Klik Disini</option>
                         <option value="1">Laki-Laki</option>
                         <option value="2">Perempuan</option>
                       </select>
@@ -59,6 +60,7 @@
                         <label class="input-group-text bg-danger text-white"><b>Usia</b></label>
                       </div>
                       <select class="custom-select" id="Usia">                    
+                        <option value="$">Klik Disini</option>
                       <?php $Usia = array('< 20 Tahun','20 - 25 Tahun','26 - 30 Tahun','31 - 35 Tahun','36 - 40 Tahun','41 - 45 Tahun',
                                           '46 - 50 Tahun','51 - 55 Tahun','56 - 60 Tahun','> 60 Tahun'); 
                       foreach ($Usia as $key => $value) { ?>
@@ -73,6 +75,7 @@
                         <label class="input-group-text bg-danger text-white"><b>Instansi</b></label>
                       </div>
                       <select class="custom-select" id="Instansi" onchange="Instansi()">                    
+                        <option value="0">Klik Disini</option>
                         <option value="1">OPD</option>
                         <option value="2">Kecamatan</option>
                         <option value="3">Kelurahan</option>
@@ -81,7 +84,7 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-sm-4 my-1" id="InputOPD">
+                  <div class="col-sm-4 my-1" id="InputOPD" style="display: none;">
                     <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
                         <label class="input-group-text bg-danger text-white"><b>Nama OPD</b></label>
@@ -123,7 +126,7 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-sm-12 my-1" id="Portal">
+                  <div class="col-sm-12 my-1" id="Portal" style="display: none;">
                     <div class="row">
                       <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN PORTAL DATA</b></div> 
                       <?php 
@@ -414,7 +417,7 @@
                       <?php } ?>
                     </div>
                   </div>
-                  <div class="col-sm-12 my-1" id="Jaringan">
+                  <div class="col-sm-12 my-1" id="Jaringan" style="display: none;">
                     <div class="row">
                       <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN MONEV JARINGAN DAN PENGEMBANGAN APLIKASI</b></div> 
                       <?php 
@@ -510,6 +513,8 @@
                       <?php } ?>
                     </div>
                   </div>
+                </div>
+                <div class="row">
                   <div class="col-sm-6 my-1">
                     <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
@@ -522,10 +527,10 @@
                     <textarea class="form-control" id="Saran"></textarea>
                     </div>
                   </div> 
-                  <div class="col-sm-6 offset-sm-6">
-                    <button type="button" class="btn btn-primary" id="Kirim"><b>Kirim Survei</b> <div id="LoadingInput" class="spinner-border spinner-border-sm text-white" style="display: none;" role="status"></div></button>
-                  </div> 
                 </div>
+                <div class="col-sm-6 offset-sm-6">
+                  <button type="button" class="btn btn-primary" id="Kirim"><b>Kirim Survei</b> <div id="LoadingInput" class="spinner-border spinner-border-sm text-white" style="display: none;" role="status"></div></button>
+                </div> 
               </div>
             </div>
           </div>
@@ -538,7 +543,15 @@
   <script src="../assets/inputmask/min/jquery.inputmask.bundle.min.js"></script>
   <script>
     function Instansi() {
-      if ($("#Instansi").val() == '1') {
+      if ($("#Instansi").val() == '0') {
+        document.getElementById("InputOPD").style.display = 'none' 
+        document.getElementById("Portal").style.display = 'none' 
+        document.getElementById("Jaringan").style.display = 'none' 
+        document.getElementById("TTE").style.display = 'none' 
+        document.getElementById("Publikasi").style.display = 'none' 
+        document.getElementById("InputKecamatan").style.display = 'none' 
+        document.getElementById("InputDesa").style.display = 'none' 
+      } else if ($("#Instansi").val() == '1') {
         document.getElementById("InputOPD").style.display = 'block' 
         document.getElementById("Portal").style.display = 'block' 
         document.getElementById("Jaringan").style.display = 'block' 
@@ -546,7 +559,6 @@
         document.getElementById("Publikasi").style.display = 'none' 
         document.getElementById("InputKecamatan").style.display = 'none' 
         document.getElementById("InputDesa").style.display = 'none' 
-
       } else {
         document.getElementById("InputKecamatan").style.display = 'block' 
         document.getElementById("InputDesa").style.display = 'block' 
@@ -591,7 +603,13 @@
 
       $("#Kirim").click(function() {
         if ($("#Nama").val() === "") {
-          alert('Input Nama Belum Benar!')
+          alert('Input Nama Wajib Di isi!')
+        } else if ($("#Gender").val() === "0") {
+          alert('Input Jenis Kelamin Wajib Di isi!')
+        } else if ($("#Usia").val() === "$") {
+          alert('Input Usia Wajib Di isi!')
+        } else if ($("#Instansi").val() === "0") {
+          alert('Input Instansi Wajib Di isi!')
         } else {
           // var Cek = false
           // var Tanya = 0
