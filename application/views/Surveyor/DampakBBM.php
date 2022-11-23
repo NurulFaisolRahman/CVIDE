@@ -885,6 +885,7 @@
                       Kecamatan: $("#Kecamatan").val(),
                       Desa: $("#Desa").val(),
                       Alamat: $("#Alamat").val(),
+                      Saran: $("#Saran").val(),
                       Konsumsi: Konsumsi,
                       Nilai: Nilai }                  
           var Konfirmasi = confirm("Klik Batal Cek Kembali Data & Pastikan Sudah Benar Sebelum Menyimpan! Ok Untuk Simpan!"); 
