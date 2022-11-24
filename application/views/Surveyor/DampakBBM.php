@@ -80,10 +80,16 @@
                                         <table class="table table-sm table-bordered table-striped">
                                           <thead class="bg-danger">
                                             <tr style="font-size: 10pt;" class="text-light text-center">
-                                              <th style="width: 4%;" class="align-middle">No</th>
-                                              <th style="width: 34%;" class="align-middle">Komoditas</th>
-                                              <th style="width: 20%;" class="align-middle">Pengeluaran Agustus</th>
-                                              <th style="width: 20%;" class="align-middle">Pengeluaran Sekarang</th>
+                                              <th rowspan="2" style="width: 4%;" class="align-middle">No</th>
+                                              <th rowspan="2" style="width: 36%;" class="align-middle">Komoditas</th>
+                                              <th colspan="2" style="width: 30%;" class="align-middle">Agustus</th>
+                                              <th colspan="2" style="width: 30%;" class="align-middle">Sekarang</th>
+                                            </tr>
+                                            <tr style="font-size: 10pt;" class="text-light text-center">
+                                              <th class="align-middle">Banyaknya</th>
+                                              <th class="align-middle">Harga</th>
+                                              <th class="align-middle">Banyaknya</th>
+                                              <th class="align-middle">Harga</th>
                                             </tr>
                                           </thead>
                                           <tbody class="bg-primary">
@@ -120,7 +126,9 @@
                                               <tr class="text-light text-center align-middle">
                                                 <td class="align-middle font-weight-bold"><?=$No++?></td>
                                                 <td class="align-middle font-weight-bold"><?=$Komoditas[$i]?></td>
+                                                <td><input class="form-control form-control-sm text-center" value="0" type="text" id="_Agustus<?=$i?>"></td>
                                                 <td><input class="form-control form-control-sm text-center" value="0" type="text" id="Agustus<?=$i?>"></td>
+                                                <td><input class="form-control form-control-sm text-center" value="0" type="text" id="_Sekarang<?=$i?>"></td>
                                                 <td><input class="form-control form-control-sm text-center" value="0" type="text" id="Sekarang<?=$i?>"></td>
                                               </tr>
                                             <?php } ?>
@@ -798,7 +806,7 @@
         $("#Simpan").click(function() {
           var Komoditas = []
           for (let i = 0; i < 154; i++) {
-            Komoditas.push($("#Agustus"+i).val()+'$'+$("#Sekarang"+i).val())
+            Komoditas.push($("#_Agustus"+i).val()+'$'+$("#Agustus"+i).val()+'$'+$("#_Sekarang"+i).val()+'$'+$("#Sekarang"+i).val())
           }
           var Konsumsi = Komoditas.join("|")
           var Poin = []
