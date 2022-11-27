@@ -31,7 +31,7 @@
             <div class="card-header bg-primary text-white">
               <b>SURVEI KEPUASAN MASYARAKAT TERHADAP PELAYANAN PUBLIK DINAS KOMUNIKASI, INFORMATIKA DAN PERSANDIAN KABUPATEN BANYUWANGI</b>
             </div>
-            <div style="background-color: yellow;" class="card-body border border-primary">
+            <div class="card-body border border-primary">
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-sm-4 my-1">

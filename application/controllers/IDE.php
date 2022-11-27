@@ -870,6 +870,16 @@ class IDE extends CI_Controller {
     $this->load->view('RekapSurveyorNTP',$Data);
   }
 
+  public function InfoSurveiKominfo(){
+    $Data['Data'] = array();
+    array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 1))->num_rows());
+    array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 2))->num_rows());
+    array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 3))->num_rows());
+    array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 4))->num_rows());
+    array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 5))->num_rows());
+    $this->load->view('InfoSurveiKominfo',$Data);
+  }
+
   public function RekapSurveyorIKM(){
     $Data['Surveyor'] = $this->db->query("select surveyor.nik as NIK, surveyor.nama as Nama from surveiipm left join surveyor on (surveyor.nik = surveiipm.nik) group by surveyor.nik")->result_array();
     $this->load->view('RekapSurveyorIKM',$Data);
