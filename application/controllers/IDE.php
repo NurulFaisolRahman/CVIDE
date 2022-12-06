@@ -8,6 +8,292 @@ class IDE extends CI_Controller {
     $Data['Portfolio'] = $this->db->get('portfolio')->result_array();
 		$this->load->view('IDE',$Data);
   }
+  
+  public function BBMPengeluaran(){
+    $Kecamatan = array('35.10.01','35.10.05','35.10.09','35.10.11','35.10.16','35.10.18','35.10.24');
+    for ($i=0; $i < 7; $i++) { 
+      $Data = $this->db->query("SELECT * FROM `dampakbbm` WHERE Kecamatan="."'".$Kecamatan[$i]."'")->result_array();
+      $Sebelum = $Sesudah = 0;
+      foreach ($Data as $key) {
+        $Pisah = explode("|",$key['Konsumsi']);
+        for ($j=0; $j < 154; $j++) { 
+          $Pecah = explode("$",$Pisah[$j]);
+          // if ($j == 0) {
+          //   echo $Pecah[1].'<br>';
+          // }
+          if ($Pecah[0] > 0) {
+            $Sebelum += ($Pecah[1]*4);
+          } 
+          if ($Pecah[2] > 0) {
+            $Sesudah += ($Pecah[3]*4);
+          } 
+        }
+      }
+      echo intval($Sebelum/count($Data)).'|'.intval($Sesudah/count($Data)).'<br>';
+    }
+  }
+  
+  public function bbm(){
+      $data = $this->db->query("SELECT Konsumsi FROM `dampakbbm` WHERE Kecamatan='35.10.05'")->result_array();
+      foreach ($data as $key) {
+        echo $key['Konsumsi'].'<br>';
+      }
+  }
+  
+  public function BBMHarga(){
+    // 35.10.01 Pesanggaran
+    // 35.10.05 Muncar
+    // 35.10.09 Genteng
+    // 35.10.11 Kalibaru
+    // 35.10.16 Banyuwangi 
+    // 35.10.18 Wongsorejo
+    // 35.10.24 Licin
+    $Kecamatan = array('35.10.01','35.10.05','35.10.09','35.10.11','35.10.16','35.10.18','35.10.24');
+    for ($i=6; $i <= 6; $i++) { 
+      $Data = $this->db->query("SELECT * FROM `dampakbbm` WHERE Kecamatan="."'".$Kecamatan[$i]."'")->result_array();
+      $_Harga = $Harga = $Selisih = array();
+      $_Harga_ = $Harga_ = $Selisih_ = array();
+      for ($k=0; $k < 154; $k++) { 
+        $_Harga[$k] = 0;$Harga[$k] = 0;$Selisih[$k] = 0;
+        $_Harga_[$k] = 0;$Harga_[$k] = 0;$Selisih_[$k] = 0;
+      }
+      foreach ($Data as $key) {
+        $Pisah = explode("|",$key['Konsumsi']);
+        // echo $key['Konsumsi'].'<br>';
+        for ($j=0; $j < 154; $j++) { 
+            // echo $Pisah[$j].'<br>';
+          $Pecah = explode("$",$Pisah[$j]);
+        //   if ($j == 135) {
+        //      echo $Pecah[0].'$'.$Pecah[1].'$'.$Pecah[2].'$'.$Pecah[3].$key['Nama'].'<br>';
+        //     }
+          if ($Pecah[0] >= 1) {
+            $_Harga[$j] += $Pecah[1]/$Pecah[0];
+            $_Harga_[$j] += 1;
+          } else if ($Pecah[0] > 0) {
+            $_Harga[$j] += $Pecah[1]*(1/$Pecah[0]);
+            $_Harga_[$j] += 1;
+          }
+          if ($Pecah[2] >= 1) {
+            $Harga[$j] += $Pecah[3]/$Pecah[2];
+            $Harga_[$j] += 1;
+          } else if ($Pecah[2] > 0) {
+            $Harga[$j] += $Pecah[3]*(1/$Pecah[2]);
+            $Harga_[$j] += 1;
+          }
+          if ($Pecah[1] > 0 && $Pecah[3] > 0) {
+            $Selisih[$j] += abs(($Pecah[1]/$Pecah[0])-($Pecah[3]/$Pecah[2]));
+            $Selisih_[$j] += 1;
+          } 
+        }
+      }
+      for ($k=0; $k < 154; $k++) { 
+        if ($_Harga_[$k] > 0) {
+          echo $_Harga_[$k].'|'.intval($_Harga[$k]/$_Harga_[$k]).'|';
+        } else {
+          echo $_Harga_[$k].'|'.intval($_Harga[$k]).'|';
+        }
+        if ($Harga_[$k] > 0) {
+          echo $Harga_[$k].'|'.intval($Harga[$k]/$Harga_[$k]).'|';
+        } else {
+          echo $Harga_[$k].'|'.intval($Harga[$k]).'|';
+        }
+        if ($Selisih_[$k] > 0) {
+          echo intval($Selisih[$k]/$Selisih_[$k]).'<br>';
+        } else {
+          echo intval($Selisih[$k]).'<br>';
+        }
+      }
+    }
+  }
+  
+  public function BBMKuantitas(){
+    // 35.10.01 Pesanggaran
+    // 35.10.05 Muncar
+    // 35.10.09 Genteng
+    // 35.10.11 Kalibaru
+    // 35.10.16 Banyuwangi 
+    // 35.10.18 Wongsorejo
+    // 35.10.24 Licin
+    $Kecamatan = array('35.10.01','35.10.05','35.10.09','35.10.11','35.10.16','35.10.18','35.10.24');
+    for ($i=6; $i <= 6; $i++) { 
+      $Data = $this->db->query("SELECT * FROM `dampakbbm` WHERE Kecamatan="."'".$Kecamatan[$i]."'")->result_array();
+      $_Kuantitas = $Kuantitas = $Selisih = array();
+      $_Kuantitas_ = $Kuantitas_ = $Selisih_ = array();
+      for ($k=0; $k < 154; $k++) { 
+        $_Kuantitas[$k] = 0;$Kuantitas[$k] = 0;$Selisih[$k] = 0;
+        $_Kuantitas_[$k] = 0;$Kuantitas_[$k] = 0;$Selisih_[$k] = 0;
+      }
+      foreach ($Data as $key) {
+        $Pisah = explode("|",$key['Konsumsi']);
+        for ($j=0; $j < 154; $j++) { 
+            // echo $Pisah[$j].'<br>';
+          $Pecah = explode("$",$Pisah[$j]);
+            // if ($j == 142) {
+            //  echo '$'.$Pecah[0].'$'.$Pecah[1].'$'.$Pecah[2].'$'.$Pecah[3].$key['Nama'].'<br>';
+            // }
+          if ($Pecah[0] > 0) {
+            $_Kuantitas[$j] += $Pecah[0];
+            $_Kuantitas_[$j] += 1;
+          } 
+          if ($Pecah[2] > 0) {
+            $Kuantitas[$j] += $Pecah[2];
+            $Kuantitas_[$j] += 1;
+          } 
+          if ($Pecah[0] > 0 && $Pecah[2] > 0) {
+            $Selisih[$j] += abs(($Pecah[0]-$Pecah[2]));
+            $Selisih_[$j] += 1;
+          } 
+        }
+      }
+      for ($k=0; $k < 154; $k++) { 
+        if ($_Kuantitas_[$k] > 0) {
+          echo number_format($_Kuantitas[$k]/$_Kuantitas_[$k],2,",",".").'|';
+        } else {
+          echo number_format($_Kuantitas[$k],2,",",".").'|';
+        }
+        if ($Kuantitas_[$k] > 0) {
+          echo number_format($Kuantitas[$k]/$Kuantitas_[$k],2,",",".").'|';
+        } else {
+          echo number_format($Kuantitas_[$k],2,",",".").'|';
+        }
+        if ($Selisih_[$k] > 0) {
+          echo number_format($Selisih[$k]/$Selisih_[$k],2,",",".").'<br>';
+        } else {
+          echo number_format($Selisih[$k],2,",",".").'<br>';
+        }
+      }
+    }
+  }
+  
+  public function BBMGeser(){
+    // 35.10.01 Pesanggaran
+    // 35.10.05 Muncar
+    // 35.10.09 Genteng
+    // 35.10.11 Kalibaru
+    // 35.10.16 Banyuwangi 
+    // 35.10.18 Wongsorejo
+    // 35.10.24 Licin
+    $Kecamatan = array('35.10.01','35.10.05','35.10.09','35.10.11','35.10.16','35.10.18','35.10.24');
+    for ($i=6; $i <= 6; $i++) { 
+      $Data = $this->db->query("SELECT * FROM `dampakbbm` WHERE Kecamatan="."'".$Kecamatan[$i]."'")->result_array();
+      $Sebelum = $Sesudah = array();
+      $_Sebelum = $_Sesudah = array();
+      for ($k=0; $k < 154; $k++) { 
+        $Sebelum[$k] = 0;$Sesudah[$k] = 0;
+        $_Sebelum[$k] = 0;$_Sesudah[$k] = 0;
+      }
+      foreach ($Data as $key) {
+        $Pisah = explode("|",$key['Konsumsi']);
+        for ($j=0; $j < 154; $j++) { 
+          $Pecah = explode("$",$Pisah[$j]);
+          // if ($j == 0) {
+          //   echo $Pecah[1].'<br>';
+          // }
+          if ($Pecah[0] > 0 && $Pecah[2] == 0) {
+            $Sebelum[$j] += 1;
+          } 
+          if ($Pecah[0] == 0 && $Pecah[2] > 0) {
+            $Sesudah[$j] += 1;
+          } 
+          if ($Pecah[0] > 0) {
+            $_Sebelum[$j] += 1;
+          } 
+          if ($Pecah[2] > 0) {
+            $_Sesudah[$j] += 1;
+          } 
+        }
+      }
+
+      for ($k=0; $k < 154; $k++) { 
+        echo $Sebelum[$k].'|'.$Sesudah[$k].'|'.$_Sebelum[$k].'|'.$_Sesudah[$k].'<br>';
+      }
+    }
+  }
+  
+  public function BPNT(){
+    // $Data = $this->db->query('SELECT pendampingbpnt.*,surveyor.Nama AS Surveyor FROM `pendampingbpnt`,`surveyor` WHERE pendampingbpnt.NIK=surveyor.NIK')->result_array();
+    // $Data = $this->db->query('SELECT ewarung.*,surveyor.Nama AS Surveyor FROM `ewarung`,`surveyor` WHERE ewarung.NIK=surveyor.NIK ORDER BY ewarung.NIK')->result_array();
+    $Data = $this->db->query('SELECT pkpm.*,surveyor.Nama AS Surveyor FROM pkpm,surveyor WHERE pkpm.NIK=surveyor.NIK ORDER BY pkpm.NIK')->result_array();
+    foreach ($Data as $key) {
+        echo $key['Id'].'#'.$key['Nama'].'#'.$key['Nilai'].'<br>';
+        // $Pisah = explode("|",$key['Nilai']);
+        // $Pecah = explode("$",$Pisah[6]);
+        // $Pecah = explode("$",$Pisah[7]);
+        // $P = $I = '';
+        // for ($k=0; $k < 11; $k++) { 
+        //     $Temp = explode("#",$Pecah[$k]);
+        //     if ($Temp[0] == 1) {
+        //         $P .= 'Sangat Tidak Setuju#';
+        //     } else if ($Temp[0] == 2) {
+        //         $P .= 'Tidak Setuju#';
+        //     } else if ($Temp[0] == 3) {
+        //         $P .= 'Ragu-Ragu#';
+        //     } else if ($Temp[0] == 4) {
+        //         $P .= 'Setuju#';
+        //     } else if ($Temp[0] == 5) {
+        //         $P .= 'Sangat Setuju#';
+        //     }
+        //     if ($Temp[1] == 1) {
+        //         $P .= 'Sangat Tidak Penting#';
+        //     } else if ($Temp[1] == 2) {
+        //         $P .= 'Tidak Penting#';
+        //     } else if ($Temp[1] == 3) {
+        //         $P .= 'Ragu-Ragu#';
+        //     } else if ($Temp[1] == 4) {
+        //         $P .= 'Penting#';
+        //     } else if ($Temp[1] == 5) {
+        //         $P .= 'Sangat Penting#';
+        //     }
+        // }
+        // echo $P.$I.'<br>';
+        // for ($k=0; $k < 10; $k++) { 
+        //     $Temp = explode("#",$Pecah[$k]);
+        //     if ($Temp[0] == 0) {
+        //         echo 'Tidak#';
+        //     } else if ($Temp[0] == 1) {
+        //         echo 'Ya#';
+        //     } else {
+        //         echo 'Tidak#';
+        //     }
+        //     if ($Temp[1] == 0) {
+        //         echo '-#';
+        //     } else if ($Temp[1] == 1) {
+        //         echo 'Pasar#';
+        //     } else if ($Temp[1] == 2) {
+        //         echo 'Perum Bulog#';
+        //     } else if ($Temp[1] == 3) {
+        //         echo 'Penggilingan#';
+        //     } else if ($Temp[1] == 4) {
+        //         echo 'Peternak#';
+        //     } else if ($Temp[1] == 5) {
+        //         echo 'Agen/Grosir#';
+        //     } else if ($Temp[1] == 6) {
+        //         echo 'Lainnya#';
+        //     }
+        //     if ($Temp[2] == 0) {
+        //         echo 'Tidak#';
+        //     } else if ($Temp[2] == 1) {
+        //         echo 'Ya#';
+        //     } else {
+        //         echo 'Tidak#';
+        //     }
+        //     if ($Temp[3] == 0) {
+        //         echo '-#';
+        //     } else if ($Temp[3] == 1) {
+        //         echo 'Pemasok tidak mengirimkan bahan pangan sesuai jumlah yang dipesan e-Warong#';
+        //     } else if ($Temp[3] == 2) {
+        //         echo 'Pemasok kehabisan pasokan/stok#';
+        //     } else if ($Temp[3] == 3) {
+        //         echo 'Harga terlalu tinggi/modal tidak mencukupi#';
+        //     } else if ($Temp[3] == 4) {
+        //         echo 'Bahan pangan sangat diminati oleh KPM, melebihi perkiraan e-Warong#';
+        //     } else if ($Temp[3] == 5) {
+        //         echo 'Lainnya#';
+        //     }
+        //   }
+        //   echo '<br>';
+    }
+  }
 
   public function PrintNTP(){
     $Nama = $this->db->query('SELECT DISTINCT(NamaResponden) FROM `ntpprodusen` WHERE NIK=3522080906980006')->result_array();
@@ -872,7 +1158,7 @@ class IDE extends CI_Controller {
 
   public function InfoSurveiKominfo(){
     $Data['Data'] = array();
-    array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 1))->num_rows());
+    array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi != 2 && Instansi != 3 && Instansi != 4 && Instansi != 5')->num_rows());
     array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 2))->num_rows());
     array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 3))->num_rows());
     array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 4))->num_rows());
