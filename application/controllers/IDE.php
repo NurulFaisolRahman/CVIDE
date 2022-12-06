@@ -627,10 +627,12 @@ class IDE extends CI_Controller {
     ini_set('max_execution_time', 0); 
     ini_set('memory_limit','2048M');
     $Data['Rekap'] = array();
+    $Kelurahan = array('35.10.15.1002','35.10.15.1003','35.10.16.1001','35.10.16.1002','35.10.16.1003','35.10.16.1004','35.10.16.1005','35.10.16.1006','35.10.16.1007','35.10.16.1008','35.10.16.1009','35.10.16.1010','35.10.16.1011','35.10.16.1012','35.10.16.1013','35.10.16.1014','35.10.16.1015','35.10.16.1016','35.10.16.1017','35.10.16.1018','35.10.17.1002','35.10.17.1005','35.10.17.1003','35.10.17.1004','35.10.21.1007','35.10.21.1006','35.10.21.1001','35.10.21.1002');
     $Kecamatan = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     foreach ($Kecamatan as $key) {
       $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$key['Kode'].".%"."'")->result_array();
       foreach ($Desa as $KEY) {
+        if (in_array($KEY['Kode'],$Kelurahan)) { continue; }
         $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikmdesa` WHERE Desa = "."'".$KEY['Kode']."'")->row_array()['Total'];
         array_push($Data['Rekap'],$KEY['Nama']."|".$key['Nama']."|".$Total);
       }
