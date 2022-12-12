@@ -8,6 +8,13 @@ class IDE extends CI_Controller {
     $Data['Portfolio'] = $this->db->get('portfolio')->result_array();
 		$this->load->view('IDE',$Data);
   }
+
+  public function Kominfo(){
+    $Data = $this->db->get('kominfo')->result_array();
+    foreach ($Data as $key) {
+        echo $key['Id'].'$'.$key['Nama'].'$'.$key['Gender'].'$'.$key['Usia'].'$'.$key['Instansi'].'$'.$key['Kecamatan'].'$'.$key['Desa'].'$'.$key['Saran'].'$'.$key['Nilai'].'<br>';   
+    }
+  }
   
   public function BBMPengeluaran(){
     $Kecamatan = array('35.10.01','35.10.05','35.10.09','35.10.11','35.10.16','35.10.18','35.10.24');
@@ -741,7 +748,7 @@ class IDE extends CI_Controller {
     $this->load->view('DownloadSurveiIKM',$Data);
   }
 
-  public function ExcelIKM($NamaKecamatan,$Desa){
+  public function ExcelIKM($NamaKecamatan,$Desa,$Tahun){
     $Data['NamaKecamatan'] = $NamaKecamatan;
     $Data['NamaDesa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode = "."'".$Desa."'")->row_array()['Nama'];
     $Data['Responden'] = array();
@@ -753,10 +760,20 @@ class IDE extends CI_Controller {
     $Data['Gender'] = array();
     $Data['Pendidikan'] = array();
     $Data['Pekerjaan'] = array();
-    $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikmdesa` WHERE Desa = "."'".$Desa."'")->row_array()['Total'];
+    $Tabel = '';
+    $Bobot = 3;
+    if ($Tahun == 1) {
+      $Tabel = 'ikmdesa';
+      $Bobot = 2;
+    } else if ($Tahun == 2) {
+      $Tabel = 'surveiikm';
+    } else {
+      $Tabel = 'ikm';
+    }
+    $Total = $this->db->query("SELECT COUNT(*) AS Total FROM ".$Tabel." WHERE Desa = "."'".$Desa."'")->row_array()['Total'];
     array_push($Data['Responden'], $Total);
     $Data['NilaiIndeks'][0] = 0;
-    $RespondenDesa = $this->db->query("SELECT * FROM `ikmdesa` WHERE Desa = "."'".$Desa."'")->result_array();
+    $RespondenDesa = $this->db->query("SELECT * FROM ".$Tabel." WHERE Desa = "."'".$Desa."'")->result_array();
     $Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
     $Average = array(0,0,0,0,0,0,0,0,0,0,0);
     $Tertimbang = array(0,0,0,0,0,0,0,0,0,0,0);
@@ -807,7 +824,7 @@ class IDE extends CI_Controller {
     }
     if ($Total < 356) {
       for ($k=0; $k < 11; $k++) { 
-        $Tampung[$k] += (3*(356-$Total));
+        $Tampung[$k] += ($Bobot*(356-$Total));
       }
       $Data['Responden'][0] = 356;
     }
@@ -859,12 +876,22 @@ class IDE extends CI_Controller {
     $this->load->view('ExcelSurveiIKM',$Data);
   }
 
-  public function RekapExcelIKMKecamatan($KodeKecamatan,$NamaKecamatan){
+  public function RekapExcelIKMKecamatan($KodeKecamatan,$NamaKecamatan,$Tahun){
     $Data['NamaFile'] = "Rekap_IKM_Kecamatan_".$NamaKecamatan;
     $Data['IKMDesa'] = array();$Data['IKMKecamatan'] = array();
     $_Responden = 0;
     $_Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
     $_Konversi = array(0,0,0,0,0,0,0,0,0,0,0);
+    $Tabel = '';
+    $Bobot = 3;
+    if ($Tahun == 1) {
+      $Tabel = 'ikmdesa';
+      $Bobot = 2;
+    } else if ($Tahun == 2) {
+      $Tabel = 'surveiikm';
+    } else {
+      $Tabel = 'ikm';
+    }
     $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$KodeKecamatan.".%'")->result_array();
     for ($j = 0; $j < count($Desa); $j++) { 
       $Responden = 0;
@@ -872,8 +899,8 @@ class IDE extends CI_Controller {
       $Konversi = array(0,0,0,0,0,0,0,0,0,0,0);
       $Titip = 0;
       $DataIKMDesa = $Desa[$j]['Nama'];
-      $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikmdesa` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->row_array()['Total'];
-      $RespondenDesa = $this->db->query("SELECT * FROM `ikmdesa` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->result_array();
+      $Total = $this->db->query("SELECT COUNT(*) AS Total FROM ".$Tabel." WHERE Desa = "."'".$Desa[$j]['Kode']."'")->row_array()['Total'];
+      $RespondenDesa = $this->db->query("SELECT * FROM ".$Tabel." WHERE Desa = "."'".$Desa[$j]['Kode']."'")->result_array();
       foreach ($RespondenDesa as $key) {
         $Pecah = explode("|",$key['Poin']);
         for ($i=0; $i < 11; $i++) { 
@@ -883,8 +910,8 @@ class IDE extends CI_Controller {
       }
       if ($Total < 356) {
         for ($k=0; $k < 11; $k++) { 
-          $Tampung[$k] += (3*(356-$Total));
-          $_Tampung[$k] += (3*(356-$Total));
+          $Tampung[$k] += ($Bobot*(356-$Total));
+          $_Tampung[$k] += ($Bobot*(356-$Total));
         }
         $Titip += 356-$Total;
       }
@@ -909,7 +936,7 @@ class IDE extends CI_Controller {
     $this->load->view('RekapExcelIKMKecamatan',$Data);
   }
 
-  public function ExcelIKMKecamatan($KodeKecamatan,$NamaKecamatan){
+  public function ExcelIKMKecamatan($KodeKecamatan,$NamaKecamatan,$Tahun){
     $Data['NamaKecamatan'] = $NamaKecamatan;
     $Data['NamaDesa'] = '';
     $Data['Responden'] = array(0);
@@ -933,10 +960,20 @@ class IDE extends CI_Controller {
     $Pria = 0;
     $Wanita = 0;
     $Titip = 0;
+    $Tabel = '';
+    $Bobot = 3;
+    if ($Tahun == 1) {
+      $Tabel = 'ikmdesa';
+      $Bobot = 2;
+    } else if ($Tahun == 2) {
+      $Tabel = 'surveiikm';
+    } else {
+      $Tabel = 'ikm';
+    }
     $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$KodeKecamatan.".%'")->result_array();
     for ($j = 0; $j < count($Desa); $j++) { 
-      $Total = $this->db->query("SELECT COUNT(*) AS Total FROM `ikmdesa` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->row_array()['Total'];
-      $RespondenDesa = $this->db->query("SELECT * FROM `ikmdesa` WHERE Desa = "."'".$Desa[$j]['Kode']."'")->result_array();
+      $Total = $this->db->query("SELECT COUNT(*) AS Total FROM ".$Tabel." WHERE Desa = "."'".$Desa[$j]['Kode']."'")->row_array()['Total'];
+      $RespondenDesa = $this->db->query("SELECT * FROM ".$Tabel." WHERE Desa = "."'".$Desa[$j]['Kode']."'")->result_array();
       foreach ($RespondenDesa as $key) {
         $Pecah = explode("|",$key['Poin']);
         for ($i=0; $i < 11; $i++) { 
@@ -976,7 +1013,7 @@ class IDE extends CI_Controller {
       }
       if ($Total < 356) {
         for ($k=0; $k < 11; $k++) { 
-          $Tampung[$k] += (3*(356-$Total));
+          $Tampung[$k] += ($Bobot*(356-$Total));
         }
         $Titip += 356-$Total;
       }
@@ -1046,7 +1083,7 @@ class IDE extends CI_Controller {
       }
       if ($Total < 356) {
         for ($k=0; $k < 11; $k++) { 
-          $Tampung[$k] += (3*(356-$Total));
+          $Tampung[$k] += (2*(356-$Total));
         }
         $Total = 356;
         $Data['Responden'][$j] = 356;
@@ -1159,6 +1196,30 @@ class IDE extends CI_Controller {
   }
 
   public function InfoSurveiKominfo(){
+    // OPD & kec: 1-10 + 61-70
+    // kel : 41-50 & 21-30
+    // desa : 41-50 + 61-70
+    // masy umum : 1-10
+    // $Average[$i] = str_replace(".",",",round($Tampung[$i]/$Data['Responden'][0],2));
+    //   $Tertimbang[$i] = str_replace(".",",",round(($Tampung[$i]/$Data['Responden'][0])*(1/11),2));
+    //   $Konversi[$i] = ($Tampung[$i]/$Data['Responden'][0])*(1/11)*25;
+    // }
+    // array_push($Data['Rata2'], $Average);
+    // array_push($Data['Tertimbang'], $Tertimbang);
+    // $Data['NilaiIndeks'][0] = str_replace(".",",",round(array_sum($Konversi),2));
+    // if ($Data['NilaiIndeks'][0] < 65) {
+    //   $Data['MutuPelayanan'][0] = 'D';
+    //   $Data['KinerjaUnit'][0] = 'Tidak Baik';
+    // } else if ($Data['NilaiIndeks'][0] < 76.61) {
+    //   $Data['MutuPelayanan'][0] = 'C';
+    //   $Data['KinerjaUnit'][0] = 'Kurang Baik';
+    // } else if ($Data['NilaiIndeks'][0] < 88.31) {
+    //   $Data['MutuPelayanan'][0] = 'B';
+    //   $Data['KinerjaUnit'][0] = 'Baik';
+    // } else {
+    //   $Data['MutuPelayanan'][0] = 'A';
+    //   $Data['KinerjaUnit'][0] = 'Sangat Baik';
+    // }
     $Data['Data'] = array();
     array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi != 2 && Instansi != 3 && Instansi != 4 && Instansi != 5')->num_rows());
     array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 2))->num_rows());
