@@ -1,6 +1,6 @@
 <?php
   header('Content-Type: application/xls');
-  header('Content-Disposition: attachment; filename=IKM_'.$NamaKecamatan.'_'.$NamaDesa.'_'.$Tahun.'.xls');
+  header('Content-Disposition: attachment; filename='.$NamaFile.'.xls');
 ?>
 MIME-Version: 1.0
 X-Document-Type: Worksheet
@@ -908,7 +908,7 @@ td
    <col width=3D"64" span=3D"2" style=3D'width:48,00pt;'/>
    <tr height=3D"20" style=3D'height:15.00pt;'>
     <td height=3D"20" width=3D"33" style=3D'height:15.00pt;width:24.75pt;'></td>
-    <td width=3D"180" style=3D'width:135.00pt;' x:str><?=$NamaDesa?></td>
+    <td width=3D"180" style=3D'width:135.00pt;' x:str><?=$Lokasi?></td>
     <td width=3D"64" style=3D'width:48.00pt;'></td>
     <td width=3D"110" style=3D'width:82.50pt;'></td>
     <td width=3D"26" style=3D'width:19.50pt;'></td>

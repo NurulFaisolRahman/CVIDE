@@ -764,14 +764,17 @@ class IDE extends CI_Controller {
     $Bobot = 3;
     if ($Tahun == 1) {
       $Tabel = 'ikmdesa';
-      $Data['Tahun'] = '2022';
+      $Data['NamaFile'] = "IKM_Desa".$Data['NamaDesa']."_".$NamaKecamatan."_2022";
+      $Data['Lokasi'] = "Desa ".$Data['NamaDesa']." 2022";
       $Bobot = 2;
     } else if ($Tahun == 2) {
       $Tabel = 'surveiikm';
-      $Data['Tahun'] = '2021';
+      $Data['NamaFile'] = "IKM_Desa".$Data['NamaDesa']."_".$NamaKecamatan."_2021";
+      $Data['Lokasi'] = "Desa ".$Data['NamaDesa']." 2021";
     } else {
       $Tabel = 'ikm';
-      $Data['Tahun'] = '2020';
+      $Data['NamaFile'] = "IKM_Desa".$Data['NamaDesa']."_".$NamaKecamatan."_2020";
+      $Data['Lokasi'] = "Desa ".$Data['NamaDesa']." 2020";
     }
     $Total = $this->db->query("SELECT COUNT(*) AS Total FROM ".$Tabel." WHERE Desa = "."'".$Desa."'")->row_array()['Total'];
     array_push($Data['Responden'], $Total);
@@ -969,14 +972,17 @@ class IDE extends CI_Controller {
     $Bobot = 3;
     if ($Tahun == 1) {
       $Tabel = 'ikmdesa';
-      $Data['Tahun'] = '2022';
+      $Data['NamaFile'] = "IKM_Kecamatan_".$NamaKecamatan."_2022";
+      $Data['Lokasi'] = "Kecamatan ".$NamaKecamatan." 2022";
       $Bobot = 2;
     } else if ($Tahun == 2) {
       $Tabel = 'surveiikm';
-      $Data['Tahun'] = '2021';
+      $Data['NamaFile'] = "IKM_Kecamatan_".$NamaKecamatan."_2021";
+      $Data['Lokasi'] = "Kecamatan ".$NamaKecamatan." 2021";
     } else {
       $Tabel = 'ikm';
-      $Data['Tahun'] = '2020';
+      $Data['NamaFile'] = "IKM_Kecamatan_".$NamaKecamatan."_2020";
+      $Data['Lokasi'] = "Kecamatan ".$NamaKecamatan." 2020";
     }
     $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$KodeKecamatan.".%'")->result_array();
     for ($j = 0; $j < count($Desa); $j++) { 
