@@ -68,7 +68,7 @@
                           <td class="align-middle"><b><?=number_format($NTP[9][$i],2)?></b></td>
                           <td class="align-middle"><b><?=number_format($NTP[10][$i],2)?></b></td>
                         </tr>
-                        <tr><td colspan="11" class="bg-warning"></td></tr>
+                        <tr><td colspan="13" class="bg-warning"></td></tr>
                       <?php } ?>
                       </tbody>
                     </table>
