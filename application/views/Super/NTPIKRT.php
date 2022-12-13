@@ -17,54 +17,56 @@
                             <th class="align-middle">Juli</th>
                             <th class="align-middle">Agustus</th>
                             <th class="align-middle">September</th>
+                            <th class="align-middle">Oktober</th>
+                            <th class="align-middle">November</th>
                           </tr>
                         </thead>
                         <tbody style="font-size: 12px;" class="bg-primary">
                           <tr class="text-light align-middle">
                             <td class="align-middle"><b>Bahan Makanan</b></td>
-                            <?php for ($i=0; $i < 9; $i++) { ?>
+                            <?php for ($i=0; $i < 11; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($IBahanMakanan[$i],2)?></b></td>
                             <?php } ?>
                           </tr>
                           <tr class="text-light align-middle">
                             <td class="align-middle"><b>Makanan, Minuman, Rokok & Tembakau</b></td>
-                            <?php for ($i=0; $i < 9; $i++) { ?>
+                            <?php for ($i=0; $i < 11; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($IMakananJadi[$i],2)?></b></td>
                             <?php } ?>
                           </tr>
                           <tr class="text-light align-middle">
                             <td class="align-middle"><b>Perumahan</b></td>
-                            <?php for ($i=0; $i < 9; $i++) { ?>
+                            <?php for ($i=0; $i < 11; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($IPerumahan[$i],2)?></b></td>
                             <?php } ?>
                           </tr>
                           <tr class="text-light align-middle">
                             <td class="align-middle"><b>Sandang</b></td>
-                            <?php for ($i=0; $i < 9; $i++) { ?>
+                            <?php for ($i=0; $i < 11; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($ISandang[$i],2)?></b></td>
                             <?php } ?>
                           </tr>
                           <tr class="text-light align-middle">
                             <td class="align-middle"><b>Kesehatan</b></td>
-                            <?php for ($i=0; $i < 9; $i++) { ?>
+                            <?php for ($i=0; $i < 11; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($IKesehatan[$i],2)?></b></td>
                             <?php } ?>
                           </tr>
                           </tr>
                           <tr class="text-light align-middle">
                             <td class="align-middle"><b>Pendidikan, Rekreasi & Olahraga</b></td>
-                            <?php for ($i=0; $i < 9; $i++) { ?>
+                            <?php for ($i=0; $i < 11; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($IPendidikan[$i],2)?></b></td>
                             <?php } ?>
                           </tr><tr class="text-light align-middle">
                             <td class="align-middle"><b>Transportasi & Komunikasi</b></td>
-                            <?php for ($i=0; $i < 9; $i++) { ?>
+                            <?php for ($i=0; $i < 11; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($ITransportasi[$i],2)?></b></td>
                             <?php } ?>
                           </tr>
                           </tr><tr class="text-light align-middle">
                             <td class="align-middle"><b>IKRT</b></td>
-                            <?php for ($i=0; $i < 9; $i++) { ?>
+                            <?php for ($i=0; $i < 11; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($IKRT[$i],2)?></b></td>
                             <?php } ?>
                           </tr>

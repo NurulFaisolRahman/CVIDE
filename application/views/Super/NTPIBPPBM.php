@@ -17,45 +17,47 @@
                             <th class="align-middle">Juli</th>
                             <th class="align-middle">Agustus</th>
                             <th class="align-middle">September</th>
+                            <th class="align-middle">Oktober</th>
+                            <th class="align-middle">November</th>
                           </tr>
                         </thead>
                         <tbody style="font-size: 12px;" class="bg-primary">
                           <tr class="text-light align-middle">
                             <td class="align-middle"><b>Bibit</b></td>
-                            <?php for ($i=0; $i < 9; $i++) { ?>
+                            <?php for ($i=0; $i < 11; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($IBibit[$i],2)?></b></td>
                             <?php } ?>
                           </tr>
                           <tr class="text-light align-middle">
                             <td class="align-middle"><b>Pupuk & Obat-Obatan</b></td>
-                            <?php for ($i=0; $i < 9; $i++) { ?>
+                            <?php for ($i=0; $i < 11; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($IPupuk[$i],2)?></b></td>
                             <?php } ?>
                           </tr><tr class="text-light align-middle">
                             <td class="align-middle"><b>Transportasi</b></td>
-                            <?php for ($i=0; $i < 9; $i++) { ?>
+                            <?php for ($i=0; $i < 11; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($ITransportasi[$i],2)?></b></td>
                             <?php } ?>
                           </tr><tr class="text-light align-middle">
                             <td class="align-middle"><b>Sewa & Pengeluaran Lain</b></td>
-                            <?php for ($i=0; $i < 9; $i++) { ?>
+                            <?php for ($i=0; $i < 11; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($ISewa[$i],2)?></b></td>
                             <?php } ?>
                           </tr>
                           </tr><tr class="text-light align-middle">
                             <td class="align-middle"><b>Barang Modal</b></td>
-                            <?php for ($i=0; $i < 9; $i++) { ?>
+                            <?php for ($i=0; $i < 11; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($IBarangModal[$i],2)?></b></td>
                             <?php } ?>
                           </tr><tr class="text-light align-middle">
                             <td class="align-middle"><b>Upah Buruh</b></td>
-                            <?php for ($i=0; $i < 9; $i++) { ?>
+                            <?php for ($i=0; $i < 11; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($IUpahBuruh[$i],2)?></b></td>
                             <?php } ?>
                           </tr>
                           </tr><tr class="text-light align-middle">
                             <td class="align-middle"><b>IBPPBM</b></td>
-                            <?php for ($i=0; $i < 9; $i++) { ?>
+                            <?php for ($i=0; $i < 11; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($IIBPPBM[$i],2)?></b></td>
                             <?php } ?>
                           </tr>
