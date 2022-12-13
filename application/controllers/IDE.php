@@ -764,11 +764,14 @@ class IDE extends CI_Controller {
     $Bobot = 3;
     if ($Tahun == 1) {
       $Tabel = 'ikmdesa';
+      $Data['Tahun'] = '2022';
       $Bobot = 2;
     } else if ($Tahun == 2) {
       $Tabel = 'surveiikm';
+      $Data['Tahun'] = '2021';
     } else {
       $Tabel = 'ikm';
+      $Data['Tahun'] = '2020';
     }
     $Total = $this->db->query("SELECT COUNT(*) AS Total FROM ".$Tabel." WHERE Desa = "."'".$Desa."'")->row_array()['Total'];
     array_push($Data['Responden'], $Total);
@@ -877,7 +880,6 @@ class IDE extends CI_Controller {
   }
 
   public function RekapExcelIKMKecamatan($KodeKecamatan,$NamaKecamatan,$Tahun){
-    $Data['NamaFile'] = "Rekap_IKM_Kecamatan_".$NamaKecamatan;
     $Data['IKMDesa'] = array();$Data['IKMKecamatan'] = array();
     $_Responden = 0;
     $_Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
@@ -886,11 +888,14 @@ class IDE extends CI_Controller {
     $Bobot = 3;
     if ($Tahun == 1) {
       $Tabel = 'ikmdesa';
+      $Data['NamaFile'] = "Rekap_IKM_Kecamatan_".$NamaKecamatan."_2022";
       $Bobot = 2;
     } else if ($Tahun == 2) {
       $Tabel = 'surveiikm';
+      $Data['NamaFile'] = "Rekap_IKM_Kecamatan_".$NamaKecamatan."_2021";;
     } else {
       $Tabel = 'ikm';
+      $Data['NamaFile'] = "Rekap_IKM_Kecamatan_".$NamaKecamatan."_2020";;
     }
     $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$KodeKecamatan.".%'")->result_array();
     for ($j = 0; $j < count($Desa); $j++) { 
@@ -964,11 +969,14 @@ class IDE extends CI_Controller {
     $Bobot = 3;
     if ($Tahun == 1) {
       $Tabel = 'ikmdesa';
+      $Data['Tahun'] = '2022';
       $Bobot = 2;
     } else if ($Tahun == 2) {
       $Tabel = 'surveiikm';
+      $Data['Tahun'] = '2021';
     } else {
       $Tabel = 'ikm';
+      $Data['Tahun'] = '2020';
     }
     $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$KodeKecamatan.".%'")->result_array();
     for ($j = 0; $j < count($Desa); $j++) { 
