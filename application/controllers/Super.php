@@ -47,7 +47,8 @@ class Super extends CI_Controller {
     $Data['Fluktuasi'] = array();
     if ($Sektor == 1) {
       for ($k=1; $k <= 11; $k++) { 
-        $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-0".$k."%'")->result_array();    
+        if ($k < 10) { $Bulan = '0'.$k; }
+        $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-".$Bulan."%'")->result_array();    
         $DataHarga = array();
         for ($j=0; $j < count($TanamanPangan); $j++) { 
           $Temp = array();
@@ -70,7 +71,8 @@ class Super extends CI_Controller {
       }
     } else if ($Sektor == 2) {
       for ($k=1; $k <= 11; $k++) { 
-        $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-0".$k."%'")->result_array();    
+        if ($k < 10) { $Bulan = '0'.$k; }
+        $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-".$Bulan."%'")->result_array();    
         $DataHarga = array();
         for ($j=0; $j < count($Hortikultura); $j++) { 
           $Temp = array();
@@ -93,7 +95,8 @@ class Super extends CI_Controller {
       }
     } else if ($Sektor == 3) {
       for ($k=1; $k <= 11; $k++) { 
-        $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-0".$k."%'")->result_array();    
+        if ($k < 10) { $Bulan = '0'.$k; }
+        $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-".$Bulan."%'")->result_array();    
         $DataHarga = array();
         for ($j=0; $j < count($Perkebunan); $j++) { 
           $Temp = array();
@@ -116,7 +119,8 @@ class Super extends CI_Controller {
       }
     } else if ($Sektor == 4) {
       for ($k=1; $k <= 11; $k++) { 
-        $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-0".$k."%'")->result_array();    
+        if ($k < 10) { $Bulan = '0'.$k; }
+        $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-".$Bulan."%'")->result_array();    
         $DataHarga = array();
         for ($j=0; $j < count($Peternakan); $j++) { 
           $Temp = array();
@@ -139,7 +143,8 @@ class Super extends CI_Controller {
       }
     } else if ($Sektor == 5) {
       for ($k=1; $k <= 11; $k++) { 
-        $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-0".$k."%'")->result_array();    
+        if ($k < 10) { $Bulan = '0'.$k; }
+        $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-".$Bulan."%'")->result_array();    
         $DataHarga = array();
         for ($j=0; $j < count($Perikanan); $j++) { 
           $Temp = array();
@@ -162,7 +167,7 @@ class Super extends CI_Controller {
       }
     }
     $Data['Laju'] = array();
-    for ($j=1; $j < 9; $j++) { 
+    for ($j=1; $j < 11; $j++) { 
       $Temp = array();
       for ($i=0; $i < count($Data['Fluktuasi'][0]); $i++) { 
         $Harga = $Data['Fluktuasi'][$j][$i];

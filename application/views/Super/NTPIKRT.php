@@ -2,7 +2,7 @@
             <div class="row">
               <div class="col-lg-12">
                 <div class="row mt-1">
-                  <div class="col-lg-8 col-sm-12">
+                  <div class="col-lg-12 col-sm-12">
                     <div class="table-responsive">
                       <table class="table table-sm table-bordered table-striped">
                         <thead class="bg-danger">
