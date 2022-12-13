@@ -675,8 +675,8 @@ class IDE extends CI_Controller {
         }
         if ($Total < 356) {
           for ($k=0; $k < 11; $k++) { 
-            $Tampung[$k] += (3*(356-$Total));
-            $_Tampung[$k] += (3*(356-$Total));
+            $Tampung[$k] += (2*(356-$Total));
+            $_Tampung[$k] += (2*(356-$Total));
           }
           $Titip += 356-$Total;
         }
