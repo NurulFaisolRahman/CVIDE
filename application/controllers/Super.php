@@ -367,7 +367,7 @@ class Super extends CI_Controller {
     $ITSeries = $IBSeries = $NTPSeries = array();
     for ($k=1; $k <= 11; $k++) { 
       if ($k < 10) { $Bulan = '0'.$k; }
-      $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-0".$Bulan."%'")->result_array();    
+      $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga FROM `ntpprodusen` WHERE TanggalSurvei LIKE '2022-".$Bulan."%'")->result_array();    
       $Data['NTPTanamanPangan'] = $Data['NTPHortikultura'] = $Data['NTPPerkebunan'] = $Data['NTPPeternakan'] = $Data['NTPPerikanan'] = $Data['NTP'] = 0;
       if (count($DataProdusen) > 0) {
         $TempITSeries = $TempIBSeries = $TempNTPSeries = array();
@@ -566,7 +566,7 @@ class Super extends CI_Controller {
     for ($k=1; $k <= 11; $k++) { 
       if ($k < 10) { $Bulan = '0'.$k; }
       $IKRT = $_IKRT = $BahanMakanan = $_BahanMakanan = $MakananJadi = $_MakananJadi = $Perumahan = $_Perumahan = $Sandang = $_Sandang = $Kesehatan = $_Kesehatan = $Pendidikan = $_Pendidikan = $Transportasi = $_Transportasi = 0;
-      $DataKonsumen = $this->db->query("SELECT KodeKualitas,Harga FROM `ntpkonsumen` WHERE TanggalSurvei LIKE '2022-0".$Bulan."%'")->result_array(); 
+      $DataKonsumen = $this->db->query("SELECT KodeKualitas,Harga FROM `ntpkonsumen` WHERE TanggalSurvei LIKE '2022-".$Bulan."%'")->result_array(); 
       // if (count($DataKonsumen) > 0) {
         foreach ($DataKonsumen as $key) {
           $Pisah = explode("|",$key['KodeKualitas']);
