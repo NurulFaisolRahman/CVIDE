@@ -77,10 +77,7 @@
                       <select class="custom-select" id="Instansi" onchange="Instansi()">                    
                         <option value="0">Klik Disini</option>
                         <option value="1">OPD</option>
-                        <option value="2">Kecamatan</option>
                         <option value="3">Kelurahan</option>
-                        <option value="4">Desa</option>
-                        <option value="5">Lainnya</option>
                       </select>
                     </div>
                   </div>
@@ -553,10 +550,10 @@
         document.getElementById("InputDesa").style.display = 'none' 
       } else if ($("#Instansi").val() == '1') {
         document.getElementById("InputOPD").style.display = 'block' 
-        document.getElementById("Portal").style.display = 'block' 
+        document.getElementById("Portal").style.display = 'none' 
         document.getElementById("Publikasi").style.display = 'block'
         document.getElementById("TTE").style.display = 'none' 
-        document.getElementById("Jaringan").style.display = 'block'  
+        document.getElementById("Jaringan").style.display = 'none'  
         document.getElementById("InputKecamatan").style.display = 'none' 
         document.getElementById("InputDesa").style.display = 'none' 
       } else {
@@ -571,7 +568,7 @@
         } else if ($("#Instansi").val() == '3') {
           document.getElementById("Portal").style.display = 'none' 
           document.getElementById("Publikasi").style.display = 'none'   
-          document.getElementById("TTE").style.display = 'block' 
+          document.getElementById("TTE").style.display = 'none' 
           document.getElementById("Jaringan").style.display = 'block'
         } else if ($("#Instansi").val() == '4') {
           document.getElementById("Portal").style.display = 'none' 
@@ -613,13 +610,7 @@
         } else {
           var Cek = false
           if ($("#Instansi").val() === "1") {
-            for (let i = 1; i <= 40; i++) {
-              if ($("input[name='Input"+i+"']:checked").val() == undefined) {
-                Cek = true
-                break
-              }
-            }
-            for (let i = 61; i <= 80; i++) {
+            for (let i = 21; i <= 40; i++) {
               if ($("input[name='Input"+i+"']:checked").val() == undefined) {
                 Cek = true
                 break
@@ -639,7 +630,7 @@
               }
             }    
           } else if ($("#Instansi").val() === "3") {
-            for (let i = 41; i <= 80; i++) {
+            for (let i = 61; i <= 80; i++) {
               if ($("input[name='Input"+i+"']:checked").val() == undefined) {
                 Cek = true
                 break
@@ -679,10 +670,10 @@
                         Nilai: Nilai }
             $("#Kirim").attr("disabled", true);                              
             $("#LoadingInput").show();
-            $.post(BaseURL+"IDE/InputKominfo", Data).done(function(Respon) {
+            $.post(BaseURL+"IDE/Input_Kominfo", Data).done(function(Respon) {
               if (Respon == '1') {
                 alert('Terima Kasih Telah Mengisi Survei!')
-                window.location = BaseURL + "IDE/SurveiKominfo"
+                window.location = BaseURL + "IDE/Survei_Kominfo"
               } else {
                 alert(Respon)
                 $("#LoadingInput").hide();

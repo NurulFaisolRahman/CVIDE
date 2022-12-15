@@ -729,6 +729,12 @@ class IDE extends CI_Controller {
     array_push($Data['IKMKecamatan'],$DataIKMKecamatan);
     $this->load->view('RekapSurveiIKM',$Data);
   }
+
+  public function Survei_Kominfo(){
+    $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
+    $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.01.%'")->result_array();
+    $this->load->view('Survei_Kominfo',$Data);
+  }
   
   public function SurveiKominfo(){
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
@@ -1145,6 +1151,16 @@ class IDE extends CI_Controller {
     }
   }
 
+  public function Input_Kominfo(){
+    $_POST['Nama'] = htmlentities($_POST['Nama']);
+    $this->db->insert('kominfoo',$_POST);
+    if ($this->db->affected_rows()){
+      echo '1';
+    } else {
+      echo 'Gagal Mengirim Survei!';
+    }
+  }
+
   public function InputIKM(){
     if($this->db->get_where('ikmdesa', array('NIK' => $_POST['NIK']))->num_rows() === 0){
       $_POST['Nama'] = htmlentities($_POST['Nama']);
@@ -1210,30 +1226,15 @@ class IDE extends CI_Controller {
   }
 
   public function InfoSurveiKominfo(){
-    // OPD & kec: 1-10 + 61-70
-    // kel : 41-50 & 21-30
-    // desa : 41-50 + 61-70
-    // masy umum : 1-10
-    // $Average[$i] = str_replace(".",",",round($Tampung[$i]/$Data['Responden'][0],2));
-    //   $Tertimbang[$i] = str_replace(".",",",round(($Tampung[$i]/$Data['Responden'][0])*(1/11),2));
-    //   $Konversi[$i] = ($Tampung[$i]/$Data['Responden'][0])*(1/11)*25;
-    // }
-    // array_push($Data['Rata2'], $Average);
-    // array_push($Data['Tertimbang'], $Tertimbang);
-    // $Data['NilaiIndeks'][0] = str_replace(".",",",round(array_sum($Konversi),2));
-    // if ($Data['NilaiIndeks'][0] < 65) {
-    //   $Data['MutuPelayanan'][0] = 'D';
-    //   $Data['KinerjaUnit'][0] = 'Tidak Baik';
-    // } else if ($Data['NilaiIndeks'][0] < 76.61) {
-    //   $Data['MutuPelayanan'][0] = 'C';
-    //   $Data['KinerjaUnit'][0] = 'Kurang Baik';
-    // } else if ($Data['NilaiIndeks'][0] < 88.31) {
-    //   $Data['MutuPelayanan'][0] = 'B';
-    //   $Data['KinerjaUnit'][0] = 'Baik';
-    // } else {
-    //   $Data['MutuPelayanan'][0] = 'A';
-    //   $Data['KinerjaUnit'][0] = 'Sangat Baik';
-    // }
+    // 1. Portal Data
+    // 2. Publikasi & Komunikasi Publik
+    // 3. TTE & Keamanan Informasi
+    // 4. Monev Jaringan & Pengembangan Aplikasi
+    // OPD : Portal Data + Monev Jaringan & Pengembangan Aplikasi + Publikasi & Komunikasi Publik 1-20 + 61-80 + 21-40
+    // Kecamatan : Portal Data + Monev Jaringan & Pengembangan Aplikasi 1-20 + 61-80
+    // Kelurahan : Tanda Tangan Elektronik (TTE) & Keamanan Informasi + Monev Jaringan & Pengembangan Aplikasi 41-60 + 61-80
+    // Desa : Tanda Tangan Elektronik (TTE) & Keamanan Informasi + Monev Jaringan & Pengembangan Aplikasi 41-60 + 61-80
+    // Lainnya : Portal Data 1-20
     $Data['Data'] = array();
     array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi != 2 && Instansi != 3 && Instansi != 4 && Instansi != 5')->num_rows());
     array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 2))->num_rows());
