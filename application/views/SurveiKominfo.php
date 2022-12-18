@@ -226,7 +226,7 @@
                   </div>
                   <div class="col-sm-12 my-1" id="Publikasi" style="display: none;">
                     <div class="row">
-                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN PUBLIKASI DAN KOMUNIKASI PUBLIK</b></div> 
+                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN PUBLIKASI DAN KOMUNIKASI PUBLIK (PPID,Pengaduan,Konten Instagram/Berita Banyuwangi/Konten Radio, dll)</b></div> 
                       <?php 
                         $Tanya = array('Bagaimanakah tingkat kemudahan persyaratan dalam mendapatkan pelayanan publikasi dan komunikasi publik dari Dinas Kominfo dan Persandian Kab. Banyuwangi?',
                                       'Bagaimanakah kemudahan prosedur pelayanan publikasi dan komunikasi publik di Dinas Kominfo dan Persandian Kab. Banyuwangi?',
@@ -272,7 +272,7 @@
                           </div>
                         </div> 
                       <?php } ?>
-                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>HARAPAN RESPONDEN TENTANG PELAYANAN PUBLIKASI DAN KOMUNIKASI PUBLIK</b></div> 
+                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>HARAPAN RESPONDEN TENTANG PELAYANAN PUBLIKASI DAN KOMUNIKASI PUBLIK (PPID,Pengaduan,Konten Instagram/Berita Banyuwangi/Konten Radio, dll)</b></div> 
                       <?php 
                         $Tanya = array('Persyaratan dalam mendapatkan pelayanan publikasi dan komunikasi publik dari Dinas Kominfo dan Persandian Kab. Banyuwangi harus mudah',
                                       'Prosedur pelayanan publikasi dan komunikasi publik di Dinas Kominfo dan Persandian Kab. Banyuwangi harus mudah',
@@ -565,7 +565,7 @@
         document.getElementById("InputOPD").style.display = 'none'  
         if ($("#Instansi").val() == '2') {
           document.getElementById("Portal").style.display = 'block' 
-          document.getElementById("Publikasi").style.display = 'none'
+          document.getElementById("Publikasi").style.display = 'block'
           document.getElementById("TTE").style.display = 'none' 
           document.getElementById("Jaringan").style.display = 'block'   
         } else if ($("#Instansi").val() == '3') {
@@ -626,7 +626,7 @@
               }
             }
           } else if ($("#Instansi").val() === "2") {
-            for (let i = 1; i <= 20; i++) {
+            for (let i = 1; i <= 40; i++) {
               if ($("input[name='Input"+i+"']:checked").val() == undefined) {
                 Cek = true
                 break
