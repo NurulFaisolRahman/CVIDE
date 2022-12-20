@@ -90,7 +90,7 @@
                               <td class="align-middle"><b><?=$Fluktuasi[10][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[11][$i]?></b></td>
                             </tr>
-                            <tr class="text-light align-middle bg-warning">
+                            <tr class="text-light align-middle bg-success">
                               <td class="align-middle"><b>#</b></td>
                               <td class="align-middle"><b>Laju</b></td>
                               <td class="align-middle"><b>0</b></td>
