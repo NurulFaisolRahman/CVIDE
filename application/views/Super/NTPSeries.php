@@ -20,6 +20,7 @@
                           <th class="align-middle">November</th>
                           <th class="align-middle">Desember</th>
                           <th class="align-middle bg-primary">Semester 2</th>
+                          <th class="align-middle bg-warning">NTP 2022</th>
                         </tr>
                       </thead>
                       <tbody style="font-size: 12px;" class="bg-primary">
@@ -41,6 +42,7 @@
                           <td class="align-middle"><b><?=number_format($IT[10][$i],2)?></b></td>
                           <td class="align-middle"><b><?=number_format($IT[11][$i],2)?></b></td>
                           <td class="align-middle bg-danger text-center"><b><?=number_format(($IT[6][$i]+$IT[7][$i]+$IT[8][$i]+$IT[9][$i]+$IT[10][$i]+$IT[11][$i])/6,2)?></b></td>
+                          <td class="align-middle bg-success text-center"><b><?=number_format(($IT[0][$i]+$IT[1][$i]+$IT[2][$i]+$IT[3][$i]+$IT[4][$i]+$IT[5][$i]+$IT[6][$i]+$IT[7][$i]+$IT[8][$i]+$IT[9][$i]+$IT[10][$i]+$IT[11][$i])/12,2)?></b></td>
                         </tr>
                         <tr class="text-light align-middle">
                           <td class="align-middle"><b>IB <?=$Sektor[$i]?></b></td>
@@ -58,6 +60,7 @@
                           <td class="align-middle"><b><?=number_format($IB[10][$i],2)?></b></td>
                           <td class="align-middle"><b><?=number_format($IB[11][$i],2)?></b></td>
                           <td class="align-middle bg-danger text-center"><b><?=number_format(($IB[6][$i]+$IB[7][$i]+$IB[8][$i]+$IB[9][$i]+$IB[10][$i]+$IB[11][$i])/6,2)?></b></td>
+                          <td class="align-middle bg-success text-center"><b><?=number_format(($IB[0][$i]+$IB[1][$i]+$IB[2][$i]+$IB[3][$i]+$IB[4][$i]+$IB[5][$i]+$IB[6][$i]+$IB[7][$i]+$IB[8][$i]+$IB[9][$i]+$IB[10][$i]+$IB[11][$i])/12,2)?></b></td>
                         </tr>
                         <tr class="text-light align-middle">
                           <td class="align-middle"><b>NTP <?=$Sektor[$i]?></b></td>
@@ -75,8 +78,9 @@
                           <td class="align-middle"><b><?=number_format($NTP[10][$i],2)?></b></td>
                           <td class="align-middle"><b><?=number_format($NTP[11][$i],2)?></b></td>
                           <td class="align-middle bg-danger text-center"><b><?=number_format(($NTP[6][$i]+$NTP[7][$i]+$NTP[8][$i]+$NTP[9][$i]+$NTP[10][$i]+$NTP[11][$i])/6,2)?></b></td>
+                          <td class="align-middle bg-success text-center"><b><?=number_format(($NTP[0][$i]+$NTP[1][$i]+$NTP[2][$i]+$NTP[3][$i]+$NTP[4][$i]+$NTP[5][$i]+$NTP[6][$i]+$NTP[7][$i]+$NTP[8][$i]+$NTP[9][$i]+$NTP[10][$i]+$NTP[11][$i])/12,2)?></b></td>
                         </tr>
-                        <tr><td colspan="15" class="bg-warning"></td></tr>
+                        <tr><td colspan="16" class="bg-warning"></td></tr>
                       <?php } ?>
                       </tbody>
                     </table>
