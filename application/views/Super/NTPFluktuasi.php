@@ -90,21 +90,65 @@
                               <td class="align-middle"><b><?=$Fluktuasi[10][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[11][$i]?></b></td>
                             </tr>
-                            <tr class="text-light align-middle bg-success">
+                            <tr class="text-light align-middle bg-white">
                               <td class="align-middle"><b>#</b></td>
                               <td class="align-middle"><b>Laju</b></td>
                               <td class="align-middle"><b>0</b></td>
-                              <td class="align-middle"><b><?=$Laju[0][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Laju[1][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Laju[2][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Laju[3][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Laju[4][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Laju[5][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Laju[6][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Laju[7][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Laju[8][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Laju[9][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Laju[10][$i]?></b></td>
+                              <?php if ($Laju[0][$i] > 0) { ?>
+                                <td class="align-middle bg-success"><b><?=$Laju[0][$i]?></b></td>
+                              <?php } else if ($Laju[0][$i] < 0) { ?>
+                                <td class="align-middle bg-warning"><b><?=$Laju[0][$i]?></b></td>
+                              <?php } ?>
+                              <?php if ($Laju[1][$i] > 0) { ?>
+                                <td class="align-middle bg-success"><b><?=$Laju[1][$i]?></b></td>
+                              <?php } else if ($Laju[1][$i] < 0) { ?>
+                                <td class="align-middle bg-warning"><b><?=$Laju[1][$i]?></b></td>
+                              <?php } ?>
+                              <?php if ($Laju[2][$i] > 0) { ?>
+                                <td class="align-middle bg-success"><b><?=$Laju[2][$i]?></b></td>
+                              <?php } else if ($Laju[2][$i] < 0) { ?>
+                                <td class="align-middle bg-warning"><b><?=$Laju[2][$i]?></b></td>
+                              <?php } ?>
+                              <?php if ($Laju[3][$i] > 0) { ?>
+                                <td class="align-middle bg-success"><b><?=$Laju[3][$i]?></b></td>
+                              <?php } else if ($Laju[3][$i] < 0) { ?>
+                                <td class="align-middle bg-warning"><b><?=$Laju[3][$i]?></b></td>
+                              <?php } ?>
+                              <?php if ($Laju[4][$i] > 0) { ?>
+                                <td class="align-middle bg-success"><b><?=$Laju[4][$i]?></b></td>
+                              <?php } else if ($Laju[4][$i] < 0) { ?>
+                                <td class="align-middle bg-warning"><b><?=$Laju[4][$i]?></b></td>
+                              <?php } ?>
+                              <?php if ($Laju[5][$i] > 0) { ?>
+                                <td class="align-middle bg-success"><b><?=$Laju[5][$i]?></b></td>
+                              <?php } else if ($Laju[5][$i] < 0) { ?>
+                                <td class="align-middle bg-warning"><b><?=$Laju[5][$i]?></b></td>
+                              <?php } ?>
+                              <?php if ($Laju[6][$i] > 0) { ?>
+                                <td class="align-middle bg-success"><b><?=$Laju[6][$i]?></b></td>
+                              <?php } else if ($Laju[6][$i] < 0) { ?>
+                                <td class="align-middle bg-warning"><b><?=$Laju[6][$i]?></b></td>
+                              <?php } ?>
+                              <?php if ($Laju[7][$i] > 0) { ?>
+                                <td class="align-middle bg-success"><b><?=$Laju[7][$i]?></b></td>
+                              <?php } else if ($Laju[7][$i] < 0) { ?>
+                                <td class="align-middle bg-warning"><b><?=$Laju[7][$i]?></b></td>
+                              <?php } ?>
+                              <?php if ($Laju[8][$i] > 0) { ?>
+                                <td class="align-middle bg-success"><b><?=$Laju[8][$i]?></b></td>
+                              <?php } else if ($Laju[8][$i] < 0) { ?>
+                                <td class="align-middle bg-warning"><b><?=$Laju[8][$i]?></b></td>
+                              <?php } ?>
+                              <?php if ($Laju[9][$i] > 0) { ?>
+                                <td class="align-middle bg-success"><b><?=$Laju[9][$i]?></b></td>
+                              <?php } else if ($Laju[9][$i] < 0) { ?>
+                                <td class="align-middle bg-warning"><b><?=$Laju[9][$i]?></b></td>
+                              <?php } ?>
+                              <?php if ($Laju[10][$i] > 0) { ?>
+                                <td class="align-middle bg-success"><b><?=$Laju[10][$i]?></b></td>
+                              <?php } else if ($Laju[10][$i] < 0) { ?>
+                                <td class="align-middle bg-warning"><b><?=$Laju[10][$i]?></b></td>
+                              <?php } ?>
                             </tr>
                           <?php } ?>
                         </tbody>
