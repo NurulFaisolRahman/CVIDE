@@ -314,6 +314,19 @@ class IDE extends CI_Controller {
     }
   }
 
+  public function PrintSektorNTP(){
+    $Data = $this->db->query("SELECT DISTINCT(NamaResponden) FROM `ntpprodusen` WHERE KodeKualitas LIKE '%IA%' OR KodeKualitas LIKE '%IB%'")->result_array();
+    foreach ($Data as $key) {
+      $Nama = $this->db->query('SELECT * FROM `ntpprodusen` WHERE NamaResponden LIKE "%'.$key['NamaResponden'].'%" AND (KodeKualitas LIKE "%IA%" OR KodeKualitas LIKE "%IB%") ORDER BY TanggalSurvei')->result_array();
+      echo $key['NamaResponden'].'<br>';
+      echo $Nama[0]['KodeKualitas'].'<br>';
+      for ($i=0; $i < count($Nama); $i++) { 
+        echo $Nama[$i]['Harga'].'<br>';
+      }
+      echo '<br>';
+    }
+  }
+
   public function SimulasiNTP(){
     $TanamanPangan = array('IA001001','IA001005','IA001006','IA002001','IA002006','IA003001','IA003006','IA004001','IB001003','IB002001','IB003001','IB005002','IB006001','IB006002','IB009001','JA101001','JA101003','JA101004','JA102003','JA102004','JA201002','JA202001','JA203001','JA204001','JA207001','JB001001','JB001002','JB001003','JB002002','JB004001','JB005001','JB006001','JB007001','JB014001','JB101002','JB102001','JB103001','JB105002','JC001001','JC002001','JC007001','JC009001','JC011001','JC013001','JD001001','JD002001','JD002002','JD002003','JD003002','JD004001','JD005002','JD006001','JD006002','JD006003','JD012001','JD013001','JF001001','JF002001','JF002002','JF005001','JF005002','JF007001','JF008001','JF009001','JF011001','JF012001','JF017001','JF018001','JF019001','JF023001','JF027001','JF028001','JF029001','JF034001','JG003001','JG005001','JG006001','JG012002','KA101101','KA101102','KA201101','KA301101','KA301102','KA401101','KA401102','KA501101','KA501102','KA601101','KA701101','KA801101','KA801102','KA911101','KA911102','KA921101','KA921102','KA961101');
     $NamaTanamanPangan = array('Gabah Kering Giling (GKG) Ciherang','Gabah Kering Giling (GKG) IR 64','Gabah Kering Giling (GKG)','Gabah Kering Panen Ciherang','Gabah Kering Panen','Gabah Kualitas Rendah Ciherang','Gabah Kualitas Rendah','Gabah Ketan Kering Giling ','Jagung','Jagung pipilan kuning','Kacang hijau ','Kacang kedelai putih','Kacang tanah belum dikupas','Kacang tanah dikupas','Talas biasa','Bibit padi cisadane','Bibit padi IR64','Bibit padi','Benih padi IR 64','Benih padi','Jagung','Kacang tanag','Kacang kedelai','Kacang hijau','Talas','urea pusri','urea gresik','urea','SP36','ZA','KCL','NPK','pupuk kandang','petroganik','insektisida (furadan)','fungisida (baycor)','herbisida (DMA-6)','bakterisida (scoor)','sewa tanah ladang (surplus)','sewa tanah sawah (surplus)','sewa traktor tangan (kubota)','sewa penyemprotan hama','sewa tresher','sewa pompa air','ongkos angkut','bensin (premium)','bensin (pertalite)','bensin (pertamax)','solar','oli (mesran)','ban luar motor (IRC)','ban dalam motor (swallow)','ban dalam motor (IRC)','ban dalam motor','tarif servis sepeda','tarif servis motor','tampah/nyiru','karung (goni',' 50 kg)','karung (plastik',' 50 kg)','cangkul (pandai besi)','cangkul (pabrik)','arit/sabit (dengan gagang)','garu','traktor tangan (kubota)','golok','parang','pisau','linggis','ember (plastik diameter 30 cm)','terpal','kapak','mesin pemotong rumput','selang','tangki','biaya pengairan lahan','plastik transparan/mulsa','bambu','tali (rafia)','upah mencangkul (laki2)','upah mencangkul (perempuan)','upah membajak (laki2)','upah penanaman (laki2)','upah penanaman (perempuan)','upah merambet/menyiangi (laki2)','upah merambet/menyiangi (perempuan)','upah pemanenan (laki2)','upah pemanenan (perempuan)','upah pemupukan (laki2)','upah penyemprotan (laki2)','upah perontokan (laki2)','upah perontokan (perempuan)','upah pengeringan (laki2)','upah pengeringan (perempuan)','upah pemipilan (laki2)','upah pemipilan (perempuan)','upah pikul/angkut (laki2)');
