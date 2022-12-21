@@ -94,7 +94,11 @@
               window.location = BaseURL + "Surveyor"
             }
             else if (Respon == '2') {
-              window.location = BaseURL + "Super"
+              if ($("#Username").val() == 'bappedalamongan') {
+                window.location = BaseURL + "Super/NTPSeries" 
+              } else {
+                window.location = BaseURL + "Super" 
+              }
             }
             else {
               alert(Respon)

@@ -60,7 +60,7 @@
                         </ul>
                       </li>
                       <li><a href="<?=base_url('Super/IPM')?>"><b>IPM</b> </a></li>
-                      <?php } if ($Username == 'superadmin') { ?> 
+                      <?php } if ($Username == 'superadmin' || $Username == 'bappedalamongan') { ?> 
                         <li><a><b>Nilai Tukar Petani (NTP)</b><span class="fa fa-chevron-down"></span></a>
                           <ul class="nav child_menu">
                             <li><a href="<?=base_url('Super/NTP')?>"><b>Data Bulanan</b></a></li>
