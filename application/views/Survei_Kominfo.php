@@ -624,12 +624,6 @@
                 break
               }
             }
-            for (let i = 61; i <= 80; i++) {
-              if ($("input[name='Input"+i+"']:checked").val() == undefined) {
-                Cek = true
-                break
-              }
-            }    
           } else if ($("#Instansi").val() === "3") {
             for (let i = 61; i <= 80; i++) {
               if ($("input[name='Input"+i+"']:checked").val() == undefined) {
