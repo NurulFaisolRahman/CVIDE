@@ -1248,12 +1248,16 @@ class IDE extends CI_Controller {
     // Kelurahan : Tanda Tangan Elektronik (TTE) & Keamanan Informasi + Monev Jaringan & Pengembangan Aplikasi 41-60 + 61-80
     // Desa : Tanda Tangan Elektronik (TTE) & Keamanan Informasi + Monev Jaringan & Pengembangan Aplikasi 41-60 + 61-80
     // Lainnya : Portal Data 1-20
+    // =IF(A1=0;"< 20 Tahun";IF(A1=1;"20 - 25 Tahun";IF(A1=2;"26 - 30 Tahun";IF(A1=3;"31 - 35 Tahun";IF(A1=4;"36 - 40 Tahun";IF(A1=5;"41 - 45 Tahun";IF(A1=6;"46 - 50 Tahun";IF(A1=7;"51 - 55 Tahun";IF(A1=8;"56 - 60 Tahun";"> 60 Tahun")))))))))
+    // Kelurahan 41
+    // Lainnya 40 37 40 44 45 48 47
+    // Desa 38 41 45 45 48 48 
     $Data['Data'] = array();
     array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi != 2 && Instansi != 3 && Instansi != 4 && Instansi != 5')->num_rows());
     array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 2))->num_rows());
-    array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 3))->num_rows());
-    array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 4))->num_rows());
-    array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 5))->num_rows());
+    array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 3))->num_rows()+41);
+    array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 4))->num_rows()+217);
+    array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 5))->num_rows()+301);
     $this->load->view('InfoSurveiKominfo',$Data);
   }
 
