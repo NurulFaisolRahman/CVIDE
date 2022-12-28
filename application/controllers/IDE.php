@@ -786,7 +786,7 @@ class IDE extends CI_Controller {
       $Tabel = 'ikmdesa';
       $Data['NamaFile'] = "IKM_Desa".$Data['NamaDesa']."_".$NamaKecamatan."_2022";
       $Data['Lokasi'] = "Desa ".$Data['NamaDesa']." 2022";
-      $Bobot = 2;
+      $Bobot = 3;
     } else if ($Tahun == 2) {
       $Tabel = 'surveiikm';
       $Data['NamaFile'] = "IKM_Desa".$Data['NamaDesa']."_".$NamaKecamatan."_2021";
@@ -912,7 +912,7 @@ class IDE extends CI_Controller {
     if ($Tahun == 1) {
       $Tabel = 'ikmdesa';
       $Data['NamaFile'] = "Rekap_IKM_Kecamatan_".$NamaKecamatan."_2022";
-      $Bobot = 2;
+      $Bobot = 3;
     } else if ($Tahun == 2) {
       $Tabel = 'surveiikm';
       $Data['NamaFile'] = "Rekap_IKM_Kecamatan_".$NamaKecamatan."_2021";;
@@ -994,7 +994,7 @@ class IDE extends CI_Controller {
       $Tabel = 'ikmdesa';
       $Data['NamaFile'] = "IKM_Kecamatan_".$NamaKecamatan."_2022";
       $Data['Lokasi'] = "Kecamatan ".$NamaKecamatan." 2022";
-      $Bobot = 2;
+      $Bobot = 3;
     } else if ($Tahun == 2) {
       $Tabel = 'surveiikm';
       $Data['NamaFile'] = "IKM_Kecamatan_".$NamaKecamatan."_2021";
