@@ -1000,8 +1000,8 @@ td
     <td class="xl69" x:str><?=str_replace(".",",",$Pisah[10])?></td>
     <td class="xl69" x:str><?=str_replace(".",",",$Pisah[11])?></td>
 		<td class="xl69" x:str><?=str_replace(".",",",$Pisah[12])?></td>
-		<td class="xl69" x:str><?=$Pisah[12]==0?'-':($Pisah[12]<43.75?'D':($Pisah[12]<62.5?'C':($Pisah[12]<81.25?'B':'A')));?></td>
-		<td class="xl69" x:str><?=$Pisah[12]==0?'-':($Pisah[12]<43.75?'Tidak Baik':($Pisah[12]<62.5?'Kurang Baik':($Pisah[12]<81.25?'Baik':'Sangat Baik')));?></td>
+		<td class="xl69" x:str><?=$Pisah[12]==0?'-':($Pisah[12]<65?'D':($Pisah[12]<76.61?'C':($Pisah[12]<88.31?'B':'A')));?></td>
+		<td class="xl69" x:str><?=$Pisah[12]==0?'-':($Pisah[12]<65?'Tidak Baik':($Pisah[12]<76.61?'Kurang Baik':($Pisah[12]<88.31?'Baik':'Sangat Baik')));?></td>
    </tr>
    <?php } ?>
    <tr height="20" style='height:15.00pt;'>
@@ -1020,8 +1020,8 @@ td
     <td class="xl73" x:str><?=str_replace(".",",",$IKMKecamatan[10])?></td>
     <td class="xl73" x:str><?=str_replace(".",",",$IKMKecamatan[11])?></td>
     <td class="xl73" x:str><?=str_replace(".",",",$IKMKecamatan[12])?></td>
-		<td class="xl73" x:str><?=$IKMKecamatan[12]==0?'-':($IKMKecamatan[12]<43.75?'D':($IKMKecamatan[12]<62.5?'C':($IKMKecamatan[12]<81.25?'B':'A')));?></td>
-		<td class="xl73" x:str><?=$IKMKecamatan[12]==0?'-':($IKMKecamatan[12]<43.75?'Tidak Baik':($IKMKecamatan[12]<62.5?'Kurang Baik':($IKMKecamatan[12]<81.25?'Baik':'Sangat Baik')));?></td>
+		<td class="xl73" x:str><?=$IKMKecamatan[12]==0?'-':($IKMKecamatan[12]<65?'D':($IKMKecamatan[12]<76.61?'C':($IKMKecamatan[12]<88.31?'B':'A')));?></td>
+		<td class="xl73" x:str><?=$IKMKecamatan[12]==0?'-':($IKMKecamatan[12]<65?'Tidak Baik':($IKMKecamatan[12]<76.61?'Kurang Baik':($IKMKecamatan[12]<88.31?'Baik':'Sangat Baik')));?></td>
    </tr>
   </table>
  </body>
