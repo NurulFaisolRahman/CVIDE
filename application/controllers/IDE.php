@@ -669,6 +669,7 @@ class IDE extends CI_Controller {
     $_Konversi = array(0,0,0,0,0,0,0,0,0,0,0);
     $Kecamatan = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     foreach ($Kecamatan as $KEY) {
+      if ($KEY['Kode']=='35.10.16') { continue; }
       $Responden = 0;
       $Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
       $Konversi = array(0,0,0,0,0,0,0,0,0,0,0);
