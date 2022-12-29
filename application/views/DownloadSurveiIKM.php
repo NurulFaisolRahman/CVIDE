@@ -61,7 +61,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text bg-danger text-light"><b>Desa</b></span>
                                 </div>
-                                <select class="custom-select" id="Desa">                    
+                                <select class="custom-select" id="Desa">
                                   <?php foreach ($Desa as $key) { ?>
                                     <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option>
                                   <?php } ?>                  
@@ -103,7 +103,7 @@
         $("#Kecamatan").change(function (){
           var Pecah = $("#Kecamatan").val().split("|")
           var Desa = { Kode: Pecah[0] }
-          $.post(BaseURL+"IDE/ListDesa", Desa).done(function(Respon) {
+          $.post(BaseURL+"IDE/ListDesaIKM", Desa).done(function(Respon) {
             $('#Desa').html(Respon)
           })    
         })

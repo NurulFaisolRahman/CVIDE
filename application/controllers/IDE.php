@@ -903,6 +903,7 @@ class IDE extends CI_Controller {
   }
 
   public function RekapExcelIKMKecamatan($KodeKecamatan,$NamaKecamatan,$Tahun){
+    $Kelurahan = array('35.10.15.1002','35.10.15.1003','35.10.16.1001','35.10.16.1002','35.10.16.1003','35.10.16.1004','35.10.16.1005','35.10.16.1006','35.10.16.1007','35.10.16.1008','35.10.16.1009','35.10.16.1010','35.10.16.1011','35.10.16.1012','35.10.16.1013','35.10.16.1014','35.10.16.1015','35.10.16.1016','35.10.16.1017','35.10.16.1018','35.10.17.1002','35.10.17.1005','35.10.17.1003','35.10.17.1004','35.10.21.1007','35.10.21.1006','35.10.21.1001','35.10.21.1002');
     $Data['IKMDesa'] = array();$Data['IKMKecamatan'] = array();
     $_Responden = 0;
     $_Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
@@ -922,6 +923,7 @@ class IDE extends CI_Controller {
     }
     $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$KodeKecamatan.".%'")->result_array();
     for ($j = 0; $j < count($Desa); $j++) { 
+      if (in_array($Desa[$j]['Kode'],$Kelurahan)) { continue; }
       $Responden = 0;
       $Tampung = array(0,0,0,0,0,0,0,0,0,0,0);
       $Konversi = array(0,0,0,0,0,0,0,0,0,0,0);
@@ -1213,6 +1215,17 @@ class IDE extends CI_Controller {
     $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$_POST['Kode'].".%"."'")->result_array();
     $OpsiDesa = "";
     foreach ($Desa as $key) {
+      $OpsiDesa .= "<option value='".$key['Kode']."'>".$key['Nama']."</option>";
+    }
+    echo $OpsiDesa;
+  }
+
+  function ListDesaIKM(){
+    $Kelurahan = array('35.10.15.1002','35.10.15.1003','35.10.16.1001','35.10.16.1002','35.10.16.1003','35.10.16.1004','35.10.16.1005','35.10.16.1006','35.10.16.1007','35.10.16.1008','35.10.16.1009','35.10.16.1010','35.10.16.1011','35.10.16.1012','35.10.16.1013','35.10.16.1014','35.10.16.1015','35.10.16.1016','35.10.16.1017','35.10.16.1018','35.10.17.1002','35.10.17.1005','35.10.17.1003','35.10.17.1004','35.10.21.1007','35.10.21.1006','35.10.21.1001','35.10.21.1002');                 
+    $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$_POST['Kode'].".%"."'")->result_array();
+    $OpsiDesa = "";
+    foreach ($Desa as $key) {
+      if (in_array($key['Kode'],$Kelurahan)) { continue; }
       $OpsiDesa .= "<option value='".$key['Kode']."'>".$key['Nama']."</option>";
     }
     echo $OpsiDesa;
