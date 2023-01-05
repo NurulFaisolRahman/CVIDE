@@ -691,8 +691,8 @@ class IDE extends CI_Controller {
         }
         if ($Total < 356) {
           for ($k=0; $k < 11; $k++) { 
-            $Tampung[$k] += (3*(356-$Total));
-            $_Tampung[$k] += (3*(356-$Total));
+            $Tampung[$k] += (2*(356-$Total));
+            $_Tampung[$k] += (2*(356-$Total));
           }
           $Titip += 356-$Total;
         }
@@ -788,7 +788,7 @@ class IDE extends CI_Controller {
       $Tabel = 'ikmdesa';
       $Data['NamaFile'] = "IKM_Desa".$Data['NamaDesa']."_".$NamaKecamatan."_2022";
       $Data['Lokasi'] = "Desa ".$Data['NamaDesa']." 2022";
-      $Bobot = 3;
+      $Bobot = 2;
     } else if ($Tahun == 2) {
       $Tabel = 'surveiikm';
       $Data['NamaFile'] = "IKM_Desa".$Data['NamaDesa']."_".$NamaKecamatan."_2021";
@@ -915,7 +915,7 @@ class IDE extends CI_Controller {
     if ($Tahun == 1) {
       $Tabel = 'ikmdesa';
       $Data['NamaFile'] = "Rekap_IKM_Kecamatan_".$NamaKecamatan."_2022";
-      $Bobot = 3;
+      $Bobot = 2;
     } else if ($Tahun == 2) {
       $Tabel = 'surveiikm';
       $Data['NamaFile'] = "Rekap_IKM_Kecamatan_".$NamaKecamatan."_2021";;
@@ -999,7 +999,7 @@ class IDE extends CI_Controller {
       $Tabel = 'ikmdesa';
       $Data['NamaFile'] = "IKM_Kecamatan_".$NamaKecamatan."_2022";
       $Data['Lokasi'] = "Kecamatan ".$NamaKecamatan." 2022";
-      $Bobot = 3;
+      $Bobot = 2;
     } else if ($Tahun == 2) {
       $Tabel = 'surveiikm';
       $Data['NamaFile'] = "IKM_Kecamatan_".$NamaKecamatan."_2021";
@@ -1123,7 +1123,7 @@ class IDE extends CI_Controller {
       }
       if ($Total < 356) {
         for ($k=0; $k < 11; $k++) { 
-          $Tampung[$k] += (3*(356-$Total));
+          $Tampung[$k] += (2*(356-$Total));
         }
         $Total = 356;
         $Data['Responden'][$j] = 356;
