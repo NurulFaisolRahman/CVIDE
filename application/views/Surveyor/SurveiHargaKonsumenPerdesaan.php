@@ -614,8 +614,8 @@
           var CopyHarga = Pisah[8].split('|')
           // var Copy_Harga = Pisah[9].split('|')
           for (let i = 0; i < Kode.length; i++) {
-            $("#Edit"+Kode[i]).val("")
-            $("#Edit_"+Kode[i]).val("")
+            $("#Copy"+Kode[i]).val("")
+            $("#Copy_"+Kode[i]).val("")
           }
           for (let i = 0; i < CopyKode.length; i++) {
             $("#Copy_"+CopyKode[i]).val(CopyHarga[i])
