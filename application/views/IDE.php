@@ -75,18 +75,18 @@
         <div class="carousel-inner" role="listbox">
 
           <!-- Slide 7 -->
-          <div class="carousel-item active" style="background-image: url('assets/img/slide/Slide7.jpg');">
+          <!-- <div class="carousel-item active" style="background-image: url('assets/img/slide/Slide7.jpg');">
             <div class="carousel-container">
-              <div class="carousel-content container">
+              <div class="carousel-content container"> -->
               <!-- <h2 class="animate__animated animate__fadeInDown" style="color: #FF0000;text-shadow: -1px -1px 0 #ff0, 1px -1px 0 #ff0, -1px 1px 0 #ff0, 1px 1px 0 #ff0;">Welcome to <span>IDE Consultant</span></h2> -->
                 <!-- <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.</p> -->
                 <!-- <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Read More</a> -->
-              </div>
+              <!-- </div>
             </div>
-          </div>
+          </div> -->
 
           <!-- Slide 1 -->
-          <div class="carousel-item" style="background-image: url('assets/img/slide/Slide1.jpg');">
+          <div class="carousel-item active" style="background-image: url('assets/img/slide/Slide1.jpg');">
             <div class="carousel-container">
               <div class="carousel-content container">
               </div>
@@ -266,7 +266,7 @@
           <h2 class="font-weight-bold text-danger">Team</h2>
         </div>
         <div class="row">
-          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+          <!-- <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
             <div class="member">
               <div class="pic"><img src="assets/img/team/PakTitov.jpg" class="img-fluid" alt=""></div>
               <div class="member-info">
@@ -275,64 +275,64 @@
                 <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVTitov"><b>Info</b></button>
               </div>
             </div>
-          </div>
-          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
-            <div class="member">
-              <div class="pic"><img src="assets/img/team/Ibnu.jpg" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Ibnu Dwi Prasetya S.E</h4>
-                <span>Asisten Tenaga Ahli</span>
-                <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVIbnu"><b>Info</b></button>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
-            <div class="member">
-              <div class="pic"><img src="assets/img/team/Noven.jpg" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Noventianus Reonaldi Werang S.E</h4>
-                <span>Asisten Tenaga Ahli</span>
-                <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVNoven"><b>Info</b></button>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+          </div> -->
+          <div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">
             <div class="member">
               <div class="pic"><img src="assets/img/team/Faisol.jpg" class="img-fluid" alt=""></div>
               <div class="member-info">
                 <h4>Nurul Faisol<br>Rahman S.Kom</h4>
                 <span>Tenaga IT</span>
-                <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVFaisol"><b>Info</b></button>
+                <!-- <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVFaisol"><b>Info</b></button> -->
               </div>
             </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+          <div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="member">
+              <div class="pic"><img src="assets/img/team/Ibnu.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Ibnu Dwi Prasetya S.E</h4>
+                <span>Asisten Tenaga Ahli</span>
+                <!-- <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVIbnu"><b>Info</b></button> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="member">
+              <div class="pic"><img src="assets/img/team/Noven.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Noventianus Reonaldi Werang S.E</h4>
+                <span>Asisten Tenaga Ahli</span>
+                <!-- <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVNoven"><b>Info</b></button> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">
             <div class="member">
               <div class="pic"><img src="assets/img/team/Rifta.jpg" class="img-fluid" alt=""></div>
               <div class="member-info">
                 <h4>Rifta Amelia Pratiwi S.E</h4>
                 <span>Asisten Tenaga Ahli</span>
-                <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVRifta"><b>Info</b></button>
+                <!-- <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVRifta"><b>Info</b></button> -->
               </div>
             </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+          <div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">
             <div class="member">
               <div class="pic"><img src="assets/img/team/Rizka.jpg" class="img-fluid" alt=""></div>
               <div class="member-info">
                 <h4>Rizka Firstiani S.E</h4>
                 <span>Asisten Tenaga Ahli</span>
-                <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVRizka"><b>Info</b></button>
+                <!-- <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVRizka"><b>Info</b></button> -->
               </div>
             </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+          <div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">
             <div class="member">
               <div class="pic"><img src="assets/img/team/Sherly.jpg" class="img-fluid" alt=""></div>
               <div class="member-info">
                 <h4>Sherly Novita<br>Anggrianti S.E</h4>
                 <span>Asisten Tenaga Ahli</span>
-                <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVSherly"><b>Info</b></button>
+                <!-- <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVSherly"><b>Info</b></button> -->
               </div>
             </div>
           </div>

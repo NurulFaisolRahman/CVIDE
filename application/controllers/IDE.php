@@ -303,9 +303,9 @@ class IDE extends CI_Controller {
   }
 
   public function PrintNTP(){
-    $Nama = $this->db->query('SELECT DISTINCT(NamaResponden) FROM `ntpprodusen` WHERE NIK=3522080906980006')->result_array();
+    $Nama = $this->db->query('SELECT DISTINCT(NamaResponden) FROM `ntpprodusen` WHERE NIK=3525116310990002')->result_array();
     foreach ($Nama as $key) {
-      $Data = $this->db->query('SELECT * FROM `ntpprodusen` WHERE NIK=3522080906980006 AND NamaResponden='."'".$key['NamaResponden']."'")->result_array();
+      $Data = $this->db->query('SELECT * FROM `ntpprodusen` WHERE NIK=3525116310990002 AND NamaResponden="'.$key['NamaResponden'].'"')->result_array();
       echo $key['NamaResponden'].'<br>';
       echo $Data[0]['KodeKualitas'].'<br>';
       for ($i=0; $i < count($Data); $i++) { 
