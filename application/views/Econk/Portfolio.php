@@ -196,10 +196,6 @@
 				$('#Narasi').summernote({
 					height: 250
 				})
-
-				$('#EditNarasi').summernote({
-					height: 250
-				})
 				
 				$("#Input").click(function() {
 					var File = $('#Thumbnail')[0].files[0]

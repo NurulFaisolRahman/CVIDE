@@ -1,5 +1,6 @@
 <div class="clearfix"></div>
             <div class="row">
+            <?php $Tahun = $this->session->userdata('TahunNTP'); ?>
               <div class="col-lg-12">
                 <div class="row mt-1">
                   <div class="col-lg-3">
@@ -13,6 +14,17 @@
                         <option value="3" <?=$this->uri->segment('3')==3?'selected':'';?>>Perkebunan</option>
                         <option value="4" <?=$this->uri->segment('3')==4?'selected':'';?>>Peternakan</option>
                         <option value="5" <?=$this->uri->segment('3')==5?'selected':'';?>>Perikanan</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-lg-2">
+                    <div class="input-group input-group-sm mb-1">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text bg-danger text-light"><b>NTP Tahun</b></label>
+                      </div>
+                      <select class="custom-select" id="TahunNTP">                    
+                          <option value="2022" <?=$Tahun==2022?'selected':'';?>>2022</option>
+                          <option value="2023" <?=$Tahun==2023?'selected':'';?>>2023</option>
                       </select>
                     </div>
                   </div>
@@ -45,6 +57,7 @@
                             <th class="align-middle">Maret</th>
                             <th class="align-middle">April</th>
                             <th class="align-middle">Mei</th>
+                          <?php if ($Tahun == 2022) { ?>
                             <th class="align-middle">Juni</th>
                             <th class="align-middle">Juli</th>
                             <th class="align-middle">Agustus</th>
@@ -52,6 +65,7 @@
                             <th class="align-middle">Oktober</th>
                             <th class="align-middle">November</th>
                             <th class="align-middle">Desember</th>
+                          <?php } ?>
                           </tr>
                         </thead>
                         <tbody style="font-size: 12px;" class="bg-primary">
@@ -74,6 +88,7 @@
                             $Nama = $NamaPerikanan;
                           }
                           for ($i=0; $i < count($Kode); $i++) { ?>
+                          <?php if ($Fluktuasi[0][$i] != 0) { ?>
                             <tr class="text-light align-middle">
                               <td class="align-middle"><b><?=$Nama[$i]?></b></td>
                               <td class="align-middle"><b><?=$Kode[$i]?></b></td>
@@ -82,6 +97,7 @@
                               <td class="align-middle"><b><?=$Fluktuasi[2][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[3][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[4][$i]?></b></td>
+                            <?php if ($Tahun == 2022) { ?>
                               <td class="align-middle"><b><?=$Fluktuasi[5][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[6][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[7][$i]?></b></td>
@@ -90,6 +106,7 @@
                               <td class="align-middle"><b><?=$Fluktuasi[10][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[11][$i]?></b></td>
                             </tr>
+                            <?php } ?>
                             <tr class="text-light align-middle bg-success">
                               <td class="align-middle"><b>#</b></td>
                               <td class="align-middle"><b>Laju</b></td>
@@ -122,6 +139,7 @@
                               <?php } else { ?>
                                 <td class="align-middle bg-success"><b><?=$Laju[3][$i]?></b></td>
                               <?php } ?>
+                            <?php if ($Tahun == 2022) { ?>
                               <?php if ($Laju[4][$i] > 0.0) { ?>
                                 <td class="align-middle bg-danger"><b><?=$Laju[4][$i]?></b></td>
                               <?php } else if ($Laju[4][$i] < 0.0) { ?>
@@ -171,8 +189,9 @@
                               <?php } else { ?>
                                 <td class="align-middle bg-success"><b><?=$Laju[10][$i]?></b></td>
                               <?php } ?>
+                            <?php } ?>
                             </tr>
-                          <?php } ?>
+                          <?php }} ?>
                         </tbody>
                       </table>
                     </div>
@@ -193,7 +212,15 @@
 			$(document).ready(function(){
         var BaseURL = '<?=base_url()?>' 
         $("#TampilkanData").click(function() {
-          window.location = BaseURL + "Super/NTPFluktuasi/" + $("#Sektor").val()                 
+          var Data =  { TahunNTP: $("#TahunNTP").val() }
+          $.post(BaseURL+"Super/Session", Data).done(function(Respon) {
+            if (Respon == '1') {
+              window.location = BaseURL + "Super/NTPFluktuasi/" + $("#Sektor").val()
+            }
+            else {
+              alert(Respon)
+            }
+          })                 
         })
       })
 		</script>

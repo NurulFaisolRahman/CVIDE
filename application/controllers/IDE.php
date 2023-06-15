@@ -302,29 +302,53 @@ class IDE extends CI_Controller {
     }
   }
 
-  public function PrintNTP(){
-    $Nama = $this->db->query('SELECT DISTINCT(NamaResponden) FROM `ntpprodusen` WHERE NIK=3525116310990002')->result_array();
+  public function NTPP(){
+    $Nama = $this->db->query("SELECT DISTINCT(NamaResponden) FROM `ntpprodusen` WHERE NIK=3525012505970003")->result_array();
     foreach ($Nama as $key) {
-      $Data = $this->db->query('SELECT * FROM `ntpprodusen` WHERE NIK=3525116310990002 AND NamaResponden="'.$key['NamaResponden'].'"')->result_array();
+      $Data = $this->db->query('SELECT * FROM `ntpprodusen` WHERE NIK=3525012505970003 AND NamaResponden="'.$key['NamaResponden'].'"')->result_array();
       echo $key['NamaResponden'].'<br>';
-      echo $Data[0]['KodeKualitas'].'<br>';
+      echo 'Bulan|'.$Data[0]['KodeKualitas'].'<br>';
       for ($i=0; $i < count($Data); $i++) { 
-        echo $Data[$i]['Harga'].'<br>';
+        echo ($i+1)>12?($i-11):($i+1);
+        echo '|'.$Data[$i]['Harga'].'<br>';
+      }
+    }
+  }
+  
+  public function NTPK(){
+    $Nama = $this->db->query("SELECT DISTINCT(NamaResponden) FROM `ntpkonsumen` WHERE NIK=3525012505970003")->result_array();
+    foreach ($Nama as $key) {
+      $Data = $this->db->query('SELECT * FROM `ntpkonsumen` WHERE NIK=3525012505970003 AND NamaResponden="'.$key['NamaResponden'].'"')->result_array();
+      echo $key['NamaResponden'].'<br>';
+      echo 'Bulan|'.$Data[0]['KodeKualitas'].'<br>';
+      for ($i=0; $i < count($Data); $i++) { 
+        echo ($i+1)>12?($i-11):($i+1);
+        echo '|'.$Data[$i]['Harga'].'<br>';
       }
     }
   }
 
-  public function PrintSektorNTP(){
-    $Data = $this->db->query("SELECT DISTINCT(NamaResponden) FROM `ntpprodusen` WHERE KodeKualitas LIKE '%IA%' OR KodeKualitas LIKE '%IB%'")->result_array();
-    foreach ($Data as $key) {
-      $Nama = $this->db->query('SELECT * FROM `ntpprodusen` WHERE NamaResponden LIKE "%'.$key['NamaResponden'].'%" AND (KodeKualitas LIKE "%IA%" OR KodeKualitas LIKE "%IB%") ORDER BY TanggalSurvei')->result_array();
-      echo $key['NamaResponden'].'<br>';
-      echo $Nama[0]['KodeKualitas'].'<br>';
-      for ($i=0; $i < count($Nama); $i++) { 
-        echo $Nama[$i]['Harga'].'<br>';
+  public function SektorNTP(){
+    $_Data = $this->db->query("SELECT KodeKualitas FROM `ntpprodusen` WHERE TanggalSurvei LIKE '%2022%'")->result_array();
+    $Data = $this->db->query("SELECT KodeKualitas FROM `ntpprodusen` WHERE TanggalSurvei LIKE '%2023%'")->result_array();
+    $_Kode = array();$Kode = array();
+    foreach ($_Data as $key) {
+      $Pisah = explode("|",$key['KodeKualitas']);
+      for ($i=0; $i < count($Pisah); $i++) {
+        if (!in_array($Pisah[$i],$_Kode)) {
+          array_push($_Kode,$Pisah[$i]);
+        }
       }
-      echo '<br>';
     }
+    foreach ($Data as $key) {
+      $Pisah = explode("|",$key['KodeKualitas']);
+      for ($i=0; $i < count($Pisah); $i++) {
+        if (!in_array($Pisah[$i],$Kode)) {
+          array_push($Kode,$Pisah[$i]);
+        }
+      }
+    }
+    echo implode("|",array_diff($_Kode,$Kode));
   }
 
   public function SimulasiNTP(){
@@ -532,7 +556,8 @@ class IDE extends CI_Controller {
                            'KodeKecamatan' => '35.10.01',
                            'KodeDesa' => '35.10.01.2001',
                            'JenisData' => 'Kabupaten',
-                           'BulanNTP' => '01');
+                           'BulanNTP' => '01',
+                           'TahunNTP' => '2022');
           $this->session->set_userdata($Session);
           echo '2';
         } else {

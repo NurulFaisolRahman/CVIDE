@@ -1,25 +1,37 @@
           <div class="clearfix"></div>
             <div class="row">
+            <?php $Tahun = $this->session->userdata('TahunNTP'); ?>
               <div class="col-lg-12">
                 <div class="row mt-1">
-                    <div class="col-lg-3">
-                      <div class="input-group input-group-sm mb-1">
-                        <div class="input-group-prepend">
-                          <label class="input-group-text bg-danger text-light"><b>Data Bulan</b></label>
-                        </div>
-                        <select class="custom-select" id="BulanNTP">                    
-                          <?php $BulanNTP = array('01' => 'Januari','02' => 'Februari','03' => 'Maret','04' => 'April','05' => 'Mei','06' => 'Juni',
-                                                  '07' => 'Juli','08' => 'Agustus','09' => 'September','10' => 'Oktober','11' => 'November','12' => 'Desember'); 
-                          foreach ($BulanNTP as $key => $value) { ?>
-                            <option value="<?=$key?>" <?=$this->session->userdata('BulanNTP')==$key?'selected':'';?>><?=$value?></option>
-                          <?php } ?>
-                        </select>
+                  <div class="col-lg-2">
+                    <div class="input-group input-group-sm mb-1">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text bg-danger text-light"><b>Bulan</b></label>
                       </div>
-                    </div>
-                    <div class="col-lg-3">
-                      <div class="btn btn-sm btn-danger border-light" id="TampilkanData"><b>Tampilkan</b></div>
+                      <select class="custom-select" id="BulanNTP">                    
+                        <?php $BulanNTP = array('01' => 'Januari','02' => 'Februari','03' => 'Maret','04' => 'April','05' => 'Mei','06' => 'Juni',
+                                                '07' => 'Juli','08' => 'Agustus','09' => 'September','10' => 'Oktober','11' => 'November','12' => 'Desember'); 
+                        foreach ($BulanNTP as $key => $value) { ?>
+                          <option value="<?=$key?>" <?=$this->session->userdata('BulanNTP')==$key?'selected':'';?>><?=$value?></option>
+                        <?php } ?>
+                      </select>
                     </div>
                   </div>
+                  <div class="col-lg-2">
+                    <div class="input-group input-group-sm mb-1">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text bg-danger text-light"><b>NTP Tahun</b></label>
+                      </div>
+                      <select class="custom-select" id="TahunNTP">                    
+                          <option value="2022" <?=$Tahun==2022?'selected':'';?>>2022</option>
+                          <option value="2023" <?=$Tahun==2023?'selected':'';?>>2023</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="btn btn-sm btn-danger border-light" id="TampilkanData"><b>Tampilkan</b></div>
+                  </div>
+                </div>
                 <div class="row mt-1">
                   <div class="col-lg-3 mb-1 col-sm-12 text-center">
                     <div class="card">
@@ -87,7 +99,7 @@
 			$(document).ready(function(){
         var BaseURL = '<?=base_url()?>' 
         $("#TampilkanData").click(function() {
-          var Data =  { BulanNTP: $("#BulanNTP").val() }
+          var Data =  { BulanNTP: $("#BulanNTP").val(), TahunNTP: $("#TahunNTP").val() }
           $.post(BaseURL+"Super/Session", Data).done(function(Respon) {
             if (Respon == '1') {
               window.location = BaseURL + "Super/NTP"
