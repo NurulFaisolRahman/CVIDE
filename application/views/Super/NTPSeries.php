@@ -19,7 +19,7 @@
                     </div>
                   </div>
                   <?php if ($Tahun == 2023) { ?>
-                    <div class="col-6">
+                    <div class="col-7">
                   <?php } if ($Tahun == 2022) { ?>
                     <div class="col-12">
                   <?php } ?>

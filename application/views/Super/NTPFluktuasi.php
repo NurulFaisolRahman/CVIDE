@@ -57,8 +57,8 @@
                             <th class="align-middle">Maret</th>
                             <th class="align-middle">April</th>
                             <th class="align-middle">Mei</th>
-                          <?php if ($Tahun == 2022) { ?>
                             <th class="align-middle">Juni</th>
+                          <?php if ($Tahun == 2022) { ?>
                             <th class="align-middle">Juli</th>
                             <th class="align-middle">Agustus</th>
                             <th class="align-middle">September</th>
