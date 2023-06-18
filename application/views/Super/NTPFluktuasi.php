@@ -97,8 +97,8 @@
                               <td class="align-middle"><b><?=$Fluktuasi[2][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[3][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[4][$i]?></b></td>
-                            <?php if ($Tahun == 2022) { ?>
                               <td class="align-middle"><b><?=$Fluktuasi[5][$i]?></b></td>
+                            <?php if ($Tahun == 2022) { ?>
                               <td class="align-middle"><b><?=$Fluktuasi[6][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[7][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[8][$i]?></b></td>
