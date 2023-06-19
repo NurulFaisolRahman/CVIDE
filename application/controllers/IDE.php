@@ -316,9 +316,9 @@ class IDE extends CI_Controller {
   }
   
   public function NTPK(){
-    $Nama = $this->db->query("SELECT DISTINCT(NamaResponden) FROM `ntpkonsumen` WHERE NIK=3525012505970003")->result_array();
+    $Nama = $this->db->query("SELECT DISTINCT(NamaResponden) FROM `ntpkonsumen`")->result_array();
     foreach ($Nama as $key) {
-      $Data = $this->db->query('SELECT * FROM `ntpkonsumen` WHERE NIK=3525012505970003 AND NamaResponden="'.$key['NamaResponden'].'"')->result_array();
+      $Data = $this->db->query('SELECT * FROM `ntpkonsumen` WHERE NamaResponden="'.$key['NamaResponden'].'"')->result_array();
       echo $key['NamaResponden'].'<br>';
       echo 'Bulan|'.$Data[0]['KodeKualitas'].'<br>';
       for ($i=0; $i < count($Data); $i++) { 
