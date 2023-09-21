@@ -29,10 +29,10 @@
                             <th class="align-middle">April</th>
                             <th class="align-middle">Mei</th>
                             <th class="align-middle">Juni</th>
-                          <?php if ($Tahun == 2022) { ?>
                             <th class="align-middle">Juli</th>
                             <th class="align-middle">Agustus</th>
                             <th class="align-middle">September</th>
+                          <?php if ($Tahun == 2022) { ?>
                             <th class="align-middle">Oktober</th>
                             <th class="align-middle">November</th>
                             <th class="align-middle">Desember</th>
