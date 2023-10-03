@@ -266,7 +266,7 @@
           <h2 class="font-weight-bold text-danger">Team</h2>
         </div>
         <div class="row">
-          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+          <div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">
             <div class="member">
               <div class="pic"><img src="assets/img/team/PakTitov.jpg" class="img-fluid" alt=""></div>
               <div class="member-info">
