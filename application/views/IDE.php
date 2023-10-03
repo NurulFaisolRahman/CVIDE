@@ -266,23 +266,13 @@
           <h2 class="font-weight-bold text-danger">Team</h2>
         </div>
         <div class="row">
-          <!-- <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
             <div class="member">
               <div class="pic"><img src="assets/img/team/PakTitov.jpg" class="img-fluid" alt=""></div>
               <div class="member-info">
                 <h4>Titov Chuk’s<br>Mayvani S.E., M.E</h4>
                 <span>Pembina dan Penasehat</span>
-                <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVTitov"><b>Info</b></button>
-              </div>
-            </div>
-          </div> -->
-          <div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">
-            <div class="member">
-              <div class="pic"><img src="assets/img/team/Faisol.jpg" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Nurul Faisol<br>Rahman S.Kom</h4>
-                <span>Tenaga IT</span>
-                <!-- <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVFaisol"><b>Info</b></button> -->
+                <!-- <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVTitov"><b>Info</b></button> -->
               </div>
             </div>
           </div>
@@ -328,14 +318,24 @@
           </div>
           <div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">
             <div class="member">
-              <div class="pic"><img src="assets/img/team/Sherly.jpg" class="img-fluid" alt=""></div>
+              <div class="pic"><img src="assets/img/team/Faisol.jpg" class="img-fluid" alt=""></div>
               <div class="member-info">
-                <h4>Sherly Novita<br>Anggrianti S.E</h4>
-                <span>Asisten Tenaga Ahli</span>
-                <!-- <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVSherly"><b>Info</b></button> -->
+                <h4>Nurul Faisol<br>Rahman S.Kom</h4>
+                <span>Tenaga IT</span>
+                <!-- <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVFaisol"><b>Info</b></button> -->
               </div>
             </div>
           </div>
+          <!-- <div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="member">
+              <div class="pic"><img src="assets/img/team/Sherly.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Sherly Novita<br>Anggrianti S.E</h4>
+                <span>Asisten Tenaga Ahli</span> -->
+                <!-- <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVSherly"><b>Info</b></button> -->
+              <!-- </div>
+            </div>
+          </div> -->
         </div>
       </div>
     </section>
