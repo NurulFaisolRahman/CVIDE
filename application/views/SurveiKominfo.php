@@ -226,7 +226,7 @@
                   </div>
                   <div class="col-sm-12 my-1" id="Publikasi" style="display: none;">
                     <div class="row">
-                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN PUBLIKASI DAN KOMUNIKASI PUBLIK (PPID,Pengaduan,Konten Instagram/Berita Banyuwangi/Konten Radio, dll)</b></div> 
+                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN PUBLIKASI DAN KOMUNIKASI PUBLIK (PPID,Pengaduan,Konten Instagram/Berita Banyuwangi/Call Center 112, dll)</b></div> 
                       <?php 
                         $Tanya = array('Bagaimanakah tingkat kemudahan persyaratan dalam mendapatkan pelayanan publikasi dan komunikasi publik dari Dinas Kominfo dan Persandian Kab. Banyuwangi?',
                                       'Bagaimanakah kemudahan prosedur pelayanan publikasi dan komunikasi publik di Dinas Kominfo dan Persandian Kab. Banyuwangi?',
@@ -272,7 +272,7 @@
                           </div>
                         </div> 
                       <?php } ?>
-                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>HARAPAN RESPONDEN TENTANG PELAYANAN PUBLIKASI DAN KOMUNIKASI PUBLIK (PPID,Pengaduan,Konten Instagram/Berita Banyuwangi/Konten Radio, dll)</b></div> 
+                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>HARAPAN RESPONDEN TENTANG PELAYANAN PUBLIKASI DAN KOMUNIKASI PUBLIK (PPID,Pengaduan,Konten Instagram/Berita Banyuwangi/Call Center 112, dll)</b></div> 
                       <?php 
                         $Tanya = array('Persyaratan dalam mendapatkan pelayanan publikasi dan komunikasi publik dari Dinas Kominfo dan Persandian Kab. Banyuwangi harus mudah',
                                       'Prosedur pelayanan publikasi dan komunikasi publik di Dinas Kominfo dan Persandian Kab. Banyuwangi harus mudah',
@@ -513,6 +513,102 @@
                       <?php } ?>
                     </div>
                   </div>
+                  <div class="col-sm-12 my-1" id="Radio" style="display: none;">
+                    <div class="row">
+                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN RADIO BLAMBANGAN</b></div> 
+                      <?php 
+                        $Tanya = array('Bagaimanakah tingkat kemudahan persyaratan dalam mendapatkan pelayanan radio blambangan dari Dinas Kominfo dan Persandian Kab. Banyuwangi?',
+                                      'Bagaimanakah kemudahan prosedur pelayanan radio blambangan di Dinas Kominfo dan Persandian Kab. Banyuwangi?',
+                                      'Bagaimanakah kecepatan pelayanan radio blambangan di Dinas Kominfo dan Persandian Kab. Banyuwangi?',
+                                      'Bagaimanakah kewajaran biaya (apabila dikenakan biaya) terhadap jenis pelayanan radio blambangan yang diberikan oleh Dinas Kominfo dan Persandian Kab. Banyuwangi?',
+                                      'Apakah hasil pelayanan radio blambangan yang diberikan oleh Dinas Kominfo dan Persandian sudah sesuai dengan yang Anda harapkan/inginkan?',
+                                      'Bagaimanakah kemampuan petugas Dinas Kominfo dan Persandian Kab. Banyuwangi dalam  memberikan pelayanan?',
+                                      'Bagaimanakah sikap (kesopanan dan keramahan) petugas Dinas Kominfo dan Persandian Kab. Banyuwangi dalam memberikan pelayanan?',
+                                      'Bagaimanakah penanganan terhadap pengaduan, saran dan masukan pelayanan yang dilakukan  Dinas Kominfo dan Persandian Kab. Banyuwangi?',
+                                      'Bagaimanakah sarana dan prasarana pelayanan publik yang dimiliki Dinas Kominfo dan Persandian Kab. Banyuwangi?',
+                                      'Menurut anda, bagaimanakah keamanan pelayanan di Dinas Kominfo dan Persandian Kab. Banyuwangi?'); 
+                        $Opsi = array('1. Tidak Mudah 2. Kurang Mudah 3. Mudah 4. Sangat Mudah',
+                                      '1. Tidak Mudah 2. Kurang Mudah 3. Mudah 4. Sangat Mudah',
+                                      '1. Tidak Cepat 2. Kurang Cepat 3. Cepat 4. Sangat Cepat',
+                                      '1. Tidak Wajar 2. Kurang Wajar 3. Wajar 4. Sangat Wajar',
+                                      '1. Tidak Sesuai 2. Kurang Sesuai 3. Sesuai 4. Sangat Sesuai',
+                                      '1. Tidak Mampu 2. Kurang Mampu 3. Mampu 4. Sangat Mampu',
+                                      '1. Tidak Sopan & Tidak Ramah 2. Kurang Sopan & Kurang Ramah 3. Sopan & Ramah 4. Sangat Sopan & Sangat Ramah',
+                                      '1. Tidak Memuaskan 2. Kurang Memuaskan 3. Memuaskan 4. Sangat Memuaskan',
+                                      '1. Tidak Lengkap 2. Kurang Lengkap 3. Lengkap 4. Sangat Lengkap',
+                                      '1. Tidak Aman 2. Kurang Aman 3. Aman 4. Sangat Aman'
+                            );
+                      ?>
+                      <?php for ($j=0; $j < count($Tanya); $j++) { ?>
+                        <div class="col-sm-6 my-1">
+                          <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                              <p class="input-group-text bg-danger text-white text-justify text-wrap"><b><?=($j+1).'. '.$Tanya[$j]?></b></p>
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-sm-6 bg-primary p-2 my-1">
+                          <div style="font-size: 11pt;" class="text-wrap text-justify font-weight-bold text-white">
+                          <?=$Opsi[$j]?>
+                          </div>
+                          <div class="input-group mt-1">
+                            <?php for ($i=1; $i <= 4; $i++) { ?>
+                              <div class="form-check form-check-inline ml-4">
+                                <input style="transform: scale(1.5);" class="form-check-input" type="radio" name="Input<?=($j+81)?>" id="I<?=($j+1).$i?>" value="<?=$i?>">
+                                <label class="form-check-label font-weight-bold text-white" for="I<?=($j+1).$i?>">&nbsp;<?=$i?></label>
+                              </div>
+                            <?php } ?>
+                          </div>
+                        </div> 
+                      <?php } ?>
+                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>HARAPAN RESPONDEN TENTANG PELAYANAN RADIO BLAMBANGAN</b></div> 
+                      <?php 
+                        $Tanya = array('Persyaratan dalam mendapatkan pelayanan radio blambangan dari Dinas Kominfo dan Persandian Kab. Banyuwangi harus mudah',
+                                      'Prosedur pelayanan radio blambangan di Dinas Kominfo dan Persandian Kab. Banyuwangi harus mudah',
+                                      'Harus cepat dalam memberikan pelayanan radio blambangan',
+                                      'Biaya (apabila dikenakan biaya) yang ditetapkan pada setiap jenis pelayanan radio blambangan harus dalam taraf wajar',
+                                      'Kesediaan layanan radio blambangan yang diberikan oleh Dinas Kominfo dan Persandian harus sesuai dengan kebutuhan yang diinginkan oleh',
+                                      'Petugas Dinas Kominfo dan Persandian Kab. Banyuwangi harus tanggap dan mampu dalam  memberikan pelayanan',
+                                      'Petugas Dinas Kominfo dan Persandian Kab. Banyuwangi harus sopan dan ramah dalam memberikan pelayanan',
+                                      'Dinas Kominfo dan Persandian Kab. Banyuwangi harus memberikan penanganan yang memuaskan terhadap pengaduan, saran dan masukan pelayanan radio',
+                                      'Sarana dan prasarana pelayanan publik yang dimiliki Dinas Kominfo dan Persandian Kab. Banyuwangi harus lengkap',
+                                      'Dinas Kominfo dan Persandian Kab. Banyuwangi harus memberikan keamanan pelayanan pada pengguna layanan radio blambangan'); 
+                        $Opsi = array('1. Tidak Setuju 2. Kurang Setuju 3. Setuju 4. Sangat Setuju',
+                                      '1. Tidak Setuju 2. Kurang Setuju 3. Setuju 4. Sangat Setuju',
+                                      '1. Tidak Setuju 2. Kurang Setuju 3. Setuju 4. Sangat Setuju',
+                                      '1. Tidak Setuju 2. Kurang Setuju 3. Setuju 4. Sangat Setuju',
+                                      '1. Tidak Setuju 2. Kurang Setuju 3. Setuju 4. Sangat Setuju',
+                                      '1. Tidak Setuju 2. Kurang Setuju 3. Setuju 4. Sangat Setuju',
+                                      '1. Tidak Setuju 2. Kurang Setuju 3. Setuju 4. Sangat Setuju',
+                                      '1. Tidak Setuju 2. Kurang Setuju 3. Setuju 4. Sangat Setuju',
+                                      '1. Tidak Setuju 2. Kurang Setuju 3. Setuju 4. Sangat Setuju',
+                                      '1. Tidak Setuju 2. Kurang Setuju 3. Setuju 4. Sangat Setuju'
+                                    ); 
+                      ?>
+                      <?php for ($j=0; $j < count($Tanya); $j++) { ?>
+                        <div class="col-sm-6 my-1">
+                          <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                              <p class="input-group-text bg-danger text-white text-justify text-wrap"><b><?=($j+1).'. '.$Tanya[$j]?></b></p>
+                            </div>
+                          </div>
+                        </div> 
+                        <div class="col-sm-6 bg-primary p-2 my-1">
+                          <div style="font-size: 11pt;" class="text-wrap text-justify font-weight-bold text-white">
+                          <?=$Opsi[$j]?>
+                          </div>
+                          <div class="input-group mt-1">
+                            <?php for ($i=1; $i <= 4; $i++) { ?>
+                              <div class="form-check form-check-inline ml-4">
+                                <input style="transform: scale(1.5);" class="form-check-input" type="radio" name="Input<?=($j+91)?>" id="I<?=($j+1).$i?>" value="<?=$i?>">
+                                <label class="form-check-label font-weight-bold text-white" for="I<?=($j+1).$i?>">&nbsp;<?=$i?></label>
+                              </div>
+                            <?php } ?>
+                          </div>
+                        </div> 
+                      <?php } ?>
+                    </div>
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-sm-6 my-1">
@@ -551,6 +647,7 @@
         document.getElementById("Jaringan").style.display = 'none'
         document.getElementById("InputKecamatan").style.display = 'none' 
         document.getElementById("InputDesa").style.display = 'none' 
+        document.getElementById("Radio").style.display = 'none'
       } else if ($("#Instansi").val() == '1') {
         document.getElementById("InputOPD").style.display = 'block' 
         document.getElementById("Portal").style.display = 'block' 
@@ -559,6 +656,7 @@
         document.getElementById("Jaringan").style.display = 'block'  
         document.getElementById("InputKecamatan").style.display = 'none' 
         document.getElementById("InputDesa").style.display = 'none' 
+        document.getElementById("Radio").style.display = 'none'
       } else {
         document.getElementById("InputKecamatan").style.display = 'block' 
         document.getElementById("InputDesa").style.display = 'block' 
@@ -567,19 +665,23 @@
           document.getElementById("Portal").style.display = 'block' 
           document.getElementById("Publikasi").style.display = 'block'
           document.getElementById("TTE").style.display = 'none' 
+          document.getElementById("Radio").style.display = 'none'
           document.getElementById("Jaringan").style.display = 'block'   
         } else if ($("#Instansi").val() == '3') {
           document.getElementById("Portal").style.display = 'none' 
-          document.getElementById("Publikasi").style.display = 'none'   
+          document.getElementById("Publikasi").style.display = 'none'  
+          document.getElementById("Radio").style.display = 'none' 
           document.getElementById("TTE").style.display = 'block' 
           document.getElementById("Jaringan").style.display = 'block'
         } else if ($("#Instansi").val() == '4') {
           document.getElementById("Portal").style.display = 'none' 
           document.getElementById("Publikasi").style.display = 'none'   
+          document.getElementById("Radio").style.display = 'none'
           document.getElementById("TTE").style.display = 'block' 
           document.getElementById("Jaringan").style.display = 'block'
         } else if ($("#Instansi").val() == '5') {
           document.getElementById("Portal").style.display = 'block' 
+          document.getElementById("Radio").style.display = 'block' 
           document.getElementById("Publikasi").style.display = 'none'
           document.getElementById("TTE").style.display = 'none'   
           document.getElementById("Jaringan").style.display = 'none' 
@@ -659,13 +761,19 @@
                 break
               }
             }
+            for (let i = 81; i <= 100; i++) {
+              if ($("input[name='Input"+i+"']:checked").val() == undefined) {
+                Cek = true
+                break
+              }
+            }
           }
           if (Cek) {
             alert('Ada Pertanyaan Yang Belum Di Isi Mohon Cek Kembali!')
           } 
           else {
             var Poin = []
-            for (let i = 1; i <= 80; i++) {
+            for (let i = 1; i <= 100; i++) {
               Poin.push($("input[name='Input"+i+"']:checked").val())
             }
             var Nilai = Poin.join("|")
