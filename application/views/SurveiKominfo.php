@@ -128,7 +128,7 @@
                   </div>
                   <div class="col-sm-12 my-1" id="Portal" style="display: none;">
                     <div class="row">
-                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN PORTAL DATA</b></div> 
+                      <div class="col-sm-12 my-1 bg-success text-white py-2 "><b>PENDAPAT RESPONDEN TENTANG PELAYANAN PORTAL DATA</b></div> 
                       <?php 
                         $Tanya = array('Bagaimanakah tingkat kemudahan persyaratan dalam mendapatkan pelayanan di Portal Data Kab. Banyuwangi?',
                                       'Bagaimanakah kemudahan prosedur pelayanan di Portal Data Kab. Banyuwangi?',
@@ -175,7 +175,7 @@
                           </div>
                         </div> 
                       <?php } ?>
-                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>HARAPAN RESPONDEN TENTANG PELAYANAN PORTAL DATA</b></div> 
+                      <div class="col-sm-12 my-1 bg-success text-white py-2"><b>HARAPAN RESPONDEN TENTANG PELAYANAN PORTAL DATA</b></div> 
                       <?php 
                         $Tanya = array('Persyaratan dalam mendapatkan pelayanan Portal Data Kab. Banyuwangi harus mudah',
                                       'Prosedur pelayanan Portal Data Kab. Banyuwangi harus mudah',
@@ -226,7 +226,7 @@
                   </div>
                   <div class="col-sm-12 my-1" id="Publikasi" style="display: none;">
                     <div class="row">
-                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN PUBLIKASI DAN KOMUNIKASI PUBLIK (PPID,Pengaduan,Konten Instagram/Berita Banyuwangi/Call Center 112, dll)</b></div> 
+                      <div class="col-sm-12 my-1 bg-warning text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN PUBLIKASI DAN KOMUNIKASI PUBLIK (PPID,Pengaduan,Konten Instagram/Berita Banyuwangi/Call Center 112, dll)</b></div> 
                       <?php 
                         $Tanya = array('Bagaimanakah tingkat kemudahan persyaratan dalam mendapatkan pelayanan publikasi dan komunikasi publik dari Dinas Kominfo dan Persandian Kab. Banyuwangi?',
                                       'Bagaimanakah kemudahan prosedur pelayanan publikasi dan komunikasi publik di Dinas Kominfo dan Persandian Kab. Banyuwangi?',
@@ -272,7 +272,7 @@
                           </div>
                         </div> 
                       <?php } ?>
-                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>HARAPAN RESPONDEN TENTANG PELAYANAN PUBLIKASI DAN KOMUNIKASI PUBLIK (PPID,Pengaduan,Konten Instagram/Berita Banyuwangi/Call Center 112, dll)</b></div> 
+                      <div class="col-sm-12 my-1 bg-warning text-white py-2"><b>HARAPAN RESPONDEN TENTANG PELAYANAN PUBLIKASI DAN KOMUNIKASI PUBLIK (PPID,Pengaduan,Konten Instagram/Berita Banyuwangi/Call Center 112, dll)</b></div> 
                       <?php 
                         $Tanya = array('Persyaratan dalam mendapatkan pelayanan publikasi dan komunikasi publik dari Dinas Kominfo dan Persandian Kab. Banyuwangi harus mudah',
                                       'Prosedur pelayanan publikasi dan komunikasi publik di Dinas Kominfo dan Persandian Kab. Banyuwangi harus mudah',
@@ -322,7 +322,7 @@
                   </div>
                   <div class="col-sm-12 my-1" id="TTE" style="display: none;">
                     <div class="row">
-                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN TANDA TANGAN ELEKTRONIK (TTE) DAN KEAMANAN INFORMASI</b></div> 
+                      <div class="col-sm-12 my-1 bg-dark text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN TANDA TANGAN ELEKTRONIK (TTE) DAN KEAMANAN INFORMASI</b></div> 
                       <?php 
                         $Tanya = array('Bagaimanakah tingkat kemudahan persyaratan dalam mendapatkan pelayanan TTE?',
                                       'Bagaimanakah kemudahan prosedur pelayanan TTE di Dinas Kominfo dan Persandian Kab. Banyuwangi?',
@@ -368,7 +368,7 @@
                           </div>
                         </div> 
                       <?php } ?>
-                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>HARAPAN RESPONDEN TENTANG PELAYANAN TANDA TANGAN ELEKTRONIK (TTE) DAN KEAMANAN INFORMASI</b></div> 
+                      <div class="col-sm-12 my-1 bg-dark text-white py-2"><b>HARAPAN RESPONDEN TENTANG PELAYANAN TANDA TANGAN ELEKTRONIK (TTE) DAN KEAMANAN INFORMASI</b></div> 
                       <?php 
                         $Tanya = array('Persyaratan dalam mendapatkan pelayanan TTE dari Dinas Kominfo dan Persandian Kab. Banyuwangi harus mudah',
                                       'Prosedur pelayanan TTE harus mudah',
@@ -419,7 +419,7 @@
                   </div>
                   <div class="col-sm-12 my-1" id="Jaringan" style="display: none;">
                     <div class="row">
-                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN MONEV JARINGAN DAN PENGEMBANGAN APLIKASI</b></div> 
+                      <div class="col-sm-12 my-1 text-white py-2" style="background-color: #800080;"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN MONEV JARINGAN DAN PENGEMBANGAN APLIKASI</b></div> 
                       <?php 
                         $Tanya = array('Bagaimanakah tingkat kemudahan persyaratan dalam mendapatkan pelayanan monev jaringan dan pengembangan aplikasi?',
                                       'Bagaimanakah kemudahan prosedur pelayanan monev jaringan dan pengembangan aplikasi di Dinas Kominfo dan Persandian Kab. Banyuwangi?',
@@ -465,7 +465,7 @@
                           </div>
                         </div> 
                       <?php } ?>
-                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>HARAPAN RESPONDEN TENTANG PELAYANAN MONEV JARINGAN DAN PENGEMBANGAN APLIKASI</b></div> 
+                      <div class="col-sm-12 my-1 text-white py-2" style="background-color: #800080;"><b>HARAPAN RESPONDEN TENTANG PELAYANAN MONEV JARINGAN DAN PENGEMBANGAN APLIKASI</b></div> 
                       <?php 
                         $Tanya = array('Persyaratan dalam mendapatkan pelayanan monev jaringan dan pengembangan aplikasi dari Dinas Kominfo dan Persandian Kab. Banyuwangi harus mudah',
                                       'Prosedur pelayanan monev jaringan dan pengembangan aplikasi di Dinas Kominfo dan Persandian Kab. Banyuwangi harus mudah',
@@ -515,7 +515,7 @@
                   </div>
                   <div class="col-sm-12 my-1" id="Radio" style="display: none;">
                     <div class="row">
-                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN RADIO BLAMBANGAN</b></div> 
+                      <div class="col-sm-12 my-1 text-white py-2" style="background-color: #894C0A;"><b>PENDAPAT RESPONDEN TENTANG PELAYANAN RADIO BLAMBANGAN</b></div> 
                       <?php 
                         $Tanya = array('Bagaimanakah tingkat kemudahan persyaratan dalam mendapatkan pelayanan radio blambangan dari Dinas Kominfo dan Persandian Kab. Banyuwangi?',
                                       'Bagaimanakah kemudahan prosedur pelayanan radio blambangan di Dinas Kominfo dan Persandian Kab. Banyuwangi?',
@@ -561,7 +561,7 @@
                           </div>
                         </div> 
                       <?php } ?>
-                      <div class="col-sm-12 my-1 bg-primary text-white py-2"><b>HARAPAN RESPONDEN TENTANG PELAYANAN RADIO BLAMBANGAN</b></div> 
+                      <div class="col-sm-12 my-1 text-white py-2" style="background-color: #894C0A;"><b>HARAPAN RESPONDEN TENTANG PELAYANAN RADIO BLAMBANGAN</b></div> 
                       <?php 
                         $Tanya = array('Persyaratan dalam mendapatkan pelayanan radio blambangan dari Dinas Kominfo dan Persandian Kab. Banyuwangi harus mudah',
                                       'Prosedur pelayanan radio blambangan di Dinas Kominfo dan Persandian Kab. Banyuwangi harus mudah',
