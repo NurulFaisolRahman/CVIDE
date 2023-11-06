@@ -19,7 +19,7 @@
           <p class="text-justify">&emsp;&emsp;&emsp;Dengan Hormat, Inti Desain Ekonomi Konsultan Beserta Dinas Komunikasi, Informatika dan Persandian Kabupaten Banyuwangi 
           membutuhkan informasi tentang pelayanan yang diberikan kepada masyarakat pengguna layanan Dinas Komunikasi, Informatika dan Persandian Kabupaten Banyuwangi yaitu :
           1. Pelayanan data Statistik (Portal Data). 2. Pelayanan Publikasi dan Komunikasi Publik. 3. Pelayanan Tanda Tangan Elektronik (TTE) dan Keamanan Informasi.
-          4. Pelayanan monev Jaringan dan pengembangan Aplikasi.<b><span class="text-danger"> Catatan Penting : Bapak/Ibu dimohon menjawab pertanyaan berikut dengan benar. 
+          4. Pelayanan monev Jaringan dan pengembangan Aplikasi. 5. Pelayanan Radio Blambangan<b><span class="text-danger"> Catatan Penting : Bapak/Ibu dimohon menjawab pertanyaan berikut dengan benar. 
           Segala informasi yang diberikan oleh responden dijamin kerahasiaannya oleh konsultan independen. Terima Kasih</span></b></p>
         </div>
         <!-- <div class="col-sm-12 text-center">
@@ -80,7 +80,7 @@
                         <option value="2">Kecamatan</option>
                         <option value="3">Kelurahan</option>
                         <option value="4">Desa</option>
-                        <option value="5">Lainnya</option>
+                        <option value="5">Masyarakat Umum</option>
                       </select>
                     </div>
                   </div>
