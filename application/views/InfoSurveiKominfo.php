@@ -58,7 +58,7 @@
                                     </tr>
                                   </thead>
                                   <tbody style="font-size: 12px;" class="bg-primary">
-                                  <?php $Instansi = array('OPD','Kecamatan','Kelurahan','Desa','Lainnya'); $No = 1; for ($i=0; $i < 5; $i++) { ?>
+                                  <?php $Instansi = array('OPD','Kecamatan','Kelurahan','Desa','Masyarakat Umum'); $No = 1; for ($i=0; $i < 5; $i++) { ?>
                                     <tr class="text-light align-middle">
                                       <td class="align-middle text-center font-weight-bold"><?=$No++?></td>
                                       <td class="align-middle font-weight-bold"><?=$Instansi[$i]?></td>

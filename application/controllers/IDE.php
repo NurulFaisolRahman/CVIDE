@@ -1296,11 +1296,16 @@ class IDE extends CI_Controller {
     // Lainnya 40 37 40 44 45 48 47
     // Desa 38 41 45 45 48 48 
     $Data['Data'] = array();
-    array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi != 2 && Instansi != 3 && Instansi != 4 && Instansi != 5')->num_rows()+1);
+    // array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi != 2 && Instansi != 3 && Instansi != 4 && Instansi != 5')->num_rows()+1);
+    // array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 2))->num_rows());
+    // array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 3))->num_rows()+41);
+    // array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 4))->num_rows()+265);
+    // array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 5))->num_rows()+301);
+    array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi != 2 && Instansi != 3 && Instansi != 4 && Instansi != 5')->num_rows());
     array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 2))->num_rows());
-    array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 3))->num_rows()+41);
-    array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 4))->num_rows()+265);
-    array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 5))->num_rows()+301);
+    array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 3))->num_rows());
+    array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 4))->num_rows());
+    array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 5))->num_rows());
     $this->load->view('InfoSurveiKominfo',$Data);
   }
 
