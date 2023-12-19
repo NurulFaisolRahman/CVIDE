@@ -39,12 +39,10 @@
                           <th class="align-middle">Agustus</th>
                           <th class="align-middle">September</th>
                           <th class="align-middle">Oktober</th>
-                          <!-- <?php if ($Tahun == 2022) { ?> -->
                           <th class="align-middle">November</th>
                           <th class="align-middle">Desember</th>
                           <th class="align-middle bg-primary">Semester 2</th>
                           <th class="align-middle bg-warning">NTP</th>
-                        <!-- <?php } ?> -->
                         </tr>
                       </thead>
                       <tbody style="font-size: 12px;" class="bg-primary">
