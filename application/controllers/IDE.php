@@ -305,7 +305,7 @@ class IDE extends CI_Controller {
   public function NTPP(){
     $Nama = $this->db->query("SELECT DISTINCT(NamaResponden) FROM `ntpprodusen`")->result_array();
     foreach ($Nama as $key) {
-      $Data = $this->db->query('SELECT * FROM `ntpprodusen` WHERE NamaResponden="'.$key['NamaResponden'].'"')->result_array();
+      $Data = $this->db->query('SELECT * FROM `ntpprodusen` WHERE TanggalSurvei LIKE "2023%" AND NamaResponden="'.$key['NamaResponden'].'"')->result_array();
       echo $key['NamaResponden'].'<br>';
       echo 'Bulan|'.$Data[0]['KodeKualitas'].'<br>';
       for ($i=0; $i < count($Data); $i++) { 
@@ -318,7 +318,7 @@ class IDE extends CI_Controller {
   public function NTPK(){
     $Nama = $this->db->query("SELECT DISTINCT(NamaResponden) FROM `ntpkonsumen`")->result_array();
     foreach ($Nama as $key) {
-      $Data = $this->db->query('SELECT * FROM `ntpkonsumen` WHERE NamaResponden="'.$key['NamaResponden'].'"')->result_array();
+      $Data = $this->db->query('SELECT * FROM `ntpkonsumen` WHERE TanggalSurvei LIKE "2023%" AND NamaResponden="'.$key['NamaResponden'].'"')->result_array();
       echo $key['NamaResponden'].'<br>';
       echo 'Bulan|'.$Data[0]['KodeKualitas'].'<br>';
       for ($i=0; $i < count($Data); $i++) { 
