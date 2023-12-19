@@ -104,8 +104,8 @@
                               <td class="align-middle"><b><?=$Fluktuasi[11][$i]?></b></td>
                             </tr>
                             <tr class="text-light align-middle bg-success">
-                              <td class="align-middle"><b>#</b></td>
-                              <td class="align-middle"><b>Laju</b></td>
+                              <td class="align-middle"><b></b></td>
+                              <td class="align-middle"><b>Laju (%)</b></td>
                               <td class="align-middle"><b>0</b></td>
                               <?php if ($Laju[0][$i] > 0.0) { ?>
                                 <td class="align-middle bg-danger"><b><?=$Laju[0][$i]?></b></td>
