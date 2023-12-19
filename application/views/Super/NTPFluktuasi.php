@@ -62,10 +62,10 @@
                             <th class="align-middle">Agustus</th>
                             <th class="align-middle">September</th>
                             <th class="align-middle">Oktober</th>
-                            <?php if ($Tahun == 2022) { ?>
+                            <!-- <?php if ($Tahun == 2022) { ?> -->
                             <th class="align-middle">November</th>
                             <th class="align-middle">Desember</th>
-                          <?php } ?>
+                          <!-- <?php } ?> -->
                           </tr>
                         </thead>
                         <tbody style="font-size: 12px;" class="bg-primary">
@@ -102,11 +102,11 @@
                               <td class="align-middle"><b><?=$Fluktuasi[7][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[8][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[9][$i]?></b></td>
-                              <?php if ($Tahun == 2022) { ?>
+                              <!-- <?php if ($Tahun == 2022) { ?> -->
                               <td class="align-middle"><b><?=$Fluktuasi[10][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[11][$i]?></b></td>
                             </tr>
-                            <?php } ?>
+                            <!-- <?php } ?> -->
                             <tr class="text-light align-middle bg-success">
                               <td class="align-middle"><b>#</b></td>
                               <td class="align-middle"><b>Laju</b></td>
@@ -174,7 +174,7 @@
                               <?php } else { ?>
                                 <td class="align-middle bg-success"><b><?=$Laju[8][$i]?></b></td>
                               <?php } ?>
-                              <?php if ($Tahun == 2022) { ?>
+                              <!-- <?php if ($Tahun == 2022) { ?> -->
                               <?php if ($Laju[9][$i] > 0.0) { ?>
                                 <td class="align-middle bg-danger"><b><?=$Laju[9][$i]?></b></td>
                               <?php } else if ($Laju[9][$i] < 0.0) { ?>
@@ -189,7 +189,7 @@
                               <?php } else { ?>
                                 <td class="align-middle bg-success"><b><?=$Laju[10][$i]?></b></td>
                               <?php } ?>
-                            <?php } ?>
+                            <!-- <?php } ?> -->
                             </tr>
                           <?php }} ?>
                         </tbody>

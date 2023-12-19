@@ -10,7 +10,7 @@ class IDE extends CI_Controller {
   }
 
   public function Kominfo(){
-    $Data = $this->db->get('kominfo')->result_array();
+    $Data = $this->db->query('SELECT * FROM `kominfo` WHERE Instansi != 2 && Instansi != 3 && Instansi != 4 && Instansi != 5 && Id > 382')->result_array();
     foreach ($Data as $key) {
         echo $key['Id'].'$'.$key['Nama'].'$'.$key['Gender'].'$'.$key['Usia'].'$'.$key['Instansi'].'$'.$key['Kecamatan'].'$'.$key['Desa'].'$'.$key['Saran'].'$'.$key['Nilai'].'<br>';   
     }
@@ -303,9 +303,9 @@ class IDE extends CI_Controller {
   }
 
   public function NTPP(){
-    $Nama = $this->db->query("SELECT DISTINCT(NamaResponden) FROM `ntpprodusen` WHERE NIK=3525012505970003")->result_array();
+    $Nama = $this->db->query("SELECT DISTINCT(NamaResponden) FROM `ntpprodusen`")->result_array();
     foreach ($Nama as $key) {
-      $Data = $this->db->query('SELECT * FROM `ntpprodusen` WHERE NIK=3525012505970003 AND NamaResponden="'.$key['NamaResponden'].'"')->result_array();
+      $Data = $this->db->query('SELECT * FROM `ntpprodusen` WHERE NamaResponden="'.$key['NamaResponden'].'"')->result_array();
       echo $key['NamaResponden'].'<br>';
       echo 'Bulan|'.$Data[0]['KodeKualitas'].'<br>';
       for ($i=0; $i < count($Data); $i++) { 
