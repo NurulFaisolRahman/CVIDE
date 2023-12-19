@@ -303,7 +303,7 @@ class IDE extends CI_Controller {
   }
 
   public function NTPP(){
-    $Nama = $this->db->query("SELECT DISTINCT(NamaResponden) FROM `ntpprodusen`")->result_array();
+    $Nama = $this->db->query("SELECT DISTINCT(NamaResponden) FROM `ntpprodusen` TanggalSurvei LIKE '2023%'")->result_array();
     foreach ($Nama as $key) {
       $Data = $this->db->query('SELECT * FROM `ntpprodusen` WHERE TanggalSurvei LIKE "2023%" AND NamaResponden="'.$key['NamaResponden'].'"')->result_array();
       echo $key['NamaResponden'].'<br>';
@@ -316,7 +316,7 @@ class IDE extends CI_Controller {
   }
   
   public function NTPK(){
-    $Nama = $this->db->query("SELECT DISTINCT(NamaResponden) FROM `ntpkonsumen`")->result_array();
+    $Nama = $this->db->query("SELECT DISTINCT(NamaResponden) FROM `ntpkonsumen` TanggalSurvei LIKE '2023%'")->result_array();
     foreach ($Nama as $key) {
       $Data = $this->db->query('SELECT * FROM `ntpkonsumen` WHERE TanggalSurvei LIKE "2023%" AND NamaResponden="'.$key['NamaResponden'].'"')->result_array();
       echo $key['NamaResponden'].'<br>';
