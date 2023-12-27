@@ -1301,11 +1301,11 @@ class IDE extends CI_Controller {
     // array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 3))->num_rows()+41);
     // array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 4))->num_rows()+265);
     // array_push($Data['Data'],$this->db->get_where('kominfo', array('Instansi' => 5))->num_rows()+301);
-    array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi != 2 && Instansi != 3 && Instansi != 4 && Instansi != 5 && Id > 382')->num_rows());
-    array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi = 2 && Id > 382')->num_rows());
-    array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi = 3 && Id > 382')->num_rows());
-    array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi = 4 && Id > 382')->num_rows());
-    array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi = 5 && Id > 382')->num_rows());
+    array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi != 2 && Instansi != 3 && Instansi != 4 && Instansi != 5 && Id > 382')->num_rows()+7);
+    array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi = 2 && Id > 382')->num_rows()+20);
+    array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi = 3 && Id > 382')->num_rows()+23);
+    array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi = 4 && Id > 382')->num_rows()+114);
+    array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi = 5 && Id > 382')->num_rows()+216);
     $this->load->view('InfoSurveiKominfo',$Data);
   }
 
