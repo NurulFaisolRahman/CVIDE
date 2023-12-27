@@ -1305,7 +1305,7 @@ class IDE extends CI_Controller {
     array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi = 2 && Id > 382')->num_rows()+20);
     array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi = 3 && Id > 382')->num_rows()+23);
     array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi = 4 && Id > 382')->num_rows()+114);
-    array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi = 5 && Id > 382')->num_rows()+216);
+    array_push($Data['Data'],$this->db->query('SELECT * FROM `kominfo` WHERE Instansi = 5 && Id > 382')->num_rows()+9);
     $this->load->view('InfoSurveiKominfo',$Data);
   }
 
