@@ -22,7 +22,7 @@
 														<th scope="row" class="align-middle"><?=$key['Catatan']?></th>
 														<th scope="row" class="text-center align-middle">
 															<?php if (!empty($key['File'])) { ?>
-																<button LihatProject="<?=base_url('Project/'.$key['File'])?>" class="btn btn-sm btn-danger LihatProject"><i class="fa fa-file-pdf"></i></button>
+																<button LihatProject="<?=base_url('Project/'.$key['File'])?>" class="btn btn-sm btn-danger LihatProject"><i class="fa fa-file-pdf-o"></i></button>
 															<?php } ?>
 														</th>
 													</tr>
