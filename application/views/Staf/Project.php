@@ -25,7 +25,7 @@
 														<th scope="row" class="align-middle"><?=$key['Catatan']?></th>
 														<th scope="row" class="text-center align-middle">
 															<?php if (!empty($key['File'])) { ?>
-																<button LihatProject="<?=base_url('Project/'.$key['File'])?>" class="btn btn-sm btn-danger LihatProject"><i class="fas fa-file-pdf"></i></button>
+																<button LihatProject="<?=base_url('Project/'.$key['File'])?>" class="btn btn-sm btn-danger LihatProject"><i class="fa fa-file-pdf"></i></button>
 															<?php } ?>
 															<button Edit="<?=$key['Id']."$".$key['NamaProject']."$".$key['Deadline']."$".$key['Catatan']."$".$key['File']?>" class="btn btn-sm btn-warning Edit"><i class="fa fa-edit"></i></button>
 															<button Hapus="<?=$key['Id']."$".$key['File']?>" class="btn btn-sm btn-danger Hapus"><i class="fa fa-trash"></i></button>
