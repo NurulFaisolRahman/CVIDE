@@ -22,7 +22,7 @@
 														<th scope="row" class="align-middle"><?=$key['Catatan']?></th>
 														<th scope="row" class="text-center align-middle">
 															<?php if (!empty($key['File'])) { ?>
-																<a href="<?=base_url("Project/".$key['File'])?>" class="btn btn-sm btn-primary" download><i class="fa fa-download"></i></a>
+																<button LihatProject="<?=base_url('Project/'.$key['File'])?>" class="btn btn-sm btn-danger LihatProject"><i class="fas fa-file-pdf"></i></button>
 															<?php } ?>
 														</th>
 													</tr>
@@ -38,6 +38,15 @@
         <!-- /page content -->
       </div>
 		</div>
+		<div class="modal fade" id="ModalProject">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-body">
+            <embed id="PathProject" src="" type="application/pdf" width="100%" height="520"/>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="<?=base_url("vendors/jquery/dist/jquery.min.js")?>"></script>
    	<script src="<?=base_url("vendors/bootstrap/dist/js/bootstrap.bundle.min.js")?>"></script>
 		<script src="<?=base_url("build/js/custom.min.js")?>"></script>
@@ -46,6 +55,7 @@
 		<script>
 			$(document).ready(function(){
 				var BaseURL = '<?=base_url()?>'  
+
 				$('#TabelProject').DataTable( {
 					"ordering": true,
 					"bInfo" : false,
@@ -56,6 +66,12 @@
 							'next': '<b class="text-white">></b>'
 						}
 					}
+				})
+
+				$(document).on("click",".LihatProject",function(){
+					var Path = $(this).attr('LihatProject')
+          $('#PathProject').attr('src',Path)		
+          $('#ModalProject').modal("show")
 				})
 			})
 		</script>

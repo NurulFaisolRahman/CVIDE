@@ -25,7 +25,7 @@
 														<th scope="row" class="align-middle"><?=$key['Catatan']?></th>
 														<th scope="row" class="text-center align-middle">
 															<?php if (!empty($key['File'])) { ?>
-																<a href="<?=base_url("Project/".$key['File'])?>" class="btn btn-sm btn-primary" download><i class="fa fa-download"></i></a>
+																<button LihatProject="<?=base_url('Project/'.$key['File'])?>" class="btn btn-sm btn-danger LihatProject"><i class="fas fa-file-pdf"></i></button>
 															<?php } ?>
 															<button Edit="<?=$key['Id']."$".$key['NamaProject']."$".$key['Deadline']."$".$key['Catatan']."$".$key['File']?>" class="btn btn-sm btn-warning Edit"><i class="fa fa-edit"></i></button>
 															<button Hapus="<?=$key['Id']."$".$key['File']?>" class="btn btn-sm btn-danger Hapus"><i class="fa fa-trash"></i></button>
@@ -153,6 +153,15 @@
         </div>
       </div>
     </div>
+		<div class="modal fade" id="ModalProject">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-body">
+            <embed id="PathProject" src="" type="application/pdf" width="100%" height="520"/>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="<?=base_url("vendors/jquery/dist/jquery.min.js")?>"></script>
    	<script src="<?=base_url("vendors/bootstrap/dist/js/bootstrap.bundle.min.js")?>"></script>
 		<script src="<?=base_url("build/js/custom.min.js")?>"></script>
@@ -172,6 +181,12 @@
 						}
 					}
 				})
+
+				$(document).on("click",".LihatProject",function(){
+					var Path = $(this).attr('LihatProject')
+          $('#PathProject').attr('src',Path)		
+          $('#ModalProject').modal("show")
+				}) 
 				 
 				$("#Input").click(function() {
 					var fd = new FormData()
