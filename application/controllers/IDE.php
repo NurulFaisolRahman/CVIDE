@@ -1250,7 +1250,7 @@ class IDE extends CI_Controller {
     $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$_POST['Kode'].".%"."'")->result_array();
     $OpsiDesa = "";
     foreach ($Desa as $key) {
-      $OpsiDesa .= "<option value='".$key['Kode']."'>".$key['Nama']."</option>";
+      $OpsiDesa .= "<option value='".$key['Nama']."'>".$key['Nama']."</option>";
     }
     echo $OpsiDesa;
   }

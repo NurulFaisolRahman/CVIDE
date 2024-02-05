@@ -152,7 +152,7 @@
                       </div>
                       <select class="custom-select" id="Desa">                    
                         <?php foreach ($Desa as $key) { ?>
-                          <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option>
+                          <option value="<?=$key['Nama']?>"><?=$key['Nama']?></option>
                         <?php } ?>                  
                       </select>
                     </div>
@@ -200,6 +200,11 @@
                                   '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting'); 
                   ?> 
                   <?php for ($j=0; $j < 20; $j++) { ?>
+                    <?php if ($j%2==0) { ?>
+                      <div class="col-12"><b>KINERJA / PERFORMA</b></div>
+                    <?php } else { ?>
+                      <div class="col-12"><b>KEPENTINGAN / HARAPAN</b></div>
+                    <?php } ?> 
                     <div class="col-sm-6 my-1">
                       <div class="input-group input-group-sm">
                         <div class="input-group-prepend">
@@ -219,7 +224,7 @@
                           </div>
                         <?php } ?>
                       </div>
-                    </div> 
+                    </div>
                   <?php } ?>
                   <div class="col-sm-6 my-1">
                     <div class="input-group input-group-sm">
