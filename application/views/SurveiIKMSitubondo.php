@@ -198,12 +198,15 @@
                                   '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
                                   '1. Tidak Ada, 2. Ada Tapi Tidak Berfungsi, 3. Berfungsi Kurang Maksimal, 4. Dikelola Dengan Baik',
                                   '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting'); 
+                    $Poin = array('A. Persyaratan Layanan','B. SOP / Prosedur Layanan','C. Kecepatan & Ketepatan Layanan','D. Kesesuaian Biaya/Tarif Layanan','E. Kewajaran Biaya/Tarif Layanan',
+                                  'F. Kesesuaian Produk Layanan','G. Kompetensi SDM Layanan','H. Kesopanan & Keramahan Layanan','I. Sarana & Prasarana Layanan','J. Penanagan Pengaduan Layanan');
                   ?> 
                   <?php for ($j=0; $j < 20; $j++) { ?>
                     <?php if ($j%2==0) { ?>
-                      <div class="col-12"><b>KINERJA / PERFORMA</b></div>
+                      <div class="col-12"><b><?=$Poin[$j/2]?></b></div>
+                      <div class="col-12 text-danger"><b>KINERJA / PERFORMA</b></div>
                     <?php } else { ?>
-                      <div class="col-12"><b>KEPENTINGAN / HARAPAN</b></div>
+                      <div class="col-12 text-success"><b>KEPENTINGAN / HARAPAN</b></div>
                     <?php } ?> 
                     <div class="col-sm-6 my-1">
                       <div class="input-group input-group-sm">
@@ -239,7 +242,7 @@
                     </div>
                   </div>
                   <div class="col-sm-6 offset-sm-6">
-                    <!-- <button type="button" class="btn btn-primary" id="Kirim"><b>Kirim Survei</b> <div id="LoadingInput" class="spinner-border spinner-border-sm text-white" style="display: none;" role="status"></div></button> -->
+                    <button type="button" class="btn btn-primary" id="Kirim"><b>Kirim Survei</b> <div id="LoadingInput" class="spinner-border spinner-border-sm text-white" style="display: none;" role="status"></div></button>
                   </div> 
                 </div>
               </div>
@@ -297,18 +300,26 @@
       })
 
       $("#Kirim").click(function() {
-        if (isNaN($("#NIK").val()) || $("#NIK").val() === "") {
-          alert('Input NIK Belum Benar!')
-        } else if ($("#Nama").val() === "") {
+        if ($("#Nama").val() === "") {
           alert('Input Nama Belum Benar!')
-        } else if ($("#Pekerjaan").val() == 6 && $("#PekerjaanLainnya").val() === "") {
+        } else if ($("#Gender").val() === "Gender") {
+          alert('Input Gender Belum Benar!')
+        } else if ($("#Usia").val() === "" || isNaN($("#Usia").val())) {
+          alert('Input Usia Hanya Angka Saja!')
+        } else if (isNaN($("#HP").val()) || $("#HP").val() === "") {
           alert('Input Pekerjaan Lainnya Belum Benar!')
-        } else if ($("#Keperluan").val() === "") {
-          alert('Input Keperluan Belum Benar!')
+        } else if ($("#Pendidikan").val() === "Pendidikan" || ($("#Pendidikan").val() === "LAINNYA" && $("#PendidikanLainnya").val() === "")) {
+          alert('Input Pendidikan Belum Benar!')
+        } else if ($("#Pekerjaan").val() === "Pekerjaan" || ($("#Pekerjaan").val() === "LAINNYA" && $("#PekerjaanLainnya").val() === "")) {
+          alert('Input Pekerjaan Belum Benar!')
+        } else if ($("#Instansi").val() === "Instansi" || ($("#Instansi").val() === "LAINNYA" && $("#InstansiLainnya").val() === "")) {
+          alert('Input Instansi Belum Benar!')
+        } else if ($("#Layanan").val() === "Layanan" || ($("#Layanan").val() === "LAINNYA" && $("#LayananLainnya").val() === "")) {
+          alert('Input Layanan Belum Benar!')
         } else {
           var Cek = false
           var Tanya = 0
-          for (let i = 1; i <= 11; i++) {
+          for (let i = 1; i <= 20; i++) {
             if ($("input[name='Input"+i+"']:checked").val() == undefined) {
               Cek = true
               Tanya = i
@@ -319,29 +330,33 @@
             alert('Pertanyaan Nomer '+Tanya+' Wajib Di Isi!')
           } 
           else {
-            var Poin = ""
-            for (let i = 1; i <= 11; i++) {
-              Poin += $("input[name='Input"+i+"']:checked").val()
-              if (i < 11) {
-                Poin += "|"
-              }
+            var Poin = []
+            for (let i = 1; i <= 20; i++) {
+              Poin.push($("input[name='Input"+i+"']:checked").val())
             }
-            var IKM = { NIK: $("#NIK").val(),
-                        Nama: $("#Nama").val(),
+            var Nilai = Poin.join("|");
+            var Pendidikan = $("#Pendidikan").val() == 'LAINNYA' ? $("#PendidikanLainnya").val() : $("#Pendidikan").val();
+            var Pekerjaan = $("#Pekerjaan").val() == 'LAINNYA' ? $("#PekerjaanLainnya").val() : $("#Pekerjaan").val();
+            var Instansi = $("#Instansi").val() == 'LAINNYA' ? $("#InstansiLainnya").val() : $("#Instansi").val();
+            var Layanan = $("#Layanan").val() == 'LAINNYA' ? $("#LayananLainnya").val() : $("#Layanan").val();
+            var IKM = { Nama: $("#Nama").val(),
                         Gender: $("#Gender").val(),
                         Usia: $("#Usia").val(),
-                        Pendidikan: $("#Pendidikan").val(),
+                        HP: $("#HP").val(),
+                        Pendidikan: Pendidikan,
+                        Pekerjaan: Pekerjaan,
+                        Instansi: Instansi,
+                        Layanan: Layanan,
                         Kecamatan: $("#Kecamatan").val(),
                         Desa: $("#Desa").val(),
-                        Pekerjaan: $("#Pekerjaan").val(),
-                        Keperluan: $("#Keperluan").val(),
-                        Poin: Poin }
+                        Saran: $("#Saran").val(),
+                        Poin: Nilai }
             $("#Kirim").attr("disabled", true);                              
             $("#LoadingInput").show();
-            $.post(BaseURL+"IDE/InputIKM", IKM).done(function(Respon) {
+            $.post(BaseURL+"IDE/InputIKMSitubondo", IKM).done(function(Respon) {
               if (Respon == '1') {
-                alert('Terima Kasih')
-                window.location = BaseURL + "IDE/SurveiIKM"
+                alert('Terima Kasih Sudah Mengisi Survei!')
+                window.location = BaseURL + "IDE/SurveiIKMSitubondo"
               } else {
                 alert(Respon)
                 $("#LoadingInput").hide();

@@ -1228,6 +1228,21 @@ class IDE extends CI_Controller {
     }
   }
 
+  public function InputIKMSitubondo(){
+    $_POST['Nama'] = htmlentities($_POST['Nama']);
+    $_POST['Usia'] = htmlentities($_POST['Usia']);
+    $_POST['HP'] = htmlentities($_POST['HP']);
+    $_POST['Pekerjaan'] = htmlentities($_POST['Pekerjaan']);
+    $_POST['Instansi'] = htmlentities($_POST['Instansi']);
+    $_POST['Layanan'] = htmlentities($_POST['Layanan']);
+    $this->db->insert('ikmstb',$_POST);
+    if ($this->db->affected_rows()){
+      echo '1';
+    } else {
+      echo 'Gagal Mengirim Survei!';
+    }
+  }
+
 	function ListKabupaten(){
     $Kabupaten = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$_POST['Kode'].".%"."' AND length(Kode) = 5")->result_array();
     $OpsiKabupaten = "";
