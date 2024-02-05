@@ -140,7 +140,7 @@
                       </div>
                       <select class="custom-select" id="Kecamatan">  
                         <?php foreach ($Kecamatan as $key) { ?>
-                          <option value="<?=$key['Nama']?>"><?=$key['Nama']?></option>
+                          <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option>
                         <?php } ?>                  
                       </select>
                     </div>
@@ -152,7 +152,7 @@
                       </div>
                       <select class="custom-select" id="Desa">                    
                         <?php foreach ($Desa as $key) { ?>
-                          <option value="<?=$key['Nama']?>"><?=$key['Nama']?></option>
+                          <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option>
                         <?php } ?>                  
                       </select>
                     </div>

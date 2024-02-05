@@ -1241,7 +1241,7 @@ class IDE extends CI_Controller {
     $Kecamatan = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$_POST['Kode'].".%"."' AND length(Kode) = 8")->result_array();
     $OpsiKecamatan = "";
     foreach ($Kecamatan as $key) {
-      $OpsiKecamatan .= "<option value='".$key['Nama']."'>".$key['Nama']."</option>";
+      $OpsiKecamatan .= "<option value='".$key['Kode']."'>".$key['Nama']."</option>";
     }
     echo $OpsiKecamatan;
   }
@@ -1250,7 +1250,7 @@ class IDE extends CI_Controller {
     $Desa = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$_POST['Kode'].".%"."'")->result_array();
     $OpsiDesa = "";
     foreach ($Desa as $key) {
-      $OpsiDesa .= "<option value='".$key['Nama']."'>".$key['Nama']."</option>";
+      $OpsiDesa .= "<option value='".$key['Kode']."'>".$key['Nama']."</option>";
     }
     echo $OpsiDesa;
   }
