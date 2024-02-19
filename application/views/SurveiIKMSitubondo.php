@@ -297,7 +297,7 @@
         } else if ($("#Usia").val() === "" || isNaN($("#Usia").val())) {
           alert('Input Usia Hanya Angka Saja!')
         } else if (isNaN($("#HP").val()) || $("#HP").val() === "") {
-          alert('Input Pekerjaan Lainnya Belum Benar!')
+          alert('Input HP Belum Benar!')
         } else if ($("#Pendidikan").val() === "Pendidikan" || ($("#Pendidikan").val() === "LAINNYA" && $("#PendidikanLainnya").val() === "")) {
           alert('Input Pendidikan Belum Benar!')
         } else if ($("#Pekerjaan").val() === "Pekerjaan" || ($("#Pekerjaan").val() === "LAINNYA" && $("#PekerjaanLainnya").val() === "")) {
