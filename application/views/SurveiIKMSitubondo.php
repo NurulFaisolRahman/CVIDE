@@ -34,7 +34,7 @@
             <div class="card-header bg-danger text-white">
               <b>SURVEI KEPUASAN MASYARAKAT (SKM) TERHADAP LAYANAN BAPPEDA KABUPATEN SITUBONDO</b>
             </div>
-            <div style="background-color: #FFBF00;" class="card-body border border-primary">
+            <div class="card-body border border-primary">
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-sm-3 my-1">
@@ -123,16 +123,16 @@
                       <div class="input-group-prepend">
                         <label class="input-group-text bg-primary text-white"><b>Jenis Layanan</b></label>
                       </div>
-                      <select class="custom-select" id="Layanan">      
-                        <option value="Layanan">Klik Disini</option>                 
-                      <?php $Pekerjaan = array('Musrenbang','Penyusunan Dokumen Perencanaan Tahuna/5 Tahunan','LKPJ','SIPD','Inovasi Daerah','LAINNYA'); 
-                      foreach ($Pekerjaan as $key => $value) { ?>
-                        <option value="<?=$value?>"><?=$value?></option>
-                      <?php }?>
-                      </select>
-                      <input class="form-control" type="text" id="LayananLainnya" placeholder="Lainnya" disabled>
+                      <?php $Layanan = array('Penyusunan Dokumen Perencanaan Tahunan / 5 Tahunan','Musrenbang','LKPJ','SIPD','Inovasi Daerah','LAINNYA'); ?>
+                      <?php for ($j=0; $j < 5; $j++) { ?>
+                        <div class="form-check ml-2">
+                          <input class="form-check-input" type="checkbox" value="<?=$Layanan[$j]?>" name="Layanan" id="Layanan<?=$j?>">
+                          <label class="form-check-label" for="Layanan<?=$j?>"><b><?=$Layanan[$j]?></b></label>
+                        </div>
+                      <?php } ?>
+                      <input class="form-control ml-2" type="text" id="LayananLainnya" placeholder="Lainnya">
                     </div>
-                  </div>
+                  </div> 
                   <div class="col-sm-3 my-1">
                     <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
@@ -289,16 +289,6 @@
         }
       })
 
-      $("#Layanan").change(function (){
-        if ($("#Layanan").val() == 'LAINNYA') {
-          $("#LayananLainnya").prop('disabled', false);
-          $("#LayananLainnya").attr("placeholder", "Sebutkan");
-        } else {
-          $("#LayananLainnya").prop('disabled', true);
-          $("#LayananLainnya").attr("placeholder", "Lainnya");
-        }
-      })
-
       $("#Kirim").click(function() {
         if ($("#Nama").val() === "") {
           alert('Input Nama Belum Benar!')
@@ -314,7 +304,7 @@
           alert('Input Pekerjaan Belum Benar!')
         } else if ($("#Instansi").val() === "Instansi" || ($("#Instansi").val() === "LAINNYA" && $("#InstansiLainnya").val() === "")) {
           alert('Input Instansi Belum Benar!')
-        } else if ($("#Layanan").val() === "Layanan" || ($("#Layanan").val() === "LAINNYA" && $("#LayananLainnya").val() === "")) {
+        } else if (!$("#Layanan0").is(':checked') && !$("#Layanan1").is(':checked') && !$("#Layanan2").is(':checked') && !$("#Layanan3").is(':checked') && !$("#Layanan4").is(':checked') && $("#LayananLainnya").val() === "") {
           alert('Input Layanan Belum Benar!')
         } else {
           var Cek = false
@@ -338,7 +328,12 @@
             var Pendidikan = $("#Pendidikan").val() == 'LAINNYA' ? $("#PendidikanLainnya").val() : $("#Pendidikan").val();
             var Pekerjaan = $("#Pekerjaan").val() == 'LAINNYA' ? $("#PekerjaanLainnya").val() : $("#Pekerjaan").val();
             var Instansi = $("#Instansi").val() == 'LAINNYA' ? $("#InstansiLainnya").val() : $("#Instansi").val();
-            var Layanan = $("#Layanan").val() == 'LAINNYA' ? $("#LayananLainnya").val() : $("#Layanan").val();
+            var A = []
+            $.each($("input[name='Layanan']:checked"), function(){
+              A.push($(this).val())
+            })
+            A.push($("#LayananLainnya").val())
+            var Layanan = A.join("|");
             var IKM = { Nama: $("#Nama").val(),
                         Gender: $("#Gender").val(),
                         Usia: $("#Usia").val(),
