@@ -45,4 +45,53 @@ class SuperAdmin extends CI_Controller {
     $this->load->view('SuperAdmin/Header',$Data);
 		$this->load->view('SuperAdmin/Project',$Data);
   }
+
+  public function Matrikulasi(){
+    $Data['Matrikulasi'] = $this->db->get('matrikulasi')->result_array();
+    $this->load->view('SuperAdmin/Header',$Data);
+		$this->load->view('SuperAdmin/Matrikulasi',$Data);
+  }
+
+  public function LihatMatrikulasi(){
+    $Data = $this->db->query("SELECT * FROM `matrikulasi` WHERE PIC LIKE '%".$_POST['PIC']."%'")->result_array();
+    $Tabel = '<thead>
+              <tr style="font-weight: bold;">
+                <th style="width: 5%;" class="align-middle text-center">No</th>
+                <th style="width: 45%;" class="align-middle">Nama Project</th>
+                <th style="width: 10%;" class="align-middle text-center">Beban</th>
+                <th style="width: 20%;" class="align-middle">Honor Project</th>
+                <th style="width: 20%;" class="align-middle">Keterangan</th>
+              </tr>
+              </thead>
+              <tbody>';
+    $No = 1;$Total = 0;
+    foreach ($Data as $key) {
+      $PIC = explode(' ',$key['PIC']);
+      $Nilai = explode(' ',$key['Nilai']);
+      $Bayar = explode(' ',$key['Bayar']);
+      $Beban = explode(' ',$key['Beban']);
+      $i = array_search($_POST['PIC'],$PIC);
+      $Ket = '';$Total += (float)$Beban[$i];
+      if ($Bayar[$i]/$Nilai[$i] == 1) {
+        $Ket = 'Dibayar 100%';
+      } else if ($Bayar[$i]/$Nilai[$i] == 0.75) {
+        $Ket = 'Dibayar 75%';
+      } else if ($Bayar[$i]/$Nilai[$i] == 0.5) {
+        $Ket = 'Dibayar 50%';
+      } else if ($Bayar[$i]/$Nilai[$i] == 0.25) {
+        $Ket = 'Dibayar 25%';
+      } else if ($Bayar[$i]/$Nilai[$i] == 0) {
+        $Ket = 'Belum Dibayar';
+      }
+      $Tabel .= '<tr>
+                  <td class="text-center">'.$No++.'</td>
+                    <td>'.$key['Nama'].'</td>
+                    <td class="align-middle text-center">'.$Beban[$i].'</td>
+                    <td>'.number_format($Bayar[$i],0,',','.').'</td>
+                    <td>'.$Ket.'</td>
+                  </tr>';
+    }
+    $Tabel .= '</tbody>';
+    echo $Tabel;
+  }
 }
