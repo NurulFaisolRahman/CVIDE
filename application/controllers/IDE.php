@@ -1730,4 +1730,84 @@ class IDE extends CI_Controller {
       return 'Sangat Baik';
     }
   }
+
+  public function LihatMatrikulasi(){
+    $Data = $this->db->query("SELECT * FROM `matrikulasi` WHERE PIC LIKE '%".$_POST['PIC']."%'")->result_array();
+    $Tabel = '<thead>
+              <tr style="font-weight: bold;">
+                <th style="width: 5%;" class="align-middle text-center">No</th>
+                <th style="width: 45%;" class="align-middle">Nama Project</th>
+                <th style="width: 10%;" class="align-middle text-center">Beban</th>
+                <th style="width: 20%;" class="align-middle">Honor Project</th>
+                <th style="width: 20%;" class="align-middle">Keterangan</th>
+              </tr>
+              </thead>
+              <tbody>';
+    $No = 1;$Total = 0;
+    foreach ($Data as $key) {
+      $PIC = explode(' ',$key['PIC']);
+      $Nilai = explode(' ',$key['Nilai']);
+      $Bayar = explode(' ',$key['Bayar']);
+      $Beban = explode(' ',$key['Beban']);
+      $i = array_search($_POST['PIC'],$PIC);
+      $Ket = '';$Total += (float)$Beban[$i];
+      if ($Bayar[$i]/$Nilai[$i] == 1) {
+        $Ket = 'Dibayar 100%';
+      } else if ($Bayar[$i]/$Nilai[$i] == 0.75) {
+        $Ket = 'Dibayar 75%';
+      } else if ($Bayar[$i]/$Nilai[$i] == 0.5) {
+        $Ket = 'Dibayar 50%';
+      } else if ($Bayar[$i]/$Nilai[$i] == 0.25) {
+        $Ket = 'Dibayar 25%';
+      } else if ($Bayar[$i]/$Nilai[$i] == 0) {
+        $Ket = 'Belum Dibayar';
+      }
+      $Tabel .= '<tr>
+                  <td class="text-center">'.$No++.'</td>
+                    <td>'.$key['Nama'].'</td>
+                    <td class="align-middle text-center">'.$Beban[$i].'</td>
+                    <td>'.number_format($Bayar[$i],0,',','.').'</td>
+                    <td>'.$Ket.'</td>
+                  </tr>';
+    }
+    $Tabel .= '</tbody>';
+    echo $Tabel;
+  }
+
+  public function ExcelMatrikulasi(){
+    $Data['Matrikulasi'] = $this->db->query("SELECT * FROM `matrikulasi`")->result_array();
+    $Nama = array('Rizka','Rifta','Noven','Linda');
+    $Data['PIC'] = array();$Data['Total'] = array();
+    for ($j=0; $j < 4; $j++) { 
+      $Temp = array();$Total = 0.0;
+      $Get = $this->db->query("SELECT * FROM `matrikulasi` WHERE PIC LIKE '%".$Nama[$j]."%'")->result_array();
+      foreach ($Get as $key) {
+        $Row = array();
+        $PIC = explode(' ',$key['PIC']);
+        $Nilai = explode(' ',$key['Nilai']);
+        $Bayar = explode(' ',$key['Bayar']);
+        $Beban = explode(' ',$key['Beban']);
+        $i = array_search($Nama[$j],$PIC);
+        array_push($Row,$key['Nama']);
+        array_push($Row,$Beban[$i]);
+        $Total += (float)str_replace(",",".",$Beban[$i]);
+        array_push($Row,$Bayar[$i]);
+        if ($Bayar[$i]/$Nilai[$i] == 1) {
+          array_push($Row,'Dibayar 100%');
+        } else if ($Bayar[$i]/$Nilai[$i] == 0.75) {
+          array_push($Row,'Dibayar 75%');
+        } else if ($Bayar[$i]/$Nilai[$i] == 0.5) {
+          array_push($Row,'Dibayar 50%');
+        } else if ($Bayar[$i]/$Nilai[$i] == 0.25) {
+          array_push($Row,'Dibayar 25%');
+        } else if ($Bayar[$i]/$Nilai[$i] == 0) {
+          array_push($Row,'Belum Dibayar');
+        }
+        array_push($Temp,$Row);
+      }  
+      array_push($Data['PIC'],$Temp);
+      array_push($Data['Total'],$Total);
+    }
+		$this->load->view('ExcelMatrikulasi',$Data);
+  }
 }

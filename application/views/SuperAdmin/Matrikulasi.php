@@ -98,11 +98,11 @@
 				var BaseURL = '<?=base_url()?>'  
 
 				$("#Unduh").click(function() {
-					window.location = BaseURL + "Admin/ExcelMatrikulasi/"
+					window.location = BaseURL + "IDE/ExcelMatrikulasi/"
 				}) 
 
 				$("#Lihat").click(function() {
-					$.post(BaseURL+"SuperAdmin/LihatMatrikulasi", {PIC : $("#PIC").val()}).done(function(Respon) {
+					$.post(BaseURL+"IDE/LihatMatrikulasi", {PIC : $("#PIC").val()}).done(function(Respon) {
 							$('#TabelPIC').html(Respon)
 							$('#ModalPIC').modal("show")
 						})
