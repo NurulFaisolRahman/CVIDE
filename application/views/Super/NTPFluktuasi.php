@@ -56,6 +56,7 @@
                             <th class="align-middle">Januari</th>
                             <th class="align-middle">Februari</th>
                             <th class="align-middle">Maret</th>
+                          <?php if ($Tahun != 2024) { ?>
                             <th class="align-middle">April</th>
                             <th class="align-middle">Mei</th>
                             <th class="align-middle">Juni</th>
@@ -65,6 +66,7 @@
                             <th class="align-middle">Oktober</th>
                             <th class="align-middle">November</th>
                             <th class="align-middle">Desember</th>
+                          <?php } ?>
                           </tr>
                         </thead>
                         <tbody style="font-size: 12px;" class="bg-primary">
@@ -129,6 +131,7 @@
                               <?php } else { ?>
                                 <td class="align-middle bg-success"><b><?=$Laju[2][$i]?></b></td>
                               <?php } ?>
+                            <?php if ($Tahun != 2024) { ?>
                               <?php if ($Laju[3][$i] > 0.0) { ?>
                                 <td class="align-middle bg-danger"><b><?=$Laju[3][$i]?></b></td>
                               <?php } else if ($Laju[3][$i] < 0.0) { ?>
@@ -185,6 +188,7 @@
                               <?php } else { ?>
                                 <td class="align-middle bg-success"><b><?=$Laju[10][$i]?></b></td>
                               <?php } ?>
+                            <?php } ?>
                             </tr>
                           <?php }} ?>
                         </tbody>

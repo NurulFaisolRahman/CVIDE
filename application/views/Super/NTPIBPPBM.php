@@ -27,7 +27,7 @@
                             <th class="align-middle">Januari</th>
                             <th class="align-middle">Februari</th>
                             <th class="align-middle">Maret</th>
-                            <th class="align-middle">April</th>
+                            <!-- <th class="align-middle">April</th>
                             <th class="align-middle">Mei</th>
                             <th class="align-middle">Juni</th>
                             <th class="align-middle">Juli</th>
@@ -35,7 +35,7 @@
                             <th class="align-middle">September</th>
                             <th class="align-middle">Oktober</th>
                             <th class="align-middle">November</th>
-                            <th class="align-middle">Desember</th>
+                            <th class="align-middle">Desember</th> -->
                           </tr>
                         </thead>
                         <tbody style="font-size: 12px;" class="bg-primary">

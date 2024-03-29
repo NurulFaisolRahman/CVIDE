@@ -25,6 +25,7 @@
                     <div class="col-12">
                   <?php } else if ($Tahun == 2024) { ?>
                     <div class="col-auto">
+                  <?php } ?>
                   <div class="table-responsive">
                     <table class="table table-sm table-bordered table-striped">
                       <thead class="bg-danger">
@@ -33,7 +34,7 @@
                           <th class="align-middle">Januari</th>
                           <th class="align-middle">Februari</th>
                           <th class="align-middle">Maret</th>
-                        <?php } ?>
+                        <?php if ($Tahun != 2024) { ?>
                           <th class="align-middle">April</th>
                           <th class="align-middle">Mei</th>
                           <th class="align-middle">Juni</th>
@@ -46,6 +47,7 @@
                           <th class="align-middle">Desember</th>
                           <th class="align-middle bg-primary">Semester 2</th>
                           <th class="align-middle bg-warning">NTP</th>
+                        <?php } ?>
                         </tr>
                       </thead>
                       <tbody style="font-size: 12px;" class="bg-primary">
