@@ -96,6 +96,7 @@
                               <td class="align-middle"><b><?=$Fluktuasi[0][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[1][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[2][$i]?></b></td>
+                            <?php if ($Tahun != 2024) { ?>
                               <td class="align-middle"><b><?=$Fluktuasi[3][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[4][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[5][$i]?></b></td>
@@ -105,6 +106,7 @@
                               <td class="align-middle"><b><?=$Fluktuasi[9][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[10][$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[11][$i]?></b></td>
+                            <?php } ?>
                             </tr>
                             <tr class="text-light align-middle bg-success">
                               <td class="align-middle"><b></b></td>
