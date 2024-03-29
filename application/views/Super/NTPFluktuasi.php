@@ -124,6 +124,7 @@
                               <?php } else { ?>
                                 <td class="align-middle bg-success"><b><?=$Laju[1][$i]?></b></td>
                               <?php } ?>
+                            <?php if ($Tahun != 2024) { ?>
                               <?php if ($Laju[2][$i] > 0.0) { ?>
                                 <td class="align-middle bg-danger"><b><?=$Laju[2][$i]?></b></td>
                               <?php } else if ($Laju[2][$i] < 0.0) { ?>
@@ -131,7 +132,6 @@
                               <?php } else { ?>
                                 <td class="align-middle bg-success"><b><?=$Laju[2][$i]?></b></td>
                               <?php } ?>
-                            <?php if ($Tahun != 2024) { ?>
                               <?php if ($Laju[3][$i] > 0.0) { ?>
                                 <td class="align-middle bg-danger"><b><?=$Laju[3][$i]?></b></td>
                               <?php } else if ($Laju[3][$i] < 0.0) { ?>

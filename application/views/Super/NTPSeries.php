@@ -24,7 +24,7 @@
                   <?php } else if ($Tahun == 2023) { ?>
                     <div class="col-12">
                   <?php } else if ($Tahun == 2024) { ?>
-                    <div class="col-auto">
+                    <div class="col-4">
                   <?php } ?>
                   <div class="table-responsive">
                     <table class="table table-sm table-bordered table-striped">
