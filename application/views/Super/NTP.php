@@ -25,6 +25,7 @@
                       <select class="custom-select" id="TahunNTP">                    
                           <option value="2022" <?=$Tahun==2022?'selected':'';?>>2022</option>
                           <option value="2023" <?=$Tahun==2023?'selected':'';?>>2023</option>
+                          <option value="2024" <?=$Tahun==2024?'selected':'';?>>2024</option>
                       </select>
                     </div>
                   </div>
