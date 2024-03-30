@@ -6,7 +6,7 @@
                   <div class="col-lg-2">
                     <div class="input-group input-group-sm mb-1">
                       <div class="input-group-prepend">
-                        <label class="input-group-text bg-danger text-light"><b>NTP Tahun</b></label>
+                        <label class="input-group-text bg-primary text-light"><b>NTP Tahun</b></label>
                       </div>
                       <select class="custom-select" id="TahunNTP">                    
                           <option value="2022" <?=$Tahun==2022?'selected':'';?>>2022</option>
@@ -16,7 +16,7 @@
                     </div>
                   </div>
                   <div class="col-lg-3">
-                    <div class="btn btn-sm btn-danger border-light" id="TampilkanData"><b>Tampilkan</b></div>
+                    <div class="btn btn-sm btn-primary border-light" id="TampilkanData"><b>Tampilkan</b></div>
                   </div>
                   <div class="col-lg-12 col-sm-12">
                     <div class="table-responsive">
@@ -40,41 +40,41 @@
                           <?php } ?>
                           </tr>
                         </thead>
-                        <tbody style="font-size: 12px;" class="bg-primary">
-                          <tr class="text-light align-middle">
+                        <tbody style="font-size: 12px;">
+                          <tr class="text-dark align-middle">
                             <td class="align-middle"><b>Bibit</b></td>
                             <?php for ($i=0; $i < $Total; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($IBibit[$i],2)?></b></td>
                             <?php } ?>
                           </tr>
-                          <tr class="text-light align-middle">
+                          <tr class="text-dark align-middle">
                             <td class="align-middle"><b>Pupuk & Obat-Obatan</b></td>
                             <?php for ($i=0; $i < $Total; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($IPupuk[$i],2)?></b></td>
                             <?php } ?>
-                          </tr><tr class="text-light align-middle">
+                          </tr><tr class="text-dark align-middle">
                             <td class="align-middle"><b>Transportasi</b></td>
                             <?php for ($i=0; $i < $Total; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($ITransportasi[$i],2)?></b></td>
                             <?php } ?>
-                          </tr><tr class="text-light align-middle">
+                          </tr><tr class="text-dark align-middle">
                             <td class="align-middle"><b>Sewa & Pengeluaran Lain</b></td>
                             <?php for ($i=0; $i < $Total; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($ISewa[$i],2)?></b></td>
                             <?php } ?>
                           </tr>
-                          </tr><tr class="text-light align-middle">
+                          </tr><tr class="text-dark align-middle">
                             <td class="align-middle"><b>Barang Modal</b></td>
                             <?php for ($i=0; $i < $Total; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($IBarangModal[$i],2)?></b></td>
                             <?php } ?>
-                          </tr><tr class="text-light align-middle">
+                          </tr><tr class="text-dark align-middle">
                             <td class="align-middle"><b>Upah Buruh</b></td>
                             <?php for ($i=0; $i < $Total; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($IUpahBuruh[$i],2)?></b></td>
                             <?php } ?>
                           </tr>
-                          </tr><tr class="text-light align-middle">
+                          </tr><tr class="text-dark align-middle">
                             <td class="align-middle"><b>IBPPBM</b></td>
                             <?php for ($i=0; $i < $Total; $i++) { ?>
                               <td class="align-middle"><b><?=number_format($IIBPPBM[$i],2)?></b></td>

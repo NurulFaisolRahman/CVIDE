@@ -92,4 +92,4 @@
           </div>
         </div>
         <!-- /top navigation -->
-      <div class="right_col bg-success" role="main" style="overflow-x: hidden;">
+      <div class="right_col bg-light" role="main" style="overflow-x: hidden;">

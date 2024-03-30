@@ -1,12 +1,12 @@
 <div class="clearfix"></div>
             <div class="row">
-            <?php $Tahun = $this->session->userdata('TahunNTP'); ?>
+              <?php $Tahun = $this->session->userdata('TahunNTP'); ?>
               <div class="col-lg-12">
                 <div class="row mt-1">
                   <div class="col-lg-3">
                     <div class="input-group input-group-sm mb-1">
                       <div class="input-group-prepend">
-                        <label class="input-group-text bg-danger text-light"><b>Sektor NTP</b></label>
+                        <label class="input-group-text bg-primary text-light"><b>Sektor NTP</b></label>
                       </div>
                       <select class="custom-select" id="Sektor">           
                         <option value="1" <?=$this->uri->segment('3')==1?'selected':'';?>>Tanaman Pangan</option>
@@ -20,7 +20,7 @@
                   <div class="col-lg-2">
                     <div class="input-group input-group-sm mb-1">
                       <div class="input-group-prepend">
-                        <label class="input-group-text bg-danger text-light"><b>NTP Tahun</b></label>
+                        <label class="input-group-text bg-primary text-light"><b>NTP Tahun</b></label>
                       </div>
                       <select class="custom-select" id="TahunNTP">                    
                           <option value="2022" <?=$Tahun==2022?'selected':'';?>>2022</option>
@@ -30,7 +30,7 @@
                     </div>
                   </div>
                   <div class="col-lg-3">
-                    <div class="btn btn-sm btn-danger border-light" id="TampilkanData"><b>Tampilkan</b></div>
+                    <div class="btn btn-sm btn-primary border-light" id="TampilkanData"><b>Tampilkan</b></div>
                   </div>
                 </div>
                 <?php 
@@ -49,9 +49,9 @@
                   <div class="col-lg-12 col-sm-12">
                     <div class="table-responsive">
                       <table class="table table-sm table-bordered table-striped">
-                        <thead class="bg-danger">
+                        <thead class="bg-primary">
                           <tr style="font-size: 10pt;" class="text-light text-center">
-                            <th class="align-middle">Nama</th>
+                            <th class="align-middle">Komoditas</th>
                             <th class="align-middle">Kode</th>
                             <th class="align-middle">Januari</th>
                             <th class="align-middle">Februari</th>
@@ -69,7 +69,7 @@
                           <?php } ?>
                           </tr>
                         </thead>
-                        <tbody style="font-size: 12px;" class="bg-primary">
+                        <tbody style="font-size: 12px;">
                         <?php 
                           $Sektor = $this->uri->segment('3');
                           if ($Sektor == 1) {
@@ -90,7 +90,7 @@
                           }
                           for ($i=0; $i < count($Kode); $i++) { ?>
                           <?php if ($Fluktuasi[0][$i] != 0) { ?>
-                            <tr class="text-light align-middle">
+                            <tr class="text-dark align-middle">
                               <td class="align-middle"><b><?=$Nama[$i]?></b></td>
                               <td class="align-middle"><b><?=$Kode[$i]?></b></td>
                               <td class="align-middle"><b><?=$Fluktuasi[0][$i]?></b></td>
@@ -108,87 +108,87 @@
                               <td class="align-middle"><b><?=$Fluktuasi[11][$i]?></b></td>
                             <?php } ?>
                             </tr>
-                            <tr class="text-light align-middle bg-success">
+                            <tr class="text-light align-middle">
                               <td class="align-middle"><b></b></td>
-                              <td class="align-middle"><b>Laju (%)</b></td>
+                              <td class="align-middle text-primary"><b>Laju (%)</b></td>
                               <td class="align-middle"><b>0</b></td>
                               <?php if ($Laju[0][$i] > 0.0) { ?>
-                                <td class="align-middle bg-danger"><b><?=$Laju[0][$i]?></b></td>
+                                <td class="align-middle bg-success"><b><?='+'.$Laju[0][$i].'%'?></b></td>
                               <?php } else if ($Laju[0][$i] < 0.0) { ?>
-                                <td class="align-middle bg-warning"><b><?=$Laju[0][$i]?></b></td>
+                                <td class="align-middle bg-danger"><b><?=$Laju[0][$i].'%'?></b></td>
                               <?php } else { ?>
-                                <td class="align-middle bg-success"><b><?=$Laju[0][$i]?></b></td>
+                                <td class="align-middle text-dark"><b><?=$Laju[0][$i].'%'?></b></td>
                               <?php } ?>
                               <?php if ($Laju[1][$i] > 0.0) { ?>
-                                <td class="align-middle bg-danger"><b><?=$Laju[1][$i]?></b></td>
+                                <td class="align-middle bg-success"><b><?='+'.$Laju[1][$i].'%'?></b></td>
                               <?php } else if ($Laju[1][$i] < 0.0) { ?>
-                                <td class="align-middle bg-warning"><b><?=$Laju[1][$i]?></b></td>
+                                <td class="align-middle bg-danger"><b><?=$Laju[1][$i].'%'?></b></td>
                               <?php } else { ?>
-                                <td class="align-middle bg-success"><b><?=$Laju[1][$i]?></b></td>
+                                <td class="align-middle text-dark"><b><?=$Laju[1][$i].'%'?></b></td>
                               <?php } ?>
                             <?php if ($Tahun != 2024) { ?>
                               <?php if ($Laju[2][$i] > 0.0) { ?>
-                                <td class="align-middle bg-danger"><b><?=$Laju[2][$i]?></b></td>
+                                <td class="align-middle bg-success"><b><?='+'.$Laju[2][$i].'%'?></b></td>
                               <?php } else if ($Laju[2][$i] < 0.0) { ?>
-                                <td class="align-middle bg-warning"><b><?=$Laju[2][$i]?></b></td>
+                                <td class="align-middle bg-danger"><b><?=$Laju[2][$i].'%'?></b></td>
                               <?php } else { ?>
-                                <td class="align-middle bg-success"><b><?=$Laju[2][$i]?></b></td>
+                                <td class="align-middle text-dark"><b><?=$Laju[2][$i].'%'?></b></td>
                               <?php } ?>
                               <?php if ($Laju[3][$i] > 0.0) { ?>
-                                <td class="align-middle bg-danger"><b><?=$Laju[3][$i]?></b></td>
+                                <td class="align-middle bg-success"><b><?='+'.$Laju[3][$i].'%'?></b></td>
                               <?php } else if ($Laju[3][$i] < 0.0) { ?>
-                                <td class="align-middle bg-warning"><b><?=$Laju[3][$i]?></b></td>
+                                <td class="align-middle bg-danger"><b><?=$Laju[3][$i].'%'?></b></td>
                               <?php } else { ?>
-                                <td class="align-middle bg-success"><b><?=$Laju[3][$i]?></b></td>
+                                <td class="align-middle text-dark"><b><?=$Laju[3][$i].'%'?></b></td>
                               <?php } ?>
                               <?php if ($Laju[4][$i] > 0.0) { ?>
-                                <td class="align-middle bg-danger"><b><?=$Laju[4][$i]?></b></td>
+                                <td class="align-middle bg-success"><b><?='+'.$Laju[4][$i].'%'?></b></td>
                               <?php } else if ($Laju[4][$i] < 0.0) { ?>
-                                <td class="align-middle bg-warning"><b><?=$Laju[4][$i]?></b></td>
+                                <td class="align-middle bg-danger"><b><?=$Laju[4][$i].'%'?></b></td>
                               <?php } else { ?>
-                                <td class="align-middle bg-success"><b><?=$Laju[4][$i]?></b></td>
+                                <td class="align-middle text-dark"><b><?=$Laju[4][$i].'%'?></b></td>
                               <?php } ?>
                               <?php if ($Laju[5][$i] > 0.0) { ?>
-                                <td class="align-middle bg-danger"><b><?=$Laju[5][$i]?></b></td>
+                                <td class="align-middle bg-success"><b><?='+'.$Laju[5][$i].'%'?></b></td>
                               <?php } else if ($Laju[5][$i] < 0.0) { ?>
-                                <td class="align-middle bg-warning"><b><?=$Laju[5][$i]?></b></td>
+                                <td class="align-middle bg-danger"><b><?=$Laju[5][$i].'%'?></b></td>
                               <?php } else { ?>
-                                <td class="align-middle bg-success"><b><?=$Laju[5][$i]?></b></td>
+                                <td class="align-middle text-dark"><b><?=$Laju[5][$i].'%'?></b></td>
                               <?php } ?>
                               <?php if ($Laju[6][$i] > 0.0) { ?>
-                                <td class="align-middle bg-danger"><b><?=$Laju[6][$i]?></b></td>
+                                <td class="align-middle bg-success"><b><?='+'.$Laju[6][$i].'%'?></b></td>
                               <?php } else if ($Laju[6][$i] < 0.0) { ?>
-                                <td class="align-middle bg-warning"><b><?=$Laju[6][$i]?></b></td>
+                                <td class="align-middle bg-danger"><b><?=$Laju[6][$i].'%'?></b></td>
                               <?php } else { ?>
-                                <td class="align-middle bg-success"><b><?=$Laju[6][$i]?></b></td>
+                                <td class="align-middle text-dark"><b><?=$Laju[6][$i].'%'?></b></td>
                               <?php } ?>
                               <?php if ($Laju[7][$i] > 0.0) { ?>
-                                <td class="align-middle bg-danger"><b><?=$Laju[7][$i]?></b></td>
+                                <td class="align-middle bg-success"><b><?='+'.$Laju[7][$i].'%'?></b></td>
                               <?php } else if ($Laju[7][$i] < 0.0) { ?>
-                                <td class="align-middle bg-warning"><b><?=$Laju[7][$i]?></b></td>
+                                <td class="align-middle bg-danger"><b><?=$Laju[7][$i].'%'?></b></td>
                               <?php } else { ?>
-                                <td class="align-middle bg-success"><b><?=$Laju[7][$i]?></b></td>
+                                <td class="align-middle text-dark"><b><?=$Laju[7][$i].'%'?></b></td>
                               <?php } ?>
                               <?php if ($Laju[8][$i] > 0.0) { ?>
-                                <td class="align-middle bg-danger"><b><?=$Laju[8][$i]?></b></td>
+                                <td class="align-middle bg-success"><b><?='+'.$Laju[8][$i].'%'?></b></td>
                               <?php } else if ($Laju[8][$i] < 0.0) { ?>
-                                <td class="align-middle bg-warning"><b><?=$Laju[8][$i]?></b></td>
+                                <td class="align-middle bg-danger"><b><?=$Laju[8][$i].'%'?></b></td>
                               <?php } else { ?>
-                                <td class="align-middle bg-success"><b><?=$Laju[8][$i]?></b></td>
+                                <td class="align-middle text-dark"><b><?=$Laju[8][$i].'%'?></b></td>
                               <?php } ?>
                               <?php if ($Laju[9][$i] > 0.0) { ?>
-                                <td class="align-middle bg-danger"><b><?=$Laju[9][$i]?></b></td>
+                                <td class="align-middle bg-success"><b><?='+'.$Laju[9][$i].'%'?></b></td>
                               <?php } else if ($Laju[9][$i] < 0.0) { ?>
-                                <td class="align-middle bg-warning"><b><?=$Laju[9][$i]?></b></td>
+                                <td class="align-middle bg-danger"><b><?=$Laju[9][$i].'%'?></b></td>
                               <?php } else { ?>
-                                <td class="align-middle bg-success"><b><?=$Laju[9][$i]?></b></td>
+                                <td class="align-middle text-dark"><b><?=$Laju[9][$i].'%'?></b></td>
                               <?php } ?>
                               <?php if ($Laju[10][$i] > 0.0) { ?>
-                                <td class="align-middle bg-danger"><b><?=$Laju[10][$i]?></b></td>
+                                <td class="align-middle bg-success"><b><?='+'.$Laju[10][$i].'%'?></b></td>
                               <?php } else if ($Laju[10][$i] < 0.0) { ?>
-                                <td class="align-middle bg-warning"><b><?=$Laju[10][$i]?></b></td>
+                                <td class="align-middle bg-danger"><b><?=$Laju[10][$i].'%'?></b></td>
                               <?php } else { ?>
-                                <td class="align-middle bg-success"><b><?=$Laju[10][$i]?></b></td>
+                                <td class="align-middle text-dark"><b><?=$Laju[10][$i].'%'?></b></td>
                               <?php } ?>
                             <?php } ?>
                             </tr>
