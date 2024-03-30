@@ -69,7 +69,7 @@
                           <?php } ?>
                           </tr>
                         </thead>
-                        <tbody style="font-size: 12px;">
+                        <tbody style="font-size: 11px;">
                         <?php 
                           $Sektor = $this->uri->segment('3');
                           if ($Sektor == 1) {
@@ -93,19 +93,19 @@
                             <tr class="text-dark align-middle">
                               <td class="align-middle"><b><?=$Nama[$i]?></b></td>
                               <td class="align-middle"><b><?=$Kode[$i]?></b></td>
-                              <td class="align-middle"><b><?=$Fluktuasi[0][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Fluktuasi[1][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Fluktuasi[2][$i]?></b></td>
+                              <td class="align-middle"><b><?=number_format($Fluktuasi[0][$i],0,',','.')?></b></td>
+                              <td class="align-middle"><b><?=number_format($Fluktuasi[1][$i],0,',','.')?></b></td>
+                              <td class="align-middle"><b><?=number_format($Fluktuasi[2][$i],0,',','.')?></b></td>
                             <?php if ($Tahun != 2024) { ?>
-                              <td class="align-middle"><b><?=$Fluktuasi[3][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Fluktuasi[4][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Fluktuasi[5][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Fluktuasi[6][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Fluktuasi[7][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Fluktuasi[8][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Fluktuasi[9][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Fluktuasi[10][$i]?></b></td>
-                              <td class="align-middle"><b><?=$Fluktuasi[11][$i]?></b></td>
+                              <td class="align-middle"><b><?=number_format($Fluktuasi[3][$i],0,',','.')?></b></td>
+                              <td class="align-middle"><b><?=number_format($Fluktuasi[4][$i],0,',','.')?></b></td>
+                              <td class="align-middle"><b><?=number_format($Fluktuasi[5][$i],0,',','.')?></b></td>
+                              <td class="align-middle"><b><?=number_format($Fluktuasi[6][$i],0,',','.')?></b></td>
+                              <td class="align-middle"><b><?=number_format($Fluktuasi[7][$i],0,',','.')?></b></td>
+                              <td class="align-middle"><b><?=number_format($Fluktuasi[8][$i],0,',','.')?></b></td>
+                              <td class="align-middle"><b><?=number_format($Fluktuasi[9][$i],0,',','.')?></b></td>
+                              <td class="align-middle"><b><?=number_format($Fluktuasi[10][$i],0,',','.')?></b></td>
+                              <td class="align-middle"><b><?=number_format($Fluktuasi[11][$i],0,',','.')?></b></td>
                             <?php } ?>
                             </tr>
                             <tr class="text-light align-middle">
