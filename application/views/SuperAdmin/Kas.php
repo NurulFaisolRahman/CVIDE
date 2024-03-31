@@ -20,10 +20,10 @@
 								<div class="col-lg-12">
 									<div class="input-group input-group-sm mb-2">
 										<div class="input-group-prepend">
-											<span class="input-group-text bg-primary text-white"><b><?="Pemasukan = Rp ".number_format($In,0,',','.')?></b></span>
+											<span class="input-group-text bg-primary text-white"><b><?="Debit 2024 = Rp ".number_format($In,0,',','.')?></b></span>
 										</div>
 										<div class="input-group-prepend mx-2">
-                      <span class="input-group-text bg-danger text-white"><b><?="Pengeluaran = Rp ".number_format($Out,0,',','.')?></b></span>
+                      <span class="input-group-text bg-danger text-white"><b><?="Kredit 2024 = Rp ".number_format($Out,0,',','.')?></b></span>
 										</div>
 										<div class="input-group-prepend">
 											<span class="input-group-text bg-warning text-white"><b><?="Saldo = Rp ".number_format($In-$Out,0,',','.')?></b></span>
