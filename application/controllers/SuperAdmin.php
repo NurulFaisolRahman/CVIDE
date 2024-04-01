@@ -42,8 +42,8 @@ class SuperAdmin extends CI_Controller {
     $Data['OutBerjalan'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='Out' AND `Tanggal` LIKE '".date('Y-m')."%'")->row_array()['Total'];
     $this->db->order_by('Id', 'DESC');
     $Data['Kas'] = $this->db->get('kas')->result_array();
-    $this->load->view('Admin/Header',$Data);
-		$this->load->view('Admin/Kas',$Data);
+    $this->load->view('SuperAdmin/Header',$Data);
+		$this->load->view('SuperAdmin/Kas',$Data);
   }
 
   public function Project(){
