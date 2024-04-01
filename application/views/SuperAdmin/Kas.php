@@ -20,7 +20,7 @@
 								<div class="col-lg-12">
 									<div class="input-group input-group-sm mb-2">
 										<div class="input-group-prepend">
-											<span class="input-group-text bg-warning text-white"><b><?="Saldo Bulan Lalu ".date("F Y")." = Rp ".number_format($SaldoLalu,0,',','.')?></b></span>
+											<span class="input-group-text bg-warning text-white"><b><?="Saldo Bulan Lalu = Rp ".number_format($SaldoLalu,0,',','.')?></b></span>
 										</div>
 										<div class="input-group-prepend">
 											<span class="input-group-text bg-primary text-white"><b><?="Debit ".date("F Y")." = Rp ".number_format($InBerjalan,0,',','.')?></b></span>
@@ -29,7 +29,7 @@
                       <span class="input-group-text bg-danger text-white"><b><?="Kredit ".date("F Y")." = Rp ".number_format($OutBerjalan,0,',','.')?></b></span>
 										</div>
 										<div class="input-group-prepend">
-											<span class="input-group-text bg-warning text-white"><b><?="Saldo ".date("F Y")." = Rp ".number_format(($In-$Out)+$SaldoLalu,0,',','.')?></b></span>
+											<span class="input-group-text bg-warning text-white"><b><?="Saldo ".date("F Y")." = Rp ".number_format(($InBerjalan-$OutBerjalan)+$SaldoLalu,0,',','.')?></b></span>
                     </div>
 									</div>
 								</div>

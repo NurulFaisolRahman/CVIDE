@@ -58,7 +58,7 @@ class Admin extends CI_Controller {
 
 	public function Kas(){
     $Data['InLalu'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='IN' AND `Tanggal` >= '2022-05' AND Tanggal <= '2023-12-30'")->row_array()['Total'];
-    $Data['OutLalu'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='IN' AND `Tanggal` >= '2022-05-10' AND Tanggal <= '2023-12-30'")->row_array()['Total'];
+    $Data['OutLalu'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='OUT' AND `Tanggal` >= '2022-05-10' AND Tanggal <= '2023-12-30'")->row_array()['Total'];
     $Data['SeleisihLalu'] = $Data['InLalu'] - $Data['OutLalu'];
     $Data['In'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='IN' AND `Tanggal` LIKE '2024%'")->row_array()['Total'];
     $Data['Out'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='OUT' AND `Tanggal` LIKE '2024%'")->row_array()['Total'];
