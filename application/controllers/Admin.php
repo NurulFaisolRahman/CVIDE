@@ -65,7 +65,7 @@ class Admin extends CI_Controller {
     $Data['SaldoLalu'] = $Data['SeleisihLalu'] + ($Data['In']-$Data['Out']);
     $Data['InBerjalan'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='IN' AND `Tanggal` LIKE date('Y-m')")->row_array()['Total'];
     $Data['OutBerjalan'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='Out' AND `Tanggal` LIKE date('Y-m')")->row_array()['Total'];
-    $this->db->order_by('Date', 'DESC');
+    $this->db->order_by('Id', 'DESC');
     $Data['Kas'] = $this->db->get('kas')->result_array();
     $this->load->view('Admin/Header',$Data);
 		$this->load->view('Admin/Kas',$Data);
