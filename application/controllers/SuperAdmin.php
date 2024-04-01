@@ -34,9 +34,9 @@ class SuperAdmin extends CI_Controller {
 	public function Kas(){
     $Data['InLalu'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='IN' AND `Tanggal` >= '2022-05' AND Tanggal <= '2023-12-30'")->row_array()['Total'];
     $Data['OutLalu'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='OUT' AND `Tanggal` >= '2022-05-10' AND Tanggal <= '2023-12-30'")->row_array()['Total'];
-    $Data['SeleisihLalu'] = $Data['InLalu'] - $Data['OutLalu'];
-    $Data['In'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='IN' AND `Tanggal` <= ".date('Y')."-0".(date('m')-1)." AND Tanggal >= '2024-01-01'")->row_array()['Total'];
-    $Data['Out'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='OUT' AND `Tanggal` <= ".date('Y')."-0".(date('m')-1)." AND Tanggal >= '2024-01-01'")->row_array()['Total'];
+    $Data['SeleisihLalu'] = $Data['InLalu'] - $Data['OutLalu'];$Bulan = date("Y-n-j", strtotime("last day of previous month"));
+    $Data['In'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='IN' AND Tanggal <= '".$Bulan."' AND Tanggal >= '2024-01-01'")->row_array()['Total'];
+    $Data['Out'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='Out' AND Tanggal <= '".$Bulan."' AND Tanggal >= '2024-01-01'")->row_array()['Total'];
     $Data['SaldoLalu'] = $Data['SeleisihLalu'] + ($Data['In']-$Data['Out']);
     $Data['InBerjalan'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='IN' AND `Tanggal` LIKE '".date('Y-m')."%'")->row_array()['Total'];
     $Data['OutBerjalan'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='Out' AND `Tanggal` LIKE '".date('Y-m')."%'")->row_array()['Total'];
