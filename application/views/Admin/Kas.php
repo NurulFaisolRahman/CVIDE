@@ -32,7 +32,7 @@
                       <span class="input-group-text bg-danger text-white"><b><?="Pengeluaran ".date("F Y")." = Rp ".number_format($OutBerjalan,0,',','.')?></b></span>
 										</div>
 										<div class="input-group-prepend">
-											<span class="input-group-text bg-warning text-white"><b><?="Saldo ".date("F Y")." = Rp ".number_format(($InBerjalan-$OutBerjalan)+$SaldoLalu,0,',','.')?></b></span>
+											<span class="input-group-text bg-warning text-white"><b><?="Saldo Berjalan = Rp ".number_format(($InBerjalan-$OutBerjalan)+$SaldoLalu,0,',','.')?></b></span>
                     </div>
 									</div>
 								</div>
