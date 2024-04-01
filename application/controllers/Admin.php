@@ -62,9 +62,9 @@ class Admin extends CI_Controller {
     $Data['SeleisihLalu'] = $Data['InLalu'] - $Data['OutLalu'];
     $Data['In'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='IN' AND `Tanggal` LIKE '".date('Y')."%'")->row_array()['Total'];
     $Data['Out'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='OUT' AND `Tanggal` LIKE '".date('Y')."%'")->row_array()['Total'];
-    $Data['SaldoLalu'] = $Data['SeleisihLalu'] + ($Data['In']-$Data['Out']);
     $Data['InBerjalan'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='IN' AND `Tanggal` LIKE '".date('Y-m')."%'")->row_array()['Total'];
     $Data['OutBerjalan'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='Out' AND `Tanggal` LIKE '".date('Y-m')."%'")->row_array()['Total'];
+    $Data['SaldoLalu'] = $Data['SeleisihLalu'] + ($Data['In']-$Data['Out']) - $Data['OutBerjalan'];
     $this->db->order_by('Id', 'DESC');
     $Data['Kas'] = $this->db->get('kas')->result_array();
     $this->load->view('Admin/Header',$Data);
