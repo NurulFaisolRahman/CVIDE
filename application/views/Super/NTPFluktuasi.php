@@ -147,6 +147,7 @@
                               <?php } else { ?>
                                 <td class="align-middle text-dark"><b><?=$Laju[4][$i].'%'?></b></td>
                               <?php } ?>
+                              <?php if ($Tahun != 2024) { ?>
                               <?php if ($Laju[5][$i] > 0.0) { ?>
                                 <td class="align-middle bg-success"><b><?='+'.$Laju[5][$i].'%'?></b></td>
                               <?php } else if ($Laju[5][$i] < 0.0) { ?>
@@ -154,7 +155,6 @@
                               <?php } else { ?>
                                 <td class="align-middle text-dark"><b><?=$Laju[5][$i].'%'?></b></td>
                               <?php } ?>
-                              <?php if ($Tahun != 2024) { ?>
                               <?php if ($Laju[6][$i] > 0.0) { ?>
                                 <td class="align-middle bg-success"><b><?='+'.$Laju[6][$i].'%'?></b></td>
                               <?php } else if ($Laju[6][$i] < 0.0) { ?>

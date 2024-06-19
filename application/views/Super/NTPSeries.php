@@ -237,7 +237,7 @@
                           <td class="align-middle bg-danger text-center text-light"><b><?=number_format(($NTP[6][$i]+$NTP[7][$i]+$NTP[8][$i]+$NTP[9][$i]+$NTP[10][$i]+$NTP[11][$i])/6,2)?></b></td>
                           <td class="align-middle bg-success text-center text-light"><b><?=number_format(($NTP[0][$i]+$NTP[1][$i]+$NTP[2][$i]+$NTP[3][$i]+$NTP[4][$i]+$NTP[5][$i]+$NTP[6][$i]+$NTP[7][$i]+$NTP[8][$i]+$NTP[9][$i]+$NTP[10][$i]+$NTP[11][$i])/12,2)?></b></td> -->
                         </tr>
-                        <tr><td colspan="4" class="bg-warning"></td></tr> 
+                        <tr><td colspan="8" class="bg-warning"></td></tr> 
                       <?php }} ?>
                       </tbody>
                     </table>
