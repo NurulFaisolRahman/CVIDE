@@ -266,36 +266,26 @@
           <h2 class="font-weight-bold text-danger">Team</h2>
         </div>
         <div class="row">
-          <div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">
-            <div class="member">
-              <div class="pic"><img src="assets/img/team/PakTitov.jpg" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Titov Chuk’s<br>Mayvani S.E., M.E</h4>
-                <span>Pembina dan Penasehat</span>
+          <!--<div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">-->
+          <!--  <div class="member">-->
+          <!--    <div class="pic"><img src="assets/img/team/PakTitov.jpg" class="img-fluid" alt=""></div>-->
+          <!--    <div class="member-info">-->
+          <!--      <h4>Titov Chuk’s<br>Mayvani S.E., M.E</h4>-->
+          <!--      <span>Pembina dan Penasehat</span>-->
                 <!-- <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVTitov"><b>Info</b></button> -->
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">
-            <div class="member">
-              <div class="pic"><img src="assets/img/team/Ibnu.jpg" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Ibnu Dwi Prasetya S.E</h4>
-                <span>Asisten Tenaga Ahli</span>
+          <!--    </div>-->
+          <!--  </div>-->
+          <!--</div>-->
+          <!--<div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">-->
+          <!--  <div class="member">-->
+          <!--    <div class="pic"><img src="assets/img/team/Ibnu.jpg" class="img-fluid" alt=""></div>-->
+          <!--    <div class="member-info">-->
+          <!--      <h4>Ibnu Dwi Prasetya S.E</h4>-->
+          <!--      <span>Asisten Tenaga Ahli</span>-->
                 <!-- <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVIbnu"><b>Info</b></button> -->
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">
-            <div class="member">
-              <div class="pic"><img src="assets/img/team/Noven.jpg" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Noventianus Reonaldi Werang S.E</h4>
-                <span>Asisten Tenaga Ahli</span>
-                <!-- <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVNoven"><b>Info</b></button> -->
-              </div>
-            </div>
-          </div>
+          <!--    </div>-->
+          <!--  </div>-->
+          <!--</div>-->
           <div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">
             <div class="member">
               <div class="pic"><img src="assets/img/team/Rifta.jpg" class="img-fluid" alt=""></div>
@@ -318,11 +308,41 @@
           </div>
           <div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">
             <div class="member">
+              <div class="pic"><img src="assets/img/team/Noven.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Noventianus Reonaldi Werang S.E</h4>
+                <span>Asisten Tenaga Ahli</span>
+                <!-- <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVNoven"><b>Info</b></button> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="member">
+              <div class="pic"><img src="assets/img/team/Linda.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Linda Cahyanai S.E.</h4>
+                <span>Asisten Tenaga Ahli</span>
+                <!-- <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVTitov"><b>Info</b></button> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="member">
               <div class="pic"><img src="assets/img/team/Faisol.jpg" class="img-fluid" alt=""></div>
               <div class="member-info">
-                <h4>Nurul Faisol<br>Rahman S.Kom</h4>
+                <h4>Nurul Faisol Rahman S.Kom</h4>
                 <span>Tenaga IT</span>
-                <!-- <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVFaisol"><b>Info</b></button> -->
+                 <!--<button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVFaisol"><b>Info</b></button> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="member">
+              <div class="pic"><img src="assets/img/team/Levia.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Levia Melvianawati S.E.</h4>
+                <span>Asisten Tenaga Ahli</span>
+                <!-- <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#CVTitov"><b>Info</b></button> -->
               </div>
             </div>
           </div>

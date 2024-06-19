@@ -209,6 +209,55 @@ class Super extends CI_Controller {
 		$this->load->view('Super/NTPFluktuasi',$Data);
   }
 
+  public function NTPI(){
+    $IKRT = array('AA001001','AA003002','AA004001','AA006001','AA007001','AA008002','AA011001','AA012001','AA013001','AA014001','AA014002','AA014003','AA014004','AA016001','AA017001','AA018001','AA019001','AA020001','AA021001','AA702001','AB001002','AB007001','AB007002','AB011001','AB012001','AB013001','AB014001','AB018001','AB019001','AB020001','AB022001','AB023001','AB701002','AC001001','AC002001','AC004001','AC005001','AC006001','AC007001','AC008001','AC009001','AC011001','AC013001','AC015001','AC017001','AC018001','AC022001','AC023001','AC026001','AC035001','AC701001','AC703001','AC704001','AC708001','AD001001','AD002001','AD003001','AD004001','AD005001','AD006001','AD007001','AD008001','AD009001','AD014001','AD016001','AD020001','AE013001','AE015001','AE019001','AE021001','AE024001','AE026001','AF006001','AF006002','AF007001','AF007002','AF008001','AF008002','AF009001','AF011001','AF011002','AF012002','AF013001','AF014001','AF703001','AF703002','AG002002','AG002003','AG003001','AG004001','AG005001','AG007001','AH001001','AH002001','AH003002','AH004001','AH005001','AH005002','AH008001','AH010001','AH011001','AH012001','AH013001','AH016001','AH017001','AH018001','AH019001','AH020001','AH026001','AH030001','AH031001','AH034001','AH701001','AH702003','AH707001','AI001001','AI002001','AI003001','AI003002','AI004001','AI006001','AI007001','AI008001','AI010001','AI013002','AI014002','AI015003','AI016001','AI017001','AI017002','AI018001','AI019001','AI020001','AI021001','AI702001','AJ001001','AJ002001','AJ003002','AJ005001','AJ006001','AJ007001','AK001001','AK001002','AK002001','AK003001','AK008001','AK008002','AK011001','AK012001','AK013001','AK014001','AK015001','AK016001','AK016002','AK018001','AK019001','AK020001','AK021001','AK022001','AK023001','AK024001','AK024002','AK025001','AK025002','AK026001','AK701001','AK703002','AK706001','AL001003','AL003001','AP001001','AP002001','AP003001','AP003002','AP004001','AP011001','AP012001','AP021001','AP022001','AP024001','AP024002','AP706001','AP708001','AP708002','AP709002','AP714001','AQ001001','AQ001002','AQ008001','AQ009001','AQ011005','AQ012002','AQ710003','AQ711001','AR001002','AR002001','AR003001','AR013001','AR014001','BA002001','BA004004','BA005004','BA006001','BA006003','BA007001','BA007004','BA009001','BA014001','BA015001','BA016003','BA016004','BA017001','BA021001','BA022001','BA023001','BA024001','BA030002','BA705001','BA709003','BA711001','BA712001','BB001001','BB002003','BB004001','BB005002','BB006002','BB006003','BB007002','BB008001','BB009002','BB010001','BB012002','BB013001','BB016001','BB017001','BB703001','BC009003','BC010001','BC010003','BC013003','BC019002','BC021001','BC022001','BC022003','BC025001','BC027003','BC029001','BC030003','BC034002','BC036003','BC042001','BC049002','BC053001','BC053002','BC701001','BC703002','BC710001','BC713001','BD001001','BD003002','BD004004','BD005001','BD005002','BD009001','BD010001','BD010002','BD011001','BD012001','BD013002','CA001003','CA003003','CA013003','CA015003','CA016003','CA017003','CA019003','CA022001','CA023001','CA024001','CA025001','CA027001','CA701002','CA702001','CA703001','CA704002','CB004001','CB008001','CB010002','CB011001','CB013001','CB014001','CB015001','CB016001','CB017001','CB019001','CB020001','CB021001','CB025001','CB027001','CC004001','CC011001','CC017002','CC019002','CD001004','CD002001','CD022001','CD023001','CD025001','CD028001','DA001001','DA002001','DA004001','DA008002','DB001001','DB001002','DB001003','DB002001','DB002002','DB002003','DB003001','DB005001','DB006001','DB007001','DB008002','DB009001','DB701001','DB702001','DC001001','DC001002','DC002001','DC002002','DC002003','DC003001','DC009001','DC011001','DC011002','DC012001','DC503001','DC504001','DC702001','DC703001','DC703002','DC704002','DC707001','EB004001','EB005001','EB006002','EB006004','EB008001','EB009004','EB012002','ED001001','ED002001','ED003001','FA001001','FA001002','FA003003','FC003002','FC010001','FC011001','FC015001','FC016001','FC702001','FD002001');
+    $Nama = array('Beras','Beras Ketan/Pulut','Tepung Beras','Tepung Sagu','Tepung Tapioka (Aci/Kanji)','Tepung Terigu','Jagung Pipilan/Pocelan','Beras Jagung ','Mie Basah','Mie Instant Supermi Rasa Ayam Bawang','Mie Instant Sedap Goreng','Mie Instant Indomie Soto','Mie Instant Indomie Rasa Ayam Bawang','Bihun ','Makaroni','Ketela Pohon','Ketela Rambat ','Gaple','Talas','Sohun/Soun','Daging Sapi','Itik hidup Manila/mentok','Itik hidup Bebek','Ayam Kampung Hidup','Ayam Ras Hidup','Daging Ayam Kampung','Daging Ayam Ras','Sosis Daging Ayam','Sosis Daging Sapi','Bakso','Daging Dlm Kaleng','Rampela Hati Ayam','Ayam Nuget','Cakalang','Cumi-Cumi','Kembung','Selar','Tenggiri','Teri','Tongkol','Udang Laut','Layang','Kerang','Layur','Bawal','Kurisi','Kerapu','Rajungan','Pari','Lemuru','Kuniran','Bilis','Manyung','Sembilang','Gurame','Gabus','Mujair','Ikan Mas','Lele','Nila','Bandeng','Udang Tambak','Patin','Sepat','Belut','Saluang/Wader','Ikan Asin Sepat','Ikan Asin Teri','Ikan Asin Layang','Ikan Asin Layur','Ikan Asin Cumi-cumi','Ikan Tongkol Asap','Susu Cair Kemasan Bendera','Susu Cair Kemasan Indomilk','Susu Bubuk Bayi Lactogen','Susu Bubuk Bayi SGM','Makanan Bayi Milna','Makanan Bayi Cerelac','Keju','Telur Itik/Bebek Tawar Mentah','Telur Itik/Bebek Asin Matang','Telur Puyuh','Telur Ayam Kampung','Telur Ayam Ras','Susu Kental Manis Putih','Susu Kental Manis Coklat','Minyak Goreng Tropical','Minyak Goreng Curah','Margarine','Mentega','Kelapa Tua','Santan Instan/Jadi','Kangkung','Bayam','Kubis/Kol','Kacang Panjang','Kentang Besar','Kentang Sedang','Ketimun','Tomat Sayur','Labu Siam/Jipang','Labu Air/Labu Panjang','Peta','Daun Bawang','Tauge/Kecambah','Buncis','Wortel','Lobak','Cabai Hijau','Sawi Putih','Sawi Hijau','Jagung Muda Kecil','Brokoli','Jamur','Daun Selada','Pisang','Pepaya','Jeruk Medan','Jeruk Pontianak','Mangga','Sawo','Nanas','Durian','Melon','Salak','Alpukat','Apel','Belimbing','Semangka Tanpa Biji','Semangka Ada Biji','Anggur','Nangka','Pir','Kelengkeng','Buah Naga','Kacang Tanah','Kacang Hijau','Kacang Kedele','Kacang Merah','Tempe Kedele','Tahu Mentah','Bawang Merah Besar','Bawang Merah Kecil','Bawang Putih','Lada/Merica','Penyedap Masakan Ajinomoto','Penyedap Masakan Sasa','Kemiri','Asam','Gula Merah','Ketumbar','Jinten','Bumbu Jadi IndofoodNasi Goreng','Bumbu Jadi Sajiku Nasi Goreng','Kunyit','Lengkuas','Jahe','Cabai Merah','Cabai Rawit','Terasi','Saus Sambal ABC','Saus Sambal Indofood','Saus Tomat ABC','Saus Tomat Indofood','Jeruk Nipis','Kencur','Garam','Cabai Merah Kering','Kerupuk Mentah','Bahan agar-agar','Roti Tawar','Roti Manis','Biskuit Khong Guan','Biskuit Regal','Donat','Bubur Nasi','Gado-Gado','Soto','Sate','Ayam Goreng Paha','Ayam Goreng Dada','Martabak','Sayur Jadi Sop','Sayur Jadi Capcay','Nasi dengan Lauk','Mie Ayam','Gula Pasir Gulaku','Gula Pasir Curah','Teh Manis','Air Minum Dalam Kemasan','Minuman Ringan','Minuman Kesehatan/Berenergi Suplemen','Teh Celup','Minuman Es Campur','Rokok Putih','Rokok Kretek','Rokok Kretek Filter','Arak/Anggur obat','Bir Bintang','Kayu Balok','Seng Plat','Seng Gelombang','Genteng Jatiwangi','Genteng Bintang','Asbes Djabesmen','Asbes','Batu Bata','Semen','Batako','Cat Kayu Emco','Cat Kayu','Cat Tembok','Paku','Keramik','Upah Tukang Bukan Mandor','Besi Slup (full=12 m)','Sekop','Pipa Paralon','Papan','Kuas','Palu/ Martil','Minyak Tanah','Arang','Korek Api/Geretan','Bola Lampu','Tarif Listrik  900w','Tarif Listrik 1300w','Lilin','Lampu TL/Neon','Gas LPG','Fitting Lampu','Kabel','Senter','Batu Baterai','Korek Api Gas','Tarif Air PDAM','Gelas','Piring Polos Duralex','Piring Kembang','Toples','Mangkok','Sapu Lidi','Kain Pel Gajah (dari kain)','Kain Pel Dinamic (sumbu)','Pisau','Payung','Jarum','Gayung','Teko/Ceret','Dandang','Kipas angin','Mesin Cuci','Rice Cooker Miyako','Rice Cooker Cosmos','Magic Com Miyako','Mixer','Ember','Sapu','Sabun Deterjen Bubuk','Sabun Cream/Colek','Pembasmi Nyamuk Bakar','Pembasmi Nyamuk Lotion Autan','Pembasmi Nyamuk Lotion Soffel','Pemutih','Pewangi Pakaian Molto','Pewangi Pakaian So Klin (Refill))','Pembasmi Nyamuk Spray','Sabun Cair/Cuci Piring','Tissu','Kemeja Panjang Sersin','Kaos Kutang/Singlet','Kaos Oblong/Polos','Peci/Kopiah','Baju Kaos/T-Shirt','Kaos Kaki','Baju Koko','Celana Panjang Jeans','Jaket','Kemeja Pendek katun','Kemeja Pendek Sersin','Sepatu Kets Pria','Celana Pendek Jeans','Kemeja Pendek Batik','Sarung','Sandal Pria','Rok Dalam','Sepatu','Celana Dalam','Daster','Pembalut Wanita','Celana Panjang Jeans','Kerudung/Jilbab','Mukena','Baju Kaos/ T-Shirt','Baju Batik','Celana Panjang Sersin','Kaos Kaki','Kebaya','Sandal Wanita','Sepatu Kulit Sintetis','Pakaian Bayi','Popok Sekali Pakai','Sandal Anak','Emas Perhiasan','Benang Jahit','Tutup Kepala/Topi','Ikat Pinggang','Sandal Jepit Karet','Kacamata','Tarif Dokter','Tarif Pemeriksaan Kandungan','Mantri Kesehatan','Tarif Dokter Gigi','Obat Sakit Kepala Paramex','Obat Sakit Kepala Oskadon','Obat Sakit Kepala Bodrex','Obat Sakit Perut  New Diatab','Obat Sakit Perut Diapet','Obat Sakit Perut New Entrostop','Obat Batuk Cair','Obat Flu','Obat Sakit Maag','Obat Gosok/Balsem','Minyak Angin','Minyak Kayu Putih','Minyak Telon','Minyak Tawon','Pasta Gigi Pepsodent','Pasta Gigi Ciptadent','Sabun Mandi Lifebuoy','Sabun Mandi Lux','Sabun Mandi Give','Bedak','Hand Body Lotion','Shampoo Sunsilk','Shampoo Lifebouy','Sikat Gigi','Tarif Gunting Rambut Pria','Tarif Gunting Rambut Wanita','Bedak Bayi','Sabun Mandi Cair Lifebuoy','Sabun Mandi CairLux','Sabun Wajah','Deodorant','Buku Tulis Bergaris','Penggaris Plastik','Pensil Hitam Staedtler HB','Pensil Hitam Staedtler 2B','Pulpen/Ballpoint','Penghapus Pensil','Buku Gambar','Kaos Olah Raga','Training Pack','Sepatu Olah Raga','Tarif Angkutan Bermotor Jauh ( > 5Km)','Tarif Angkutan Bermotor Dekat (<= 5Km)','Bensin Pertamax','Ban Dalam Motor','Busi','Kanvas Rem','Cuci Mobil','Cuci Motor','Tambal Ban','Tarif Adm Transfer Uang');
+    $Data['Fluktuasi'] = array();
+    for ($k=1; $k <= 12; $k++) { 
+        if ($k < 10) { $Bulan = '0'.$k; } else { $Bulan = $k; }
+        $DataProdusen = $this->db->query("SELECT KodeKualitas,Harga FROM `ntpkonsumen` WHERE TanggalSurvei LIKE '2023-".$Bulan."%'")->result_array();    
+        $DataHarga = array();
+        for ($j=0; $j < count($IKRT); $j++) { 
+          $Temp = array();
+          foreach ($DataProdusen as $key) {
+            $Pisah = explode("|",$key['KodeKualitas']);
+            $Harga = explode("|",$key['Harga']);
+            for ($i=0; $i < count($Pisah); $i++) { 
+              if ($Pisah[$i] == $IKRT[$j]) {
+                array_push($Temp,(int)$Harga[$i]);
+              }
+            }
+          }
+          array_push($DataHarga,$Temp);
+        }
+        $Average = array();
+        for ($x=0; $x < count($DataHarga); $x++) { 
+          if (count($DataHarga[$x]) > 0) {
+            array_push($Average,(int)(array_sum($DataHarga[$x])/count($DataHarga[$x])));
+          } else {
+            array_push($Average,0);
+          }
+        }
+        array_push($Data['Fluktuasi'],$Average);
+      }
+    $Data['Laju'] = array();
+    for ($j=1; $j < 12; $j++) { 
+      $Temp = array();
+      for ($i=0; $i < count($Data['Fluktuasi'][0]); $i++) { 
+        $Harga = $Data['Fluktuasi'][$j][$i];
+        $_Harga = $Data['Fluktuasi'][$j-1][$i];
+        if ($Harga > 0) {
+          array_push($Temp,number_format((($Harga-$_Harga)/$Harga*100),2,",","."));
+        } else {
+          array_push($Temp,0);
+        }
+      }
+      array_push($Data['Laju'],$Temp);
+    }
+    $this->load->view('Super/Header',$Data);
+	  $this->load->view('Super/NTPFluktuasi',$Data);
+  }
+
   public function NTP(){
     $TahunNTP = $this->session->userdata('TahunNTP');
     $Bulan = $this->session->userdata('BulanNTP');
@@ -585,7 +634,7 @@ class Super extends CI_Controller {
     }
     $Data['IT'] = $ITSeries;$Data['IB'] = $IBSeries;$Data['NTP'] = $NTPSeries;
     $this->load->view('Super/Header');
-		$this->load->view('Super/NTPSeries',$Data);
+    $this->load->view('Super/NTPSeries',$Data);
   }
 
   public function NTPIKRT(){

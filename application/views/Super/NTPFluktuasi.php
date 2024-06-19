@@ -56,10 +56,10 @@
                             <th class="align-middle">Januari</th>
                             <th class="align-middle">Februari</th>
                             <th class="align-middle">Maret</th>
-                          <?php if ($Tahun != 2024) { ?>
                             <th class="align-middle">April</th>
                             <th class="align-middle">Mei</th>
                             <th class="align-middle">Juni</th>
+                            <?php if ($Tahun != 2024) { ?>
                             <th class="align-middle">Juli</th>
                             <th class="align-middle">Agustus</th>
                             <th class="align-middle">September</th>
@@ -96,10 +96,10 @@
                               <td class="align-middle"><b><?=number_format($Fluktuasi[0][$i],0,',','.')?></b></td>
                               <td class="align-middle"><b><?=number_format($Fluktuasi[1][$i],0,',','.')?></b></td>
                               <td class="align-middle"><b><?=number_format($Fluktuasi[2][$i],0,',','.')?></b></td>
-                            <?php if ($Tahun != 2024) { ?>
                               <td class="align-middle"><b><?=number_format($Fluktuasi[3][$i],0,',','.')?></b></td>
                               <td class="align-middle"><b><?=number_format($Fluktuasi[4][$i],0,',','.')?></b></td>
                               <td class="align-middle"><b><?=number_format($Fluktuasi[5][$i],0,',','.')?></b></td>
+                              <?php if ($Tahun != 2024) { ?>
                               <td class="align-middle"><b><?=number_format($Fluktuasi[6][$i],0,',','.')?></b></td>
                               <td class="align-middle"><b><?=number_format($Fluktuasi[7][$i],0,',','.')?></b></td>
                               <td class="align-middle"><b><?=number_format($Fluktuasi[8][$i],0,',','.')?></b></td>
@@ -126,7 +126,6 @@
                               <?php } else { ?>
                                 <td class="align-middle text-dark"><b><?=$Laju[1][$i].'%'?></b></td>
                               <?php } ?>
-                            <?php if ($Tahun != 2024) { ?>
                               <?php if ($Laju[2][$i] > 0.0) { ?>
                                 <td class="align-middle bg-success"><b><?='+'.$Laju[2][$i].'%'?></b></td>
                               <?php } else if ($Laju[2][$i] < 0.0) { ?>
@@ -155,6 +154,7 @@
                               <?php } else { ?>
                                 <td class="align-middle text-dark"><b><?=$Laju[5][$i].'%'?></b></td>
                               <?php } ?>
+                              <?php if ($Tahun != 2024) { ?>
                               <?php if ($Laju[6][$i] > 0.0) { ?>
                                 <td class="align-middle bg-success"><b><?='+'.$Laju[6][$i].'%'?></b></td>
                               <?php } else if ($Laju[6][$i] < 0.0) { ?>
