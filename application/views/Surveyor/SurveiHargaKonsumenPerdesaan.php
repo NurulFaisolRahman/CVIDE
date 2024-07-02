@@ -12,7 +12,7 @@
                       <div class="container-fluid">
                         <div class="row">
                           <div class="col-sm-12">
-                            <button type="button" class="btn btn-sm btn-primary border-white" data-toggle="modal" data-target="#ModalInput"><i class="fa fa-plus"></i><b> Input Data Survei</b></button>
+                            <!-- <button type="button" class="btn btn-sm btn-primary border-white" data-toggle="modal" data-target="#ModalInput"><i class="fa fa-plus"></i><b> Input Data Survei</b></button> -->
                             <div class="table-responsive">
                               <table id="TabelKonsumen" class="table table-sm table-bordered bg-light">
                                 <thead>
@@ -53,7 +53,7 @@
         <!-- /page content -->
       </div>
     </div>
-    <div class="modal fade" id="ModalInput">
+    <!-- <div class="modal fade" id="ModalInput">
       <div class="modal-dialog modal-xl">
         <div class="modal-content bg-warning">
           <div class="modal-body">
@@ -188,7 +188,7 @@
                 'CC001002','CC001003','CC001004','CC002001','CC002002','CC002003','CC002004','CC003001','CC003002','CC003003','CC004001','CC004002','CC004003','CC004004','CC007001','CC007002',
                 'CC007003','CC007004','CC008001','CC008002','CC008003','CC008004','CC009001','CC009002','CC009003','CC010001','CC010002','CC010003','CC011001','CC012001','CC013001','CC014001',
                 'CC015001','CC016001','CC016002','CC017001','CC017002','CC017003','CC017004','CC018001','CC018002','CC018003','CC019001','CC019002','CC019003','CC019004','CD001001','CD001002',
-                'CD001003','CD001004','CD002001','CD002002','CD002003','CD003001','CD003002','CD004001','CD004002','CD004003','CD004004','CD018001','CD018002','CD018003','CD018004','CD020001',
+                'CD001003','CD001004','CD002001','CD002002','CD002003','CD004001','CD004002','CD004003','CD004004','CD018001','CD018002','CD018003','CD018004','CD020001',
                 'CD020002','CD020003','CD020004','CD022001','CD022002','CD023001','CD023002','CD023003','CD025001','CD025002','CD026001','CD026002','CD026003','CD028001','CD029001','CD029002',
                 'DB001001','DB001002','DB001003','DB001004','DB001005','DB002001','DB002002','DB002003','DB002004','DB002005','DB003001','DB003002','DB003003','DB003004','DB003005','DB004001',
                 'DB004002','DB004003','DB004004','DB004005','DB005001','DB005002','DB005003','DB005004','DB005005','DB006001','DB006002','DB006003','DB007001','DB007002','DB007003','DB008001',
@@ -234,7 +234,7 @@
                           <th class="align-middle">Harga Bulan Sebelumnya</th>
                         </tr>
                       </thead>
-                    <?php for ($i=709; $i < 1417; $i++) { ?>
+                    <?php for ($i=709; $i < 1415; $i++) { ?>
                       <tr class="text-white bg-primary">
                         <td class="text-center align-middle font-weight-bold"><?=$Kode[$i]?></td>
                         <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="<?=$Kode[$i]?>"></td>
@@ -252,7 +252,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     
     <div class="modal fade" id="ModalEdit">
       <div class="modal-dialog modal-xl">
@@ -328,7 +328,7 @@
                         </tr>
                       </thead>
                     <?php for ($i=0; $i < 709; $i++) { ?>
-                      <tr class="text-white bg-primary">
+                      <tr id="_Edit<?=$Kode[$i]?>" class="text-white bg-primary">
                         <td class="text-center align-middle font-weight-bold"><?=$Kode[$i]?></td>
                         <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Edit<?=$Kode[$i]?>"></td>
                         <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Edit<?='_'.$Kode[$i]?>"></td>
@@ -347,8 +347,8 @@
                           <th class="align-middle">Harga Bulan Sebelumnya</th>
                         </tr>
                       </thead>
-                    <?php for ($i=709; $i < 1417; $i++) { ?>
-                      <tr class="text-white bg-primary">
+                    <?php for ($i=709; $i < 1415; $i++) { ?>
+                      <tr id="_Edit<?=$Kode[$i]?>" class="text-white bg-primary">
                         <td class="text-center align-middle font-weight-bold"><?=$Kode[$i]?></td>
                         <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Edit<?=$Kode[$i]?>"></td>
                         <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Edit<?='_'.$Kode[$i]?>"></td>
@@ -440,7 +440,7 @@
                         </tr>
                       </thead>
                     <?php for ($i=0; $i < 709; $i++) { ?>
-                      <tr class="text-white bg-primary">
+                      <tr id="_Copy<?=$Kode[$i]?>" class="text-white bg-primary">
                         <td class="text-center align-middle font-weight-bold"><?=$Kode[$i]?></td>
                         <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Copy<?=$Kode[$i]?>"></td>
                         <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Copy<?='_'.$Kode[$i]?>"></td>
@@ -459,8 +459,8 @@
                           <th class="align-middle">Harga Bulan Sebelumnya</th>
                         </tr>
                       </thead>
-                    <?php for ($i=709; $i < 1417; $i++) { ?>
-                      <tr class="text-white bg-primary">
+                    <?php for ($i=709; $i < 1415; $i++) { ?>
+                      <tr id="_Copy<?=$Kode[$i]?>" class="text-white bg-primary">
                         <td class="text-center align-middle font-weight-bold"><?=$Kode[$i]?></td>
                         <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Copy<?=$Kode[$i]?>"></td>
                         <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Copy<?='_'.$Kode[$i]?>"></td>
@@ -574,7 +574,7 @@
                     'CC001002','CC001003','CC001004','CC002001','CC002002','CC002003','CC002004','CC003001','CC003002','CC003003','CC004001','CC004002','CC004003','CC004004','CC007001','CC007002',
                     'CC007003','CC007004','CC008001','CC008002','CC008003','CC008004','CC009001','CC009002','CC009003','CC010001','CC010002','CC010003','CC011001','CC012001','CC013001','CC014001',
                     'CC015001','CC016001','CC016002','CC017001','CC017002','CC017003','CC017004','CC018001','CC018002','CC018003','CC019001','CC019002','CC019003','CC019004','CD001001','CD001002',
-                    'CD001003','CD001004','CD002001','CD002002','CD002003','CD003001','CD003002','CD004001','CD004002','CD004003','CD004004','CD018001','CD018002','CD018003','CD018004','CD020001',
+                    'CD001003','CD001004','CD002001','CD002002','CD002003','CD004001','CD004002','CD004003','CD004004','CD018001','CD018002','CD018003','CD018004','CD020001',
                     'CD020002','CD020003','CD020004','CD022001','CD022002','CD023001','CD023002','CD023003','CD025001','CD025002','CD026001','CD026002','CD026003','CD028001','CD029001','CD029002',
                     'DB001001','DB001002','DB001003','DB001004','DB001005','DB002001','DB002002','DB002003','DB002004','DB002005','DB003001','DB003002','DB003003','DB003004','DB003005','DB004001',
                     'DB004002','DB004003','DB004004','DB004005','DB005001','DB005002','DB005003','DB005004','DB005005','DB006001','DB006002','DB006003','DB007001','DB007002','DB007003','DB008001',
@@ -614,12 +614,20 @@
           var CopyHarga = Pisah[8].split('|')
           // var Copy_Harga = Pisah[9].split('|')
           for (let i = 0; i < Kode.length; i++) {
+            $("#_Copy"+Kode[i]).show()
+          }
+          for (let i = 0; i < Kode.length; i++) {
             $("#Copy"+Kode[i]).val("")
             $("#Copy_"+Kode[i]).val("")
           }
           for (let i = 0; i < CopyKode.length; i++) {
             $("#Copy_"+CopyKode[i]).val(CopyHarga[i])
             // $("#Copy_"+CopyKode[i]).val(Copy_Harga[i])
+          }
+          for (let i = 0; i < Kode.length; i++) {
+            if ($("#Copy_"+Kode[i]).val() == "") {
+              $("#_Copy"+Kode[i]).hide()
+            }
           }
 					$('#ModalCopy').modal("show")
 				})
@@ -675,12 +683,20 @@
           var EditHarga = Pisah[8].split('|')
           var Edit_Harga = Pisah[9].split('|')
           for (let i = 0; i < Kode.length; i++) {
+            $("#_Edit"+Kode[i]).show()
+          }
+          for (let i = 0; i < Kode.length; i++) {
             $("#Edit"+Kode[i]).val("")
             $("#Edit_"+Kode[i]).val("")
           }
           for (let i = 0; i < EditKode.length; i++) {
             $("#Edit"+EditKode[i]).val(EditHarga[i])
             $("#Edit_"+EditKode[i]).val(Edit_Harga[i])
+          }
+          for (let i = 0; i < Kode.length; i++) {
+            if ($("#Edit_"+Kode[i]).val() == "") {
+              $("#_Edit"+Kode[i]).hide()
+            }
           }
 					$('#ModalEdit').modal("show")
 				})
@@ -699,7 +715,10 @@
             var Harga = []
             var _Harga = []
             for (let i = 0; i < Kode.length; i++) {
-              if ($("#Edit"+Kode[i]).val() > 0) {
+              if ($("#Edit_"+Kode[i]).val() > 0 && $("#Edit"+Kode[i]).val() == "") {
+                alert('Input Kode Kualitas '+Kode[i]+' Belum Benar!')
+                return
+              } else if ($("#Edit"+Kode[i]).val() > 0) {
                 KodeKualitas.push(Kode[i])
                 Harga.push($("#Edit"+Kode[i]).val())
                 _Harga.push($("#Edit_"+Kode[i]).val())

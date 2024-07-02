@@ -198,7 +198,7 @@ class Super extends CI_Controller {
         $Harga = $Data['Fluktuasi'][$j][$i];
         $_Harga = $Data['Fluktuasi'][$j-1][$i];
         if ($Harga > 0) {
-          array_push($Temp,number_format((($Harga-$_Harga)/$Harga*100),2,",","."));
+          array_push($Temp,number_format((($Harga-$_Harga)/$_Harga*100),2,",","."));
         } else {
           array_push($Temp,0);
         }
@@ -247,7 +247,7 @@ class Super extends CI_Controller {
         $Harga = $Data['Fluktuasi'][$j][$i];
         $_Harga = $Data['Fluktuasi'][$j-1][$i];
         if ($Harga > 0) {
-          array_push($Temp,number_format((($Harga-$_Harga)/$Harga*100),2,",","."));
+          array_push($Temp,number_format((($Harga-$_Harga)/$_Harga*100),2,",","."));
         } else {
           array_push($Temp,0);
         }
