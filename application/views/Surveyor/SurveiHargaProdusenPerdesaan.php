@@ -300,7 +300,7 @@
                     <input class="form-control" type="text" id="EditAlamat">
                   </div>
                 </div>  
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                   <div class="table-responsive mt-1">
                     <table class="table table-sm table-bordered table-striped">
                       <thead class="bg-danger">
@@ -310,27 +310,7 @@
                           <th class="align-middle">Harga Bulan Sebelumnya</th>
                         </tr>
                       </thead>
-                    <?php for ($i=0; $i < 880; $i++) { ?>
-                      <tr id="_Edit<?=$Kode[$i]?>" class="text-white bg-primary">
-                        <td class="text-center align-middle font-weight-bold"><?=$Kode[$i]?></td>
-                        <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Edit<?=$Kode[$i]?>"></td>
-                        <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Edit<?='_'.$Kode[$i]?>"></td>
-                      </tr>
-                    <?php } ?>
-                    </table>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="table-responsive mt-1">
-                    <table class="table table-sm table-bordered table-striped">
-                      <thead class="bg-danger">
-                        <tr style="font-size: 10pt;" class="text-white text-center">
-                          <th class="align-middle">Kode Kualitas</th>
-                          <th class="align-middle">Harga Bulan Pencacahan</th>
-                          <th class="align-middle">Harga Bulan Sebelumnya</th>
-                        </tr>
-                      </thead>
-                    <?php for ($i=880; $i < 1758; $i++) { ?>
+                    <?php for ($i=0; $i < 1758; $i++) { ?>
                       <tr id="_Edit<?=$Kode[$i]?>" class="text-white bg-primary">
                         <td class="text-center align-middle font-weight-bold"><?=$Kode[$i]?></td>
                         <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Edit<?=$Kode[$i]?>"></td>
@@ -392,7 +372,7 @@
                     <input class="form-control" type="text" id="CopyAlamat">
                   </div>
                 </div>  
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                   <div class="table-responsive mt-1">
                     <table class="table table-sm table-bordered table-striped">
                       <thead class="bg-danger">
@@ -402,27 +382,7 @@
                           <th class="align-middle">Harga Bulan Sebelumnya</th>
                         </tr>
                       </thead>
-                    <?php for ($i=0; $i < 880; $i++) { ?>
-                      <tr id="_Copy<?=$Kode[$i]?>" class="text-white bg-primary">
-                        <td class="text-center align-middle font-weight-bold"><?=$Kode[$i]?></td>
-                        <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Copy<?=$Kode[$i]?>"></td>
-                        <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Copy<?='_'.$Kode[$i]?>"></td>
-                      </tr>
-                    <?php } ?>
-                    </table>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="table-responsive mt-1">
-                    <table class="table table-sm table-bordered table-striped">
-                      <thead class="bg-danger">
-                        <tr style="font-size: 10pt;" class="text-white text-center">
-                          <th class="align-middle">Kode Kualitas</th>
-                          <th class="align-middle">Harga Bulan Pencacahan</th>
-                          <th class="align-middle">Harga Bulan Sebelumnya</th>
-                        </tr>
-                      </thead>
-                    <?php for ($i=880; $i < 1758; $i++) { ?>
+                    <?php for ($i=0; $i < 1758; $i++) { ?>
                       <tr id="_Copy<?=$Kode[$i]?>" class="text-white bg-primary">
                         <td class="text-center align-middle font-weight-bold"><?=$Kode[$i]?></td>
                         <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Copy<?=$Kode[$i]?>"></td>
