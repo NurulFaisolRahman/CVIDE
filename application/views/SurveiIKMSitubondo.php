@@ -199,7 +199,7 @@
                                   '1. Tidak Ada, 2. Ada Tapi Tidak Berfungsi, 3. Berfungsi Kurang Maksimal, 4. Dikelola Dengan Baik',
                                   '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting'); 
                     $Poin = array('A. Persyaratan Layanan','B. SOP / Prosedur Layanan','C. Kecepatan & Ketepatan Layanan','D. Kesesuaian Biaya/Tarif Layanan','E. Kewajaran Biaya/Tarif Layanan',
-                                  'F. Kesesuaian Produk Layanan','G. Kompetensi SDM Layanan','H. Kesopanan & Keramahan Layanan','I. Sarana & Prasarana Layanan','J. Penanagan Pengaduan Layanan');
+                                  'F. Kesesuaian Produk Layanan','G. Kompetensi SDM Layanan','H. Kesopanan & Keramahan Layanan','I. Sarana & Prasarana Layanan','J. Penanganan Pengaduan Layanan');
                   ?> 
                   <?php for ($j=0; $j < 20; $j++) { ?>
                     <?php if ($j%2==0) { ?>
@@ -227,6 +227,7 @@
                           </div>
                         <?php } ?>
                       </div>
+                      <input class="form-control mt-1" type="text" id="Alasan<?=($j+1)?>" placeholder="Alasan Anda Memilih">
                     </div>
                   <?php } ?>
                   <div class="col-sm-6 my-1">
@@ -324,7 +325,10 @@
             for (let i = 1; i <= 20; i++) {
               Poin.push($("input[name='Input"+i+"']:checked").val())
             }
-            var Nilai = Poin.join("|");
+            var R = []
+            for (let i = 1; i <= 20; i++) {
+              R.push($("#Alasan"+i).val())
+            }
             var Pendidikan = $("#Pendidikan").val() == 'LAINNYA' ? $("#PendidikanLainnya").val() : $("#Pendidikan").val();
             var Pekerjaan = $("#Pekerjaan").val() == 'LAINNYA' ? $("#PekerjaanLainnya").val() : $("#Pekerjaan").val();
             var Instansi = $("#Instansi").val() == 'LAINNYA' ? $("#InstansiLainnya").val() : $("#Instansi").val();
@@ -333,7 +337,6 @@
               A.push($(this).val())
             })
             A.push($("#LayananLainnya").val())
-            var Layanan = A.join("|");
             var IKM = { Nama: $("#Nama").val(),
                         Gender: $("#Gender").val(),
                         Usia: $("#Usia").val(),
@@ -341,11 +344,12 @@
                         Pendidikan: Pendidikan,
                         Pekerjaan: Pekerjaan,
                         Instansi: Instansi,
-                        Layanan: Layanan,
+                        Layanan: A.join("|"),
                         Kecamatan: $("#Kecamatan").val(),
                         Desa: $("#Desa").val(),
                         Saran: $("#Saran").val(),
-                        Poin: Nilai }
+                        Poin: Poin.join("|"),
+                        Alasan: R.join("|") }
             $("#Kirim").attr("disabled", true);                              
             $("#LoadingInput").show();
             $.post(BaseURL+"IDE/InputIKMSitubondo", IKM).done(function(Respon) {
