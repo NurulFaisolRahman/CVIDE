@@ -25,7 +25,7 @@
                   <?php } else if ($Tahun == 2023) { ?>
                     <div class="col-lg-12 col-sm-12">
                   <?php } else if ($Tahun == 2024) { ?>
-                    <div class="col-lg-6 col-sm-12">
+                    <div class="col-lg-7 col-sm-12">
                   <?php } ?>
                   <div class="table-responsive">
                     <table class="table table-sm table-bordered table-striped">
@@ -38,9 +38,9 @@
                           <th class="align-middle">April</th>
                           <th class="align-middle">Mei</th>
                           <th class="align-middle">Juni</th>
-                          <th class="align-middle bg-primary">Semester 1</th>
-                          <?php if ($Tahun != 2024) { ?>
+                          <th class="align-middle bg-primary">Semester 1</th>                          
                           <th class="align-middle">Juli</th>
+                          <?php if ($Tahun != 2024) { ?>
                           <th class="align-middle">Agustus</th>
                           <th class="align-middle">September</th>
                           <th class="align-middle">Oktober</th>
@@ -192,8 +192,8 @@
                           <td class="align-middle"><b><?=number_format($IT[4][$i],2)?></b></td>
                           <td class="align-middle"><b><?=number_format($IT[5][$i],2)?></b></td>
                           <td class="align-middle bg-danger text-center text-light"><b><?=number_format(($IT[0][$i]+$IT[1][$i]+$IT[2][$i]+$IT[3][$i]+$IT[4][$i]+$IT[5][$i])/6,2)?></b></td>
-                          <!-- <td class="align-middle"><b><?=number_format($IT[6][$i],2)?></b></td>
-                          <td class="align-middle"><b><?=number_format($IT[7][$i],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($IT[6][$i],2)?></b></td>
+                          <!-- <td class="align-middle"><b><?=number_format($IT[7][$i],2)?></b></td>
                           <td class="align-middle"><b><?=number_format($IT[8][$i],2)?></b></td>
                           <td class="align-middle"><b><?=number_format($IT[9][$i],2)?></b></td>
                           <td class="align-middle"><b><?=number_format($IT[10][$i],2)?></b></td>
@@ -210,8 +210,8 @@
                           <td class="align-middle"><b><?=number_format($IB[4][$i],2)?></b></td>
                           <td class="align-middle"><b><?=number_format($IB[5][$i],2)?></b></td>
                           <td class="align-middle bg-danger text-center text-light"><b><?=number_format(($IB[0][$i]+$IB[1][$i]+$IB[2][$i]+$IB[3][$i]+$IB[4][$i]+$IB[5][$i])/6,2)?></b></td>
-                          <!-- <td class="align-middle"><b><?=number_format($IB[6][$i],2)?></b></td>
-                          <td class="align-middle"><b><?=number_format($IB[7][$i],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($IB[6][$i],2)?></b></td>
+                          <!-- <td class="align-middle"><b><?=number_format($IB[7][$i],2)?></b></td>
                           <td class="align-middle"><b><?=number_format($IB[8][$i],2)?></b></td>
                           <td class="align-middle"><b><?=number_format($IB[9][$i],2)?></b></td>
                           <td class="align-middle"><b><?=number_format($IB[10][$i],2)?></b></td>
@@ -228,8 +228,8 @@
                           <td class="align-middle"><b><?=number_format($NTP[4][$i],2)?></b></td>
                           <td class="align-middle"><b><?=number_format($NTP[5][$i],2)?></b></td>
                           <td class="align-middle bg-danger text-center text-light"><b><?=number_format(($NTP[0][$i]+$NTP[1][$i]+$NTP[2][$i]+$NTP[3][$i]+$NTP[4][$i]+$NTP[5][$i])/6,2)?></b></td>
-                          <!-- <td class="align-middle"><b><?=number_format($NTP[6][$i],2)?></b></td>
-                          <td class="align-middle"><b><?=number_format($NTP[7][$i],2)?></b></td>
+                          <td class="align-middle"><b><?=number_format($NTP[6][$i],2)?></b></td>
+                          <!-- <td class="align-middle"><b><?=number_format($NTP[7][$i],2)?></b></td>
                           <td class="align-middle"><b><?=number_format($NTP[8][$i],2)?></b></td>
                           <td class="align-middle"><b><?=number_format($NTP[9][$i],2)?></b></td>
                           <td class="align-middle"><b><?=number_format($NTP[10][$i],2)?></b></td>
@@ -237,7 +237,7 @@
                           <td class="align-middle bg-danger text-center text-light"><b><?=number_format(($NTP[6][$i]+$NTP[7][$i]+$NTP[8][$i]+$NTP[9][$i]+$NTP[10][$i]+$NTP[11][$i])/6,2)?></b></td>
                           <td class="align-middle bg-success text-center text-light"><b><?=number_format(($NTP[0][$i]+$NTP[1][$i]+$NTP[2][$i]+$NTP[3][$i]+$NTP[4][$i]+$NTP[5][$i]+$NTP[6][$i]+$NTP[7][$i]+$NTP[8][$i]+$NTP[9][$i]+$NTP[10][$i]+$NTP[11][$i])/12,2)?></b></td> -->
                         </tr>
-                        <tr><td colspan="8" class="bg-warning"></td></tr> 
+                        <tr><td colspan="9" class="bg-warning"></td></tr> 
                       <?php }} ?>
                       </tbody>
                     </table>
