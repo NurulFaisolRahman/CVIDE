@@ -31,8 +31,8 @@
                             <th class="align-middle">Mei</th>
                             <th class="align-middle">Juni</th>
                             <th class="align-middle">Juli</th>
-                            <?php if ($Tahun != 2024) { ?>
                             <th class="align-middle">Agustus</th>
+                            <?php if ($Tahun != 2024) { ?>
                             <th class="align-middle">September</th>
                             <th class="align-middle">Oktober</th>
                             <th class="align-middle">November</th>
