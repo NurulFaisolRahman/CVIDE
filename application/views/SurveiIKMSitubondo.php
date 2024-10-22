@@ -110,7 +110,7 @@
                       </div>
                       <select class="custom-select" id="Instansi">    
                         <option value="Instansi">Klik Disini</option>                   
-                      <?php $Instansi = array('DINAS PENDIDIKAN DAN KEBUDAYAAN','DINAS KESEHATAN','RUMAH SAKIT UMUM DAERAH (RSUD) ASEMBAGUS','RUMAH SAKIT UMUM DAERAH (RSUD) BESUKI','RUMAH SAKIT UMUM DAERAH (RSUD) DR. ABDOER RAHEM','DINAS PEKERJAAN UMUM DAN PERUMAHAN PERMUKIMAN','SATUAN POLISI PAMONG PRAJA','BADAN PENANGGULANGAN BENCANA DAERAH','DINAS SOSIAL','DINAS KETENAGAKERJAAN','DINAS PEMBERDAYAAN PEREMPUAN',' PERLINDUNGAN ANAK',' PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA','DINAS PERTANIAN DAN KETAHANAN PANGAN','DINAS LINGKUNGAN HIDUP','DINAS KEPENDUDUKAN DAN PENCATATAN SIPIL','DINAS PEMBERDAYAAN MASYARAKAT DAN DESA','DINAS PERHUBUNGAN','DINAS KOMUNIKASI DAN INFORMATIKA','DINAS KOPERASI PERINDUSTRIAN DAN PERDAGANGAN','DINAS PENANAMAN MODAL PELAYANAN TERPADU SATU PINTU','DINAS PARIWISATA PEMUDA DAN OLAHRAGA','DINAS PERPUSTAKAAN DAN KEARSIPAN','DINAS PETERNAKAN DAN PERIKANAN','SEKRETARIAT DAERAH','SEKRETARIAT DPRD','BADAN PERENCANAAN PEMBANGUNAN DAERAH','BADAN KEUANGAN DAN ASET DAERAH','BADAN PENDAPATAN DAERAH','BADAN KEPEGAWAIAN DAN PENGEMBANGAN SUMBER DAYA MANUSIA','INSPEKTORAT','KECAMATAN BANYUGLUGUR','KECAMATAN JATIBANTENG','KECAMATAN SUMBERMALANG','KECAMATAN BESUKI','KECAMATAN SUBOH','KECAMATAN MLANDINGAN','KECAMATAN BUNGATAN','KECAMATAN KENDIT','KECAMATAN PANARUKAN','KECAMATAN SITUBONDO','KECAMATAN PANJI','KECAMATAN MANGARAN','KECAMATAN KAPONGAN','KECAMATAN ARJASA','KECAMATAN ASEMBAGUS','KECAMATAN JANGKAR','KECAMATAN BANYUPUTIH','BADAN KESATUAN BANGSA DAN POLITIK','LAINNYA'); 
+                      <?php $Instansi = array('DINAS PENDIDIKAN DAN KEBUDAYAAN','DINAS KESEHATAN','RUMAH SAKIT UMUM DAERAH (RSUD) ASEMBAGUS','RUMAH SAKIT UMUM DAERAH (RSUD) BESUKI','RUMAH SAKIT UMUM DAERAH (RSUD) DR. ABDOER RAHEM','DINAS PEKERJAAN UMUM DAN PERUMAHAN PERMUKIMAN','SATUAN POLISI PAMONG PRAJA','BADAN PENANGGULANGAN BENCANA DAERAH','DINAS SOSIAL','DINAS KETENAGAKERJAAN','DINAS PEMBERDAYAAN PEREMPUAN',' PERLINDUNGAN ANAK',' PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA','DINAS PERTANIAN DAN KETAHANAN PANGAN','DINAS LINGKUNGAN HIDUP','DINAS KEPENDUDUKAN DAN PENCATATAN SIPIL','DINAS PEMBERDAYAAN MASYARAKAT DAN DESA','DINAS PERHUBUNGAN','DINAS KOMUNIKASI DAN INFORMATIKA','DINAS KOPERASI PERINDUSTRIAN DAN PERDAGANGAN','DINAS PENANAMAN MODAL PELAYANAN TERPADU SATU PINTU','DINAS PARIWISATA PEMUDA DAN OLAHRAGA','DINAS PERPUSTAKAAN DAN KEARSIPAN','DINAS PETERNAKAN DAN PERIKANAN','SEKRETARIAT DAERAH','SEKRETARIAT DPRD','BADAN PERENCANAAN PEMBANGUNAN DAERAH','BADAN KEUANGAN DAN ASET DAERAH','BADAN PENDAPATAN DAERAH','BADAN KEPEGAWAIAN DAN PENGEMBANGAN SUMBER DAYA MANUSIA','INSPEKTORAT','BADAN KESATUAN BANGSA DAN POLITIK','KECAMATAN BANYUGLUGUR','KECAMATAN JATIBANTENG','KECAMATAN SUMBERMALANG','KECAMATAN BESUKI','KECAMATAN SUBOH','KECAMATAN MLANDINGAN','KECAMATAN BUNGATAN','KECAMATAN KENDIT','KECAMATAN PANARUKAN','KECAMATAN SITUBONDO','KECAMATAN PANJI','KECAMATAN MANGARAN','KECAMATAN KAPONGAN','KECAMATAN ARJASA','KECAMATAN ASEMBAGUS','KECAMATAN JANGKAR','KECAMATAN BANYUPUTIH','LAINNYA'); 
                       foreach ($Instansi as $key => $value) { ?>
                         <option value="<?=$value?>"><?=$value?></option>
                       <?php }?>
@@ -131,9 +131,10 @@
                         </div>
                       <?php } ?>
                       <input class="form-control ml-2" type="text" id="LayananLainnya" placeholder="Lainnya">
+                      <pre><b class="text-danger">Bisa Centang Lebih Dari 1 Layanan</b></pre>
                     </div>
                   </div> 
-                  <div class="col-sm-3 my-1">
+                  <div class="col-sm-3 my-1" id="OpsiKecamatan">
                     <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
                         <label class="input-group-text bg-primary text-white"><b>Kecamatan</b></label>
@@ -145,7 +146,7 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-sm-3 my-1">
+                  <div class="col-sm-3 my-1" id="OpsiDesa">
                     <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
                         <label class="input-group-text bg-primary text-white"><b>Desa/Kelurahan</b></label>
@@ -287,6 +288,13 @@
         } else {
           $("#InstansiLainnya").prop('disabled', true);
           $("#InstansiLainnya").attr("placeholder", "Lainnya");
+        }
+        if ($("#Instansi").val()[0] == 'K') {
+          $("#OpsiKecamatan").show();
+          $("#OpsiDesa").show();
+        } else {
+          $("#OpsiKecamatan").hide();
+          $("#OpsiDesa").hide();
         }
       })
 

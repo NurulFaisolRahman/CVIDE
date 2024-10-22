@@ -62,8 +62,8 @@
                             <th class="align-middle">Juli</th>
                             <th class="align-middle">Agustus</th>
                             <th class="align-middle">September</th>
-                            <?php if ($Tahun != 2024) { ?>
                             <th class="align-middle">Oktober</th>
+                            <?php if ($Tahun != 2024) { ?>
                             <th class="align-middle">November</th>
                             <th class="align-middle">Desember</th>
                           <?php } ?>
@@ -102,8 +102,8 @@
                               <td class="align-middle"><b><?=number_format($Fluktuasi[6][$i],0,',','.')?></b></td>
                               <td class="align-middle"><b><?=number_format($Fluktuasi[7][$i],0,',','.')?></b></td>
                               <td class="align-middle"><b><?=number_format($Fluktuasi[8][$i],0,',','.')?></b></td>
-                              <?php if ($Tahun != 2024) { ?>
                               <td class="align-middle"><b><?=number_format($Fluktuasi[9][$i],0,',','.')?></b></td>
+                              <?php if ($Tahun != 2024) { ?>
                               <td class="align-middle"><b><?=number_format($Fluktuasi[10][$i],0,',','.')?></b></td>
                               <td class="align-middle"><b><?=number_format($Fluktuasi[11][$i],0,',','.')?></b></td>
                             <?php } ?>
@@ -168,7 +168,6 @@
                               <?php } else { ?>
                                 <td class="align-middle text-dark"><b><?=$Laju[7][$i].'%'?></b></td>
                               <?php } ?>
-                              <?php if ($Tahun != 2024) { ?>
                               <?php if ($Laju[8][$i] > 0.0) { ?>
                                 <td class="align-middle bg-success"><b><?='+'.$Laju[8][$i].'%'?></b></td>
                               <?php } else if ($Laju[8][$i] < 0.0) { ?>
@@ -176,6 +175,7 @@
                               <?php } else { ?>
                                 <td class="align-middle text-dark"><b><?=$Laju[8][$i].'%'?></b></td>
                               <?php } ?>
+                              <?php if ($Tahun != 2024) { ?>
                               <?php if ($Laju[9][$i] > 0.0) { ?>
                                 <td class="align-middle bg-success"><b><?='+'.$Laju[9][$i].'%'?></b></td>
                               <?php } else if ($Laju[9][$i] < 0.0) { ?>
