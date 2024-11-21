@@ -178,7 +178,12 @@
                                    '17. Bagaimana pendapat Saudara tentang kualitas sarana dan prasarana (Wifi, Proyektor, AC, dll) dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kab. Situbondo?',
                                    '18. Bagaimana kepentingan/harapan Saudara tentang kualitas sarana dan prasarana (Wifi, Proyektor, AC, dll) dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kab. Situbondo?',
                                    '19. Bagaimana pendapat Saudara tentang penanganan pengaduan pengguna layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kab. Situbondo?',
-                                   '20. Bagaimana kepentingan/harapan Saudara tentang penanganan pengaduan pengguna layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kab. Situbondo?'); 
+                                   '20. Bagaimana kepentingan/harapan Saudara tentang penanganan pengaduan pengguna layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kab. Situbondo?',
+                                   '21. Bagaimana pendapat Saudara tentang transparansi pelayanan yang diberikan?',
+                                   '22. Bagaimana kepentingan/harapan Saudara tentang transparansi pelayanan yang diberikan?',
+                                   '23. Bagaimana integritas petugas pelayanan dalam memberikan pelayanan?',
+                                   '24. Bagaimana kepentingan/harapan Saudara tentang integritas petugas pelayanan dalam memberikan pelayanan?'
+                                  ); 
                     $Opsi = array('1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai',
                                   '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
                                   '1. Tidak Mudah, 2. Kurang Mudah, 3. Mudah, 4. Sangat Mudah',
@@ -198,11 +203,15 @@
                                   '1. Buruk, 2. Cukup, 3. Baik, 4. Sangat Baik',
                                   '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
                                   '1. Tidak Ada, 2. Ada Tapi Tidak Berfungsi, 3. Berfungsi Kurang Maksimal, 4. Dikelola Dengan Baik',
+                                  '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
+                                  '1. Standar pelayanan tidak dipublikasikan, 2. Standar pelayanan dipublikasikan sebagian, 3. Standar pelayanan dipublikasikan seluruhnya, 4. Standar pelayanan dipublikasikan seluruhnya dan jelas',
+                                  '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
+                                  '1. Petugas pelayanan memberikan pelayanan yang tidak sesuai dengan standar pelayanan yang telah ditetapkan. 2. Petugas pelayanan memberikan pelayanan dengan cepat, namun disertai permintaan imbalan yang tidak sesuai dengan etika dan integritas profesi. 3. Petugas pelayanan memberikan pelayanan yang sesuai dengan standar pelayanan yang telah ditetapkan, menunjukkan kepatuhan terhadap prosedur dan prinsip integritas. 4. Petugas pelayanan memberikan pelayanan yang sesuai dengan standar pelayanan, serta melaksanakannya dengan cepat dan efisien, tanpa melanggar integritas atau etika kerja',
                                   '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting'); 
                     $Poin = array('A. Persyaratan Layanan','B. SOP / Prosedur Layanan','C. Kecepatan & Ketepatan Layanan','D. Kesesuaian Biaya/Tarif Layanan','E. Kewajaran Biaya/Tarif Layanan',
-                                  'F. Kesesuaian Produk Layanan','G. Kompetensi SDM Layanan','H. Kesopanan & Keramahan Layanan','I. Sarana & Prasarana Layanan','J. Penanganan Pengaduan Layanan');
+                                  'F. Kesesuaian Produk Layanan','G. Kompetensi SDM Layanan','H. Kesopanan & Keramahan Layanan','I. Sarana & Prasarana Layanan','J. Penanganan Pengaduan Layanan','K. Transparansi Layanan','L. Integritas Layanan');
                   ?> 
-                  <?php for ($j=0; $j < 20; $j++) { ?>
+                  <?php for ($j=0; $j < 24; $j++) { ?>
                     <?php if ($j%2==0) { ?>
                       <div class="col-12"><b><?=$Poin[$j/2]?></b></div>
                       <div class="col-12 text-danger"><b>KINERJA / PERFORMA</b></div>
@@ -318,7 +327,7 @@
         } else {
           var Cek = false
           var Tanya = 0
-          for (let i = 1; i <= 20; i++) {
+          for (let i = 1; i <= 24; i++) {
             if ($("input[name='Input"+i+"']:checked").val() == undefined) {
               Cek = true
               Tanya = i
@@ -330,11 +339,11 @@
           } 
           else {
             var Poin = []
-            for (let i = 1; i <= 20; i++) {
+            for (let i = 1; i <= 24; i++) {
               Poin.push($("input[name='Input"+i+"']:checked").val())
             }
             var R = []
-            for (let i = 1; i <= 20; i++) {
+            for (let i = 1; i <= 24; i++) {
               R.push($("#Alasan"+i).val())
             }
             var Pendidikan = $("#Pendidikan").val() == 'LAINNYA' ? $("#PendidikanLainnya").val() : $("#Pendidikan").val();
