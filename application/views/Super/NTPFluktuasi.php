@@ -102,9 +102,7 @@
                               <td class="align-middle"><b><?=number_format($Fluktuasi[8][$i],0,',','.')?></b></td>
                               <td class="align-middle"><b><?=number_format($Fluktuasi[9][$i],0,',','.')?></b></td>
                               <td class="align-middle"><b><?=number_format($Fluktuasi[10][$i],0,',','.')?></b></td>
-                              <?php if ($Tahun != 2024) { ?>
                               <td class="align-middle"><b><?=number_format($Fluktuasi[11][$i],0,',','.')?></b></td>
-                            <?php } ?>
                             </tr>
                             <tr class="text-light align-middle">
                               <td class="align-middle"><b></b></td>
