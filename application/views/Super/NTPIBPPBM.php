@@ -35,9 +35,7 @@
                             <th class="align-middle">September</th>
                             <th class="align-middle">Oktober</th>
                             <th class="align-middle">November</th>
-                            <?php if ($Tahun != 2024) { ?>
                             <th class="align-middle">Desember</th>
-                          <?php } ?>
                           </tr>
                         </thead>
                         <tbody style="font-size: 12px;">
