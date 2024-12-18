@@ -187,7 +187,6 @@
                               <?php } else { ?>
                                 <td class="align-middle text-dark"><b><?=$Laju[10][$i].'%'?></b></td>
                               <?php } ?>
-                            <?php } ?>
                             </tr>
                           <?php }} ?>
                         </tbody>
