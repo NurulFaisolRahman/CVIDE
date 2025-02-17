@@ -39,7 +39,10 @@
 									<li><a href="<?=base_url('Admin')?>"><i class="fa fa-user"></i> <b>Dashboard</b> </a></li>
                 </ul>
                 <ul class="nav side-menu">
-									<li><a href="<?=base_url('Admin/Kas')?>"><i class="fa fa-usd"></i> <b>Kas</b> </a></li>
+									<li><a href="<?=base_url('Admin/Cashflow')?>"><i class="fa fa-usd"></i> <b>Cashflow</b> </a></li>
+                </ul>
+                <ul class="nav side-menu">
+									<li><a href="<?=base_url('Admin/Pendapatan')?>"><i class="fa fa-usd"></i> <b>Pendapatan</b> </a></li>
                 </ul>
                 <ul class="nav side-menu">
 									<li><a href="<?=base_url('Admin/Matrikulasi')?>"><i class="fa fa-book"></i> <b>Matrikulasi</b> </a></li>

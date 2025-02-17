@@ -55,19 +55,28 @@
 												</tr>
 											</thead>
 											<tbody>
-												<?php $No = 1; foreach ($Kas as $key) { $Date = explode("-",$key['Tanggal'])?>
+												<?php $JenisPengeluaran = array('','Honor','Perjalanan Dinas','Pajak','Survei','Operasional Kantor'); 
+															$SubPengeluaran = array(array(''),
+																											array('','PIC Kegiatan','TA Kegiatan','General Manager'),
+																											array('','BBM','Tol','Penginapan','Konsumsi','Honor Peserta rapat/FGD','Honor Perjadin TA Kegiatan','Honor Perjadin PIC Kegiatan'),
+																											array('','Pajak'),
+																											array('','Honor Surveyor','Operasional Survei','Penginapan','Penginapan','Sewa Kendaraan'),
+																											array('','Cetak Laporan Kegiatan','Pembelian ATK','Jasa Pengiriman Dokumen Kegiatan')); 
+															$No = 1; foreach ($Kas as $key) { $Date = explode("-",$key['Tanggal'])?>
 													<tr>
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>
-														<th scope="row" class="align-middle"><?=$key['Description']?></th>
-														<th scope="row" class="align-middle"><?=$key['Category']?></th>
-														<th scope="row" class="text-center align-middle"><?=$key['Quantity']?></th>
-														<th scope="row" style="width: 15%;" class="text-center align-middle"><?="Rp ".number_format($key['Price'],0,',','.')?></th>
-														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=$key['Jenis'] == 'IN' ? "Rp ".number_format($key['Amount'],0,',','.') : '';?></th>
-														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=$key['Jenis'] == 'OUT' ? "Rp ".number_format($key['Amount'],0,',','.') : '';?></th>
+														<th scope="row" class="align-middle"><?=isset($key['Description']) ? $key['Description'] : $key['Deskripsi']; ?></th>
+														<th scope="row" class="align-middle"><?=isset($key['Category']) ? $key['Category'] : $SubPengeluaran[$key['JenisPengeluaran']][$key['SubPengeluaran']] ?></th>
+														<th scope="row" class="text-center align-middle"><?=isset($key['Quantity']) ? $key['Quantity'] : '1'; ?></th>
+														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=isset($key['Price']) ? "Rp ".number_format($key['Price'],0,',','.') : "Rp ".number_format($key['NominalPengeluaran'],0,',','.'); ?></th>
+														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=isset($key['Jenis']) ? $key['Jenis'] == 'IN' ? "Rp ".number_format($key['Amount'],0,',','.') : '' : ''; ?></th>
+														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=isset($key['Jenis']) ? $key['Jenis'] == 'OUT' ? "Rp ".number_format($key['Amount'],0,',','.') : '' : "Rp ".number_format($key['NominalPengeluaran'],0,',','.'); ?></th>
 														<th scope="row" style="width: 10%;" class="text-center align-middle"><?=$Date[2].'-'.$Date[1].'-'.$Date[0]?></th>
 														<th scope="row" style="width: 10%;" class="text-center align-middle">
-															<button Edit="<?=$key['Id']."|".$key['Description']."|".$key['Quantity']."|".$key['Price']."|".$key['Amount']."|".$key['Tanggal']."|".$key['Jenis']."|".$key['Category']?>" class="btn btn-sm btn-warning Edit"><i class="fa fa-edit"></i></button>
-															<button Hapus="<?=$key['Id']?>" class="btn btn-sm btn-danger Hapus"><i class="fa fa-trash"></i></button>
+															<?php if (isset($key['Description'])) { ?>
+																<button Edit="<?=$key['Id']."|".$key['Description']."|".$key['Quantity']."|".$key['Price']."|".$key['Amount']."|".$key['Tanggal']."|".$key['Jenis']."|".$key['Category']?>" class="btn btn-sm btn-warning Edit"><i class="fa fa-edit"></i></button>
+																<button Hapus="<?=$key['Id']?>" class="btn btn-sm btn-danger Hapus"><i class="fa fa-trash"></i></button>
+															<?php } else { echo '-'; } ?>
 														</th>
 													</tr>
 												<?php } ?>  
@@ -147,8 +156,8 @@
             </div>
           </div>
           <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-danger" data-dismiss="modal"><b>Tutup</b></button>
-            <button type="submit" class="btn btn-primary" id="Input"><b>Simpan</b></button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal"><b>Tutup</b></button>
+						<button type="button" class="btn btn-primary" id="Input"><b>Simpan&nbsp;<div id="LoadingInput" class="spinner-border spinner-border-sm text-white" role="status" style="display: none;"></div></b></button>
           </div>
         </div>
       </div>
@@ -221,7 +230,7 @@
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-danger" data-dismiss="modal"><b>Tutup</b></button>
-            <button type="submit" class="btn btn-primary" id="Edit"><b>Simpan</b></button>
+            <button type="button" class="btn btn-primary" id="Edit"><b>Simpan&nbsp;<div id="LoadingEdit" class="spinner-border spinner-border-sm text-white" role="status" style="display: none;"></div></b></button>
           </div>
         </div>
       </div>
@@ -262,21 +271,28 @@
 					} else if (isNaN($("#Quantity").val())) {
 						alert('Input Quantity Belum Benar!')
 					} else {
-						var Data = { Category: $("#Category").val(),
-												 Description: $("#Description").val(),
-												 Jenis: $("input[name='Jenis']:checked").val(),
-												 Price: $("#Price").val(),
-												 Quantity: $("#Quantity").val(),
-												 Amount: $("#Price").val()*$("#Quantity").val(),
-												 Tanggal: $("#Date").val()
-											 }
-						$.post(BaseURL+"Admin/Input", Data).done(function(Respon) {
-							if (Respon == '1') {
-								window.location = BaseURL + "Admin/Kas"
-							} else {
-								alert(Respon)
-							}
-						})
+						var Konfirmasi = confirm("Apakah Data Yang Di Input Sudah Benar?"); 
+            if (Konfirmasi == true) {
+              $("#Input").attr("disabled", true); 
+              $("#LoadingInput").show();                             
+							var Data = { Category: $("#Category").val(),
+													Description: $("#Description").val(),
+													Jenis: $("input[name='Jenis']:checked").val(),
+													Price: $("#Price").val(),
+													Quantity: $("#Quantity").val(),
+													Amount: $("#Price").val()*$("#Quantity").val(),
+													Tanggal: $("#Date").val()
+												}
+							$.post(BaseURL+"Admin/Input", Data).done(function(Respon) {
+								if (Respon == '1') {
+									window.location = BaseURL + "Admin/Cashflow"
+								} else {
+                  alert(Respon)
+                  $("#Input").attr("disabled", false); 
+                  $("#LoadingInput").hide();                             
+                }
+							})
+						}
 					}
 				})
 
@@ -300,21 +316,28 @@
 					} else if (isNaN($("#EditQuantity").val())) {
 						alert('Input Quantity Belum Benar!')
 					} else {
-						var Data = { Id: $("#Id").val(),
-												 Category: $("#Edit	Category").val(),
-												 Description: $("#EditDescription").val(),
-												 Jenis: $("input[name='EditJenis']:checked").val(),
-												 Price: $("#EditPrice").val(),
-												 Quantity: $("#EditQuantity").val(),
-												 Amount: $("#EditPrice").val()*$("#EditQuantity").val(),
-												 Tanggal: $("#EditDate").val()}
-						$.post(BaseURL+"Admin/Edit", Data).done(function(Respon) {
-							if (Respon == '1') {
-								window.location = BaseURL + "Admin/Kas"
-							} else {
-								alert(Respon)
-							}
-						})
+						var Konfirmasi = confirm("Apakah Data Yang Di Edit Sudah Benar?"); 
+            if (Konfirmasi == true) {
+              $("#Edit").attr("disabled", true); 
+              $("#LoadingEdit").show();                             
+							var Data = { Id: $("#Id").val(),
+													Category: $("#Edit	Category").val(),
+													Description: $("#EditDescription").val(),
+													Jenis: $("input[name='EditJenis']:checked").val(),
+													Price: $("#EditPrice").val(),
+													Quantity: $("#EditQuantity").val(),
+													Amount: $("#EditPrice").val()*$("#EditQuantity").val(),
+													Tanggal: $("#EditDate").val()}
+							$.post(BaseURL+"Admin/Edit", Data).done(function(Respon) {
+								if (Respon == '1') {
+									window.location = BaseURL + "Admin/Cashflow"
+								} else {
+                  alert(Respon)
+                  $("#Edit").attr("disabled", false); 
+                  $("#LoadingEdit").hide();                             
+                }
+							})
+						}
 					}
 				})
 
@@ -324,7 +347,7 @@
       		if (Konfirmasi == true) {
 						$.post(BaseURL+"Admin/Hapus", Hapus).done(function(Respon) {
 							if (Respon == '1') {
-								window.location = BaseURL + "Admin/Kas"
+								window.location = BaseURL + "Admin/Cashflow"
 							} else {
 								alert(Respon)
 							}

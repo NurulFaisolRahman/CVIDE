@@ -628,12 +628,14 @@ class IDE extends CI_Controller {
 			if (password_verify($_POST['Password'], $Akun[0]['Password'])) {
         if ($Akun[0]['Level'] == 1) {
           $Session = array('SuperAdmin' => true,
-                           'Username' => $Akun[0]['Username']);
+                           'Username' => $Akun[0]['Username'],
+                           'Kegiatan' => '');
           $this->session->set_userdata($Session);
           echo '1';
         } else if ($Akun[0]['Level'] == 2) {
           $Session = array('Admin' => true,
-                           'Username' => $Akun[0]['Username']);
+                           'Username' => $Akun[0]['Username'],
+                           'Kegiatan' => '');
           $this->session->set_userdata($Session);
           echo '2';
         } else if ($Akun[0]['Level'] == 3) {

@@ -31,7 +31,7 @@ class SuperAdmin extends CI_Controller {
 		$this->load->view('ExcelKas',$Data);
   }
 
-	public function Kas(){
+	public function Cashflow(){
     $Data['InLalu'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='IN' AND `Tanggal` >= '2022-05' AND Tanggal <= '2023-12-30'")->row_array()['Total'];
     $Data['OutLalu'] = $this->db->query("SELECT SUM(Amount) AS Total FROM `kas` WHERE `Jenis`='OUT' AND `Tanggal` >= '2022-05-10' AND Tanggal <= '2023-12-30'")->row_array()['Total'];
     $Data['SeleisihLalu'] = $Data['InLalu'] - $Data['OutLalu'];$Bulan = date("Y-n-j", strtotime("last day of previous month"));
@@ -43,7 +43,7 @@ class SuperAdmin extends CI_Controller {
     $this->db->order_by('Id', 'DESC');
     $Data['Kas'] = $this->db->get('kas')->result_array();
     $this->load->view('SuperAdmin/Header',$Data);
-		$this->load->view('SuperAdmin/Kas',$Data);
+		$this->load->view('SuperAdmin/Cashflow',$Data);
   }
 
   public function Project(){
@@ -56,5 +56,34 @@ class SuperAdmin extends CI_Controller {
     $Data['Matrikulasi'] = $this->db->get('matrikulasi')->result_array();
     $this->load->view('SuperAdmin/Header',$Data);
 		$this->load->view('SuperAdmin/Matrikulasi',$Data);
+  }
+
+  public function Pendapatan(){
+    $Data['Pendapatan'] = $this->db->get('pendapatan')->result_array();
+    $this->load->view('SuperAdmin/Header',$Data);
+		$this->load->view('SuperAdmin/Pendapatan',$Data);
+  }
+
+  public function Pengeluaran(){
+    $Id = $this->session->userdata('Kegiatan');
+    $Kegiatan = $this->db->query("SELECT * FROM `pendapatan` WHERE `Id`=".$Id)->row_array();
+    $Data['NamaKegiatan'] = $Kegiatan['NamaKegiatan'];
+    $Data['NominalKegiatan'] = $Kegiatan['NominalKegiatan'];
+    $Data['Pengeluaran'] = $this->db->query("SELECT * FROM `pengeluaran` WHERE `IdKegiatan`=".$Id)->result_array();
+    $Data['Charge'] = 30/100*$Data['NominalKegiatan'];
+    $Data['Saving'] = 20/100*$Data['NominalKegiatan'];
+    $Data['Umum'] = 5/100*$Data['NominalKegiatan'];
+    $Data['Biaya'] = 0;
+    foreach ($Data['Pengeluaran'] as $key) {
+      $Data['Biaya'] += $key['NominalPengeluaran'];
+    }
+    $Data['Saldo'] = $Data['NominalKegiatan'] - ($Data['Charge']+$Data['Saving']+$Data['Biaya']);
+    $this->load->view('SuperAdmin/Header',$Data);
+		$this->load->view('SuperAdmin/Pengeluaran',$Data);
+  }
+
+  public function SesiBiaya(){
+    $this->session->set_userdata(array('Kegiatan' => $_POST['Kegiatan']));
+    echo '1';
   }
 }

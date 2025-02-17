@@ -39,14 +39,17 @@
 									<li><a href="<?=base_url('SuperAdmin')?>"><i class="fa fa-user"></i> <b>Dashboard</b> </a></li>
                 </ul>
                 <ul class="nav side-menu">
-									<li><a href="<?=base_url('SuperAdmin/Kas')?>"><i class="fa fa-usd"></i> <b>Kas</b> </a></li>
+									<li><a href="<?=base_url('SuperAdmin/Cashflow')?>"><i class="fa fa-usd"></i> <b>Cashflow</b> </a></li>
+                </ul>
+                <ul class="nav side-menu">
+									<li><a href="<?=base_url('SuperAdmin/Pendapatan')?>"><i class="fa fa-usd"></i> <b>Pendapatan</b> </a></li>
                 </ul>
                 <!-- <ul class="nav side-menu">
 									<li><a href="<?=base_url('SuperAdmin/Project')?>"><i class="fa fa-book"></i> <b>Project</b> </a></li>
                 </ul> -->
-                <ul class="nav side-menu">
+                <!-- <ul class="nav side-menu">
 									<li><a href="<?=base_url('SuperAdmin/Matrikulasi')?>"><i class="fa fa-book"></i> <b>Matrikulasi</b> </a></li>
-                </ul>
+                </ul> -->
 								<ul class="nav side-menu">
 									<li><a href="<?=base_url('IDE/SignOut')?>"><i class="fa fa-sign-out"></i> <b>Keluar</b> </a></li>
                 </ul>
