@@ -135,7 +135,10 @@ class Admin extends CI_Controller {
 
   public function ExcelKas($From,$To){
     $Data['NamaFile'] = "Kas ".$From." Hingga ".$To;
-    $Data['Kas'] = $this->db->query("SELECT * FROM `kas` WHERE Tanggal >= '".$From."' and Tanggal <= '".$To."' ORDER BY Tanggal ASC")->result_array();
+    $Umum = $this->db->query("SELECT * FROM `kas` WHERE Tanggal >= '".$From."' and Tanggal <= '".$To."' ORDER BY Tanggal ASC")->result_array();
+    $Biaya = $this->db->query("SELECT * FROM `pengeluaran` WHERE Tanggal >= '".$From."' and Tanggal <= '".$To."' ORDER BY Tanggal ASC")->result_array();
+    $Data['Kas'] = array_merge($Umum,$Biaya);
+    array_multisort(array_column($Data['Kas'], 'Tanggal'), SORT_ASC, $Data['Kas']);
 		$this->load->view('ExcelKas',$Data);
   }
 

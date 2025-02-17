@@ -904,11 +904,11 @@ td
    <tr height="24" style='height:18.00pt;mso-height-source:userset;mso-height-alt:360;'>
     <td height="24" style='height:18.00pt;'></td>
     <td class="xl67" x:num><?=$No++?></td>
-    <td class="xl68" x:str><?=$key['Description']?></td>
-    <td class="xl67" x:num><?=$key['Quantity']?></td>
-    <td class="xl69" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><?=$key['Price']?><span style='mso-spacerun:yes;'>&nbsp;</span></td>
-    <td class="xl69" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><?=$key['Jenis'] == 'IN' ? $key['Amount'] : '';?><span style='mso-spacerun:yes;'>&nbsp;</span></td>
-    <td class="xl69" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><?=$key['Jenis'] == 'OUT' ? $key['Amount'] : '';?><span style='mso-spacerun:yes;'>&nbsp;</span></td>
+    <td class="xl68" x:str><?=isset($key['Description']) ? $key['Description'] : $key['Deskripsi']; ?></td>
+    <td class="xl67" x:num><?=isset($key['Quantity']) ? $key['Quantity'] : '1'; ?></td>
+    <td class="xl69" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><?=isset($key['Price']) ? "Rp ".number_format($key['Price'],0,',','.') : "Rp ".number_format($key['NominalPengeluaran'],0,',','.'); ?><span style='mso-spacerun:yes;'>&nbsp;</span></td>
+    <td class="xl69" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><?=isset($key['Jenis']) ? $key['Jenis'] == 'IN' ? "Rp ".number_format($key['Amount'],0,',','.') : '' : ''; ?><span style='mso-spacerun:yes;'>&nbsp;</span></td>
+    <td class="xl69" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><?=isset($key['Jenis']) ? $key['Jenis'] == 'OUT' ? "Rp ".number_format($key['Amount'],0,',','.') : '' : "Rp ".number_format($key['NominalPengeluaran'],0,',','.'); ?><span style='mso-spacerun:yes;'>&nbsp;</span></td>
     <td class="xl67" x:str><?=$Date[2].'-'.$Date[1].'-'.$Date[0]?></td>
    </tr>
 	 <?php } ?>
