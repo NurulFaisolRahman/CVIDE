@@ -57,12 +57,12 @@
 											<tbody>
 												<?php $JenisPengeluaran = array('','Honor','Perjalanan Dinas','Pajak','Survei','Operasional Kantor'); 
 															$SubPengeluaran = array(array(''),
-																											array('','PIC Kegiatan','TA Kegiatan','General Manager'),
-																											array('','BBM','Tol','Penginapan','Konsumsi','Honor Peserta rapat/FGD','Honor Perjadin TA Kegiatan','Honor Perjadin PIC Kegiatan'),
-																											array('','Pajak'),
-																											array('','Honor Surveyor','Operasional Survei','Penginapan','Penginapan','Sewa Kendaraan'),
-																											array('','Cetak Laporan Kegiatan','Pembelian ATK','Jasa Pengiriman Dokumen Kegiatan')); 
-															$No = 1; foreach ($Kas as $key) { $Date = explode("-",$key['Tanggal'])?>
+																											array('','PIC Kegiatan','TA Kegiatan','General Manager','Lainnya'),
+																											array('','BBM','Tol','Penginapan','Konsumsi','Honor Peserta rapat/FGD','Honor Perjadin TA Kegiatan','Honor Perjadin PIC Kegiatan','Lainnya'),
+																											array('','Pajak','Lainnya'),
+																											array('','Honor Surveyor','Operasional Survei','Penginapan','Penginapan','Sewa Kendaraan','Lainnya'),
+																											array('','Cetak Laporan Kegiatan','Pembelian ATK','Jasa Pengiriman Dokumen Kegiatan','Lainnya')); 
+															$No = 1; foreach ($Kas as $key) { $Date = explode("-",$key['Tanggal']); ?>
 													<tr>
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>
 														<th scope="row" class="align-middle"><?=isset($key['Description']) ? $key['Description'] : $key['Deskripsi']; ?></th>

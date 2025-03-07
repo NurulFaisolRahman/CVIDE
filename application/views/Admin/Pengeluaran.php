@@ -1,4 +1,4 @@
-							<div class="row">
+<div class="row">
 								<div class="col-lg-12 d-flex justify-content-center">
 									<div class="card" style="width: 50%;">
 										<input type="hidden" class="form-control" id="IdKegiatan" value="<?=$this->session->userdata('Kegiatan')?>">
@@ -58,17 +58,17 @@
 													<th scope="col" style="width: 15%;" class="align-middle">Sub Pengeluaran</th>
 													<th scope="col" style="width: 10%;" class="align-middle">Nominal</th>
 													<th scope="col" style="width: 10%;" class="align-middle">Tanggal</th>
-													<th scope="col" style="width: 6%;" class="text-center align-middle">Edit</th>
+													<th scope="col" style="width: 7%;" class="text-center align-middle">Edit</th>
 												</tr>
 											</thead>
 											<tbody>
 												<?php $JenisPengeluaran = array('','Honor','Perjalanan Dinas','Pajak','Survei','Operasional Kantor'); 
 															$SubPengeluaran = array(array(''),
-																											array('','PIC Kegiatan','TA Kegiatan','General Manager'),
-																											array('','BBM','Tol','Penginapan','Konsumsi','Honor Peserta rapat/FGD','Honor Perjadin TA Kegiatan','Honor Perjadin PIC Kegiatan'),
-																											array('','Pajak'),
-																											array('','Honor Surveyor','Operasional Survei','Penginapan','Penginapan','Sewa Kendaraan'),
-																											array('','Cetak Laporan Kegiatan','Pembelian ATK','Jasa Pengiriman Dokumen Kegiatan')); 
+																											array('','PIC Kegiatan','TA Kegiatan','General Manager','Lainnya'),
+																											array('','BBM','Tol','Penginapan','Konsumsi','Honor Peserta rapat/FGD','Honor Perjadin TA Kegiatan','Honor Perjadin PIC Kegiatan','Lainnya'),
+																											array('','Pajak','Lainnya'),
+																											array('','Honor Surveyor','Operasional Survei','Penginapan','Penginapan','Sewa Kendaraan','Lainnya'),
+																											array('','Cetak Laporan Kegiatan','Pembelian ATK','Jasa Pengiriman Dokumen Kegiatan','Lainnya')); 
 															$No = 1; foreach ($Pengeluaran as $key) { $Tanggal = explode("-",$key['Tanggal']);?>
 													<tr>
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>
@@ -240,19 +240,19 @@
 					var Sub = $("#JenisPengeluaran").val() 
 					var List = ''
 					if (Sub == 1) {
-						List += '<option value="1">PIC Kegiatan</option><option value="2">TA Kegiatan</option><option value="3">GM Kegiatan</option>'
+						List += '<option value="1">PIC Kegiatan</option><option value="2">TA Kegiatan</option><option value="3">GM Kegiatan</option><option value="4">Lainnya</option>'
 						$('#SubPengeluaran').html(List)	
 					} else if (Sub == 2) {
-						List += '<option value="1">BBM</option><option value="2">TOL</option><option value="3">Penginapan</option><option value="4">Konsumsi</option><option value="5">Honor Peserta rapat/FGD</option><option value="6">Honor Perjadin TA Kegiatan</option><option value="7">Honor Perjadin PIC Kegiatan</option>'
+						List += '<option value="1">BBM</option><option value="2">TOL</option><option value="3">Penginapan</option><option value="4">Konsumsi</option><option value="5">Honor Peserta rapat/FGD</option><option value="6">Honor Perjadin TA Kegiatan</option><option value="7">Honor Perjadin PIC Kegiatan</option><option value="8">Lainnya</option>'
 						$('#SubPengeluaran').html(List)	
 					} else if (Sub == 3) {
-						List += '<option value="1">Pajak</option>'
+						List += '<option value="1">Pajak</option><option value="2">Lainnya</option>'
 						$('#SubPengeluaran').html(List)	
  					} else if (Sub == 4) {
-						List += '<option value="1">Honor Surveyor</option><option value="2">Operasional Survei</option><option value="3">Penginapan</option><option value="4">Sewa Kendaraan</option>'
+						List += '<option value="1">Honor Surveyor</option><option value="2">Operasional Survei</option><option value="3">Penginapan</option><option value="4">Sewa Kendaraan</option><option value="5">Lainnya</option>'
 						$('#SubPengeluaran').html(List)	
 					} else if (Sub == 5) {
-						List += '<option value="1">Cetak Laporan Kegiatan</option><option value="2">Pembelian ATK</option><option value="3">Jasa Kirim Dokumen Kegiatan</option>'
+						List += '<option value="1">Cetak Laporan Kegiatan</option><option value="2">Pembelian ATK</option><option value="3">Jasa Kirim Dokumen Kegiatan</option><option value="4">Lainnya</option>'
 						$('#SubPengeluaran').html(List)	
 					}
 				})
@@ -261,19 +261,19 @@
 					var Sub = $("#_JenisPengeluaran").val() 
 					var List = ''
 					if (Sub == 1) {
-						List += '<option value="1">PIC Kegiatan</option><option value="2">TA Kegiatan</option><option value="3">GM Kegiatan</option>'
+						List += '<option value="1">PIC Kegiatan</option><option value="2">TA Kegiatan</option><option value="3">GM Kegiatan</option><option value="4">Lainnya</option>'
 						$('#_SubPengeluaran').html(List)	
 					} else if (Sub == 2) {
-						List += '<option value="1">BBM</option><option value="2">TOL</option><option value="3">Penginapan</option><option value="4">Konsumsi</option><option value="5">Honor Peserta rapat/FGD</option><option value="6">Honor Perjadin TA Kegiatan</option><option value="7">Honor Perjadin PIC Kegiatan</option>'
+						List += '<option value="1">BBM</option><option value="2">TOL</option><option value="3">Penginapan</option><option value="4">Konsumsi</option><option value="5">Honor Peserta rapat/FGD</option><option value="6">Honor Perjadin TA Kegiatan</option><option value="7">Honor Perjadin PIC Kegiatan</option><option value="8">Lainnya</option>'
 						$('#_SubPengeluaran').html(List)	
 					} else if (Sub == 3) {
-						List += '<option value="1">Pajak</option>'
+						List += '<option value="1">Pajak</option><option value="2">Lainnya</option>'
 						$('#_SubPengeluaran').html(List)	
  					} else if (Sub == 4) {
-						List += '<option value="1">Honor Surveyor</option><option value="2">Operasional Survei</option><option value="3">Penginapan</option><option value="4">Sewa Kendaraan</option>'
+						List += '<option value="1">Honor Surveyor</option><option value="2">Operasional Survei</option><option value="3">Penginapan</option><option value="4">Sewa Kendaraan</option><option value="5">Lainnya</option>'
 						$('#_SubPengeluaran').html(List)	
 					} else if (Sub == 5) {
-						List += '<option value="1">Cetak Laporan Kegiatan</option><option value="2">Pembelian ATK</option><option value="3">Jasa Kirim Dokumen Kegiatan</option>'
+						List += '<option value="1">Cetak Laporan Kegiatan</option><option value="2">Pembelian ATK</option><option value="3">Jasa Kirim Dokumen Kegiatan</option><option value="4">Lainnya</option>'
 						$('#_SubPengeluaran').html(List)	
 					}
 				})
@@ -314,19 +314,19 @@
 					var Sub = $("#_JenisPengeluaran").val() 
 					var List = ''
 					if (Sub == 1) {
-						List += '<option value="1">PIC Kegiatan</option><option value="2">TA Kegiatan</option><option value="3">GM Kegiatan</option>'
+						List += '<option value="1">PIC Kegiatan</option><option value="2">TA Kegiatan</option><option value="3">GM Kegiatan</option><option value="4">Lainnya</option>'
 						$('#_SubPengeluaran').html(List)	
 					} else if (Sub == 2) {
-						List += '<option value="1">BBM</option><option value="2">TOL</option><option value="3">Penginapan</option><option value="4">Konsumsi</option><option value="5">Honor Peserta rapat/FGD</option><option value="6">Honor Perjadin TA Kegiatan</option><option value="7">Honor Perjadin PIC Kegiatan</option>'
+						List += '<option value="1">BBM</option><option value="2">TOL</option><option value="3">Penginapan</option><option value="4">Konsumsi</option><option value="5">Honor Peserta rapat/FGD</option><option value="6">Honor Perjadin TA Kegiatan</option><option value="7">Honor Perjadin PIC Kegiatan</option><option value="8">Lainnya</option>'
 						$('#_SubPengeluaran').html(List)	
 					} else if (Sub == 3) {
-						List += '<option value="1">Pajak</option>'
+						List += '<option value="1">Pajak</option><option value="2">Lainnya</option>'
 						$('#_SubPengeluaran').html(List)	
  					} else if (Sub == 4) {
-						List += '<option value="1">Honor Surveyor</option><option value="2">Operasional Survei</option><option value="3">Penginapan</option><option value="4">Sewa Kendaraan</option>'
+						List += '<option value="1">Honor Surveyor</option><option value="2">Operasional Survei</option><option value="3">Penginapan</option><option value="4">Sewa Kendaraan</option><option value="5">Lainnya</option>'
 						$('#_SubPengeluaran').html(List)	
 					} else if (Sub == 5) {
-						List += '<option value="1">Cetak Laporan Kegiatan</option><option value="2">Pembelian ATK</option><option value="3">Jasa Kirim Dokumen Kegiatan</option>'
+						List += '<option value="1">Cetak Laporan Kegiatan</option><option value="2">Pembelian ATK</option><option value="3">Jasa Kirim Dokumen Kegiatan</option><option value="4">Lainnya</option>'
 						$('#_SubPengeluaran').html(List)	
 					}
 					$("#_SubPengeluaran").val(Pisah[2])

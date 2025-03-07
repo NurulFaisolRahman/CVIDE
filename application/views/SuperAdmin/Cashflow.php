@@ -49,15 +49,22 @@
 												</tr>
 											</thead>
 											<tbody id="RekapSurvei">
-												<?php $No = 1; foreach ($Kas as $key) { $Date = explode("-",$key['Tanggal'])?>
+												<?php $JenisPengeluaran = array('','Honor','Perjalanan Dinas','Pajak','Survei','Operasional Kantor'); 
+															$SubPengeluaran = array(array(''),
+																											array('','PIC Kegiatan','TA Kegiatan','General Manager','Lainnya'),
+																											array('','BBM','Tol','Penginapan','Konsumsi','Honor Peserta rapat/FGD','Honor Perjadin TA Kegiatan','Honor Perjadin PIC Kegiatan','Lainnya'),
+																											array('','Pajak','Lainnya'),
+																											array('','Honor Surveyor','Operasional Survei','Penginapan','Penginapan','Sewa Kendaraan','Lainnya'),
+																											array('','Cetak Laporan Kegiatan','Pembelian ATK','Jasa Pengiriman Dokumen Kegiatan','Lainnya')); 
+															$No = 1; foreach ($Kas as $key) { $Date = explode("-",$key['Tanggal']); ?>
 													<tr>
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>
-														<th scope="row" class="align-middle"><?=$key['Description']?></th>
-														<th scope="row" class="align-middle"><?=$key['Category']?></th>
-														<th scope="row" class="text-center align-middle"><?=$key['Quantity']?></th>
-														<th scope="row" style="width: 15%;" class="text-center align-middle"><?="Rp ".number_format($key['Price'],0,',','.')?></th>
-														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=$key['Jenis'] == 'IN' ? "Rp ".number_format($key['Amount'],0,',','.') : '';?></th>
-														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=$key['Jenis'] == 'OUT' ? "Rp ".number_format($key['Amount'],0,',','.') : '';?></th>
+														<th scope="row" class="align-middle"><?=isset($key['Description']) ? $key['Description'] : $key['Deskripsi']; ?></th>
+														<th scope="row" class="align-middle"><?=isset($key['Category']) ? $key['Category'] : $SubPengeluaran[$key['JenisPengeluaran']][$key['SubPengeluaran']] ?></th>
+														<th scope="row" class="text-center align-middle"><?=isset($key['Quantity']) ? $key['Quantity'] : '1'; ?></th>
+														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=isset($key['Price']) ? "Rp ".number_format($key['Price'],0,',','.') : "Rp ".number_format($key['NominalPengeluaran'],0,',','.'); ?></th>
+														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=isset($key['Jenis']) ? $key['Jenis'] == 'IN' ? "Rp ".number_format($key['Amount'],0,',','.') : '' : ''; ?></th>
+														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=isset($key['Jenis']) ? $key['Jenis'] == 'OUT' ? "Rp ".number_format($key['Amount'],0,',','.') : '' : "Rp ".number_format($key['NominalPengeluaran'],0,',','.'); ?></th>
 														<th scope="row" style="width: 10%;" class="text-center align-middle"><?=$Date[2].'-'.$Date[1].'-'.$Date[0]?></th>
 													</tr>
 												<?php } ?>  
