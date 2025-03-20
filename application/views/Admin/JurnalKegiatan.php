@@ -1,56 +1,14 @@
 							<div class="row">
-								<div class="col-lg-12 d-flex justify-content-center">
-									<div class="card" style="width: 50%;">
-										<input type="hidden" class="form-control" id="IdKegiatan" value="<?=$this->session->userdata('Kegiatan')?>">
-										<div class="card-body p-1">
-											<div class="table-responsive px-2">
-												<table class="table table-sm table-bordered bg-light font-weight-bold mb-0">
-													<thead>
-														<tr class="text-primary">
-															<td>Kegiatan</td>
-															<td class="text-wrap"><?=$NamaKegiatan?></td>
-														</tr>
-														<!-- <tr>
-															<td>Total</td>
-															<td><?="Rp ".number_format($NominalKegiatan,0,',','.')?></td>
-														</tr>
-														<tr>
-															<td>Charge</td>
-															<td><?="Rp ".number_format($Charge,0,',','.')?></td>
-														</tr>
-														<tr>
-															<td>Saving</td>
-															<td><?="Rp ".number_format($Saving,0,',','.')?></td>
-														</tr>
-														<tr>
-															<td>Umum</td>
-															<td><?="Rp ".number_format($Umum,0,',','.')?></td>
-														</tr> -->
-														<tr class="text-danger">
-															<td>Pengeluaran</td>
-															<td><?="Rp ".number_format($Biaya,0,',','.')?></td>
-														</tr>
-														<tr class="text-primary">
-															<td>Saldo</td>
-															<td><?="Rp ".number_format($Saldo,0,',','.')?></td>
-														</tr>
-													</thead>
-												</table>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row mt-1">
 								<div class="col-sm-12">
 									<div class="table-responsive">
 										<table id="TabelPendapatan" class="table table-sm table-bordered bg-light">
 											<thead>
 												<tr class="bg-danger text-light">
 													<th scope="col" style="width: 3%;" class="text-center align-middle">No</th>
-													<th scope="col" style="width: 20%;" class="align-middle">Deskripsi Pengeluaran</th>
-													<th scope="col" style="width: 10%;" class="align-middle">Jenis Pengeluaran</th>
-													<th scope="col" style="width: 15%;" class="align-middle">Sub Pengeluaran</th>
+													<th scope="col" style="width: 20%;" class="align-middle">Deskripsi</th>
+													<th scope="col" style="width: 20%;" class="align-middle">Kegiatan</th>
+													<th scope="col" style="width: 10%;" class="align-middle">Jenis</th>
+													<th scope="col" style="width: 15%;" class="align-middle">Sub Jenis</th>
 													<th scope="col" style="width: 10%;" class="align-middle">Nominal</th>
 													<th scope="col" style="width: 10%;" class="align-middle">Tanggal</th>
 												</tr>
@@ -63,10 +21,15 @@
 																											array('','Pajak','Lainnya'),
 																											array('','Honor Surveyor','Operasional Survei','Penginapan','Penginapan','Sewa Kendaraan','Lainnya'),
 																											array('','Cetak Laporan Kegiatan','Pembelian ATK','Jasa Pengiriman Dokumen Kegiatan','Lainnya')); 
-															$No = 1; foreach ($Pengeluaran as $key) { $Tanggal = explode("-",$key['Tanggal']);?>
+															$NamaKegiatan = array();
+															foreach ($Kegiatan as $key) {
+																$NamaKegiatan[$key['Id']] = $key['NamaKegiatan'];
+															}
+															$No = 1; foreach ($Biaya as $key) { $Tanggal = explode("-",$key['Tanggal']);?>
 													<tr>
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>
 														<th scope="row" class="align-middle"><?=$key['Deskripsi']?></th>
+														<th scope="row" class="align-middle"><?=$NamaKegiatan[$key['IdKegiatan']]?></th>
 														<th scope="row" class="align-middle"><?=$JenisPengeluaran[$key['JenisPengeluaran']]?></th>
 														<th scope="row" class="align-middle"><?=$SubPengeluaran[$key['JenisPengeluaran']][$key['SubPengeluaran']]?></th>
 														<th scope="row" class="align-middle"><?="Rp ".number_format($key['NominalPengeluaran'],0,',','.')?></th>
@@ -95,7 +58,7 @@
 				$('#TabelPendapatan').DataTable( {
 					"ordering": true,
 					"bInfo" : true,
-					"lengthMenu": [[10, 30, 50, -1], [10, 30, 50, "All"]],
+					"lengthMenu": [[15, 30, 50, -1], [15, 30, 50, "All"]],
 					"language": {
 						"paginate": {
 							'previous': '<b class="text-white"><</b>',

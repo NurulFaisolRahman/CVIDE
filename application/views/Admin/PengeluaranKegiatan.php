@@ -61,9 +61,9 @@
 
 				$(document).on("click",".Biaya",function(){
 					var Data = { Kegiatan: $(this).attr('Biaya') }
-					$.post(BaseURL+"SuperAdmin/SesiBiaya", Data).done(function(Respon) {
+					$.post(BaseURL+"Admin/SesiBiaya", Data).done(function(Respon) {
 						if (Respon == '1') {
-							window.location = BaseURL + "SuperAdmin/Pengeluaran"
+							window.location = BaseURL + "Admin/BiayaKegiatan"
 						}
 					})
 				})

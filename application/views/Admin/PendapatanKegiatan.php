@@ -1,6 +1,6 @@
 							<div class="row">
 								<div class="col-lg-auto">
-									<button type="button" class="btn btn-sm btn-primary border-white mb-2" data-toggle="modal" data-target="#ModalInput"><i class="fa fa-plus"></i><b> Input Pendapatan</b></button>
+									<button type="button" class="btn btn-sm btn-primary border-white mb-2" data-toggle="modal" data-target="#ModalInput"><i class="fa fa-plus"></i><b> Input Kegiatan</b></button>
 								</div>
 							</div>
 							<div class="row">
@@ -16,7 +16,6 @@
 													<th scope="col" style="width: 8%;" class="align-middle">Mulai</th>
 													<th scope="col" style="width: 8%;" class="align-middle">Selesai</th>
 													<th scope="col" style="width: 4%;" class="text-center align-middle">Edit</th>
-													<th scope="col" style="width: 4%;" class="text-center align-middle">Biaya</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -31,9 +30,6 @@
 														<th scope="row" class="align-middle"><?=$Selesai[2].'-'.$Selesai[1].'-'.$Selesai[0]?></th>
 														<th scope="row" class="text-center align-middle">
 															<button Edit="<?=$key['Id']."|".$key['NamaKegiatan']."|".$key['SumberKegiatan']."|".$key['NominalKegiatan']."|".$key['Mulai']."|".$key['Selesai']."|".$key['DeskripsiKegiatan']?>" class="btn btn-sm btn-warning Edit"><i class="fa fa-edit"></i></button> 
-														</th>
-														<th scope="row" class="text-center align-middle">
-															<button Biaya="<?=$key['Id']?>" class="btn btn-sm btn-danger Biaya"><i class="fa fa-edit"></i></button> 
 														</th>
 													</tr>
 												<?php } ?> 
@@ -218,9 +214,9 @@
 													Selesai: $("#Selesai").val(),
 													DeskripsiKegiatan: $("#DeskripsiKegiatan").val()
 												}
-							$.post(BaseURL+"Admin/InputPendapatan", Data).done(function(Respon) {
+							$.post(BaseURL+"Admin/InputPendapatanKegiatan", Data).done(function(Respon) {
 								if (Respon == '1') {
-									window.location = BaseURL + "Admin/Pendapatan"
+									window.location = BaseURL + "Admin/PendapatanKegiatan"
 								} else {
                   alert(Respon)
                   $("#Input").attr("disabled", false); 
@@ -271,9 +267,9 @@
 													 Selesai: $("#_Selesai").val(),
 													 DeskripsiKegiatan: $("#_DeskripsiKegiatan").val()
 												}
-							$.post(BaseURL+"Admin/EditPendapatan", Data).done(function(Respon) {
+							$.post(BaseURL+"Admin/EditPendapatanKegiatan", Data).done(function(Respon) {
 								if (Respon == '1') {
-									window.location = BaseURL + "Admin/Pendapatan"
+									window.location = BaseURL + "Admin/PendapatanKegiatan"
 								} else {
                   alert(Respon)
                   $("#Edit").attr("disabled", false); 

@@ -1,4 +1,4 @@
-							<div class="row my-2">
+							<div class="row">
 								<div class="col-lg-auto">
 									<div class="input-group input-group-sm mb-2">
 										<div class="input-group-prepend">
@@ -11,7 +11,7 @@
 										<div class="input-group-prepend">
                       <span class="input-group-text bg-danger text-white"><b>To</b></span>
                     </div>
-                    <input type="date" class="form-control" id="To" value="<?=date('Y-m-d')?>">
+                    <input type="date" class="form-control" id="To" value="<?=date('Y-m-d')?>">  
 									</div>
 								</div>
 								<div class="col-lg-auto">
@@ -29,26 +29,26 @@
                       <span class="input-group-text bg-danger text-white"><b><?="Pengeluaran ".date("F Y")." = Rp ".number_format($OutBerjalan,0,',','.')?></b></span>
 										</div>
 										<div class="input-group-prepend">
-										<span class="input-group-text bg-warning text-white"><b><?="Saldo Berjalan = Rp ".number_format(($InBerjalan-$OutBerjalan)+$SaldoLalu,0,',','.')?></b></span>
+											<span class="input-group-text bg-warning text-white"><b><?="Saldo Berjalan = Rp ".number_format(($InBerjalan-$OutBerjalan)+$SaldoLalu,0,',','.')?></b></span>
                     </div>
 									</div>
 								</div>
+							</div>
+							<div class="row">
 								<div class="col-sm-12">
 									<div class="table-responsive">
 										<table id="TabelKas" class="table table-sm table-bordered bg-light">
 											<thead>
 												<tr class="bg-danger text-light">
-													<th scope="col" style="width: 4%;" class="text-center align-middle">No</th>
-													<th scope="col" class="align-middle">Description</th>
-													<th scope="col" class="align-middle">Category</th>
-													<th scope="col" style="width: 7%;" class="text-center align-middle">Quantity</th>
-													<th scope="col" class="text-center align-middle">Price</th>
-													<th scope="col" class="text-center align-middle">Debit</th>
-													<th scope="col" class="text-center align-middle">Kredit</th>
-													<th scope="col" class="text-center align-middle">Date</th>
+													<th scope="col" class="text-center align-middle">No</th>
+													<th scope="col" class="align-middle">Deskripsi</th>
+													<th scope="col" class="align-middle">Nominal</th>
+													<th scope="col" class="align-middle">Debit</th>
+													<th scope="col" class="align-middle">Kredit</th>
+													<th scope="col" class="text-center align-middle">Tanggal</th>
 												</tr>
 											</thead>
-											<tbody id="RekapSurvei">
+											<tbody>
 												<?php $JenisPengeluaran = array('','Honor','Perjalanan Dinas','Pajak','Survei','Operasional Kantor'); 
 															$SubPengeluaran = array(array(''),
 																											array('','PIC Kegiatan','TA Kegiatan','General Manager','Lainnya'),
@@ -60,11 +60,9 @@
 													<tr>
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>
 														<th scope="row" class="align-middle"><?=isset($key['Description']) ? $key['Description'] : $key['Deskripsi']; ?></th>
-														<th scope="row" class="align-middle"><?=isset($key['Category']) ? $key['Category'] : $SubPengeluaran[$key['JenisPengeluaran']][$key['SubPengeluaran']] ?></th>
-														<th scope="row" class="text-center align-middle"><?=isset($key['Quantity']) ? $key['Quantity'] : '1'; ?></th>
-														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=isset($key['Price']) ? "Rp ".number_format($key['Price'],0,',','.') : "Rp ".number_format($key['NominalPengeluaran'],0,',','.'); ?></th>
-														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=isset($key['Jenis']) ? $key['Jenis'] == 'IN' ? "Rp ".number_format($key['Amount'],0,',','.') : '' : ''; ?></th>
-														<th scope="row" style="width: 15%;" class="text-center align-middle"><?=isset($key['Jenis']) ? $key['Jenis'] == 'OUT' ? "Rp ".number_format($key['Amount'],0,',','.') : '' : "Rp ".number_format($key['NominalPengeluaran'],0,',','.'); ?></th>
+														<th scope="row" style="width: 15%;" class="align-middle"><?=isset($key['Price']) ? "Rp ".number_format($key['Price'],0,',','.') : "Rp ".number_format($key['NominalPengeluaran'],0,',','.'); ?></th>
+														<th scope="row" style="width: 15%;" class="align-middle"><?=isset($key['Jenis']) ? $key['Jenis'] == 'IN' ? "Rp ".number_format($key['Amount'],0,',','.') : '' : ''; ?></th>
+														<th scope="row" style="width: 15%;" class="align-middle"><?=isset($key['Jenis']) ? $key['Jenis'] == 'OUT' ? "Rp ".number_format($key['Amount'],0,',','.') : '' : "Rp ".number_format($key['NominalPengeluaran'],0,',','.'); ?></th>
 														<th scope="row" style="width: 10%;" class="text-center align-middle"><?=$Date[2].'-'.$Date[1].'-'.$Date[0]?></th>
 													</tr>
 												<?php } ?>  
@@ -89,7 +87,7 @@
 				var BaseURL = '<?=base_url()?>'  
 				$('#TabelKas').DataTable( {
 					"ordering": true,
-					"bInfo" : false,
+					"bInfo" : true,
 					"lengthMenu": [[7, 30, 50, -1], [7, 30, 50, "All"]],
 					"language": {
 						"paginate": {
@@ -105,7 +103,7 @@
 					} else if ($("#To").val() == "") {
 						alert('Input To Belum Benar!')
 					} else {
-						window.location = BaseURL + "SuperAdmin/ExcelKas/" +$("#From").val()+"/"+$("#To").val()
+						window.location = BaseURL + "Admin/ExcelKas/" +$("#From").val()+"/"+$("#To").val()
 					}
 				})
 			})

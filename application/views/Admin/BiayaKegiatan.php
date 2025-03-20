@@ -293,9 +293,9 @@
 													 Tanggal: $("#Tanggal").val(),
 													 Deskripsi: $("#Deskripsi").val()
 												}
-							$.post(BaseURL+"Admin/InputPengeluaran", Data).done(function(Respon) {
+							$.post(BaseURL+"Admin/InputBiayaKegiatan", Data).done(function(Respon) {
 								if (Respon == '1') {
-									window.location = BaseURL + "Admin/Pengeluaran"
+									window.location = BaseURL + "Admin/BiayaKegiatan"
 								} else {
                   alert(Respon)
                   $("#Input").attr("disabled", false); 
@@ -351,9 +351,9 @@
 													 Tanggal: $("#_Tanggal").val(),
 													 Deskripsi: $("#_Deskripsi").val()
 												}
-							$.post(BaseURL+"Admin/EditPengeluaran", Data).done(function(Respon) {
+							$.post(BaseURL+"Admin/EditBiayaKegiatan", Data).done(function(Respon) {
 								if (Respon == '1') {
-									window.location = BaseURL + "Admin/Pengeluaran"
+									window.location = BaseURL + "Admin/BiayaKegiatan"
 								} else {
                   alert(Respon)
                   $("#Edit").attr("disabled", false); 
@@ -368,9 +368,9 @@
 					var Hapus = {Id: $(this).attr('Hapus')}
 					var Konfirmasi = confirm("Data Yang Ingin Dihapus Sudah Benar?");
       		if (Konfirmasi == true) {
-						$.post(BaseURL+"Admin/HapusPengeluaran", Hapus).done(function(Respon) {
+						$.post(BaseURL+"Admin/HapusBiayaKegiatan", Hapus).done(function(Respon) {
 							if (Respon == '1') {
-								window.location = BaseURL + "Admin/Pengeluaran"
+								window.location = BaseURL + "Admin/BiayaKegiatan"
 							} else {
 								alert(Respon)
 							}

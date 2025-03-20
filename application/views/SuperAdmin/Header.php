@@ -39,11 +39,30 @@
 									<li><a href="<?=base_url('SuperAdmin')?>"><i class="fa fa-user"></i> <b>Dashboard</b> </a></li>
                 </ul>
                 <ul class="nav side-menu">
-									<li><a href="<?=base_url('SuperAdmin/Cashflow')?>"><i class="fa fa-usd"></i> <b>Cashflow</b> </a></li>
-                </ul>
+                  <li><a><i class="fa fa-usd"></i> <b>Pendapatan</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+											<li><a href="<?=base_url('SuperAdmin/PendapatanKas')?>"><b>Kas</b></a></li>
+                      <li><a href="<?=base_url('SuperAdmin/PendapatanKegiatan')?>"><b>Kegiatan</b></a></li>
+                    </ul>
+									</li>
+								</ul>
                 <ul class="nav side-menu">
-									<li><a href="<?=base_url('SuperAdmin/Pendapatan')?>"><i class="fa fa-usd"></i> <b>Pendapatan</b> </a></li>
-                </ul>
+                  <li><a><i class="fa fa-usd"></i> <b>Pengeluaran</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+											<li><a href="<?=base_url('SuperAdmin/PengeluaranUmum')?>"><b>Umum</b></a></li>
+                      <li><a href="<?=base_url('SuperAdmin/PengeluaranKegiatan')?>"><b>Kegiatan</b></a></li>
+                    </ul>
+									</li>
+								</ul>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-book"></i> <b>Jurnal</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+											<li><a href="<?=base_url('SuperAdmin/JurnalUmum')?>"><b>Umum</b></a></li>
+                      <li><a href="<?=base_url('SuperAdmin/JurnalKegiatan')?>"><b>Kegiatan</b></a></li>
+                      <li><a href="<?=base_url('SuperAdmin/JurnalTotal')?>"><b>Total</b></a></li>
+                    </ul>
+									</li>
+								</ul>
                 <!-- <ul class="nav side-menu">
 									<li><a href="<?=base_url('SuperAdmin/Project')?>"><i class="fa fa-book"></i> <b>Project</b> </a></li>
                 </ul> -->

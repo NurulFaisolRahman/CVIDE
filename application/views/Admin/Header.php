@@ -39,11 +39,30 @@
 									<li><a href="<?=base_url('Admin')?>"><i class="fa fa-user"></i> <b>Dashboard</b> </a></li>
                 </ul>
                 <ul class="nav side-menu">
-									<li><a href="<?=base_url('Admin/Cashflow')?>"><i class="fa fa-usd"></i> <b>Cashflow</b> </a></li>
-                </ul>
+                  <li><a><i class="fa fa-usd"></i> <b>Pendapatan</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+											<li><a href="<?=base_url('Admin/PendapatanKas')?>"><b>Kas</b></a></li>
+                      <li><a href="<?=base_url('Admin/PendapatanKegiatan')?>"><b>Kegiatan</b></a></li>
+                    </ul>
+									</li>
+								</ul>
                 <ul class="nav side-menu">
-									<li><a href="<?=base_url('Admin/Pendapatan')?>"><i class="fa fa-usd"></i> <b>Pendapatan</b> </a></li>
-                </ul>
+                  <li><a><i class="fa fa-usd"></i> <b>Pengeluaran</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+											<li><a href="<?=base_url('Admin/PengeluaranUmum')?>"><b>Umum</b></a></li>
+                      <li><a href="<?=base_url('Admin/PengeluaranKegiatan')?>"><b>Kegiatan</b></a></li>
+                    </ul>
+									</li>
+								</ul>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-book"></i> <b>Jurnal</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+											<li><a href="<?=base_url('Admin/JurnalUmum')?>"><b>Umum</b></a></li>
+                      <li><a href="<?=base_url('Admin/JurnalKegiatan')?>"><b>Kegiatan</b></a></li>
+                      <li><a href="<?=base_url('Admin/JurnalTotal')?>"><b>Total</b></a></li>
+                    </ul>
+									</li>
+								</ul>
                 <!-- <ul class="nav side-menu">
 									<li><a href="<?=base_url('Admin/Matrikulasi')?>"><i class="fa fa-book"></i> <b>Matrikulasi</b> </a></li>
                 </ul> -->

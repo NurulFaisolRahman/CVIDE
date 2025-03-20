@@ -1812,4 +1812,12 @@ class IDE extends CI_Controller {
     }
 		$this->load->view('ExcelMatrikulasi',$Data);
   }
+
+  public function RenstraBanyuwangi(){
+    $this->load->view('RenstraBanyuwangi');
+  }
+
+  public function RenstraSitubondo(){
+    $this->load->view('RenstraSitubondo');
+  }
 }
