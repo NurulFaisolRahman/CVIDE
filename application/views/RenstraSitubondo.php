@@ -55,6 +55,7 @@
                         <div id="DLHPERMENDAGRI" class="panel-collapse collapse" role="tabpanel">
                           <div style="padding: 10px;font-size: 12pt;font-family: Cambria;letter-spacing: 1px;" class="panel-body">
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1biRIM6UJayzyJDoWX9h6_p6wHNp6hE1cNj1-QPGIvkE/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB II</b></a>
+                            <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1DJwewW3lYcB7602F6Q6youyTKfvjFHTc5SrmmXfXI4o/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB III</b></a>
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1CVsBrAPTcYxteuLv8HfQgmkZ1fYYipV6hsIgFQ8vVbk/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB IV</b></a>
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1AVyZd7hgfMjoHItl86hMEOEdypU4yBOhjEanz91GYBM/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB V</b></a>
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1kETt5hL2oz0Hx3xU9p97KLt8Wdb_9-2GE_7Yf-BQVFY/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB VI</b></a>
@@ -117,6 +118,7 @@
                         <div id="DishubPERMENDAGRI" class="panel-collapse collapse" role="tabpanel">
                           <div style="padding: 10px;font-size: 12pt;font-family: Cambria;letter-spacing: 1px;" class="panel-body">
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1biRIM6UJayzyJDoWX9h6_p6wHNp6hE1cNj1-QPGIvkE/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB II</b></a>
+                            <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1pn8rg0yTUT08T7wqhfUGpDGMdIzPPCqet2e0RifI1dk/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB III</b></a>
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1CVsBrAPTcYxteuLv8HfQgmkZ1fYYipV6hsIgFQ8vVbk/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB IV</b></a>
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1AVyZd7hgfMjoHItl86hMEOEdypU4yBOhjEanz91GYBM/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB V</b></a>
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1kETt5hL2oz0Hx3xU9p97KLt8Wdb_9-2GE_7Yf-BQVFY/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB VI</b></a>
@@ -179,6 +181,7 @@
                         <div id="DiskominfoPERMENDAGRI" class="panel-collapse collapse" role="tabpanel">
                           <div style="padding: 10px;font-size: 12pt;font-family: Cambria;letter-spacing: 1px;" class="panel-body">
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1bZkUHWAjJqhHLqEY5azSzqih9Vp_o7xBaB7xXnCaTlM/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB II</b></a>
+                            <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1617q_Q8fH88BMcgQX9AxsZXzCk34uLLkU-3BPvcRXik/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB III</b></a>
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1tTOvIW1nXZfUpwPKfXXFqKVDfTrmu6bNwM_zQ3KK_qo/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB IV</b></a>
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1gAQ_bC8yuFa8v91uiR4CSNY4ovmPlXi2PtKPUaD1Gu8/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB V</b></a>
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1HS6W6psRkhKiYgBHmn9UVRFAsQ2whS1KftWMMN-YamM/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB VI</b></a>
@@ -241,6 +244,7 @@
                         <div id="DPUPPPERMENDAGRI" class="panel-collapse collapse" role="tabpanel">
                           <div style="padding: 10px;font-size: 12pt;font-family: Cambria;letter-spacing: 1px;" class="panel-body">
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1_K9Xn_pqQ7ijHuwAViwvAxs5tmvUQOxIpgHMl4kq3O0/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB II</b></a>
+                            <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1suc8Rbk6wsdRX5BFVSiLLukV9FvuT82oaTNUdSaQMos/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB III</b></a>
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1_NIPwZ2B3EDkql1Z2-v10Y0b9uhWIig5WdGlBfD0oD0/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB IV</b></a>
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/13C1Q79pnFhWdwvAlECm1UoaL7t_f-fjdDO2C4jeVIUM/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB V</b></a>
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/16-ZE-QlJYJmoAeCjlZA3bVBXNyQLa4MjaneGqRYss5g/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB VI</b></a>
@@ -303,6 +307,7 @@
                         <div id="BPBDPERMENDAGRI" class="panel-collapse collapse" role="tabpanel">
                           <div style="padding: 10px;font-size: 12pt;font-family: Cambria;letter-spacing: 1px;" class="panel-body">
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1SxQrg6yw3fftvWW2PbKW_sC2Awinb1F6WjHOGQOmgys/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB II</b></a>
+                            <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1Oi2I01Z_ofVcWjFzS5dwrOe3_5_UFzrrnTrRT0p5aAc/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB III</b></a>
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/13hILpGeliBXcz2s8acd0_ViE_pup5gAsiz22YzzqYjA/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB IV</b></a>
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1_RTSMdgFg4vxmngZw7pdZeiTqFXjZVhks8QSyhLKy6s/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB V</b></a>
                             <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1RNNWene4-ehH1WijJ6-bV9t-cIHHb6ytAFsPXpaRJ6w/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB VI</b></a>
