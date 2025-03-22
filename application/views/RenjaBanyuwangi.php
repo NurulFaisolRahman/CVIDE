@@ -54,13 +54,13 @@
                         </div>
                         <div id="DinsosPERMENDAGRI" class="panel-collapse collapse" role="tabpanel">
                           <div style="padding: 10px;font-size: 12pt;font-family: Cambria;letter-spacing: 1px;" class="panel-body">
-                            <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1daVkM8c1GcbpVFLQuBeaq1wsFz69v0B-ZGJJb0wYnMA/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB II</b></a>
-                            <a class="btn btn-primary btn-block" href="https://docs.google.com/spreadsheets/d/1NXp8UvgtOfersAsbzbPDvCobFJ63P_GLu-ysjeQ5z4U/edit?usp=drive_link" role="button"><b>KEBUTUHAN BAB III</b></a>
-                            <a class="btn btn-primary btn-block" href="https://docs.google.com/document/d/19kmEeXTOfnOsicbelQ7nUyK2_38bYpmM/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true" role="button"><b>BAB I PENDAHULUAN</b></a>
-                            <a class="btn btn-primary btn-block" href="https://docs.google.com/document/d/1z8xZbZiHq50bCO7uqVeCMT-sP9ZYNygq/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true" role="button"><b>BAB II HASIL EVALUASI RENJA <br> PERANGKAT DAERAH TAHUN LALU</b></a>
-                            <a class="btn btn-primary btn-block" href="https://docs.google.com/document/d/1NxeOTkTLjJHm7uBoLsBQIePeNPMJiGB_/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true" role="button"><b>BAB III TUJUAN DAN SASARAN <br> PERANGKAT DAERAH</b></a>
-                            <a class="btn btn-primary btn-block" href="https://docs.google.com/document/d/1ToWkjo14l6zb6uiix4S_PT09DmzP2-Y8/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true" role="button"><b>BAB IV RENCANA KERJA DAN <br> PENDANAAN PERANGKA DAERAH</b></a>
-                            <a class="btn btn-primary btn-block" href="https://docs.google.com/document/d/1GwackUv1sPRbkWZIgDTIT4BJc7nfoNlU/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true" role="button"><b>BAB V PENUTUP</b></a>
+                            <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/spreadsheets/d/1daVkM8c1GcbpVFLQuBeaq1wsFz69v0B-ZGJJb0wYnMA/edit?usp=drive_link')" role="button"><b>KEBUTUHAN BAB II</b></a>
+                            <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/spreadsheets/d/1NXp8UvgtOfersAsbzbPDvCobFJ63P_GLu-ysjeQ5z4U/edit?usp=drive_link')" role="button"><b>KEBUTUHAN BAB III</b></a>
+                            <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/19kmEeXTOfnOsicbelQ7nUyK2_38bYpmM/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')" role="button"><b>BAB I PENDAHULUAN</b></a>
+                            <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1z8xZbZiHq50bCO7uqVeCMT-sP9ZYNygq/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')" role="button"><b>BAB II HASIL EVALUASI RENJA <br> PERANGKAT DAERAH TAHUN LALU</b></a>
+                            <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1NxeOTkTLjJHm7uBoLsBQIePeNPMJiGB_/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')" role="button"><b>BAB III TUJUAN DAN SASARAN <br> PERANGKAT DAERAH</b></a>
+                            <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1ToWkjo14l6zb6uiix4S_PT09DmzP2-Y8/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')" role="button"><b>BAB IV RENCANA KERJA DAN <br> PENDANAAN PERANGKA DAERAH</b></a>
+                            <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1GwackUv1sPRbkWZIgDTIT4BJc7nfoNlU/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')" role="button"><b>BAB V PENUTUP</b></a>
                           </div>
                         </div>
                       </div>

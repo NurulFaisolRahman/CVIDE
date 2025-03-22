@@ -60,7 +60,7 @@
 													<tr>
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>
 														<th scope="row" class="align-middle"><?=isset($key['Description']) ? $key['Description'] : $key['Deskripsi']; ?></th>
-														<th scope="row" style="width: 15%;" class="align-middle"><?=isset($key['Price']) ? "Rp ".number_format($key['Price'],0,',','.') : "Rp ".number_format($key['NominalPengeluaran'],0,',','.'); ?></th>
+														<th scope="row" style="width: 15%;" class="align-middle"><?=isset($key['Amount']) ? "Rp ".number_format($key['Amount'],0,',','.') : "Rp ".number_format($key['NominalPengeluaran'],0,',','.'); ?></th>
 														<th scope="row" style="width: 15%;" class="align-middle"><?=isset($key['Jenis']) ? $key['Jenis'] == 'IN' ? "Rp ".number_format($key['Amount'],0,',','.') : '' : ''; ?></th>
 														<th scope="row" style="width: 15%;" class="align-middle"><?=isset($key['Jenis']) ? $key['Jenis'] == 'OUT' ? "Rp ".number_format($key['Amount'],0,',','.') : '' : "Rp ".number_format($key['NominalPengeluaran'],0,',','.'); ?></th>
 														<th scope="row" style="width: 10%;" class="text-center align-middle"><?=$Date[2].'-'.$Date[1].'-'.$Date[0]?></th>
