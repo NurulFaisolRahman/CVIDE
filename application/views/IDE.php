@@ -185,6 +185,15 @@
       margin-bottom: 48px;
     }
 
+    .title-expert p {
+        font-size: 16px;
+      color: var(--apple-text);
+      max-width: 1000px;
+      margin: 0 auto;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
     .section-title h2 {
       font-size: clamp(28px, 4vw, 36px);
       font-weight: 600;
@@ -1141,7 +1150,6 @@
       </div>
       <nav class="nav-menu">
         <a href="#about">About</a>
-        <a href="#news">News</a>
         <a href="#services">Services</a>
         <a href="#portfolio">Portfolio</a>
         <a href="#team">Team</a>
@@ -1375,6 +1383,12 @@
         </div>
         <div class="partner-card">
           <div class="partner-logo">
+            <img src="assets/img/partner/kab.ponorogo.png" alt="Kab. Ponorogo">
+          </div>
+          <h3>Kab. Ponorogo</h3>
+        </div>
+        <div class="partner-card">
+          <div class="partner-logo">
             <img src="assets/img/partner/kab.mojokerto.jpg" alt="Kab. Mojokerto">
           </div>
           <h3>Kab. Mojokerto</h3>
@@ -1479,7 +1493,7 @@
         </div>
         <div class="team-card">
           <div class="team-image">
-            <img src="assets/img/team/Rifta.png" alt="Rizka">
+            <img src="assets/img/team/Rifta.png" alt="Rifta">
             <div class="team-overlay"></div>
           </div>
           <div class="team-info">
@@ -1563,7 +1577,54 @@
         </div>
       </div>
     </div>
+
+    <!-- External Team -->
+    <div class="team-section">
+      <h3 class="team-category">External Expert Collaboration</h3>
+       <div class="title-expert">
+      <p>CV Inti Desain Ekonomi (IDE) terus mengembangkan profesionalitas dan keahlian dengan berkolaborasi 
+        bersama para ahli eksternal, baik akademisi maupun praktisi dari sektor swasta dan pemerintah, 
+        sebagai mitra untuk berbagi wawasan, pengalaman,dan solusi nyata demi menghasilkan inovasi yang bermanfaat.</p>
+    </div>
+      <div class="team-grid core-team">
+        <div class="team-card">
+          <div class="team-image">
+            <img src="assets/img/team/rizka.png" alt="Rizka">
+            <div class="team-overlay"></div>
+          </div>
+          <div class="team-info">
+            <h3 class="team-name">Rizka Firstiani S.E., M.E</h3>
+            <p class="team-role">Public Budgeting Expert Advisor</p>
+            <div class="team-line"></div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-image">
+            <img src="assets/img/team/faisol.png" alt="Faisol">
+            <div class="team-overlay"></div>
+          </div>
+          <div class="team-info">
+            <h3 class="team-name">Nurul Faisol Rahman S.Kom</h3>
+            <p class="team-role">IT Expert Advisor</p>
+            <div class="team-line"></div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-image">
+            <img src="assets/img/team/titov.png" alt="Titov">
+            <div class="team-overlay"></div>
+          </div>
+          <div class="team-info">
+            <h3 class="team-name">Titov Chuk’s Mayvani S.E., M.E</h3>
+            <p class="team-role">Regional Planning Expert Advisor</p>
+            <div class="team-line"></div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
   </section>
+
 
   <!-- Contact Section -->
   <section id="contact" class="ide-contact">
@@ -1575,15 +1636,15 @@
         <div class="social-links">
   <h3>Ikuti Sosial Media Kami</h3>
   <div class="social-links-container">
-    <a href="https://www.tiktok.com/@ideconsultant" class="social-link" target="_blank">
+    <a href="https://www.tiktok.com/@intidesainekonomi?_t=ZS-8yox13fLDlf&_r=1" class="social-link" target="_blank">
       <img src="assets/img/TT.png" alt="TikTok">
     </a>
-    <a href="https://www.instagram.com/ideconsultant" class="social-link" target="_blank">
+    <a href="https://www.instagram.com/intidesainekonomi?igsh=Zmx2bjk2NjNnNmllt" class="social-link" target="_blank">
       <img src="assets/img/instagram.png" alt="Instagram">
     </a>
-    <a href="https://www.youtube.com/@ideconsultant" class="social-link" target="_blank">
+    <!-- <a href="https://www.youtube.com/@ideconsultant" class="social-link" target="_blank">
       <img src="assets/img/youtube.png" alt="YouTube">
-    </a>
+    </a> -->
   </div>
 </div>
       </div>

@@ -78,7 +78,7 @@
                   </div>
                 </div>
               </div>
-              <div class="panel panel-default">
+              <!-- <div class="panel panel-default">
                 <div class="panel-heading" role="tab" style="cursor: pointer;">
                   <h4 style="text-align: left;" class="panel-title">
                     <a style="text-decoration: none;" onclick="window.open('https://docs.google.com/document/d/1RJV6GLnPciqQtzZxL2BlWHMh0VM_tMcgMdizbxkw27s/edit?tab=t.0')">
@@ -86,7 +86,7 @@
                     </a>
                   </h4>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
