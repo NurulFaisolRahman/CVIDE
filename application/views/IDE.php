@@ -1244,7 +1244,7 @@
     </div>
   </section>
 
-  <!-- Portfolio Section -->
+  <!-- Portfolio Section
   <section id="portfolio" class="section portfolio">
   <div class="section-title">
     <h2>Portofolio Kami</h2>
@@ -1357,7 +1357,7 @@
     </div>
   </div>
   <button class="show-more-btn" id="showMoreBtn">Show More</button>
-</section>
+</section> -->
   <!-- Partners Section -->
   <section id="partners" class="section">
     <div class="section-title">
