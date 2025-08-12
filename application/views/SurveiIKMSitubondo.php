@@ -470,6 +470,10 @@
         font-weight: 600;
         font-size: 1rem;
         display: flex;
+<<<<<<< HEAD
+=======
+        margin-bottom: 10px;
+>>>>>>> 333d67611d3fef4148bb46edf5e28bbe41cf9dab
         align-items: center;
       }
 
@@ -478,6 +482,10 @@
         font-weight: 600;
         font-size: 1rem;
         display: flex;
+<<<<<<< HEAD
+=======
+        margin-bottom: 10px;
+>>>>>>> 333d67611d3fef4148bb46edf5e28bbe41cf9dab
         align-items: center;
       }
 
@@ -656,6 +664,22 @@
           gap: var(--spacing-sm);
         }
       }
+<<<<<<< HEAD
+=======
+
+      .reason-notification {
+          font-size: 14px;
+          color:rgb(255, 255, 255);
+          margin-top: 4px;
+          font-style: italic;
+          animation: fadeIn 0.3s ease-out;
+      }
+
+      .is-invalid {
+          border-color: #d32f2f !important;
+          box-shadow: 0 0 0 0.2rem rgba(211, 47, 47, 0.25) !important;
+      }
+>>>>>>> 333d67611d3fef4148bb46edf5e28bbe41cf9dab
     </style>
   </head>
 
@@ -979,6 +1003,42 @@
           }
         });
 
+<<<<<<< HEAD
+=======
+        // Function to check and show notification for reasons when 1 or 2 is selected
+        function checkReasonInputs() {
+            $('input[type="radio"]').on('change', function() {
+                var selectedValue = $(this).val();
+                var questionId = $(this).attr('name').replace('Input', '');
+                var reasonInput = $('#Alasan' + questionId);
+                
+                if (selectedValue == 1 || selectedValue == 2) {
+                    // Show notification near the reason input field
+                    if (!reasonInput.next('.reason-notification').length) {
+                        reasonInput.after('<div class="reason-notification  small mt-1"> Harap isi alasan dengan jelas</div>');
+                    }
+                } else {
+                    // Remove notification if it exists
+                    reasonInput.next('.reason-notification').remove();
+                }
+            });
+            
+            // Also check on page load in case of browser remembering selections
+            $('input[type="radio"]:checked').each(function() {
+                var selectedValue = $(this).val();
+                var questionId = $(this).attr('name').replace('Input', '');
+                var reasonInput = $('#Alasan' + questionId);
+                
+                if ((selectedValue == 1 || selectedValue == 2) && !reasonInput.next('.reason-notification').length) {
+                    reasonInput.after('<div class="reason-notification  small mt-1">Harap isi alasan dengan jelas</div>');
+                }
+            });
+        }
+        
+        // Call the function
+        checkReasonInputs();
+
+>>>>>>> 333d67611d3fef4148bb46edf5e28bbe41cf9dab
         // Scroll to top button
         $(window).scroll(function() {
           if ($(this).scrollTop() > 300) {
@@ -1010,6 +1070,45 @@
         }, 800);
 
         $("#Kirim").click(function() {
+<<<<<<< HEAD
+=======
+          // Validasi alasan untuk pilihan 1 atau 2
+          var valid = true;
+          var firstEmptyReason = null;
+          
+          $('input[type="radio"]:checked').each(function() {
+            var qid = $(this).attr('name').replace('Input', '');
+            var selectedValue = $(this).val();
+            var alasan = $('#Alasan' + qid).val().trim();
+            
+            if ((selectedValue == 1 || selectedValue == 2) && alasan === "") {
+              $('#Alasan' + qid).addClass('is-invalid');
+              if (!$('#Alasan' + qid).next('.reason-notification').length) {
+                  $('#Alasan' + qid).after('<div class="reason-notification  small mt-1">Harap isi alasan dengan jelas</div>');
+              }
+              valid = false;
+              if (!firstEmptyReason) {
+                firstEmptyReason = qid;
+              }
+            } else {
+              $('#Alasan' + qid).removeClass('is-invalid');
+              $('#Alasan' + qid).next('.reason-notification').remove();
+            }
+          });
+          
+          if (!valid) {
+            alert('Harap isi alasan untuk pilihan dengan nilai 1 atau 2');
+            if (firstEmptyReason) {
+              $('html, body').animate({
+                scrollTop: $('#Alasan' + firstEmptyReason).offset().top - 100
+              }, 500);
+              $('#Alasan' + firstEmptyReason).focus();
+            }
+            return false;
+          }
+
+          // Validasi lainnya
+>>>>>>> 333d67611d3fef4148bb46edf5e28bbe41cf9dab
           if ($("#Nama").val() === "") {
             alert('Mohon isi nama lengkap Anda!');
             $("#Nama").focus();
