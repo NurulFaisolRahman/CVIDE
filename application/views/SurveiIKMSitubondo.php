@@ -12,7 +12,7 @@
     <link href="../assets/vendor/fontawesome/css/all.min.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-   <style>
+    <style>
       /* ===== CSS VARIABLES ===== */
       :root {
         /* Primary Colors */
@@ -383,280 +383,279 @@
         display: block;
       }
 
-/* ===== QUESTION COMPONENTS ===== */
-.question-container {
-  margin-bottom: 25px;
-  background-color: var(--light-blue); /* Solid blue background */
-  border-radius: var(--border-radius);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow-sm);
-  border-left: 4px solid var(--primary-blue);
-  border: 1px solid var(--accent-blue); /* Added solid blue border */
-  max-width: 100%; /* Tambahkan ini */
-  margin-left: auto; /* Tambahkan ini */
-  margin-right: auto; /* Tambahkan ini */
-}
+      /* ===== QUESTION COMPONENTS ===== */
+      .question-container {
+        margin-bottom: 25px;
+        background-color: var(--light-blue);
+        border-radius: var(--border-radius);
+        padding: var(--spacing-lg);
+        box-shadow: var(--shadow-sm);
+        border-left: 4px solid var(--primary-blue);
+        border: 1px solid var(--accent-blue);
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
 
-.question-text {
-  font-weight: 500;
-  color: var(--dark-blue); /* Darker blue for better contrast on blue background */
-  margin-bottom: var(--spacing-md);
-  font-size: 15px;
-  line-height: 1.6;
-}
+      .question-text {
+        font-weight: 500;
+        color: var(--dark-blue);
+        margin-bottom: var(--spacing-md);
+        font-size: 15px;
+        line-height: 1.6;
+      }
 
-/* Updated: Changed from red to blue theme with solid colors */
-.options-container {
-  background-color: var(--primary-blue); /* Solid light blue background */
-  padding: 18px;
-  border-radius: var(--border-radius);
-  margin-top: var(--spacing-md);
-  border: 1px solid var(--accent-blue); /* Solid blue border */
-  max-width: 100%; /* Tambahkan ini */
-}
+      .options-container {
+        background-color: var(--primary-blue);
+        padding: 18px;
+        border-radius: var(--border-radius);
+        margin-top: var(--spacing-md);
+        border: 1px solid var(--accent-blue);
+        max-width: 100%;
+      }
 
-.radio-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-md);
-  justify-content: center; /* Pusatkan opsi radio */
-}
+      .radio-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+        justify-content: center;
+      }
 
-.radio-option {
-  display: flex;
-  align-items: center;
-  background-color: transparent; /* Removed white background */
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: 6px;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  border: none; /* Removed border */
-}
+      .radio-option {
+        display: flex;
+        align-items: center;
+        background-color: transparent;
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        border: none;
+      }
 
-.radio-option:hover {
-  background-color: var(--secondary-blue);
-  color: var(--white);
-  transform: translateY(-2px);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-  border-color: var(--secondary-blue);
-}
+      .radio-option:hover {
+        background-color: var(--secondary-blue);
+        color: var(--white);
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        border-color: var(--secondary-blue);
+      }
 
-.radio-option label {
-  font-weight: 500;
-  margin-left: var(--spacing-sm);
-  cursor: pointer;
-  color: var(--white  );
-  transition: color 0.2s ease;
-}
+      .radio-option label {
+        font-weight: 500;
+        margin-left: var(--spacing-sm);
+        cursor: pointer;
+        color: var(--white);
+        transition: color 0.2s ease;
+      }
 
-.radio-option:hover label {
-  color: var(--white);
-}
+      .radio-option:hover label {
+        color: var(--white);
+      }
 
-/* ===== SECTION TITLES ===== */
-.section-title {
-  color: var(--primary-blue);
-  font-weight: 700;
-  margin-top: var(--spacing-xl);
-  margin-bottom: var(--spacing-md);
-  padding-bottom: var(--spacing-sm);
-  border-bottom: 2px solid var(--medium-gray);
-  font-size: 1.2rem;
-  letter-spacing: 0.5px;
-}
+      /* ===== SECTION TITLES ===== */
+      .section-title {
+        color: var(--primary-blue);
+        font-weight: 700;
+        margin-top: var(--spacing-xl);
+        margin-bottom: var(--spacing-md);
+        padding-bottom: var(--spacing-sm);
+        border-bottom: 2px solid var(--medium-gray);
+        font-size: 1.2rem;
+        letter-spacing: 0.5px;
+      }
 
-.performance-title {
-  color: var(--primary-red);
-  font-weight: 600;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-}
+      .performance-title {
+        color: var(--primary-red);
+        font-weight: 600;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+      }
 
-.importance-title {
-  color: var(--success-green);
-  font-weight: 600;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-}
+      .importance-title {
+        color: var(--success-green);
+        font-weight: 600;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+      }
 
-.performance-title i,
-.importance-title i {
-  margin-right: var(--spacing-sm);
-  font-size: 1.1rem;
-}
+      .performance-title i,
+      .importance-title i {
+        margin-right: var(--spacing-sm);
+        font-size: 1.1rem;
+      }
 
-/* ===== SERVICE OPTIONS ===== */
-.layanan-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
+      /* ===== SERVICE OPTIONS ===== */
+      .layanan-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
 
-.layanan-option {
-  background-color: var(--light-blue);
-  border-radius: 6px;
-  padding: var(--spacing-sm) var(--spacing-md);
-  display: flex;
-  align-items: center;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
+      .layanan-option {
+        background-color: var(--light-blue);
+        border-radius: 6px;
+        padding: var(--spacing-sm) var(--spacing-md);
+        display: flex;
+        align-items: center;
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
 
-.layanan-option:hover {
-  background-color: var(--secondary-blue);
-  color: var(--white);
-}
+      .layanan-option:hover {
+        background-color: var(--secondary-blue);
+        color: var(--white);
+      }
 
-.layanan-option input {
-  margin-right: var(--spacing-sm);
-}
+      .layanan-option input {
+        margin-right: var(--spacing-sm);
+      }
 
-/* ===== UTILITY CLASSES ===== */
-.bg-primary {
-  background-color: var(--primary-blue);
-}
+      /* ===== UTILITY CLASSES ===== */
+      .bg-primary {
+        background-color: var(--primary-blue);
+      }
 
-.bg-danger {
-  background-color: var(--primary-red);
-  border-radius: var(--border-radius);
-}
+      .bg-danger {
+        background-color: var(--primary-red);
+        border-radius: var(--border-radius);
+      }
 
-.info-text {
-  font-size: 13px;
-  color: var(--dark-gray);
-  margin-top: 5px;
-  font-style: italic;
-}
+      .info-text {
+        font-size: 13px;
+        color: var(--dark-gray);
+        margin-top: 5px;
+        font-style: italic;
+      }
 
-/* ===== FLOATING ACTION BUTTON ===== */
-.fab {
-  position: fixed;
-  bottom: var(--spacing-xl);
-  right: var(--spacing-xl);
-  width: 60px;
-  height: 60px;
-  background-color: var(--primary-red);
-  color: var(--white);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  box-shadow: 0 6px 20px rgba(211, 47, 47, 0.3);
-  cursor: pointer;
-  z-index: 1000;
-  transition: all 0.3s ease;
-  border: none;
-}
+      /* ===== FLOATING ACTION BUTTON ===== */
+      .fab {
+        position: fixed;
+        bottom: var(--spacing-xl);
+        right: var(--spacing-xl);
+        width: 60px;
+        height: 60px;
+        background-color: var(--primary-red);
+        color: var(--white);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        box-shadow: 0 6px 20px rgba(211, 47, 47, 0.3);
+        cursor: pointer;
+        z-index: 1000;
+        transition: all 0.3s ease;
+        border: none;
+      }
 
-.fab:hover {
-  transform: scale(1.1);
-  box-shadow: 0 8px 25px rgba(211, 47, 47, 0.4);
-}
+      .fab:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(211, 47, 47, 0.4);
+      }
 
-/* ===== ANIMATIONS ===== */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+      /* ===== ANIMATIONS ===== */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-.fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
-}
+      .fade-in {
+        animation: fadeIn 0.6s ease-out forwards;
+      }
 
-/* ===== SCROLLBAR CUSTOMIZATION ===== */
-::-webkit-scrollbar {
-  width: 10px;
-}
+      /* ===== SCROLLBAR CUSTOMIZATION ===== */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
 
-::-webkit-scrollbar-track {
-  background: var(--light-gray);
-}
+      ::-webkit-scrollbar-track {
+        background: var(--light-gray);
+      }
 
-::-webkit-scrollbar-thumb {
-  background: var(--primary-blue);
-  border-radius: 5px;
-}
+      ::-webkit-scrollbar-thumb {
+        background: var(--primary-blue);
+        border-radius: 5px;
+      }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--dark-blue);
-}
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--dark-blue);
+      }
 
-/* ===== RESPONSIVE DESIGN ===== */
-@media (max-width: 768px) {
-  .question-container {
-    max-width: 100%;
-    padding: var(--spacing-md);
-  }
-  
-  .options-container {
-    padding: var(--spacing-md);
-  }
-  
-  .radio-options {
-    flex-direction: column;
-    gap: var(--spacing-sm);
-  }
-  
-  .radio-option {
-    padding: 6px 12px;
-  }
-  
-  .input-group-text {
-    min-width: 100px;
-    font-size: 14px;
-  }
-  
-  .section-title {
-    font-size: 1.1rem;
-  }
-  
-  .fab {
-    bottom: var(--spacing-lg);
-    right: var(--spacing-lg);
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
-  }
-}
+      /* ===== RESPONSIVE DESIGN ===== */
+      @media (max-width: 768px) {
+        .question-container {
+          max-width: 100%;
+          padding: var(--spacing-md);
+        }
+        
+        .options-container {
+          padding: var(--spacing-md);
+        }
+        
+        .radio-options {
+          flex-direction: column;
+          gap: var(--spacing-sm);
+        }
+        
+        .radio-option {
+          padding: 6px 12px;
+        }
+        
+        .input-group-text {
+          min-width: 100px;
+          font-size: 14px;
+        }
+        
+        .section-title {
+          font-size: 1.1rem;
+        }
+        
+        .fab {
+          bottom: var(--spacing-lg);
+          right: var(--spacing-lg);
+          width: 50px;
+          height: 50px;
+          font-size: 20px;
+        }
+      }
 
-@media (max-width: 576px) {
-  .header-section {
-    padding: var(--spacing-md) 0;
-    margin-bottom: var(--spacing-lg);
-  }
-  
-  .card-body {
-    padding: var(--spacing-md);
-  }
-  
-  .question-container {
-    padding: var(--spacing-md);
-  }
-  
-  .options-container {
-    padding: var(--spacing-md);
-  }
-  
-  .radio-options {
-    flex-direction: column;
-    gap: var(--spacing-sm);
-  }
-  
-  .layanan-options {
-    flex-direction: column;
-    gap: var(--spacing-sm);
-  }
-}
+      @media (max-width: 576px) {
+        .header-section {
+          padding: var(--spacing-md) 0;
+          margin-bottom: var(--spacing-lg);
+        }
+        
+        .card-body {
+          padding: var(--spacing-md);
+        }
+        
+        .question-container {
+          padding: var(--spacing-md);
+        }
+        
+        .options-container {
+          padding: var(--spacing-md);
+        }
+        
+        .radio-options {
+          flex-direction: column;
+          gap: var(--spacing-sm);
+        }
+        
+        .layanan-options {
+          flex-direction: column;
+          gap: var(--spacing-sm);
+        }
+      }
     </style>
   </head>
 

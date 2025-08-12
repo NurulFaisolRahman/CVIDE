@@ -1,14 +1,16 @@
+							<br>
 							<div class="row">
 								<div class="col-lg-auto">
 									<button type="button" class="btn btn-primary border-white mb-2" data-toggle="modal" data-target="#ModalInput"><i class="fa fa-plus"></i><b> Input</b></button>
 								</div>
 							</div>
+							<br>
 							<div class="row">
 								<div class="col-sm-12">
 									<div class="table-responsive">
 										<table id="TabelPortfolio" class="table table-sm table-bordered bg-light">
 											<thead>
-												<tr class="bg-danger text-light">
+												 <tr style="background: linear-gradient(135deg, #2196F3, #0D47A1); color: white;">
 													<th scope="col" style="width: 4%;" class="text-center align-middle">No</th>
 													<th scope="col" class="align-middle">Title</th>
 													<th scope="col" style="width: 15%;" class="align-middle">Category</th>
@@ -187,8 +189,8 @@
 					"lengthMenu": [[10, 30, 50, -1], [10, 30, 50, "All"]],
 					"language": {
 						"paginate": {
-							'previous': '<b class="text-white"><</b>',
-							'next': '<b class="text-white">></b>'
+							'previous': '<i class="fa fa-chevron-left"></i>',
+                    		'next': '<i class="fa fa-chevron-right"></i>'
 						}
 					}
 				})

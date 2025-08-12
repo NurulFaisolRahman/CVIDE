@@ -13,6 +13,50 @@
     <link href="<?=base_url('vendors/font-awesome/css/font-awesome.min.css')?>" rel="stylesheet">
     <link href="<?=base_url('build/css/custom.min.css')?>" rel="stylesheet">
     <link href="<?=base_url('assets/datatables-bs4/css/dataTables.bootstrap4.css')?>" rel="stylesheet">
+
+    <style>/* Layout utama */
+          .dataTables_wrapper .dataTables_length {
+              float: left;
+              margin-right: 20px;
+          }
+
+          .dataTables_wrapper .dataTables_filter {
+              float: right;
+              text-align: right;
+          }
+
+          .dataTables_wrapper .dataTables_info {
+              float: left;
+              padding-top: 8px;
+          }
+
+          .dataTables_wrapper .dataTables_paginate {
+              float: right;
+              margin-top: 0;
+          }
+
+          /* Responsive untuk mobile */
+          @media (max-width: 767px) {
+              .dataTables_wrapper .dataTables_length,
+              .dataTables_wrapper .dataTables_filter,
+              .dataTables_wrapper .dataTables_info,
+              .dataTables_wrapper .dataTables_paginate {
+                  float: none;
+                  text-align: center;
+                  width: 100%;
+                  margin-bottom: 10px;
+              }
+              
+              .dataTables_wrapper .dataTables_filter input {
+                  width: 100% !important;
+              }
+              
+              .dataTables_wrapper .dataTables_length select {
+                  width: 100% !important;
+              }
+          }
+</style>
+
   </head>
 
   <body class="nav-md">
@@ -61,6 +105,6 @@
         <!-- /top navigation -->
 
         <!-- page content -->
-				<div class="right_col bg-success" role="main" style="overflow-x: hidden;">
+				<div class="right_col" role="main" style="overflow-x: hidden;">
 					<div class="">
             <div class="clearfix"></div>

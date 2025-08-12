@@ -1,9 +1,10 @@
+							<br>
 							<div class="row">
 								<div class="col-sm-12">
 									<div class="table-responsive">
 										<table id="TabelProject" class="table table-sm table-bordered bg-light">
 											<thead>
-												<tr class="bg-danger text-light">
+												<tr style="background: linear-gradient(135deg, #2196F3, #0D47A1); color: white;">
 													<th scope="col" style="width: 4%;" class="text-center align-middle">No</th>
 													<th scope="col" class="align-middle">PJ Project</th>
 													<th scope="col" class="align-middle">Nama Project</th>
@@ -62,8 +63,8 @@
 					"lengthMenu": [[7, 30, 50, -1], [7, 30, 50, "All"]],
 					"language": {
 						"paginate": {
-							'previous': '<b class="text-white"><</b>',
-							'next': '<b class="text-white">></b>'
+							'previous': '<i class="fa fa-chevron-left"></i>',
+                    		'next': '<i class="fa fa-chevron-right"></i>'
 						}
 					}
 				})

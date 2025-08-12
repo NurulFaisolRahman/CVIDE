@@ -1,9 +1,10 @@
-							<div class="row">
+							<br>
+                            <div class="row">
 								<div class="col-sm-12">
 									<div class="table-responsive">
 										<table id="TabelKas" class="table table-sm table-bordered bg-light">
 											<thead>
-												<tr class="bg-danger text-light">
+												<tr style="background: linear-gradient(135deg, #2196F3, #0D47A1); color: white;">
 													<th scope="col" class="text-center align-middle">No</th>
 													<th scope="col" class="align-middle">Deskripsi</th>
 													<th scope="col" class="align-middle">Nominal Kas</th>
@@ -15,7 +16,7 @@
 													<tr>
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>
 														<th scope="row" class="align-middle"><?=$key['Description']?></th>
-														<th scope="row" class="align-middle"><?="Rp ".number_format($key['Amount'],0,',','.')?></th>
+														<th scope="row" class="align-middle font-weight-bold" style="color: #1565c0;"><?="Rp ".number_format($key['Amount'],0,',','.')?></th>
 														<th scope="row" style="width: 10%;" class="align-middle"><?=$Date[2].'-'.$Date[1].'-'.$Date[0]?></th>
 													</tr>
 												<?php } ?>  
@@ -44,8 +45,8 @@
 					"lengthMenu": [[15, 30, 50, -1], [15, 30, 50, "All"]],
 					"language": {
 						"paginate": {
-							'previous': '<b class="text-white"><</b>',
-							'next': '<b class="text-white">></b>'
+							'previous': '<i class="fa fa-chevron-left"></i>',
+                    		'next': '<i class="fa fa-chevron-right"></i>'
 						}
 					}
 				})

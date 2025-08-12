@@ -1,9 +1,10 @@
+							<br>
 							<div class="row">
 								<div class="col-sm-12">
 									<div class="table-responsive">
 										<table id="TabelPendapatan" class="table table-sm table-bordered bg-light">
 											<thead>
-												<tr class="bg-danger text-light">
+												<tr style="background: linear-gradient(135deg, #2196F3, #0D47A1); color: white;">
 													<th scope="col" style="width: 3%;" class="text-center align-middle">No</th>
 													<th scope="col" style="width: 25%;" class="align-middle">Nama Kegiatan</th>
 													<th scope="col" style="width: 10%;" class="align-middle">Sumber Kegiatan</th>
@@ -20,7 +21,7 @@
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>
 														<th scope="row" class="align-middle"><?=$key['NamaKegiatan']?></th>
 														<th scope="row" class="align-middle"><?=$SumberKegiatan[$key['SumberKegiatan']]?></th>
-														<th scope="row" class="align-middle"><?="Rp ".number_format($key['NominalKegiatan'],0,',','.')?></th>
+														<th scope="row" class="align-middle font-weight-bold" style="color: #e53935;"><?="Rp ".number_format($key['NominalKegiatan'],0,',','.')?></th>
 														<th scope="row" class="align-middle"><?=$Mulai[2].'-'.$Mulai[1].'-'.$Mulai[0]?></th>
 														<th scope="row" class="align-middle"><?=$Selesai[2].'-'.$Selesai[1].'-'.$Selesai[0]?></th>
 														<th scope="row" class="text-center align-middle">
@@ -53,8 +54,8 @@
 					"lengthMenu": [[10, 30, 50, -1], [10, 30, 50, "All"]],
 					"language": {
 						"paginate": {
-							'previous': '<b class="text-white"><</b>',
-							'next': '<b class="text-white">></b>'
+							 'previous': '<i class="fa fa-chevron-left"></i>',
+                    			'next': '<i class="fa fa-chevron-right"></i>'
 						}
 					}
 				})
