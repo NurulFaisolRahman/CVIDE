@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Kabupaten Ponorogo</title>
 
@@ -19,6 +19,24 @@
       .btn-primary:hover {
         background-color: #286090;
         border-color: #204d74;
+      }
+      
+      /* Tambahan untuk tampilan mobile tetap sama */
+      body {
+        min-width: 400px; /* Lebar minimum untuk mencegah penyusutan berlebihan */
+      }
+      .container-fluid {
+        width: 400px; /* Lebar tetap */
+        margin: 0 auto; /* Pusatkan di layar */
+      }
+      img.img-rounded {
+        max-width: 100%;
+        height: auto;
+      }
+      @media (max-width: 400px) {
+        body {
+          zoom: 0.8; /* Sedikit perkecil tampilan di layar sangat kecil */
+        }
       }
     </style>
   </head>
@@ -143,8 +161,7 @@
                   </div>
                 </div>
               </div>
-
-
+              
             </div>
           </div>
         </div>
