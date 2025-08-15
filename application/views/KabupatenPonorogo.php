@@ -44,26 +44,28 @@
         <div class="col-12 text-center">
           <div style="width: 400px;margin-bottom: 55px;" class="container">
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+              
+              <!-- BPR Ponorogo Menu -->
               <div class="panel panel-default">
                 <div class="panel-heading" role="tab" style="cursor: pointer;">
                   <h4 style="text-align: left;" class="panel-title">
-                    <a style="text-decoration: none;" role="button" data-toggle="collapse" data-parent="#accordion" href="#Dinsos" aria-expanded="true" aria-controls="Dinsos">
+                    <a style="text-decoration: none;" role="button" data-toggle="collapse" data-parent="#accordion" href="#Ponorogo" aria-expanded="true" aria-controls="Ponorogo">
                       <b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> BPR Ponorogo</b>
                     </a>
                   </h4>
                 </div>
-                <div id="Dinsos" class="panel-collapse collapse" role="tabpanel">
+                <div id="Ponorogo" class="panel-collapse collapse" role="tabpanel">
                   <div class="panel-body">
-                    <div style="margin-bottom: 0px;" class="panel-group" id="accordionDinsos" role="tablist" aria-multiselectable="true">
+                    <div style="margin-bottom: 0px;" class="panel-group" id="accordionPonorogo" role="tablist" aria-multiselectable="true">
                       <div class="panel panel-default">
                         <div class="panel-heading" role="tab" style="cursor: pointer;">
                           <h4 style="text-align: left;" class="panel-title">
-                            <a style="text-decoration: none;" role="button" data-toggle="collapse" data-parent="#accordionDinsos" href="#DinsosPERMENDAGRI" aria-expanded="true" aria-controls="DinsosPERMENDAGRI">
-                              <b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Kebutuhan Data</b>
+                            <a style="text-decoration: none;" role="button" data-toggle="collapse" data-parent="#accordionPonorogo" href="#PonorogoKABUPATEN" aria-expanded="true" aria-controls="PonorogoKABUPATEN">
+                              <b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Laporan</b>
                             </a>
                           </h4>
                         </div>
-                        <div id="DinsosPERMENDAGRI" class="panel-collapse collapse" role="tabpanel">
+                        <div id="PonorogoKABUPATEN" class="panel-collapse collapse" role="tabpanel">
                           <div style="padding: 10px;font-size: 12pt;font-family: Cambria;letter-spacing: 1px;" class="panel-body">
                             <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/spreadsheets/d/1naDerHzGIgrxhwhbH73BXni85j0-TYo12gVrtywsH6E/edit?gid=0#gid=0')" role="button"><b>Kertas Kerja</b></a>
                             <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1RJV6GLnPciqQtzZxL2BlWHMh0VM_tMcgMdizbxkw27s/edit?tab=t.0 ')" role="button"><b>BAB I</b></a>
@@ -74,24 +76,81 @@
                           </div>
                         </div>
                       </div>
+                      <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" style="cursor: pointer;">
+                          <h4 style="text-align: left;" class="panel-title">
+                            <a style="text-decoration: none;" role="button" data-toggle="collapse" data-parent="#accordionPonorogo" href="#PonorogoSubMenu" aria-expanded="true" aria-controls="PonorogoSubMenu">
+                              <b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Kebutuhan Data</b>
+                            </a>
+                          </h4>
+                        </div>
+                        <div id="PonorogoSubMenu" class="panel-collapse collapse" role="tabpanel">
+                          <div style="padding: 10px;font-size: 12pt;font-family: Cambria;letter-spacing: 1px;" class="panel-body">
+                            <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1HPgL53l_wdsILzwAg4wu6a07HrR5vppc?usp=sharing ')" role="button"><b>Dokumen Pendukung</b></a>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <!-- <div class="panel panel-default">
+
+              <!-- Perumda Sari Gunung Menu -->
+              <div class="panel panel-default">
                 <div class="panel-heading" role="tab" style="cursor: pointer;">
                   <h4 style="text-align: left;" class="panel-title">
-                    <a style="text-decoration: none;" onclick="window.open('https://docs.google.com/document/d/1RJV6GLnPciqQtzZxL2BlWHMh0VM_tMcgMdizbxkw27s/edit?tab=t.0')">
+                    <a style="text-decoration: none;" role="button" data-toggle="collapse" data-parent="#accordion" href="#SariGunung" aria-expanded="true" aria-controls="SariGunung">
                       <b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> NA Perumda Sari Gunung</b>
                     </a>
                   </h4>
                 </div>
-              </div> -->
+                <div id="SariGunung" class="panel-collapse collapse" role="tabpanel">
+                  <div class="panel-body">
+                    <div style="margin-bottom: 0px;" class="panel-group" id="accordionSariGunung" role="tablist" aria-multiselectable="true">
+                      <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" style="cursor: pointer;">
+                          <h4 style="text-align: left;" class="panel-title">
+                            <a style="text-decoration: none;" role="button" data-toggle="collapse" data-parent="#accordionSariGunung" href="#SariGunungLaporan" aria-expanded="true" aria-controls="SariGunungLaporan">
+                              <b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Laporan</b>
+                            </a>
+                          </h4>
+                        </div>
+                        <div id="SariGunungLaporan" class="panel-collapse collapse" role="tabpanel">
+                          <div style="padding: 10px;font-size: 12pt;font-family: Cambria;letter-spacing: 1px;" class="panel-body">
+                            <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1wzucanHC4tul1dcl7WQKyE6fqaOkpZ0eGNUhHZj3jqg/edit?usp=sharing')" role="button"><b>BAB I</b></a>
+                            <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1SielKNLGZACXa7NIWAaFmtd-yc2GU2b1lLpOVrKD3mk/edit?usp=drive_link')" role="button"><b>BAB II</b></a>
+                            <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1WN9tPCuNUrtiUN_EeHEPPcR74uh85gERqkTYHe_slFM/edit?usp=drive_link')" role="button"><b>BAB III</b></a>
+                            <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1cfT2m2jx9y9ghuuNOPudrqQRRMJrRWoAReCXbMYowOY/edit?usp=drive_link')" role="button"><b>BAB IV</b></a>
+                            <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1qTUNXJRyAbIiXRH6YZ0VZfZpni1teCvF4KrN62_nmVw/edit?usp=drive_link')" role="button"><b>BAB V</b></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" style="cursor: pointer;">
+                          <h4 style="text-align: left;" class="panel-title">
+                            <a style="text-decoration: none;" role="button" data-toggle="collapse" data-parent="#accordionSariGunung" href="#SariGunungData" aria-expanded="true" aria-controls="SariGunungData">
+                              <b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Kebutuhan Data</b>
+                            </a>
+                          </h4>
+                        </div>
+                        <div id="SariGunungData" class="panel-collapse collapse" role="tabpanel">
+                          <div style="padding: 10px;font-size: 12pt;font-family: Cambria;letter-spacing: 1px;" class="panel-body">
+                            <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1u2aNgDLViH8Kn1RvBKBZ2_jhqIwNe_7D?usp=drive_link')" role="button"><b>Dokumen Pendukung</b></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
             </div>
           </div>
         </div>
       </div>
     </div>
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
