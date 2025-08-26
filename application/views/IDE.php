@@ -112,18 +112,100 @@
       width: 100%;
     }
 
-    /* Hero Section */
     .hero {
       height: 100vh;
-      background: url("assets/img/background/banner3.png") no-repeat center center;
-      background-size: cover;
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: flex-start;
       text-align: left;
-      position: relative;
-      overflow: hidden;
       padding-left: 5%;
+      overflow: hidden;
+    }
+
+    .hero-slider {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .hero-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .hero-slide.active {
+      opacity: 1;
+    }
+
+    .hero-content {
+      max-width: 700px;
+      padding: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .slider-nav {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 2;
+    }
+
+    .slider-dot {
+      width: 10px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .slider-dot.active {
+      background: var(--apple-blue);
+    }
+
+    .slider-prev,
+    .slider-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 2;
+      transition: background 0.3s ease;
+    }
+
+    .slider-prev:hover,
+    .slider-next:hover {
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .slider-prev {
+      left: 20px;
+    }
+
+    .slider-next {
+      right: 20px;
     }
 
     .hero-content {
@@ -1160,6 +1242,17 @@
 
   <!-- Hero Section -->
   <section class="hero">
+    <div class="hero-slider">
+      <div class="hero-slide" style="background-image: url('assets/img/background/banner5.png');"></div>
+      <div class="hero-slide" style="background-image: url('assets/img/background/banner2.png');"></div>
+      <div class="hero-slide" style="background-image: url('assets/img/background/banner6.png');"></div>
+    </div>
+    <div class="slider-nav">
+      <div class="slider-dot active"></div>
+      <div class="slider-dot"></div>
+    </div>
+    <button class="slider-prev">❮</button>
+    <button class="slider-next">❯</button>
     <div class="hero-content">
       <h1>Professional Research & Consulting</h1>
       <p>Your trusted partner for innovative economic policy research and professional consulting services</p>
@@ -1769,6 +1862,64 @@
         event.target.classList.remove('active');
       }
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const slides = document.querySelectorAll('.hero-slide');
+      const dots = document.querySelectorAll('.slider-dot');
+      const prevButton = document.querySelector('.slider-prev');
+      const nextButton = document.querySelector('.slider-next');
+      let currentSlide = 0;
+      let autoSlideInterval;
+
+      function showSlide(index) {
+        slides.forEach((slide, i) => {
+          slide.classList.toggle('active', i === index);
+          dots[i].classList.toggle('active', i === index);
+        });
+      }
+
+      function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+      }
+
+      function prevSlide() {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(currentSlide);
+      }
+
+      function startAutoSlide() {
+        autoSlideInterval = setInterval(nextSlide, 5000);
+      }
+
+      function stopAutoSlide() {
+        clearInterval(autoSlideInterval);
+      }
+
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          stopAutoSlide();
+          currentSlide = index;
+          showSlide(currentSlide);
+          startAutoSlide();
+        });
+      });
+
+      prevButton.addEventListener('click', () => {
+        stopAutoSlide();
+        prevSlide();
+        startAutoSlide();
+      });
+
+      nextButton.addEventListener('click', () => {
+        stopAutoSlide();
+        nextSlide();
+        startAutoSlide();
+      });
+
+      showSlide(currentSlide);
+      startAutoSlide();
+    });
 
     // Portfolio filter
     document.querySelectorAll('.filter-btn').forEach(btn => {

@@ -87,7 +87,7 @@
                           <div style="padding: 10px;font-size: 12pt;font-family: Cambria;letter-spacing: 1px;" class="panel-body">
                             <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/spreadsheets/d/1naDerHzGIgrxhwhbH73BXni85j0-TYo12gVrtywsH6E/edit?gid=0#gid=0')" role="button"><b>Kertas Kerja</b></a>
                             <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1RJV6GLnPciqQtzZxL2BlWHMh0VM_tMcgMdizbxkw27s/edit?tab=t.0 ')" role="button"><b>BAB I</b></a>
-                            <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1oh_v2jN2cuKy7jIUCyCeHR_Xq_F0nTNDR8ppQ8aZMCQ/edit?tab=t.0#heading=h.su4oczdpgxi  ')" role="button"><b>BAB II</b></a>
+                            <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1Ufp7hdbnMmsxpKTATvfe30dsep-Hq-LahswjZDm5y6s/edit?tab=t.0#heading=h.6sds1d1pzoyb  ')" role="button"><b>BAB II</b></a>
                             <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1gB7vK3KD31EmzsTLAAyzIs-sPZQ2u_-6qtaxAqW5pu8/edit?tab=t.0  ')" role="button"><b>BAB III</b></a>
                             <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1mreRMBSFJKGHLuYQ5Vx4WyUdSv_SfpFvhrwFXs8Up9w/edit?tab=t.0 ')" role="button"><b>BAB IV</b></a>
                             <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1PpnU6pAp5sGdKsgQMTWkHrE8KIy1YH8yjjhNu1fqwVM/edit?tab=t.0 ')" role="button"><b>BAB V</b></a>
