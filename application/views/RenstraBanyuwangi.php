@@ -94,6 +94,7 @@
                             <a class="btn btn-success btn-block" onclick="window.open('https://docs.google.com/document/d/1PnviQUSwvxwc78pNXdi-FKvgmQm433e19kb9xXBqwK4/edit?usp=drive_link')" role="button"><b>BAB III TUJUAN, SASARAN, <br> STRATEGI DAN ARAH KEBIJAKAN</b></a>
                             <a class="btn btn-success btn-block" onclick="window.open('https://docs.google.com/document/d/1n5LENTn3aSYYgcSWkOK-G7SyX1FykBNh/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')" role="button"><b>BAB IV PROGRAM, KEGIATAN, <br> SUB KEGIATAN, DAN KINERJA</b></a>
                             <a class="btn btn-success btn-block" onclick="window.open('https://docs.google.com/document/d/1U7Z7DEQYCydK_y2dYCyJn5XHYYgPrkn2/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')" role="button"><b>BAB V PENUTUP</b></a>
+                            <a class="btn btn-success btn-block" onclick="window.open('https://drive.google.com/file/d/1n0rbyKDe-gzk5p7Gu_xsJLP7vjy6lrYr/view?usp=sharing')" role="button"><b>RANCANGAN RENSTRA</b></a>
                           </div>
                         </div>
                       </div>
