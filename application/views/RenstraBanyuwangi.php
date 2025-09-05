@@ -117,6 +117,7 @@
                                           <a class="btn btn-success btn-block" onclick="window.open('https://docs.google.com/document/d/1U7Z7DEQYCydK_y2dYCyJn5XHYYgPrkn2/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')" role="button"><b>BAB V PENUTUP</b></a>
                                           <a class="btn btn-success btn-block" onclick="window.open('https://drive.google.com/file/d/1n0rbyKDe-gzk5p7Gu_xsJLP7vjy6lrYr/view?usp=sharing')" role="button"><b>RANCANGAN RENSTRA</b></a>
                                           <a class="btn btn-success btn-block" onclick="window.open('https://drive.google.com/file/d/1CqqJq1zUrch3yUVUKvFt0ykMK4j3FHFI/view?usp=drive_link')" role="button"><b>RANKHIR RENSTRA</b></a>
+                                          <a class="btn btn-success btn-block" onclick="window.open('https://drive.google.com/file/d/1_rUinYdSb4vSI_zQozHaiDhRDex5dshC/view?usp=drive_link')" role="button"><b>RANKHIR RENSTRA FINAL</b></a>
                                         </div>
                                       </div>
                                     </div>
