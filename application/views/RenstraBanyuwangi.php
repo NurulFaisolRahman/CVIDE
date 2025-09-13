@@ -118,6 +118,7 @@
                                           <a class="btn btn-success btn-block" onclick="window.open('https://drive.google.com/file/d/1n0rbyKDe-gzk5p7Gu_xsJLP7vjy6lrYr/view?usp=sharing')" role="button"><b>RANCANGAN RENSTRA</b></a>
                                           <a class="btn btn-success btn-block" onclick="window.open('https://drive.google.com/file/d/1CqqJq1zUrch3yUVUKvFt0ykMK4j3FHFI/view?usp=drive_link')" role="button"><b>RANKHIR RENSTRA</b></a>
                                           <a class="btn btn-success btn-block" onclick="window.open('https://drive.google.com/file/d/1_rUinYdSb4vSI_zQozHaiDhRDex5dshC/view?usp=drive_link')" role="button"><b>RANKHIR RENSTRA FINAL</b></a>
+                                          <a class="btn btn-success btn-block" onclick="window.open('https://drive.google.com/file/d/1N9kJz5BJZwIm4cBCI2flLtxmmI7PCj8Q/view?usp=drive_link')" role="button"><b>RANKHIR RENSTRA FINAL REV</b></a>
                                         </div>
                                       </div>
                                     </div>
