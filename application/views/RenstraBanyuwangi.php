@@ -120,7 +120,7 @@
                                           <a class="btn btn-success btn-block" onclick="window.open('https://drive.google.com/file/d/1_rUinYdSb4vSI_zQozHaiDhRDex5dshC/view?usp=drive_link')" role="button"><b>RANKHIR RENSTRA FINAL</b></a>
                                           <a class="btn btn-success btn-block" onclick="window.open('https://drive.google.com/file/d/1N9kJz5BJZwIm4cBCI2flLtxmmI7PCj8Q/view?usp=drive_link')" role="button"><b>RANKHIR RENSTRA FINAL REV</b></a>
                                           <a class="btn btn-success btn-block" onclick="window.open('https://drive.google.com/file/d/1I38pY389my15qp4YUCpl41DVNCcZinCo/view?usp=drive_link')" role="button"><b>RANKHIR RENSTRA FINAL REV 2</b></a>
-                                          <a class="btn btn-success btn-block" onclick="window.open('https://drive.google.com/file/d/1I38pY389my15qp4YUCpl41DVNCcZinCo/view?usp=drive_link')" role="button"><b>RANKHIR RENSTRA FINAL REV 3</b></a>
+                                          <a class="btn btn-success btn-block" onclick="window.open('https://drive.google.com/file/d/1uzsQ-AKg0g_gvTimc2XEsAl_oNrFiyVr/view?usp=drive_link')" role="button"><b>RANKHIR RENSTRA FINAL REV 3</b></a>
                                         </div>
                                       </div>
                                     </div>
