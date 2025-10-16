@@ -1821,6 +1821,12 @@ class IDE extends CI_Controller {
     $this->load->view('KabupatenPonorogo');
   }
 
+  public function IPPDSitubondo(){
+    $this->load->view('IPPDSitubondo');
+  }
+  public function IPPDBanyuwangi(){
+      $this->load->view('IPPDBanyuwangi');
+    }
   public function RenstraBanyuwangi(){
     $this->load->view('RenstraBanyuwangi');
   }
