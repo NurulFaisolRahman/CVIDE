@@ -470,10 +470,7 @@
         font-weight: 600;
         font-size: 1rem;
         display: flex;
-<<<<<<< HEAD
-=======
         margin-bottom: 10px;
->>>>>>> 333d67611d3fef4148bb46edf5e28bbe41cf9dab
         align-items: center;
       }
 
@@ -482,10 +479,7 @@
         font-weight: 600;
         font-size: 1rem;
         display: flex;
-<<<<<<< HEAD
-=======
         margin-bottom: 10px;
->>>>>>> 333d67611d3fef4148bb46edf5e28bbe41cf9dab
         align-items: center;
       }
 
@@ -664,8 +658,6 @@
           gap: var(--spacing-sm);
         }
       }
-<<<<<<< HEAD
-=======
 
       .reason-notification {
           font-size: 14px;
@@ -679,7 +671,6 @@
           border-color: #d32f2f !important;
           box-shadow: 0 0 0 0.2rem rgba(211, 47, 47, 0.25) !important;
       }
->>>>>>> 333d67611d3fef4148bb46edf5e28bbe41cf9dab
     </style>
   </head>
 
@@ -1003,8 +994,6 @@
           }
         });
 
-<<<<<<< HEAD
-=======
         // Function to check and show notification for reasons when 1 or 2 is selected
         function checkReasonInputs() {
             $('input[type="radio"]').on('change', function() {
@@ -1038,7 +1027,6 @@
         // Call the function
         checkReasonInputs();
 
->>>>>>> 333d67611d3fef4148bb46edf5e28bbe41cf9dab
         // Scroll to top button
         $(window).scroll(function() {
           if ($(this).scrollTop() > 300) {
@@ -1070,8 +1058,6 @@
         }, 800);
 
         $("#Kirim").click(function() {
-<<<<<<< HEAD
-=======
           // Validasi alasan untuk pilihan 1 atau 2
           var valid = true;
           var firstEmptyReason = null;
@@ -1108,7 +1094,6 @@
           }
 
           // Validasi lainnya
->>>>>>> 333d67611d3fef4148bb46edf5e28bbe41cf9dab
           if ($("#Nama").val() === "") {
             alert('Mohon isi nama lengkap Anda!');
             $("#Nama").focus();
