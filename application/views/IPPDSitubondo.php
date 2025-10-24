@@ -281,11 +281,11 @@
             </div>
             <div id="upload" class="panel-collapse collapse" role="tabpanel">
               <div class="panel-body">
-                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1No92_NbtN_5DOGIXqowFexAHAOL9aAee?usp=drive_link')" role="button">RKPD 2026</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/186IY8jPfHb2yMvpHwXod_yLIUqA--wbR?usp=drive_link')" role="button">P RKPD 2025</a>
+                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1No92_NbtN_5DOGIXqowFexAHAOL9aAee?usp=drive_link')" role="button">P RENJA 2025</a>
+                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/186IY8jPfHb2yMvpHwXod_yLIUqA--wbR?usp=drive_link')" role="button">RENSTRA 2025 - 2026</a>
                 <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1KMFCTjJtioU80v4nXF-1ndemGCA2R-EH?usp=drive_link')" role="button">RPJMD 2025 - 2029</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1cpfFRZfoT05q-XG-sOnxY_T7CJShRe8D?usp=drive_link')" role="button">P RENJA 2025</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/18BaH26rpe_xs8nq2bI7xalDDX2TuefGl?usp=drive_link')" role="button">RENSTRA 2025 - 2026</a>
+                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1cpfFRZfoT05q-XG-sOnxY_T7CJShRe8D?usp=drive_link')" role="button">RKPD 2026</a>
+                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/18BaH26rpe_xs8nq2bI7xalDDX2TuefGl?usp=drive_link')" role="button">P-RKPD 2025</a>
                 <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1gLa2GzKXgsrN3KcDaJas3bsjt9GTutCn?usp=drive_link')" role="button">Rincian APBD 2025 & 2026</a>
                 <a class="btn btn-primary btn-block" onclick="window.open('')" role="button">RKA 2025 & 2026</a>
               </div>
