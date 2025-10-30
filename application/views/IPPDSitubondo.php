@@ -260,7 +260,7 @@
             </div>
             <div id="laporan" class="panel-collapse collapse" role="tabpanel">
               <div class="panel-body">
-                <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/spreadsheets/d/1KzmsHp01fRFLaCwCFJcoASnykfOFpezgh_5ytXyEnZI/edit?usp=drive_link')" role="button">Kertas Kerja</a>
+                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1D1PjEg2SiyYtfTcSS81nUA7ktighq9_0')" role="button">Kertas Kerja</a>
                 <a class="btn btn-primary btn-block" onclick="window.open('')" role="button">BAB I</a>
                 <a class="btn btn-primary btn-block" onclick="window.open('')" role="button">BAB II</a>
                 <a class="btn btn-primary btn-block" onclick="window.open('')" role="button">BAB III</a>
