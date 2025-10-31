@@ -224,6 +224,19 @@
         color: var(--light-color);
         text-decoration: none;
       }
+
+      .btn-justify {
+        text-align: justify;
+        text-justify: inter-word;
+        white-space: normal; /* Agar teks bisa turun ke baris berikutnya */
+      }
+
+      .btn-justify {
+  word-break: break-word;
+}
+
+
+
     </style>
   </head>
   <body>
@@ -264,6 +277,24 @@
             </div>
           </div>
 
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#Justifikasi" aria-expanded="true" aria-controls="Justifikasi">
+                  <i class="fas fa-clipboard-check"></i> Justifikasi Penilaian
+                </a>
+              </h4>
+            </div>
+            <div id="Justifikasi" class="panel-collapse collapse" role="tabpanel">
+              <div class="panel-body">
+                <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/spreadsheets/d/1pTxeLhUEJVpj5_hZPVkYaAwA-uo0YTd38QRuev-aHOA/edit?usp=drive_link')" role="button">Lembar Kerja - Sinergi</a>
+                <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/spreadsheets/d/1IJd37K7wsCEstzq9nou_HiNMbtzFeLnFCZYBBHpy0p4/edit?usp=drive_link')" role="button">Kertas Kerja - Kualitas Perencanaan</a>
+                <a class="btn btn-primary btn-block btn-justify" onclick="window.open('https://docs.google.com/spreadsheets/d/16LwtXtpCH6Ri_LdRihJLeXL8JLCrbLkfe45kPX-t6VY/edit?usp=drive_link')" role="button">
+                  Lembar Kerja - Keterhubungan Perencanaan Pembangunan dengan Perencanaan Kinerja
+                </a>
+              </div>
+            </div>
+          </div>
           <!-- Upload Menu -->
           <div class="panel panel-default">
             <div class="panel-heading" role="tab">
@@ -275,16 +306,15 @@
             </div>
             <div id="upload" class="panel-collapse collapse" role="tabpanel">
               <div class="panel-body">
-                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1m1YNSLMOjSrzbW-A2BYFWFaYyhy6346x?usp=drive_link')" role="button"> RENJA SKPD Tahun 2025</a>
+                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1m1YNSLMOjSrzbW-A2BYFWFaYyhy6346x?usp=drive_link')" role="button">RENJA SKPD Tahun 2025</a>
                 <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1DRSnxisnDcgYntUdFD09yX52gG9LQUdm?usp=drive_link')" role="button">RENSTRA SKPD Tahun 2025-2029</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1il8lCI6NAG_-e_WYeQfCkjfBOjXy3NOP?usp=drive_link')" role="button">Rincian APBD Tahun 2024 & 2025</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1y4KyuOfkC28pTFr-TxEJlPKldJvdC0vF?usp=drive_link')" role="button">RKA SKPD Tahun 2024 & 2025</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1YvE1K3nEX1r7mSqr_LobewTEPstZSFuY?usp=drive_link')" role="button">RKPD Tahun 2024 & 2025 (Murni dan Perubahan) </a>
+                <!-- <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1il8lCI6NAG_-e_WYeQfCkjfBOjXy3NOP?usp=drive_link')" role="button">Rincian APBD Tahun 2024 & 2025</a> -->
+                <!-- <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1y4KyuOfkC28pTFr-TxEJlPKldJvdC0vF?usp=drive_link')" role="button">RKA SKPD Tahun 2024 & 2025</a> -->
+                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1YvE1K3nEX1r7mSqr_LobewTEPstZSFuY?usp=drive_link')" role="button">RKPD Tahun 2024 & 2025 (Murni dan Perubahan)</a>
                 <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1jOc37e73VFJWYfGzkPxJC38xXaM41RUL?usp=drive_link')" role="button">RPJMD Tahun 2025-2029</a>
               </div>
             </div>
           </div>
-          
         </div>
       </div>
     </div>
