@@ -1834,4 +1834,8 @@ class IDE extends CI_Controller {
   public function RenstraSitubondo(){
     $this->load->view('RenstraSitubondo');
   }
+
+  public function LKPJSitubondo(){
+      $this->load->view('LKPJSitubondo');
+    }
 }
