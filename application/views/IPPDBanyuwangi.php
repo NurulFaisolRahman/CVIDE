@@ -268,11 +268,7 @@
             <div id="laporan" class="panel-collapse collapse" role="tabpanel">
               <div class="panel-body">
                 <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/spreadsheets/d/16eVJkVTVVFNyDAmr54tVqHyPrHkVZlHl-U5lcxv8MXs/edit?usp=drive_link')" role="button">Kertas Kerja</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('')" role="button">BAB I</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('')" role="button">BAB II</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('')" role="button">BAB III</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('')" role="button">BAB IV</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('')" role="button">BAB V</a>
+                <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1yORD0PP6axrGlge87tJFqsAJ9SI88x9T1qKnY3GvupM/edit?tab=t.0 ')" role="button">Laporan</a>
               </div>
             </div>
           </div>

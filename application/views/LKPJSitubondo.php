@@ -14,16 +14,17 @@
     <style>
       :root {
             --primary-blue: #1a73e8;
-            --btn-bg: rgba(255, 255, 255, 0.9);
+            --btn-bg: rgba(255, 255, 255, 0.95);
             --btn-text: #333333;
-            --glass-bg: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.25);
             --wa-color: #25d366;
         }
       
       * {
         font-family: 'Inter', sans-serif;
         box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent; /* Hilangkan highlight biru default pada tap */
       }
       
       body {
@@ -31,7 +32,6 @@
         margin: 0;
         padding: 0;
         color: white;
-        position: relative;
         background-color: #0f172a; 
         overflow-x: hidden;
       }
@@ -53,185 +53,113 @@
           content: "";
           position: fixed;
           top: 0; left: 0; width: 100%; height: 100%;
-          background: linear-gradient(
-              45deg, 
-              rgba(10, 25, 47, 0.85), 
-              rgba(28, 70, 145, 0.6), 
-              rgba(60, 20, 80, 0.5),
-              rgba(10, 25, 47, 0.85)
-          );
-          background-size: 400% 400%;
-          animation: gradientBG 15s ease infinite;
+          background: linear-gradient(45deg, rgba(10, 25, 47, 0.85), rgba(28, 70, 145, 0.65));
           z-index: -1;
           backdrop-filter: blur(2px);
       }
-
-      @keyframes gradientBG {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-      }
       
-      /* Container */
+      /* Container - Responsif Max Width */
       .app-container {
         max-width: 480px;
-        margin: 20px auto;
-        padding: 40px 25px;
-        min-height: calc(100vh - 40px);
+        width: 100%;
+        margin: 0 auto; /* Margin 0 agar full di mobile */
+        padding: 40px 20px;
+        min-height: 100vh;
         display: flex;
         flex-direction: column;
         position: relative;
         z-index: 1;
         background: var(--glass-bg);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-radius: 24px;
-        border: 1px solid var(--glass-border);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.2), 
-                    inset 0 0 20px rgba(255,255,255,0.05);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-left: 1px solid var(--glass-border);
+        border-right: 1px solid var(--glass-border);
       }
       
       /* Header */
       .header-section {
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 25px;
         position: relative;
       }
       
-      .logo-wrapper {
-        position: relative;
-        display: inline-block;
-        margin-bottom: 20px;
-      }
-
       .profile-image {
-        width: 130px;
-        height: 130px;
+        width: 120px;
+        height: 120px;
         border-radius: 50%;
-        border: 4px solid rgba(255, 255, 255, 0.8);
+        border: 4px solid rgba(255, 255, 255, 0.9);
         object-fit: contain;
         background-color: white;
         padding: 5px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         animation: floatIcon 6s ease-in-out infinite;
       }
 
       @keyframes floatIcon {
         0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-      }
-
-      .logo-glow {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 160px;
-        height: 160px;
-        background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
-        border-radius: 50%;
-        z-index: -1;
-        filter: blur(10px);
+        50% { transform: translateY(-8px); }
       }
       
       .site-title {
-        font-size: 26px;
+        font-size: 24px;
         font-weight: 800;
-        margin: 0 0 8px 0;
+        margin: 15px 0 5px 0;
         text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         letter-spacing: 0.5px;
-        background: linear-gradient(to right, #ffffff, #a0c4ff);
+        background: linear-gradient(to right, #ffffff, #dbeafe);
+        background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
       
       .site-desc {
-        font-size: 15px;
-        opacity: 0.9;
+        font-size: 14px;
+        opacity: 0.95;
         margin: 0;
         font-weight: 400;
-        color: #e0e0e0;
-        letter-spacing: 0.3px;
+        color: #f1f5f9;
+        line-height: 1.5;
       }
 
-      /* Countdown */
+      /* Countdown Compact */
       .countdown-wrapper {
         background: rgba(255, 255, 255, 0.15);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 18px;
-        padding: 18px;
-        margin: 20px 0 30px 0;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        padding: 15px;
+        margin: 20px 0;
         display: flex;
         justify-content: center;
-        gap: 15px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        gap: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       }
 
-      .countdown-item {
-        text-align: center;
-        min-width: 55px;
-      }
-
-      .countdown-number {
-        display: block;
-        font-size: 24px;
-        font-weight: 800;
-        line-height: 1;
-        color: #fff;
-        text-shadow: 0 2px 5px rgba(0,0,0,0.3);
-      }
-
-      .countdown-label {
-        font-size: 11px;
-        text-transform: uppercase;
-        opacity: 0.8;
-        margin-top: 6px;
-        display: block;
-        letter-spacing: 1px;
-        font-weight: 600;
-      }
+      .countdown-item { text-align: center; flex: 1; }
+      .countdown-number { display: block; font-size: 22px; font-weight: 800; line-height: 1; }
+      .countdown-label { font-size: 10px; opacity: 0.9; margin-top: 4px; display: block; letter-spacing: 0.5px; }
 
       /* Search Box */
-      .search-container {
-        position: relative;
-        margin-bottom: 25px;
-      }
+      .search-container { position: relative; margin-bottom: 20px; }
       
       .search-input {
         width: 100%;
-        padding: 16px 20px 16px 50px;
-        border-radius: 50px;
-        border: 2px solid transparent;
-        background: rgba(255, 255, 255, 0.9);
+        padding: 14px 20px 14px 45px;
+        border-radius: 30px;
+        border: none;
+        background: rgba(255, 255, 255, 0.95);
         outline: none;
-        font-size: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        transition: all 0.3s;
+        font-size: 14px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         color: #333;
       }
 
-      .search-input:focus {
-        background: white;
-        border-color: var(--primary-blue);
-        box-shadow: 0 8px 25px rgba(26, 115, 232, 0.2);
-      }
-
       .search-icon {
-        position: absolute;
-        left: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--primary-blue);
-        font-size: 18px;
-        z-index: 2;
+        position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
+        color: var(--primary-blue); font-size: 16px; z-index: 2;
       }
 
       /* Button List */
-      .link-list {
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-      }
+      .link-list { display: flex; flex-direction: column; gap: 12px; }
       
       .bio-btn {
         display: flex;
@@ -239,149 +167,96 @@
         width: 100%;
         background-color: var(--btn-bg);
         color: var(--btn-text);
-        padding: 18px 22px;
-        border-radius: 50px;
+        padding: 16px 20px;
+        border-radius: 16px; /* Lebih modern */
         text-decoration: none !important;
         font-weight: 600;
-        font-size: 14px; /* Sedikit diperkecil agar nama dinas panjang muat */
+        font-size: 14px;
         line-height: 1.4;
-        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         position: relative;
         border: none;
         cursor: pointer;
+        transition: transform 0.1s, background-color 0.2s;
       }
       
-      .bio-btn:hover {
-        transform: translateY(-3px) scale(1.01);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.15), 0 0 15px rgba(255, 255, 255, 0.3);
-        background-color: white;
+      /* Active state untuk responsivitas sentuhan */
+      .bio-btn:active {
+        transform: scale(0.98);
+        background-color: #e2e8f0;
       }
       
       .bio-btn i {
-        font-size: 20px;
-        width: 38px;
+        font-size: 18px;
+        width: 30px;
         text-align: center;
-        margin-right: 8px;
+        margin-right: 10px;
         color: var(--primary-blue);
-        transition: 0.3s;
-        flex-shrink: 0; /* Agar icon tidak mengecil/gepeng */
+        flex-shrink: 0;
       }
       
-      .bio-btn span {
-        flex: 1;
-        text-align: left;
-        /* Hapus white-space: nowrap agar teks panjang bisa turun ke bawah (multiline) */
-        /* white-space: nowrap; */ 
-      }
+      .bio-btn span { flex: 1; text-align: left; }
       
       .bio-btn::after {
         content: '\f054'; 
         font-family: 'Font Awesome 6 Free';
         font-weight: 900;
-        font-size: 14px;
-        opacity: 0.4;
-        transition: 0.3s;
-        color: var(--primary-blue);
-        margin-left: 10px;
-      }
-
-      .bio-btn:hover::after {
-        opacity: 1;
-        transform: translateX(5px);
+        font-size: 12px;
+        opacity: 0.3;
+        color: #64748b;
+        margin-left: 8px;
       }
 
       /* Group Header */
       .group-header {
-        font-size: 12px;
-        font-weight: 700;
-        color: #a0c4ff;
+        font-size: 11px;
+        font-weight: 800;
+        color: #ffffff;
+        background: rgba(255,255,255,0.2);
+        padding: 6px 12px;
+        border-radius: 6px;
         margin-top: 15px;
         margin-bottom: 5px;
         text-transform: uppercase;
-        letter-spacing: 1px;
-        padding-left: 10px;
+        letter-spacing: 0.5px;
+        display: inline-block;
+        align-self: flex-start;
       }
 
       /* Floating WA */
       .float-wa {
-          position: fixed;
-          width: 60px;
-          height: 60px;
-          bottom: 30px;
-          right: 30px;
-          background-color: var(--wa-color);
-          color: #FFF;
-          border-radius: 50px;
-          text-align: center;
-          font-size: 32px;
-          box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-          z-index: 1000;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          text-decoration: none !important;
-          transition: all 0.3s ease;
-          animation: pulse-wa 2s infinite;
+          position: fixed; width: 55px; height: 55px; bottom: 25px; right: 25px;
+          background-color: var(--wa-color); color: #FFF; border-radius: 50%;
+          text-align: center; font-size: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+          z-index: 1000; display: flex; align-items: center; justify-content: center;
+          text-decoration: none !important; transition: transform 0.2s;
       }
-
-      .float-wa:hover {
-          background-color: #128c7e;
-          transform: scale(1.1);
-          color: white;
-      }
+      .float-wa:active { transform: scale(0.9); }
 
       .wa-tooltip {
-          position: absolute;
-          right: 70px;
-          background: rgba(255, 255, 255, 0.9);
-          color: #333;
-          padding: 5px 12px;
-          border-radius: 8px;
-          font-size: 12px;
-          font-weight: 600;
-          white-space: nowrap;
-          box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-          opacity: 0;
-          transition: opacity 0.3s;
-          pointer-events: none;
+          position: absolute; right: 65px; background: white; color: #333;
+          padding: 5px 10px; border-radius: 6px; font-size: 12px; font-weight: 600;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.2); opacity: 0; transition: opacity 0.3s; pointer-events: none;
       }
-
-      .float-wa:hover .wa-tooltip {
-          opacity: 1;
-      }
-
-      @keyframes pulse-wa {
-          0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-          70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
-          100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-      }
+      .float-wa:hover .wa-tooltip { opacity: 1; }
 
       .no-result {
-        text-align: center;
-        padding: 30px;
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: 20px;
-        display: none;
-        color: white;
-        border: 1px dashed rgba(255,255,255,0.3);
-      }
-      
-      .no-result i {
-        font-size: 40px;
-        margin-bottom: 15px;
-        opacity: 0.8;
-        color: #a0c4ff;
+        text-align: center; padding: 20px; background: rgba(0,0,0,0.3);
+        border-radius: 12px; display: none; color: white; margin-top: 10px;
       }
 
       .footer {
-        text-align: center;
-        margin-top: auto;
-        padding-top: 50px;
-        font-size: 13px;
-        opacity: 0.8;
-        font-weight: 500;
-        letter-spacing: 1px;
+        text-align: center; margin-top: 40px; padding-bottom: 20px;
+        font-size: 12px; opacity: 0.8; font-weight: 500;
+      }
+
+      /* MEDIA QUERIES untuk Layar Kecil (HP) */
+      @media (max-width: 400px) {
+        .app-container { padding: 30px 15px; }
+        .site-title { font-size: 22px; }
+        .bio-btn { padding: 14px 16px; font-size: 13px; }
+        .countdown-number { font-size: 18px; }
+        .search-input { font-size: 13px; }
       }
     </style>
   </head>
@@ -391,42 +266,29 @@
       
       <div class="header-section">
         <div class="logo-wrapper">
-            <div class="logo-glow"></div>
             <img class="profile-image" src="https://situbondo.info/wp-content/uploads/2024/04/logo-kabupaten-situbondo-png-3-2.png" alt="Logo Situbondo">
         </div>
         <h1 class="site-title">LKPJ BUPATI 2025</h1>
         <p class="site-desc">Laporan Keterangan Pertanggungjawaban Bupati Situbondo Tahun 2025</p>
-        <p class="site-desc" style="font-size: 12px; color: #fbff00; margin-top: 5px;">*Dimohon untuk mengisi data sesuai masing masing OPD</p>
+        <p class="site-desc" style="font-size: 11px; color: #fbff00; margin-top: 5px;">*Dimohon untuk mengisi data sesuai masing masing OPD</p>
       </div>
 
       <div class="countdown-wrapper" id="countdown">
-        <div class="countdown-item">
-          <span class="countdown-number" id="days">00</span>
-          <span class="countdown-label">HARI</span>
-        </div>
-        <div class="countdown-item">
-          <span class="countdown-number" id="hours">00</span>
-          <span class="countdown-label">JAM</span>
-        </div>
-        <div class="countdown-item">
-          <span class="countdown-number" id="minutes">00</span>
-          <span class="countdown-label">MENIT</span>
-        </div>
-        <div class="countdown-item">
-          <span class="countdown-number" id="seconds">00</span>
-          <span class="countdown-label">DETIK</span>
-        </div>
+        <div class="countdown-item"><span class="countdown-number" id="days">00</span><span class="countdown-label">HARI</span></div>
+        <div class="countdown-item"><span class="countdown-number" id="hours">00</span><span class="countdown-label">JAM</span></div>
+        <div class="countdown-item"><span class="countdown-number" id="minutes">00</span><span class="countdown-label">MENIT</span></div>
+        <div class="countdown-item"><span class="countdown-number" id="seconds">00</span><span class="countdown-label">DETIK</span></div>
       </div>
 
       <div class="search-container">
         <i class="fas fa-search search-icon"></i>
-        <input type="text" class="search-input" id="searchInput" onkeyup="filterFunction()" placeholder="Cari Dinas, Bagian, atau Kecamatan...">
+        <input type="text" class="search-input" id="searchInput" onkeyup="filterFunction()" placeholder="Cari Dinas / Kecamatan...">
       </div>
 
       <div class="link-list" id="linkList">
         
         <a class="bio-btn" style="background: linear-gradient(to right, #ffffff, #e6f0ff); border: 1px solid #1a73e8;" onclick="konfirmasiBuka('Panduan Pengisian', 'https://docs.google.com/document/d/1qxnO8zH-h4S4v8UUTe6KCu1P2SmOd7qh/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')">
-            <i class="fas fa-book-open"></i><span><b>Panduan Pengisian Link</b></span>
+            <i class="fas fa-book-open" style="color: #1a73e8;"></i><span><b>Panduan Pengisian Link</b></span>
         </a>
 
         <div class="group-header">Sekretariat Daerah</div>
@@ -507,27 +369,20 @@
         <i class="fab fa-whatsapp my-float"></i>
         <div class="wa-tooltip">Butuh Bantuan?</div>
     </a>
-
     <div class="footer">
       <p>SITUBONDO NAIK KELAS  <br> &copy; 2025 Tim Penyusun LKPJ</p>
     </div>
-
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script>
-      // 1. Fungsi Countdown
       var countDownDate = new Date("Dec 31, 2025 23:59:59").getTime();
-
       var x = setInterval(function() {
         var now = new Date().getTime();
         var distance = countDownDate - now;
-
         var days = Math.floor(distance / (1000 * 60 * 60 * 24));
         var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
         document.getElementById("days").innerHTML = String(days).padStart(2, '0');
         document.getElementById("hours").innerHTML = String(hours).padStart(2, '0');
         document.getElementById("minutes").innerHTML = String(minutes).padStart(2, '0');
@@ -609,18 +464,8 @@
           }
         }).then((result) => {
           if (result.isConfirmed) {
-            Swal.fire({
-              title: 'Sedang Mengalihkan...',
-              html: 'Mohon tunggu sebentar.',
-              timer: 800,
-              timerProgressBar: true,
-              didOpen: () => {
-                Swal.showLoading()
-              },
-              willClose: () => {
-                window.open(url, '_blank'); 
-              }
-            })
+            // LANGSUNG BUKA LINK TANPA DELAY
+            window.open(url, '_blank'); 
           }
         })
       }
