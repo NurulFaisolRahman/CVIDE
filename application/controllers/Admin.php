@@ -111,31 +111,48 @@ class Admin extends CI_Controller {
 		}
 	}
 
-  public function PendapatanKegiatan(){
-    $Data['Pendapatan'] = $this->db->get('pendapatan')->result_array();
-    $this->load->view('Admin/Header',$Data);
-		$this->load->view('Admin/PendapatanKegiatan',$Data);
-  }
+public function PendapatanKegiatan(){
+    // Ambil tahun unik dari kolom Mulai
+    $queryTahun = $this->db->query("SELECT DISTINCT YEAR(Mulai) AS Tahun FROM pendapatan WHERE Mulai IS NOT NULL ORDER BY Tahun DESC");
+    $Data['TahunPendapatan'] = $queryTahun->result_array();
+    
+    // Ambil data pendapatan dengan filter tahun jika ada, dan urutkan dari paling baru (berdasarkan InputAt DESC)
+    $tahunFilter = $this->input->get('tahun');
+    $this->db->from('pendapatan');
+    if (!empty($tahunFilter) && is_numeric($tahunFilter)) {
+        $this->db->where('YEAR(Mulai)', $tahunFilter);
+    }
+    $this->db->order_by('InputAt', 'DESC');  // Urut dari paling baru diinput
+    // Fallback: Jika kolom InputAt belum ada, ganti dengan 'Id DESC'
+    // $this->db->order_by('Id', 'DESC');
+    $Data['Pendapatan'] = $this->db->get()->result_array();
+    
+    $this->load->view('Admin/Header', $Data);
+    $this->load->view('Admin/PendapatanKegiatan', $Data);
+}
 
-  public function InputPendapatanKegiatan(){
+// Perbaikan juga di Input (set InputAt saat insert)
+public function InputPendapatanKegiatan(){
+    $_POST['InputAt'] = date("Y-m-d H:i:s");  // Set waktu input
     $this->db->insert('pendapatan', $_POST);
     if ($this->db->affected_rows()){
       echo '1';
     } else {
       echo 'Gagal Input Data Pendapatan!';
     }
-  }
+}
 
-  public function EditPendapatanKegiatan(){
+// Sudah ada UpdateAt di Edit, tapi tambahkan jika perlu
+public function EditPendapatanKegiatan(){
     $_POST['UpdateAt'] = date("Y-m-d H:i:s");
-    $this->db->where('Id',$_POST['Id']);
+    $this->db->where('Id', $_POST['Id']);
     $this->db->update('pendapatan', $_POST);
-		if ($this->db->affected_rows()){
-			echo '1';
-		} else {
-      echo 'Gagal Update Data Pendapatan!';
+    if ($this->db->affected_rows()){
+        echo '1';
+    } else {
+        echo 'Gagal Update Data Pendapatan!';
     }
-  }
+}
 
   public function ExcelKas($From,$To){
     $Data['NamaFile'] = "Kas ".$From." Hingga ".$To;
@@ -166,11 +183,22 @@ class Admin extends CI_Controller {
 		$this->load->view('Admin/JurnalTotal',$Data);
   }
 
-  public function PendapatanKas(){
-    $Data['Kas'] = $this->db->query("SELECT * FROM `kas` WHERE DeleteAt IS NULL AND Jenis = 'IN' ORDER BY Tanggal DESC,InputAt DESC")->result_array();
-    $this->load->view('Admin/Header',$Data);
-		$this->load->view('Admin/PendapatanKas',$Data);
-  }
+ public function PendapatanKas() {
+    // Ambil tahun unik dari kolom Tanggal
+    $queryTahun = $this->db->query("SELECT DISTINCT YEAR(Tanggal) AS Tahun FROM `kas` WHERE DeleteAt IS NULL AND Jenis = 'IN' AND Tanggal IS NOT NULL ORDER BY Tahun DESC");
+    $Data['TahunKas'] = $queryTahun->result_array();
+    
+    // Ambil data kas, dengan filter tahun jika ada
+    $tahunFilter = $this->input->get('tahun');
+    $Data['Kas'] = $this->db->query("SELECT * FROM `kas` WHERE DeleteAt IS NULL AND Jenis = 'IN' ORDER BY Tanggal DESC, InputAt DESC")->result_array(); // Default semua
+    if (!empty($tahunFilter) && is_numeric($tahunFilter)) {
+        $this->db->where('YEAR(Tanggal)', $tahunFilter);
+        $Data['Kas'] = $this->db->get('kas')->result_array();
+    }
+    
+    $this->load->view('Admin/Header', $Data);
+    $this->load->view('Admin/PendapatanKas', $Data);
+}
 
   public function InputPendapatanKas(){
     $_POST['Jenis'] = 'IN';

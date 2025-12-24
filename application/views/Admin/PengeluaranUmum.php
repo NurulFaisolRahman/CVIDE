@@ -53,9 +53,9 @@
 
 <!-- Input Modal -->
 <div class="modal fade" id="ModalInput">
-    <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content" style="border: 2px solid #2196F3;">
-            <div class="modal-header" style="background: linear-gradient(135deg, #2196F3, #0D47A1); color: white;">
+            <div class="modal-header" style="background: linear-gradient(500deg, #2196F3, #0D47A1); color: white;">
                 <h5 class="modal-title"><i class="fa fa-plus mr-2"></i>Input Pengeluaran Baru</h5>
                 <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
             </div>
