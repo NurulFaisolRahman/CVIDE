@@ -139,8 +139,16 @@ class Admin extends CI_Controller {
 
   public function ExcelKas($From,$To){
     $Data['NamaFile'] = "Kas ".$From." Hingga ".$To;
+    $Data['SumberKegiatan'] = array('','Swakelola Tipe 1','Swakelola Tipe 2','Narasumber','Rekanan','CV IDE PL','CV IDE Tender/Seleksi');
+    $Data['JenisPengeluaran'] = array('','Honor','Perjalanan Dinas','Pajak','Survei','Operasional Kantor'); 
+    $Data['SubPengeluaran'] = array(array(''),
+                                                        array('','PIC Kegiatan','TA Kegiatan','General Manager','Lainnya'),
+                                                        array('','BBM','Tol','Penginapan','Konsumsi','Honor Peserta rapat/FGD','Honor Perjadin TA Kegiatan','Honor Perjadin PIC Kegiatan','Lainnya'),
+                                                        array('','Pajak','Lainnya'),
+                                                        array('','Honor Surveyor','Operasional Survei','Penginapan','Penginapan','Sewa Kendaraan','Lainnya'),
+                                                        array('','Cetak Laporan Kegiatan','Pembelian ATK','Jasa Pengiriman Dokumen Kegiatan','Lainnya'));  
     $Umum = $this->db->query("SELECT * FROM `kas` WHERE Tanggal >= '".$From."' and Tanggal <= '".$To."' AND DeleteAt IS NULL ORDER BY Tanggal ASC,InputAt ASC")->result_array();
-    $Biaya = $this->db->query("SELECT * FROM `pengeluaran` WHERE Tanggal >= '".$From."' and Tanggal <= '".$To."' AND DeleteAt IS NULL ORDER BY Tanggal ASC,InputAt DESC")->result_array();
+    $Biaya = $this->db->query("SELECT r.*,t.NamaKegiatan FROM `pengeluaran` as r,`pendapatan` as t WHERE r.Tanggal >= '".$From."' and r.Tanggal <= '".$To."' AND r.DeleteAt IS NULL AND r.IdKegiatan = t.Id ORDER BY r.Tanggal ASC,r.InputAt DESC")->result_array();
     $Data['Kas'] = array_merge($Umum,$Biaya);
     array_multisort(array_column($Data['Kas'], 'Tanggal'), SORT_ASC, $Data['Kas']);
 		$this->load->view('ExcelKas',$Data);

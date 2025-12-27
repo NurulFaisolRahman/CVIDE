@@ -875,11 +875,14 @@ td
   <table width="938,93" border="0" cellpadding="0" cellspacing="0" style='width:704.20pt;border-collapse:collapse;table-layout:fixed;'>
    <col width="26" style='mso-width-source:userset;mso-width-alt:950;'/>
    <col width="40" style='mso-width-source:userset;mso-width-alt:1462;'/>
-   <col width="285" style='mso-width-source:userset;mso-width-alt:10422;'/>
-   <col width="63,93" style='mso-width-source:userset;mso-width-alt:2338;'/>
+   <col width="285" style='mso-width-source:userset;mso-width-alt:8000;'/>
+   <col width="63,93" style='mso-width-source:userset;mso-width-alt:8000;'/>
    <col width="110" style='mso-width-source:userset;mso-width-alt:4022;'/>
-   <col width="145" span="2" style='mso-width-source:userset;mso-width-alt:5302;'/>
-   <col width="124" style='mso-width-source:userset;mso-width-alt:4534;'/>
+   <col width="145" span="2" style='mso-width-source:userset;mso-width-alt:3000;'/>
+   <col width="124" style='mso-width-source:userset;mso-width-alt:4000;'/>
+	 <col width="124" style='mso-width-source:userset;mso-width-alt:4000;'/>
+	 <col width="124" style='mso-width-source:userset;mso-width-alt:4000;'/>
+	 <col width="124" style='mso-width-source:userset;mso-width-alt:4000;'/>
    <tr height="20" style='height:15.00pt;'>
     <td height="20" width="26" style='height:15.00pt;width:19.50pt;'></td>
     <td width="40" style='width:30.00pt;'></td>
@@ -893,20 +896,26 @@ td
    <tr height="24" style='height:18.00pt;mso-height-source:userset;mso-height-alt:360;'>
     <td height="24" style='height:18.00pt;'></td>
     <td class="xl65" x:str>No</td>
-    <td class="xl66" x:str>Description</td>
-    <td class="xl65" x:str>Quantity</td>
-    <td class="xl65" x:str>Price</td>
+		<td class="xl66" x:str>Kegiatan</td>
+    <td class="xl66" x:str>Deskripsi</td>
+		<td class="xl66" x:str>Kategori</td>
+		<td class="xl66" x:str>Sub Kategori</td>
+    <td class="xl65" x:str>Kuantitas</td>
+    <td class="xl65" x:str>Harga</td>
     <td class="xl65" x:str>Debit</td>
     <td class="xl65" x:str>Kredit</td>
-    <td class="xl65" x:str>Date</td>
+    <td class="xl65" x:str>Tanggal</td>
    </tr>
 	 <?php $Amount = 0; $No= 1; foreach ($Kas as $key) { $Date = explode("-",$key['Tanggal'])?> 
    <tr height="24" style='height:18.00pt;mso-height-source:userset;mso-height-alt:360;'>
     <td height="24" style='height:18.00pt;'></td>
     <td class="xl67" x:num><?=$No++?></td>
+		<td class="xl68" x:str><?=isset($key['IdKegiatan']) ? $key['NamaKegiatan'] : ''; ?></td>
     <td class="xl68" x:str><?=isset($key['Description']) ? $key['Description'] : $key['Deskripsi']; ?></td>
-    <td class="xl67" x:num><?=isset($key['Quantity']) ? $key['Quantity'] : '1'; ?></td>
-    <td class="xl69" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><?=isset($key['Price']) ? "Rp ".number_format($key['Price'],0,',','.') : "Rp ".number_format($key['NominalPengeluaran'],0,',','.'); ?><span style='mso-spacerun:yes;'>&nbsp;</span></td>
+		<td class="xl68" x:str><?=isset($key['Category']) ? $key['Category'] : $JenisPengeluaran[$key['JenisPengeluaran']]; ?></td>
+		<td class="xl68" x:str><?=isset($key['Category']) ? '' : $SubPengeluaran[$key['JenisPengeluaran']][$key['SubPengeluaran']]; ?></td>
+		<td class="xl67" x:num><?=isset($key['Quantity']) ? $key['Quantity'] == "" ? '1' : $key['Quantity'] : '1'; ?></td>
+    <td class="xl69" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><?=isset($key['Price']) ? $key['Price'] == "" ? "Rp ".number_format($key['Amount'],0,',','.') : "Rp ".number_format($key['Price'],0,',','.') : "Rp ".number_format($key['NominalPengeluaran'],0,',','.'); ?><span style='mso-spacerun:yes;'>&nbsp;</span></td>
     <td class="xl69" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><?=isset($key['Jenis']) ? $key['Jenis'] == 'IN' ? "Rp ".number_format($key['Amount'],0,',','.') : '' : ''; ?><span style='mso-spacerun:yes;'>&nbsp;</span></td>
     <td class="xl69" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><?=isset($key['Jenis']) ? $key['Jenis'] == 'OUT' ? "Rp ".number_format($key['Amount'],0,',','.') : '' : "Rp ".number_format($key['NominalPengeluaran'],0,',','.'); ?><span style='mso-spacerun:yes;'>&nbsp;</span></td>
     <td class="xl67" x:str><?=$Date[2].'-'.$Date[1].'-'.$Date[0]?></td>
@@ -915,11 +924,11 @@ td
 	 <?php if (count($Kas) > 0) { ?>
    <tr height="26,67" style='height:20.00pt;mso-height-source:userset;mso-height-alt:400;'>
     <td height="26,67" style='height:20.00pt;'></td>
-    <td class="xl70" colspan="3" style='mso-ignore:colspan;'></td>
+    <td class="xl70" colspan="6" style='mso-ignore:colspan;'></td>
     <td class="xl71" x:str>Total</td>
-    <td class="xl72" x:fmla="=SUM(F3:F<?=2+count($Kas)?>)" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='mso-spacerun:yes;'>&nbsp;</span></td>
-    <td class="xl72" x:fmla="=SUM(G3:G<?=2+count($Kas)?>)" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='mso-spacerun:yes;'>&nbsp;</span></td>
-    <td class="xl73" x:fmla="=F<?=3+count($Kas)?>-G<?=3+count($Kas)?>" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='mso-spacerun:yes;'>&nbsp;</span></td>
+    <td class="xl72" x:fmla="=SUM(I3:I<?=2+count($Kas)?>)" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='mso-spacerun:yes;'>&nbsp;</span></td>
+    <td class="xl72" x:fmla="=SUM(J3:J<?=2+count($Kas)?>)" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='mso-spacerun:yes;'>&nbsp;</span></td>
+    <td class="xl73" x:fmla="=I<?=3+count($Kas)?>-J<?=3+count($Kas)?>" x:num=""><span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='mso-spacerun:yes;'>&nbsp;</span></td>
    </tr>
 	 <?php } ?>
    <tr height="20" style='height:15.00pt;'>
