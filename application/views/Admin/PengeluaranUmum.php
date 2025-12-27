@@ -5,6 +5,18 @@
             <i class="fa fa-plus mr-1"></i><b> Input Pengeluaran</b>
         </button>
     </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <select class="form-control form-control-sm" id="FilterTahun" onchange="filterByTahun()" style="border: 1px solid #bbdefb;">
+                <option value="">Semua Tahun</option>
+                <?php foreach ($TahunKas as $tahun) { ?>
+                    <option value="<?=$tahun['Tahun']?>" <?= ($this->input->get('tahun') == $tahun['Tahun']) ? 'selected' : '' ?>>
+                        <?=$tahun['Tahun']?>
+                    </option>
+                <?php } ?>
+            </select>
+        </div>
+    </div>
 </div>
 <br>
 <div class="row">
@@ -285,8 +297,20 @@
                     }
                 })
             }
-        })
+        })        
     })
+
+    // Fungsi untuk filter berdasarkan tahun
+    function filterByTahun() {
+        var selectedTahun = $('#FilterTahun').val();
+        var currentUrl = new URL(window.location);
+        if (selectedTahun) {
+            currentUrl.searchParams.set('tahun', selectedTahun);
+        } else {
+            currentUrl.searchParams.delete('tahun');
+        }
+        window.location = currentUrl.toString();
+    }
 </script>
 </body>
 </html>

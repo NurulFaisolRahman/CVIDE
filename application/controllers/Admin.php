@@ -57,7 +57,15 @@ class Admin extends CI_Controller {
   }
 
   public function PengeluaranKegiatan(){
-    $Data['Pendapatan'] = $this->db->get('pendapatan')->result_array();
+    // Ambil tahun unik dari kolom Mulai
+    $queryTahun = $this->db->query("SELECT DISTINCT YEAR(Mulai) AS Tahun FROM pendapatan WHERE Mulai IS NOT NULL ORDER BY Tahun DESC");
+    $Data['TahunPendapatan'] = $queryTahun->result_array();
+    // Ambil data pendapatan dengan filter tahun jika ada, dan urutkan dari paling baru (berdasarkan InputAt DESC)
+    $tahunFilter = $this->input->get('tahun');
+    $Data['Pendapatan'] = $this->db->query("SELECT * FROM `pendapatan` ORDER BY Mulai DESC,InputAt DESC")->result_array();
+    if (!empty($tahunFilter) && is_numeric($tahunFilter)) {
+        $Data['Pendapatan'] = $this->db->query("SELECT * FROM `pendapatan` WHERE YEAR(Mulai) = '".$tahunFilter."' ORDER BY Mulai DESC,InputAt DESC")->result_array();
+    }
     $this->load->view('Admin/Header',$Data);
 		$this->load->view('Admin/PengeluaranKegiatan',$Data);
   }
@@ -115,18 +123,12 @@ public function PendapatanKegiatan(){
     // Ambil tahun unik dari kolom Mulai
     $queryTahun = $this->db->query("SELECT DISTINCT YEAR(Mulai) AS Tahun FROM pendapatan WHERE Mulai IS NOT NULL ORDER BY Tahun DESC");
     $Data['TahunPendapatan'] = $queryTahun->result_array();
-    
     // Ambil data pendapatan dengan filter tahun jika ada, dan urutkan dari paling baru (berdasarkan InputAt DESC)
     $tahunFilter = $this->input->get('tahun');
-    $this->db->from('pendapatan');
+    $Data['Pendapatan'] = $this->db->query("SELECT * FROM `pendapatan` ORDER BY Mulai DESC,InputAt DESC")->result_array();
     if (!empty($tahunFilter) && is_numeric($tahunFilter)) {
-        $this->db->where('YEAR(Mulai)', $tahunFilter);
+        $Data['Pendapatan'] = $this->db->query("SELECT * FROM `pendapatan` WHERE YEAR(Mulai) = '".$tahunFilter."' ORDER BY Mulai DESC,InputAt DESC")->result_array();
     }
-    $this->db->order_by('InputAt', 'DESC');  // Urut dari paling baru diinput
-    // Fallback: Jika kolom InputAt belum ada, ganti dengan 'Id DESC'
-    // $this->db->order_by('Id', 'DESC');
-    $Data['Pendapatan'] = $this->db->get()->result_array();
-    
     $this->load->view('Admin/Header', $Data);
     $this->load->view('Admin/PendapatanKegiatan', $Data);
 }
@@ -195,15 +197,12 @@ public function EditPendapatanKegiatan(){
     // Ambil tahun unik dari kolom Tanggal
     $queryTahun = $this->db->query("SELECT DISTINCT YEAR(Tanggal) AS Tahun FROM `kas` WHERE DeleteAt IS NULL AND Jenis = 'IN' AND Tanggal IS NOT NULL ORDER BY Tahun DESC");
     $Data['TahunKas'] = $queryTahun->result_array();
-    
     // Ambil data kas, dengan filter tahun jika ada
     $tahunFilter = $this->input->get('tahun');
     $Data['Kas'] = $this->db->query("SELECT * FROM `kas` WHERE DeleteAt IS NULL AND Jenis = 'IN' ORDER BY Tanggal DESC, InputAt DESC")->result_array(); // Default semua
     if (!empty($tahunFilter) && is_numeric($tahunFilter)) {
-        $this->db->where('YEAR(Tanggal)', $tahunFilter);
-        $Data['Kas'] = $this->db->get('kas')->result_array();
+        $Data['Kas'] = $this->db->query("SELECT * FROM `kas` WHERE DeleteAt IS NULL AND Jenis = 'IN' AND YEAR(Tanggal) = '".$tahunFilter."' ORDER BY Tanggal DESC, InputAt DESC")->result_array(); //
     }
-    
     $this->load->view('Admin/Header', $Data);
     $this->load->view('Admin/PendapatanKas', $Data);
 }
@@ -241,7 +240,15 @@ public function EditPendapatanKegiatan(){
 	}
 
   public function PengeluaranUmum(){
-    $Data['Kas'] = $this->db->query("SELECT * FROM `kas` WHERE DeleteAt IS NULL AND Jenis = 'OUT' ORDER BY Tanggal DESC,InputAt DESC")->result_array();
+    // Ambil tahun unik dari kolom Tanggal
+    $queryTahun = $this->db->query("SELECT DISTINCT YEAR(Tanggal) AS Tahun FROM `kas` WHERE DeleteAt IS NULL AND Jenis = 'OUT' AND Tanggal IS NOT NULL ORDER BY Tahun DESC");
+    $Data['TahunKas'] = $queryTahun->result_array();
+    // Ambil data kas, dengan filter tahun jika ada
+    $tahunFilter = $this->input->get('tahun');
+    $Data['Kas'] = $this->db->query("SELECT * FROM `kas` WHERE DeleteAt IS NULL AND Jenis = 'OUT' ORDER BY Tanggal DESC, InputAt DESC")->result_array(); // Default semua
+    if (!empty($tahunFilter) && is_numeric($tahunFilter)) {
+        $Data['Kas'] = $this->db->query("SELECT * FROM `kas` WHERE DeleteAt IS NULL AND Jenis = 'OUT' AND YEAR(Tanggal) = '".$tahunFilter."' ORDER BY Tanggal DESC, InputAt DESC")->result_array(); //
+    }
     $this->load->view('Admin/Header',$Data);
 		$this->load->view('Admin/PengeluaranUmum',$Data);
   }
@@ -279,14 +286,31 @@ public function EditPendapatanKegiatan(){
 	}
 
   public function JurnalUmum(){
-    $Data['Kas'] = $this->db->query("SELECT * FROM `kas` WHERE DeleteAt IS NULL AND Jenis = 'OUT' ORDER BY Tanggal DESC,InputAt DESC")->result_array();
+    // Ambil tahun unik dari kolom Tanggal
+    $queryTahun = $this->db->query("SELECT DISTINCT YEAR(Tanggal) AS Tahun FROM `kas` WHERE DeleteAt IS NULL AND Jenis = 'OUT' AND Tanggal IS NOT NULL ORDER BY Tahun DESC");
+    $Data['TahunKas'] = $queryTahun->result_array();    
+    // Ambil data kas, dengan filter tahun jika ada
+    $tahunFilter = $this->input->get('tahun');
+    $Data['Kas'] = $this->db->query("SELECT * FROM `kas` WHERE DeleteAt IS NULL AND Jenis = 'OUT' ORDER BY Tanggal DESC, InputAt DESC")->result_array(); // Default semua
+    if (!empty($tahunFilter) && is_numeric($tahunFilter)) {
+      $Data['Kas'] = $this->db->query("SELECT * FROM `kas` WHERE DeleteAt IS NULL AND Jenis = 'OUT' AND YEAR(Tanggal) = '".$tahunFilter."' ORDER BY Tanggal DESC, InputAt DESC")->result_array(); //
+    }
     $this->load->view('Admin/Header',$Data);
 		$this->load->view('Admin/JurnalUmum',$Data);
   }
 
   public function JurnalKegiatan(){
+    // Ambil tahun unik dari kolom Mulai
+    $queryTahun = $this->db->query("SELECT DISTINCT YEAR(Mulai) AS Tahun FROM pendapatan WHERE Mulai IS NOT NULL ORDER BY Tahun DESC");
+    $Data['TahunKas'] = $queryTahun->result_array();
+    // Ambil data pendapatan dengan filter tahun jika ada, dan urutkan dari paling baru (berdasarkan InputAt DESC)
+    $tahunFilter = $this->input->get('tahun');
     $Data['Biaya'] = $this->db->query("SELECT * FROM `pengeluaran` WHERE DeleteAt IS NULL ORDER BY Tanggal DESC,InputAt DESC")->result_array();
-    $Data['Kegiatan'] = $this->db->query("SELECT * FROM `pendapatan`")->result_array();
+    $Data['Kegiatan'] = $this->db->query("SELECT * FROM `pendapatan` ORDER BY Mulai DESC,InputAt DESC")->result_array();
+    if (!empty($tahunFilter) && is_numeric($tahunFilter)) {
+        $Data['Biaya'] = $this->db->query("SELECT * FROM `pengeluaran` WHERE DeleteAt IS NULL AND YEAR(Tanggal) = '".$tahunFilter."' ORDER BY Tanggal DESC,InputAt DESC")->result_array();
+        $Data['Kegiatan'] = $this->db->query("SELECT * FROM `pendapatan` WHERE YEAR(Mulai) = '".$tahunFilter."' ORDER BY Mulai DESC,InputAt DESC")->result_array();
+    }
     $this->load->view('Admin/Header',$Data);
 		$this->load->view('Admin/JurnalKegiatan',$Data);
   }

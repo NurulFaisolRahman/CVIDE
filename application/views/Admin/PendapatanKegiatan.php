@@ -7,7 +7,6 @@
     </div>
     <div class="col-md-3">
         <div class="form-group">
-
             <select class="form-control form-control-sm" id="FilterTahun" onchange="filterByTahun()" style="border: 1px solid #bbdefb;">
                 <option value="">Semua Tahun</option>
                 <?php foreach ($TahunPendapatan as $tahun) { ?>
