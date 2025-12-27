@@ -1,9 +1,22 @@
 <br>
-<div class="row">
-    <div class="col-lg-auto">
-        <button type="button" class="btn btn-sm btn-primary mb-2" data-toggle="modal" data-target="#ModalInput" style="background: linear-gradient(135deg, #1e88e5, #0d47a1); border: 1px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+<div class="row ">
+    <div class="col-auto me-2">
+        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#ModalInput" style="background: linear-gradient(135deg, #1e88e5, #0d47a1); border: 1px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
             <i class="fa fa-plus mr-1"></i><b> Input Kegiatan</b>
         </button>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+
+            <select class="form-control form-control-sm" id="FilterTahun" onchange="filterByTahun()" style="border: 1px solid #bbdefb;">
+                <option value="">Semua Tahun</option>
+                <?php foreach ($TahunPendapatan as $tahun) { ?>
+                    <option value="<?=$tahun['Tahun']?>" <?= ($this->input->get('tahun') == $tahun['Tahun']) ? 'selected' : '' ?>>
+                        <?=$tahun['Tahun']?>
+                    </option>
+                <?php } ?>
+            </select>
+        </div>
     </div>
 </div>
 <br>
@@ -193,7 +206,7 @@
 <script src="<?=base_url("assets/datatables-bs4/js/dataTables.bootstrap4.js")?>"></script>
 <script>
     $(document).ready(function(){
-        var BaseURL = '<?=base_url()?>'  
+        var BaseURL = '<?=base_url()?>';  
         $('#TabelPendapatan').DataTable({
             "ordering": true,
             "bInfo": true,
@@ -314,6 +327,18 @@
             }
         })
     })
+
+    // Fungsi untuk filter berdasarkan tahun
+    function filterByTahun() {
+        var selectedTahun = $('#FilterTahun').val();
+        var currentUrl = new URL(window.location);
+        if (selectedTahun) {
+            currentUrl.searchParams.set('tahun', selectedTahun);
+        } else {
+            currentUrl.searchParams.delete('tahun');
+        }
+        window.location = currentUrl.toString();
+    }
 </script>
 </body>
 </html>

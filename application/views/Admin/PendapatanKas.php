@@ -1,9 +1,21 @@
 <br>
-<div class="row">
-    <div class="col-lg-auto">
-        <button type="button" class="btn btn-sm btn-primary mb-2" data-toggle="modal" data-target="#ModalInput" style="background: linear-gradient(135deg, #1e88e5, #0d47a1); border: 1px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+<div class="row ">
+    <div class="col-auto me-2">
+        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#ModalInput" style="background: linear-gradient(135deg, #1e88e5, #0d47a1); border: 1px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
             <i class="fa fa-plus mr-1"></i><b> Input Kas</b>
         </button>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <select class="form-control form-control-sm" id="FilterTahun" onchange="filterByTahun()" style="border: 1px solid #bbdefb;">
+                <option value="">Semua Tahun</option>
+                <?php foreach ($TahunKas as $tahun) { ?>
+                    <option value="<?=$tahun['Tahun']?>" <?= ($this->input->get('tahun') == $tahun['Tahun']) ? 'selected' : '' ?>>
+                        <?=$tahun['Tahun']?>
+                    </option>
+                <?php } ?>
+            </select>
+        </div>
     </div>
 </div>
 <br>
@@ -13,11 +25,11 @@
             <table id="TabelKas" class="table table-sm table-striped table-hover" style="border: 1px solid #e3f2fd;">
                 <thead>
                     <tr style="background: linear-gradient(135deg, #2196F3, #0D47A1); color: white;">
-                        <th scope="col" class="text-center align-middle">No</th>
-                        <th scope="col" class="align-middle">Deskripsi</th>
-                        <th scope="col" class="align-middle">Nominal Kas</th>
-                        <th scope="col" class="align-middle">Tanggal</th>
-                        <th scope="col" class="text-center align-middle">Edit</th>
+                        <th scope="col" style="width: 3%;" class="text-center align-middle">No</th>
+                        <th scope="col" style="width: 25%;" class="align-middle">Deskripsi</th>
+                        <th scope="col" style="width: 10%;" class="align-middle">Nominal Kas</th>
+                        <th scope="col" style="width: 8%;" class="align-middle">Tanggal</th>
+                        <th scope="col" style="width: 4%;" class="text-center align-middle">Edit</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,8 +38,8 @@
                             <th scope="row" class="text-center align-middle"><?=$No++?></th>
                             <td class="align-middle"><?=$key['Description']?></td>
                             <td class="align-middle font-weight-bold" style="color: #1565c0;"><?="Rp ".number_format($key['Amount'],0,',','.')?></td>
-                            <td style="width: 10%;" class="align-middle"><?=$Date[2].'-'.$Date[1].'-'.$Date[0]?></td>
-                            <td style="width: 10%;" class="text-center align-middle">
+                            <td class="align-middle"><?=$Date[2].'-'.$Date[1].'-'.$Date[0]?></td>
+                            <td class="text-center align-middle">
                                 <button Edit="<?=$key['Id']."|".$key['Description']."|".$key['Amount']."|".$key['Tanggal']?>" class="btn btn-sm btn-info Edit" style="background-color: #42a5f5; border-color: #fff;">
                                     <i class="fa fa-edit"></i>
                                 </button>
@@ -145,41 +157,41 @@
 <script src="<?=base_url("assets/datatables-bs4/js/dataTables.bootstrap4.js")?>"></script>
 <script>
     $(document).ready(function(){
-        var BaseURL = '<?=base_url()?>'  
+        var BaseURL = '<?=base_url()?>';  
         $('#TabelKas').DataTable({
-    "ordering": true,
-    "bInfo": true,
-    "lengthMenu": [[7, 30, 50, -1], [7, 30, 50, "All"]],
-    "language": {
-         "paginate": {
-            'previous': '<i class="fa fa-chevron-left"></i>',
-            'next': '<i class="fa fa-chevron-right"></i>'
-        }
-    },
-    "dom": '<"row"<"col-sm-6"l><"col-sm-6"f>>rt<"row"<"col-sm-6"i><"col-sm-6"p>>',
-    "initComplete": function() {
-        // Style search input
-        $('.dataTables_filter input')
-            .addClass('form-control form-control-sm')
-            .css('width', '200px');
-            
-        // Style length menu
-        $('.dataTables_length')
-            .css('margin-bottom', '10px');
-            
-        $('.dataTables_length select')
-            .addClass('form-control form-control-sm')
-            .css('width', '80px');
-            
-        // Style info text
-        $('.dataTables_info')
-            .css('padding-top', '8px');
-            
-        // Style pagination
-        $('.dataTables_paginate')
-            .addClass('float-right');
-    }
-});
+            "ordering": true,
+            "bInfo": true,
+            "lengthMenu": [[7, 30, 50, -1], [7, 30, 50, "All"]],
+            "language": {
+                "paginate": {
+                    'previous': '<i class="fa fa-chevron-left"></i>',
+                    'next': '<i class="fa fa-chevron-right"></i>'
+                }
+            },
+            "dom": '<"row"<"col-sm-6"l><"col-sm-6"f>>rt<"row"<"col-sm-6"i><"col-sm-6"p>>',
+            "initComplete": function() {
+                // Style search input
+                $('.dataTables_filter input')
+                    .addClass('form-control form-control-sm')
+                    .css('width', '200px');
+                    
+                // Style length menu
+                $('.dataTables_length')
+                    .css('margin-bottom', '10px');
+                    
+                $('.dataTables_length select')
+                    .addClass('form-control form-control-sm')
+                    .css('width', '80px');
+                    
+                // Style info text
+                $('.dataTables_info')
+                    .css('padding-top', '8px');
+                    
+                // Style pagination
+                $('.dataTables_paginate')
+                    .addClass('float-right');
+            }
+        });
         
         $("#Input").click(function() {
             if (isNaN($("#Price").val()) || $("#Price").val() == "") {
@@ -189,10 +201,11 @@
                 if (Konfirmasi == true) {
                     $("#Input").attr("disabled", true); 
                     $("#LoadingInput").show();                             
-                    var Data = { Description: $("#Description").val(),
-                                 Amount: $("#Price").val(),
-                                 Tanggal: $("#Date").val()
-                            }
+                    var Data = { 
+                        Description: $("#Description").val(),
+                        Amount: $("#Price").val(),
+                        Tanggal: $("#Date").val()
+                    }
                     $.post(BaseURL+"Admin/InputPendapatanKas", Data).done(function(Respon) {
                         if (Respon == '1') {
                             window.location = BaseURL + "Admin/PendapatanKas"
@@ -224,10 +237,12 @@
                 if (Konfirmasi == true) {
                     $("#Edit").attr("disabled", true); 
                     $("#LoadingEdit").show();                             
-                    var Data = { Id: $("#Id").val(),
-                                Description: $("#EditDescription").val(),
-                                Amount: $("#EditPrice").val(),
-                                Tanggal: $("#EditDate").val() }
+                    var Data = { 
+                        Id: $("#Id").val(),
+                        Description: $("#EditDescription").val(),
+                        Amount: $("#EditPrice").val(),
+                        Tanggal: $("#EditDate").val()
+                    }
                     $.post(BaseURL+"Admin/EditPendapatanKas", Data).done(function(Respon) {
                         if (Respon == '1') {
                             window.location = BaseURL + "Admin/PendapatanKas"
@@ -255,6 +270,18 @@
             }
         })
     })
+
+    // Fungsi untuk filter berdasarkan tahun
+    function filterByTahun() {
+        var selectedTahun = $('#FilterTahun').val();
+        var currentUrl = new URL(window.location);
+        if (selectedTahun) {
+            currentUrl.searchParams.set('tahun', selectedTahun);
+        } else {
+            currentUrl.searchParams.delete('tahun');
+        }
+        window.location = currentUrl.toString();
+    }
 </script>
 </body>
 </html>
