@@ -223,22 +223,107 @@
         align-self: flex-start;
       }
 
-      /* Floating WA */
-      .float-wa {
-          position: fixed; width: 55px; height: 55px; bottom: 25px; right: 25px;
-          background-color: var(--wa-color); color: #FFF; border-radius: 50%;
-          text-align: center; font-size: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-          z-index: 1000; display: flex; align-items: center; justify-content: center;
-          text-decoration: none !important; transition: transform 0.2s;
+      /* Floating WA Single Button */
+      .float-wa-single {
+          position: fixed;
+          width: 60px;
+          height: 60px;
+          bottom: 25px;
+          right: 25px;
+          background: linear-gradient(135deg, #25d366, #128c7e);
+          color: white;
+          border-radius: 50%;
+          text-align: center;
+          font-size: 28px;
+          box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+          z-index: 1000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none !important;
+          cursor: pointer;
+          border: 2px solid white;
+          transition: all 0.3s;
       }
-      .float-wa:active { transform: scale(0.9); }
+      
+      .float-wa-single:hover {
+          transform: scale(1.1);
+          box-shadow: 0 8px 25px rgba(37, 211, 102, 0.6);
+      }
+      
+      .float-wa-single:active {
+          transform: scale(0.95);
+      }
+      
+      .wa-badge {
+          position: absolute;
+          top: -5px;
+          right: -5px;
+          background: #ff4757;
+          color: white;
+          font-size: 10px;
+          font-weight: 800;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 2px solid white;
+      }
 
-      .wa-tooltip {
-          position: absolute; right: 65px; background: white; color: #333;
-          padding: 5px 10px; border-radius: 6px; font-size: 12px; font-weight: 600;
-          box-shadow: 0 2px 5px rgba(0,0,0,0.2); opacity: 0; transition: opacity 0.3s; pointer-events: none;
+      /* WA Admin Option Styling */
+      .wa-option {
+          display: flex;
+          align-items: center;
+          padding: 12px;
+          margin: 8px 0;
+          border-radius: 10px;
+          border: 1px solid #e0e0e0;
+          background: #f8f9fa;
+          cursor: pointer;
+          transition: all 0.3s;
       }
-      .float-wa:hover .wa-tooltip { opacity: 1; }
+      
+      .wa-option:hover {
+          background: #e3f2fd;
+          border-color: var(--primary-blue);
+      }
+      
+      .wa-option i {
+          font-size: 24px;
+          color: #25d366;
+          margin-right: 12px;
+          width: 40px;
+          text-align: center;
+      }
+      
+      .wa-option-info {
+          flex: 1;
+      }
+      
+      .wa-option-name {
+          font-weight: 700;
+          color: #333;
+          margin-bottom: 3px;
+          font-size: 14px;
+      }
+      
+      .wa-option-number {
+          font-size: 11px;
+          color: #666;
+      }
+      
+      .wa-option-tag {
+          display: inline-block;
+          padding: 2px 8px;
+          background: #25d366;
+          color: white;
+          border-radius: 10px;
+          font-size: 9px;
+          font-weight: 700;
+          margin-left: 8px;
+      }
 
       .no-result {
         text-align: center; padding: 20px; background: rgba(0,0,0,0.3);
@@ -257,6 +342,7 @@
         .bio-btn { padding: 14px 16px; font-size: 13px; }
         .countdown-number { font-size: 18px; }
         .search-input { font-size: 13px; }
+        .float-wa-single { width: 55px; height: 55px; font-size: 24px; }
       }
     </style>
   </head>
@@ -292,69 +378,69 @@
         </a>
 
         <div class="group-header">Sekretariat Daerah</div>
-        <a class="bio-btn" onclick="konfirmasiBuka('Setda - Tata Pemerintahan', 'https://docs.google.com/spreadsheets/d/1wQcsbp2GMX8YZ4FsHwg5XKqgK7fam0er/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-handshake"></i><span>1.A. Bagian Tata Pemerintahan dan Kerja Sama</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Setda - Hukum', 'https://docs.google.com/spreadsheets/d/1yynugFAt4StwWHwNcPkMRFPe0S26M0yo/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-scale-balanced"></i><span>1.B. Bagian Hukum</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Setda - Prokopim', 'https://docs.google.com/spreadsheets/d/1XUQaf6sAru_MoOmyqykR69dMdn46ExMB/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-microphone"></i><span>1.C. Bagian Protokol dan Komunikasi Pimpinan</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Setda - Kesra', 'https://docs.google.com/spreadsheets/d/1Q4O6J0u5z61H-pZMeXc5dS8yPM61ziwn/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-users"></i><span>1.D. Bagian Kesejahteraan Masyarakat</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Setda - Perekonomian','https://docs.google.com/spreadsheets/d/1tqPRx_w0z7b6-8wDdrZLkx9nSikEYp1G/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-chart-pie"></i><span>1.E. Bagian Perekonomian, Pembangunan, SDA</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Setda - PBJ', 'https://docs.google.com/spreadsheets/d/1P-lGumFqSsrkp2c-w3MIHuabgv5sWfFX/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-boxes-packing"></i><span>1.F. Bagian Pengadaan Barang dan Jasa</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Setda - Organisasi', 'https://docs.google.com/spreadsheets/d/1k1BBXOVQdCRuwVctehaQjvo1u6pp5rEN/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-sitemap"></i><span>1.G. Bagian Organisasi</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Setda - Umum', 'https://docs.google.com/spreadsheets/d/1dYn00L0NW5MMh6bx-bW22S6O0s9iCZXm/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-building"></i><span>1.H. Bagian Umum</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Setda - Perencanaan','https://docs.google.com/spreadsheets/d/1N6jbN4Tk1NWfusY0V75rXTvTF9-UfxfG/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-file-invoice-dollar"></i><span>1.I. Bagian Perencanaan dan Keuangan</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Setda - Tata Pemerintahan', 'https://docs.google.com/spreadsheets/d/1-BFAZ39UB71AsKSkx0Tt3dq2Pk-BO9Hu/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-handshake"></i><span>1.A. Bagian Tata Pemerintahan dan Kerja Sama</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Setda - Hukum', 'https://docs.google.com/spreadsheets/d/1GBH8vxSFM4FN6xFE4f1yUi9U2iuEDDLH/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-scale-balanced"></i><span>1.B. Bagian Hukum</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Setda - Prokopim', 'https://docs.google.com/spreadsheets/d/1hDZpCaSVT_LVTsPPl-Rd3mWZxO7y1oJS/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-microphone"></i><span>1.C. Bagian Protokol dan Komunikasi Pimpinan</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Setda - Kesra', 'https://docs.google.com/spreadsheets/d/1K_fl0luUQBZ8jANtcXlTRFqopL4xRs_-/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-users"></i><span>1.D. Bagian Kesejahteraan Masyarakat</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Setda - Perekonomian', 'https://docs.google.com/spreadsheets/d/1cJsTFMXQD-HAdPxDN4xi8T3zOph1XXiA/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-chart-pie"></i><span>1.E. Bagian Perekonomian, Pembangunan, SDA</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Setda - PBJ', 'https://docs.google.com/spreadsheets/d/1Z5q0zYCYwBJHd1A46NUx7k3haTPkytpH/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-boxes-packing"></i><span>1.F. Bagian Pengadaan Barang dan Jasa</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Setda - Organisasi', 'https://docs.google.com/spreadsheets/d/1ri7_RLnpXqoL3w_CQ1d4FHlfF9OaJdmc/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-sitemap"></i><span>1.G. Bagian Organisasi</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Setda - Umum', 'https://docs.google.com/spreadsheets/d/1HJg-ae2PEZIGc4vQbQDEHXUiTlN_a6Lt/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-building"></i><span>1.H. Bagian Umum</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Setda - Perencanaan', 'https://docs.google.com/spreadsheets/d/1TUh36HUecUUmjRsLtIWccSZtJhon5Zpr/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-file-invoice-dollar"></i><span>1.I. Bagian Perencanaan dan Keuangan</span></a>
 
         <div class="group-header">Badan & Lembaga</div>
-        <a class="bio-btn" onclick="konfirmasiBuka('Sekretariat DPRD', 'https://docs.google.com/spreadsheets/d/1Ab6DC36roCJy4o55MNylc3-XAm3M6fU1/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-gavel"></i><span>2. Sekretariat DPRD</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Inspektorat Daerah', 'https://docs.google.com/spreadsheets/d/1-AGBH0w15qNdj4hUrghZKLUTz6M_mIRd/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-magnifying-glass"></i><span>3. Inspektorat Daerah</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('BAPPERIDA', 'https://docs.google.com/spreadsheets/d/1u-Nywe33K1fnGdGzJVIIqjVS4lhh1U_P/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-lightbulb"></i><span>4. Badan Perencanaan Pembangunan, Riset & Inovasi</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Bapenda', 'https://docs.google.com/spreadsheets/d/1Lyhw21nCViFJBT6i3sLU_rUSJ2TF3Ilp/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-wallet"></i><span>5. Badan Pendapatan Daerah</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('BKAD', 'https://docs.google.com/spreadsheets/d/10067NUaoMJe37Xewyq3-ja9OUu4WhcT6/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-money-bill-wave"></i><span>6. Badan Keuangan dan Aset Daerah</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('BKPSDM', 'https://docs.google.com/spreadsheets/d/1RoPxcGwJddMcaluSlYWkOnRq9IUthxe3/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-user-tie"></i><span>7. BKPSDM</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('BPBD', 'https://docs.google.com/spreadsheets/d/1P8wm0UdmS_5tEQYStubt41asDWGx05CM/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-triangle-exclamation"></i><span>8. Badan Penanggulangan Bencana Daerah</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Bakesbangpol', 'https://docs.google.com/spreadsheets/d/1klHwzNu8kovqHvslmMxyoMUNkuJ06gWF/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-flag"></i><span>9. Badan Kesatuan Bangsa dan Politik</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Sekretariat DPRD', 'https://docs.google.com/spreadsheets/d/1cLjtMzWSbpqaMf3zfz7shgHnbtf_Hmsm/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-gavel"></i><span>2. Sekretariat DPRD</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Inspektorat Daerah', 'https://docs.google.com/spreadsheets/d/1YPHe5MxsNLOcgjlixXa-PbP0OUtgNqK-/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-magnifying-glass"></i><span>3. Inspektorat Daerah</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('BAPPERIDA', 'https://docs.google.com/spreadsheets/d/1HgWErPCd_XFtnQ94jpJlKOeEy4ZXTZ3X/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-lightbulb"></i><span>4. Badan Perencanaan Pembangunan, Riset & Inovasi</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Bapenda', 'https://docs.google.com/spreadsheets/d/16vJQ8kgc8jULV3O8l7JEj10QSxFRbxWK/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-wallet"></i><span>5. Badan Pendapatan Daerah</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('BKAD', 'https://docs.google.com/spreadsheets/d/1TOjW7F83r2XkhF1Kfm2Xs-PPieVWDt_3/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-money-bill-wave"></i><span>6. Badan Keuangan dan Aset Daerah</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('BKPSDM', 'https://docs.google.com/spreadsheets/d/19V2CHYgEg8DvlihnzW0qEI_WnYm8go59/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-user-tie"></i><span>7. BKPSDM</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('BPBD', 'https://docs.google.com/spreadsheets/d/10Md0oUepKSa--JIeZ5SfeQOZ2Grn91sn/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-triangle-exclamation"></i><span>8. Badan Penanggulangan Bencana Daerah</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Bakesbangpol', 'https://docs.google.com/spreadsheets/d/1hBU-sNavQmf9iPQ_kOUQZ1E4aY-SNZdv/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-flag"></i><span>9. Badan Kesatuan Bangsa dan Politik</span></a>
 
         <div class="group-header">Dinas - Dinas</div>
-        <a class="bio-btn" onclick="konfirmasiBuka('Dinas Pendidikan', 'https://docs.google.com/spreadsheets/d/13GQwzksGbDwxUdxIiqZNRFfJNQZCrnBS/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-graduation-cap"></i><span>10. Dinas Pendidikan dan Kebudayaan</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Dinas Kesehatan', 'https://docs.google.com/spreadsheets/d/17b3ixpr-G52dLFlFoQflrpKNgZVpFWWr/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-heartbeat"></i><span>11. Dinas Kesehatan</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Dinas PUPP', 'https://docs.google.com/spreadsheets/d/10_Eo6QdE0Neu_jYTcTa9JeAcxmXz-muq/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-trowel-bricks"></i><span>12. Dinas PU dan Perumahan Permukiman</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Satpol PP', 'https://docs.google.com/spreadsheets/d/1W6RzvId-dogwNrImvbDJxP0jPAWu1SMH/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-shield-halved"></i><span>13. Satuan Polisi Pamong Praja</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Dinas Sosial', 'https://docs.google.com/spreadsheets/d/1bAH2UN53PSYxULUOcKoP0qaPxYlCoWQG/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-hands-helping"></i><span>14. Dinas Sosial</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Disnaker', 'https://docs.google.com/spreadsheets/d/1FRZfoyv48IoHYDDKmbHe2K_SB7z1kovN/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-briefcase"></i><span>15. Dinas Ketenagakerjaan</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('DP3A', 'https://docs.google.com/spreadsheets/d/1AqvuicQ30cAR29sEyztBaHE7BdMC0gIb/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-children"></i><span>16. Dinas Pemberdayaan Perempuan & Perlindungan Anak</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Dinas Pertanian', 'https://docs.google.com/spreadsheets/d/1UX1UNw16fwqoI6FZnRw6HH5g_KmePNeY/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-wheat"></i><span>17. Dinas Pertanian dan Ketahanan Pangan</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('DLH', 'https://docs.google.com/spreadsheets/d/1ML5xChKIObR4_2FIliFWR26DClCPmE49/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-tree"></i><span>18. Dinas Lingkungan Hidup</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Dukcapil', 'https://docs.google.com/spreadsheets/d/1dxYdvs89erbP6vPuUGLJc1iTLDaMmDRp/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-id-card"></i><span>19. Dinas Kependudukan dan Pencatatan Sipil</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Dinas PMD', 'https://docs.google.com/spreadsheets/d/1jyUPbSCLblxeUilCWFqAp4EJ_KzbAJnh/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-house-user"></i><span>20. Dinas Pemberdayaan Masyarakat dan Desa</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Dishub', 'https://docs.google.com/spreadsheets/d/1QULCIrOPonZkHqVldKxIYOxfuie8afgl/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-bus"></i><span>21. Dinas Perhubungan</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Kominfo', 'https://docs.google.com/spreadsheets/d/1LfT_fuQ3bXAJjwVywKzqYR6DFM_tl_uf/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-wifi"></i><span>22. Dinas Komunikasi dan Informatika</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Diskoperindag', 'https://docs.google.com/spreadsheets/d/1QgcTz3N-5HIdDSxHfPe6YWY2o0INYzoJ/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-store"></i><span>23. Dinas Koperasi, Perindustrian, dan Perdagangan</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('DPMPTSP', 'https://docs.google.com/spreadsheets/d/1kBHVjs2Kr-e51KCHcC1iLOBGUifADxBV/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-file-signature"></i><span>24. DPMPTSP (Penanaman Modal & PTSP)</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Disparpora', 'https://docs.google.com/spreadsheets/d/1NGqKTXvg-nqxAu4NCETbwRtmA75-j5b9/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-person-running"></i><span>25. Dinas Pariwisata, Pemuda dan Olahraga</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Perpusip', 'https://docs.google.com/spreadsheets/d/1i7CslRT1IlNhlWp2AKyoaf-_COETIgYU/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-book"></i><span>26. Dinas Perpustakaan dan Kearsipan</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Dinas Peternakan', 'https://docs.google.com/spreadsheets/d/1bUBmGZsr3iyYvejEGqybcEOyiqUtoZ3M/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-cow"></i><span>27. Dinas Peternakan dan Perikanan</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Dinas Pendidikan', 'https://docs.google.com/spreadsheets/d/1T2iRbA8ZuBtxNghfFmKJzAEGnhcamyqC/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-graduation-cap"></i><span>10. Dinas Pendidikan dan Kebudayaan</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Dinas Kesehatan', 'https://docs.google.com/spreadsheets/d/1j-J__5hnvZ62zwri7M7XqvHHYrqoLasX/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-heartbeat"></i><span>11. Dinas Kesehatan</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Dinas PUPP', 'https://docs.google.com/spreadsheets/d/1IWAOqE5vQEK2RlzrVbRsxRldD8Xi1E6l/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-trowel-bricks"></i><span>12. Dinas PU dan Perumahan Permukiman</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Satpol PP', 'https://docs.google.com/spreadsheets/d/1AvOj1ZvsLmehDMRnsHYEHe0U2EAHlop7/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-shield-halved"></i><span>13. Satuan Polisi Pamong Praja</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Dinas Sosial', 'https://docs.google.com/spreadsheets/d/1Z37EN8A3ufbsAeF5nFoJvIXabkflFNU3/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-hands-helping"></i><span>14. Dinas Sosial</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Disnaker', 'https://docs.google.com/spreadsheets/d/1pMjHZj1dC02gF9aZzu3Dt6PZ-CoB6JGJ/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-briefcase"></i><span>15. Dinas Ketenagakerjaan</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('DP3A', 'https://docs.google.com/spreadsheets/d/1zNegwkwaGfZWhClFx49QbYjF1vZg-QxH/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-children"></i><span>16. Dinas Pemberdayaan Perempuan & Perlindungan Anak</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Dinas Pertanian', 'https://docs.google.com/spreadsheets/d/1kmLqcQxCGdXjNJa9qxVXfb5wD0Bnnk5K/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-wheat"></i><span>17. Dinas Pertanian dan Ketahanan Pangan</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('DLH', 'https://docs.google.com/spreadsheets/d/19IUUTt_21Mc-En7ekOe4DN4an0uikwSq/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-tree"></i><span>18. Dinas Lingkungan Hidup</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Dukcapil', 'https://docs.google.com/spreadsheets/d/1aiqkx_ahknt8Kh-_vjCCfx2euIWvdHUQ/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-id-card"></i><span>19. Dinas Kependudukan dan Pencatatan Sipil</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Dinas PMD', 'https://docs.google.com/spreadsheets/d/1S7UesKfOkcfR7IiTyEpx1zr2o6pwXRl2/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-house-user"></i><span>20. Dinas Pemberdayaan Masyarakat dan Desa</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Dishub', 'https://docs.google.com/spreadsheets/d/1BxiwYKq9jwDo95iHPbJrbxPu3dIObFQ0/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-bus"></i><span>21. Dinas Perhubungan</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Kominfo', 'https://docs.google.com/spreadsheets/d/1hRNqFfPP89z1ns-jxKiVu8PKPOEcjQOM/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-wifi"></i><span>22. Dinas Komunikasi dan Informatika</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Diskoperindag', 'https://docs.google.com/spreadsheets/d/1UMNFqjLbkHqxkVFdniXmXbiV6Xpjaydy/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-store"></i><span>23. Dinas Koperasi, Perindustrian, dan Perdagangan</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('DPMPTSP', 'https://docs.google.com/spreadsheets/d/16iXox4BvuAzCkAJ6oO1yblqDHI0ZVTQZ/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-file-signature"></i><span>24. DPMPTSP (Penanaman Modal & PTSP)</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Disparpora', 'https://docs.google.com/spreadsheets/d/1tYPAK-c0W2dkQ7FF8QD24z8jk-Fjfx-i/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-person-running"></i><span>25. Dinas Pariwisata, Pemuda dan Olahraga</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Perpusip', 'https://docs.google.com/spreadsheets/d/1rBe2ALt9uGiZCthSLkfYh6WfmxXqzaPl/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-book"></i><span>26. Dinas Perpustakaan dan Kearsipan</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Dinas Peternakan', 'https://docs.google.com/spreadsheets/d/1vNXQ0jTRJ318XtpJ4zEb8VQU6RwbHbmU/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-cow"></i><span>27. Dinas Peternakan dan Perikanan</span></a>
 
         <div class="group-header">Rumah Sakit Daerah</div>
-        <a class="bio-btn" onclick="konfirmasiBuka('RSUD Abdoer Rahem', 'https://docs.google.com/spreadsheets/d/10ieGwQXO8nbujrpgMYHzzqiLorBF2yCE/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-hospital"></i><span>28. RSUD dr. Abdoer Rahem</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('RSUD Besuki', 'https://docs.google.com/spreadsheets/d/1udRdcVkM6XD1yVuk0920E0BX7scU8k9Q/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-hospital-user"></i><span>29. RSUD Besuki</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('RSUD Asembagus', 'https://docs.google.com/spreadsheets/d/1fK2j5FEFPshIwWCd95f1fSqNvGLhZQ1e/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-square-h"></i><span>30. RSUD Asembagus</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('RSUD Abdoer Rahem', 'https://docs.google.com/spreadsheets/d/1m4LdqwrGSE5T0Qol_1B2J7IY5J_DF7MH/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-hospital"></i><span>28. RSUD dr. Abdoer Rahem</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('RSUD Besuki', 'https://docs.google.com/spreadsheets/d/1Qq77tf8Fv4RzytLuE0VHg5ybvOwEgfQn/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-hospital-user"></i><span>29. RSUD Besuki</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('RSUD Asembagus', 'https://docs.google.com/spreadsheets/d/1J4IGWzf_hDgxz9wXF1UBjTcxsSdNt0TA/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-square-h"></i><span>30. RSUD Asembagus</span></a>
 
         <div class="group-header">Kecamatan</div>
-        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Arjasa', 'https://docs.google.com/spreadsheets/d/1QQ9LRuAAit1qXVw1seFDOgFbQTd-qF49/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>31. Kecamatan Arjasa</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Asembagus', 'https://docs.google.com/spreadsheets/d/1JamvPaHzJdY-5uq9qtasf5sz_8aWZvfh/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>32. Kecamatan Asembagus</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Banyuglugur', 'https://docs.google.com/spreadsheets/d/1OuwdpDiJfA17TM1HanHBgk0QG1HjXWee/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>33. Kecamatan Banyuglugur</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Banyuputih', 'https://docs.google.com/spreadsheets/d/15rejSqCEeYKx-P6N4x7HMsSIfOXLnIdz/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>34. Kecamatan Banyuputih</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Bungatan', 'https://docs.google.com/spreadsheets/d/15rejSqCEeYKx-P6N4x7HMsSIfOXLnIdz/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>35. Kecamatan Bungatan</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Besuki', 'https://docs.google.com/spreadsheets/d/1Tw2DJVaiO3DnPYON1aNaNJRP7q3rwXvT/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>36. Kecamatan Besuki</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Jangkar', 'https://docs.google.com/spreadsheets/d/1KRHrtEArx8nzO0AnE8eXROGje5i0n4bF/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>37. Kecamatan Jangkar</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Jatibanteng', 'https://docs.google.com/spreadsheets/d/1kuj0t9FxUFnPAXlUYRayxKfeMGPCvtrK/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>38. Kecamatan Jatibanteng</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Kapongan', 'https://docs.google.com/spreadsheets/d/1WYNx_5DX8ytNh0hfQpEET2Os1Vwxcxh2/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>39. Kecamatan Kapongan</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Kendit', 'https://docs.google.com/spreadsheets/d/1Bqo3MFRYyZ95yNlKM3vOx4XMlOsrf2Li/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>40. Kecamatan Kendit</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Mangaran', 'https://docs.google.com/spreadsheets/d/1Bn7wjsovdoyI9UaQoUvuTwd0Ubd6Kb5a/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>41. Kecamatan Mangaran</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Mlandingan', 'https://docs.google.com/spreadsheets/d/1TwKe9jIcXtSaJlZ0TFM3kTg-v5UbezPa/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>42. Kecamatan Mlandingan</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Panarukan', 'https://docs.google.com/spreadsheets/d/1tVWU8c60eTf8pf7iTWdDMZNTeEI0xcC5/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>43. Kecamatan Panarukan</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Panji', 'https://docs.google.com/spreadsheets/d/1TlSVOQQlXqlQqG9AcAEtI_c9hgsREsbq/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>44. Kecamatan Panji</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Situbondo', 'https://docs.google.com/spreadsheets/d/1lhv46203mT_PtUthmQLF0Sb3-Ppu8nSh/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>45. Kecamatan Situbondo</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Suboh', 'https://docs.google.com/spreadsheets/d/1iQexXaMPiKzyz1rKifLzqmoPF_j_MeLd/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>46. Kecamatan Suboh</span></a>
-        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Sumbermalang', 'https://docs.google.com/spreadsheets/d/1g_j0bCX_cVtbmu5Jni0Tc3xyWg7QIiC4/edit?usp=drive_link&ouid=106461277664591374090&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>47. Kecamatan Sumbermalang</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Arjasa', 'https://docs.google.com/spreadsheets/d/1WYTHT4W71Js6X4UmihxsmtUser438iB6/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>31. Kecamatan Arjasa</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Asembagus', 'https://docs.google.com/spreadsheets/d/17n5a5JyrZx5nqc8gEc2tdpn0LZjGpBln/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>32. Kecamatan Asembagus</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Banyuglugur', 'https://docs.google.com/spreadsheets/d/1uJ7zVAHkuVIu0S2HU9T2DNqI6ZCjugyz/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>33. Kecamatan Banyuglugur</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Banyuputih', 'https://docs.google.com/spreadsheets/d/1N8U37FqOjTO-IZbK96rghovh-UzMzpjn/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>34. Kecamatan Banyuputih</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Bungatan', 'https://docs.google.com/spreadsheets/d/1DWU0lr5J7L6s32v2-_35_pYqxvUUJyrD/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>35. Kecamatan Bungatan</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Besuki', 'https://docs.google.com/spreadsheets/d/1FKWh6fRPeI4MxVcPORrTcgOg_bkQxhyE/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>36. Kecamatan Besuki</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Jangkar', 'https://docs.google.com/spreadsheets/d/1t9r8C5MxgdYxsxSNxriw2m6GUSfLVlBn/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>37. Kecamatan Jangkar</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Jatibanteng', 'https://docs.google.com/spreadsheets/d/1uecMB_rZ9Xw7WufMASfEg3GPV5Gw-6oJ/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>38. Kecamatan Jatibanteng</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Kapongan', 'https://docs.google.com/spreadsheets/d/1Pg1XSkp-LzRV9ikLSJE9BFGFIl9myvtF/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>39. Kecamatan Kapongan</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Kendit', 'https://docs.google.com/spreadsheets/d/1Zkh1LjfwhSpu95pe9m6KL8-aOFeofeLC/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>40. Kecamatan Kendit</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Mangaran', 'https://docs.google.com/spreadsheets/d/1uRim2LLPgxPbWaIFPvLN_PhLs8U9axRu/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>41. Kecamatan Mangaran</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Mlandingan', 'https://docs.google.com/spreadsheets/d/1x5peKR1vUMZ4QBoUIfgSt3lWObrh62pJ/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>42. Kecamatan Mlandingan</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Panarukan', 'https://docs.google.com/spreadsheets/d/1hY7VyukaoxLj34Z69SHhztxCLBdcFeNm/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>43. Kecamatan Panarukan</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Panji', 'https://docs.google.com/spreadsheets/d/1akedXgIk5_Xf8fs2Z8uWSNMCAd9iIrxP/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>44. Kecamatan Panji</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Situbondo', 'https://docs.google.com/spreadsheets/d/1dkqCQOvtHIhVTydBE0SH7JZ3hyi3QHIE/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>45. Kecamatan Situbondo</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Suboh', 'https://docs.google.com/spreadsheets/d/1fFcrt7Djru5aqVZbC-lJ_D2azLh75joc/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>46. Kecamatan Suboh</span></a>
+        <a class="bio-btn" onclick="konfirmasiBuka('Kecamatan Sumbermalang', 'https://docs.google.com/spreadsheets/d/1qcjn35APcoqYsL0HIKLDaUwYAPIT30Zd/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"><i class="fas fa-map-location-dot"></i><span>47. Kecamatan Sumbermalang</span></a>
 
         <div id="noResult" class="no-result">
           <i class="fas fa-search-minus"></i>
@@ -365,17 +451,20 @@
 
     </div>
 
-    <a href="https://wa.me/6281234567890?text=Halo%20Admin%20LKPJ,%20saya%20butuh%20bantuan." class="float-wa" target="_blank">
-        <i class="fab fa-whatsapp my-float"></i>
-        <div class="wa-tooltip">Butuh Bantuan?</div>
-    </a>
+    <!-- Single WhatsApp Button -->
+    <div class="float-wa-single" id="waButton">
+      <i class="fab fa-whatsapp"></i>
+      <div class="wa-badge">2</div>
+    </div>
+
     <div class="footer">
       <p>SITUBONDO NAIK KELAS  <br> &copy; 2025 Tim Penyusun LKPJ</p>
     </div>
+    
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-      var countDownDate = new Date("Dec 31, 2025 23:59:59").getTime();
+      var countDownDate = new Date("Jan 23, 2026 23:59:59").getTime();
       var x = setInterval(function() {
         var now = new Date().getTime();
         var distance = countDownDate - now;
@@ -406,9 +495,6 @@
 
         for (i = 0; i < a.length; i++) {
           txtValue = a[i].textContent || a[i].innerText;
-          // Skip tombol WA agar tidak ikut terfilter
-          if (a[i].classList.contains("float-wa")) continue;
-
           if (txtValue.toUpperCase().indexOf(filter) > -1) {
             a[i].style.display = "flex";
             visibleCount++;
@@ -438,36 +524,88 @@
 
       // 3. Fungsi Alert Keren (SweetAlert2)
       function konfirmasiBuka(namaDinas, url) {
-        if (url === '#' || url === '') {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Link Belum Tersedia',
-                text: 'Mohon maaf, link untuk ' + namaDinas + ' belum diinput oleh admin.',
-                confirmButtonColor: '#1a73e8'
-            });
-            return; 
-        }
-
+    if (url === '#' || url === '' || !url) {
+        alert('Mohon maaf, link untuk ' + namaDinas + ' belum diinput oleh admin.');
+        return; 
+    }
+    
+    window.open(url, '_blank'); 
+}
+      
+      // 4. Fungsi WhatsApp Admin Selection
+      document.getElementById('waButton').addEventListener('click', function() {
         Swal.fire({
-          title: 'Buka Tautan?',
-          html: "Anda akan diarahkan ke halaman upload data untuk:<br><b>" + namaDinas + "</b>",
-          icon: 'info',
-          showCancelButton: true,
-          confirmButtonColor: '#1a73e8',
-          cancelButtonColor: '#ff4757',
-          confirmButtonText: 'Ya, Lanjutkan',
-          cancelButtonText: 'Batal',
-          background: '#fff',
-          borderRadius: '20px',
+          title: 'Pilih Admin WhatsApp',
+          html: `<div style="text-align:left; margin-top:15px;">
+                   <p style="margin-bottom:15px; color:#666; font-size:14px;">Pilih admin yang ingin Anda hubungi:</p>
+                   
+                   <div class="wa-option" onclick="pilihAdmin('Admin 1', '6282141225949')">
+                     <i class="fab fa-whatsapp"></i>
+                     <div class="wa-option-info">
+                       <div class="wa-option-name">Admin 1 <span class="wa-option-tag">UTAMA</span></div>
+                       <div class="wa-option-number">+62 821-4122-5949</div>
+                     </div>
+                     <i class="fas fa-chevron-right" style="color:#999;"></i>
+                   </div>
+                   
+                   <div class="wa-option" onclick="pilihAdmin('Admin 2', '6281336059797')">
+                     <i class="fab fa-whatsapp"></i>
+                     <div class="wa-option-info">
+                       <div class="wa-option-name">Admin 2 <span class="wa-option-tag" style="background:#ffa726;">CADANGAN</span></div>
+                       <div class="wa-option-number">+62 813-3605-9797</div>
+                     </div>
+                     <i class="fas fa-chevron-right" style="color:#999;"></i>
+                   </div>
+                   
+                   <p style="font-size:12px; color:#999; margin-top:15px; text-align:center;">
+                     <i class="fas fa-clock"></i> Respon dalam 1x24 jam
+                   </p>
+                 </div>`,
+          showConfirmButton: false,
+          showCloseButton: true,
+          background: '#ffffff',
+          borderRadius: '16px',
+          width: '400px',
           customClass: {
-            popup: 'animated fadeInDown faster'
+            popup: 'animated fadeInUp'
           }
+        });
+      });
+
+      function pilihAdmin(namaAdmin, nomor) {
+        // Tutup modal pilihan admin
+        Swal.close();
+        
+        // Tampilkan konfirmasi
+        Swal.fire({
+          title: `Hubungi ${namaAdmin}?`,
+          html: `<div style="text-align:center;">
+                   <i class="fab fa-whatsapp" style="font-size:48px;color:#25d366;margin-bottom:15px;"></i>
+                   <p>Anda akan membuka WhatsApp untuk menghubungi:</p>
+                   <div style="background:#f1f8e9; padding:10px; border-radius:8px; margin:15px 0;">
+                     <strong>${namaAdmin}</strong><br>
+                     <span style="font-size:12px; color:#666;">${formatNomor(nomor)}</span>
+                   </div>
+                 </div>`,
+          showCancelButton: true,
+          confirmButtonColor: '#25d366',
+          cancelButtonColor: '#6c757d',
+          confirmButtonText: '<i class="fab fa-whatsapp"></i> Buka WhatsApp',
+          cancelButtonText: '<i class="fas fa-times"></i> Batal',
+          background: '#ffffff',
+          borderRadius: '16px'
         }).then((result) => {
           if (result.isConfirmed) {
-            // LANGSUNG BUKA LINK TANPA DELAY
-            window.open(url, '_blank'); 
+            const message = `Halo Admin, saya butuh bantuan terkait pengisian LKPJ Bupati Situbondo 2025.`;
+            const waUrl = `https://wa.me/${nomor}?text=${encodeURIComponent(message)}`;
+            window.open(waUrl, '_blank');
           }
-        })
+        });
+      }
+
+      function formatNomor(nomor) {
+        // Format: +62 821 4122 5949
+        return nomor.replace(/(\d{2})(\d{3})(\d{4})(\d{4})/, '+$1 $2-$3-$4');
       }
     </script>
   </body>
