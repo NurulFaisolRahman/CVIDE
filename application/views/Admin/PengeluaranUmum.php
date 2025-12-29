@@ -85,7 +85,7 @@
                                 <label class="text-primary font-weight-bold">Kategori</label>
                                 <select class="form-control form-control-sm" id="Category" style="border: 1px solid #bbdefb;">  
                                     <?php 
-                                        $Category = array('Makanan','Operasional Kantor','Transportasi','Tagihan','Honorarium','Lainnya'); 
+                                        $Category = array('Makanan','Prive','Operasional Kantor','Transportasi','Tagihan','Honorarium','Lainnya'); 
                                         for ($i=0; $i < count($Category); $i++) { ?>
                                         <option value="<?=$Category[$i]?>"><?=$Category[$i]?></option>
                                     <?php } ?>                  
