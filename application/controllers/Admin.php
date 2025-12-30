@@ -76,17 +76,23 @@ class Admin extends CI_Controller {
     $Data['NamaKegiatan'] = $Kegiatan['NamaKegiatan'];
     $Data['NominalKegiatan'] = $Kegiatan['NominalKegiatan'];
     $Data['Pengeluaran'] = $this->db->query("SELECT * FROM `pengeluaran` WHERE `DeleteAt` IS NULL AND `IdKegiatan`=".$Id." ORDER BY Tanggal DESC,InputAt DESC")->result_array();
-    $Data['Charge'] = 30/100*$Data['NominalKegiatan'];
-    $Data['Saving'] = 20/100*$Data['NominalKegiatan'];
-    $Data['Umum'] = 5/100*$Data['NominalKegiatan'];
-    $Data['Biaya'] = 0;
+    
+    // $Data['Charge'] = 30/100*$Data['NominalKegiatan'];  
+    // $Data['Saving'] = 20/100*$Data['NominalKegiatan'];   
+    // $Data['Umum'] = 5/100*$Data['NominalKegiatan'];      
+    
+    $Data['Biaya'] = 0; 
     foreach ($Data['Pengeluaran'] as $key) {
-      $Data['Biaya'] += $key['NominalPengeluaran'];
+        $Data['Biaya'] += $key['NominalPengeluaran'];
     }
-    $Data['Saldo'] = $Data['NominalKegiatan'] - ($Data['Charge']+$Data['Saving']+$Data['Biaya']);
+    
+    // RUMUS BARU: Saldo = Nominal - Biaya Riil
+    // $Data['Saldo'] = $Data['NominalKegiatan'] - ($Data['Charge']+$Data['Saving']+$Data['Biaya']);
+    $Data['Saldo'] = $Data['NominalKegiatan'] - $Data['Biaya'];
+    
     $this->load->view('Admin/Header',$Data);
-		$this->load->view('Admin/BiayaKegiatan',$Data);
-  }
+    $this->load->view('Admin/BiayaKegiatan',$Data);
+}
 
   public function InputBiayaKegiatan(){
     $this->db->insert('pengeluaran', $_POST);

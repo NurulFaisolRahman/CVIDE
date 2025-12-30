@@ -9,6 +9,12 @@
 </div>
 <br>
 
+<?php 
+// Hitung persentase pengeluaran untuk cek warning
+$persentase = $NominalKegiatan > 0 ? ($Biaya / $NominalKegiatan) * 100 : 0;
+$warningAktif = $persentase > 50;
+?>
+
 <!-- Summary Panel Ringkas & Menarik -->
 <div class="row mb-4">
     <div class="col-lg-12">
@@ -16,16 +22,33 @@
             <div class="card-body py-3">
                 <div class="row align-items-center text-center text-md-left">
                     <!-- Judul Kegiatan -->
-                    <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="col-md-3 mb-3 mb-md-0">
                         <h5 class="mb-1 text-primary font-weight-bold">
                             <i class="fa fa-folder-open mr-2"></i>Renstra Diskop Banyuwangi
                         </h5>
                         <small class="text-muted font-weight-bold"><?=$NamaKegiatan?></small>
                     </div>
 
-                    <!-- Total Pengeluaran -->
-                    <div class="col-md-4 mb-3 mb-md-0">
-                        <div class="p-3 rounded-lg shadow-sm" style="background: rgba(244, 67, 54, 0.1);">
+                    <!-- Total Nominal Lengkap (Sebelum Pengurangan) -->
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        <div class="p-3 rounded-lg shadow-sm" style="background: rgba(76, 175, 80, 0.1);">
+                            <div class="d-flex align-items-center justify-content-center justify-content-md-start">
+                                <div class="rounded-circle p-3 mr-3" style="background: #4caf50; color: white; width: 50px; height: 50px;">
+                                    <i class="fa fa-arrow-up fa-lg"></i>
+                                </div>
+                                <div>
+                                    <p class="mb-0 text-success font-weight-bold small text-uppercase">Nominal Awal</p>
+                                    <h5 class="mb-0 text-success font-weight-bold">
+                                        <?="Rp ".number_format($NominalKegiatan,0,',','.')?>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Pengeluaran (dengan warna warning jika >50%) -->
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        <div class="p-3 rounded-lg shadow-sm" style="<?php echo $warningAktif ? 'background: rgba(244, 67, 54, 0.2);' : 'background: rgba(244, 67, 54, 0.1);'; ?>">
                             <div class="d-flex align-items-center justify-content-center justify-content-md-start">
                                 <div class="rounded-circle p-3 mr-3" style="background: #f44336; color: white; width: 50px; height: 50px;">
                                     <i class="fa fa-arrow-down fa-lg"></i>
@@ -35,14 +58,19 @@
                                     <h5 class="mb-0 text-danger font-weight-bold">
                                         <?="Rp ".number_format($Biaya,0,',','.')?>
                                     </h5>
+                                    <?php if ($warningAktif): ?>
+                                    <small class="text-white font-weight-bold d-block" style="font-size: 0.75em; color: red !important;">
+                                        <i class="fa fa-exclamation-triangle" style="color: red;"></i> <?= round($persentase, 2) ?>% (Melebihi 50%)
+                                    </small>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Saldo Tersisa -->
-                    <div class="col-md-4 mx-auto">
-                        <div class="p-3 rounded-lg shadow-sm " style="background: rgba(33, 150, 243, 0.1);">
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        <div class="p-3 rounded-lg shadow-sm <?php echo $warningAktif ? 'border: 1px solid #ffc107;' : ''; ?>" style="background: rgba(33, 150, 243, 0.1);">
                             <div class="d-flex align-items-center justify-content-center justify-content-md-start">
                                 <div class="rounded-circle p-3 mr-3 text-center " style="background: #2196F3; color: white; width: 50px; height: 50px;">
                                     <i class="fa fa-usd fa-lg"></i>
@@ -52,6 +80,11 @@
                                     <h5 class="mb-0 text-primary font-weight-bold">
                                         <?="Rp ".number_format($Saldo,0,',','.')?>
                                     </h5>
+                                    <?php if ($warningAktif): ?>
+                                    <small class="text-white font-weight-bold d-block" style="font-size: 0.75em; color: #2196F3 !important;">
+                                        <i class="fa fa-exclamation-triangle" style="color: #2196F3;"></i> Perhatikan penggunaan dana!
+                                    </small>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -252,6 +285,8 @@
 <script src="<?=base_url("build/js/custom.min.js")?>"></script>
 <script src="<?=base_url("assets/datatables/jquery.dataTables.js")?>"></script>
 <script src="<?=base_url("assets/datatables-bs4/js/dataTables.bootstrap4.js")?>"></script>
+<!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 $(document).ready(function(){
     var BaseURL = '<?=base_url()?>';
@@ -381,6 +416,20 @@ $(document).ready(function(){
             });
         }
     });
+
+    // SweetAlert untuk peringatan penggunaan dana >50%
+    <?php if ($warningAktif): ?>
+    Swal.fire({
+        icon: 'warning',
+        title: 'Peringatan Penggunaan Dana!',
+        text: 'Total pengeluaran telah melebihi 50% dari Nominal Awal (<?= round($persentase, 2) ?>%). Silakan pertimbangkan efisiensi anggaran.',
+        footer: '<small>Monitor penggunaan dana dengan hati-hati.</small>',
+        confirmButtonColor: '#ffc107',
+        confirmButtonText: 'Mengerti',
+        timer: 8000,  // Auto-dismiss setelah 8 detik
+        timerProgressBar: true
+    });
+    <?php endif; ?>
 });
 </script>
 </body>
