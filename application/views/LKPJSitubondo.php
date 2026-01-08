@@ -464,7 +464,7 @@
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-      var countDownDate = new Date("Jan 23, 2026 23:59:59").getTime();
+      var countDownDate = new Date("Jan 13, 2026 23:59:59").getTime();
       var x = setInterval(function() {
         var now = new Date().getTime();
         var distance = countDownDate - now;
@@ -539,19 +539,28 @@
           html: `<div style="text-align:left; margin-top:15px;">
                    <p style="margin-bottom:15px; color:#666; font-size:14px;">Pilih admin yang ingin Anda hubungi:</p>
                    
-                   <div class="wa-option" onclick="pilihAdmin('Admin 1', '6282141225949')">
+                   <div class="wa-option" onclick="pilihAdmin('Admin 1', '6282131187041')">
                      <i class="fab fa-whatsapp"></i>
                      <div class="wa-option-info">
-                       <div class="wa-option-name">Admin 1 <span class="wa-option-tag">UTAMA</span></div>
+                       <div class="wa-option-name">Admin 1 <span class="wa-option-tag">Admin Web</span></div>
+                       <div class="wa-option-number">+62 821-3118-7041</div>
+                     </div>
+                     <i class="fas fa-chevron-right" style="color:#999;"></i>
+                   </div>
+
+                   <div class="wa-option" onclick="pilihAdmin('Admin 2', '6282141225949')">
+                     <i class="fab fa-whatsapp"></i>
+                     <div class="wa-option-info">
+                       <div class="wa-option-name">Admin 2 <span class="wa-option-tag">UTAMA</span></div>
                        <div class="wa-option-number">+62 821-4122-5949</div>
                      </div>
                      <i class="fas fa-chevron-right" style="color:#999;"></i>
                    </div>
                    
-                   <div class="wa-option" onclick="pilihAdmin('Admin 2', '6281336059797')">
+                   <div class="wa-option" onclick="pilihAdmin('Admin 3', '6281336059797')">
                      <i class="fab fa-whatsapp"></i>
                      <div class="wa-option-info">
-                       <div class="wa-option-name">Admin 2 <span class="wa-option-tag" style="background:#ffa726;">CADANGAN</span></div>
+                       <div class="wa-option-name">Admin 3 <span class="wa-option-tag" style="background:#ffa726;">CADANGAN</span></div>
                        <div class="wa-option-number">+62 813-3605-9797</div>
                      </div>
                      <i class="fas fa-chevron-right" style="color:#999;"></i>
