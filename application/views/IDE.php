@@ -370,15 +370,12 @@
     /* Services Section */
     .services-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5 card 1 deret */
+  grid-template-columns: repeat(5, 1fr); 
   gap: 24px;
   max-width: 1200px;
   margin: 0 auto;
-  align-items: stretch; /* semua card tinggi sama */
+  align-items: stretch; 
 }
-
-/* Mengatur baris kedua: card 4 dan 5 agar center */
-
 
 /* Hover & style card tetap sama */
 .service-card {
@@ -389,11 +386,11 @@
   box-shadow: 0 6px 20px rgba(0, 31, 63, 0.08);
   border: 1px solid rgba(0, 31, 63, 0.1);
   transition: 0.3s ease;
-  height: 100%;             /* isi mengikuti tinggi */
+  height: 100%;            
   display: flex;
   flex-direction: column;
-  justify-content: center;  /* konten ke tengah vertikal */
-  align-items: center;      /* konten ke tengah horizontal */
+  justify-content: center;  
+  align-items: center;      
 }
 
 .service-card:hover {
@@ -404,7 +401,7 @@
 /* Responsif: tablet */
 @media (max-width: 900px) {
   .services-grid {
-    grid-template-columns: repeat(3, 1fr); /* jadi 3 card / row */
+    grid-template-columns: repeat(3, 1fr); 
   }
 }
 
@@ -431,8 +428,6 @@
   width: 32px;
   height: 32px;
 }
-
-
 
     .service-card {
   display: flex;
@@ -1384,7 +1379,7 @@
           <path d="M20 3H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h6v2H8v2h8v-2h-2v-2h6c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 12H4V5h16v10z"/>
         </svg>
       </div>
-      <h3>Layanan IT</h3>
+      <h3>IT Services</h3>
     </div>
 
   </div>
