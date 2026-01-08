@@ -369,52 +369,83 @@
 
     /* Services Section */
     .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 card 1 deret */
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: stretch; /* semua card tinggi sama */
+}
+
+/* Mengatur baris kedua: card 4 dan 5 agar center */
+
+
+/* Hover & style card tetap sama */
+.service-card {
+  background: white;
+  padding: 32px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0, 31, 63, 0.08);
+  border: 1px solid rgba(0, 31, 63, 0.1);
+  transition: 0.3s ease;
+  height: 100%;             /* isi mengikuti tinggi */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* konten ke tengah vertikal */
+  align-items: center;      /* konten ke tengah horizontal */
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 31, 63, 0.12);
+}
+
+/* Responsif: tablet */
+@media (max-width: 900px) {
+  .services-grid {
+    grid-template-columns: repeat(3, 1fr); /* jadi 3 card / row */
+  }
+}
+
+/* Responsif: mobile */
+@media (max-width: 600px) {
+  .services-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.service-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #001F3F 0%, #0056b3 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  color: white;
+}
+
+.service-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+
 
     .service-card {
-      background: white;
-      padding: 32px;
-      border-radius: 12px;
-      text-align: center;
-      box-shadow: 0 6px 20px rgba(0, 31, 63, 0.08);
-      transition: all 0.3s ease;
-      border: 1px solid rgba(0, 31, 63, 0.1);
-    }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
 
-    .service-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 31, 63, 0.12);
-      border-color: rgba(0, 31, 63, 0.2);
-    }
-
-    .service-icon {
-      width: 64px;
-      height: 64px;
-      background: linear-gradient(135deg, #001F3F 0%, #0056b3 100%);
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-      color: white;
-    }
-
-    .service-icon svg {
-      width: 32px;
-      height: 32px;
-    }
-
-    .service-card h3 {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      color: #001F3F;
-    }
+@media (min-width: 1200px) {
+  .services-grid {
+    gap: 32px;
+  }
+}
 
     /* Portfolio Section */
     .portfolio {
@@ -1276,7 +1307,7 @@
       
       <div class="about-video">
         <iframe width="100%" height="100%" 
-                src="https://www.youtube.com/embed/bipPIXtv7pA" 
+                src="https://www.youtube.com/embed/SKajwW-IaW0"
                 title="Company Video" frameborder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                 allowfullscreen></iframe>
@@ -1298,52 +1329,67 @@
   </section>
 
   <!-- Services Section -->
-  <section id="services" class="section">
-    <div class="section-title">
-      <h2>Layanan Kami</h2>
-      <p>Menyediakan solusi konsultasi komprehensif yang disesuaikan secara spesifik untuk memenuhi kebutuhan unik Anda.</p>
+  <!-- Services Section -->
+<section id="services" class="section">
+  <div class="section-title">
+    <h2>Layanan Kami</h2>
+    <p>Menyediakan solusi konsultasi komprehensif yang disesuaikan secara spesifik untuk memenuhi kebutuhan unik Anda.</p>
+  </div>
+
+  <div class="services-grid">
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.8L20 9v6l-8 4-8-4V9l8-4.2z"/>
+          <path d="M12 16l-5-3v-2l5 3 5-3v2l-5 3z"/>
+        </svg>
+      </div>
+      <h3>Economic Development</h3>
     </div>
-    
-    <div class="services-grid">
-      <div class="service-card">
-        <div class="service-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.8L20 9v6l-8 4-8-4V9l8-4.2z"/>
-            <path d="M12 16l-5-3v-2l5 3 5-3v2l-5 3z"/>
-          </svg>
-        </div>
-        <h3>Economic Development</h3>
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/>
+          <path d="M7 12h2v5H7zm4-7h2v12h-2zm4 4h2v8h-2z"/>
+        </svg>
       </div>
-      
-      <div class="service-card">
-        <div class="service-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/>
-            <path d="M7 12h2v5H7zm4-7h2v12h-2zm4 4h2v8h-2z"/>
-          </svg>
-        </div>
-        <h3>Fiscal & Public Policy</h3>
-      </div>
-      
-      <div class="service-card">
-        <div class="service-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-          </svg>
-        </div>
-        <h3>Regional Planning</h3>
-      </div>
-      
-      <div class="service-card">
-        <div class="service-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-          </svg>
-        </div>
-        <h3>Management</h3>
-      </div>
+      <h3>Fiscal & Public Policy</h3>
     </div>
-  </section>
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+        </svg>
+      </div>
+      <h3>Regional Planning</h3>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+        </svg>
+      </div>
+      <h3>Management</h3>
+    </div>
+
+    <!-- New IT Service Added -->
+    <div class="service-card">
+      <div class="service-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M4 5h16v10H4z" opacity=".3"/>
+          <path d="M20 3H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h6v2H8v2h8v-2h-2v-2h6c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 12H4V5h16v10z"/>
+        </svg>
+      </div>
+      <h3>Layanan IT</h3>
+    </div>
+
+  </div>
+</section>
+
 
   <!-- Portfolio Section
   <section id="portfolio" class="section portfolio">
