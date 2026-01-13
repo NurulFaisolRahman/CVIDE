@@ -848,8 +848,8 @@
                            '4. Bagaimana kepentingan/harapan Saudara tentang kejelasan dan kemudahan SOP/prosedur layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kab. Situbondo?',
                            '5. Bagaimana pendapat Saudara tentang kecepatan dan ketepatan waktu dalam memberikan layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kab. Situbondo?',
                            '6. Bagaimana kepentingan/harapan Saudara tentang kecepatan dan ketepatan waktu dalam memberikan layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kab. Situbondo?',
-                           '7. Bagaimana pendapat saudara tentang biaya/tarif layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di BAPPEDA telah sesuai dengan peraturan yang berlaku?',
-                           '8. Bagaimana kepentingan/harapan saudara tentang biaya/tarif layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di BAPPEDA telah sesuai dengan peraturan yang berlaku?',
+                           #'7. Bagaimana pendapat saudara tentang biaya/tarif layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di BAPPEDA telah sesuai dengan peraturan yang berlaku?',
+                           #'8. Bagaimana kepentingan/harapan saudara tentang biaya/tarif layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di BAPPEDA telah sesuai dengan peraturan yang berlaku?',
                            '9. <strong>Pelayanan di Bapperida Kabupaten Situbondo 100% GRATIS</strong> dan tidak dipungut biaya/tarif untuk mendapatkan pelayanan.</p>
                                 <p>Biaya/tarif yang dimaksud adalah biaya jasa setelah memperoleh pelayanan konsultasi, evaluasi, dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya), bukan biaya transportasi atau cetak dokumen.</p>
                                 <p>Jika pelayanan diterima secara gratis, pilih opsi <strong>nomor 4 (Gratis)</strong>. Jika terdapat biaya setelah pelayanan, pilih opsi selain Gratis dan <strong>wajib menuliskan alasan serta rincian biaya</strong>.</p>
@@ -877,8 +877,8 @@
                           '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
                           '1. Tidak Cepat, 2. Kurang Cepat, 3. Cepat, 4. Sangat Cepat',
                           '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
-                          '1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai',
-                          '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
+                          #'1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai',
+                          #'1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
                           '1. Sangat Mahal, 2. Cukup Mahal, 3. Murah, 4. Gratis',
                           '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
                           '1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai',
@@ -899,7 +899,7 @@
             $Poin = array('A. Persyaratan Layanan',
                           'B. SOP / Prosedur Layanan',
                           'C. Kecepatan & Ketepatan Layanan',
-                          'D. Kesesuaian Biaya/Tarif Layanan',
+                          #'D. Kesesuaian Biaya/Tarif Layanan',
                           'E. Kewajaran Biaya/Tarif Layanan',
                           'F. Kesesuaian Produk Layanan',
                           'G. Kompetensi SDM Layanan',
@@ -909,7 +909,9 @@
                           'K. Transparansi Layanan',
                           'L. Integritas Layanan');
           ?> 
-          <?php for ($j=0; $j < 24; $j++) { ?>
+          <?php $totalPertanyaan = count($Tanya); ?>
+          <?php for ($j = 0; $j < $totalPertanyaan; $j++) { ?>
+
             <?php if ($j%2==0) { ?>
               <div class="section-title"><?=$Poin[$j/2]?></div>
               <div class="performance-title"><i class="fas fa-chart-line"></i> KINERJA / PERFORMA</div>
@@ -958,11 +960,12 @@
     <div class="fab" id="scrollTopBtn" title="Kembali ke Atas">
       <i class="fas fa-arrow-up"></i>
     </div>
-
+    
     <script src="../assets/vendor/jquery/jquery.min.js"></script>
     <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/inputmask/min/jquery.inputmask.bundle.min.js"></script>
     <script>
+      var totalPertanyaan = <?= count($Tanya) ?>;
       $(document).ready(function(){
           
         var BaseURL = '<?=base_url()?>';  
@@ -1151,7 +1154,7 @@
           } else {
             var Cek = false;
             var Tanya = 0;
-            for (let i = 1; i <= 24; i++) {
+            for (let i = 1; i <= totalPertanyaan; i++) {
               if ($("input[name='Input"+i+"']:checked").val() == undefined) {
                 Cek = true;
                 Tanya = i;
@@ -1167,13 +1170,14 @@
             } 
             else {
               var Poin = [];
-              for (let i = 1; i <= 24; i++) {
-                Poin.push($("input[name='Input"+i+"']:checked").val());
-              }
+              for (let i = 1; i <= totalPertanyaan; i++) {
+    Poin.push($("input[name='Input"+i+"']:checked").val());
+}
               var R = [];
-              for (let i = 1; i <= 24; i++) {
-                R.push($("#Alasan"+i).val());
-              }
+              for (let i = 1; i <= totalPertanyaan; i++) {
+    R.push($("#Alasan"+i).val());
+}
+
               var Pendidikan = $("#Pendidikan").val();
               var Pekerjaan = $("#Pekerjaan").val() == 'LAINNYA' ? $("#PekerjaanLainnya").val() : $("#Pekerjaan").val();
               var Instansi = $("#Instansi").val() == 'LAINNYA' ? $("#InstansiLainnya").val() : $("#Instansi").val();
