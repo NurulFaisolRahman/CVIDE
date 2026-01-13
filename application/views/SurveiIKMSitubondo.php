@@ -850,7 +850,10 @@
                            '6. Bagaimana kepentingan/harapan Saudara tentang kecepatan dan ketepatan waktu dalam memberikan layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kab. Situbondo?',
                            '7. Bagaimana pendapat saudara tentang biaya/tarif layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di BAPPEDA telah sesuai dengan peraturan yang berlaku?',
                            '8. Bagaimana kepentingan/harapan saudara tentang biaya/tarif layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di BAPPEDA telah sesuai dengan peraturan yang berlaku?',
-                           '9. Bagaimana pendapat saudara tentang kewajaran biaya/tarif dalam layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di BAPPEDA Kab Situbondo?',
+                           '9. <strong>Pelayanan di Bapperida Kabupaten Situbondo 100% GRATIS</strong> dan tidak dipungut biaya/tarif untuk mendapatkan pelayanan.</p>
+                                <p>Biaya/tarif yang dimaksud adalah biaya jasa setelah memperoleh pelayanan konsultasi, evaluasi, dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya), bukan biaya transportasi atau cetak dokumen.</p>
+                                <p>Jika pelayanan diterima secara gratis, pilih opsi <strong>nomor 4 (Gratis)</strong>. Jika terdapat biaya setelah pelayanan, pilih opsi selain Gratis dan <strong>wajib menuliskan alasan serta rincian biaya</strong>.</p>
+                                ',
                            '10. Bagaimana kepentingan/harapan saudara tentang kewajaran biaya/tarif dalam layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di BAPPEDA Kab Situbondo?',
                            '11. Bagaimana pendapat anda tentang kesesuaian produk layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) substansi dan arahan antara yang tercantum dalam standar regulasi dengan hasil yang diberikan di unit pelayanan Bappeda Kab. Situbondo?',
                            '12. Bagaimana kepentingan/harapan anda tentang kesesuaian produk layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) substansi dan arahan antara yang tercantum dalam standar regulasi dengan hasil yang diberikan di unit pelayanan Bappeda Kab. Situbondo?',
@@ -867,6 +870,7 @@
                            '23. Bagaimana integritas petugas pelayanan dalam memberikan pelayanan?',
                            '24. Bagaimana kepentingan/harapan Saudara tentang integritas petugas pelayanan dalam memberikan pelayanan?'
                           ); 
+
             $Opsi = array('1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai',
                           '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
                           '1. Tidak Mudah, 2. Kurang Mudah, 3. Mudah, 4. Sangat Mudah',
@@ -891,8 +895,19 @@
                           '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
                           '1. Petugas pelayanan memberikan pelayanan yang tidak sesuai dengan standar pelayanan yang telah ditetapkan. 2. Petugas pelayanan memberikan pelayanan dengan cepat, namun disertai permintaan imbalan yang tidak sesuai dengan etika dan integritas profesi. 3. Petugas pelayanan memberikan pelayanan yang sesuai dengan standar pelayanan yang telah ditetapkan, menunjukkan kepatuhan terhadap prosedur dan prinsip integritas. 4. Petugas pelayanan memberikan pelayanan yang sesuai dengan standar pelayanan, serta melaksanakannya dengan cepat dan efisien, tanpa melanggar integritas atau etika kerja',
                           '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting'); 
-            $Poin = array('A. Persyaratan Layanan','B. SOP / Prosedur Layanan','C. Kecepatan & Ketepatan Layanan','D. Kesesuaian Biaya/Tarif Layanan','E. Kewajaran Biaya/Tarif Layanan',
-                          'F. Kesesuaian Produk Layanan','G. Kompetensi SDM Layanan','H. Kesopanan & Keramahan Layanan','I. Sarana & Prasarana Layanan','J. Penanganan Pengaduan Layanan','K. Transparansi Layanan','L. Integritas Layanan');
+
+            $Poin = array('A. Persyaratan Layanan',
+                          'B. SOP / Prosedur Layanan',
+                          'C. Kecepatan & Ketepatan Layanan',
+                          'D. Kesesuaian Biaya/Tarif Layanan',
+                          'E. Kewajaran Biaya/Tarif Layanan',
+                          'F. Kesesuaian Produk Layanan',
+                          'G. Kompetensi SDM Layanan',
+                          'H. Kesopanan & Keramahan Layanan',
+                          'I. Sarana & Prasarana Layanan',
+                          'J. Penanganan Pengaduan Layanan',
+                          'K. Transparansi Layanan',
+                          'L. Integritas Layanan');
           ?> 
           <?php for ($j=0; $j < 24; $j++) { ?>
             <?php if ($j%2==0) { ?>
