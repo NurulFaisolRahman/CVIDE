@@ -247,6 +247,14 @@
           transform: scale(0.96);
       }
       
+      .wa-label {
+        margin-top: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #25d366;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+        letter-spacing: 0.5px;
+      }
 
       .wa-option {
           display: flex;
@@ -333,11 +341,12 @@
         <p class="site-desc" style="font-size: 11px; color: #fbff00; margin-top: 5px;">*Dimohon untuk mengisi data sesuai masing masing OPD</p>
       </div>
 
-      <div class="wa-top-container">
-        <div class="float-wa-single" id="waButton">
-          <i class="fab fa-whatsapp"></i>
-        </div>
+    <div class="wa-top-container">
+      <div class="float-wa-single" id="waButton">
+        <i class="fab fa-whatsapp"></i>
       </div>
+      <div class="wa-label">Contact Person</div>
+    </div>
 
       <div class="countdown-wrapper" id="countdown">
         <div class="countdown-item"><span class="countdown-number" id="days">00</span><span class="countdown-label">HARI</span></div>
