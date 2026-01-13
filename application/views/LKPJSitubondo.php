@@ -24,7 +24,7 @@
       * {
         font-family: 'Inter', sans-serif;
         box-sizing: border-box;
-        -webkit-tap-highlight-color: transparent; /* Hilangkan highlight biru default pada tap */
+        -webkit-tap-highlight-color: transparent;
       }
       
       body {
@@ -36,7 +36,6 @@
         overflow-x: hidden;
       }
 
-      /* Background Image */
       body::before {
           content: "";
           position: fixed;
@@ -48,7 +47,6 @@
           z-index: -2;
       }
 
-      /* Gradient Overlay */
       body::after {
           content: "";
           position: fixed;
@@ -58,11 +56,10 @@
           backdrop-filter: blur(2px);
       }
       
-      /* Container - Responsif Max Width */
       .app-container {
         max-width: 480px;
         width: 100%;
-        margin: 0 auto; /* Margin 0 agar full di mobile */
+        margin: 0 auto;
         padding: 40px 20px;
         min-height: 100vh;
         display: flex;
@@ -76,7 +73,6 @@
         border-right: 1px solid var(--glass-border);
       }
       
-      /* Header */
       .header-section {
         text-align: center;
         margin-bottom: 25px;
@@ -121,7 +117,6 @@
         line-height: 1.5;
       }
 
-      /* Countdown Compact */
       .countdown-wrapper {
         background: rgba(255, 255, 255, 0.15);
         border: 1px solid rgba(255, 255, 255, 0.2);
@@ -138,7 +133,6 @@
       .countdown-number { display: block; font-size: 22px; font-weight: 800; line-height: 1; }
       .countdown-label { font-size: 10px; opacity: 0.9; margin-top: 4px; display: block; letter-spacing: 0.5px; }
 
-      /* Search Box */
       .search-container { position: relative; margin-bottom: 20px; }
       
       .search-input {
@@ -158,7 +152,6 @@
         color: var(--primary-blue); font-size: 16px; z-index: 2;
       }
 
-      /* Button List */
       .link-list { display: flex; flex-direction: column; gap: 12px; }
       
       .bio-btn {
@@ -168,7 +161,7 @@
         background-color: var(--btn-bg);
         color: var(--btn-text);
         padding: 16px 20px;
-        border-radius: 16px; /* Lebih modern */
+        border-radius: 16px;
         text-decoration: none !important;
         font-weight: 600;
         font-size: 14px;
@@ -180,7 +173,6 @@
         transition: transform 0.1s, background-color 0.2s;
       }
       
-      /* Active state untuk responsivitas sentuhan */
       .bio-btn:active {
         transform: scale(0.98);
         background-color: #e2e8f0;
@@ -207,7 +199,6 @@
         margin-left: 8px;
       }
 
-      /* Group Header */
       .group-header {
         font-size: 11px;
         font-weight: 800;
@@ -223,56 +214,40 @@
         align-self: flex-start;
       }
 
-      /* Floating WA Single Button */
+      /* Tombol WA yang dipindah ke atas (versi non-floating) */
+      .wa-top-container {
+        text-align: center;
+        margin: 0 auto 10px auto;
+      }
+
       .float-wa-single {
-          position: fixed;
-          width: 60px;
-          height: 60px;
-          bottom: 25px;
-          right: 25px;
+          width: 65px;
+          height: 65px;
           background: linear-gradient(135deg, #25d366, #128c7e);
           color: white;
           border-radius: 50%;
-          text-align: center;
-          font-size: 28px;
-          box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-          z-index: 1000;
-          display: flex;
+          font-size: 30px;
+          box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+          display: inline-flex;
           align-items: center;
           justify-content: center;
           text-decoration: none !important;
           cursor: pointer;
-          border: 2px solid white;
+          border: 3px solid white;
+          position: relative;
           transition: all 0.3s;
       }
       
       .float-wa-single:hover {
-          transform: scale(1.1);
-          box-shadow: 0 8px 25px rgba(37, 211, 102, 0.6);
+          transform: scale(1.08);
+          box-shadow: 0 10px 30px rgba(37, 211, 102, 0.6);
       }
       
       .float-wa-single:active {
-          transform: scale(0.95);
+          transform: scale(0.96);
       }
       
-      .wa-badge {
-          position: absolute;
-          top: -5px;
-          right: -5px;
-          background: #ff4757;
-          color: white;
-          font-size: 10px;
-          font-weight: 800;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border: 2px solid white;
-      }
 
-      /* WA Admin Option Styling */
       .wa-option {
           display: flex;
           align-items: center;
@@ -335,14 +310,13 @@
         font-size: 12px; opacity: 0.8; font-weight: 500;
       }
 
-      /* MEDIA QUERIES untuk Layar Kecil (HP) */
       @media (max-width: 400px) {
         .app-container { padding: 30px 15px; }
         .site-title { font-size: 22px; }
         .bio-btn { padding: 14px 16px; font-size: 13px; }
         .countdown-number { font-size: 18px; }
         .search-input { font-size: 13px; }
-        .float-wa-single { width: 55px; height: 55px; font-size: 24px; }
+        .float-wa-single { width: 58px; height: 58px; font-size: 26px; }
       }
     </style>
   </head>
@@ -357,6 +331,12 @@
         <h1 class="site-title">LKPJ BUPATI 2025</h1>
         <p class="site-desc">Laporan Keterangan Pertanggungjawaban Bupati Situbondo Tahun 2025</p>
         <p class="site-desc" style="font-size: 11px; color: #fbff00; margin-top: 5px;">*Dimohon untuk mengisi data sesuai masing masing OPD</p>
+      </div>
+
+      <div class="wa-top-container">
+        <div class="float-wa-single" id="waButton">
+          <i class="fab fa-whatsapp"></i>
+        </div>
       </div>
 
       <div class="countdown-wrapper" id="countdown">
@@ -451,14 +431,8 @@
 
     </div>
 
-    <!-- Single WhatsApp Button -->
-    <div class="float-wa-single" id="waButton">
-      <i class="fab fa-whatsapp"></i>
-      <div class="wa-badge">2</div>
-    </div>
-
     <div class="footer">
-      <p>SITUBONDO NAIK KELAS  <br> &copy; 2025 Tim Penyusun LKPJ</p>
+      <p>SITUBONDO NAIK KELAS  <br> © 2025 Tim Penyusun LKPJ</p>
     </div>
     
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
@@ -483,7 +457,6 @@
         }
       }, 1000);
 
-      // 2. Fungsi Filter Pencarian (Search)
       function filterFunction() {
         var input, filter, div, a, i, txtValue;
         input = document.getElementById("searchInput");
@@ -503,7 +476,6 @@
           }
         }
 
-        // Menyembunyikan judul grup (header) jika sedang mencari sesuatu
         var headers = document.getElementsByClassName("group-header");
         for (var k = 0; k < headers.length; k++) {
             if (filter !== "") {
@@ -522,17 +494,14 @@
         }
       }
 
-      // 3. Fungsi Alert Keren (SweetAlert2)
       function konfirmasiBuka(namaDinas, url) {
-    if (url === '#' || url === '' || !url) {
-        alert('Mohon maaf, link untuk ' + namaDinas + ' belum diinput oleh admin.');
-        return; 
-    }
-    
-    window.open(url, '_blank'); 
-}
+        if (url === '#' || url === '' || !url) {
+            alert('Mohon maaf, link untuk ' + namaDinas + ' belum diinput oleh admin.');
+            return; 
+        }
+        window.open(url, '_blank'); 
+      }
       
-      // 4. Fungsi WhatsApp Admin Selection
       document.getElementById('waButton').addEventListener('click', function() {
         Swal.fire({
           title: 'Pilih Admin WhatsApp',
@@ -582,10 +551,8 @@
       });
 
       function pilihAdmin(namaAdmin, nomor) {
-        // Tutup modal pilihan admin
         Swal.close();
         
-        // Tampilkan konfirmasi
         Swal.fire({
           title: `Hubungi ${namaAdmin}?`,
           html: `<div style="text-align:center;">
@@ -613,7 +580,6 @@
       }
 
       function formatNomor(nomor) {
-        // Format: +62 821 4122 5949
         return nomor.replace(/(\d{2})(\d{3})(\d{4})(\d{4})/, '+$1 $2-$3-$4');
       }
     </script>
