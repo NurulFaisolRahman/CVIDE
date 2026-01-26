@@ -24,9 +24,8 @@ $warningAktif = $persentase > 50;
                     <!-- Judul Kegiatan -->
                     <div class="col-md-3 mb-3 mb-md-0">
                         <h5 class="mb-1 text-primary font-weight-bold">
-                            <i class="fa fa-folder-open mr-2"></i>Renstra Diskop Banyuwangi
+                            <i class="fa fa-folder-open mr-2"></i><?=$NamaKegiatan?>
                         </h5>
-                        <small class="text-muted font-weight-bold"><?=$NamaKegiatan?></small>
                     </div>
 
                     <!-- Total Nominal Lengkap (Sebelum Pengurangan) -->
