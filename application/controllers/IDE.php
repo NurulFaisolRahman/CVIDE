@@ -1838,4 +1838,8 @@ class IDE extends CI_Controller {
   public function LKPJSitubondo(){
       $this->load->view('LKPJSitubondo');
     }
+
+  public function LKPJBanyuwangi(){
+      $this->load->view('LKPJBanyuwangi');
+    }
 }

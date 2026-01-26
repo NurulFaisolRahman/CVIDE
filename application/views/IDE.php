@@ -1257,11 +1257,11 @@
         <span class="logo-text">Inti Desain Ekonomi Consultant</span>
       </div>
       <nav class="nav-menu">
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
+        <a href="#about">Tentang</a>
+        <a href="#services">Layanan</a>
         <a href="#portfolio">Portfolio</a>
-        <a href="#team">Team</a>
-        <a href="#" onclick="openModal('signInModal')">Sign In</a>
+        <a href="#team">Tim</a>
+        <a href="#" onclick="openModal('signInModal')">Masuk</a>
       </nav>
     </div>
   </header>
@@ -1340,7 +1340,7 @@
           <path d="M12 16l-5-3v-2l5 3 5-3v2l-5 3z"/>
         </svg>
       </div>
-      <h3>Economic Development</h3>
+      <h3>Ekonomi Pembangunan</h3>
     </div>
 
     <div class="service-card">
@@ -1350,7 +1350,7 @@
           <path d="M7 12h2v5H7zm4-7h2v12h-2zm4 4h2v8h-2z"/>
         </svg>
       </div>
-      <h3>Fiscal & Public Policy</h3>
+      <h3>Fiskal & Kebijakan Publik</h3>
     </div>
 
     <div class="service-card">
@@ -1359,7 +1359,7 @@
           <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
         </svg>
       </div>
-      <h3>Regional Planning</h3>
+      <h3>Perencanaan Regional</h3>
     </div>
 
     <div class="service-card">
@@ -1368,7 +1368,7 @@
           <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
         </svg>
       </div>
-      <h3>Management</h3>
+      <h3>Manajemen</h3>
     </div>
 
     <!-- New IT Service Added -->
@@ -1379,7 +1379,7 @@
           <path d="M20 3H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h6v2H8v2h8v-2h-2v-2h6c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 12H4V5h16v10z"/>
         </svg>
       </div>
-      <h3>IT Services</h3>
+      <h3>Layanan IT</h3>
     </div>
 
   </div>
@@ -1503,7 +1503,7 @@
   <!-- Partners Section -->
   <section id="partners" class="section">
     <div class="section-title">
-      <h2>Our Partners</h2>
+      <h2>Mitra Kami</h2>
       <p>Jejaring Kemitraan Kami: Bersinergi untuk Mencapai Tujuan Bersama.</p>
     </div>
     
@@ -1595,13 +1595,13 @@
   <!-- Team Section -->
   <section id="team" class="section">
     <div class="section-title">
-      <h2>Our Team</h2>
+      <h2>Tim Kami</h2>
       <p>Kenali Tim Profesional Kami yang Siap Memberikan Solusi Terbaik.</p>
     </div>
 
     <!-- Core Team -->
     <div class="team-section">
-      <h3 class="team-category">Researcher Team</h3>
+      <h3 class="team-category">Tim Riset</h3>
       <div class="team-grid core-team">
         <div class="team-card">
           <div class="team-image">
@@ -1652,7 +1652,7 @@
 
     <!-- Support Team -->
     <div class="team-section">
-      <h3 class="team-category">Support Team</h3>
+      <h3 class="team-category">Tim Support</h3>
       <div class="team-grid support-team">
         <div class="team-card">
           <div class="team-image">
@@ -1714,7 +1714,7 @@
 
     <!-- External Team -->
     <div class="team-section">
-      <h3 class="team-category">External Expert Collaboration</h3>
+      <h3 class="team-category">Kolaborasi para ahli</h3>
        <div class="title-expert">
       <p>CV Inti Desain Ekonomi (IDE) terus mengembangkan profesionalitas dan keahlian dengan berkolaborasi 
         bersama para ahli eksternal, baik akademisi maupun praktisi dari sektor swasta dan pemerintah, 
@@ -1864,7 +1864,7 @@
   <div id="signInModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">Sign In</h3>
+        <h3 class="modal-title">Masuk</h3>
         <button class="modal-close" onclick="closeModal('signInModal')">&times;</button>
       </div>
       <div class="modal-body">
@@ -1876,7 +1876,7 @@
           <label class="form-label">Password</label>
           <input type="password" class="form-input" id="Password" placeholder="Enter your password">
         </div>
-        <button class="btn-primary" id="Masuk">Sign In</button>
+        <button class="btn-primary" id="Masuk">Masuk</button>
       </div>
     </div>
   </div>
