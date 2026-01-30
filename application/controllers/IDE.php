@@ -1813,8 +1813,8 @@ class IDE extends CI_Controller {
 		$this->load->view('ExcelMatrikulasi',$Data);
   }
 
-  public function RenjaBanyuwangi(){
-    $this->load->view('RenjaBanyuwangi');
+  public function DinasSosialBanyuwangi(){
+    $this->load->view('DinsosBanyuwangi');
   }
 
    public function KabupatenPonorogo(){
@@ -1842,4 +1842,5 @@ class IDE extends CI_Controller {
   public function LKPJBanyuwangi(){
       $this->load->view('LKPJBanyuwangi');
     }
+    
 }

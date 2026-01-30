@@ -86,6 +86,7 @@
                                 <a class="btn btn-success btn-block" onclick="window.open('https://docs.google.com/spreadsheets/d/1RGJkEdyN6kVzkj6zU4qriIYomLbAx45DAlDCsfs3Yxs/edit?usp=drive_link')" role="button"><b>KEBUTUHAN BAB III</b></a>
                                 <a class="btn btn-success btn-block" onclick="window.open('https://docs.google.com/spreadsheets/d/1r5NuyymaPcXlPtAEWrqCkOPsPEqVWvjSbfFMRmYH9S0/edit?usp=drive_link')" role="button"><b>KEBUTUHAN BAB IV</b></a>
                                 <a class="btn btn-success btn-block" onclick="window.open('https://drive.google.com/file/d/1_EmHbIrQL3URC1JxNvT_JsWg3pcnYLmY/view?usp=drive_link')" role="button"><b>RANWAL RENSTRA</b></a>
+                                <a class="btn btn-success btn-block" onclick="window.open('https://drive.google.com/file/d/1K1gIpgPDk0KdLepmJtq2DVEl_c9Ezn-k/view?usp=drive_link')" role="button"><b>RANKHIR RENSTRA</b></a>
                                 <a class="btn btn-success btn-block" onclick="window.open('https://docs.google.com/document/d/1Kp6MZxS-lwFX6yyWYJbVy8s3O22CVpXn/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')" role="button"><b>DAFTAR ISI</b></a>
                                 <a class="btn btn-success btn-block" onclick="window.open('https://docs.google.com/document/d/1XKBKjz1i9f10XaKXOHwLv1ka74ejkqfZ/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')" role="button"><b>DAFTAR TABEL</b></a>
                                 <a class="btn btn-success btn-block" onclick="window.open('https://docs.google.com/document/d/1O1Lx3fmJfjU3ssWHNSxvBcNOLVG9WZWt/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')" role="button"><b>DAFTAR GAMBAR</b></a>
@@ -107,7 +108,7 @@
                 <div class="panel-heading" role="tab">
                   <h4 style="text-align: left;" class="panel-title">
                     <a style="text-decoration: none;" role="button" data-toggle="collapse" data-parent="#accordion" href="#Dinsos" aria-expanded="true" aria-controls="Dinsos">
-                      <b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> RENCANA KERJA</b>
+                      <b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> RENCANA KERJA 2026</b>
                     </a>
                   </h4>
                 </div>
@@ -142,6 +143,91 @@
                   </div>
                 </div>
               </div>
+                  <div class="panel-group" style="margin-top: 5px;" id="accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab">
+                      <h4 style="text-align: left;" class="panel-title">
+                        <a style="text-decoration: none;" role="button" data-toggle="collapse"
+                          data-parent="#accordion" href="#Renja2027" aria-expanded="true"
+                          aria-controls="Renja2027">
+                          <b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> RENCANA KERJA 2027</b>
+                        </a>
+                      </h4>
+                    </div>
+
+                    <div id="Renja2027" class="panel-collapse collapse" role="tabpanel">
+                      <div class="panel-body">
+                        <div style="margin-bottom: 0px;" class="panel-group" id="accordionRenja2027"
+                            role="tablist" aria-multiselectable="true">
+
+                          <div class="panel panel-default">
+                            <div class="panel-heading" role="tab">
+                              <h4 style="text-align: left;" class="panel-title">
+                                <a style="text-decoration: none;" role="button" data-toggle="collapse"
+                                  data-parent="#accordionRenja2027" href="#Renja2027Permendagri"
+                                  aria-expanded="true" aria-controls="Renja2027Permendagri">
+                                  <b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> VERSI PERMENDAGRI</b>
+                                </a>
+                              </h4>
+                            </div>
+
+                            <div id="Renja2027Permendagri" class="panel-collapse collapse" role="tabpanel">
+                              <div style="padding: 10px;font-size: 12pt;font-family: Cambria;letter-spacing: 1px;"
+                                  class="panel-body">
+
+                                <!-- ISI SAMA DENGAN RENCANA KERJA -->
+                                <a class="btn btn-success btn-block"
+                                  onclick="window.open('https://drive.google.com/drive/folders/1FSwIB4V3rY_k91jaKex0nWHeIga-_8Z5?usp=drive_link')"
+                                  role="button"><b>KUMPULAN DATA</b></a>
+
+                                <a class="btn btn-primary btn-block"
+                                  onclick="window.open('https://docs.google.com/spreadsheets/d/1qSD4XQlZm06bcCm1y0eeLy0QC9mFaLzQ/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"
+                                  role="button"><b>KEBUTUHAN BAB II</b></a>
+
+                                <a class="btn btn-primary btn-block"
+                                  onclick="window.open('https://docs.google.com/spreadsheets/d/1nUsSfcB4ou-SO_xk0Gsl30lptoyBLRKJ/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"
+                                  role="button"><b>KEBUTUHAN BAB III</b></a>
+
+                                <a class="btn btn-success btn-block"
+                                  onclick="window.open('https://docs.google.com/document/d/1WbXkJ2PLp7G-HofhCt5F0Y0vRQTEBFmb/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"
+                                  role="button"><b>DAFTAR ISI</b></a>
+
+                                <a class="btn btn-success btn-block"
+                                  onclick="window.open('https://docs.google.com/document/d/1FEoTILfK5ZVuLzvfCy8gldYsrXFoFDlg/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"
+                                  role="button"><b>DAFTAR TABEL</b></a>
+
+                                <a class="btn btn-success btn-block"
+                                  onclick="window.open('https://docs.google.com/document/d/17SHZoZyOzOk9LuBRA1lzejcI9GXLj92P/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"
+                                  role="button"><b>DAFTAR GAMBAR</b></a>
+
+                                <a class="btn btn-primary btn-block"
+                                  onclick="window.open('https://docs.google.com/document/d/1BMvOpjRXi7duitYgKvfthYF90j-NDELn/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"
+                                  role="button"><b>BAB I PENDAHULUAN</b></a>
+
+                                <a class="btn btn-primary btn-block"
+                                  onclick="window.open('https://docs.google.com/document/d/1nfSb1Q2y8qrTeY9BvTKjzaNtSk9XR6iV/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"
+                                  role="button"><b>BAB II HASIL EVALUASI RENJA</b></a>
+
+                                <a class="btn btn-primary btn-block"
+                                  onclick="window.open('https://docs.google.com/document/d/1fZpigAUmYs7DL6rRYy1JlTCREXixsJPm/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"
+                                  role="button"><b>BAB III TUJUAN DAN SASARAN</b></a>
+
+                                <a class="btn btn-primary btn-block"
+                                  onclick="window.open('https://docs.google.com/document/d/18fHj0q0JP5I_TR0iZRiRwQB2M253Wpw2/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"
+                                  role="button"><b>BAB IV RENCANA KERJA DAN PENDANAAN</b></a>
+
+                                <a class="btn btn-primary btn-block"
+                                  onclick="window.open('https://docs.google.com/document/d/1QqL_ecN3MCmID4_4e8qdaERuvbg0zf2K/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')"
+                                  role="button"><b>BAB V PENUTUP</b></a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
             </div>
           </div>
         </div>
