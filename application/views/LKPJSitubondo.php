@@ -362,6 +362,13 @@
 
       <div class="link-list" id="linkList">
         
+        <a class="bio-btn"
+   style="background: linear-gradient(to right, #ffffff, #e6f0ff); border: 1px solid #1a73e8;"
+   href="LaporanSitubondo">
+    <i class="fas fa-book-open" style="color: #1a73e8;"></i>
+    <span><b>LAPORAN</b></span>
+</a>
+
         <a class="bio-btn" style="background: linear-gradient(to right, #ffffff, #e6f0ff); border: 1px solid #1a73e8;" onclick="konfirmasiBuka('Panduan Pengisian', 'https://docs.google.com/document/d/1qxnO8zH-h4S4v8UUTe6KCu1P2SmOd7qh/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')">
             <i class="fas fa-book-open" style="color: #1a73e8;"></i><span><b>Panduan Pengisian Link</b></span>
         </a>
@@ -441,13 +448,13 @@
     </div>
 
     <div class="footer">
-      <p>SITUBONDO NAIK KELAS  <br> © 2025 Tim Penyusun LKPJ</p>
+      <p>SITUBONDO NAIK KELAS  <br> © 2026 Tim Penyusun LKPJ</p>
     </div>
     
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-      var countDownDate = new Date("Jan 13, 2026 23:59:59").getTime();
+      var countDownDate = new Date("Feb 4, 2026 23:59:59").getTime();
       var x = setInterval(function() {
         var now = new Date().getTime();
         var distance = countDownDate - now;
