@@ -1835,6 +1835,10 @@ class IDE extends CI_Controller {
     $this->load->view('RenstraSitubondo');
   }
 
+  public function LaporanSitubondo(){
+    $this->load->view('LaporanSitubondo');
+  }
+
   public function LKPJSitubondo(){
       $this->load->view('LKPJSitubondo');
     }
