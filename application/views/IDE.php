@@ -1413,7 +1413,7 @@
   <header class="header">
     <div class="header-content">
       <div class="logo">
-        <a><img src="assets/img/logo.png" alt="LogoIDE"></a>  
+        <img src="<?= base_url('assets/img/logo.png') ?>" alt="LogoIDE">
         <span class="logo-text">Inti Desain Ekonomi Consultant</span>
       </div>
       <!-- Ganti bagian <nav class="nav-menu"> menjadi seperti ini -->
@@ -1457,7 +1457,7 @@
           <p class="mega-desc">Pendampingan strategis berbasis data ekonomi.</p>
 
           <h4 class="mega-heading">Survei & Penelitian</h4>
-          <a href="MenuSurvei">Survei Kepuasan Masyarakat</a>
+          <a href="IDE/MenuSurvei">Survei Kepuasan Masyarakat</a>
           <p class="mega-desc">Metode ilmiah dengan analisis mendalam.</p>
         </div>
         <div class="mega-column">
