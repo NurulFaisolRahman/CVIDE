@@ -1457,7 +1457,7 @@
           <p class="mega-desc">Pendampingan strategis berbasis data ekonomi.</p>
 
           <h4 class="mega-heading">Survei & Penelitian</h4>
-          <a href="IDE/MenuSurvei">Survei Kepuasan Masyarakat</a>
+          <a href="MenuSurvei">Survei Kepuasan Masyarakat</a>
           <p class="mega-desc">Metode ilmiah dengan analisis mendalam.</p>
         </div>
         <div class="mega-column">
