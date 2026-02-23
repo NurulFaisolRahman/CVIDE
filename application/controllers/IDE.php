@@ -797,6 +797,10 @@ class IDE extends CI_Controller {
     $this->load->view('SurveiIKMSitubondo',$Data);
   }
 
+    public function SurveiIKMYogyakarta(){
+    $this->load->view('SurveiIKMYogyakarta');
+  }
+
   public function DownloadSurveiIKM(){
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
     $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.01.%'")->result_array();
@@ -1244,6 +1248,33 @@ class IDE extends CI_Controller {
       echo 'Gagal Mengirim Survei!';
     }
   }
+
+public function InputIKMYogyakarta()
+{
+    $data = [
+        'Nama'       => $this->input->post('Nama', true),
+        'Gender'     => $this->input->post('Gender', true),
+        'Usia'       => $this->input->post('Usia', true),
+        'HP'         => $this->input->post('HP', true),
+        'Pendidikan' => $this->input->post('Pendidikan', true),
+        'Pekerjaan'  => $this->input->post('Pekerjaan', true),
+        'Kualifikasi'   => $this->input->post('Kualifikasi', true),
+        'Layanan'    => $this->input->post('Layanan', true),
+        'Saran'      => $this->input->post('Saran', true),
+        'Poin'       => $this->input->post('Poin', true),
+        'Alasan'     => $this->input->post('Alasan', true)
+    ];
+
+    $insert = $this->db->insert('ikmyogya', $data);
+
+    if (!$insert) {
+        $error = $this->db->error();
+        echo $error['message'];
+        return;
+    }
+
+    echo '1';
+}
 
 	function ListKabupaten(){
     $Kabupaten = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE "."'".$_POST['Kode'].".%"."' AND length(Kode) = 5")->result_array();
