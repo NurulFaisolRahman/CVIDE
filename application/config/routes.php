@@ -50,5 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['default_controller'] = 'IDE';
-$route['404_override'] = '';
+$route['404_override'] = 'errors/show_404';
+$route['403_override'] = 'errors/show_403';
+$route['legalitas'] = 'IDE/legalitas';
 $route['translate_uri_dashes'] = FALSE;

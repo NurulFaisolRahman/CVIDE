@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Survei Kepuasan Masyarakat - BAPPEDA Yogyakarta</title>
+  <title>Survei Kepuasan Masyarakat - BAKESBANGPOL Kota Yogyakarta</title>
   <!-- Favicons -->
   <link href="../assets/img/favicon.ico" rel="icon">
   <!-- Vendor CSS Files -->
@@ -444,7 +444,7 @@
   <div class="header-section text-center">
     <div class="container">
       <h2 class="header-title mb-2">SURVEI KEPUASAN MASYARAKAT</h2>
-      <h5 class="header-subtitle">BAPPEDA Kota Yogyakarta</h5>
+      <h5 class="header-subtitle">Badan Kesatuan Bangsa dan Politik Kota Yogyakarta</h5>
     </div>
   </div>
 
@@ -454,10 +454,10 @@
         <p class="text-justify mb-0">
           Dalam rangka peningkatan kualitas pelayanan publik secara berkelanjutan dan memenuhi amanat PERMENPAN RB Nomor 14 Tahun 2017 tentang Pedoman Penyusunan Survei Kepuasan Masyarakat Unit Penyelenggara Pelayanan Publik, bahwa penyelenggara pelayanan publik wajib melaksanakan Survei Kepuasan Masyarakat (SKM) secara berkala minimal 1 (satu) kali setahun.
           <br><br>
-          Atas dasar tersebut, dengan ini BAPPEDA Kota Yogyakarta bermaksud melakukan Survei Kepuasan Masyarakat (SKM) tentang Penyelenggaraan Pelayanan BAPPEDA Kota Yogyakarta. Kami berharap Bapak/Ibu/Saudara/Saudari berkenan untuk menjawab kuesioner di bawah ini.
+          Atas dasar tersebut, dengan ini BAKESBANGPOL Kota Yogyakarta bermaksud melakukan Survei Kepuasan Masyarakat (SKM) tentang Penyelenggaraan Pelayanan BAKESBANGPOL Kota Yogyakarta. Kami berharap Bapak/Ibu/Saudara/Saudari berkenan untuk menjawab kuesioner di bawah ini.
           <br><br>
-          <b>Pilih jawaban sesuai dengan pendapat anda tentang Kinerja (Performa) dan Kepentingan (Importance) pelayanan pada BAPPEDA Kota Yogyakarta.</b>
-          <span class="text-danger">*) Unit layanan adalah Bidang dan Fungsional Perencana pada Bappeda.</span>
+          <b>Pilih jawaban sesuai dengan pendapat anda tentang Kinerja (Performa) dan Kepentingan (Importance) pelayanan pada BAKESBANGPOL Kota Yogyakarta.</b>
+          <span class="text-danger">*) Unit layanan adalah Bidang dan Fungsional Perencana pada BAKESBANGPOL.</span>
         </p>
       </div>
     </div>
@@ -592,7 +592,7 @@
             </select>
           </div>
           <small class="form-text text-muted mt-2">
-            Pilih satu jenis layanan yang paling sesuai dengan pengalaman Anda di BAPPEDA Kota Yogyakarta.
+            Pilih satu jenis layanan yang paling sesuai dengan pengalaman Anda di BAKESBANGPOL Kota Yogyakarta.
           </small>
         </div>
       </div>
@@ -606,28 +606,28 @@
       <div class="card-body">
         <?php 
           $Tanya = array(
-            '1. Bagaimana pendapat saudara tentang kesesuaian persyaratan layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) dengan peraturan perundang-undangan di unit pelayanan Bappeda Kota Yogyakarta?',
-            '2. Bagaimana kepentingan/harapan saudara tentang kesesuaian persyaratan layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) dengan peraturan perundang-undangan di unit pelayanan Bappeda Kota Yogyakarta?',
-            '3. Bagaimana pemahaman Saudara tentang kejelasan dan kemudahan SOP/prosedur layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kota Yogyakarta?',
-            '4. Bagaimana kepentingan/harapan Saudara tentang kejelasan dan kemudahan SOP/prosedur layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kota Yogyakarta?',
-            '5. Bagaimana pendapat Saudara tentang kecepatan dan ketepatan waktu dalam memberikan layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kota Yogyakarta?',
-            '6. Bagaimana kepentingan/harapan Saudara tentang kecepatan dan ketepatan waktu dalam memberikan layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kota Yogyakarta?',
-            '7. Bagaimana pendapat saudara tentang biaya/tarif layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di BAPPEDA telah sesuai dengan peraturan yang berlaku?',
-            '8. Bagaimana kepentingan/harapan saudara tentang biaya/tarif layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di BAPPEDA telah sesuai dengan peraturan yang berlaku?',
-            '9. <strong>Pelayanan di BAPPEDA Kota Yogyakarta 100% GRATIS</strong> dan tidak dipungut biaya/tarif untuk mendapatkan pelayanan.</p>
+            '1. Bagaimana pendapat saudara tentang kesesuaian persyaratan layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) dengan peraturan perundang-undangan di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
+            '2. Bagaimana kepentingan/harapan saudara tentang kesesuaian persyaratan layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) dengan peraturan perundang-undangan di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
+            '3. Bagaimana pemahaman Saudara tentang kejelasan dan kemudahan SOP/prosedur layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
+            '4. Bagaimana kepentingan/harapan Saudara tentang kejelasan dan kemudahan SOP/prosedur layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
+            '5. Bagaimana pendapat Saudara tentang kecepatan dan ketepatan waktu dalam memberikan layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
+            '6. Bagaimana kepentingan/harapan Saudara tentang kecepatan dan ketepatan waktu dalam memberikan layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
+            '7. Bagaimana pendapat saudara tentang biaya/tarif layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di BAKESBANGPOL telah sesuai dengan peraturan yang berlaku?',
+            '8. Bagaimana kepentingan/harapan saudara tentang biaya/tarif layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di BAKESBANGPOL telah sesuai dengan peraturan yang berlaku?',
+            '9. <strong>Pelayanan di BAKESBANGPOL Kota Yogyakarta 100% GRATIS</strong> dan tidak dipungut biaya/tarif untuk mendapatkan pelayanan.</p>
                  <p>Biaya/tarif yang dimaksud adalah biaya jasa setelah memperoleh pelayanan konsultasi, evaluasi, dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya), bukan biaya transportasi atau cetak dokumen.</p>
                  <p>Jika pelayanan diterima secara gratis, pilih opsi <strong>nomor 4 (Gratis)</strong>. Jika terdapat biaya setelah pelayanan, pilih opsi selain Gratis dan <strong>wajib menuliskan alasan serta rincian biaya</strong>.</p>',
-            '10. Bagaimana kepentingan/harapan saudara tentang kewajaran biaya/tarif dalam layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di BAPPEDA Kota Yogyakarta?',
-            '11. Bagaimana pendapat anda tentang kesesuaian produk layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) substansi dan arahan antara yang tercantum dalam standar regulasi dengan hasil yang diberikan di unit pelayanan Bappeda Kota Yogyakarta?',
-            '12. Bagaimana kepentingan/harapan anda tentang kesesuaian produk layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) substansi dan arahan antara yang tercantum dalam standar regulasi dengan hasil yang diberikan di unit pelayanan Bappeda Kota Yogyakarta?',
-            '13. Bagaimana pendapat Saudara tentang kompetensi/ kemampuan SDM (Kabid dan Perencana) dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kota Yogyakarta?',
-            '14. Bagaimana kepentingan/harapan Saudara tentang kompetensi/ kemampuan SDM (Kabid dan Perencana) dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kota Yogyakarta?',
-            '15. Bagaimana pendapat saudara perilaku petugas dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) terkait kesopanan dan keramahan di unit pelayanan Bappeda Kota Yogyakarta?',
-            '16. Bagaimana kepentingan/harapan saudara perilaku petugas dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) terkait kesopanan dan keramahan di unit pelayanan Bappeda Kota Yogyakarta?',
-            '17. Bagaimana pendapat Saudara tentang kualitas sarana dan prasarana (Wifi, Proyektor, AC, dll) dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kota Yogyakarta?',
-            '18. Bagaimana kepentingan/harapan Saudara tentang kualitas sarana dan prasarana (Wifi, Proyektor, AC, dll) dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kota Yogyakarta?',
-            '19. Bagaimana pendapat Saudara tentang penanganan pengaduan pengguna layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kota Yogyakarta?',
-            '20. Bagaimana kepentingan/harapan Saudara tentang penanganan pengaduan pengguna layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan Bappeda Kota Yogyakarta?',
+            '10. Bagaimana kepentingan/harapan saudara tentang kewajaran biaya/tarif dalam layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di BAKESBANGPOL Kota Yogyakarta?',
+            '11. Bagaimana pendapat anda tentang kesesuaian produk layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) substansi dan arahan antara yang tercantum dalam standar regulasi dengan hasil yang diberikan di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
+            '12. Bagaimana kepentingan/harapan anda tentang kesesuaian produk layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) substansi dan arahan antara yang tercantum dalam standar regulasi dengan hasil yang diberikan di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
+            '13. Bagaimana pendapat Saudara tentang kompetensi/ kemampuan SDM (Kabid dan Perencana) dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
+            '14. Bagaimana kepentingan/harapan Saudara tentang kompetensi/ kemampuan SDM (Kabid dan Perencana) dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
+            '15. Bagaimana pendapat saudara perilaku petugas dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) terkait kesopanan dan keramahan di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
+            '16. Bagaimana kepentingan/harapan saudara perilaku petugas dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) terkait kesopanan dan keramahan di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
+            '17. Bagaimana pendapat Saudara tentang kualitas sarana dan prasarana (Wifi, Proyektor, AC, dll) dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
+            '18. Bagaimana kepentingan/harapan Saudara tentang kualitas sarana dan prasarana (Wifi, Proyektor, AC, dll) dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
+            '19. Bagaimana pendapat Saudara tentang penanganan pengaduan pengguna layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
+            '20. Bagaimana kepentingan/harapan Saudara tentang penanganan pengaduan pengguna layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
             '21. Bagaimana pendapat Saudara tentang transparansi pelayanan yang diberikan?',
             '22. Bagaimana kepentingan/harapan Saudara tentang transparansi pelayanan yang diberikan?',
             '23. Bagaimana integritas petugas pelayanan dalam memberikan pelayanan?',
@@ -694,7 +694,7 @@
         <?php } ?>
         
         <div class="question-container fade-in">
-          <div class="question-text">Silakan memberikan masukan berupa saran atau kritik terhadap layanan BAPPEDA Kota Yogyakarta :</div>
+          <div class="question-text">Silakan memberikan masukan berupa saran atau kritik terhadap layanan BAKESBANGPOL Kota Yogyakarta :</div>
           <div class="options-container">
             <textarea class="form-control" rows="4" id="Saran" placeholder="Tulis saran/kritik Anda di sini..."></textarea>
           </div>

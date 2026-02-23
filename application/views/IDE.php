@@ -1245,6 +1245,117 @@
     ::-webkit-scrollbar-thumb:hover {
       background: var(--apple-text);
     }
+
+    /* =============================================
+   NAV MENU – ukuran font seragam di semua level
+============================================= */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;          /* jarak antar menu utama lebih rapat */
+}
+
+.nav-menu > a,
+.dropbtn,
+.mega-column a,
+.mega-heading,
+.mega-desc {
+  font-family: inherit;           /* pastikan font sama dengan body */
+  font-size: 1rem;                /* ukuran font dasar seragam 16px */
+  font-weight: 500;               /* medium untuk konsistensi */
+  line-height: 1.5;
+}
+
+.dropbtn {
+  font-weight: 600;               /* sedikit lebih tebal untuk menu utama */
+}
+
+.mega-heading {
+  font-size: 1.05rem;             /* heading sedikit lebih besar tapi tetap proporsional */
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.mega-column a,
+.mega-desc {
+  font-size: 0.94rem;             /* sedikit lebih kecil agar compact */
+  color: #444;
+}
+
+.mega-desc {
+  font-size: 0.875rem;            /* deskripsi lebih kecil & ringan */
+  font-weight: 400;
+  color: #666;
+  margin: 4px 0 20px 0;
+  line-height: 1.45;
+}
+
+/* =============================================
+   DROPDOWN – versi lebih kecil & compact
+============================================= */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content.mega-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  min-width: 580px;               /* ← diperkecil dari 720px */
+  max-width: 85vw;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+  border-radius: 10px;
+  margin-top: 4px;
+  z-index: 999;
+  padding: 24px 32px;             /* padding lebih kecil */
+}
+
+.dropdown:hover .dropdown-content.mega-dropdown {
+  display: block;
+}
+
+.mega-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;                      /* jarak antar kolom dikurangi */
+}
+
+.mega-column a {
+  display: block;
+  padding: 8px 0;                 /* jarak antar link lebih rapat */
+  transition: all 0.2s;
+}
+
+.mega-column a:hover {
+  color: #0a58ca;
+  padding-left: 6px;
+}
+
+/* Panah kecil */
+.arrow-down {
+  font-size: 0.75rem;
+  margin-left: 5px;
+  opacity: 0.8;
+}
+
+/* Responsif mobile (opsional tapi direkomendasikan) */
+@media (max-width: 992px) {
+  .mega-dropdown {
+    min-width: 320px;
+    padding: 20px;
+    left: 0;
+    transform: none;
+  }
+  .mega-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
   </style>
 </head>
 
@@ -1256,13 +1367,118 @@
         <a><img src="assets/img/logo.png" alt="LogoIDE"></a>  
         <span class="logo-text">Inti Desain Ekonomi Consultant</span>
       </div>
-      <nav class="nav-menu">
-        <a href="#about">Tentang</a>
-        <a href="#services">Layanan</a>
-        <a href="#portfolio">Portfolio</a>
-        <a href="#team">Tim</a>
-        <a href="#" onclick="openModal('signInModal')">Masuk</a>
-      </nav>
+      <!-- Ganti bagian <nav class="nav-menu"> menjadi seperti ini -->
+<nav class="nav-menu">
+  <!-- Tentang – sekarang punya dropdown -->
+  <div class="dropdown">
+    <a href="#about" class="dropbtn">
+      Tentang <span class="arrow-down"></span>
+    </a>
+    <div class="dropdown-content mega-dropdown">
+      <div class="mega-grid">
+        <div class="mega-column">
+          <h4 class="mega-heading">Profil Perusahaan</h4>
+          <a href="#sejarah">Sejarah & Visi Misi</a>
+          <p class="mega-desc">Inti Desain Ekonomi Consultant berdiri sejak 2015 dengan fokus pada solusi ekonomi berkelanjutan.</p>
+
+          <h4 class="mega-heading">Legal & Sertifikasi</h4>
+          <a href="<?= base_url('legalitas') ?>">Sertifikasi & Izin Usaha</a>
+          <p class="mega-desc">Terdaftar resmi dan bekerja sama dengan lembaga terkemuka di Indonesia.</p>
+        </div>
+        <div class="mega-column">
+          <h4 class="mega-heading">Lokasi & Kontak</h4>
+          <a href="https://www.google.com/maps/search/?api=1&query=-7.929581,112.640292">Kantor Malang</a>
+          <p class="mega-desc">Berbasis di Malang, siap melayani seluruh Indonesia dan regional.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Layanan – tetap seperti sebelumnya (sudah compact) -->
+  <div class="dropdown">
+    <a href="#services" class="dropbtn">
+      Layanan <span class="arrow-down"></span>
+    </a>
+    <div class="dropdown-content mega-dropdown">
+      <div class="mega-grid">
+        <div class="mega-column">
+          <h4 class="mega-heading">Konsultasi</h4>
+          <a href="#konsultasi-ekonomi">Konsultasi Ekonomi</a>
+          <a href="#konsultasi-kebijakan">Analisis Kebijakan Publik</a>
+          <p class="mega-desc">Pendampingan strategis berbasis data ekonomi.</p>
+
+          <h4 class="mega-heading">Survei & Penelitian</h4>
+          <a href="IDE/SurveiIKMYogyakarta">Survei Kepuasan Masyarakat</a>
+          <p class="mega-desc">Metode ilmiah dengan analisis mendalam.</p>
+        </div>
+        <div class="mega-column">
+          <h4 class="mega-heading">Penyusunan Dokumen</h4>
+          <a href="#laporan-studi">Laporan & Studi Kelayakan</a>
+          <p class="mega-desc">Dokumen siap pakai untuk proposal & perencanaan.</p>
+
+          <h4 class="mega-heading">Pelatihan</h4>
+          <a href="#workshop-ekonomi">Workshop Ekonomi & Keuangan</a>
+          <p class="mega-desc">Pelatihan praktis untuk meningkatkan kompetensi.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Portfolio – sekarang punya dropdown -->
+  <div class="dropdown">
+    <a href="#portfolio" class="dropbtn">
+      Portfolio <span class="arrow-down"></span>
+    </a>
+    <div class="dropdown-content mega-dropdown">
+      <div class="mega-grid">
+        <div class="mega-column">
+          <h4 class="mega-heading">Proyek Pemerintahan</h4>
+          <a href="#proyek-pemda">Survei Ekonomi Daerah</a>
+          <a href="#studi-kelayakan">Studi Kelayakan Infrastruktur</a>
+          <p class="mega-desc">Kerjasama dengan berbagai Pemda di Jawa Timur & luar pulau.</p>
+        </div>
+        <div class="mega-column">
+          <h4 class="mega-heading">Proyek Swasta</h4>
+          <a href="#klien-korporasi">Analisis Pasar & Investasi</a>
+          <a href="#umkm">Pendampingan UMKM</a>
+          <p class="mega-desc">Lebih dari 50 klien swasta dengan hasil terukur.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tim – sekarang punya dropdown -->
+  <div class="dropdown">
+    <a href="#team" class="dropbtn">
+      Tim <span class="arrow-down"></span>
+    </a>
+    <div class="dropdown-content mega-dropdown">
+      <div class="mega-grid">
+        <div class="mega-column">
+          <h4 class="mega-heading">Pendiri & Direktur</h4>
+          <a href="#direktur">Profil Direktur Utama</a>
+          <p class="mega-desc">Ahli ekonomi dengan pengalaman 15+ tahun.</p>
+
+          <h4 class="mega-heading">Tim Ahli</h4>
+          <a href="#peneliti">Peneliti & Analis</a>
+          <a href="#konsultan">Konsultan Senior</a>
+        </div>
+        <div class="mega-column">
+          <h4 class="mega-heading">Struktur Organisasi</h4>
+          <a href="#divisi">Divisi & Departemen</a>
+          <p class="mega-desc">Tim multidisiplin: ekonomi, statistik, manajemen, & informatika.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Masuk – sekarang punya dropdown (bisa untuk pilihan login/register atau info akun) -->
+  <div class="dropdown">
+    <a href="#" class="dropbtn" onclick="openModal('signInModal')">
+      Masuk <span class="arrow-down"></span>
+    </a>
+  </div>
+</nav>
     </div>
   </header>
 
@@ -1371,7 +1587,6 @@
       <h3>Manajemen</h3>
     </div>
 
-    <!-- New IT Service Added -->
     <div class="service-card">
       <div class="service-icon">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
