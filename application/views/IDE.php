@@ -1534,9 +1534,9 @@
   <!-- Hero Section -->
   <section class="hero">
     <div class="hero-slider">
-      <div class="hero-slide" style="background-image: url('assets/img/background/banner5.png');"></div>
-      <div class="hero-slide" style="background-image: url('assets/img/background/banner2.png');"></div>
-      <div class="hero-slide" style="background-image: url('assets/img/background/banner6.png');"></div>
+      <div class="hero-slide" style="background-image: url('assets/img/background/banner5.webp');"></div>
+      <div class="hero-slide" style="background-image: url('assets/img/background/banner2.webp');"></div>
+      <div class="hero-slide" style="background-image: url('assets/img/background/banner6.webp');"></div>
     </div>
     <div class="slider-nav">
       <div class="slider-dot active"></div>
