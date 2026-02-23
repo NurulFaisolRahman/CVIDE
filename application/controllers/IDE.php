@@ -1877,9 +1877,15 @@ public function InputIKMYogyakarta()
   public function LKPJBanyuwangi(){
       $this->load->view('LKPJBanyuwangi');
     }
+
+  public function MenuSurvei(){
+      $this->load->view('MenuSurvei');
+    }
   
     public function legalitas() {
         $data['title'] = 'Legalitas & Sertifikasi | IDE Consultant';
         $this->load->view('legalitas', $data);
+
+        
     }
 }
