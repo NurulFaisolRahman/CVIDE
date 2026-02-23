@@ -1869,7 +1869,7 @@
       <div class="team-grid core-team">
         <div class="team-card">
           <div class="team-image">
-            <img src="assets/img/team/Noven.png" alt="Noven">
+            <img src="assets/img/team/foto lama/Noven.webp" alt="Noven">
             <div class="team-overlay"></div>
           </div>
           <div class="team-info">
@@ -1880,7 +1880,7 @@
         </div>
         <div class="team-card">
           <div class="team-image">
-            <img src="assets/img/team/Shaba.png" alt="Shaba">
+            <img src="assets/img/team/foto lama/Shaba.webp" alt="Shaba">
             <div class="team-overlay"></div>
           </div>
           <div class="team-info">
@@ -1891,7 +1891,7 @@
         </div>
         <div class="team-card">
           <div class="team-image">
-            <img src="assets/img/team/Rifta.png" alt="Rifta">
+            <img src="assets/img/team/foto lama/Rifta.webp" alt="Rifta">
             <div class="team-overlay"></div>
           </div>
           <div class="team-info">
@@ -1902,7 +1902,7 @@
         </div>
         <div class="team-card">
           <div class="team-image">
-            <img src="assets/img/team/Dila.png" alt="Dila">
+            <img src="assets/img/team/foto lama/Dila.webp" alt="Dila">
             <div class="team-overlay"></div>
           </div>
           <div class="team-info">
@@ -1920,7 +1920,7 @@
       <div class="team-grid support-team">
         <div class="team-card">
           <div class="team-image">
-            <img src="assets/img/team/Syinta.png" alt="Syinta">
+            <img src="assets/img/team/foto lama/Syinta.webp" alt="Syinta">
             <div class="team-overlay"></div>
           </div>
           <div class="team-info">
@@ -1931,7 +1931,7 @@
         </div>
         <div class="team-card">
           <div class="team-image">
-            <img src="assets/img/team/Mahrus.png" alt="Mahrus">
+            <img src="assets/img/team/foto lama/Mahrus.webp" alt="Mahrus">
             <div class="team-overlay"></div>
           </div>
           <div class="team-info">
@@ -1942,7 +1942,7 @@
         </div>
         <div class="team-card">
           <div class="team-image">
-            <img src="assets/img/team/titis.png" alt="titis">
+            <img src="assets/img/team/foto lama/titis.webp" alt="titis">
             <div class="team-overlay"></div>
           </div>
           <div class="team-info">
@@ -1953,7 +1953,7 @@
         </div>
         <div class="team-card">
           <div class="team-image">
-            <img src="assets/img/team/Kaka.png   " alt="Kaka">
+            <img src="assets/img/team/foto lama/Kaka.webp   " alt="Kaka">
             <div class="team-overlay"></div>
           </div>
           <div class="team-info">
@@ -1964,7 +1964,7 @@
         </div>
         <div class="team-card">
           <div class="team-image">
-            <img src="assets/img/team/Ifam.png" alt="Ifam">
+            <img src="assets/img/team/foto lama/Ifam.webp" alt="Ifam">
             <div class="team-overlay"></div>
           </div>
           <div class="team-info">
@@ -1987,7 +1987,7 @@
       <div class="team-grid core-team">
         <div class="team-card">
           <div class="team-image">
-            <img src="assets/img/team/rizka.png" alt="Rizka">
+            <img src="assets/img/team/foto lama/rizka.webp" alt="Rizka">
             <div class="team-overlay"></div>
           </div>
           <div class="team-info">
@@ -1998,7 +1998,7 @@
         </div>
         <div class="team-card">
           <div class="team-image">
-            <img src="assets/img/team/faisol.png" alt="Faisol">
+            <img src="assets/img/team/foto lama/faisol.webp" alt="Faisol">
             <div class="team-overlay"></div>
           </div>
           <div class="team-info">
@@ -2009,7 +2009,7 @@
         </div>
         <div class="team-card">
           <div class="team-image">
-            <img src="assets/img/team/titov.png" alt="Titov">
+            <img src="assets/img/team/foto lama/titov.webp" alt="Titov">
             <div class="team-overlay"></div>
           </div>
           <div class="team-info">
