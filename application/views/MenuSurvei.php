@@ -45,7 +45,13 @@
     .logo { display: flex; align-items: center; gap: 12px; }
     .logo img { width: 36px; height: 36px; border-radius: 8px; }
     .logo-text { font-size: 20px; font-weight: 600; color: var(--apple-text); }
-    .nav-menu { display: flex; list-style: none; gap: 32px; margin-left: auto; align-items: center; }
+    .nav-menu { 
+      display: flex; 
+      list-style: none; 
+      gap: 32px; 
+      margin-left: auto; 
+      align-items: center; 
+    }
     .nav-menu a {
       text-decoration: none; color: var(--apple-text);
       font-weight: 400; font-size: 15px; transition: color 0.3s ease; position: relative;
@@ -59,7 +65,7 @@
 
     /* Dropdown Mega Menu */
     .dropdown { position: relative; }
-    .dropbtn { font-weight: 600; cursor: pointer; }
+    .dropbtn { font-weight: 600; cursor: pointer; padding: 8px 0; }
     .dropdown-content.mega-dropdown {
       display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
       background: #fff; min-width: 580px; max-width: 85vw;
@@ -143,39 +149,6 @@
       margin: 0 auto 48px;
       line-height: 1.7;
     }
-    .hero-stats {
-      display: flex;
-      justify-content: center;
-      gap: 0;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 12px;
-      overflow: hidden;
-      background: rgba(255,255,255,0.03);
-      backdrop-filter: blur(12px);
-      max-width: 640px;
-      margin: 0 auto;
-    }
-    .hero-stat {
-      flex: 1;
-      padding: 20px 24px;
-      text-align: center;
-      border-right: 1px solid rgba(255,255,255,0.08);
-    }
-    .hero-stat:last-child { border-right: none; }
-    .hero-stat .val {
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: #fff;
-      display: block;
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-    .hero-stat .lbl {
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-    }
 
     /* Survey Content */
     .survey-content {
@@ -257,12 +230,6 @@
       color: #001428;
       margin-bottom: 16px;
       line-height: 1.3;
-    }
-    .survey-card p {
-      font-size: 0.94rem;
-      color: #4B5563;
-      line-height: 1.7;
-      margin-bottom: 24px;
     }
     .survey-card .btn-view {
       display: inline-flex;
@@ -413,9 +380,6 @@
     }
     @media (max-width: 768px) {
       .nav-menu { display: none; }
-      .hero-stats { flex-direction: column; }
-      .hero-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
-      .hero-stat:last-child { border-bottom: none; }
     }
     </style>
 </head>
@@ -431,6 +395,7 @@
                 <span class="logo-text">Inti Desain Ekonomi Consultant</span>
             </div>
             <nav class="nav-menu">
+              <!-- Tentang -->
               <div class="dropdown">
                 <a href="#about" class="dropbtn">Tentang <span class="arrow-down"></span></a>
                 <div class="dropdown-content mega-dropdown">
@@ -452,6 +417,7 @@
                 </div>
               </div>
 
+              <!-- Layanan -->
               <div class="dropdown">
                 <a href="#services" class="dropbtn">Layanan <span class="arrow-down"></span></a>
                 <div class="dropdown-content mega-dropdown">
@@ -477,20 +443,50 @@
                 </div>
               </div>
 
+              <!-- Portfolio - isi sama persis seperti di landing page utama -->
               <div class="dropdown">
                 <a href="#portfolio" class="dropbtn">Portfolio <span class="arrow-down"></span></a>
                 <div class="dropdown-content mega-dropdown">
-                  <!-- isi sesuai kebutuhan -->
+                  <div class="mega-grid">
+                    <div class="mega-column">
+                      <h4 class="mega-heading">Proyek Pemerintahan</h4>
+                      <a href="#proyek-pemda">Survei Ekonomi Daerah</a>
+                      <a href="#studi-kelayakan">Studi Kelayakan Infrastruktur</a>
+                      <p class="mega-desc">Kerjasama dengan berbagai Pemda di Jawa Timur & luar pulau.</p>
+                    </div>
+                    <div class="mega-column">
+                      <h4 class="mega-heading">Proyek Swasta</h4>
+                      <a href="#klien-korporasi">Analisis Pasar & Investasi</a>
+                      <a href="#umkm">Pendampingan UMKM</a>
+                      <p class="mega-desc">Lebih dari 50 klien swasta dengan hasil terukur.</p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
+              <!-- Tim - isi sama persis seperti di landing page utama -->
               <div class="dropdown">
                 <a href="#team" class="dropbtn">Tim <span class="arrow-down"></span></a>
                 <div class="dropdown-content mega-dropdown">
-                  <!-- isi sesuai kebutuhan -->
+                  <div class="mega-grid">
+                    <div class="mega-column">
+                      <h4 class="mega-heading">Pendiri & Direktur</h4>
+                      <a href="#direktur">Profil Direktur Utama</a>
+                      <p class="mega-desc">Ahli ekonomi dengan pengalaman 15+ tahun.</p>
+                      <h4 class="mega-heading">Tim Ahli</h4>
+                      <a href="#peneliti">Peneliti & Analis</a>
+                      <a href="#konsultan">Konsultan Senior</a>
+                    </div>
+                    <div class="mega-column">
+                      <h4 class="mega-heading">Struktur Organisasi</h4>
+                      <a href="#divisi">Divisi & Departemen</a>
+                      <p class="mega-desc">Tim multidisiplin: ekonomi, statistik, manajemen, & informatika.</p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
+              <!-- Masuk -->
               <a href="#" class="dropbtn" onclick="openModal('signInModal')">Masuk</a>
             </nav>
         </div>
@@ -501,7 +497,7 @@
         <div class="hero-inner">
             <div class="hero-badge">SURVEI IKM</div>
             <h1>Survei Indeks Kepuasan Masyarakat</h1>
-           <p class="lead">
+            <p class="lead">
                 Silakan berpartisipasi dalam Survei Indeks Kepuasan Masyarakat (IKM) 
                 dengan mengisi kuesioner sesuai daerah layanan yang Anda gunakan.
             </p>
@@ -511,7 +507,6 @@
     <!-- Daftar Survei -->
     <section class="survey-content">
         <div class="survey-content-inner">
-
             <div class="section-eyebrow">
                 <span class="tag">DAFTAR SURVEI AKTIF</span>
                 <h2>Formulir Survei Indeks Kepuasan Masyarakat</h2>
@@ -519,7 +514,6 @@
             </div>
 
             <div class="survey-grid">
-
                 <a href="<?= base_url('IDE/SurveiIKMSitubondo') ?>" class="survey-card">
                     <h2>Survei IKM Situbondo</h2>
                     <div class="btn-view">Lihat Laporan Lengkap </div>
@@ -529,7 +523,6 @@
                     <h2>Survei IKM Yogyakarta</h2>
                     <div class="btn-view">Lihat Laporan Lengkap </div>
                 </a>
-
             </div>
         </div>
     </section>
@@ -608,7 +601,6 @@
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
         function openModal(modalId) {
-            // Jika ada modal sign in, bisa ditambahkan logika di sini
             console.log('Open modal: ' + modalId);
         }
 
