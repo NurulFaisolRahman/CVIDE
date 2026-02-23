@@ -738,8 +738,10 @@
                 </div>
               </div>
               <div class="dropdown">
-                <a href="#" class="dropbtn" onclick="openModal('signInModal')">Masuk <span class="arrow-down"></span></a>
-              </div>
+    <a href="#" class="dropbtn" onclick="openModal('signInModal')">
+      Masuk <span class="arrow-down"></span>
+    </a>
+  </div>
             </nav>
         </div>
     </header>
@@ -756,16 +758,12 @@
             </p>
             <div class="hero-stats">
                 <div class="hero-stat">
-                    <span class="val">2015</span>
+                    <span class="val">2019</span>
                     <span class="lbl">Tahun Berdiri</span>
                 </div>
                 <div class="hero-stat">
-                    <span class="val">4</span>
+                    <span class="val">5</span>
                     <span class="lbl">Dokumen Legal</span>
-                </div>
-                <div class="hero-stat">
-                    <span class="val">ISO</span>
-                    <span class="lbl">Dalam Proses</span>
                 </div>
                 <div class="hero-stat">
                     <span class="val">100%</span>
@@ -804,15 +802,15 @@
                     <div class="card-meta">
                         <div class="meta-item">
                             <span class="meta-key">Nomor Akta</span>
-                            <span class="meta-val">Akta No. XX / 2015</span>
+                            <span class="meta-val">Akta No. 4.- / 2019</span>
                         </div>
                         <div class="meta-item">
                             <span class="meta-key">Tanggal</span>
-                            <span class="meta-val">15 Maret 2015</span>
+                            <span class="meta-val">11 Juli 2019</span>
                         </div>
                         <div class="meta-item">
-                            <span class="meta-key">Penerbit</span>
-                            <span class="meta-val">Kemenkumham RI</span>
+                            <span class="meta-key">Notaris</span>
+                            <span class="meta-val">Angga K. Nurindiyani S.H., M.Kn</span>
                         </div>
                     </div>
                 </div>
@@ -910,22 +908,22 @@
                                 <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
                             </svg>
                         </div>
-                        <span class="card-status status-process">Dalam Proses</span>
+                        <span class="card-status status-active">Aktif</span>
                     </div>
-                    <h2>Sertifikasi Kompetensi ISO 9001:2015</h2>
-                    <p>Dalam tahap akhir sertifikasi ISO 9001:2015 untuk Sistem Manajemen Mutu, serta sertifikasi kompetensi BNSP untuk bidang riset dan konsultasi. Komitmen ini merupakan bagian dari upaya berkelanjutan kami untuk memberikan layanan dengan standar internasional.</p>
+                    <h2>Terdaftar di KEMENKUMHAM</h2>
+                    <p><strong>CV Inti Desain Ekonomi Consultant</strong> adalah entitas bisnis resmi yang telah terdaftar dan disahkan oleh <strong>Kementerian Hukum dan Hak Asasi Manusia (Kemenkumham) RI</strong>, menjamin aspek legalitas dan kepatuhan hukum dalam setiap layanan konsultansi yang kami berikan.</p>
                     <div class="card-meta">
                         <div class="meta-item">
-                            <span class="meta-key">Standar</span>
-                            <span class="meta-val">ISO 9001:2015</span>
+                            <span class="meta-key">Nomor</span>
+                            <span class="meta-val">AHU-0041070-AH.01.14 Tahun 2019</span>
                         </div>
                         <div class="meta-item">
                             <span class="meta-key">Lembaga</span>
-                            <span class="meta-val">BNSP</span>
+                            <span class="meta-val">KEMENKUMHAM</span>
                         </div>
                         <div class="meta-item">
-                            <span class="meta-key">Target</span>
-                            <span class="meta-val">2025</span>
+                            <span class="meta-key">Status</span>
+                            <span class="meta-val">Terdaftar</span>
                         </div>
                     </div>
                 </div>

@@ -9,6 +9,7 @@
   
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   
   <style>
     :root {
@@ -1356,6 +1357,54 @@
     gap: 28px;
   }
 }
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 30px;
+    right: 30px;
+    background-color: #25D366;
+    color: #fff;
+    border-radius: 50%;
+    z-index: 1000;
+    
+    /* Memastikan konten di tengah sempurna */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Efek visual */
+    text-decoration: none; /* Penting agar tidak ada garis bawah link */
+    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3); /* Shadow mengikuti warna hijau agar soft */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Transisi agak membal (bouncy) */
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1) translateY(-5px); /* Sedikit bergeser ke atas saat hover */
+    background-color: #128C7E; /* Hijau WhatsApp yang lebih gelap untuk kontras hover */
+    color: #fff;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.whatsapp-float i {
+    font-size: 32px; /* Ukuran disesuaikan agar proporsional di dalam lingkaran 60px */
+    line-height: 0; /* Menghilangkan gap ekstra dari font-awesome */
+}
+
+/* Responsif untuk mobile */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        width: 50px;
+        height: 50px;
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .whatsapp-float i {
+        font-size: 28px;
+    }
+}
+
   </style>
 </head>
 
@@ -2095,6 +2144,14 @@
       </div>
     </div>
   </div>
+
+  <a href="https://wa.me/6282227666283?text=Halo%20Admin%20IDE%20Consultant,%20saya%20ingin%20bertanya..." 
+   class="whatsapp-float" 
+   target="_blank" 
+   rel="noopener noreferrer"
+   aria-label="Chat via WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+</a>
 
   <!-- External Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
