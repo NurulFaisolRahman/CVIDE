@@ -642,9 +642,99 @@
     height: 28px;
   }
 }
+
+
+    /* =============================================
+       MODAL LOGIN (sama persis seperti halaman utama)
+    ============================================= */
+    .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+    }
+    .modal.active { display: flex; }
+    .modal-content {
+        background: white;
+        border-radius: 16px;
+        width: 90%;
+        max-width: 420px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    .modal-header {
+        padding: 20px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+    }
+    .modal-title { font-size: 1.4rem; font-weight: 600; }
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: #6b7280;
+    }
+    .modal-body { padding: 24px; }
+    .form-group { margin-bottom: 20px; }
+    .form-label { display: block; margin-bottom: 6px; font-weight: 500; }
+    .form-input {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.2s;
+    }
+    .form-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(0,122,255,0.1);
+    }
+    .btn-primary {
+        width: 100%;
+        padding: 12px;
+        background: #001428;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .btn-primary:hover { background: var(--primary-dark); }
     </style>
 </head>
 <body>
+
+<!-- Sign In Modal (sama seperti halaman utama, tapi lebih clean) -->
+<div id="signInModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Masuk</h3>
+        <button class="modal-close" onclick="closeModal('signInModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input type="text" class="form-input" id="Username" placeholder="Enter your username">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="Password" placeholder="Enter your password">
+        </div>
+        <button class="btn-primary" id="Masuk">Masuk</button>
+      </div>
+    </div>
+  </div>
 
     <!-- ── Header & Navbar (tidak diubah) ─────────────────── -->
     <header class="header">
@@ -684,7 +774,7 @@
                       <a href="#konsultasi-kebijakan">Analisis Kebijakan Publik</a>
                       <p class="mega-desc">Pendampingan strategis berbasis data ekonomi.</p>
                       <h4 class="mega-heading">Survei & Penelitian</h4>
-                      <a href="IDE/SurveiIKMYogyakarta">Survei Kepuasan Masyarakat</a>
+                      <a href="<?= base_url('IDE/MenuSurvei') ?>">Survei Kepuasan Masyarakat</a>
                       <p class="mega-desc">Metode ilmiah dengan analisis mendalam.</p>
                     </div>
                     <div class="mega-column">
@@ -737,13 +827,13 @@
                   </div>
                 </div>
               </div>
-              <div class="dropdown">
+  <div class="dropdown">
     <a href="#" class="dropbtn" onclick="openModal('signInModal')">
       Masuk <span class="arrow-down"></span>
     </a>
-  </div>
-            </nav>
-        </div>
+</div>
+</nav>
+    </div>
     </header>
 
     <!-- ══════════════════════════════════════════════════════
@@ -1004,20 +1094,77 @@
 
     <!-- Script (tidak diubah) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
-    var BaseURL = '<?= base_url() ?>';
+      var BaseURL = '<?= base_url() ?>';
 
-    function openModal(modalId) {
-      document.getElementById(modalId).classList.add('active');
+// Modal functions (sama seperti halaman utama)
+function openModal(modalId) {
+    document.getElementById(modalId).classList.add('active');
+}
+function closeModal(modalId) {
+    document.getElementById(modalId).classList.remove('active');
+}
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+        closeModal(event.target.id);
     }
-    function closeModal(modalId) {
-      document.getElementById(modalId).classList.remove('active');
-    }
-    window.onclick = function(event) {
-      if (event.target.classList.contains('modal')) {
-        event.target.classList.remove('active');
-      }
-    }
+};
+
+// Login handler (sama seperti halaman utama, tapi lebih aman)
+jQuery(document).ready(function($) {
+    "use strict";
+
+    // Enter key support
+    $('#Username, #Password').on('keypress', function(e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            $('#Masuk').click();
+        }
+    });
+
+    // Tombol Masuk
+    $("#Masuk").click(function() {
+        const username = $("#Username").val().trim();
+        const password = $("#Password").val().trim();
+
+        if (!username || !password) {
+            alert("Mohon isi username/email dan password dengan lengkap.");
+            return;
+        }
+
+        const data = { Username: username, Password: password };
+
+        $("#Masuk").prop("disabled", true).text("Memproses...");
+
+        $.post(BaseURL + "IDE/SignIn", data)
+            .done(function(response) {
+                $("#Masuk").prop("disabled", false).text("Masuk");
+
+                if (response === '1') {
+                    window.location = BaseURL + "SuperAdmin";
+                } else if (response === '2') {
+                    window.location = BaseURL + "Admin";
+                } else if (response === '3') {
+                    window.location = BaseURL + "Staf";
+                } else if (response === '0') {
+                    window.location = BaseURL + "Econk";
+                } else {
+                    alert(response || "Username atau password salah. Silakan coba lagi.");
+                }
+            })
+            .fail(function() {
+                $("#Masuk").prop("disabled", false).text("Masuk");
+                alert("Gagal terhubung ke server. Periksa koneksi Anda.");
+            });
+    });
+});
+// Klik di luar modal → tutup
+window.onclick = function(event) {
+  if (event.target.classList.contains('modal')) {
+    event.target.classList.remove('active');
+  }
+}
 
     window.addEventListener('scroll', function() {
       const header = document.querySelector('.header');
