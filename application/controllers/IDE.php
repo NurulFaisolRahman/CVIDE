@@ -1260,6 +1260,7 @@ public function InputIKMYogyakarta()
         'Pekerjaan'  => $this->input->post('Pekerjaan', true),
         'Kualifikasi'   => $this->input->post('Kualifikasi', true),
         'Layanan'    => $this->input->post('Layanan', true),
+        'jenis_layanan' => $this->input->post('JenisLayanan', true),
         'Saran'      => $this->input->post('Saran', true),
         'Poin'       => $this->input->post('Poin', true),
         'Alasan'     => $this->input->post('Alasan', true)

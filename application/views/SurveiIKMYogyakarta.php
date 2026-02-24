@@ -1,12 +1,11 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Survei Kepuasan Masyarakat - BAKESBANGPOL Kota Yogyakarta</title>
+  <title>Survei Kepuasan Masyarakat Kinerja Walikota & Wakil Walikota Kota Yogyakarta</title>
   <!-- Favicons -->
   <link href="../assets/img/favicon.ico" rel="icon">
   <!-- Vendor CSS Files -->
@@ -366,15 +365,6 @@
       align-items: center;
     }
 
-    .importance-title {
-      color: var(--success-green);
-      font-weight: 600;
-      font-size: 1rem;
-      display: flex;
-      margin-bottom: 10px;
-      align-items: center;
-    }
-
     .fab {
       position: fixed;
       bottom: var(--spacing-xl);
@@ -439,13 +429,28 @@
       .question-container { padding: var(--spacing-md); }
       .radio-options { flex-direction: column; gap: var(--spacing-sm); }
     }
+
+    /* Style untuk teks Unsur */
+    .unsur-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary-blue);
+      text-align: center;
+      margin: 25px 0 20px;
+      padding: 15px;
+      background: var(--light-blue);
+      border-radius: 10px;
+      border-left: 6px solid var(--primary-blue);
+      box-shadow: var(--shadow-sm);
+    }
   </style>
 </head>
 
 <body>  
   <div class="header-section text-center">
     <div class="container">
-      <h2 class="header-title mb-2">SURVEI KEPUASAN MASYARAKAT</h2>
+      <h2 class="header-title mb-2">Survei Kepuasan Masyarakat 
+        <br>Kinerja Walikota & Wakil Walikota Kota Yogyakarta</h2>
       <h5 class="header-subtitle">Badan Kesatuan Bangsa dan Politik Kota Yogyakarta</h5>
     </div>
   </div>
@@ -456,10 +461,11 @@
         <p class="text-justify mb-0">
           Dalam rangka peningkatan kualitas pelayanan publik secara berkelanjutan dan memenuhi amanat PERMENPAN RB Nomor 14 Tahun 2017 tentang Pedoman Penyusunan Survei Kepuasan Masyarakat Unit Penyelenggara Pelayanan Publik, bahwa penyelenggara pelayanan publik wajib melaksanakan Survei Kepuasan Masyarakat (SKM) secara berkala minimal 1 (satu) kali setahun.
           <br><br>
-          Atas dasar tersebut, dengan ini BAKESBANGPOL Kota Yogyakarta bermaksud melakukan Survei Kepuasan Masyarakat (SKM) tentang Penyelenggaraan Pelayanan BAKESBANGPOL Kota Yogyakarta. Kami berharap Bapak/Ibu/Saudara/Saudari berkenan untuk menjawab kuesioner di bawah ini.
+          Atas dasar tersebut, dengan ini BAKESBANGPOL Kota Yogyakarta bekerja sama dengan CV IDE Consultant bermaksud melakukan Survei Kepuasan Masyarakat (SKM) tentang Kinerja Walikota dan Wakil Walikota Kota Yogyakarta Periode Tahun 2025. Kami berharap Bapak/Ibu/Saudara/Saudari berkenan untuk menjawab kuesioner di bawah ini.
           <br><br>
-          <b>Pilih jawaban sesuai dengan pendapat anda tentang Kinerja (Performa) dan Kepentingan (Importance) pelayanan pada BAKESBANGPOL Kota Yogyakarta.</b>
-          <span class="text-danger">*) Unit layanan adalah Bidang dan Fungsional Perencana pada BAKESBANGPOL.</span>
+          <b>Pilih jawaban sesuai dengan pendapat anda tentang Kinerja (Performa) pelayanan pada Walikota dan Wakil Walikota.</b>
+          <br><br>
+          <span class="text-danger"><b>Data dan informasi dari responden yang terhimpun akan dijamin kerahasiaannya oleh lembaga konsultan.</b></span>
         </p>
       </div>
     </div>
@@ -551,7 +557,7 @@
                 <option value="Kualifikasi">Pilih Kualifikasi</option>                   
                 <?php 
                 $Kualifikasi = array(
-                  'Unsur Politik','Unsur Politik (Pengurus Partai Politik tingkat Kota)',
+                  'Unsur Politik (Pengurus Partai Politik tingkat Kota)',
                   'Unsur Sosial (Organisasi Kemasyarakatan/Ormas)',
                   'Tokoh Masyarakat (Ketua RT/RW/PKK/LPMK/Ketua Kampung)',
                   'Unsur Ekonomi (Pelaku Usaha/Perusahaan/UMKM)',
@@ -566,39 +572,48 @@
           </div>
         </div>
         
-        <h5 class="identity-section-title mt-4"><i class="fas fa-concierge-bell mr-2"></i> Jenis Layanan</h5>
+        <h5 class="identity-section-title mt-4"><i class="fas fa-concierge-bell mr-2"></i> Layanan</h5>
         <div class="row">
-        <div class="col-12 mb-4">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fas fa-list mr-1"></i> Layanan</span>
+          <div class="col-12 mb-4">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-list mr-1"></i> Layanan</span>
+              </div>
+              <select class="custom-select" id="Layanan" name="Layanan">
+                <option value="">-- Pilih Layanan --</option>
+                <option value="Infrastruktur">Infrastruktur</option>
+                <option value="Kebudayaan">Kebudayaan</option>
+                <option value="Tata Kelola Lingkungan">Tata Kelola Lingkungan</option>
+                <option value="Komunikasi Publik">Komunikasi Publik</option>
+                <option value="Sosial">Sosial</option>
+                <option value="Pelayanan Publik">Pelayanan Publik</option>
+                <option value="Pendidikan">Pendidikan</option>
+                <option value="Tata Kelola Pemerintah">Tata Kelola Pemerintah</option>
+                <option value="Kesehatan">Kesehatan</option>
+                <option value="Keamanan">Keamanan</option>
+                <option value="Penegakan Hukum">Penegakan Hukum</option>
+                <option value="Pemberantasan Korupsi">Pemberantasan Korupsi</option>
+                <option value="Transportasi">Transportasi</option>
+                <option value="Ketenagakerjaan">Ketenagakerjaan</option>
+                <option value="Ekonomi">Ekonomi</option>
+                <option value="Pertanian">Pertanian</option>
+              </select>
+              
             </div>
-            <select class="custom-select" id="Layanan" name="Layanan">
-              <option value="">-- Pilih Jenis Layanan --</option>
-              <option value="Infrastruktur">Infrastruktur</option>
-              <option value="Kebudayaan">Kebudayaan</option>
-              <option value="Tata Kelola Lingkungan">Tata Kelola Lingkungan</option>
-              <option value="Komunikasi Publik">Komunikasi Publik</option>
-              <option value="Sosial">Sosial</option>
-              <option value="Pelayanan Publik">Pelayanan Publik</option>
-              <option value="Pendidikan">Pendidikan</option>
-              <option value="Tata Kelola Pemerintah">Tata Kelola Pemerintah</option>
-              <option value="Kesehatan">Kesehatan</option>
-              <option value="Keamanan">Keamanan</option>
-              <option value="Penegakan Hukum">Penegakan Hukum</option>
-              <option value="Pemberantasan Korupsi">Pemberantasan Korupsi</option>
-              <option value="Transportasi">Transportasi</option>
-              <option value="Ketenagakejaan">Ketenagakerjaan</option>
-              <option value="Ekonomi">Ekonomi</option>
-              <option value="Pertanian">Pertanian</option>
-            </select>
+            <small class="form-text text-muted mt-2">
+              Pilih satu jenis layanan yang paling sesuai dengan pengalaman Anda.
+            </small>
           </div>
-          <small class="form-text text-muted mt-2">
-            Pilih satu jenis layanan yang paling sesuai dengan pengalaman Anda di BAKESBANGPOL Kota Yogyakarta.
-          </small>
+          <div class="col-12 mb-4">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-edit mr-1"></i> Jenis Layanan</span>
+                    </div>
+                    <input class="form-control" type="text" id="JenisLayanan" placeholder="Sebutkan jenis layanan secara spesifik">
+                </div>
+            </div>
         </div>
       </div>
-    </div>
     </div>
 
     <div class="card">
@@ -606,100 +621,10 @@
         <i class="fas fa-clipboard-list mr-2"></i> KUESIONER SURVEI KEPUASAN MASYARAKAT
       </div>
       <div class="card-body">
-        <?php 
-          $Tanya = array(
-            '1. Bagaimana pendapat saudara tentang kesesuaian persyaratan layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) dengan peraturan perundang-undangan di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
-            '2. Bagaimana kepentingan/harapan saudara tentang kesesuaian persyaratan layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) dengan peraturan perundang-undangan di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
-            '3. Bagaimana pemahaman Saudara tentang kejelasan dan kemudahan SOP/prosedur layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
-            '4. Bagaimana kepentingan/harapan Saudara tentang kejelasan dan kemudahan SOP/prosedur layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
-            '5. Bagaimana pendapat Saudara tentang kecepatan dan ketepatan waktu dalam memberikan layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
-            '6. Bagaimana kepentingan/harapan Saudara tentang kecepatan dan ketepatan waktu dalam memberikan layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
-            '7. Bagaimana pendapat saudara tentang biaya/tarif layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di BAKESBANGPOL telah sesuai dengan peraturan yang berlaku?',
-            '8. Bagaimana kepentingan/harapan saudara tentang biaya/tarif layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di BAKESBANGPOL telah sesuai dengan peraturan yang berlaku?',
-            '9. <strong>Pelayanan di BAKESBANGPOL Kota Yogyakarta 100% GRATIS</strong> dan tidak dipungut biaya/tarif untuk mendapatkan pelayanan.</p>
-                 <p>Biaya/tarif yang dimaksud adalah biaya jasa setelah memperoleh pelayanan konsultasi, evaluasi, dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya), bukan biaya transportasi atau cetak dokumen.</p>
-                 <p>Jika pelayanan diterima secara gratis, pilih opsi <strong>nomor 4 (Gratis)</strong>. Jika terdapat biaya setelah pelayanan, pilih opsi selain Gratis dan <strong>wajib menuliskan alasan serta rincian biaya</strong>.</p>',
-            '10. Bagaimana kepentingan/harapan saudara tentang kewajaran biaya/tarif dalam layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di BAKESBANGPOL Kota Yogyakarta?',
-            '11. Bagaimana pendapat anda tentang kesesuaian produk layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) substansi dan arahan antara yang tercantum dalam standar regulasi dengan hasil yang diberikan di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
-            '12. Bagaimana kepentingan/harapan anda tentang kesesuaian produk layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) substansi dan arahan antara yang tercantum dalam standar regulasi dengan hasil yang diberikan di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
-            '13. Bagaimana pendapat Saudara tentang kompetensi/ kemampuan SDM (Kabid dan Perencana) dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
-            '14. Bagaimana kepentingan/harapan Saudara tentang kompetensi/ kemampuan SDM (Kabid dan Perencana) dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
-            '15. Bagaimana pendapat saudara perilaku petugas dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) terkait kesopanan dan keramahan di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
-            '16. Bagaimana kepentingan/harapan saudara perilaku petugas dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) terkait kesopanan dan keramahan di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
-            '17. Bagaimana pendapat Saudara tentang kualitas sarana dan prasarana (Wifi, Proyektor, AC, dll) dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
-            '18. Bagaimana kepentingan/harapan Saudara tentang kualitas sarana dan prasarana (Wifi, Proyektor, AC, dll) dalam pelayanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
-            '19. Bagaimana pendapat Saudara tentang penanganan pengaduan pengguna layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
-            '20. Bagaimana kepentingan/harapan Saudara tentang penanganan pengaduan pengguna layanan konsultasi, evaluasi dan monitoring penyusunan dokumen perencanaan dan evaluasi (RPJMD / RENSTRA / RKPD / RENJA / LKPJ / Inovasi / Lainnya) di unit pelayanan BAKESBANGPOL Kota Yogyakarta?',
-            '21. Bagaimana pendapat Saudara tentang transparansi pelayanan yang diberikan?',
-            '22. Bagaimana kepentingan/harapan Saudara tentang transparansi pelayanan yang diberikan?',
-            '23. Bagaimana integritas petugas pelayanan dalam memberikan pelayanan?',
-            '24. Bagaimana kepentingan/harapan Saudara tentang integritas petugas pelayanan dalam memberikan pelayanan?'
-          ); 
-
-          $Opsi = array(
-            '1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai',
-            '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
-            '1. Tidak Mudah, 2. Kurang Mudah, 3. Mudah, 4. Sangat Mudah',
-            '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
-            '1. Tidak Cepat, 2. Kurang Cepat, 3. Cepat, 4. Sangat Cepat',
-            '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
-            '1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai',
-            '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
-            '1. Sangat Mahal, 2. Cukup Mahal, 3. Murah, 4. Gratis',
-            '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
-            '1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai',
-            '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
-            '1. Tidak Kompeten, 2. Kurang Kompeten, 3. Kompeten, 4. Sangat Kompeten',
-            '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
-            '1. Tidak Sopan dan Ramah, 2. Kurang Sopan dan Ramah, 3. Sopan dan Ramah, 4. Sangat Sopan dan Ramah',
-            '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
-            '1. Buruk, 2. Cukup, 3. Baik, 4. Sangat Baik',
-            '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
-            '1. Tidak Ada, 2. Ada Tapi Tidak Berfungsi, 3. Berfungsi Kurang Maksimal, 4. Dikelola Dengan Baik',
-            '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
-            '1. Standar pelayanan tidak dipublikasikan, 2. Standar pelayanan dipublikasikan sebagian, 3. Standar pelayanan dipublikasikan seluruhnya, 4. Standar pelayanan dipublikasikan seluruhnya dan jelas',
-            '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting',
-            '1. Petugas pelayanan memberikan pelayanan yang tidak sesuai dengan standar pelayanan yang telah ditetapkan. 2. Petugas pelayanan memberikan pelayanan dengan cepat, namun disertai permintaan imbalan yang tidak sesuai dengan etika dan integritas profesi. 3. Petugas pelayanan memberikan pelayanan yang sesuai dengan standar pelayanan yang telah ditetapkan, menunjukkan kepatuhan terhadap prosedur dan prinsip integritas. 4. Petugas pelayanan memberikan pelayanan yang sesuai dengan standar pelayanan, serta melaksanakannya dengan cepat dan efisien, tanpa melanggar integritas atau etika kerja',
-            '1. Tidak Penting, 2. Kurang Penting, 3. Penting, 4. Sangat Penting'
-          ); 
-
-          $Poin = array(
-            'A. Persyaratan Layanan','B. SOP / Prosedur Layanan','C. Kecepatan & Ketepatan Layanan',
-            'D. Kesesuaian Biaya/Tarif Layanan','E. Kewajaran Biaya/Tarif Layanan','F. Kesesuaian Produk Layanan',
-            'G. Kompetensi SDM Layanan','H. Kesopanan & Keramahan Layanan','I. Sarana & Prasarana Layanan',
-            'J. Penanganan Pengaduan Layanan','K. Transparansi Layanan','L. Integritas Layanan'
-          );
-        ?> 
-        <?php $totalPertanyaan = count($Tanya); ?>
-        <?php for ($j = 0; $j < $totalPertanyaan; $j++) { ?>
-          <?php if ($j%2==0) { ?>
-            <div class="section-title"><?=$Poin[$j/2]?></div>
-            <div class="performance-title"><i class="fas fa-chart-line"></i> KINERJA / PERFORMA</div>
-          <?php } else { ?>
-            <div class="importance-title"><i class="fas fa-star"></i> KEPENTINGAN / HARAPAN</div>
-          <?php } ?> 
-          <div class="question-container fade-in">
-            <div class="question-text"><?=$Tanya[$j]?></div>
-            <div class="options-container">
-              <div class="font-weight-bold text-white mb-3"><?=$Opsi[$j]?></div>
-              <div class="radio-options">
-                <?php for ($i=1; $i <= 4; $i++) { ?>
-                  <div class="radio-option">
-                    <input class="form-check-input" type="radio" name="Input<?=($j+1)?>" id="I<?=($j+1).$i?>" value="<?=$i?>">
-                    <label class="form-check-label" for="I<?=($j+1).$i?>"><?=$i?></label>
-                  </div>
-                <?php } ?>
-              </div>
-              <input class="form-control" type="text" id="Alasan<?=($j+1)?>" placeholder="Alasan Anda memilih opsi di atas">
-            </div>
-          </div>
-        <?php } ?>
-        
-        <div class="question-container fade-in">
-          <div class="question-text">Silakan memberikan masukan berupa saran atau kritik terhadap layanan BAKESBANGPOL Kota Yogyakarta :</div>
-          <div class="options-container">
-            <textarea class="form-control" rows="4" id="Saran" placeholder="Tulis saran/kritik Anda di sini..."></textarea>
-          </div>
+        <div id="kuesionerContainer">
+          <p class="text-center text-muted py-5">
+            Silakan pilih jenis layanan di atas untuk menampilkan pertanyaan yang sesuai.
+          </p>
         </div>
         
         <div class="text-center mt-5">
@@ -720,8 +645,411 @@
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/inputmask/min/jquery.inputmask.bundle.min.js"></script>
   <script>
-    var totalPertanyaan = <?= $totalPertanyaan ?>;
+    var totalPertanyaan = 0;
     var BaseURL = '<?= base_url() ?>';
+
+    // Data pertanyaan – hanya performa/kinerja (harapan sudah dihapus semua)
+    const pertanyaanLayanan = {
+      "Infrastruktur": [
+        {performa: "Bagaimana kesesuaian persyaratan dalam memperoleh informasi dan layanan infrastruktur di Kota Yogyakarta (misalnya perizinan pembangunan, permohonan sambungan utilitas, atau layanan teknis lainnya)?", opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai"},
+        {performa: "Bagaimana kemudahan sistem, alur, dan prosedur pelayanan infrastruktur yang berlaku (termasuk layanan langsung maupun berbasis digital/online)?", opsi: "1. Tidak Mudah, 2. Kurang Mudah, 3. Mudah, 4. Sangat Mudah"},
+        {performa: "Bagaimana kecepatan dan ketepatan waktu dalam penyelesaian layanan atau pelaksanaan pekerjaan infrastruktur sesuai dengan jadwal yang telah ditetapkan?", opsi: "1. Tidak Cepat, 2. Kurang Cepat, 3. Cepat, 4. Sangat Cepat"},
+        {performa: "Bagaimana kewajaran, keterjangkauan, serta transparansi biaya dalam pelayanan infrastruktur? (Apabila layanan tidak dipungut biaya, tetap dinilai dari aspek keterbukaan informasi biaya.)", opsi: "1. Sangat Mahal, 2. Cukup Mahal, 3. Murah, 4. Gratis"},
+        {performa: "Bagaimana kesesuaian hasil pembangunan atau layanan infrastruktur dengan standar teknis yang ditetapkan (misalnya kualitas jalan, drainase, trotoar, penerangan jalan umum, dan fasilitas publik lainnya)?", opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai"},
+        {performa: "Bagaimana kompetensi/kemampuan, keahlian teknis, serta profesionalisme petugas/tenaga teknis dalam memberikan pelayanan atau menangani permasalahan infrastruktur?", opsi: "1. Tidak Kompeten, 2. Kurang Kompeten, 3. Kompeten, 4. Sangat Kompeten"},
+        {performa: "Bagaimana sikap, keramahan, kesopanan, serta responsivitas petugas dalam memberikan pelayanan kepada masyarakat?", opsi: "1. Tidak Sopan dan Ramah, 2. Kurang Sopan dan Ramah, 3. Sopan dan Ramah, 4. Sangat Sopan dan Ramah"},
+        {performa: "Bagaimana kemudahan dalam menyampaikan pengaduan atau laporan terkait infrastruktur (misalnya kerusakan jalan, genangan air, lampu jalan mati) serta kecepatan dan ketepatan tindak lanjutnya?", opsi: "1. Tidak Mudah, 2. Kurang Mudah, 3. Mudah, 4. Sangat Mudah"},
+        {performa: "Bagaimana kondisi fisik dan kebermanfaatan infrastruktur di Kota Yogyakarta dalam mendukung aktivitas masyarakat (jalan kota, trotoar ramah pejalan kaki, drainase, fasilitas umum, ruang publik, aksesibilitas bagi penyandang disabilitas, dll.)?", opsi: "1. Buruk, 2. Cukup, 3. Baik, 4. Sangat Baik"}
+      ],
+      "Kebudayaan": [
+        {performa: "Bagaimana kemudahan masyarakat dalam memperoleh informasi dan mengikuti program kebudayaan (misalnya pameran seni, pertunjukan tradisional, workshop budaya, atau festival lokal)?", opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai"},
+        {performa: "Bagaimana kemudahan prosedur pendaftaran dan partisipasi dalam kegiatan kebudayaan (baik secara langsung maupun online)?", opsi: "1. Tidak Mudah, 2. Kurang Mudah, 3. Mudah, 4. Sangat Mudah"},
+        {performa: "Bagaimana kecepatan dan ketepatan pelaksanaan program kebudayaan sesuai jadwal yang diumumkan?", opsi: "1. Tidak Cepat, 2. Kurang Cepat, 3. Cepat, 4. Sangat Cepat"},
+        {performa: "Bagaimana keterjangkauan biaya atau transparansi biaya dalam kegiatan kebudayaan (misalnya tiket pertunjukan, workshop, pameran; jika gratis tetap dinilai keterbukaan informasinya)?", opsi: "1. Sangat Mahal, 2. Cukup Mahal, 3. Murah, 4. Gratis"},
+        {performa: "Bagaimana kualitas program dan kegiatan kebudayaan yang diselenggarakan (misalnya kesesuaian pertunjukan dengan standar seni tradisional, kelengkapan fasilitas, penyajian informasi budaya)?", opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai"},
+        {performa: "Bagaimana kompetensi, kemampuan, dan profesionalisme tenaga kebudayaan (misalnya seniman, kurator, pengelola museum, atau petugas budaya) dalam menyelenggarakan kegiatan atau memberikan layanan kepada masyarakat?", opsi: "1. Tidak Kompeten, 2. Kurang Kompeten, 3. Kompeten, 4. Sangat Kompeten"},
+        {performa: "Bagaimana sikap, keramahan, dan responsivitas tenaga kebudayaan dalam melayani masyarakat (misalnya saat mengikuti workshop, pameran, atau program budaya)?", opsi: "1. Tidak Sopan dan Ramah, 2. Kurang Sopan dan Ramah, 3. Sopan dan Ramah, 4. Sangat Sopan dan Ramah"},
+        {performa: "Bagaimana kemudahan masyarakat dalam menyampaikan masukan, kritik, atau keluhan terkait kegiatan kebudayaan dan bagaimana kecepatan tindak lanjutnya?", opsi: "1. Tidak Mudah, 2. Kurang Mudah, 3. Mudah, 4. Sangat Mudah"},
+        {performa: "Bagaimana kondisi fisik dan kebermanfaatan fasilitas kebudayaan di Yogyakarta (misalnya museum, galeri seni, panggung pertunjukan, ruang publik budaya, perpustakaan, akses bagi penyandang disabilitas) dalam mendukung partisipasi masyarakat?", opsi: "1. Buruk, 2. Cukup, 3. Baik, 4. Sangat Baik"}
+      ],
+      "Tata Kelola Lingkungan": [
+        {performa: "Bagaimana kemudahan masyarakat dalam memperoleh informasi dan mengikuti program lingkungan (misalnya sosialisasi pengelolaan sampah, pelatihan konservasi, kegiatan penghijauan, atau festival lingkungan)?", opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai"},
+        {performa: "Bagaimana kemudahan prosedur pendaftaran dan partisipasi dalam kegiatan lingkungan (baik secara langsung maupun online)?", opsi: "1. Tidak Mudah, 2. Kurang Mudah, 3. Mudah, 4. Sangat Mudah"},
+        {performa: "Bagaimana kecepatan dan ketepatan pelaksanaan program lingkungan sesuai jadwal yang diumumkan?", opsi: "1. Tidak Cepat, 2. Kurang Cepat, 3. Cepat, 4. Sangat Cepat"},
+        {performa: "Bagaimana keterjangkauan biaya atau transparansi biaya dalam kegiatan lingkungan (misalnya partisipasi dalam pelatihan, workshop, atau pengelolaan sampah; jika gratis tetap dinilai keterbukaan informasinya)?", opsi: "1. Sangat Mahal, 2. Cukup Mahal, 3. Murah, 4. Gratis"},
+        {performa: "Bagaimana kualitas program dan kegiatan lingkungan yang diselenggarakan (misalnya kesesuaian kegiatan dengan standar pengelolaan lingkungan, kelengkapan fasilitas, penyajian informasi terkait lingkungan)?", opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai"},
+        {performa: "Bagaimana kompetensi, kemampuan, dan profesionalisme tenaga lingkungan (misalnya petugas Dinas Lingkungan Hidup, fasilitator program konservasi, pengelola taman kota) dalam menyelenggarakan kegiatan atau memberikan layanan kepada masyarakat?", opsi: "1. Tidak Kompeten, 2. Kurang Kompeten, 3. Kompeten, 4. Sangat Kompeten"},
+        {performa: "Bagaimana sikap, keramahan, dan responsivitas tenaga lingkungan dalam melayani masyarakat (misalnya saat mengikuti sosialisasi, workshop, atau program lingkungan)?", opsi: "1. Tidak Sopan dan Ramah, 2. Kurang Sopan dan Ramah, 3. Sopan dan Ramah, 4. Sangat Sopan dan Ramah"},
+        {performa: "Bagaimana kemudahan masyarakat dalam menyampaikan masukan, kritik, atau keluhan terkait kegiatan lingkungan dan bagaimana kecepatan tindak lanjutnya?", opsi: "1. Tidak Mudah, 2. Kurang Mudah, 3. Mudah, 4. Sangat Mudah"},
+        {performa: "Bagaimana kondisi fisik dan kebermanfaatan fasilitas lingkungan di Yogyakarta (misalnya taman kota, taman edukasi, tempat pengelolaan sampah, ruang terbuka hijau, dan akses bagi penyandang disabilitas) dalam mendukung partisipasi masyarakat?", opsi: "1. Buruk, 2. Cukup, 3. Baik, 4. Sangat Baik"}
+      ],
+      "Komunikasi Publik": [
+        {performa: "Bagaimana kemudahan masyarakat dalam memperoleh informasi dan mengikuti program publik (misalnya pengumuman layanan masyarakat, sosialisasi peraturan, seminar publik, atau program partisipatif warga)", opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai"},
+        {performa: "Bagaimana kemudahan prosedur pendaftaran dan partisipasi dalam kegiatan publik (baik secara langsung maupun online, misalnya mendaftar seminar, pelatihan, atau program masyarakat)", opsi: "1. Tidak Mudah, 2. Kurang Mudah, 3. Mudah, 4. Sangat Mudah"},
+        {performa: "Bagaimana kecepatan dan ketepatan penyampaian informasi sesuai jadwal yang diumumkan (misalnya jadwal layanan publik, pengumuman program, atau informasi kegiatan masyarakat)", opsi: "1. Tidak Cepat, 2. Kurang Cepat, 3. Cepat, 4. Sangat Cepat"},
+        {performa: "Bagaimana keterbukaan dan transparansi informasi terkait biaya atau prosedur layanan publik (misalnya biaya administrasi, persyaratan dokumen; jika gratis tetap dinilai kejelasan informasinya)", opsi: "1. Sangat Tidak Transparan, 2. Kurang Transparan, 3. Transparan, 4. Sangat Transparan"},
+        {performa: "Bagaimana kualitas program dan kegiatan komunikasi publik yang diselenggarakan (misalnya kelengkapan informasi, kesesuaian materi dengan kebutuhan masyarakat, kemudahan dipahami)", opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai"},
+        {performa: "Bagaimana kompetensi, kemampuan, dan profesionalisme tenaga komunikasi publik (misalnya petugas humas, staf layanan informasi, atau fasilitator kegiatan publik)", opsi: "1. Tidak Kompeten, 2. Kurang Kompeten, 3. Kompeten, 4. Sangat Kompeten"},
+        {performa: "Bagaimana sikap, keramahan, dan responsivitas tenaga komunikasi publik dalam melayani masyarakat (misalnya saat menanggapi pertanyaan, keluhan, atau konsultasi layanan publik)", opsi: "1. Tidak Sopan dan Ramah, 2. Kurang Sopan dan Ramah, 3. Sopan dan Ramah, 4. Sangat Sopan dan Ramah"},
+        {performa: "Bagaimana kemudahan masyarakat dalam menyampaikan masukan, kritik, atau saran terkait layanan publik (misalnya melalui kotak saran, media sosial resmi, email, atau layanan langsung)", opsi: "1. Tidak Mudah, 2. Kurang Mudah, 3. Mudah, 4. Sangat Mudah"},
+        {performa: "Bagaimana kondisi sarana komunikasi publik di Yogyakarta (misalnya website resmi, media sosial, papan pengumuman, pusat informasi publik, atau fasilitas pelayanan)", opsi: "1. Buruk, 2. Cukup, 3. Baik, 4. Sangat Baik"}
+      ],
+      "Sosial": [
+        {performa: "Bagaimana kemudahan masyarakat dalam memperoleh informasi dan mengikuti kegiatan sosial (misalnya kegiatan komunitas, sosialisasi program sosial, kegiatan gotong royong, atau kegiatan kemasyarakatan lainnya)", opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai"},
+        {performa: "Bagaimana kemudahan prosedur pendaftaran dan partisipasi dalam kegiatan sosial (baik secara langsung maupun online, misalnya mendaftar acara komunitas, pelatihan sosial, atau kegiatan sukarela)", opsi: "1. Tidak Mudah, 2. Kurang Mudah, 3. Mudah, 4. Sangat Mudah"},
+        {performa: "Bagaimana kecepatan dan ketepatan pelaksanaan kegiatan sosial sesuai jadwal yang diumumkan (misalnya jadwal kegiatan komunitas, pelatihan sosial, atau program kemasyarakatan)", opsi: "1. Tidak Cepat, 2. Kurang Cepat, 3. Cepat, 4. Sangat Cepat"},
+        {performa: "Bagaimana keterbukaan dan transparansi informasi terkait biaya atau prosedur kegiatan sosial (misalnya biaya partisipasi, persyaratan mengikuti kegiatan; jika gratis tetap dinilai kejelasan informasinya)", opsi: "1. Sangat Tidak Transparan, 2. Kurang Transparan, 3. Transparan, 4. Sangat Transparan"},
+        {performa: "Bagaimana kualitas program dan kegiatan sosial yang diselenggarakan (misalnya kesesuaian kegiatan dengan kebutuhan masyarakat, kelengkapan fasilitas, dan manfaat sosial bagi warga)", opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai"},
+        {performa: "Bagaimana kompetensi, kemampuan, dan profesionalisme tenaga penyelenggara kegiatan sosial (misalnya pengurus komunitas, fasilitator kegiatan sosial, atau petugas lapangan program kemasyarakatan)", opsi: "1. Tidak Kompeten, 2. Kurang Kompeten, 3. Kompeten, 4. Sangat Kompeten"},
+        {performa: "Bagaimana sikap, keramahan, dan responsivitas tenaga penyelenggara kegiatan sosial dalam melayani masyarakat (misalnya saat memberikan arahan, mendampingi peserta, atau menanggapi pertanyaan)", opsi: "1. Tidak Sopan dan Ramah, 2. Kurang Sopan dan Ramah, 3. Sopan dan Ramah, 4. Sangat Sopan dan Ramah"},
+        {performa: "Bagaimana kemudahan masyarakat dalam menyampaikan masukan, kritik, atau saran terkait kegiatan sosial (misalnya melalui pertemuan komunitas, kotak saran, media sosial, atau layanan langsung)", opsi: "1. Tidak Mudah, 2. Kurang Mudah, 3. Mudah, 4. Sangat Mudah"},
+        {performa: "Bagaimana kondisi sarana dan fasilitas sosial di Yogyakarta dalam mendukung partisipasi masyarakat (misalnya balai desa, ruang komunitas, taman warga, atau fasilitas kegiatan sukarela)", opsi: "1. Buruk, 2. Cukup, 3. Baik, 4. Sangat Baik"}
+      ],
+      "Pelayanan Publik": [
+        {performa: "Bagaimana kejelasan dan kemudahan persyaratan dalam memperoleh pelayanan publik di Kota Yogyakarta?", opsi: "1. Tidak Jelas 2. Kurang Jelas 3. Jelas 4. Sangat Jelas"},
+        {performa: "Bagaimana kemudahan sistem dan prosedur dalam mengakses pelayanan publik di Kota Yogyakarta?", opsi: "1. Tidak Mudah 2. Kurang Mudah 3. Mudah 4. Sangat Mudah"},
+        {performa: "Bagaimana kecepatan waktu penyelesaian pelayanan publik di Kota Yogyakarta?", opsi: "1. Tidak Cepat 2. Kurang Cepat 3. Cepat 4. Sangat Cepat"},
+        {performa: "Bagaimana transparansi dan kewajaran biaya dalam pelayanan publik di Kota Yogyakarta?", opsi: "1. Tidak Wajar 2. Kurang Wajar 3. Wajar 4. Sangat Wajar"},
+        {performa: "Bagaimana kesesuaian hasil pelayanan publik (dokumen/izin/layanan administratif) dengan standar yang ditetapkan di Kota Yogyakarta?", opsi: "1. Tidak Sesuai 2. Kurang Sesuai 3. Sesuai 4. Sangat Sesuai"},
+        {performa: "Bagaimana kemampuan dan profesionalisme petugas dalam memberikan pelayanan publik di Kota Yogyakarta?", opsi: "1. Tidak Baik 2. Kurang Baik 3. Baik 4. Sangat Baik"},
+        {performa: "Bagaimana sikap, keramahan, dan integritas petugas dalam memberikan pelayanan publik di Kota Yogyakarta?", opsi: "1. Tidak Baik 2. Kurang Baik 3. Baik 4. Sangat Baik"},
+        {performa: "Bagaimana kemudahan menyampaikan pengaduan serta tindak lanjutnya terhadap pelayanan publik di Kota Yogyakarta?", opsi: "1. Tidak Mudah 2. Kurang Mudah 3. Mudah 4. Sangat Mudah"},
+        {performa: "Bagaimana kondisi fasilitas pendukung pelayanan publik (ruang layanan, sistem online, akses informasi) di Kota Yogyakarta?", opsi: "1. Tidak mendukung 2. Kurang mendukung 3. mendukung 4. Sangat Mendukung"}
+      ],
+      "Pendidikan": [
+        {performa: "Bagaimana kejelasan dan kemudahan persyaratan dalam memperoleh layanan pendidikan di Kota Yogyakarta (misalnya pendaftaran sekolah, beasiswa, administrasi)?", opsi: "1. Tidak Jelas 2. Kurang Jelas 3. Jelas 4. Sangat Jelas"},
+        {performa: "Bagaimana kemudahan sistem dan prosedur pelayanan pendidikan yang berlaku di Kota Yogyakarta?", opsi: "1. Tidak Mudah 2. Kurang Mudah 3. Mudah 4. Sangat Mudah"},
+        {performa: "Bagaimana ketepatan waktu dalam penyelesaian layanan pendidikan di Kota Yogyakarta?", opsi: "1. Tidak Tepat 2. Kurang Tepat 3. Tepat 4. Sangat Tepat"},
+        {performa: "Bagaimana kewajaran dan keterjangkauan biaya dalam pelayanan pendidikan di Kota Yogyakarta? (Jika layanan gratis, tetap dinilai dari aspek transparansi biaya.)", opsi: "1. Tidak Terjangkau 2. Kurang terjangkau 3. Terjangkau 4. Sangat Terjangkau"},
+        {performa: "Bagaimana kesesuaian layanan pendidikan yang diberikan dengan standar yang ditetapkan (mutu pembelajaran, kurikulum, dan lain-lain) di Kota Yogyakarta?", opsi: "1. Tidak Sesuai 2. Kurang Sesuai 3. Sesuai 4. Sangat Sesuai"},
+        {performa: "Bagaimana kemampuan dan profesionalisme tenaga pendidik serta tenaga administrasi dalam memberikan pelayanan di Kota Yogyakarta?", opsi: "1. Tidak Baik 2. Kurang Baik 3. Baik 4. Sangat Baik"},
+        {performa: "Bagaimana sikap, keramahan, dan kesopanan petugas/tenaga pendidik dalam memberikan pelayanan di Kota Yogyakarta?", opsi: "1. Tidak Baik 2. Kurang Baik 3. Baik 4. Sangat Baik"},
+        {performa: "Bagaimana kemudahan menyampaikan pengaduan serta kecepatan tindak lanjutnya terhadap layanan pendidikan di Kota Yogyakarta?", opsi: "1. Tidak Mudah 2. Kurang Mudah 3. Mudah 4. Sangat Mudah"},
+        {performa: "Bagaimana kondisi sarana dan prasarana pendukung pelayanan pendidikan (ruang kelas, fasilitas belajar, akses informasi) di Kota Yogyakarta?", opsi: "1. Tidak mendukung 2. Kurang mendukung 3. mendukung 4. Sangat Mendukung"}
+      ],
+      "Tata Kelola Pemerintahan": [
+        {performa: "Bagaimana kejelasan persyaratan dalam mengurus administrasi pemerintahan di Kota Yogyakarta (misalnya perizinan, surat menyurat, dan layanan publik lainnya)?", opsi: "1. Tidak Jelas 2. Kurang Jelas 3. Jelas 4. Sangat Jelas"},
+        {performa: "Bagaimana kemudahan prosedur dalam mengakses layanan pemerintahan di Kota Yogyakarta?", opsi: "1. Tidak Mudah 2. Kurang Mudah 3. Mudah 4. Sangat Mudah"},
+        {performa: "Bagaimana ketepatan waktu dalam penyelesaian pelayanan administrasi pemerintahan di Kota Yogyakarta?", opsi: "1. Tidak Tepat 2. Kurang Tepat 3. Tepat 4. Sangat Tepat"},
+        {performa: "Bagaimana transparansi dan kewajaran biaya dalam pelayanan pemerintahan di Kota Yogyakarta?", opsi: "1. Tidak Wajar 2. Kurang Wajar 3. Wajar 4. Sangat Wajar"},
+        {performa: "Bagaimana kesesuaian hasil pelayanan (dokumen/izin/surat) dengan standar yang ditetapkan di Kota Yogyakarta?", opsi: "1. Tidak Sesuai 2. Kurang Sesuai 3. Sesuai 4. Sangat Sesuai"},
+        {performa: "Bagaimana kemampuan dan profesionalisme aparatur pemerintah dalam memberikan pelayanan di Kota Yogyakarta?", opsi: "1. Tidak Baik 2. Kurang Baik 3. Baik 4. Sangat Baik"},
+        {performa: "Bagaimana sikap, keramahan, dan integritas aparatur dalam memberikan pelayanan di Kota Yogyakarta?", opsi: "1. Tidak Baik 2. Kurang Baik 3. Baik 4. Sangat Baik"},
+        {performa: "Bagaimana kemudahan menyampaikan pengaduan serta tindak lanjutnya terhadap layanan pemerintahan di Kota Yogyakarta?", opsi: "1. Tidak Mudah 2. Kurang Mudah 3. Mudah 4. Sangat Mudah"},
+        {performa: "Bagaimana kondisi fasilitas pelayanan pemerintahan (ruang layanan, sistem online, akses informasi) di Kota Yogyakarta?", opsi: "1. Tidak mendukung 2. Kurang mendukung 3. mendukung 4. Sangat Mendukung"}
+      ],
+      "Kesehatan": [
+        {performa: "Bagaimana kejelasan dan kemudahan persyaratan dalam memperoleh layanan kesehatan di Kota Yogyakarta (misalnya pendaftaran, BPJS, rujukan)?", opsi: "1. Tidak Jelas 2. Kurang Jelas 3. Jelas 4. Sangat Jelas"},
+        {performa: "Bagaimana kemudahan prosedur pelayanan kesehatan di Kota Yogyakarta (alur pendaftaran, pemeriksaan, pengambilan obat)?", opsi: "1. Tidak Mudah 2. Kurang Mudah 3. Mudah 4. Sangat Mudah"},
+        {performa: "Bagaimana ketepatan waktu pelayanan kesehatan yang Anda terima di Kota Yogyakarta?", opsi: "1. Tidak Tepat 2. Kurang Tepat 3. Tepat 4. Sangat Tepat"},
+        {performa: "Bagaimana transparansi dan kewajaran biaya pelayanan kesehatan di Kota Yogyakarta?", opsi: "1. Tidak Wajar 2. Kurang Wajar 3. Wajar 4. Sangat Wajar"},
+        {performa: "Bagaimana kesesuaian layanan kesehatan yang diberikan dengan kebutuhan dan standar medis di Kota Yogyakarta?", opsi: "1. Tidak Sesuai 2. Kurang Sesuai 3. Sesuai 4. Sangat Sesuai"},
+        {performa: "Bagaimana kompetensi tenaga kesehatan (dokter, perawat, petugas medis) dalam memberikan pelayanan di Kota Yogyakarta?", opsi: "1. Tidak Baik 2. Kurang Baik 3. Baik 4. Sangat Baik"},
+        {performa: "Bagaimana sikap, keramahan, dan empati tenaga kesehatan dalam melayani pasien di Kota Yogyakarta?", opsi: "1. Tidak Baik 2. Kurang Baik 3. Baik 4. Sangat Baik"},
+        {performa: "Bagaimana kemudahan dalam menyampaikan keluhan serta tindak lanjut atas pengaduan layanan kesehatan di Kota Yogyakarta?", opsi: "1. Tidak Mudah 2. Kurang Mudah 3. Mudah 4. Sangat Mudah"},
+        {performa: "Bagaimana kondisi fasilitas pelayanan Kesehatan (ruang Kesehatan, sistem online, akses informasi) di Kota Yogyakarta?", opsi: "1. Tidak mendukung 2. Kurang mendukung 3. mendukung 4. Sangat Mendukung"}
+      ],
+      "Keamanan": [
+        {performa: "Bagaimana kejelasan persyaratan dalam memperoleh layanan keamanan di Kota Yogyakarta (misalnya pelaporan gangguan ketertiban atau kejadian keamanan)?", opsi: "1. Tidak Jelas 2. Kurang Jelas 3. Jelas 4. Sangat Jelas"},
+        {performa: "Bagaimana kemudahan prosedur dalam menyampaikan laporan atau permohonan bantuan keamanan kepada aparat di Kota Yogyakarta?", opsi: "1. Tidak Mudah 2. Kurang Mudah 3. Mudah 4. Sangat Mudah"},
+        {performa: "Bagaimana kecepatan respons aparat keamanan Kota Yogyakarta dalam menangani laporan masyarakat?", opsi: "1. Tidak Cepat 2. Kurang Cepat 3. Cepat 4. Sangat Cepat"},
+        {performa: "Bagaimana transparansi dan kepastian bahwa pelayanan keamanan di Kota Yogyakarta tidak dipungut biaya di luar ketentuan?", opsi: "1. Tidak Transparan 2. Kurang Transparan 3. Transparan 4. Sangat Transparan"},
+        {performa: "Bagaimana efektivitas hasil penanganan masalah keamanan yang Anda laporkan di Kota Yogyakarta?", opsi: "1. Tidak Efektif 2. Kurang Efektif 3. Efektif 4. Sangat Efektif"},
+        {performa: "Bagaimana kemampuan dan profesionalisme aparat keamanan Kota Yogyakarta dalam menjalankan tugasnya?", opsi: "1. Tidak Baik 2. Kurang Baik 3. Baik 4. Sangat Baik"},
+        {performa: "Bagaimana sikap, ketegasan, dan keramahan aparat keamanan dalam menjaga ketertiban di Kota Yogyakarta?", opsi: "1. Tidak Baik 2. Kurang Baik 3. Baik 4. Sangat Baik"},
+        {performa: "Bagaimana kemudahan dalam menyampaikan pengaduan terkait keamanan serta tindak lanjutnya di Kota Yogyakarta?", opsi: "1. Tidak Mudah 2. Kurang Mudah 3. Mudah 4. Sangat Mudah"},
+        {performa: "Bagaimana ketersediaan fasilitas pendukung keamanan di Kota Yogyakarta (pos keamanan, patroli, hotline, dll.)?", opsi: "1. Tidak mendukung 2. Kurang mendukung 3. mendukung 4. Sangat Mendukung"}
+      ],
+      "Penegakan Hukum": [
+        {performa: "Bagaimana kejelasan persyaratan dalam proses pelayanan penegakan hukum di Kota Yogyakarta (misalnya pelaporan pelanggaran, pengajuan aduan)?", opsi: "1. Tidak Jelas 2. Kurang Jelas 3. Jelas 4. Sangat Jelas"},
+        {performa: "Bagaimana kemudahan prosedur dalam proses pelaporan dan penanganan kasus hukum di Kota Yogyakarta?", opsi: "1. Tidak Mudah 2. Kurang Mudah 3. Mudah 4. Sangat Mudah"},
+        {performa: "Bagaimana Kecepatan/ketepatan waktu dalam penanganan laporan atau pelanggaran hukum oleh aparat terkait?", opsi: "1. Tidak Cepat 2. Kurang Cepat 3. Cepat 4. Sangat Cepat"},
+        {performa: "Bagaimana transparansi dan kepastian tidak adanya pungutan di luar ketentuan dalam proses penegakan hukum?", opsi: "1. Tidak Transparan 2. Kurang Transparan 3. Transparan 4. Sangat Transparan"},
+        {performa: "Bagaimana kejelasan dan kepastian hasil penyelesaian kasus atau penindakan pelanggaran hukum?", opsi: "1. Tidak Jelas 2. Kurang Jelas 3. Jelas 4. Sangat Jelas"},
+        {performa: "Bagaimana kompetensi dan profesionalisme aparat dalam menjalankan tugas penegakan hukum?", opsi: "1. Tidak kompeten 2. Kurang kompeten 3. kompeten 4. Sangat kompeten"},
+        {performa: "Bagaimana sikap, integritas, dan keadilan aparat dalam menangani pelanggaran hukum?", opsi: "1. Tidak Baik 2. Kurang Baik 3. Baik 4. Sangat Baik"},
+        {performa: "Bagaimana kemudahan dalam menyampaikan pengaduan terkait proses hukum serta tindak lanjutnya?", opsi: "1. Tidak Mudah 2. Kurang Mudah 3. Mudah 4. Sangat Mudah"},
+        {performa: "Bagaimana ketersediaan fasilitas pendukung penegakan hukum di Kota Yogyakarta?", opsi: "1. Tidak Mendukung 2. Kurang mendukung 3. mendukung 4. Sangat mendukung"}
+      ],
+      "Pemberantasan Korupsi": [
+      { 
+        performa: "Bagaimana kesesuaian persyaratan pelayanan dalam upaya pemberantasan korupsi (misalnya persyaratan administrasi, kelengkapan laporan, atau dokumen pendukung) dengan jenis layanan yang diberikan?", 
+        opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai" 
+      },
+      { 
+        performa: "Bagaimana kemudahan prosedur pelayanan dalam upaya pemberantasan korupsi (seperti tata cara pelaporan, pengaduan, atau akses layanan pengawasan)?", 
+        opsi: "1. Tidak Mudah, 2. Kurang Mudah, 3. Mudah, 4. Sangat Mudah" 
+      },
+      { 
+        performa: "Bagaimana kecepatan atau ketepatan waktu pelayanan dalam penanganan laporan, pengaduan, atau layanan terkait pemberantasan korupsi?", 
+        opsi: "1. Tidak Cepat, 2. Kurang Cepat, 3. Cepat, 4. Sangat Cepat" 
+      },
+      { 
+        performa: "Bagaimana kewajaran biaya atau tarif dalam pelayanan yang berkaitan dengan upaya pemberantasan korupsi?", 
+        opsi: "1. Sangat Mahal, 2. Cukup Mahal, 3. Murah, 4. Gratis" 
+      },
+      { 
+        performa: "Bagaimana kesesuaian hasil pelayanan dalam upaya pemberantasan korupsi (misalnya tindak lanjut laporan, rekomendasi, atau informasi yang diberikan) dengan standar pelayanan yang telah ditetapkan?", 
+        opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai" 
+      },
+      { 
+        performa: "Bagaimana kompetensi atau kemampuan petugas dalam memberikan pelayanan terkait pemberantasan korupsi (pemahaman aturan, integritas, dan ketepatan penanganan)?", 
+        opsi: "1. Tidak Kompeten, 2. Kurang Kompeten, 3. Kompeten, 4. Sangat Kompeten" 
+      },
+      { 
+        performa: "Bagaimana perilaku petugas dalam memberikan pelayanan terkait pemberantasan korupsi, khususnya kesopanan, profesionalitas, dan sikap berintegritas?", 
+        opsi: "1. Tidak Sopan dan Ramah, 2. Kurang Sopan dan Ramah, 3. Sopan dan Ramah, 4. Sangat Sopan dan Ramah" 
+      },
+      { 
+        performa: "Bagaimana kualitas sarana dan prasarana pendukung pelayanan pemberantasan korupsi (media pelaporan, ruang layanan, sistem informasi, fasilitas pendukung lainnya)?", 
+        opsi: "1. Tidak Baik, 2. Kurang Baik, 3. Baik, 4. Sangat Baik" 
+      },
+      { 
+        performa: "Bagaimana penanganan pengaduan, laporan, saran, dan masukan dari masyarakat terkait pemberantasan korupsi?", 
+        opsi: "1. Tidak Ada, 2. Ada tetapi Tidak Berfungsi, 3. Berfungsi Kurang Maksimal, 4. Dikelola dengan Baik" 
+      }
+    ],
+
+    "Transportasi": [
+      { 
+        performa: "Bagaimana kesesuaian persyaratan pelayanan transportasi (misalnya persyaratan administrasi, teknis, atau kelengkapan) dengan jenis layanan transportasi yang digunakan atau diajukan?", 
+        opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai" 
+      },
+      { 
+        performa: "Bagaimana kemudahan prosedur pelayanan transportasi (seperti alur pengajuan, pengurusan administrasi, atau proses pelayanan lainnya)?", 
+        opsi: "1. Tidak Mudah, 2. Kurang Mudah, 3. Mudah, 4. Sangat Mudah" 
+      },
+      { 
+        performa: "Bagaimana kecepatan atau ketepatan waktu dalam pemberian pelayanan transportasi (misalnya administrasi, perizinan, atau layanan operasional)?", 
+        opsi: "1. Tidak Cepat, 2. Kurang Cepat, 3. Cepat, 4. Sangat Cepat" 
+      },
+      { 
+        performa: "Bagaimana kewajaran biaya atau tarif yang dikenakan dalam pelayanan transportasi?", 
+        opsi: "1. Sangat Mahal, 2. Cukup Mahal, 3. Murah, 4. Gratis" 
+      },
+      { 
+        performa: "Bagaimana kesesuaian hasil pelayanan transportasi (dokumen, izin, atau hasil layanan lainnya) dengan standar pelayanan yang telah ditetapkan?", 
+        opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai" 
+      },
+      { 
+        performa: "Bagaimana kompetensi atau kemampuan petugas transportasi dalam memberikan pelayanan (pemahaman aturan, ketepatan informasi, kemampuan melayani)?", 
+        opsi: "1. Tidak Kompeten, 2. Kurang Kompeten, 3. Kompeten, 4. Sangat Kompeten" 
+      },
+      { 
+        performa: "Bagaimana perilaku petugas transportasi dalam memberikan pelayanan, khususnya kesopanan dan keramahan kepada pengguna jasa?", 
+        opsi: "1. Tidak Sopan dan Ramah, 2. Kurang Sopan dan Ramah, 3. Sopan dan Ramah, 4. Sangat Sopan dan Ramah" 
+      },
+      { 
+        performa: "Bagaimana kualitas sarana dan prasarana pelayanan transportasi (ruang tunggu, loket, rambu, fasilitas pendukung, sistem layanan)?", 
+        opsi: "1. Buruk, 2. Cukup, 3. Baik, 4. Sangat Baik" 
+      },
+      { 
+        performa: "Bagaimana penanganan pengaduan, saran, dan masukan dari pengguna layanan transportasi?", 
+        opsi: "1. Tidak Ada, 2. Ada tetapi Tidak Berfungsi, 3. Berfungsi Kurang Maksimal, 4. Dikelola dengan Baik" 
+      }
+    ],
+      "Ketenagakerjaan": [
+        { 
+          performa: "Bagaimana kesesuaian persyaratan pelayanan di bidang ketenagakerjaan (misalnya persyaratan administrasi, teknis, atau dokumen pendukung) dengan jenis layanan yang diterima?", 
+          opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai" 
+        },
+        { 
+          performa: "Bagaimana kemudahan prosedur atau tahapan pelayanan di bidang ketenagakerjaan (seperti pendaftaran, verifikasi, dan penyelesaian layanan)?", 
+          opsi: "1. Tidak Mudah, 2. Kurang Mudah, 3. Mudah, 4. Sangat Mudah" 
+        },
+        { 
+          performa: "Bagaimana kecepatan atau ketepatan waktu pelayanan di bidang ketenagakerjaan (misalnya layanan pencari kerja, pelatihan, penempatan, atau administrasi lainnya)?", 
+          opsi: "1. Tidak Cepat, 2. Kurang Cepat, 3. Cepat, 4. Sangat Cepat" 
+        },
+        { 
+          performa: "Bagaimana kewajaran biaya atau tarif dalam pelayanan di bidang ketenagakerjaan?", 
+          opsi: "1. Sangat Mahal, 2. Cukup Mahal, 3. Murah, 4. Gratis" 
+        },
+        { 
+          performa: "Bagaimana kesesuaian hasil pelayanan di bidang ketenagakerjaan (produk layanan, dokumen, atau fasilitas) dengan standar pelayanan yang telah ditetapkan?", 
+          opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai" 
+        },
+        { 
+          performa: "Bagaimana kompetensi atau kemampuan petugas dalam memberikan pelayanan di bidang ketenagakerjaan (pemahaman regulasi, ketepatan informasi, kemampuan teknis)?", 
+          opsi: "1. Tidak Kompeten, 2. Kurang Kompeten, 3. Kompeten, 4. Sangat Kompeten" 
+        },
+        { 
+          performa: "Bagaimana perilaku petugas dalam memberikan pelayanan di bidang ketenagakerjaan, khususnya kesopanan dan keramahan?", 
+          opsi: "1. Tidak Sopan dan Ramah, 2. Kurang Sopan dan Ramah, 3. Sopan dan Ramah, 4. Sangat Sopan dan Ramah" 
+        },
+        { 
+          performa: "Bagaimana kualitas sarana dan prasarana pendukung pelayanan di bidang ketenagakerjaan (ruang layanan, peralatan, sistem informasi)?", 
+          opsi: "1. Buruk, 2. Cukup, 3. Baik, 4. Sangat Baik" 
+        },
+        { 
+          performa: "Bagaimana penanganan pengaduan, saran, dan masukan dari pengguna layanan di bidang ketenagakerjaan?", 
+          opsi: "1. Tidak Ada, 2. Ada tetapi Tidak Berfungsi, 3. Berfungsi Kurang Maksimal, 4. Dikelola dengan Baik" 
+        }
+      ],
+
+      "Ekonomi": [
+        { 
+          performa: "Bagaimana kesesuaian persyaratan pelayanan di bidang ekonomi (misalnya persyaratan administrasi, teknis, atau dokumen usaha) dengan jenis layanan yang diterima?", 
+          opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai" 
+        },
+        { 
+          performa: "Bagaimana kemudahan prosedur atau tahapan pelayanan di bidang ekonomi (seperti pengajuan permohonan, verifikasi, dan penyelesaian layanan)?", 
+          opsi: "1. Tidak Mudah, 2. Kurang Mudah, 3. Mudah, 4. Sangat Mudah" 
+        },
+        { 
+          performa: "Bagaimana kecepatan atau ketepatan waktu pelayanan di bidang ekonomi (misalnya perizinan usaha, fasilitasi UMKM, atau administrasi lainnya)?", 
+          opsi: "1. Tidak Cepat, 2. Kurang Cepat, 3. Cepat, 4. Sangat Cepat" 
+        },
+        { 
+          performa: "Bagaimana kewajaran biaya atau tarif dalam pelayanan di bidang ekonomi?", 
+          opsi: "1. Sangat Mahal, 2. Cukup Mahal, 3. Murah, 4. Gratis" 
+        },
+        { 
+          performa: "Bagaimana kesesuaian hasil pelayanan di bidang ekonomi (produk layanan, dokumen, atau fasilitasi usaha) dengan standar pelayanan yang telah ditetapkan?", 
+          opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai" 
+        },
+        { 
+          performa: "Bagaimana kompetensi atau kemampuan petugas dalam memberikan pelayanan di bidang ekonomi (pemahaman regulasi, ketepatan informasi, kemampuan teknis)?", 
+          opsi: "1. Tidak Kompeten, 2. Kurang Kompeten, 3. Kompeten, 4. Sangat Kompeten" 
+        },
+        { 
+          performa: "Bagaimana perilaku petugas dalam memberikan pelayanan di bidang ekonomi, khususnya kesopanan dan keramahan?", 
+          opsi: "1. Tidak Sopan dan Ramah, 2. Kurang Sopan dan Ramah, 3. Sopan dan Ramah, 4. Sangat Sopan dan Ramah" 
+        },
+        { 
+          performa: "Bagaimana kualitas sarana dan prasarana pendukung pelayanan di bidang ekonomi (ruang layanan, sistem informasi, fasilitas pendukung lainnya)?", 
+          opsi: "1. Buruk, 2. Cukup, 3. Baik, 4. Sangat Baik" 
+        },
+        { 
+          performa: "Bagaimana penanganan pengaduan, saran, dan masukan dari pengguna layanan di bidang ekonomi?", 
+          opsi: "1. Tidak Ada, 2. Ada tetapi Tidak Berfungsi, 3. Berfungsi Kurang Maksimal, 4. Dikelola dengan Baik" 
+        }
+      ],
+
+      "Pertanian": [
+        { 
+          performa: "Bagaimana kesesuaian persyaratan pelayanan di bidang pertanian (misalnya persyaratan administrasi, teknis, atau dokumen pendukung) dengan jenis layanan yang diterima?", 
+          opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai" 
+        },
+        { 
+          performa: "Bagaimana kemudahan prosedur atau tahapan pelayanan di bidang pertanian (seperti pengajuan permohonan, verifikasi, dan penerbitan hasil layanan)?", 
+          opsi: "1. Tidak Mudah, 2. Kurang Mudah, 3. Mudah, 4. Sangat Mudah" 
+        },
+        { 
+          performa: "Bagaimana kecepatan atau ketepatan waktu pelayanan di bidang pertanian (misalnya penyuluhan, rekomendasi, bantuan, atau administrasi)?", 
+          opsi: "1. Tidak Cepat, 2. Kurang Cepat, 3. Cepat, 4. Sangat Cepat" 
+        },
+        { 
+          performa: "Bagaimana kewajaran biaya atau tarif dalam pelayanan di bidang pertanian?", 
+          opsi: "1. Sangat Mahal, 2. Cukup Mahal, 3. Murah, 4. Gratis" 
+        },
+        { 
+          performa: "Bagaimana kesesuaian hasil pelayanan di bidang pertanian (produk layanan, rekomendasi, bantuan, atau dokumen) dengan standar pelayanan yang telah ditetapkan?", 
+          opsi: "1. Tidak Sesuai, 2. Kurang Sesuai, 3. Sesuai, 4. Sangat Sesuai" 
+        },
+        { 
+          performa: "Bagaimana kompetensi atau kemampuan petugas dalam memberikan pelayanan di bidang pertanian (pengetahuan teknis, keterampilan, ketepatan informasi)?", 
+          opsi: "1. Tidak Kompeten, 2. Kurang Kompeten, 3. Kompeten, 4. Sangat Kompeten" 
+        },
+        { 
+          performa: "Bagaimana perilaku petugas dalam memberikan pelayanan di bidang pertanian, khususnya kesopanan dan keramahan?", 
+          opsi: "1. Tidak Sopan dan Ramah, 2. Kurang Sopan dan Ramah, 3. Sopan dan Ramah, 4. Sangat Sopan dan Ramah" 
+        },
+        { 
+          performa: "Bagaimana kualitas sarana dan prasarana pendukung pelayanan di bidang pertanian (ruang layanan, peralatan, media informasi, fasilitas pendukung lainnya)?", 
+          opsi: "1. Buruk, 2. Cukup, 3. Baik, 4. Sangat Baik" 
+        },
+        { 
+          performa: "Bagaimana penanganan pengaduan, saran, dan masukan dari pengguna layanan di bidang pertanian?", 
+          opsi: "1. Tidak Ada, 2. Ada tetapi Tidak Berfungsi, 3. Berfungsi Kurang Maksimal, 4. Dikelola dengan Baik" 
+        }
+      ],
+      "default": []
+    };
+
+    const poinLabels = [
+      "A. Persyaratan Layanan",
+      "B. Prosedur/Alur Layanan",
+      "C. Kecepatan & Ketepatan Waktu",
+      "D. Biaya/Tarif & Transparansi Layanan",
+      "E. Kesesuaian Produk/Hasil Layanan",
+      "F. Kompetensi Petugas",
+      "G. Sikap & Keramahan Petugas",
+      "H. Penanganan Pengaduan/Masukan",
+      "I. Sarana & Prasarana"
+    ];
+
+    function generateKuesioner(layanan) {
+      if (!layanan) {
+        $("#kuesionerContainer").html('<p class="text-center text-muted py-5">Silakan pilih jenis layanan di atas untuk menampilkan pertanyaan yang sesuai.</p>');
+        totalPertanyaan = 0;
+        return;
+      }
+
+      let questions = pertanyaanLayanan[layanan] || pertanyaanLayanan["default"];
+
+      let html = `
+        <div class="unsur-title">
+          Jenis Layanan : ${layanan}
+        </div>
+      `;
+
+      let poinIndex = 0;
+
+      questions.forEach((q, idx) => {
+        const qNum = idx + 1;
+
+        html += `
+          <div class="section-title">${poinLabels[poinIndex] || `J. Lainnya ${poinIndex + 1}`}</div>
+          <div class="performance-title"><i class="fas fa-chart-line"></i> KINERJA / PERFORMA</div>
+        `;
+        poinIndex++;
+
+        html += `
+          <div class="question-container fade-in">
+            <div class="question-text">${q.performa}</div>
+            <div class="options-container">
+              <div class="font-weight-bold text-white mb-3">${q.opsi}</div>
+              <div class="radio-options">
+                ${[1,2,3,4].map(i => `
+                  <div class="radio-option">
+                    <input class="form-check-input" type="radio" name="Input${qNum}" id="I${qNum}${i}" value="${i}">
+                    <label class="form-check-label" for="I${qNum}${i}">${i}</label>
+                  </div>
+                `).join('')}
+              </div>
+              <input class="form-control mt-3" type="text" id="Alasan${qNum}" placeholder="Alasan Anda memilih opsi di atas (wajib diisi jika memilih 1 atau 2)">
+            </div>
+          </div>
+        `;
+      });
+
+      html += `
+        <div class="question-container fade-in">
+          <div class="question-text">Silakan memberikan masukan berupa saran atau kritik terhadap layanan BAKESBANGPOL Kota Yogyakarta :</div>
+          <div class="options-container">
+            <textarea class="form-control" rows="4" id="Saran" placeholder="Tulis saran/kritik Anda di sini..."></textarea>
+          </div>
+        </div>
+      `;
+
+      $("#kuesionerContainer").html(html);
+      totalPertanyaan = questions.length;
+
+      // Validasi alasan wajib jika nilai 1 atau 2
+      $('input[type="radio"]').off('change').on('change', function() {
+        const qid = $(this).attr('name').replace('Input', '');
+        const val = parseInt($(this).val());
+        const $alasan = $('#Alasan' + qid);
+        if (val === 1 || val === 2) {
+          if (!$alasan.next('.reason-notification').length) {
+            $alasan.after('<div class="reason-notification">Harap isi alasan dengan jelas karena Anda memilih nilai rendah</div>');
+          }
+        } else {
+          $alasan.next('.reason-notification').remove();
+        }
+      });
+    }
 
     $(document).ready(function(){
       $('#HP').inputmask('9999-9999-9999');
@@ -742,21 +1070,11 @@
         }
       });
 
-      // Validasi alasan saat memilih 1 atau 2
-      $('input[type="radio"]').on('change', function() {
-        var qid = $(this).attr('name').replace('Input', '');
-        var val = $(this).val();
-        var $alasan = $('#Alasan' + qid);
-        if (val == 1 || val == 2) {
-          if (!$alasan.next('.reason-notification').length) {
-            $alasan.after('<div class="reason-notification">Harap isi alasan dengan jelas</div>');
-          }
-        } else {
-          $alasan.next('.reason-notification').remove();
-        }
+      $("#Layanan").change(function(){
+        const layanan = $(this).val().trim();
+        generateKuesioner(layanan);
       });
 
-      // Scroll to top
       $(window).scroll(function(){
         if ($(this).scrollTop() > 300) $('#scrollTopBtn').fadeIn();
         else $('#scrollTopBtn').fadeOut();
@@ -771,19 +1089,25 @@
         var valid = true;
         var firstInvalid = null;
 
-        // Cek alasan untuk nilai 1 & 2
-        $('input[type="radio"]:checked').each(function(){
-          var qid = $(this).attr('name').replace('Input','');
-          var val = $(this).val();
-          var alasan = $('#Alasan'+qid).val().trim();
-          if ((val == 1 || val == 2) && alasan === "") {
-            $('#Alasan'+qid).addClass('is-invalid');
-            valid = false;
-            if (!firstInvalid) firstInvalid = qid;
-          } else {
-            $('#Alasan'+qid).removeClass('is-invalid');
+        // Validasi radio wajib diisi
+        for (let i = 1; i <= totalPertanyaan; i++) {
+          const $radio = $(`input[name='Input${i}']:checked`);
+          if ($radio.length === 0) {
+            Swal.fire('Perhatian', 'Pertanyaan nomor ' + i + ' wajib diisi!', 'warning');
+            $(`input[name='Input${i}']`)[0].scrollIntoView({behavior:'smooth', block:'center'});
+            return false;
           }
-        });
+
+          const val = parseInt($radio.val());
+          const alasan = $(`#Alasan${i}`).val().trim();
+          if ((val === 1 || val === 2) && alasan === "") {
+            $(`#Alasan${i}`).addClass('is-invalid');
+            valid = false;
+            if (!firstInvalid) firstInvalid = i;
+          } else {
+            $(`#Alasan${i}`).removeClass('is-invalid');
+          }
+        }
 
         if (!valid) {
           Swal.fire({
@@ -791,11 +1115,11 @@
             text: 'Harap isi alasan untuk semua pilihan bernilai 1 atau 2',
             icon: 'warning'
           });
-          if (firstInvalid) $('#Alasan'+firstInvalid)[0].scrollIntoView({behavior:'smooth', block:'center'});
+          if (firstInvalid) $(`#Alasan${firstInvalid}`)[0].scrollIntoView({behavior:'smooth', block:'center'});
           return false;
         }
 
-        // Validasi identitas
+        // Validasi identitas responden
         if (!$("#Nama").val().trim()) {
           Swal.fire('Perhatian', 'Mohon isi nama lengkap!', 'warning');
           $("#Nama").focus();
@@ -806,12 +1130,12 @@
           $("#Gender").focus();
           return false;
         }
-        if (!$("#Usia").val() || isNaN($("#Usia").val())) {
-          Swal.fire('Perhatian', 'Mohon isi usia dengan angka!', 'warning');
+        if (!$("#Usia").val() || isNaN($("#Usia").val()) || $("#Usia").val() < 17) {
+          Swal.fire('Perhatian', 'Mohon isi usia dengan angka yang valid (minimal 17 tahun)!', 'warning');
           $("#Usia").focus();
           return false;
         }
-        if (!$("#HP").val() || isNaN($("#HP").val().replace(/-/g,''))) {
+        if (!$("#HP").val() || $("#HP").val().replace(/-/g,'').length < 10) {
           Swal.fire('Perhatian', 'Mohon isi nomor HP yang valid!', 'warning');
           $("#HP").focus();
           return false;
@@ -827,7 +1151,7 @@
           return false;
         }
         if ($("#Pekerjaan").val() === "LAINNYA" && !$("#PekerjaanLainnya").val().trim()) {
-          Swal.fire('Perhatian', 'Mohon sebutkan pekerjaan!', 'warning');
+          Swal.fire('Perhatian', 'Mohon sebutkan pekerjaan lainnya!', 'warning');
           $("#PekerjaanLainnya").focus();
           return false;
         }
@@ -837,33 +1161,21 @@
           return false;
         }
         if ($("#Kualifikasi").val() === "LAINNYA" && !$("#KualifikasiLainnya").val().trim()) {
-          Swal.fire('Perhatian', 'Mohon sebutkan kualifikasi!', 'warning');
+          Swal.fire('Perhatian', 'Mohon sebutkan kualifikasi lainnya!', 'warning');
           $("#KualifikasiLainnya").focus();
           return false;
         }
-
-        // Validasi Jenis Layanan
-        var layanan = $("#Layanan").val().trim();
-        if (!layanan) {
+        if (!$("#Layanan").val()) {
           Swal.fire('Perhatian', 'Mohon pilih jenis layanan!', 'warning');
           $("#Layanan").focus();
           return false;
         }
 
-        // Cek semua radio terisi
-        for (let i = 1; i <= totalPertanyaan; i++) {
-          if (!$("input[name='Input"+i+"']:checked").val()) {
-            Swal.fire('Perhatian', 'Pertanyaan nomor '+i+' wajib diisi!', 'warning');
-            $("input[name='Input"+i+"']")[0].scrollIntoView({behavior:'smooth', block:'center'});
-            return false;
-          }
-        }
-
         // Kumpulkan data
         var Poin = [], Alasan = [];
         for (let i = 1; i <= totalPertanyaan; i++) {
-          Poin.push($("input[name='Input"+i+"']:checked").val());
-          Alasan.push($("#Alasan"+i).val().trim());
+          Poin.push($(`input[name='Input${i}']:checked`).val() || "");
+          Alasan.push($(`#Alasan${i}`).val().trim());
         }
 
         var data = {
@@ -874,7 +1186,8 @@
           Pendidikan: $("#Pendidikan").val(),
           Pekerjaan: $("#Pekerjaan").val() === 'LAINNYA' ? $("#PekerjaanLainnya").val().trim() : $("#Pekerjaan").val(),
           Kualifikasi: $("#Kualifikasi").val() === 'LAINNYA' ? $("#KualifikasiLainnya").val().trim() : $("#Kualifikasi").val(),
-          Layanan: layanan,
+          Layanan: $("#Layanan").val(),
+          JenisLayanan: $("#JenisLayanan").val().trim() || "",
           Saran: $("#Saran").val().trim(),
           Poin: Poin.join("|"),
           Alasan: Alasan.join("|")
@@ -909,27 +1222,32 @@
                 cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Ya, isi survei lagi',
                 cancelButtonText: 'Tidak, selesai saja'
-              }).then((result) => {
+            }).then((result) => {
                 if (result.isConfirmed) {
-                  // Reset hanya bagian survei (kuesioner + layanan + saran)
-                  $("#Layanan").val("").trigger('change');
-                  $("#Saran").val("");
-                  for (let i = 1; i <= totalPertanyaan; i++) {
-                    $('input[name="Input'+i+'"]').prop('checked', false);
-                    $('#Alasan'+i).val("").removeClass('is-invalid');
-                    if ($('#Alasan'+i).next('.reason-notification').length) {
-                      $('#Alasan'+i).next('.reason-notification').remove();
-                    }
-                  }
-                  // Scroll ke bagian kuesioner
-                  $('html, body').animate({
-                    scrollTop: $(".card-header:contains('KUESIONER')").offset().top - 100
-                  }, 800);
+                    $("#Layanan").val("").trigger("change");          
+                    $("#JenisLayanan").val("");
+
+                    $("#Kualifikasi").val("Kualifikasi");              
+                    $("#KualifikasiLainnya")
+                      .val("")                                       
+                      .prop('disabled', true);                        
+                    $("#Saran").val("");                               
+    
+                    $('input[type="radio"]').prop('checked', false);
+                    $('input[type="text"][id^="Alasan"], textarea#Saran')
+                        .val('')
+                        .removeClass('is-invalid');
+
+                    $('.reason-notification').remove();
+
+                    $('html, body').animate({ scrollTop: $(".identity-card").offset().top - 100 }, 600);
+
+                    $("#Layanan").focus();
+
                 } else {
-                  // Redirect ke halaman survei (atau reload)
-                  window.location = BaseURL + "IDE/SurveiIKMYogyakarta";
+                    window.location = BaseURL + "IDE/SurveiIKMYogyakarta";
                 }
-              });
+            });
             } else {
               Swal.fire({
                 title: 'Gagal',
