@@ -679,7 +679,7 @@ class IDE extends CI_Controller {
 
   public function LogOut(){
 		$this->session->sess_destroy();
-		redirect(base_url('IDE/'));
+		redirect(base_url(''));
   }
 
   public function DesaSignOut(){
