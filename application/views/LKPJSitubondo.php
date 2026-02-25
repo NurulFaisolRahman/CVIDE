@@ -363,11 +363,11 @@
       <div class="link-list" id="linkList">
         
         <a class="bio-btn"
-   style="background: linear-gradient(to right, #ffffff, #e6f0ff); border: 1px solid #1a73e8;"
-   href="LaporanSitubondo">
-    <i class="fas fa-book-open" style="color: #1a73e8;"></i>
-    <span><b>LAPORAN</b></span>
-</a>
+          style="background: linear-gradient(to right, #ffffff, #e6f0ff); border: 1px solid #1a73e8;"
+          href="LaporanSitubondo">
+            <i class="fas fa-book-open" style="color: #1a73e8;"></i>
+            <span><b>LAPORAN</b></span>
+        </a>
 
         <a class="bio-btn" style="background: linear-gradient(to right, #ffffff, #e6f0ff); border: 1px solid #1a73e8;" onclick="konfirmasiBuka('Panduan Pengisian', 'https://docs.google.com/document/d/1qxnO8zH-h4S4v8UUTe6KCu1P2SmOd7qh/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')">
             <i class="fas fa-book-open" style="color: #1a73e8;"></i><span><b>Panduan Pengisian Link</b></span>
