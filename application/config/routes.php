@@ -53,4 +53,5 @@ $route['default_controller'] = 'IDE';
 $route['404_override'] = 'errors/show_404';
 $route['403_override'] = 'errors/show_403';
 $route['legalitas'] = 'IDE/legalitas';
+$route['MenuSurvei'] = 'IDE/MenuSurvei';
 $route['translate_uri_dashes'] = FALSE;
