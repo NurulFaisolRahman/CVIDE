@@ -306,20 +306,19 @@
 
     .survey-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 24px;
     }
 
     .survey-card {
         background: white;
         border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 20px 18px;
+        border-radius: 12px;
+        padding: 24px 20px;
         transition: all 0.26s ease;
-        text-decoration: none;
-        color: inherit;
-        display: block;
         box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        display: flex;
+        flex-direction: column;
     }
 
     .survey-card.hidden {
@@ -384,7 +383,7 @@
         display: flex;
         flex-direction: column;
         gap: 6px;
-        margin-bottom: 18px;
+        margin-bottom: 20px;
         font-size: 0.86rem;
     }
 
@@ -412,35 +411,141 @@
         text-align: left;
     }
 
-    .btn-view {
+    .card-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: auto;
+    }
+
+    .btn-primary, .btn-secondary {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 6px;
-        padding: 7px 16px;
-        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-        color: white;
+        padding: 8px 16px;
         font-weight: 600;
         font-size: 0.90rem;
         border: none;
         border-radius: 50px;
         cursor: pointer;
         transition: all 0.28s ease;
+        flex: 1;
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
         box-shadow: 0 3px 10px rgba(0,122,255,0.16);
     }
 
-    .btn-view:hover {
+    .btn-primary:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 24px rgba(0,122,255,0.24);
         background: linear-gradient(135deg, var(--primary-light), var(--primary));
     }
 
-    .btn-view::after {
-        content: '→';
-        transition: transform 0.28s ease;
+    .btn-secondary {
+        background: white;
+        color: var(--primary);
+        border: 1px solid var(--primary);
     }
 
-    .btn-view:hover::after {
-        transform: translateX(4px);
+    .btn-secondary:hover {
+        background: rgba(0,122,255,0.05);
+        transform: translateY(-2px);
+    }
+
+    /* Login Prompt Modal */
+    .login-prompt-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        z-index: 2001;
+        align-items: center;
+        justify-content: center;
+    }
+    .login-prompt-modal.active { display: flex; }
+    .login-prompt-content {
+        background: white;
+        border-radius: 16px;
+        width: 90%;
+        max-width: 380px;
+        padding: 32px 24px;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    .login-prompt-content h3 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: var(--text-dark);
+    }
+    .login-prompt-content p {
+        color: var(--text-muted);
+        margin-bottom: 24px;
+        line-height: 1.5;
+    }
+    .login-prompt-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+    }
+    .login-prompt-btn {
+        padding: 10px 24px;
+        border: none;
+        border-radius: 50px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .login-prompt-btn.primary {
+        background: var(--primary);
+        color: white;
+    }
+    .login-prompt-btn.primary:hover {
+        background: var(--primary-dark);
+    }
+    .login-prompt-btn.secondary {
+        background: #f0f0f0;
+        color: var(--text-dark);
+    }
+    .login-prompt-btn.secondary:hover {
+        background: #e0e0e0;
+    }
+
+    /* Login Status Badge */
+    .login-status-badge {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        z-index: 9999;
+        background: #28a745;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-size: 14px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .login-status-badge a {
+        color: white;
+        text-decoration: none;
+        margin-left: 10px;
+    }
+    .login-status-badge a:hover {
+        opacity: 0.8;
+    }
+    .level-badge {
+        background: rgba(255,255,255,0.2);
+        padding: 2px 8px;
+        border-radius: 20px;
+        font-size: 12px;
     }
 
     /* Contact Section */
@@ -479,18 +584,26 @@
     .social-link:hover img { filter: brightness(120%); }
 
     @media (max-width: 992px) {
-        .survey-grid { grid-template-columns: 1fr; }
+        .survey-grid { grid-template-columns: repeat(2, 1fr); }
         .contact-content { grid-template-columns: 1fr; }
         .contact-info { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 768px) {
+        .survey-grid { grid-template-columns: 1fr; }
         .nav-menu { display: none; }
         .survey-card { padding: 18px 16px; }
         .card-title { font-size: 1.04rem; }
         .card-meta { font-size: 0.84rem; }
         .meta-row { grid-template-columns: 100px 14px 1fr; }
-        .btn-view { padding: 6px 14px; font-size: 0.88rem; }
+        .card-actions { flex-direction: column; }
+        .login-status-badge {
+            top: 70px;
+            right: 10px;
+            left: 10px;
+            max-width: none;
+            font-size: 12px;
+        }
     }
 
     /* =============================================
@@ -563,9 +676,34 @@
     </style>
 </head>
 <body>
+<?php
+// Ambil data session dari controller
+$isLoggedIn = isset($isLoggedIn) ? $isLoggedIn : false;
+$userLevel = isset($userLevel) ? $userLevel : 0;
+$userName = isset($userName) ? $userName : 'User';
+?>
+
+<!-- Login Status Badge - Tampil jika user sudah login -->
+<?php if ($isLoggedIn): ?>
+<div class="login-status-badge">
+    <i class="fas fa-user-circle"></i> 
+    <span style="font-weight: 600;"><?= $userName ?></span>
+    <span class="level-badge">
+        <?php 
+            if($userLevel == 1) echo 'Superadmin';
+            elseif($userLevel == 2) echo 'Admin';
+            elseif($userLevel == 3) echo 'Staf';
+            elseif($userLevel == 4) echo 'Surveiyor';
+            else echo 'Pengunjung';
+        ?>
+    </span>
+    <a href="#" onclick="logout()" title="Logout">
+        <i class="fas fa-sign-out-alt"></i>
+    </a>
+</div>
+<?php endif; ?>
 
 <!-- Sign In Modal -->
-<!-- Sign In Modal (sama seperti halaman utama, tapi lebih clean) -->
 <div id="signInModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -585,6 +723,18 @@
       </div>
     </div>
   </div>
+
+<!-- Login Prompt Modal -->
+<div id="loginPromptModal" class="login-prompt-modal">
+    <div class="login-prompt-content">
+        <h3>⚠️ Perlu Login</h3>
+        <p>Anda harus masuk terlebih dahulu untuk mengisi survei. Silakan login atau lanjutkan dengan demo.</p>
+        <div class="login-prompt-actions">
+            <button class="login-prompt-btn primary" onclick="handleLoginPromptLogin()">Login</button>
+            <button class="login-prompt-btn secondary" onclick="handleLoginPromptDemo()">Demo</button>
+        </div>
+    </div>
+</div>
 
     <!-- Header – persis seperti versi awal -->
     <header class="header">
@@ -707,7 +857,7 @@
             <h1>Layanan Survei Indeks Kepuasan </h1>
             <p class="lead">
                 Silakan berpartisipasi dalam Survei  
-                dengan mengisi kuesioner sesuai  layanan yang Anda gunakan.
+                dengan mengisi kuesioner sesuai layanan yang Anda gunakan.
             </p>
 
             <!-- Opsional: Stats strip (bisa dihapus jika tidak diperlukan) -->
@@ -727,7 +877,7 @@
             <div class="section-eyebrow">
                 <span class="tag">DAFTAR SURVEI AKTIF</span>
                 <h2>Formulir Survei</h2>
-                <p>Klik pada kartu di bawah ini untuk mengisi survei sesuai  layanan yang Anda akses.</p>
+                <p>Klik pada kartu di bawah ini untuk mengisi survei sesuai layanan yang Anda akses.</p>
             </div>
 
             <!-- Filter -->
@@ -739,8 +889,6 @@
                         <select id="jenis" onchange="filterSurvei()">
                             <option value="">Semua Jenis</option>
                             <option value="IKM">Survei IKM</option>
-                            <!-- <option value="A">Survei A</option>
-                            <option value="B">Survei B</option> -->
                         </select>
                     </div>
                     <div class="filter-group">
@@ -750,7 +898,6 @@
                             <option value="2024">2024</option>
                             <option value="2025">2025</option>
                             <option value="2026">2026</option>
-                            <!-- <option value="2027">2027</option> -->
                         </select>
                     </div>
                     <div class="filter-group">
@@ -842,21 +989,67 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
       var BaseURL = '<?= base_url() ?>';
+      var currentSelectedSurvey = null; // Menyimpan survei yang dipilih
+      var isLoggedIn = <?= $isLoggedIn ? 'true' : 'false' ?>; // Status login dari PHP
+      var userLevel = <?= $userLevel ?>; // Level user dari PHP
 
-// Modal functions (sama seperti halaman utama)
+// Modal functions
 function openModal(modalId) {
     document.getElementById(modalId).classList.add('active');
 }
 function closeModal(modalId) {
     document.getElementById(modalId).classList.remove('active');
 }
+
+// Login Prompt Modal functions
+function openLoginPrompt() {
+    document.getElementById('loginPromptModal').classList.add('active');
+}
+function closeLoginPrompt() {
+    document.getElementById('loginPromptModal').classList.remove('active');
+}
+
+function handleLoginPromptLogin() {
+    closeLoginPrompt();
+    openModal('signInModal');
+}
+
+function handleLoginPromptDemo() {
+    closeLoginPrompt();
+    if (currentSelectedSurvey) {
+        // Redirect ke halaman demo dengan parameter ?demo=true
+        window.location.href = currentSelectedSurvey.url + '?demo=true';
+    }
+}
+
+// Fungsi logout
+function logout() {
+    Swal.fire({
+        title: 'Logout',
+        text: "Apakah Anda yakin ingin keluar?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Logout',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = BaseURL + "IDE/logout";
+        }
+    });
+}
+
 window.onclick = function(event) {
     if (event.target.classList.contains('modal')) {
         closeModal(event.target.id);
     }
+    if (event.target.classList.contains('login-prompt-modal')) {
+        closeLoginPrompt();
+    }
 };
 
-// Login handler (sama seperti halaman utama, tapi lebih aman)
+// Login handler
 jQuery(document).ready(function($) {
     "use strict";
 
@@ -874,7 +1067,7 @@ jQuery(document).ready(function($) {
         const password = $("#Password").val().trim();
 
         if (!username || !password) {
-            alert("Mohon isi username/email dan password dengan lengkap.");
+            Swal.fire('Perhatian', 'Mohon isi username dan password dengan lengkap.', 'warning');
             return;
         }
 
@@ -892,36 +1085,49 @@ jQuery(document).ready(function($) {
                     window.location = BaseURL + "Admin";
                 } else if (response === '3') {
                     window.location = BaseURL + "Staf";
+                } else if (response === '4') {
+                    // Surveiyor login - reload halaman untuk memperbarui status login
+                    window.location.reload();
                 } else if (response === '0') {
                     window.location = BaseURL + "Econk";
                 } else {
-                    alert(response || "Username atau password salah. Silakan coba lagi.");
+                    Swal.fire('Gagal', response || "Username atau password salah. Silakan coba lagi.", 'error');
                 }
             })
             .fail(function() {
                 $("#Masuk").prop("disabled", false).text("Masuk");
-                alert("Gagal terhubung ke server. Periksa koneksi Anda.");
+                Swal.fire('Error', 'Gagal terhubung ke server. Periksa koneksi Anda.', 'error');
             });
     });
 });
-// Klik di luar modal → tutup
-window.onclick = function(event) {
-  if (event.target.classList.contains('modal')) {
-    event.target.classList.remove('active');
-  }
-}
-
 
         // Data survei dummy (dengan lembaga terkait)
         const surveiData = [
             { id: 1, title: "Survei IKM Kinerja Bupati & Wakil Bupati Kab. Situbondo", jenis: "IKM", tahun: "2024", status: "Tidak Aktif", lembaga: "BAPPERIDA Kab. Situbondo", url: "<?= base_url('IDE/SurveiIKMSitubondo') ?>" },
             { id: 2, title: "Survei IKM Kinerja Bupati & Wakil Bupati Kab. Situbondo", jenis: "IKM", tahun: "2025", status: "Tidak Aktif", lembaga: "BAPPERIDA Kab. Situbondo", url: "<?= base_url('IDE/SurveiIKMSitubondo') ?>" },
-            { id: 3, title: "Survei IKM Kinerja Walikota & Wakil Walikota Kota Yogyakarta", jenis: "IKM", tahun: "2026", status: "Aktif", lembaga: "BAKESBANGPOL Kota Yogyakarta", url: "<?= base_url('IDE/SurveiIKMYogyakarta') ?>" },
-            // { id: 4, title: "Survei A Jakarta", jenis: "A", tahun: "2025", status: "Tidak Aktif", lembaga: "Kementerian Dalam Negeri RI", url: "#" },
-            // { id: 5, title: "Survei A Surabaya", jenis: "A", tahun: "2026", status: "Aktif", lembaga: "Dinas Sosial Provinsi Jawa Timur", url: "#" },
-            // { id: 6, title: "Survei B Bandung", jenis: "B", tahun: "2027", status: "Tidak Aktif", lembaga: "Badan Pusat Statistik Kota Bandung", url: "#" },
-            // { id: 7, title: "Survei B Bali", jenis: "B", tahun: "2026", status: "Aktif", lembaga: "Dinas Pariwisata Provinsi Bali", url: "#" }
+            { id: 3, title: "Survei IKM Kinerja Walikota & Wakil Walikota Kota Yogyakarta", jenis: "IKM", tahun: "2026", status: "Aktif", lembaga: "BAKESBANGPOL Kota Yogyakarta", url: "<?= base_url('IDE/SurveiIKMYogyakarta') ?>" }
         ];
+
+        // Fungsi untuk mengecek apakah user sudah login (dari session PHP)
+        function isUserLoggedIn() {
+            return isLoggedIn; // Mengambil dari variabel PHP di atas
+        }
+
+        function handleSurveyClick(survey, action) {
+            if (action === 'isi') {
+                if (isUserLoggedIn()) {
+                    // Jika sudah login, langsung redirect ke halaman survei
+                    window.location.href = survey.url;
+                } else {
+                    // Jika belum login, simpan survei yang dipilih dan tampilkan modal login prompt
+                    currentSelectedSurvey = survey;
+                    openLoginPrompt();
+                }
+            } else if (action === 'demo') {
+                // Demo langsung redirect dengan parameter demo
+                window.location.href = survey.url + '?demo=true';
+            }
+        }
 
         function renderSurvei(data) {
             const grid = document.getElementById('surveyGrid');
@@ -933,8 +1139,7 @@ window.onclick = function(event) {
             }
 
             data.forEach(item => {
-                const card = document.createElement('a');
-                card.href = item.url;
+                const card = document.createElement('div');
                 card.className = 'survey-card';
                 card.innerHTML = `
                     <div class="card-header-row">
@@ -967,7 +1172,14 @@ window.onclick = function(event) {
                             <span class="meta-value">${item.tahun}</span>
                         </div>
                     </div>
-                    <div class="btn-view">Lihat Laporan <span class="arrow">→</span></div>
+                    <div class="card-actions">
+                        <button class="btn-primary" onclick="handleSurveyClick(${JSON.stringify(item).replace(/"/g, '&quot;')}, 'isi')">
+                            Isi Survei
+                        </button>
+                        <button class="btn-secondary" onclick="handleSurveyClick(${JSON.stringify(item).replace(/"/g, '&quot;')}, 'demo')">
+                            Demo
+                        </button>
+                    </div>
                 `;
                 grid.appendChild(card);
             });
@@ -1000,5 +1212,7 @@ window.onclick = function(event) {
             });
         });
     </script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

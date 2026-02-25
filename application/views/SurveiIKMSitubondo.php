@@ -946,12 +946,12 @@
           </div>
           
           <!-- Tombol Submit -->
-          <div class="text-center mt-5">
+          <!-- <div class="text-center mt-5">
             <button type="button" class="btn btn-primary btn-submit" id="Kirim">
               <i class="fas fa-paper-plane mr-2"></i><b>KIRIM SURVEI</b> 
               <div id="LoadingInput" class="spinner-border spinner-border-sm text-white ml-2" style="display: none;" role="status"></div>
             </button>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

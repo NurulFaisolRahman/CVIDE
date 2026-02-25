@@ -620,41 +620,58 @@ class IDE extends CI_Controller {
 
   public function SignIn(){  
     $User = $this->db->get_where('akun', array('Username' => htmlentities($_POST['Username'])));
-		if ($User->num_rows() == 0) {
-			echo "Username Salah!";
-		}
-		else {
-			$Akun = $User->result_array();
-			if (password_verify($_POST['Password'], $Akun[0]['Password'])) {
-        if ($Akun[0]['Level'] == 1) {
-          $Session = array('SuperAdmin' => true,
-                           'Username' => $Akun[0]['Username'],
-                           'Kegiatan' => '');
-          $this->session->set_userdata($Session);
-          echo '1';
-        } else if ($Akun[0]['Level'] == 2) {
-          $Session = array('Admin' => true,
-                           'Username' => $Akun[0]['Username'],
-                           'Kegiatan' => '');
-          $this->session->set_userdata($Session);
-          echo '2';
-        } else if ($Akun[0]['Level'] == 3) {
-          $Session = array('Staf' => true,
-                           'Username' => $Akun[0]['Username']);
-          $this->session->set_userdata($Session);
-          echo '3';
-        } else if ($Akun[0]['Level'] == 0) {
-          $Session = array('Econk' => true,
-                           'Username' => $Akun[0]['Username']);
-          $this->session->set_userdata($Session);
-          echo '0';
+    if ($User->num_rows() == 0) {
+        echo "Username Salah!";
+        return;
+    }
+    
+    $Akun = $User->row_array();
+    
+    if (password_verify($_POST['Password'], $Akun['Password'])) {
+        
+        // TIDAK ADA kolom Id, jadi kita gunakan Username sebagai user_id
+        $userId = $Akun['Username']; // Username sebagai identifier
+        
+        // TIDAK ADA kolom NamaLengkap, jadi kita gunakan Username
+        $namaLengkap = $Akun['Username'];
+        
+        // Konversi Level dari char ke int
+        $level = (int)$Akun['Level'];
+        
+        // Buat session dengan format KONSISTEN
+        $Session = array(
+            'user_id'      => $userId,      // Menggunakan Username
+            'username'     => $Akun['Username'],
+            'nama_lengkap' => $namaLengkap, // Menggunakan Username
+            'level'        => $level,
+            'logged_in'    => true
+        );
+        
+        // Tambahkan flag khusus berdasarkan level
+        if ($level == 1) {
+            $Session['SuperAdmin'] = true;
+            $Session['Kegiatan'] = '';
+        } else if ($level == 2) {
+            $Session['Admin'] = true;
+            $Session['Kegiatan'] = '';
+        } else if ($level == 3) {
+            $Session['Staf'] = true;
+        } else if ($level == 4) {
+            $Session['Surveiyor'] = true;
+        } else if ($level == 0) {
+            $Session['Econk'] = true;
         }
-			} else {
-				echo "Password Salah!";
-			}
-		}	
-  }
-  
+        
+        $this->session->set_userdata($Session);
+        
+        // Kembalikan level untuk redirect di client
+        echo $level;
+        
+    } else {
+        echo "Password Salah!";
+    }
+}
+
   public function SignOut(){
 		$this->session->sess_destroy();
 		redirect(base_url());
@@ -662,7 +679,7 @@ class IDE extends CI_Controller {
 
   public function LogOut(){
 		$this->session->sess_destroy();
-		redirect(base_url('IDE/Auth'));
+		redirect(base_url('IDE/'));
   }
 
   public function DesaSignOut(){
@@ -798,8 +815,18 @@ class IDE extends CI_Controller {
   }
 
     public function SurveiIKMYogyakarta(){
-    $this->load->view('SurveiIKMYogyakarta');
-  }
+    // Ambil data session
+    $isLoggedIn = $this->session->userdata('logged_in');
+    $userLevel = $this->session->userdata('level');
+    $userName = $this->session->userdata('nama_lengkap');
+    
+    // Siapkan data untuk dikirim ke view
+    $data['isLoggedIn'] = !empty($isLoggedIn) ? $isLoggedIn : false;
+    $data['userLevel'] = !empty($userLevel) ? $userLevel : 0;
+    $data['userName'] = !empty($userName) ? $userName : 'User';
+    
+    $this->load->view('SurveiIKMYogyakarta', $data); // ✅ BENAR: Kirim data session
+}
 
   public function DownloadSurveiIKM(){
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.10.%' AND length(Kode) = 8")->result_array();
@@ -1251,19 +1278,30 @@ class IDE extends CI_Controller {
 
 public function InputIKMYogyakarta()
 {
+    // CEK SESSION - HANYA USER LEVEL 4 YANG BOLEH SUBMIT
+    $isLoggedIn = $this->session->userdata('logged_in');
+    $userLevel = $this->session->userdata('level');
+    $userId = $this->session->userdata('user_id'); // Ini akan berisi Username
+    
+    if (!$isLoggedIn || $userLevel != 4) {
+        echo "Anda tidak memiliki akses untuk mengirim survei";
+        return;
+    }
+    
     $data = [
-        'Nama'       => $this->input->post('Nama', true),
-        'Gender'     => $this->input->post('Gender', true),
-        'Usia'       => $this->input->post('Usia', true),
-        'HP'         => $this->input->post('HP', true),
-        'Pendidikan' => $this->input->post('Pendidikan', true),
-        'Pekerjaan'  => $this->input->post('Pekerjaan', true),
-        'Kualifikasi'   => $this->input->post('Kualifikasi', true),
-        'Layanan'    => $this->input->post('Layanan', true),
+        'user_id'      => $userId, // Menyimpan Username yang login
+        'Nama'         => $this->input->post('Nama', true),
+        'Gender'       => $this->input->post('Gender', true),
+        'Usia'         => $this->input->post('Usia', true),
+        'HP'           => $this->input->post('HP', true),
+        'Pendidikan'   => $this->input->post('Pendidikan', true),
+        'Pekerjaan'    => $this->input->post('Pekerjaan', true),
+        'Kualifikasi'  => $this->input->post('Kualifikasi', true),
+        'Layanan'      => $this->input->post('Layanan', true),
         'jenis_layanan' => $this->input->post('JenisLayanan', true),
-        'Saran'      => $this->input->post('Saran', true),
-        'Poin'       => $this->input->post('Poin', true),
-        'Alasan'     => $this->input->post('Alasan', true)
+        'Saran'        => $this->input->post('Saran', true),
+        'Poin'         => $this->input->post('Poin', true),
+        'Alasan'       => $this->input->post('Alasan', true)
     ];
 
     $insert = $this->db->insert('ikmyogya', $data);
@@ -1879,9 +1917,19 @@ public function InputIKMYogyakarta()
       $this->load->view('LKPJBanyuwangi');
     }
 
-  public function MenuSurvei(){
-      $this->load->view('MenuSurvei');
-    }
+ public function MenuSurvei(){
+    // Ambil data session
+    $isLoggedIn = $this->session->userdata('logged_in');
+    $userLevel = $this->session->userdata('level');
+    $userName = $this->session->userdata('nama_lengkap');
+    
+    // Siapkan data untuk dikirim ke view
+    $data['isLoggedIn'] = !empty($isLoggedIn) ? $isLoggedIn : false;
+    $data['userLevel'] = !empty($userLevel) ? $userLevel : 0;
+    $data['userName'] = !empty($userName) ? $userName : 'User';
+    
+    $this->load->view('MenuSurvei', $data);
+}
   
     public function legalitas() {
         $data['title'] = 'Legalitas & Sertifikasi | IDE Consultant';
@@ -1889,4 +1937,15 @@ public function InputIKMYogyakarta()
 
         
     }
+
+    public function debug_session() {
+    echo '<pre>';
+    echo 'Session Data:<br>';
+    print_r($this->session->userdata());
+    echo '<br><br>';
+    echo 'isLoggedIn: ' . ($this->session->userdata('logged_in') ? 'true' : 'false') . '<br>';
+    echo 'userLevel: ' . $this->session->userdata('level') . '<br>';
+    echo 'userName: ' . $this->session->userdata('nama_lengkap') . '<br>';
+    echo '</pre>';
+}
 }

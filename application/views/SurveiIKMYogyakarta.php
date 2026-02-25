@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -241,6 +243,18 @@
       box-shadow: 0 10px 30px rgba(0, 86, 179, 0.4);
     }
 
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-primary:disabled:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
     .btn-submit {
       font-size: 1.1rem;
       padding: 15px 45px;
@@ -425,9 +439,42 @@
       box-shadow: 0 0 0 0.2rem rgba(211, 47, 47, 0.25) !important;
     }
 
+    .login-badge {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+
+    .session-warning {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      max-width: 400px;
+      animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
     @media (max-width: 768px) {
       .question-container { padding: var(--spacing-md); }
       .radio-options { flex-direction: column; gap: var(--spacing-sm); }
+      .session-warning {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+      }
     }
 
     /* Style untuk teks Unsur */
@@ -446,7 +493,87 @@
   </style>
 </head>
 
-<body>  
+<body>
+<?php
+// Inisialisasi variabel session
+$isLoggedIn = isset($isLoggedIn) ? $isLoggedIn : false;
+$userLevel = isset($userLevel) ? $userLevel : 0;
+$userName = $this->session->userdata('nama_lengkap') ?? 'User';
+?>
+
+<!-- Login Status Badge -->
+<div class="login-badge">
+  <?php if ($isLoggedIn): ?>
+    <div class="dropdown">
+      <button class="btn btn-success dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-user-circle mr-1"></i> 
+        <?= $userName ?> 
+        <span class="badge badge-light ml-1">
+          <?php 
+            if($userLevel == 1) echo 'Superadmin';
+            elseif($userLevel == 2) echo 'Admin';
+            elseif($userLevel == 3) echo 'Staf';
+            elseif($userLevel == 4) echo 'Surveiyor';
+            else echo 'Pengunjung';
+          ?>
+        </span>
+      </button>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+        <a class="dropdown-item" href="#" onclick="logout()">
+          <i class="fas fa-sign-out-alt mr-2"></i> Logout
+        </a>
+      </div>
+    </div>
+  <?php else: ?>
+    <button class="btn btn-warning" onclick="openModal('signInModal')">
+      <i class="fas fa-sign-in-alt mr-1"></i> Login sebagai Surveiyor
+    </button>
+  <?php endif; ?>
+</div>
+
+<!-- Session Warning untuk Non-Surveiyor -->
+<?php if (!$isLoggedIn || $userLevel != 4): ?>
+<div class="session-warning alert alert-warning alert-dismissible fade show" role="alert">
+  <i class="fas fa-exclamation-triangle mr-2"></i>
+  <strong>Perhatian!</strong> 
+  <?php if (!$isLoggedIn): ?>
+    Anda belum login. Hanya <strong>Surveiyor (Level 4)</strong> yang dapat mengirim survei.
+    <a href="#" onclick="openModal('signInModal')" class="alert-link">Login di sini</a>
+  <?php elseif ($userLevel != 4): ?>
+    Anda login sebagai Level <?= $userLevel ?> (<?php 
+      if($userLevel == 1) echo 'Superadmin';
+      elseif($userLevel == 2) echo 'Admin';
+      elseif($userLevel == 3) echo 'Staf';
+    ?>). Hanya <strong>Surveiyor (Level 4)</strong> yang dapat mengirim survei.
+    <a href="#" onclick="logout()" class="alert-link">Logout</a> dan login sebagai Surveiyor.
+  <?php endif; ?>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<?php endif; ?>
+
+<!-- Sign In Modal -->
+<div id="signInModal" class="modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); z-index: 10000; align-items: center; justify-content: center;">
+  <div class="modal-content" style="background: white; border-radius: 16px; width: 90%; max-width: 420px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.25);">
+    <div class="modal-header" style="padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E5E7EB;">
+      <h3 class="modal-title" style="font-size: 1.4rem; font-weight: 600;">Masuk sebagai Surveiyor</h3>
+      <button class="modal-close" onclick="closeModal('signInModal')" style="background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #6b7280;">&times;</button>
+    </div>
+    <div class="modal-body" style="padding: 24px;">
+      <div class="form-group" style="margin-bottom: 20px;">
+        <label class="form-label" style="display: block; margin-bottom: 6px; font-weight: 500;">Username</label>
+        <input type="text" class="form-input" id="Username" placeholder="Masukkan username" style="width: 100%; padding: 10px 14px; border: 1px solid #E5E7EB; border-radius: 8px; font-size: 1rem;">
+      </div>
+      <div class="form-group" style="margin-bottom: 20px;">
+        <label class="form-label" style="display: block; margin-bottom: 6px; font-weight: 500;">Password</label>
+        <input type="password" class="form-input" id="Password" placeholder="Masukkan password" style="width: 100%; padding: 10px 14px; border: 1px solid #E5E7EB; border-radius: 8px; font-size: 1rem;">
+      </div>
+      <button class="btn-primary" id="Masuk" style="width: 100%; padding: 12px; background: #001428; color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer;">Masuk</button>
+    </div>
+  </div>
+</div>
+
   <div class="header-section text-center">
     <div class="container">
       <h2 class="header-title mb-2">Survei Kepuasan Masyarakat 
@@ -598,20 +725,19 @@
                 <option value="Ekonomi">Ekonomi</option>
                 <option value="Pertanian">Pertanian</option>
               </select>
-              
             </div>
             <small class="form-text text-muted mt-2">
               Pilih satu jenis layanan yang paling sesuai dengan pengalaman Anda.
             </small>
           </div>
           <div class="col-12 mb-4">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fas fa-edit mr-1"></i> Jenis Layanan</span>
-                    </div>
-                    <input class="form-control" type="text" id="JenisLayanan" placeholder="Sebutkan jenis layanan secara spesifik">
-                </div>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-edit mr-1"></i> Jenis Layanan</span>
+              </div>
+              <input class="form-control" type="text" id="JenisLayanan" placeholder="Sebutkan jenis layanan secara spesifik">
             </div>
+          </div>
         </div>
       </div>
     </div>
@@ -627,11 +753,34 @@
           </p>
         </div>
         
+        <!-- Tombol Submit dengan Session Check -->
         <div class="text-center mt-5">
-          <button type="button" class="btn btn-primary btn-submit" id="Kirim">
-            <i class="fas fa-paper-plane mr-2"></i><b>KIRIM SURVEI</b> 
-            <div id="LoadingInput" class="spinner-border spinner-border-sm text-white ml-2" style="display: none;" role="status"></div>
-          </button>
+          <?php if ($isLoggedIn && $userLevel == 4): ?>
+            <!-- Tampilkan button submit aktif untuk surveiyor level 4 -->
+            <button type="button" class="btn btn-primary btn-submit" id="Kirim">
+              <i class="fas fa-paper-plane mr-2"></i><b>KIRIM SURVEI</b> 
+              <div id="LoadingInput" class="spinner-border spinner-border-sm text-white ml-2" style="display: none;" role="status"></div>
+            </button>
+          <?php else: ?>
+            <!-- Tampilkan button disabled untuk non-surveiyor -->
+            <button type="button" class="btn btn-secondary btn-submit" disabled style="cursor: not-allowed; opacity: 0.6;" 
+                    title="<?= !$isLoggedIn ? 'Anda harus login sebagai Surveiyor (Level 4)' : 'Anda harus login sebagai Surveiyor (Level 4)' ?>">
+              <i class="fas fa-lock mr-2"></i><b>KIRIM SURVEI (TIDAK AKTIF)</b>
+            </button>
+            <p class="text-danger mt-3">
+              <i class="fas fa-exclamation-circle"></i> 
+              <?php if (!$isLoggedIn): ?>
+                Anda belum login. Silakan <a href="#" onclick="openModal('signInModal')" class="text-primary">login sebagai Surveiyor (Level 4)</a> untuk mengirim survei.
+              <?php elseif ($userLevel != 4): ?>
+                Anda login sebagai Level <?= $userLevel ?> (<?php 
+                  if($userLevel == 1) echo 'Superadmin';
+                  elseif($userLevel == 2) echo 'Admin';
+                  elseif($userLevel == 3) echo 'Staf';
+                ?>). Hanya <strong>Surveiyor (Level 4)</strong> yang dapat mengirim survei.
+                <a href="#" onclick="logout()" class="text-primary">Logout</a> dan login sebagai Surveiyor.
+              <?php endif; ?>
+            </p>
+          <?php endif; ?>
         </div>
       </div>
     </div>
@@ -644,9 +793,12 @@
   <script src="../assets/vendor/jquery/jquery.min.js"></script>
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+  
   <script>
     var totalPertanyaan = 0;
     var BaseURL = '<?= base_url() ?>';
+    var isLoggedIn = <?= $isLoggedIn ? 'true' : 'false' ?>;
+    var userLevel = <?= $userLevel ?>;
 
     // Data pertanyaan – hanya performa/kinerja (harapan sudah dihapus semua)
     const pertanyaanLayanan = {
@@ -979,6 +1131,39 @@
       "I. Sarana & Prasarana"
     ];
 
+    // Fungsi untuk modal
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'flex';
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target.classList && event.target.classList.contains('modal')) {
+            event.target.style.display = 'none';
+        }
+    };
+
+    // Fungsi logout
+    function logout() {
+        Swal.fire({
+            title: 'Logout',
+            text: "Apakah Anda yakin ingin keluar?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Logout',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = BaseURL + "IDE/logout";
+            }
+        });
+    }
+
     function generateKuesioner(layanan) {
       if (!layanan) {
         $("#kuesionerContainer").html('<p class="text-center text-muted py-5">Silakan pilih jenis layanan di atas untuk menampilkan pertanyaan yang sesuai.</p>');
@@ -1085,188 +1270,276 @@
         return false;
       });
 
-      $("#Kirim").click(function(){
-        var valid = true;
-        var firstInvalid = null;
+      // Login handler
+      $("#Masuk").click(function() {
+        const username = $("#Username").val().trim();
+        const password = $("#Password").val().trim();
 
-        // Validasi radio wajib diisi
-        for (let i = 1; i <= totalPertanyaan; i++) {
-          const $radio = $(`input[name='Input${i}']:checked`);
-          if ($radio.length === 0) {
-            Swal.fire('Perhatian', 'Pertanyaan nomor ' + i + ' wajib diisi!', 'warning');
-            $(`input[name='Input${i}']`)[0].scrollIntoView({behavior:'smooth', block:'center'});
+        if (!username || !password) {
+            Swal.fire('Perhatian', 'Mohon isi username dan password dengan lengkap.', 'warning');
+            return;
+        }
+
+        const data = { Username: username, Password: password };
+
+        $("#Masuk").prop("disabled", true).text("Memproses...");
+
+        $.post(BaseURL + "IDE/SignIn", data)
+            .done(function(response) {
+                $("#Masuk").prop("disabled", false).text("Masuk");
+
+                if (response === '1') {
+                    window.location = BaseURL + "SuperAdmin";
+                } else if (response === '2') {
+                    window.location = BaseURL + "Admin";
+                } else if (response === '3') {
+                    window.location = BaseURL + "Staf"; // Redirect Staf ke halaman staf
+                } else if (response === '4') {
+                    window.location.reload(); // Surveiyor reload halaman survei
+                } else {
+                    Swal.fire('Gagal', response || "Username atau password salah. Silakan coba lagi.", 'error');
+                }
+            })
+            .fail(function() {
+                $("#Masuk").prop("disabled", false).text("Masuk");
+                Swal.fire('Error', 'Gagal terhubung ke server. Periksa koneksi Anda.', 'error');
+            });
+      });
+
+      // Enter key support untuk login
+      $('#Username, #Password').on('keypress', function(e) {
+          if (e.which === 13) {
+              e.preventDefault();
+              $('#Masuk').click();
+          }
+      });
+
+      // Tombol Kirim dengan session check
+      $("#Kirim").click(function(){
+          // Cek session dari PHP (via variabel JavaScript)
+          <?php if (!$isLoggedIn || $userLevel != 4): ?>
+              Swal.fire({
+                  title: 'Akses Ditolak',
+                  text: '<?= !$isLoggedIn ? 'Anda harus login sebagai Surveiyor (Level 4) untuk mengirim survei' : 'Anda harus login sebagai Surveiyor (Level 4) untuk mengirim survei. Level Anda saat ini: ' . $userLevel ?>',
+                  icon: 'error',
+                  confirmButtonText: 'OK'
+              }).then(() => {
+                  if (!isLoggedIn) {
+                      openModal('signInModal');
+                  }
+              });
+              return false;
+          <?php endif; ?>
+          
+          // Validasi radio wajib diisi
+          var valid = true;
+          var firstInvalid = null;
+
+          for (let i = 1; i <= totalPertanyaan; i++) {
+            const $radio = $(`input[name='Input${i}']:checked`);
+            if ($radio.length === 0) {
+              Swal.fire('Perhatian', 'Pertanyaan nomor ' + i + ' wajib diisi!', 'warning');
+              $(`input[name='Input${i}']`)[0].scrollIntoView({behavior:'smooth', block:'center'});
+              return false;
+            }
+
+            const val = parseInt($radio.val());
+            const alasan = $(`#Alasan${i}`).val().trim();
+            if ((val === 1 || val === 2) && alasan === "") {
+              $(`#Alasan${i}`).addClass('is-invalid');
+              valid = false;
+              if (!firstInvalid) firstInvalid = i;
+            } else {
+              $(`#Alasan${i}`).removeClass('is-invalid');
+            }
+          }
+
+          if (!valid) {
+            Swal.fire({
+              title: 'Perhatian',
+              text: 'Harap isi alasan untuk semua pilihan bernilai 1 atau 2',
+              icon: 'warning'
+            });
+            if (firstInvalid) $(`#Alasan${firstInvalid}`)[0].scrollIntoView({behavior:'smooth', block:'center'});
             return false;
           }
 
-          const val = parseInt($radio.val());
-          const alasan = $(`#Alasan${i}`).val().trim();
-          if ((val === 1 || val === 2) && alasan === "") {
-            $(`#Alasan${i}`).addClass('is-invalid');
-            valid = false;
-            if (!firstInvalid) firstInvalid = i;
-          } else {
-            $(`#Alasan${i}`).removeClass('is-invalid');
+          // Validasi identitas responden
+          if (!$("#Nama").val().trim()) {
+            Swal.fire('Perhatian', 'Mohon isi nama lengkap!', 'warning');
+            $("#Nama").focus();
+            return false;
           }
-        }
+          if ($("#Gender").val() === "Gender") {
+            Swal.fire('Perhatian', 'Mohon pilih gender!', 'warning');
+            $("#Gender").focus();
+            return false;
+          }
+          if (!$("#Usia").val() || isNaN($("#Usia").val()) || $("#Usia").val() < 17) {
+            Swal.fire('Perhatian', 'Mohon isi usia dengan angka yang valid (minimal 17 tahun)!', 'warning');
+            $("#Usia").focus();
+            return false;
+          }
+          if (!$("#HP").val() || $("#HP").val().replace(/-/g,'').length < 10) {
+            Swal.fire('Perhatian', 'Mohon isi nomor HP yang valid!', 'warning');
+            $("#HP").focus();
+            return false;
+          }
+          if ($("#Pendidikan").val() === "Pendidikan") {
+            Swal.fire('Perhatian', 'Mohon pilih pendidikan!', 'warning');
+            $("#Pendidikan").focus();
+            return false;
+          }
+          if ($("#Pekerjaan").val() === "Pekerjaan") {
+            Swal.fire('Perhatian', 'Mohon pilih pekerjaan!', 'warning');
+            $("#Pekerjaan").focus();
+            return false;
+          }
+          if ($("#Pekerjaan").val() === "LAINNYA" && !$("#PekerjaanLainnya").val().trim()) {
+            Swal.fire('Perhatian', 'Mohon sebutkan pekerjaan lainnya!', 'warning');
+            $("#PekerjaanLainnya").focus();
+            return false;
+          }
+          if ($("#Kualifikasi").val() === "Kualifikasi") {
+            Swal.fire('Perhatian', 'Mohon pilih kualifikasi responden!', 'warning');
+            $("#Kualifikasi").focus();
+            return false;
+          }
+          if ($("#Kualifikasi").val() === "LAINNYA" && !$("#KualifikasiLainnya").val().trim()) {
+            Swal.fire('Perhatian', 'Mohon sebutkan kualifikasi lainnya!', 'warning');
+            $("#KualifikasiLainnya").focus();
+            return false;
+          }
+          if (!$("#Layanan").val()) {
+            Swal.fire('Perhatian', 'Mohon pilih jenis layanan!', 'warning');
+            $("#Layanan").focus();
+            return false;
+          }
 
-        if (!valid) {
+          // Kumpulkan data
+          var Poin = [], Alasan = [];
+          for (let i = 1; i <= totalPertanyaan; i++) {
+            Poin.push($(`input[name='Input${i}']:checked`).val() || "");
+            Alasan.push($(`#Alasan${i}`).val().trim());
+          }
+
+          var data = {
+            Nama: $("#Nama").val().trim(),
+            Gender: $("#Gender").val(),
+            Usia: $("#Usia").val(),
+            HP: $("#HP").val(),
+            Pendidikan: $("#Pendidikan").val(),
+            Pekerjaan: $("#Pekerjaan").val() === 'LAINNYA' ? $("#PekerjaanLainnya").val().trim() : $("#Pekerjaan").val(),
+            Kualifikasi: $("#Kualifikasi").val() === 'LAINNYA' ? $("#KualifikasiLainnya").val().trim() : $("#Kualifikasi").val(),
+            Layanan: $("#Layanan").val(),
+            JenisLayanan: $("#JenisLayanan").val().trim() || "",
+            Saran: $("#Saran").val().trim(),
+            Poin: Poin.join("|"),
+            Alasan: Alasan.join("|")
+          };
+
           Swal.fire({
-            title: 'Perhatian',
-            text: 'Harap isi alasan untuk semua pilihan bernilai 1 atau 2',
-            icon: 'warning'
-          });
-          if (firstInvalid) $(`#Alasan${firstInvalid}`)[0].scrollIntoView({behavior:'smooth', block:'center'});
-          return false;
-        }
+            title: 'Konfirmasi',
+            text: "Apakah data sudah benar dan ingin dikirim?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Kirim!',
+            cancelButtonText: 'Periksa lagi'
+          }).then((result) => {
+            if (!result.isConfirmed) return;
 
-        // Validasi identitas responden
-        if (!$("#Nama").val().trim()) {
-          Swal.fire('Perhatian', 'Mohon isi nama lengkap!', 'warning');
-          $("#Nama").focus();
-          return false;
-        }
-        if ($("#Gender").val() === "Gender") {
-          Swal.fire('Perhatian', 'Mohon pilih gender!', 'warning');
-          $("#Gender").focus();
-          return false;
-        }
-        if (!$("#Usia").val() || isNaN($("#Usia").val()) || $("#Usia").val() < 17) {
-          Swal.fire('Perhatian', 'Mohon isi usia dengan angka yang valid (minimal 17 tahun)!', 'warning');
-          $("#Usia").focus();
-          return false;
-        }
-        if (!$("#HP").val() || $("#HP").val().replace(/-/g,'').length < 10) {
-          Swal.fire('Perhatian', 'Mohon isi nomor HP yang valid!', 'warning');
-          $("#HP").focus();
-          return false;
-        }
-        if ($("#Pendidikan").val() === "Pendidikan") {
-          Swal.fire('Perhatian', 'Mohon pilih pendidikan!', 'warning');
-          $("#Pendidikan").focus();
-          return false;
-        }
-        if ($("#Pekerjaan").val() === "Pekerjaan") {
-          Swal.fire('Perhatian', 'Mohon pilih pekerjaan!', 'warning');
-          $("#Pekerjaan").focus();
-          return false;
-        }
-        if ($("#Pekerjaan").val() === "LAINNYA" && !$("#PekerjaanLainnya").val().trim()) {
-          Swal.fire('Perhatian', 'Mohon sebutkan pekerjaan lainnya!', 'warning');
-          $("#PekerjaanLainnya").focus();
-          return false;
-        }
-        if ($("#Kualifikasi").val() === "Kualifikasi") {
-          Swal.fire('Perhatian', 'Mohon pilih kualifikasi responden!', 'warning');
-          $("#Kualifikasi").focus();
-          return false;
-        }
-        if ($("#Kualifikasi").val() === "LAINNYA" && !$("#KualifikasiLainnya").val().trim()) {
-          Swal.fire('Perhatian', 'Mohon sebutkan kualifikasi lainnya!', 'warning');
-          $("#KualifikasiLainnya").focus();
-          return false;
-        }
-        if (!$("#Layanan").val()) {
-          Swal.fire('Perhatian', 'Mohon pilih jenis layanan!', 'warning');
-          $("#Layanan").focus();
-          return false;
-        }
+            $("#Kirim").prop("disabled", true);
+            $("#LoadingInput").show();
 
-        // Kumpulkan data
-        var Poin = [], Alasan = [];
-        for (let i = 1; i <= totalPertanyaan; i++) {
-          Poin.push($(`input[name='Input${i}']:checked`).val() || "");
-          Alasan.push($(`#Alasan${i}`).val().trim());
-        }
+            $.post(BaseURL + "IDE/InputIKMYogyakarta", data, function(res) {
+              $("#Kirim").prop("disabled", false);
+              $("#LoadingInput").hide();
 
-        var data = {
-          Nama: $("#Nama").val().trim(),
-          Gender: $("#Gender").val(),
-          Usia: $("#Usia").val(),
-          HP: $("#HP").val(),
-          Pendidikan: $("#Pendidikan").val(),
-          Pekerjaan: $("#Pekerjaan").val() === 'LAINNYA' ? $("#PekerjaanLainnya").val().trim() : $("#Pekerjaan").val(),
-          Kualifikasi: $("#Kualifikasi").val() === 'LAINNYA' ? $("#KualifikasiLainnya").val().trim() : $("#Kualifikasi").val(),
-          Layanan: $("#Layanan").val(),
-          JenisLayanan: $("#JenisLayanan").val().trim() || "",
-          Saran: $("#Saran").val().trim(),
-          Poin: Poin.join("|"),
-          Alasan: Alasan.join("|")
-        };
+              if (res === '1') {
+                Swal.fire({
+                  title: 'Berhasil!',
+                  text: 'Data survei sudah tersimpan. Terima kasih atas partisipasinya.',
+                  icon: 'success',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#6c757d',
+                  confirmButtonText: 'Ya, isi survei lagi',
+                  cancelButtonText: 'Tidak, selesai saja'
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                      $("#Layanan").val("").trigger("change");          
+                      $("#JenisLayanan").val("");
 
-        Swal.fire({
-          title: 'Konfirmasi',
-          text: "Apakah data sudah benar dan ingin dikirim?",
-          icon: 'question',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Ya, Kirim!',
-          cancelButtonText: 'Periksa lagi'
-        }).then((result) => {
-          if (!result.isConfirmed) return;
+                      $("#Kualifikasi").val("Kualifikasi");              
+                      $("#KualifikasiLainnya")
+                        .val("")                                       
+                        .prop('disabled', true);                        
+                      $("#Saran").val("");                               
+      
+                      $('input[type="radio"]').prop('checked', false);
+                      $('input[type="text"][id^="Alasan"], textarea#Saran')
+                          .val('')
+                          .removeClass('is-invalid');
 
-          $("#Kirim").prop("disabled", true);
-          $("#LoadingInput").show();
+                      $('.reason-notification').remove();
 
-          $.post(BaseURL + "IDE/InputIKMYogyakarta", data, function(res) {
-            $("#Kirim").prop("disabled", false);
-            $("#LoadingInput").hide();
+                      $('html, body').animate({ scrollTop: $(".identity-card").offset().top - 100 }, 600);
 
-            if (res === '1') {
+                      $("#Layanan").focus();
+
+                  } else {
+                      window.location = BaseURL + "IDE/SurveiIKMYogyakarta";
+                  }
+              });
+              } else {
+                Swal.fire({
+                  title: 'Gagal',
+                  text: 'Gagal menyimpan: ' + (res || 'Unknown error'),
+                  icon: 'error'
+                });
+              }
+            }).fail(function() {
+              $("#Kirim").prop("disabled", false);
+              $("#LoadingInput").hide();
               Swal.fire({
-                title: 'Berhasil!',
-                text: 'Data survei sudah tersimpan. Terima kasih atas partisipasinya.',
-                icon: 'success',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, isi survei lagi',
-                cancelButtonText: 'Tidak, selesai saja'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $("#Layanan").val("").trigger("change");          
-                    $("#JenisLayanan").val("");
-
-                    $("#Kualifikasi").val("Kualifikasi");              
-                    $("#KualifikasiLainnya")
-                      .val("")                                       
-                      .prop('disabled', true);                        
-                    $("#Saran").val("");                               
-    
-                    $('input[type="radio"]').prop('checked', false);
-                    $('input[type="text"][id^="Alasan"], textarea#Saran')
-                        .val('')
-                        .removeClass('is-invalid');
-
-                    $('.reason-notification').remove();
-
-                    $('html, body').animate({ scrollTop: $(".identity-card").offset().top - 100 }, 600);
-
-                    $("#Layanan").focus();
-
-                } else {
-                    window.location = BaseURL + "IDE/SurveiIKMYogyakarta";
-                }
-            });
-            } else {
-              Swal.fire({
-                title: 'Gagal',
-                text: 'Gagal menyimpan: ' + (res || 'Unknown error'),
+                title: 'Error',
+                text: 'Terjadi kesalahan koneksi. Silakan coba lagi.',
                 icon: 'error'
               });
-            }
-          }).fail(function() {
-            $("#Kirim").prop("disabled", false);
-            $("#LoadingInput").hide();
-            Swal.fire({
-              title: 'Error',
-              text: 'Terjadi kesalahan koneksi. Silakan coba lagi.',
-              icon: 'error'
             });
           });
         });
-      });
     });
+
+    // Session timeout handling (opsional)
+    <?php if ($isLoggedIn): ?>
+    let sessionTimeout = 30 * 60 * 1000; // 30 menit
+    let timeoutTimer;
+
+    function resetSessionTimer() {
+        clearTimeout(timeoutTimer);
+        timeoutTimer = setTimeout(function() {
+            Swal.fire({
+                title: 'Session Expired',
+                text: 'Sesi Anda telah berakhir. Silakan login kembali.',
+                icon: 'info',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                window.location.href = BaseURL + "IDE/logout";
+            });
+        }, sessionTimeout);
+    }
+
+    // Reset timer saat ada aktivitas user
+    $(document).on('mousemove keypress click', function() {
+        resetSessionTimer();
+    });
+
+    // Inisialisasi timer
+    resetSessionTimer();
+    <?php endif; ?>
   </script>
 </body>
 </html>
