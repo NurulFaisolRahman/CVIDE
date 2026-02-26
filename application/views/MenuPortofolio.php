@@ -901,7 +901,7 @@
     <div class="hero-badge">PORTFOLIO</div>
     <h1>Portofolio <span>Proyek</span></h1>
     <p class="lead">
-      Lebih dari 41 proyek nyata telah kami selesaikan bersama pemerintah daerah dan Instansi terkait
+      Lebih dari 38 proyek nyata telah kami selesaikan bersama pemerintah daerah dan Instansi terkait
       menghasilkan kebijakan berbasis bukti dan dampak ekonomi yang terukur.
     </p>
     <div class="hero-stats">
@@ -910,7 +910,7 @@
         <span class="lbl">Berpengalaman Sejak 2019</span>
       </div>
       <div class="hero-stat">
-        <span class="val">41+</span>
+        <span class="val">38+</span>
         <span class="lbl">Proyek Selesai</span>
       </div>
     </div>
@@ -1903,40 +1903,7 @@ Banyuwangi
         </div>
       </div> 
 
-      <div class="portfolio-card" data-year="2023">
-        <div class="card-header-row">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-          </div>
-          <span class="card-status status-completed">2023</span>
-        </div>
-        <h2>Masterplan RSUD
-Pesanggaran tipe D
-
-
-</h2>
-        <div class="card-meta">
-          <div class="meta-item">
-            <span class="meta-key">Nomor</span>
-            <span class="meta-val">027/25951/429.112/2023
-</span>
-          </div>
-          <div class="meta-item">
-            <span class="meta-key">Lembaga</span>
-            <span class="meta-val">
-Dinas Kesehatan
-Kabupaten Banyuwangi
-
-</span>
-          </div>
-          <div class="meta-item">
-            <span class="meta-key">Waktu</span>
-            <span class="meta-val">25 Hari</span>
-          </div>
-        </div>
-      </div> 
+      
 
       <div class="portfolio-card" data-year="2023">
         <div class="card-header-row">
@@ -2110,7 +2077,7 @@ Anggaran 2024
           <div class="meta-item">
             <span class="meta-key">Nomor</span>
             <span class="meta-val">050/022-
-LITBANGDALEV/429.201/20025
+LITBANGDALEV/429.201/2025
 
 </span>
           </div>
@@ -2130,45 +2097,7 @@ Kabupaten Banyuwangi
         </div>
       </div>
 
-      <div class="portfolio-card" data-year="2025">
-        <div class="card-header-row">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-          </div>
-          <span class="card-status status-completed">2025</span>
-        </div>
-        <h2>Penyusunan Laporan Keterangan
-Pertanggungjawaban Bupati
-Banyuwangi Akhir Tahun
-Anggaran 2024
-
-</h2>
-        <div class="card-meta">
-          <div class="meta-item">
-            <span class="meta-key">Nomor</span>
-            <span class="meta-val">050/022-
-LITBANGDALEV/429.201/20025
-
-</span>
-          </div>
-          <div class="meta-item">
-            <span class="meta-key">Lembaga</span>
-            <span class="meta-val">
-Badan Perencanaan
-Pembangunan Daerah
-Kabupaten Banyuwangi
-
-
-</span>
-          </div>
-          <div class="meta-item">
-            <span class="meta-key">Waktu</span>
-            <span class="meta-val">60 Hari</span>
-          </div>
-        </div>
-      </div>
+      
 
       <!-- <div class="portfolio-card" data-year="2025">
         <div class="card-header-row">
