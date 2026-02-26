@@ -2170,7 +2170,7 @@ Kabupaten Banyuwangi
         </div>
       </div>
 
-      <div class="portfolio-card" data-year="2025">
+      <!-- <div class="portfolio-card" data-year="2025">
         <div class="card-header-row">
           <div class="card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2205,7 +2205,7 @@ Kabupaten Banyuwangi
             <span class="meta-val">60 Hari</span>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="portfolio-card" data-year="2025">
         <div class="card-header-row">
