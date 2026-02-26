@@ -1904,7 +1904,7 @@
         </div>
         <div class="team-card">
           <div class="team-image">
-            <img src="assets/img/team/foto lama/kaka.webp" alt="kaka">
+            <img src="assets/img/team/foto lama/Kaka.webp" alt="kaka">
             <div class="team-overlay"></div>
           </div>
           <div class="team-info">
@@ -1915,7 +1915,7 @@
         </div>
         <div class="team-card">
           <div class="team-image">
-            <img src="assets/img/team/foto lama/ifam.webp" alt="ifam">
+            <img src="assets/img/team/foto lama/Ifam.webp" alt="ifam">
             <div class="team-overlay"></div>
           </div>
           <div class="team-info">
