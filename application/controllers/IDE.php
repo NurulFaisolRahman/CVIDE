@@ -1938,6 +1938,13 @@ public function InputIKMYogyakarta()
         
     }
 
+    public function MenuPortofolio() {
+        $data['title'] = 'Portofolio | IDE Consultant';
+        $this->load->view('MenuPortofolio', $data);
+
+        
+    }
+
     public function debug_session() {
     echo '<pre>';
     echo 'Session Data:<br>';

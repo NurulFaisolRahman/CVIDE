@@ -1293,9 +1293,7 @@
   line-height: 1.45;
 }
 
-/* =============================================
-   DROPDOWN – versi lebih kecil & compact
-============================================= */
+/* ── Dropdown – Lebar fleksibel menyesuaikan isi ────────────────────── */
 .dropdown {
   position: relative;
 }
@@ -1307,13 +1305,14 @@
   left: 50%;
   transform: translateX(-50%);
   background: #fff;
-  min-width: 580px;               /* ← diperkecil dari 720px */
-  max-width: 85vw;
+  width: max-content;                /* Lebar otomatis menyesuaikan konten */
+  min-width: 320px;                   /* Batas minimum agar tidak terlalu sempit */
+  max-width: 90vw;                    /* Batas maksimum agar tidak keluar layar */
   box-shadow: 0 12px 32px rgba(0,0,0,0.12);
   border-radius: 10px;
   margin-top: 4px;
   z-index: 999;
-  padding: 24px 32px;             /* padding lebih kecil */
+  padding: 24px 28px;                 /* Padding sedikit lebih kecil & simetris */
 }
 
 .dropdown:hover .dropdown-content.mega-dropdown {
@@ -1322,14 +1321,24 @@
 
 .mega-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 36px;                      /* jarak antar kolom dikurangi */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Kolom otomatis menyesuaikan */
+  gap: 32px;                          /* Jarak antar kolom lebih fleksibel */
+}
+
+.mega-heading {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap;                /* Hindari wrap pada heading panjang */
 }
 
 .mega-column a {
   display: block;
-  padding: 8px 0;                 /* jarak antar link lebih rapat */
+  padding: 8px 0;
   transition: all 0.2s;
+  white-space: nowrap;                /* Teks link tidak wrap */
 }
 
 .mega-column a:hover {
@@ -1337,21 +1346,25 @@
   padding-left: 6px;
 }
 
-/* Panah kecil */
-.arrow-down {
-  font-size: 0.75rem;
-  margin-left: 5px;
-  opacity: 0.8;
+.mega-desc {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #666;
+  margin: 4px 0 20px 0;
+  line-height: 1.45;
+  max-width: 320px;                   /* Batasi lebar deskripsi agar rapi */
 }
 
-/* Responsif mobile (opsional tapi direkomendasikan) */
+/* Responsif mobile */
 @media (max-width: 992px) {
-  .mega-dropdown {
-    min-width: 320px;
-    padding: 20px;
+  .dropdown-content.mega-dropdown {
     left: 0;
     transform: none;
+    width: 90vw;
+    max-width: 420px;
+    padding: 20px;
   }
+
   .mega-grid {
     grid-template-columns: 1fr;
     gap: 28px;
@@ -1416,9 +1429,8 @@
         <img src="<?= base_url('assets/img/logo.png') ?>" alt="LogoIDE">
         <span class="logo-text">Inti Desain Ekonomi Consultant</span>
       </div>
-      <!-- Ganti bagian <nav class="nav-menu"> menjadi seperti ini -->
-<nav class="nav-menu">
-  <!-- Tentang – sekarang punya dropdown -->
+      <nav class="nav-menu">
+  <!-- Tentang -->
   <div class="dropdown">
     <a href="#about" class="dropbtn">
       Tentang <span class="arrow-down"></span>
@@ -1429,7 +1441,6 @@
           <h4 class="mega-heading">Profil Perusahaan</h4>
           <a href="#sejarah">Sejarah & Visi Misi</a>
           <p class="mega-desc">Inti Desain Ekonomi Consultant berdiri sejak 2015 dengan fokus pada solusi ekonomi berkelanjutan.</p>
-
           <h4 class="mega-heading">Legal & Sertifikasi</h4>
           <a href="<?= base_url('legalitas') ?>">Sertifikasi & Izin Usaha</a>
           <p class="mega-desc">Terdaftar resmi dan bekerja sama dengan lembaga terkemuka di Indonesia.</p>
@@ -1443,7 +1454,7 @@
     </div>
   </div>
 
-  <!-- Layanan – tetap seperti sebelumnya (sudah compact) -->
+  <!-- Layanan – sudah dihapus Penyusunan Dokumen & Pelatihan -->
   <div class="dropdown">
     <a href="#services" class="dropbtn">
       Layanan <span class="arrow-down"></span>
@@ -1453,27 +1464,16 @@
         <div class="mega-column">
           <h4 class="mega-heading">Konsultasi</h4>
           <a href="#konsultasi-ekonomi">Konsultasi Ekonomi</a>
-          <a href="#konsultasi-kebijakan">Analisis Kebijakan Publik</a>
           <p class="mega-desc">Pendampingan strategis berbasis data ekonomi.</p>
-
           <h4 class="mega-heading">Survei & Penelitian</h4>
           <a href="MenuSurvei">Survei Kepuasan Masyarakat</a>
           <p class="mega-desc">Metode ilmiah dengan analisis mendalam.</p>
-        </div>
-        <div class="mega-column">
-          <h4 class="mega-heading">Penyusunan Dokumen</h4>
-          <a href="#laporan-studi">Laporan & Studi Kelayakan</a>
-          <p class="mega-desc">Dokumen siap pakai untuk proposal & perencanaan.</p>
-
-          <h4 class="mega-heading">Pelatihan</h4>
-          <a href="#workshop-ekonomi">Workshop Ekonomi & Keuangan</a>
-          <p class="mega-desc">Pelatihan praktis untuk meningkatkan kompetensi.</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Portfolio – sekarang punya dropdown -->
+  <!-- Portfolio – sudah dihapus Proyek Swasta -->
   <div class="dropdown">
     <a href="#portfolio" class="dropbtn">
       Portfolio <span class="arrow-down"></span>
@@ -1482,21 +1482,14 @@
       <div class="mega-grid">
         <div class="mega-column">
           <h4 class="mega-heading">Proyek Pemerintahan</h4>
-          <a href="#proyek-pemda">Survei Ekonomi Daerah</a>
-          <a href="#studi-kelayakan">Studi Kelayakan Infrastruktur</a>
+          <a href="MenuPortofolio">Portofolio Proyek Selesai</a>
           <p class="mega-desc">Kerjasama dengan berbagai Pemda di Jawa Timur & luar pulau.</p>
-        </div>
-        <div class="mega-column">
-          <h4 class="mega-heading">Proyek Swasta</h4>
-          <a href="#klien-korporasi">Analisis Pasar & Investasi</a>
-          <a href="#umkm">Pendampingan UMKM</a>
-          <p class="mega-desc">Lebih dari 50 klien swasta dengan hasil terukur.</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Tim – sekarang punya dropdown -->
+  <!-- Tim -->
   <div class="dropdown">
     <a href="#team" class="dropbtn">
       Tim <span class="arrow-down"></span>
@@ -1507,7 +1500,6 @@
           <h4 class="mega-heading">Pendiri & Direktur</h4>
           <a href="#direktur">Profil Direktur Utama</a>
           <p class="mega-desc">Ahli ekonomi dengan pengalaman 15+ tahun.</p>
-
           <h4 class="mega-heading">Tim Ahli</h4>
           <a href="#peneliti">Peneliti & Analis</a>
           <a href="#konsultan">Konsultan Senior</a>
@@ -1521,14 +1513,13 @@
     </div>
   </div>
 
-  <!-- Masuk – sekarang punya dropdown (bisa untuk pilihan login/register atau info akun) -->
+  <!-- Masuk -->
   <div class="dropdown">
     <a href="#" class="dropbtn" onclick="openModal('signInModal')">
       Masuk <span class="arrow-down"></span>
     </a>
   </div>
 </nav>
-    </div>
   </header>
 
   <!-- Hero Section -->
@@ -1911,6 +1902,28 @@
             <div class="team-line"></div>
           </div>
         </div>
+        <div class="team-card">
+          <div class="team-image">
+            <img src="assets/img/team/foto lama/kaka.webp" alt="kaka">
+            <div class="team-overlay"></div>
+          </div>
+          <div class="team-info">
+            <h3 class="team-name">Muhammad Eka N.S</h3>
+            <p class="team-role">IT Specialist</p>
+            <div class="team-line"></div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-image">
+            <img src="assets/img/team/foto lama/ifam.webp" alt="ifam">
+            <div class="team-overlay"></div>
+          </div>
+          <div class="team-info">
+            <h3 class="team-name">If'amunnuri Al Aghutsy</h3>
+            <p class="team-role">IT Specialist</p>
+            <div class="team-line"></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1929,7 +1942,7 @@
             <div class="team-line"></div>
           </div>
         </div>
-        <div class="team-card">
+        <!-- <div class="team-card">
           <div class="team-image">
             <img src="assets/img/team/foto lama/Mahrus.webp" alt="Mahrus">
             <div class="team-overlay"></div>
@@ -1939,7 +1952,7 @@
             <p class="team-role">Researcher Support</p>
             <div class="team-line"></div>
           </div>
-        </div>
+        </div> -->
         <div class="team-card">
           <div class="team-image">
             <img src="assets/img/team/foto lama/titis.webp" alt="titis">
@@ -1951,28 +1964,7 @@
             <div class="team-line"></div>
           </div>
         </div>
-        <div class="team-card">
-          <div class="team-image">
-            <img src="assets/img/team/foto lama/Kaka.webp   " alt="Kaka">
-            <div class="team-overlay"></div>
-          </div>
-          <div class="team-info">
-            <h3 class="team-name">Muhammad Eka Nur Sucianto</h3>
-            <p class="team-role">IT Specialist</p>
-            <div class="team-line"></div>
-          </div>
-        </div>
-        <div class="team-card">
-          <div class="team-image">
-            <img src="assets/img/team/foto lama/Ifam.webp" alt="Ifam">
-            <div class="team-overlay"></div>
-          </div>
-          <div class="team-info">
-            <h3 class="team-name">If'amunnuri Al Aghutsy</h3>
-            <p class="team-role">IT Specialist</p>
-            <div class="team-line"></div>
-          </div>
-        </div>
+        
       </div>
     </div>
 

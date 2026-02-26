@@ -1211,7 +1211,7 @@ $userName = $this->session->userdata('nama_lengkap') ?? 'User';
 
       html += `
         <div class="question-container fade-in">
-          <div class="question-text">Silakan memberikan masukan berupa saran atau kritik terhadap layanan BAKESBANGPOL Kota Yogyakarta :</div>
+          <div class="question-text">Silakan memberikan masukan berupa saran atau kritik terhadap kinerja Walikota dan Wakil Walikota Kota Yogyakarta :</div>
           <div class="options-container">
             <textarea class="form-control" rows="4" id="Saran" placeholder="Tulis saran/kritik Anda di sini..."></textarea>
           </div>

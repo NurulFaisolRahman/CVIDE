@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?></title>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -58,34 +59,83 @@
     }
     .nav-menu a:hover::after { width: 100%; }
 
-    /* ── Navbar dropdown (tidak diubah) ────────────────────── */
-    .nav-menu { display: flex; align-items: center; gap: 1.8rem; }
-    .nav-menu > a, .dropbtn, .mega-column a, .mega-heading, .mega-desc {
-      font-family: inherit; font-size: 1rem; font-weight: 500; line-height: 1.5;
-    }
-    .dropbtn { font-weight: 600; }
-    .mega-heading {
-      font-size: 1.05rem; font-weight: 700; margin: 0 0 10px 0;
-      padding-bottom: 8px; border-bottom: 1px solid #eee;
-    }
-    .mega-column a, .mega-desc { font-size: 0.94rem; color: #444; }
-    .mega-desc { font-size: 0.875rem; font-weight: 400; color: #666; margin: 4px 0 20px 0; line-height: 1.45; }
-    .dropdown { position: relative; }
-    .dropdown-content.mega-dropdown {
-      display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
-      background: #fff; min-width: 580px; max-width: 85vw;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.12); border-radius: 10px;
-      margin-top: 4px; z-index: 999; padding: 24px 32px;
-    }
-    .dropdown:hover .dropdown-content.mega-dropdown { display: block; }
-    .mega-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
-    .mega-column a { display: block; padding: 8px 0; transition: all 0.2s; }
-    .mega-column a:hover { color: #0a58ca; padding-left: 6px; }
-    .arrow-down { font-size: 0.75rem; margin-left: 5px; opacity: 0.8; }
-    @media (max-width: 992px) {
-      .mega-dropdown { min-width: 320px; padding: 20px; left: 0; transform: none; }
-      .mega-grid { grid-template-columns: 1fr; gap: 28px; }
-    }
+    /* ── Dropdown – Lebar fleksibel menyesuaikan isi ────────────────────── */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content.mega-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  width: max-content;                /* Lebar otomatis menyesuaikan konten */
+  min-width: 320px;                   /* Batas minimum agar tidak terlalu sempit */
+  max-width: 90vw;                    /* Batas maksimum agar tidak keluar layar */
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+  border-radius: 10px;
+  margin-top: 4px;
+  z-index: 999;
+  padding: 24px 28px;                 /* Padding sedikit lebih kecil & simetris */
+}
+
+.dropdown:hover .dropdown-content.mega-dropdown {
+  display: block;
+}
+
+.mega-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Kolom otomatis menyesuaikan */
+  gap: 32px;                          /* Jarak antar kolom lebih fleksibel */
+}
+
+.mega-heading {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap;                /* Hindari wrap pada heading panjang */
+}
+
+.mega-column a {
+  display: block;
+  padding: 8px 0;
+  transition: all 0.2s;
+  white-space: nowrap;                /* Teks link tidak wrap */
+}
+
+.mega-column a:hover {
+  color: #0a58ca;
+  padding-left: 6px;
+}
+
+.mega-desc {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #666;
+  margin: 4px 0 20px 0;
+  line-height: 1.45;
+  max-width: 320px;                   /* Batasi lebar deskripsi agar rapi */
+}
+
+/* Responsif mobile */
+@media (max-width: 992px) {
+  .dropdown-content.mega-dropdown {
+    left: 0;
+    transform: none;
+    width: 90vw;
+    max-width: 420px;
+    padding: 20px;
+  }
+
+  .mega-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
 
     /* ══════════════════════════════════════════════════════════
        ENTERPRISE HERO — dimodifikasi
@@ -711,6 +761,54 @@
         transition: background 0.3s;
     }
     .btn-primary:hover { background: var(--primary-dark); }
+
+    .whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 30px;
+    right: 30px;
+    background-color: #25D366;
+    color: #fff;
+    border-radius: 50%;
+    z-index: 1000;
+    
+    /* Memastikan konten di tengah sempurna */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Efek visual */
+    text-decoration: none; /* Penting agar tidak ada garis bawah link */
+    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3); /* Shadow mengikuti warna hijau agar soft */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Transisi agak membal (bouncy) */
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1) translateY(-5px); /* Sedikit bergeser ke atas saat hover */
+    background-color: #128C7E; /* Hijau WhatsApp yang lebih gelap untuk kontras hover */
+    color: #fff;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.whatsapp-float i {
+    font-size: 32px; /* Ukuran disesuaikan agar proporsional di dalam lingkaran 60px */
+    line-height: 0; /* Menghilangkan gap ekstra dari font-awesome */
+}
+
+/* Responsif untuk mobile */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        width: 50px;
+        height: 50px;
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .whatsapp-float i {
+        font-size: 28px;
+    }
+}
     </style>
 </head>
 <body>
@@ -736,105 +834,112 @@
     </div>
   </div>
 
-    <!-- ── Header & Navbar (tidak diubah) ─────────────────── -->
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">
-                <a><img src="assets/img/logo.png" alt="LogoIDE"></a>
-                <span class="logo-text">Inti Desain Ekonomi Consultant</span>
-            </div>
-            <nav class="nav-menu">
-              <div class="dropdown">
-                <a href="#about" class="dropbtn">Tentang <span class="arrow-down"></span></a>
-                <div class="dropdown-content mega-dropdown">
-                  <div class="mega-grid">
-                    <div class="mega-column">
-                      <h4 class="mega-heading">Profil Perusahaan</h4>
-                      <a href="#sejarah">Sejarah & Visi Misi</a>
-                      <p class="mega-desc">Inti Desain Ekonomi Consultant berdiri sejak 2015 dengan fokus pada solusi ekonomi berkelanjutan.</p>
-                      <h4 class="mega-heading">Legal & Sertifikasi</h4>
-                      <a href="<?= base_url('legalitas') ?>">Sertifikasi & Izin Usaha</a>
-                      <p class="mega-desc">Terdaftar resmi dan bekerja sama dengan lembaga terkemuka di Indonesia.</p>
-                    </div>
-                    <div class="mega-column">
-                      <h4 class="mega-heading">Lokasi & Kontak</h4>
-                      <a href="https://www.google.com/maps/search/?api=1&query=-7.929581,112.640292">Kantor Malang</a>
-                      <p class="mega-desc">Berbasis di Malang, siap melayani seluruh Indonesia dan regional.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="dropdown">
-                <a href="#services" class="dropbtn">Layanan <span class="arrow-down"></span></a>
-                <div class="dropdown-content mega-dropdown">
-                  <div class="mega-grid">
-                    <div class="mega-column">
-                      <h4 class="mega-heading">Konsultasi</h4>
-                      <a href="#konsultasi-ekonomi">Konsultasi Ekonomi</a>
-                      <a href="#konsultasi-kebijakan">Analisis Kebijakan Publik</a>
-                      <p class="mega-desc">Pendampingan strategis berbasis data ekonomi.</p>
-                      <h4 class="mega-heading">Survei & Penelitian</h4>
-                      <a href="<?= base_url('MenuSurvei') ?>">Survei Kepuasan Masyarakat</a>
-                      <p class="mega-desc">Metode ilmiah dengan analisis mendalam.</p>
-                    </div>
-                    <div class="mega-column">
-                      <h4 class="mega-heading">Penyusunan Dokumen</h4>
-                      <a href="#laporan-studi">Laporan & Studi Kelayakan</a>
-                      <p class="mega-desc">Dokumen siap pakai untuk proposal & perencanaan.</p>
-                      <h4 class="mega-heading">Pelatihan</h4>
-                      <a href="#workshop-ekonomi">Workshop Ekonomi & Keuangan</a>
-                      <p class="mega-desc">Pelatihan praktis untuk meningkatkan kompetensi.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="dropdown">
-                <a href="#portfolio" class="dropbtn">Portfolio <span class="arrow-down"></span></a>
-                <div class="dropdown-content mega-dropdown">
-                  <div class="mega-grid">
-                    <div class="mega-column">
-                      <h4 class="mega-heading">Proyek Pemerintahan</h4>
-                      <a href="#proyek-pemda">Survei Ekonomi Daerah</a>
-                      <a href="#studi-kelayakan">Studi Kelayakan Infrastruktur</a>
-                      <p class="mega-desc">Kerjasama dengan berbagai Pemda di Jawa Timur & luar pulau.</p>
-                    </div>
-                    <div class="mega-column">
-                      <h4 class="mega-heading">Proyek Swasta</h4>
-                      <a href="#klien-korporasi">Analisis Pasar & Investasi</a>
-                      <a href="#umkm">Pendampingan UMKM</a>
-                      <p class="mega-desc">Lebih dari 50 klien swasta dengan hasil terukur.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="dropdown">
-                <a href="#team" class="dropbtn">Tim <span class="arrow-down"></span></a>
-                <div class="dropdown-content mega-dropdown">
-                  <div class="mega-grid">
-                    <div class="mega-column">
-                      <h4 class="mega-heading">Pendiri & Direktur</h4>
-                      <a href="#direktur">Profil Direktur Utama</a>
-                      <p class="mega-desc">Ahli ekonomi dengan pengalaman 15+ tahun.</p>
-                      <h4 class="mega-heading">Tim Ahli</h4>
-                      <a href="#peneliti">Peneliti & Analis</a>
-                      <a href="#konsultan">Konsultan Senior</a>
-                    </div>
-                    <div class="mega-column">
-                      <h4 class="mega-heading">Struktur Organisasi</h4>
-                      <a href="#divisi">Divisi & Departemen</a>
-                      <p class="mega-desc">Tim multidisiplin: ekonomi, statistik, manajemen, & informatika.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+  <a href="https://wa.me/6282227666283?text=Halo%20Admin%20IDE%20Consultant,%20saya%20ingin%20bertanya..." 
+   class="whatsapp-float" 
+   target="_blank" 
+   rel="noopener noreferrer"
+   aria-label="Chat via WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+</a>
+
+   <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <img src="<?= base_url('assets/img/logo.png') ?>" alt="LogoIDE">
+        <span class="logo-text">Inti Desain Ekonomi Consultant</span>
+      </div>
+      <nav class="nav-menu">
+  <!-- Tentang -->
+  <div class="dropdown">
+    <a href="#about" class="dropbtn">
+      Tentang <span class="arrow-down"></span>
+    </a>
+    <div class="dropdown-content mega-dropdown">
+      <div class="mega-grid">
+        <div class="mega-column">
+          <h4 class="mega-heading">Profil Perusahaan</h4>
+          <a href="#sejarah">Sejarah & Visi Misi</a>
+          <p class="mega-desc">Inti Desain Ekonomi Consultant berdiri sejak 2019 dengan fokus pada solusi ekonomi berkelanjutan.</p>
+          <h4 class="mega-heading">Legal & Sertifikasi</h4>
+          <a href="<?= base_url('legalitas') ?>">Sertifikasi & Izin Usaha</a>
+          <p class="mega-desc">Terdaftar resmi dan bekerja sama dengan lembaga terkemuka di Indonesia.</p>
+        </div>
+        <div class="mega-column">
+          <h4 class="mega-heading">Lokasi & Kontak</h4>
+          <a href="https://www.google.com/maps/search/?api=1&query=-7.929581,112.640292">Kantor Malang</a>
+          <p class="mega-desc">Berbasis di Malang, siap melayani seluruh Indonesia dan regional.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Layanan – sudah dihapus Penyusunan Dokumen & Pelatihan -->
+  <div class="dropdown">
+    <a href="#services" class="dropbtn">
+      Layanan <span class="arrow-down"></span>
+    </a>
+    <div class="dropdown-content mega-dropdown">
+      <div class="mega-grid">
+        <div class="mega-column">
+          <h4 class="mega-heading">Konsultasi</h4>
+          <a href="#konsultasi-ekonomi">Konsultasi Ekonomi</a>
+          <p class="mega-desc">Pendampingan strategis berbasis data ekonomi.</p>
+          <h4 class="mega-heading">Survei & Penelitian</h4>
+          <a href="MenuSurvei">Survei Kepuasan Masyarakat</a>
+          <p class="mega-desc">Metode ilmiah dengan analisis mendalam.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Portfolio – sudah dihapus Proyek Swasta -->
+  <div class="dropdown">
+    <a href="#portfolio" class="dropbtn">
+      Portfolio <span class="arrow-down"></span>
+    </a>
+    <div class="dropdown-content mega-dropdown">
+      <div class="mega-grid">
+        <div class="mega-column">
+          <h4 class="mega-heading">Proyek Pemerintahan</h4>
+          <a href="MenuPortofolio">Portofolio Proyek Selesai</a>
+          <p class="mega-desc">Kerjasama dengan berbagai Pemerintah daerah di berbagai wilayah</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tim -->
+  <div class="dropdown">
+    <a href="#team" class="dropbtn">
+      Tim <span class="arrow-down"></span>
+    </a>
+    <div class="dropdown-content mega-dropdown">
+      <div class="mega-grid">
+        <div class="mega-column">
+          <h4 class="mega-heading">Pendiri & Direktur</h4>
+          <a href="#direktur">Profil Direktur Utama</a>
+          <p class="mega-desc">Ahli ekonomi dengan pengalaman 15+ tahun.</p>
+          <h4 class="mega-heading">Tim Ahli</h4>
+          <a href="#peneliti">Peneliti & Analis</a>
+          <a href="#konsultan">Konsultan Senior</a>
+        </div>
+        <div class="mega-column">
+          <h4 class="mega-heading">Struktur Organisasi</h4>
+          <a href="#divisi">Divisi & Departemen</a>
+          <p class="mega-desc">Tim multidisiplin: ekonomi, statistik, manajemen, & informatika.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Masuk -->
   <div class="dropdown">
     <a href="#" class="dropbtn" onclick="openModal('signInModal')">
       Masuk <span class="arrow-down"></span>
     </a>
-</div>
+  </div>
 </nav>
-    </div>
-    </header>
+  </header>
 
     <!-- ══════════════════════════════════════════════════════
          HERO — Enterprise Level

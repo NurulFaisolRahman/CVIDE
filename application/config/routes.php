@@ -54,4 +54,5 @@ $route['404_override'] = 'errors/show_404';
 $route['403_override'] = 'errors/show_403';
 $route['legalitas'] = 'IDE/legalitas';
 $route['MenuSurvei'] = 'IDE/MenuSurvei';
+$route['MenuPortofolio'] = 'IDE/MenuPortofolio';
 $route['translate_uri_dashes'] = FALSE;
