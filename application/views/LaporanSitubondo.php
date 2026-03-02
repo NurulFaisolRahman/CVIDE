@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Laporan Kabupaten Situbondo </title>
+  <title>LKPJ Kabupaten Situbondo </title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -420,11 +420,11 @@
       </div>
       <div class="hero-eyebrow">Pemerintah Kabupaten Situbondo</div>
       <div class="hero-title">
-        Laporan Dokumen Kabupaten Situbondo
+        LKPJ Kabupaten Situbondo
       </div>
     </div>
   </div>
-
+ 
   <!-- PANDUAN -->
   <div class="section">
     <div class="sec-label">Panduan Utama</div>
@@ -447,7 +447,7 @@
     <div class="acc-panel">
       <button class="acc-trigger" onclick="toggleAcc(this)">
         <div class="folder-icon"><i class="fas fa-folder-open"></i></div>
-        <span>Dokumen Laporan LKPJ</span>
+        <span>Dokumen LKPJ Tahun 2025</span>
         <i class="fas fa-chevron-down chevron"></i>
       </button>
 
