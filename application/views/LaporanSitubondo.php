@@ -453,7 +453,7 @@
 
       <div class="acc-body">
 
-        <a class="doc-item" href="https://drive.google.com/file/d/1W35vDhVHOt88d9ZC4bRRkSyzAPgOjTlc/view?usp=drive_link" target="_blank">
+        <a class="doc-item" href="https://drive.google.com/file/d/1iwlfuIyxu505IhdEw3KyaycoEQHYKRA8/view?usp=drive_link" target="_blank">
           <div class="di-icon blue"><i class="fas fa-file"></i></div>
           <div class="di-label">Cover</div>
           <i class="fas fa-chevron-right di-arrow"></i>
