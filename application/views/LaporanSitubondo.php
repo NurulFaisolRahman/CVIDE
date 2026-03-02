@@ -447,25 +447,25 @@
     <div class="acc-panel">
       <button class="acc-trigger" onclick="toggleAcc(this)">
         <div class="folder-icon"><i class="fas fa-folder-open"></i></div>
-        <span>Dokumen Laporan IPPD</span>
+        <span>Dokumen Laporan LKPJ</span>
         <i class="fas fa-chevron-down chevron"></i>
       </button>
 
       <div class="acc-body">
 
-        <a class="doc-item" href="#" target="_blank">
+        <a class="doc-item" href="https://drive.google.com/file/d/1W35vDhVHOt88d9ZC4bRRkSyzAPgOjTlc/view?usp=drive_link" target="_blank">
           <div class="di-icon blue"><i class="fas fa-file"></i></div>
           <div class="di-label">Cover</div>
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
-        <a class="doc-item" href="#" target="_blank">
+        <a class="doc-item" href="https://drive.google.com/file/d/1W35vDhVHOt88d9ZC4bRRkSyzAPgOjTlc/view?usp=drive_link" target="_blank">
           <div class="di-icon blue"><i class="fas fa-file-alt"></i></div>
           <div class="di-label">Kata Pengantar</div>
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
-        <a class="doc-item" href="#" target="_blank">
+        <a class="doc-item" href="https://docs.google.com/document/d/1iN9i5qQAwL44a355HhVgDckXqjBxE8P99ve4_E6Gmo4/edit?tab=t.0" target="_blank">
           <div class="di-icon blue"><i class="fas fa-list-ul"></i></div>
           <div class="di-label">Daftar Isi</div>
           <i class="fas fa-chevron-right di-arrow"></i>
@@ -574,7 +574,7 @@
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
-        <a class="doc-item" href="https://docs.google.com/document/d/1W1e0uJ0z2fxsZ4DjYiVYUOh1eCjAL8KC6QjlcRSH3fA/edit?usp=drive_link" target="_blank">
+        <a class="doc-item" href="https://drive.google.com/file/d/1OMzMq5lCubEsp9upE4HZnsGaKb5KkEWB/view?usp=drive_link" target="_blank">
           <div class="di-icon red"><i class="fas fa-flag-checkered"></i></div>
           <div class="di-label">BAB V — Penutup</div>
           <i class="fas fa-chevron-right di-arrow"></i>
