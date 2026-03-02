@@ -472,20 +472,20 @@
         </a>
 
         <a class="doc-item" href="https://docs.google.com/document/d/1ilGNUOPiuR5m6leFVsX1vpWhPfsaTc1MaDETRXnt-pY/edit?usp=drive_link" target="_blank">
-          <div class="di-icon gold"><i class="fas fa-book"></i></div>
+          <div class="di-icon blue"><i class="fas fa-book"></i></div>
           <div class="di-label">BAB I — Pendahuluan</div>
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
         <a class="doc-item" href="https://docs.google.com/document/d/1_5YSxjt2homwJgSdiF52XjBGhaUUHToRIk-VQiMa3XI/edit?usp=drive_link" target="_blank">
-          <div class="di-icon gold"><i class="fas fa-book"></i></div>
+          <div class="di-icon blue"><i class="fas fa-book"></i></div>
           <div class="di-label">BAB II — Perubahan Penjabaran APBD</div>
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
         <!-- SUB ACCORDION BAB III -->
         <button class="sub-trigger" onclick="toggleSub(this, 'bab3')">
-          <div class="di-icon gold" style="width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#fef3c7;color:#92400e;font-size:12px;"><i class="fas fa-book"></i></div>
+          <div class="di-icon blue" style="width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#ede9fe ;color:blue ;font-size:12px;"><i class="fas fa-book"></i></div>
           <span style="flex:1;font-size:13px;">BAB III — Hasil Penyelenggaraan Urusan Pemerintahan</span>
           <i class="fas fa-chevron-down chevron"></i>
         </button>
@@ -569,7 +569,7 @@
         </div>
 
         <a class="doc-item" href="https://docs.google.com/document/d/1edDBHek5sb_Omlc7I5kh-EdYJqj9a8UlIOT1Nv-8syE/edit?usp=drive_link" target="_blank">
-          <div class="di-icon red"><i class="fas fa-book"></i></div>
+          <div class="di-icon blue"><i class="fas fa-book"></i></div>
           <div class="di-label">BAB IV — Capaian Kinerja Tugas Pembantuan</div>
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
