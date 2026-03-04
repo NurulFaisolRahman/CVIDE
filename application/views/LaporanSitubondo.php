@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Laporan Kabupaten Situbondo </title>
+  <title>LKPJ Kabupaten Situbondo </title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -420,11 +420,11 @@
       </div>
       <div class="hero-eyebrow">Pemerintah Kabupaten Situbondo</div>
       <div class="hero-title">
-        Laporan Dokumen Kabupaten Situbondo
+        LKPJ Kabupaten Situbondo
       </div>
     </div>
   </div>
-
+ 
   <!-- PANDUAN -->
   <div class="section">
     <div class="sec-label">Panduan Utama</div>
@@ -447,45 +447,45 @@
     <div class="acc-panel">
       <button class="acc-trigger" onclick="toggleAcc(this)">
         <div class="folder-icon"><i class="fas fa-folder-open"></i></div>
-        <span>Dokumen Laporan IPPD</span>
+        <span>Dokumen LKPJ Tahun 2025</span>
         <i class="fas fa-chevron-down chevron"></i>
       </button>
 
       <div class="acc-body">
 
-        <a class="doc-item" href="#" target="_blank">
+        <a class="doc-item" href="https://drive.google.com/file/d/1iwlfuIyxu505IhdEw3KyaycoEQHYKRA8/view?usp=drive_link" target="_blank">
           <div class="di-icon blue"><i class="fas fa-file"></i></div>
           <div class="di-label">Cover</div>
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
-        <a class="doc-item" href="#" target="_blank">
+        <a class="doc-item" href="https://drive.google.com/file/d/1W35vDhVHOt88d9ZC4bRRkSyzAPgOjTlc/view?usp=drive_link" target="_blank">
           <div class="di-icon blue"><i class="fas fa-file-alt"></i></div>
           <div class="di-label">Kata Pengantar</div>
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
-        <a class="doc-item" href="#" target="_blank">
+        <a class="doc-item" href="https://docs.google.com/document/d/1iN9i5qQAwL44a355HhVgDckXqjBxE8P99ve4_E6Gmo4/edit?tab=t.0" target="_blank">
           <div class="di-icon blue"><i class="fas fa-list-ul"></i></div>
           <div class="di-label">Daftar Isi</div>
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
         <a class="doc-item" href="https://docs.google.com/document/d/1ilGNUOPiuR5m6leFVsX1vpWhPfsaTc1MaDETRXnt-pY/edit?usp=drive_link" target="_blank">
-          <div class="di-icon gold"><i class="fas fa-book"></i></div>
+          <div class="di-icon blue"><i class="fas fa-book"></i></div>
           <div class="di-label">BAB I — Pendahuluan</div>
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
         <a class="doc-item" href="https://docs.google.com/document/d/1_5YSxjt2homwJgSdiF52XjBGhaUUHToRIk-VQiMa3XI/edit?usp=drive_link" target="_blank">
-          <div class="di-icon gold"><i class="fas fa-book"></i></div>
+          <div class="di-icon blue"><i class="fas fa-book"></i></div>
           <div class="di-label">BAB II — Perubahan Penjabaran APBD</div>
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
         <!-- SUB ACCORDION BAB III -->
         <button class="sub-trigger" onclick="toggleSub(this, 'bab3')">
-          <div class="di-icon gold" style="width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#fef3c7;color:#92400e;font-size:12px;"><i class="fas fa-book"></i></div>
+          <div class="di-icon blue" style="width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#ede9fe ;color:blue ;font-size:12px;"><i class="fas fa-book"></i></div>
           <span style="flex:1;font-size:13px;">BAB III — Hasil Penyelenggaraan Urusan Pemerintahan</span>
           <i class="fas fa-chevron-down chevron"></i>
         </button>
@@ -569,12 +569,12 @@
         </div>
 
         <a class="doc-item" href="https://docs.google.com/document/d/1edDBHek5sb_Omlc7I5kh-EdYJqj9a8UlIOT1Nv-8syE/edit?usp=drive_link" target="_blank">
-          <div class="di-icon red"><i class="fas fa-book"></i></div>
+          <div class="di-icon blue"><i class="fas fa-book"></i></div>
           <div class="di-label">BAB IV — Capaian Kinerja Tugas Pembantuan</div>
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
-        <a class="doc-item" href="https://docs.google.com/document/d/1W1e0uJ0z2fxsZ4DjYiVYUOh1eCjAL8KC6QjlcRSH3fA/edit?usp=drive_link" target="_blank">
+        <a class="doc-item" href="https://drive.google.com/file/d/1OMzMq5lCubEsp9upE4HZnsGaKb5KkEWB/view?usp=drive_link" target="_blank">
           <div class="di-icon red"><i class="fas fa-flag-checkered"></i></div>
           <div class="di-label">BAB V — Penutup</div>
           <i class="fas fa-chevron-right di-arrow"></i>
