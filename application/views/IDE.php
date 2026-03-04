@@ -2044,7 +2044,7 @@
           <div class="office-info">
             <h3>Kantor IDE Consultant</h3>
             <p><i class="icon">📍</i> Perum Nila Residence B6<br>Kecamatan Blimbing<br>Kota Malang</p>
-            <p><i class="icon">✉️</i> cvideconsultan@gmail.com</p>
+            <p><i class="icon">✉️</i> admin@intidesainekonomi.id</p>
           </div>
           
           <div class="services">
