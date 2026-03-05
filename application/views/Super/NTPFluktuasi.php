@@ -1,4 +1,18 @@
 <div class="clearfix"></div>
+<style>
+    /* Mengurangi ukuran font agar tabel tidak scroll horizontal */
+    .table th {
+      font-size: 11px; /* Font header lebih kecil */
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+      padding: 0.4rem 0.2rem !important; /* Padding dikurangi */
+    }
+    .table td {
+      font-size: 10px; /* Font isi tabel lebih kecil */
+      white-space: nowrap;
+      padding: 0.3rem 0.2rem !important; /* Padding dikurangi */
+    }
+  </style>
             <div class="row">
               <?php $Tahun = $this->session->userdata('TahunNTP'); ?>
               <div class="col-lg-12">
