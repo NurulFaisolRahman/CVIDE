@@ -438,6 +438,17 @@
     </a>
   </div>
 
+  <div class="section">
+    <div class="sec-label">Ringkasan Eksekutif</div>
+    <a href="https://drive.google.com/file/d/1UqdsF3FKJ795bEXzkubyZ7PW1Jici4Cv/view?usp=drive_link" target="_blank" class="btn-panduan">
+      <div class="icon-wrap"><i class="fas fa-user-secret"></i></div>
+      <div class="text">
+        Ringkasan Eksekutif
+      </div>
+      <i class="fas fa-arrow-right arrow"></i>
+    </a>
+  </div>
+
   <div class="divider"></div>
 
   <!-- DOKUMEN -->
@@ -453,13 +464,13 @@
 
       <div class="acc-body">
 
-        <a class="doc-item" href="https://drive.google.com/file/d/1iwlfuIyxu505IhdEw3KyaycoEQHYKRA8/view?usp=drive_link" target="_blank">
+        <a class="doc-item" href="https://drive.google.com/file/d/1_IqCMBJS5sdTwwFmWguRfIoO8JW-fVhR/view?usp=drive_link" target="_blank">
           <div class="di-icon blue"><i class="fas fa-file"></i></div>
           <div class="di-label">Cover</div>
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
-        <a class="doc-item" href="https://drive.google.com/file/d/1W35vDhVHOt88d9ZC4bRRkSyzAPgOjTlc/view?usp=drive_link" target="_blank">
+        <a class="doc-item" href=" https://drive.google.com/file/d/1RiwlhtBHcCUeaqP0f3A_S9j4FIRPZvB3/view?usp=drive_link" target="_blank">
           <div class="di-icon blue"><i class="fas fa-file-alt"></i></div>
           <div class="di-label">Kata Pengantar</div>
           <i class="fas fa-chevron-right di-arrow"></i>
@@ -586,7 +597,7 @@
 
   <!-- FOOTER -->
   <div class="footer">
-    <div class="footer-text">© 2025 Pemerintah Kabupaten Situbondo</div>
+    <div class="footer-text">© 2026 Pemerintah Kabupaten Situbondo</div>
   </div>
 
 </div>
