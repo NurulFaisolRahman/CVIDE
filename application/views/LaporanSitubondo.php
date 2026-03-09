@@ -576,7 +576,7 @@
             <div class="di-label">3.1-5 Unsur Penunjang Urusan Pemerintahan</div>
             <i class="fas fa-chevron-right di-arrow"></i>
           </a>
-          <a class="doc-item" href="https://docs.google.com/document/d/17T_z6lrQhJ9n4FK8usMFPOpvxe_8SRM9c6-sYMszVMQ/edit?usp=sharing" target="_blank">
+          <a class="doc-item" href="https://drive.google.com/file/d/1dwn-_y1Yd7XRf3SeyTPFcJ61SfwNIaFM/view?usp=drive_link" target="_blank">
             <div class="di-icon purple"><i class="fas fa-circle" style="font-size:8px;"></i></div>
             <div class="di-label">3.1-6 Unsur Pengawasan Urusan Pemerintahan</div>
             <i class="fas fa-chevron-right di-arrow"></i>
