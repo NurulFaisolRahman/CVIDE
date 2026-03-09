@@ -363,31 +363,50 @@
     }
 
     /* ─── FOOTER ─── */
-    .footer {
-      background: var(--navy);
-      padding: 18px 22px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
+.footer {
+  background: var(--navy);
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* badge tetap di kanan */
+  gap: 10px;
+  flex-wrap: wrap; /* agar responsif jika layar kecil */
+}
 
-    .footer-text {
-      font-size: 11px;
-      color: rgba(255,255,255,0.4);
-    }
+.footer-text {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  flex: 1;                /* memaksa teks mengambil ruang tengah */
+  text-align: center;     /* teks di tengah */
+  order: 2;               /* urutan ke-2 di flex (tengah) */
+}
 
-    .footer-badge {
-      font-size: 10px;
-      color: var(--gold-light);
-      background: rgba(212,160,23,0.12);
-      border: 1px solid rgba(212,160,23,0.25);
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
+.footer-badge {
+  font-size: 10px;
+  color: var(--gold-light);
+  background: rgba(212,160,23,0.12);
+  border: 1px solid rgba(212,160,23,0.25);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  order: 3;               /* badge tetap di paling kanan */
+}
+
+/* Jika ingin badge tetap di kanan meski teks panjang */
+@media (max-width: 480px) {
+  .footer {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .footer-text {
+    order: 1;
+  }
+  .footer-badge {
+    order: 2;
+  }
+}
 
     /* Divider */
     .divider {
@@ -494,90 +513,111 @@
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
-        <!-- SUB ACCORDION BAB III -->
-        <button class="sub-trigger" onclick="toggleSub(this, 'bab3')">
-          <div class="di-icon blue" style="width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#ede9fe ;color:blue ;font-size:12px;"><i class="fas fa-book"></i></div>
-          <span style="flex:1;font-size:13px;">BAB III — Hasil Penyelenggaraan Urusan Pemerintahan</span>
+              <!-- SUB ACCORDION BAB III -->
+
+      <!-- BAB III – Parent Level -->
+      <button class="sub-trigger" onclick="toggleSub(this, 'bab3')">
+        <div class="di-icon blue" style="width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#ede9fe;color:blue;font-size:12px;">
+          <i class="fas fa-book"></i>
+        </div>
+        <span style="flex:1;font-size:13px;">BAB III — Hasil Penyelenggaraan Urusan Pemerintahan</span>
+        <i class="fas fa-chevron-down chevron"></i>
+      </button>
+
+      <div class="sub-body" id="bab3">
+
+        <!-- Sub-bab 3.1 – Accordion + Link dokumen utama di kanan -->
+        <button class="sub-trigger" onclick="toggleSub(this, 'bab31')" style="background:#f8fafc;font-size:12.5px; display:flex; align-items:center; justify-content:space-between; width:100%; padding:8px 12px; box-sizing:border-box;">
+          
+          <!-- Bagian kiri: ikon + judul (klik di sini toggle accordion) -->
+          <div style="display:flex; align-items:center; gap:10px; flex:1;">
+            <div class="di-icon purple" style="width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#ede9fe;color:#5b21b6;font-size:11px;">
+              <i class="fas fa-layer-group"></i>
+            </div>
+            <span style="flex:1; text-align:left;">3.1 Penyelenggaraan Urusan Pemerintahan</span>
+          </div>
+
+          <!-- Link dokumen utama 3.1 – klik di sini buka dokumen, tidak toggle -->
+          <a href="https://drive.google.com/file/d/1fTLFXqScwp3WyMopX9pT1mIqipiRe91_/view?usp=drive_link"
+            target="_blank"
+            onclick="event.stopPropagation();"
+            title="Buka Dokumen Utama 3.1"
+            style="display:flex; align-items:center; gap:6px; color:#5b21b6; font-size:11.5px; text-decoration:none; padding:4px 10px; border-radius:6px; background:rgba(91,33,182,0.08); margin-right:10px; white-space:nowrap;">
+            <i class="fas fa-file-alt" style="font-size:12px;"></i>
+            <span>Dokumen 3.1</span>
+          </a>
+
           <i class="fas fa-chevron-down chevron"></i>
         </button>
 
-        <div class="sub-body" id="bab3">
-
-          <!-- Sub-sub: 3.1 -->
-          <button class="sub-trigger" onclick="toggleSub(this, 'bab31')" style="background:#f8fafc;font-size:12.5px;">
-            <div class="di-icon purple" style="width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#ede9fe;color:#5b21b6;font-size:11px;"><i class="fas fa-layer-group"></i></div>
-            <span style="flex:1;">3.1 Penyelenggaraan Urusan Pemerintahan</span>
-            <i class="fas fa-chevron-down chevron"></i>
-          </button>
-
-          <div class="sub-body" id="bab31" style="margin-left:10px;border-color:#c4b5fd;">
-            <a class="doc-item" href="https://docs.google.com/document/d/1vwdHJAU6HwTGgb3UeABr4SYB6_YQM0-LsvP_Y3jey1s/edit?usp=drive_link" target="_blank">
-              <div class="di-icon purple"><i class="fas fa-circle" style="font-size:8px;"></i></div>
-              <div class="di-label">3.1-1 Dokumen Urusan</div>
-              <i class="fas fa-chevron-right di-arrow"></i>
-            </a>
-            <a class="doc-item" href="https://docs.google.com/document/d/1HzY3r8633tx7ML6ZZuz5a6Y8XjLZiT1FL8PFaaucYhs/edit?usp=drive_link" target="_blank">
-              <div class="di-icon purple"><i class="fas fa-circle" style="font-size:8px;"></i></div>
-              <div class="di-label">3.1-2 Dokumen Urusan</div>
-              <i class="fas fa-chevron-right di-arrow"></i>
-            </a>
-            <a class="doc-item" href="https://docs.google.com/document/d/1IssUVei6Shhi8sajUb69Kw_Bf9BGefD252rDLyUNz2Y/edit?usp=drive_link" target="_blank">
-              <div class="di-icon purple"><i class="fas fa-circle" style="font-size:8px;"></i></div>
-              <div class="di-label">3.1-3 Dokumen Urusan</div>
-              <i class="fas fa-chevron-right di-arrow"></i>
-            </a>
-            <a class="doc-item" href="https://docs.google.com/document/d/16hrXNcdP78zHbCG6-MdQaiGM95H2jksRFXL7JkbB6Ck/edit?usp=drive_link" target="_blank">
-              <div class="di-icon purple"><i class="fas fa-circle" style="font-size:8px;"></i></div>
-              <div class="di-label">3.1-4 Dokumen Urusan</div>
-              <i class="fas fa-chevron-right di-arrow"></i>
-            </a>
-            <a class="doc-item" href="https://docs.google.com/document/d/1VlHoHNHke02wb6dbJUeAFBl2Rz-vjiChWXt9pjEe-os/edit?usp=drive_link" target="_blank">
-              <div class="di-icon purple"><i class="fas fa-circle" style="font-size:8px;"></i></div>
-              <div class="di-label">3.1-5 Dokumen Urusan</div>
-              <i class="fas fa-chevron-right di-arrow"></i>
-            </a>
-            <a class="doc-item" href="https://docs.google.com/document/d/17T_z6lrQhJ9n4FK8usMFPOpvxe_8SRM9c6-sYMszVMQ/edit?usp=drive_link" target="_blank">
-              <div class="di-icon purple"><i class="fas fa-circle" style="font-size:8px;"></i></div>
-              <div class="di-label">3.1-6 Dokumen Urusan</div>
-              <i class="fas fa-chevron-right di-arrow"></i>
-            </a>
-            <a class="doc-item" href="https://docs.google.com/document/d/15P30lqWfZt42Z4JwFJlARyrb2KPXVTvmzGGCds-h4ak/edit?usp=drive_link" target="_blank">
-              <div class="di-icon purple"><i class="fas fa-circle" style="font-size:8px;"></i></div>
-              <div class="di-label">3.1-7 Dokumen Urusan</div>
-              <i class="fas fa-chevron-right di-arrow"></i>
-            </a>
-            <a class="doc-item" href="https://docs.google.com/document/d/15J15_1pdCNbIu_eYNrcrPChedjQC5ebGvxOFPdaeZ2I/edit?usp=drive_link" target="_blank">
-              <div class="di-icon purple"><i class="fas fa-circle" style="font-size:8px;"></i></div>
-              <div class="di-label">3.1-8 Dokumen Urusan</div>
-              <i class="fas fa-chevron-right di-arrow"></i>
-            </a>
-          </div>
-
-          <a class="doc-item" href="https://docs.google.com/document/d/1haU0rvg5wHxpt8cA7Jk0qFcOzwolybMIZbQJwY6NDds/edit?usp=drive_link" target="_blank">
-            <div class="di-icon green"><i class="fas fa-chess-king"></i></div>
-            <div class="di-label">3.2 Kebijakan Strategis yang Ditetapkan</div>
+        <div class="sub-body" id="bab31" style="margin-left:10px;border-color:#c4b5fd;">
+          <a class="doc-item" href="https://drive.google.com/file/d/1DrP4NDbucnnDYFiHP2mCke4Aayc-zmON/view?usp=drive_link" target="_blank">
+            <div class="di-icon purple"><i class="fas fa-circle" style="font-size:8px;"></i></div>
+            <div class="di-label">3.1-1 Pelaksanaan Urusan Wajib Yang Berkaitan Dengan Pelayanan Dasar</div>
             <i class="fas fa-chevron-right di-arrow"></i>
           </a>
-
-          <a class="doc-item" href="https://docs.google.com/document/d/1U50V22w-xWIx31D1AqnEtK-9EI9TJEbINGaQFxBPKxE/edit?usp=drive_link" target="_blank">
-            <div class="di-icon green"><i class="fas fa-reply-all"></i></div>
-            <div class="di-label">3.3 Tindak Lanjut Rekomendasi DPRD</div>
+          <a class="doc-item" href="https://drive.google.com/file/d/1-1LuyyW_uB9lGNIhjfOizVEotGSCUgG-/view?usp=drive_link" target="_blank">
+            <div class="di-icon purple"><i class="fas fa-circle" style="font-size:8px;"></i></div>
+            <div class="di-label">3.1-2 Pelaksanaan Urusan Wajib Yang Tidak Berkaitan Dengan Pelayanan Dasar</div>
             <i class="fas fa-chevron-right di-arrow"></i>
           </a>
-
-          <a class="doc-item" href="https://docs.google.com/document/d/1CZVbVR88yB4SJ-yXfZzma-PYNl_bBoKAvBPrAe7aIoU/edit?usp=drive_link" target="_blank">
-            <div class="di-icon green"><i class="fas fa-chart-bar"></i></div>
-            <div class="di-label">3.4 Capaian Indikator Kinerja Daerah</div>
+          <a class="doc-item" href="https://drive.google.com/file/d/1FHf0Uvpjt0wAjFbQIXqI2fd4kz371uI5/view?usp=drive_link" target="_blank">
+            <div class="di-icon purple"><i class="fas fa-circle" style="font-size:8px;"></i></div>
+            <div class="di-label">3.1-3 Pelaksanaan Urusan Pilihan</div>
             <i class="fas fa-chevron-right di-arrow"></i>
           </a>
-
-          <a class="doc-item" href="https://docs.google.com/document/d/1aQ7ByLiTfU3gzqE3vontyz7S1O4Kgzri8HQgl2Af9j0/edit?usp=drive_link" target="_blank">
-            <div class="di-icon green"><i class="fas fa-trophy"></i></div>
-            <div class="di-label">3.5 Prestasi & Penghargaan Tahun 2025</div>
+          <a class="doc-item" href="https://drive.google.com/file/d/1ZW5syL0Us-PWisgROpJocse1HKwaoWxo/view?usp=drive_link" target="_blank">
+            <div class="di-icon purple"><i class="fas fa-circle" style="font-size:8px;"></i></div>
+            <div class="di-label">3.1-4 Unsur Pendukung Urusan Pemerintahan</div>
             <i class="fas fa-chevron-right di-arrow"></i>
           </a>
-
+          <a class="doc-item" href="https://drive.google.com/file/d/1_jzaikdRd5SsUKslk6cHyVmhrnAr3z8d/view?usp=drive_link" target="_blank">
+            <div class="di-icon purple"><i class="fas fa-circle" style="font-size:8px;"></i></div>
+            <div class="di-label">3.1-5 Unsur Penunjang Urusan Pemerintahan</div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a class="doc-item" href="https://docs.google.com/document/d/17T_z6lrQhJ9n4FK8usMFPOpvxe_8SRM9c6-sYMszVMQ/edit?usp=sharing" target="_blank">
+            <div class="di-icon purple"><i class="fas fa-circle" style="font-size:8px;"></i></div>
+            <div class="di-label">3.1-6 Unsur Pengawasan Urusan Pemerintahan</div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a class="doc-item" href="https://drive.google.com/file/d/1BHcUtFJhsRdz9i-7ZKKmhOPmsYRjoosP/view?usp=drive_link" target="_blank">
+            <div class="di-icon purple"><i class="fas fa-circle" style="font-size:8px;"></i></div>
+            <div class="di-label">3.1-7 Unsur Kewilayahan</div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a class="doc-item" href="https://drive.google.com/file/d/1TCXwhScqdhcaR9SmRTCi2lw-14RDOtcB/view?usp=drive_link" target="_blank">
+            <div class="di-icon purple"><i class="fas fa-circle" style="font-size:8px;"></i></div>
+            <div class="di-label">3.1-8 Unsur Pemerintahan Umum</div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
         </div>
+
+        <a class="doc-item" href="https://drive.google.com/file/d/11OC-peuwXEdBtZ9lMlBuuXW1H_pig2xX/view?usp=drive_link" target="_blank">
+          <div class="di-icon green"><i class="fas fa-chess-king"></i></div>
+          <div class="di-label">3.2 Kebijakan Strategis yang Ditetapkan</div>
+          <i class="fas fa-chevron-right di-arrow"></i>
+        </a>
+
+        <a class="doc-item" href="https://drive.google.com/file/d/1gwFIXp_7JJdFP3Mgu_z8wnlJwSS9ZSTY/view?usp=drive_link" target="_blank">
+          <div class="di-icon green"><i class="fas fa-reply-all"></i></div>
+          <div class="di-label">3.3 Tindak Lanjut Rekomendasi DPRD</div>
+          <i class="fas fa-chevron-right di-arrow"></i>
+        </a>
+
+        <a class="doc-item" href="https://docs.google.com/document/d/1CZVbVR88yB4SJ-yXfZzma-PYNl_bBoKAvBPrAe7aIoU/edit?usp=drive_link" target="_blank">
+          <div class="di-icon green"><i class="fas fa-chart-bar"></i></div>
+          <div class="di-label">3.4 Capaian Indikator Kinerja Daerah</div>
+          <i class="fas fa-chevron-right di-arrow"></i>
+        </a>
+
+        <a class="doc-item" href="https://docs.google.com/document/d/1aQ7ByLiTfU3gzqE3vontyz7S1O4Kgzri8HQgl2Af9j0/edit?usp=drive_link" target="_blank">
+          <div class="di-icon green"><i class="fas fa-trophy"></i></div>
+          <div class="di-label">3.5 Prestasi & Penghargaan Tahun 2025</div>
+          <i class="fas fa-chevron-right di-arrow"></i>
+        </a>
+
+      </div>
 
         <a class="doc-item" href="https://docs.google.com/document/d/1edDBHek5sb_Omlc7I5kh-EdYJqj9a8UlIOT1Nv-8syE/edit?usp=drive_link" target="_blank">
           <div class="di-icon blue"><i class="fas fa-book"></i></div>
