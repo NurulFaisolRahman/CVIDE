@@ -990,7 +990,7 @@ $userName = isset($userName) ? $userName : 'User';
                         <label for="jenis">Jenis Survei</label>
                         <select id="jenis" onchange="filterSurvei()">
                             <option value="">Semua Jenis</option>
-                            <option value="IKM">Survei IKM</option>
+                            <!-- <option value="IKM">Survei IKM</option> -->
                         </select>
                     </div>
                     <div class="filter-group">
@@ -999,15 +999,15 @@ $userName = isset($userName) ? $userName : 'User';
                             <option value="">Semua Tahun</option>
                             <!-- <option value="2024">2024</option> -->
                             <!-- <option value="2025">2025</option> -->
-                            <option value="2026">2026</option>
+                            <!-- <option value="2026">2026</option> -->
                         </select>
                     </div>
                     <div class="filter-group">
                         <label for="status">Status</label>
                         <select id="status" onchange="filterSurvei()">
                             <option value="">Semua Status</option>
-                            <option value="Aktif">Aktif</option>
-                            <option value="Tidak Aktif">Tidak Aktif</option>
+                            <!-- <option value="Aktif">Aktif</option>
+                            <option value="Tidak Aktif">Tidak Aktif</option> -->
                         </select>
                     </div>
                 </div>
@@ -1207,7 +1207,7 @@ jQuery(document).ready(function($) {
         const surveiData = [
             // { id: 1, title: "Survei IKM Kinerja Bupati & Wakil Bupati Kab. Situbondo", jenis: "IKM", tahun: "2024", status: "Tidak Aktif", lembaga: "BAPPERIDA Kab. Situbondo", url: "<?= base_url('IDE/SurveiIKMSitubondo') ?>" },
             // { id: 2, title: "Survei IKM Kinerja Bupati & Wakil Bupati Kab. Situbondo", jenis: "IKM", tahun: "2025", status: "Tidak Aktif", lembaga: "BAPPERIDA Kab. Situbondo", url: "<?= base_url('IDE/SurveiIKMSitubondo') ?>" },
-            { id: 3, title: "Survei IKM Kinerja Walikota & Wakil Walikota Kota Yogyakarta", jenis: "IKM", tahun: "2026", status: "Aktif", lembaga: "BAKESBANGPOL Kota Yogyakarta", url: "<?= base_url('IDE/SurveiIKMYogyakarta') ?>" }
+           // { id: 3, title: "Survei IKM Kinerja Walikota & Wakil Walikota Kota Yogyakarta", jenis: "IKM", tahun: "2026", status: "Aktif", lembaga: "BAKESBANGPOL Kota Yogyakarta", url: "<?= base_url('IDE/SurveiIKMYogyakarta') ?>" }
         ];
 
         // Fungsi untuk mengecek apakah user sudah login (dari session PHP)
