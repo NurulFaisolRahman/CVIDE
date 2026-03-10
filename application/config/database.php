@@ -74,18 +74,15 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'	=> '',
+	'dsn'      => '',
 	'hostname' => 'localhost',
-	// 'username' => 'root',
-	// 'password' => '',
-	// 'database' => 'u5384729_ide',
+	'username' => 'root',
+	'password' => '',
+	'database' => 'cvide',
 	'dbdriver' => 'mysqli',
-	'username' => 'u5384729_ide',
-	'password' => 'CV1d3consultan',
-	'database' => 'u5384729_ide',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
-	'db_debug' => (ENVIRONMENT !== 'production'),
+	'db_debug' => TRUE,
 	'cache_on' => FALSE,
 	'cachedir' => '',
 	'char_set' => 'utf8',
