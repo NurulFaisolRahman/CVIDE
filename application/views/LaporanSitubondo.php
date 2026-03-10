@@ -495,7 +495,7 @@
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
-        <a class="doc-item" href="https://docs.google.com/document/d/1iN9i5qQAwL44a355HhVgDckXqjBxE8P99ve4_E6Gmo4/edit?tab=t.0" target="_blank">
+        <a class="doc-item" href="https://drive.google.com/file/d/1kVOpmG4rbvr27m0iyUiD5mg2iwisRaiy/view?usp=drive_link" target="_blank">
           <div class="di-icon blue"><i class="fas fa-list-ul"></i></div>
           <div class="di-label">Daftar Isi</div>
           <i class="fas fa-chevron-right di-arrow"></i>
@@ -605,13 +605,13 @@
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
-        <a class="doc-item" href="https://docs.google.com/document/d/1CZVbVR88yB4SJ-yXfZzma-PYNl_bBoKAvBPrAe7aIoU/edit?usp=drive_link" target="_blank">
+        <a class="doc-item" href="https://drive.google.com/file/d/1ekM5-xOnnTgld0IFAXyV_KB6FJS-ileG/view?usp=drive_link" target="_blank">
           <div class="di-icon green"><i class="fas fa-chart-bar"></i></div>
           <div class="di-label">3.4 Capaian Indikator Kinerja Daerah</div>
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
-        <a class="doc-item" href="https://docs.google.com/document/d/1aQ7ByLiTfU3gzqE3vontyz7S1O4Kgzri8HQgl2Af9j0/edit?usp=drive_link" target="_blank">
+        <a class="doc-item" href="https://drive.google.com/file/d/1NEbC9-W6ExkiMpAsQJ1PmDQWAN1kyCxC/view?usp=drive_link" target="_blank">
           <div class="di-icon green"><i class="fas fa-trophy"></i></div>
           <div class="di-label">3.5 Prestasi & Penghargaan Tahun 2025</div>
           <i class="fas fa-chevron-right di-arrow"></i>
