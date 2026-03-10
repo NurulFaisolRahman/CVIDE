@@ -501,13 +501,13 @@
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
-        <a class="doc-item" href="https://docs.google.com/document/d/1ilGNUOPiuR5m6leFVsX1vpWhPfsaTc1MaDETRXnt-pY/edit?usp=drive_link" target="_blank">
+        <a class="doc-item" href="https://drive.google.com/file/d/1kjTZL2D9e5aUmivPSgcKE4WqWox343e_/view?usp=drive_link" target="_blank">
           <div class="di-icon blue"><i class="fas fa-book"></i></div>
           <div class="di-label">BAB I — Pendahuluan</div>
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
-        <a class="doc-item" href="https://docs.google.com/document/d/1_5YSxjt2homwJgSdiF52XjBGhaUUHToRIk-VQiMa3XI/edit?usp=drive_link" target="_blank">
+        <a class="doc-item" href="https://drive.google.com/file/d/1up9Vvf1Jcb1IwscOzdLCi9jiLaIB14oS/view?usp=drive_link" target="_blank">
           <div class="di-icon blue"><i class="fas fa-book"></i></div>
           <div class="di-label">BAB II — Perubahan Penjabaran APBD</div>
           <i class="fas fa-chevron-right di-arrow"></i>
@@ -619,7 +619,7 @@
 
       </div>
 
-        <a class="doc-item" href="https://docs.google.com/document/d/1edDBHek5sb_Omlc7I5kh-EdYJqj9a8UlIOT1Nv-8syE/edit?usp=drive_link" target="_blank">
+        <a class="doc-item" href="https://drive.google.com/file/d/1y-xAuQJhEQzKR_lf4RWmnvwOGtqPRPGI/view?usp=drive_link" target="_blank">
           <div class="di-icon blue"><i class="fas fa-book"></i></div>
           <div class="di-label">BAB IV — Capaian Kinerja Tugas Pembantuan</div>
           <i class="fas fa-chevron-right di-arrow"></i>
