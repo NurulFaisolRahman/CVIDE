@@ -501,7 +501,7 @@
           <i class="fas fa-chevron-right di-arrow"></i>
         </a>
 
-        <a class="doc-item" href="https://drive.google.com/file/d/1kjTZL2D9e5aUmivPSgcKE4WqWox343e_/view?usp=drive_link" target="_blank">
+        <a class="doc-item" href="https://drive.google.com/file/d/10uwkKGl8-pD5GbERAKFnIjRZeFFAI264/view?usp=drive_link" target="_blank">
           <div class="di-icon blue"><i class="fas fa-book"></i></div>
           <div class="di-label">BAB I — Pendahuluan</div>
           <i class="fas fa-chevron-right di-arrow"></i>
