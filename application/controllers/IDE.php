@@ -1945,6 +1945,11 @@ public function InputIKMYogyakarta()
         
     }
 
+    public function MasterData() {
+    $data['title'] = 'Master Data Proyek | IDE Consultant';
+    $this->load->view('MasterData', $data);
+}
+
     public function debug_session() {
     echo '<pre>';
     echo 'Session Data:<br>';
