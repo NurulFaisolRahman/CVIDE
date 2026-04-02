@@ -310,7 +310,7 @@
   <div class="hero-inner">
     <div class="hero-badge">MASTER DATA</div>
     <h1>Master Data <span>Proyek</span></h1>
-    <p class="lead">Portal terintegrasi proyek riset dan konsultasi IDE Consultant tahun 2024–2026</p>
+    <p class="lead">Portal terintegrasi proyek riset dan konsultasi IDE Consultant</p>
   </div>
 </section>
 
