@@ -1917,6 +1917,10 @@ public function InputIKMYogyakarta()
       $this->load->view('LKPJBanyuwangi');
     }
 
+    public function UsulanCSRPDBanyuwangi(){
+      $this->load->view('UsulanCSRPDBanyuwangi');
+    }
+    
  public function MenuSurvei(){
     // Ambil data session
     $isLoggedIn = $this->session->userdata('logged_in');
@@ -1949,6 +1953,7 @@ public function InputIKMYogyakarta()
     $data['title'] = 'Master Data Proyek | IDE Consultant';
     $this->load->view('MasterData', $data);
 }
+
 
     public function debug_session() {
     echo '<pre>';
