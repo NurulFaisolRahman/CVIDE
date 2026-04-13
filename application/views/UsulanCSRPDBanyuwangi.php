@@ -105,7 +105,7 @@ header('Content-Type: text/html; charset=utf-8');
     }
 
     .site-title {
-      font-size: 1.9rem;
+      font-size: 2rem; /* DIPERBESAR */
       font-weight: 800;
       margin: 14px 0 5px;
       background: linear-gradient(135deg, #FFFFFF, #BFDBFE);
@@ -116,7 +116,7 @@ header('Content-Type: text/html; charset=utf-8');
     }
 
     .site-desc {
-      font-size: 0.85rem;
+      font-size: 1rem; /* DIPERBESAR */
       color: #e2e8f0;
       font-weight: 500;
     }
@@ -126,7 +126,7 @@ header('Content-Type: text/html; charset=utf-8');
       display: inline-block;
       padding: 4px 14px;
       border-radius: 40px;
-      font-size: 0.7rem;
+      font-size: 0.85rem; /* DIPERBESAR */
       font-weight: 600;
       color: #facc15;
       margin-top: 8px;
@@ -139,14 +139,14 @@ header('Content-Type: text/html; charset=utf-8');
     }
 
     .float-wa-single {
-      width: 70px;
-      height: 70px;
+      width: 80px; /* DIPERBESAR */
+      height: 80px; /* DIPERBESAR */
       background: linear-gradient(145deg, #25d366, #128C7E);
       border-radius: 50%;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 34px;
+      font-size: 40px; /* DIPERBESAR */
       color: white;
       box-shadow: 0 8px 18px rgba(0,0,0,0.3);
       border: 3px solid white;
@@ -154,7 +154,13 @@ header('Content-Type: text/html; charset=utf-8');
       transition: 0.2s;
     }
     .float-wa-single:active { transform: scale(0.95); }
-    .wa-label { font-size: 0.7rem; font-weight: 700; margin-top: 6px; color: #b9f6ca; text-shadow: 0 1px 2px black; }
+    .wa-label { 
+      font-size: 0.85rem; /* DIPERBESAR */
+      font-weight: 700; 
+      margin-top: 8px; 
+      color: #b9f6ca; 
+      text-shadow: 0 1px 2px black; 
+    }
 
     /* Search */
     .search-container {
@@ -163,41 +169,42 @@ header('Content-Type: text/html; charset=utf-8');
     }
     .search-input {
       width: 100%;
-      padding: 14px 20px 14px 45px;
+      padding: 16px 20px 16px 50px; /* DIPERBESAR padding */
       border: none;
       border-radius: 60px;
       background: rgba(255, 255, 255, 0.96);
-      font-size: 0.9rem;
+      font-size: 1rem; /* DIPERBESAR */
       font-weight: 500;
       outline: none;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     .search-icon {
       position: absolute;
-      left: 18px;
+      left: 20px; /* DIPERBESAR */
       top: 50%;
       transform: translateY(-50%);
       color: var(--primary-blue);
+      font-size: 1.2rem; /* DIPERBESAR */
     }
 
     /* Daftar tombol */
     .link-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px; /* DIPERBESAR gap */
     }
 
     .bio-btn {
       display: flex;
       align-items: center;
       background: var(--btn-bg);
-      padding: 14px 18px;
-      border-radius: 24px;
+      padding: 16px 20px; /* DIPERBESAR padding */
+      border-radius: 28px; /* DIPERBESAR */
       text-decoration: none;
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 1rem; /* DIPERBESAR dari 0.85rem */
       color: var(--btn-text);
-      gap: 12px;
+      gap: 14px; /* DIPERBESAR gap */
       box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
       transition: all 0.2s;
       cursor: pointer;
@@ -205,57 +212,65 @@ header('Content-Type: text/html; charset=utf-8');
       width: 100%;
     }
     .bio-btn i {
-      font-size: 1.3rem;
-      width: 32px;
+      font-size: 1.6rem; /* DIPERBESAR dari 1.3rem */
+      width: 40px; /* DIPERBESAR */
       color: var(--primary-blue);
       text-align: center;
     }
-    .bio-btn span { flex: 1; text-align: left; font-weight: 600; }
+    .bio-btn span { 
+      flex: 1; 
+      text-align: left; 
+      font-weight: 700; /* DIPERBESAR boldnya */
+      font-size: 1rem; /* DIPERBESAR */
+    }
     .bio-btn::after {
       content: '\f054';
       font-family: 'Font Awesome 6 Free';
       font-weight: 900;
-      font-size: 0.7rem;
+      font-size: 0.9rem; /* DIPERBESAR */
       opacity: 0.5;
       color: #4b5563;
     }
     .bio-btn:active { transform: scale(0.98); background: #eef2ff; }
 
     .group-header {
-      font-size: 0.7rem;
+      font-size: 0.85rem; /* DIPERBESAR */
       font-weight: 800;
       background: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(4px);
       display: inline-block;
-      padding: 5px 16px;
+      padding: 6px 18px; /* DIPERBESAR */
       border-radius: 30px;
       color: white;
       letter-spacing: 0.5px;
-      margin: 12px 0 4px;
+      margin: 16px 0 6px; /* DIPERBESAR margin */
       text-transform: uppercase;
     }
 
     .no-result {
       text-align: center;
       background: rgba(0, 0, 0, 0.6);
-      padding: 24px;
+      padding: 28px; /* DIPERBESAR */
       border-radius: 30px;
       color: white;
       display: none;
       margin-top: 16px;
+      font-size: 1rem; /* DIPERBESAR */
     }
     .footer {
       text-align: center;
-      margin-top: 35px;
-      font-size: 0.7rem;
+      margin-top: 40px; /* DIPERBESAR */
+      font-size: 0.8rem; /* DIPERBESAR */
       opacity: 0.8;
       color: #cbd5e6;
     }
 
     @media (max-width: 480px) {
       .app-container { padding: 20px 16px 30px; }
-      .site-title { font-size: 1.6rem; }
-      .bio-btn { padding: 12px 14px; }
+      .site-title { font-size: 1.8rem; }
+      .bio-btn { padding: 14px 16px; }
+      .bio-btn i { font-size: 1.4rem; width: 36px; }
+      .bio-btn span { font-size: 0.95rem; }
     }
   </style>
 </head>
@@ -263,7 +278,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 <div class="app-container">
   <div class="header-section">
-    <img class="profile-image" src="https://in.pinterest.com/pin/banyuwangi-kabupaten-logo-kabupaten-banyuwangi-hd-png-download-transparent-png-image-pngitem--306455949656381045/" alt="Logo Banyuwangi" onerror="this.src='https://via.placeholder.com/110?text=Banyuwangi'">
+    <img class="profile-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Banyuwangi_Regency_coat_of_arms.svg/250px-Banyuwangi_Regency_coat_of_arms.svg.png" alt="Logo Banyuwangi" onerror="this.src='https://via.placeholder.com/110?text=Banyuwangi'">
     <h1 class="site-title"> USULAN CSR PERANGKAT DAERAH </h1>
     <p class="site-desc"> Perangkat Daerah Kabupaten Banyuwangi</p>
     <div class="csr-badge"><i class="fas fa-hand-holding-heart"></i> Portal Tautan Resmi</div>
