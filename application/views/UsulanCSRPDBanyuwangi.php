@@ -372,7 +372,7 @@ header('Content-Type: text/html; charset=utf-8');
   </div>
 
   <div class="footer">
-    <p><i class="fas fa-handshake"></i> Portal Usulan CSR Perangkat Daerah <br> BANYUWANGI BERKOLABORASI | © 2025 Tim CSR</p>
+    <p><i class="fas fa-handshake"></i> Portal Usulan CSR Perangkat Daerah © 2025 </p>
   </div>
 </div>
 
