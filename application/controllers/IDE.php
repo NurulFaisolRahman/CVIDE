@@ -1960,4 +1960,219 @@ public function InputIKMYogyakarta()
     echo 'userName: ' . $this->session->userdata('nama_lengkap') . '<br>';
     echo '</pre>';
 }
+
+       // ====================== SMB - SISTEM MANAJEMEN BAPPEDA ======================
+
+    /**
+     * Halaman Login SMB (View)
+     */
+    public function SmbLoginPage()
+    {
+        // Jika sudah login SMB, langsung redirect ke dashboard
+        if ($this->session->userdata('smb_logged_in')) {
+            redirect('IDE/SmbDashboard');
+        }
+
+        $this->load->view('Smb/auth_smb');
+    }
+
+    /**
+     * Proses Login SMB (dipanggil via AJAX dari form)
+     */
+    public function SmbLogin()
+    {
+        // ==================== CORS ====================
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: POST, OPTIONS');
+        header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
+        header('Access-Control-Allow-Credentials: true');
+
+        // Handle Preflight OPTIONS Request
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            header('Access-Control-Max-Age: 86400');
+            exit(0);
+        }
+
+        $username = $this->input->post('username', TRUE);
+        $password = $this->input->post('password', TRUE);
+
+        if (empty($username) || empty($password)) {
+            echo "Username dan Password harus diisi!";
+            return;
+        }
+
+        // Ambil data user dari tabel akun
+        $user = $this->db->get_where('akun', ['Username' => $username])->row_array();
+
+        if ($user && password_verify($password, $user['Password'])) {
+
+            // Buat session khusus SMB
+            $session_data = [
+                'smb_logged_in' => true,
+                'user_id'       => $user['Username'],
+                'username'      => $user['Username'],
+                'nama_lengkap'  => $user['Username'],
+                'level'         => (int)$user['Level'],
+                'system'        => 'SMB_Bappeda'
+            ];
+
+            $this->session->set_userdata($session_data);
+
+            echo '1';   // Login berhasil
+
+        } else {
+            echo "Username atau Password salah!";
+        }
+    }
+
+    /**
+     * Dashboard SMB
+     */
+    public function SmbDashboard()
+    {
+        // Proteksi: Harus sudah login SMB
+        if (!$this->session->userdata('smb_logged_in')) {
+            redirect('IDE/SmbLoginPage');
+        }
+
+        $data['title']     = 'Dashboard SMB - Bappeda';
+        $data['nama_user'] = $this->session->userdata('nama_lengkap') ?? 'Pengguna SMB';
+
+        $this->load->view('Smb/smb_dashboard', $data);
+    }
+
+    /**
+     * Logout SMB
+     */
+       public function SmbLogout()
+{
+    // Set header untuk JSON response
+    $this->output
+        ->set_content_type('application/json')
+        ->set_header('Access-Control-Allow-Origin: *')
+        ->set_header('Access-Control-Allow-Methods: POST, GET, OPTIONS')
+        ->set_header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization')
+        ->set_header('Access-Control-Allow-Credentials: true');
+    
+    // Hapus session SMB
+    $this->session->unset_userdata('smb_logged_in');
+    $this->session->unset_userdata('user_id');
+    $this->session->unset_userdata('username');
+    $this->session->unset_userdata('nama_lengkap');
+    $this->session->unset_userdata('level');
+    $this->session->unset_userdata('system');
+    
+    // Destroy session
+    $this->session->sess_destroy();
+    
+    // Kirim response JSON
+    echo json_encode([
+        'status' => 'success',
+        'message' => 'Logout berhasil',
+        'redirect' => base_url('IDE/SmbLoginPage')
+    ]);
+}
+
+// Upload Dokumen
+public function upload_dokumen() {
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+        return;
+    }
+    
+    $config['upload_path'] = './uploads/dokumen/';
+    $config['allowed_types'] = 'pdf|doc|docx|xls|xlsx|jpg|jpeg|png|zip';
+    $config['max_size'] = 10240; // 10MB
+    
+    if (!is_dir($config['upload_path'])) {
+        mkdir($config['upload_path'], 0777, true);
+    }
+    
+    $this->load->library('upload', $config);
+    
+    if (!$this->upload->do_upload('file_dokumen')) {
+        echo json_encode(['status' => 'error', 'message' => $this->upload->display_errors('', '')]);
+        return;
+    }
+    
+    $upload_data = $this->upload->data();
+    
+    // Generate thumbnail untuk gambar
+    $thumbnail = null;
+    if (in_array($upload_data['file_type'], ['image/jpeg', 'image/png', 'image/jpg'])) {
+        $thumbnail = $this->generate_thumbnail($upload_data['full_path'], $upload_data['file_name']);
+    }
+    
+    $data = array(
+        'id_bidang' => $this->input->post('id_bidang'),
+        'nama_dokumen' => $this->input->post('nama_dokumen'),
+        'kategori' => $this->input->post('kategori'),
+        'file_name' => $upload_data['file_name'],
+        'file_path' => 'uploads/dokumen/' . $upload_data['file_name'],
+        'file_type' => $upload_data['file_type'],
+        'file_size' => $upload_data['file_size'],
+        'thumbnail' => $thumbnail,
+        'uploaded_by' => $this->session->userdata('username'),
+        'upload_date' => date('Y-m-d H:i:s'),
+        'status' => $this->input->post('status')
+    );
+    
+    $this->db->insert('smb_dokumen', $data);
+    
+    echo json_encode(['status' => 'success', 'message' => 'Dokumen berhasil diupload', 'data' => $data]);
+}
+
+// Generate Thumbnail
+private function generate_thumbnail($file_path, $file_name) {
+    $this->load->library('image_lib');
+    
+    $thumb_path = './uploads/thumbnails/';
+    if (!is_dir($thumb_path)) {
+        mkdir($thumb_path, 0777, true);
+    }
+    
+    $config['image_library'] = 'gd2';
+    $config['source_image'] = $file_path;
+    $config['new_image'] = $thumb_path . 'thumb_' . $file_name;
+    $config['maintain_ratio'] = TRUE;
+    $config['width'] = 150;
+    $config['height'] = 150;
+    
+    $this->image_lib->initialize($config);
+    
+    if ($this->image_lib->resize()) {
+        return 'uploads/thumbnails/thumb_' . $file_name;
+    }
+    
+    return null;
+}
+
+// Get Dokumen by Bidang
+public function get_dokumen_by_bidang() {
+    $id_bidang = $this->input->post('id_bidang');
+    $dokumen = $this->db->get_where('smb_dokumen', ['id_bidang' => $id_bidang])->result_array();
+    echo json_encode(['status' => 'success', 'data' => $dokumen]);
+}
+
+// Delete Dokumen
+public function delete_dokumen() {
+    $id_dokumen = $this->input->post('id_dokumen');
+    $dokumen = $this->db->get_where('smb_dokumen', ['id_dokumen' => $id_dokumen])->row_array();
+    
+    if ($dokumen) {
+        // Hapus file fisik
+        if (file_exists($dokumen['file_path'])) {
+            unlink($dokumen['file_path']);
+        }
+        if ($dokumen['thumbnail'] && file_exists($dokumen['thumbnail'])) {
+            unlink($dokumen['thumbnail']);
+        }
+        
+        $this->db->delete('smb_dokumen', ['id_dokumen' => $id_dokumen]);
+        echo json_encode(['status' => 'success', 'message' => 'Dokumen berhasil dihapus']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Dokumen tidak ditemukan']);
+    }
+}
+
 }

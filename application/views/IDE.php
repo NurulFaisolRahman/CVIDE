@@ -1579,6 +1579,8 @@
                 <h4 class="mega-heading">Survei & Penelitian</h4>
                 <a href="MenuSurvei">Survei Kepuasan Masyarakat</a>
                 <p class="mega-desc">Metode ilmiah dengan analisis mendalam.</p>
+                <h4 class="mega-heading">MasterData</h4>
+              <a href="MasterData">Repositori Data</a>
               </div>
             </div>
           </div>
