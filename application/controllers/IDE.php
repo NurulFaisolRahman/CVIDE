@@ -2073,23 +2073,32 @@ public function InputIKMYogyakarta()
     ]);
 }
 
-// Upload Dokumen
-public function upload_dokumen() {
+// ==================== DOKUMEN METHODS ====================
+    
+    /**
+     * Upload Dokumen ke Database
+     */
+    public function upload_dokumen() {
+    // Cek session login
     if (!$this->session->userdata('smb_logged_in')) {
-        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+        echo json_encode(['status' => 'error', 'message' => 'Session expired, silakan login kembali']);
         return;
     }
     
-    $config['upload_path'] = './uploads/dokumen/';
-    $config['allowed_types'] = 'pdf|doc|docx|xls|xlsx|jpg|jpeg|png|zip';
+    // Konfigurasi upload
+    $config['upload_path'] = FCPATH . 'uploads/dokumen/';
+    $config['allowed_types'] = 'pdf|doc|docx|xls|xlsx|jpg|jpeg|png|zip|rar';
     $config['max_size'] = 10240; // 10MB
+    $config['encrypt_name'] = TRUE; // Enkripsi nama file untuk keamanan
     
+    // Buat folder jika belum ada
     if (!is_dir($config['upload_path'])) {
         mkdir($config['upload_path'], 0777, true);
     }
     
     $this->load->library('upload', $config);
     
+    // Proses upload
     if (!$this->upload->do_upload('file_dokumen')) {
         echo json_encode(['status' => 'error', 'message' => $this->upload->display_errors('', '')]);
         return;
@@ -2099,80 +2108,315 @@ public function upload_dokumen() {
     
     // Generate thumbnail untuk gambar
     $thumbnail = null;
-    if (in_array($upload_data['file_type'], ['image/jpeg', 'image/png', 'image/jpg'])) {
-        $thumbnail = $this->generate_thumbnail($upload_data['full_path'], $upload_data['file_name']);
+    if (in_array($upload_data['file_type'], ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'])) {
+        $thumbnail = $this->_generate_thumbnail($upload_data['full_path'], $upload_data['file_name']);
     }
     
+    // Data dokumen
+    $id_bidang = $this->input->post('id_bidang');
+    $nama_dokumen = $this->input->post('nama_dokumen');
+    $kategori = $this->input->post('kategori');
+    $status = $this->input->post('status');
+    $username = $this->session->userdata('username');
+    
+    // Mapping id_bidang ke nama bidang
+    $bidang_map = [
+        'a' => 'Bidang Litbang',
+        'b' => 'Bidang Perencanaan',
+        'c' => 'Bidang Ekonomi',
+        'd' => 'Bidang Kesra',
+        'e' => 'Bidang Sarpras'
+    ];
+    $nama_bidang = isset($bidang_map[$id_bidang]) ? $bidang_map[$id_bidang] : 'Unknown';
+    
     $data = array(
-        'id_bidang' => $this->input->post('id_bidang'),
-        'nama_dokumen' => $this->input->post('nama_dokumen'),
-        'kategori' => $this->input->post('kategori'),
+        'id_bidang' => $id_bidang,
+        'nama_dokumen' => $nama_dokumen,
+        'kategori' => $kategori,
         'file_name' => $upload_data['file_name'],
         'file_path' => 'uploads/dokumen/' . $upload_data['file_name'],
         'file_type' => $upload_data['file_type'],
         'file_size' => $upload_data['file_size'],
         'thumbnail' => $thumbnail,
-        'uploaded_by' => $this->session->userdata('username'),
+        'uploaded_by' => $username,
         'upload_date' => date('Y-m-d H:i:s'),
-        'status' => $this->input->post('status')
+        'status' => $status
     );
     
-    $this->db->insert('smb_dokumen', $data);
-    
-    echo json_encode(['status' => 'success', 'message' => 'Dokumen berhasil diupload', 'data' => $data]);
+    // Simpan ke database
+    if ($this->db->insert('smb_dokumen', $data)) {
+        // Log aktivitas UPLOAD (bukan Hapus!)
+        $this->_log_aktivitas($username, 'Upload', $nama_bidang, "Upload dokumen: $nama_dokumen");
+        
+        echo json_encode([
+            'status' => 'success', 
+            'message' => 'Dokumen berhasil diupload',
+            'data' => $data
+        ]);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Gagal menyimpan ke database']);
+    }
 }
-
-// Generate Thumbnail
-private function generate_thumbnail($file_path, $file_name) {
-    $this->load->library('image_lib');
     
-    $thumb_path = './uploads/thumbnails/';
-    if (!is_dir($thumb_path)) {
-        mkdir($thumb_path, 0777, true);
+    /**
+     * Generate Thumbnail untuk Gambar
+     */
+    private function _generate_thumbnail($file_path, $file_name) {
+        $this->load->library('image_lib');
+        
+        $thumb_path = FCPATH . 'uploads/thumbnails/';
+        if (!is_dir($thumb_path)) {
+            mkdir($thumb_path, 0777, true);
+        }
+        
+        $thumb_name = 'thumb_' . $file_name;
+        $config['image_library'] = 'gd2';
+        $config['source_image'] = $file_path;
+        $config['new_image'] = $thumb_path . $thumb_name;
+        $config['maintain_ratio'] = TRUE;
+        $config['width'] = 150;
+        $config['height'] = 150;
+        
+        $this->image_lib->initialize($config);
+        
+        if ($this->image_lib->resize()) {
+            return 'uploads/thumbnails/' . $thumb_name;
+        }
+        
+        return null;
     }
     
-    $config['image_library'] = 'gd2';
-    $config['source_image'] = $file_path;
-    $config['new_image'] = $thumb_path . 'thumb_' . $file_name;
-    $config['maintain_ratio'] = TRUE;
-    $config['width'] = 150;
-    $config['height'] = 150;
+    /**
+ * Tambah log aktivitas
+ */
+private function _log_aktivitas($username, $aksi, $modul, $detail) {
+    // Ambil IP address
+    $ip = $this->input->ip_address();
     
-    $this->image_lib->initialize($config);
-    
-    if ($this->image_lib->resize()) {
-        return 'uploads/thumbnails/thumb_' . $file_name;
+    // Konversi localhost ke format yang lebih mudah dibaca
+    if ($ip == '::1') {
+        $ip = 'Localhost (127.0.0.1)';
     }
     
-    return null;
+    // Atau jika ingin tetap IPv4
+    if ($ip == '::1') {
+        $ip = '127.0.0.1';
+    }
+    
+    $data = array(
+        'username' => $username,
+        'aksi' => $aksi,
+        'modul' => $modul,
+        'detail' => $detail,
+        'ip_address' => $ip,
+        'waktu' => date('Y-m-d H:i:s')
+    );
+    $this->db->insert('smb_aktivitas_log', $data);
 }
-
-// Get Dokumen by Bidang
-public function get_dokumen_by_bidang() {
-    $id_bidang = $this->input->post('id_bidang');
-    $dokumen = $this->db->get_where('smb_dokumen', ['id_bidang' => $id_bidang])->result_array();
-    echo json_encode(['status' => 'success', 'data' => $dokumen]);
-}
-
-// Delete Dokumen
-public function delete_dokumen() {
+    
+    /**
+     * Get Dokumen by Bidang (AJAX)
+     */
+    public function get_dokumen_by_bidang() {
+        $id_bidang = $this->input->post('id_bidang');
+        
+        if (empty($id_bidang)) {
+            echo json_encode(['status' => 'error', 'message' => 'ID Bidang tidak valid']);
+            return;
+        }
+        
+        $dokumen = $this->db->get_where('smb_dokumen', ['id_bidang' => $id_bidang])->result_array();
+        
+        // Format tanggal
+        foreach ($dokumen as &$doc) {
+            $doc['upload_date_formatted'] = date('d M Y H:i', strtotime($doc['upload_date']));
+            $doc['file_size_formatted'] = $this->_format_file_size($doc['file_size']);
+        }
+        
+        echo json_encode(['status' => 'success', 'data' => $dokumen]);
+    }
+    
+    /**
+     * Format File Size
+     */
+    private function _format_file_size($bytes) {
+        if ($bytes >= 1048576) {
+            return round($bytes / 1048576, 2) . ' MB';
+        } elseif ($bytes >= 1024) {
+            return round($bytes / 1024, 2) . ' KB';
+        } else {
+            return $bytes . ' B';
+        }
+    }
+    
+    /**
+     * Delete Dokumen
+     */
+    public function delete_dokumen() {
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+        return;
+    }
+    
     $id_dokumen = $this->input->post('id_dokumen');
     $dokumen = $this->db->get_where('smb_dokumen', ['id_dokumen' => $id_dokumen])->row_array();
     
     if ($dokumen) {
         // Hapus file fisik
-        if (file_exists($dokumen['file_path'])) {
-            unlink($dokumen['file_path']);
-        }
-        if ($dokumen['thumbnail'] && file_exists($dokumen['thumbnail'])) {
-            unlink($dokumen['thumbnail']);
+        $file_path = FCPATH . $dokumen['file_path'];
+        if (file_exists($file_path)) {
+            unlink($file_path);
         }
         
+        // Hapus thumbnail jika ada
+        if (!empty($dokumen['thumbnail'])) {
+            $thumb_path = FCPATH . $dokumen['thumbnail'];
+            if (file_exists($thumb_path)) {
+                unlink($thumb_path);
+            }
+        }
+        
+        // Hapus dari database
         $this->db->delete('smb_dokumen', ['id_dokumen' => $id_dokumen]);
+        
+        // Log aktivitas HAPUS
+        $this->_log_aktivitas(
+            $this->session->userdata('username'), 
+            'Hapus', 
+            'Dokumen', 
+            "Menghapus dokumen: " . $dokumen['nama_dokumen']
+        );
+        
         echo json_encode(['status' => 'success', 'message' => 'Dokumen berhasil dihapus']);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Dokumen tidak ditemukan']);
     }
 }
-
+    
+    /**
+     * Get Log Aktivitas (untuk halaman log)
+     */
+    /**
+ * Get Log Aktivitas (untuk halaman log)
+ */
+/**
+ * Get Log Aktivitas (untuk halaman log)
+ */
+public function get_log_aktivitas() {
+    $start_date = $this->input->get('start_date');
+    $end_date = $this->input->get('end_date');
+    $aksi = $this->input->get('aksi');
+    $search = $this->input->get('search');
+    
+    $this->db->order_by('waktu', 'DESC');
+    
+    if (!empty($start_date)) {
+        $this->db->where('DATE(waktu) >=', date('Y-m-d', strtotime($start_date)));
+    }
+    if (!empty($end_date)) {
+        $this->db->where('DATE(waktu) <=', date('Y-m-d', strtotime($end_date)));
+    }
+    if (!empty($aksi)) {
+        $this->db->where('aksi', $aksi);
+    }
+    if (!empty($search)) {
+        $this->db->group_start()
+            ->like('username', $search)
+            ->or_like('detail', $search)
+            ->or_like('modul', $search)
+            ->group_end();
+    }
+    
+    $logs = $this->db->limit(500)->get('smb_aktivitas_log')->result_array();
+    
+    foreach ($logs as &$log) {
+        $log['waktu'] = date('d/m/Y H:i:s', strtotime($log['waktu']));
+        $log['ip_address'] = $log['ip_address'] ?? '-';
+        $log['detail'] = $log['detail'] ?? '-';
+    }
+    
+    echo json_encode(['status' => 'success', 'data' => $logs]);
 }
+    
+    /**
+     * Get Statistik Dashboard
+     */
+    /**
+ * Get Statistik Dashboard
+ */
+/**
+ * Get Statistik Dashboard (LENGKAP)
+ */
+public function get_dashboard_stats() {
+    // Total semua dokumen
+    $total_dokumen = $this->db->count_all('smb_dokumen');
+    
+    // Total user dari tabel akun
+    $total_user = $this->db->count_all('akun');
+    
+    // Total printer aktif
+    $total_printer_aktif = 4;
+    
+    // ========== DOKUMEN BERDASARKAN STATUS ==========
+    $dokumen_selesai = $this->db->where('status', 'Selesai')->count_all_results('smb_dokumen');
+    $dokumen_review = $this->db->where('status', 'Review')->count_all_results('smb_dokumen');
+    $dokumen_ongoing = $this->db->where('status', 'On Going')->count_all_results('smb_dokumen');
+    
+    // ========== DOKUMEN BERDASARKAN KATEGORI ==========
+    $dokumen_sk = $this->db->where('kategori', 'Surat Keputusan')->count_all_results('smb_dokumen');
+    $dokumen_laporan = $this->db->where('kategori', 'Laporan')->count_all_results('smb_dokumen');
+    $dokumen_nota = $this->db->where('kategori', 'Nota Dinas')->count_all_results('smb_dokumen');
+    
+    // ========== DOKUMEN PER BIDANG ==========
+    $bidang_list = [
+        'a' => 'Bidang Litbang',
+        'b' => 'Bidang Perencanaan',
+        'c' => 'Bidang Ekonomi',
+        'd' => 'Bidang Kesra',
+        'e' => 'Bidang Sarpras'
+    ];
+    
+    $dokumen_per_bidang = [];
+    foreach ($bidang_list as $kode => $nama) {
+        $count = $this->db->where('id_bidang', $kode)->count_all_results('smb_dokumen');
+        $dokumen_per_bidang[$kode] = [
+            'nama' => $nama,
+            'total' => (int)$count
+        ];
+    }
+    
+    // Return JSON lengkap
+    echo json_encode([
+        'status' => 'success',
+        'total_dokumen' => (int)$total_dokumen,
+        'total_user' => (int)$total_user,
+        'total_printer_aktif' => (int)$total_printer_aktif,
+        'dokumen_selesai' => (int)$dokumen_selesai,
+        'dokumen_review' => (int)$dokumen_review,
+        'dokumen_ongoing' => (int)$dokumen_ongoing,
+        'dokumen_sk' => (int)$dokumen_sk,
+        'dokumen_laporan' => (int)$dokumen_laporan,
+        'dokumen_nota' => (int)$dokumen_nota,
+        'dokumen_per_bidang' => $dokumen_per_bidang,
+        'trend_data' => [
+            'user_trend' => '+8.5%',
+            'dokumen_trend' => '+1.3%',
+            'selesai_trend' => '-4.3%',
+            'ongoing_trend' => '+1.8%'
+        ]
+    ]);
+}
+    public function file($path)
+{
+    $fullPath = FCPATH . $path;
+
+    if (!file_exists($fullPath)) {
+        show_404();
+    }
+
+    header('Content-Type: ' . mime_content_type($fullPath));
+    header('Content-Disposition: inline; filename="' . basename($fullPath) . '"');
+    readfile($fullPath);
+}
+}
+

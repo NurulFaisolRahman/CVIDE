@@ -630,31 +630,270 @@ a { text-decoration: none; color: inherit; }
 }
 .sel-filter:focus { border-color: var(--blue-400); }
 
+/* ============================================================
+   IMPROVED TABLE STYLES
+   ============================================================ */
 .tbl {
   width: 100%;
   border-collapse: collapse;
   font-size: 12.5px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
 }
+
 .tbl th {
   text-align: left;
-  padding: 9px 14px;
-  font-size: 11px; font-weight: 600;
+  padding: 12px 16px;
+  font-size: 11px;
+  font-weight: 600;
   color: var(--text-2);
   background: #f8f9fd;
   border-bottom: 1px solid var(--border);
   white-space: nowrap;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
+
 .tbl td {
-  padding: 10px 14px;
+  padding: 14px 16px;
   border-bottom: 1px solid var(--border);
   vertical-align: middle;
 }
-.tbl tr:last-child td { border-bottom: none; }
-.tbl tbody tr { transition: var(--transition); }
-.tbl tbody tr:hover { background: #f8f9fd; }
 
+.tbl tr:last-child td {
+  border-bottom: none;
+}
+
+.tbl tbody tr {
+  transition: var(--transition);
+}
+
+.tbl tbody tr:hover {
+  background: #f8f9fd;
+}
+
+/* Responsive table wrapper */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Column width optimization */
+.tbl th:first-child,
+.tbl td:first-child {
+  width: 50px;
+  text-align: center;
+}
+
+.tbl th:nth-child(2),
+.tbl td:nth-child(2) {
+  width: 70px;
+  text-align: center;
+}
+
+.tbl th:nth-child(4),
+.tbl td:nth-child(4) {
+  width: 130px;
+}
+
+.tbl th:nth-child(5),
+.tbl td:nth-child(5) {
+  width: 110px;
+}
+
+.tbl th:nth-child(6),
+.tbl td:nth-child(6) {
+  width: 120px;
+}
+
+.tbl th:nth-child(7),
+.tbl td:nth-child(7) {
+  width: 100px;
+}
+
+.tbl th:last-child,
+.tbl td:last-child {
+  width: 100px;
+  text-align: center;
+}
+
+/* Badge styles */
+.badge-kategori {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.badge-sk {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
+.badge-laporan {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.badge-nota {
+  background: #fed7aa;
+  color: #9a3412;
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.link-act, .link-danger {
+  font-size: 13px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.link-act {
+  color: #2563eb;
+}
+
+.link-act:hover {
+  background: #eff4ff;
+  text-decoration: none;
+}
+
+.link-danger {
+  color: #dc2626;
+}
+
+.link-danger:hover {
+  background: #fee2e2;
+  text-decoration: none;
+}
+
+/* File icon and thumbnail */
+.doc-thumbnail {
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #e2e8f0;
+}
+
+.doc-thumbnail:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.file-icon {
+  width: 45px;
+  height: 45px;
+  background: var(--blue-50);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--blue-600);
+  cursor: pointer;
+  transition: all 0.2s;
+  margin: 0 auto;
+}
+
+.file-icon:hover {
+  background: var(--blue-100);
+  transform: scale(1.05);
+}
+
+/* Empty state */
+.empty-state-table {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-3);
+}
+
+.empty-state-table .icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+/* Toolbar */
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 10px;
+  background: #ffffff;
+}
+
+.table-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.mini-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--page-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0 12px;
+  height: 34px;
+  transition: var(--transition);
+}
+
+.mini-search:focus-within {
+  border-color: var(--blue-400);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(47,82,196,0.08);
+}
+
+.mini-search svg {
+  width: 14px;
+  height: 14px;
+  color: var(--text-3);
+}
+
+.mini-search input {
+  border: none;
+  background: transparent;
+  font-size: 12.5px;
+  color: var(--text-1);
+  outline: none;
+  width: 180px;
+}
+
+.mini-search input::placeholder {
+  color: var(--text-3);
+}
+
+.sel-filter {
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 12px;
+  font-family: inherit;
+  background: var(--page-bg);
+  color: var(--text-1);
+  outline: none;
+  cursor: pointer;
+}
+
+.sel-filter:focus {
+  border-color: var(--blue-400);
+}
 /* ============================================================
    PILLS / BADGES
    ============================================================ */
@@ -817,6 +1056,342 @@ a { text-decoration: none; color: inherit; }
 }
 .file-icon:hover {
   background: var(--blue-100);
+}
+
+/* ============================================================
+   PDF EXPORT STYLES
+   ============================================================ */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #pdf-export-content, #pdf-export-content * {
+    visibility: visible;
+  }
+  #pdf-export-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Style untuk konten PDF yang akan diexport */
+.pdf-export-wrapper {
+  font-family: 'Plus Jakarta Sans', 'DM Sans', sans-serif;
+  padding: 20px;
+  background: white;
+}
+
+.pdf-header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #1a2d6b;
+}
+
+.pdf-header h2 {
+  color: #1a2d6b;
+  margin-bottom: 5px;
+  font-size: 20px;
+}
+
+.pdf-header p {
+  color: #666;
+  font-size: 12px;
+  margin: 5px 0;
+}
+
+.pdf-date {
+  text-align: right;
+  margin-bottom: 20px;
+  font-size: 11px;
+  color: #666;
+}
+
+.pdf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.pdf-table th {
+  background: #1a2d6b;
+  color: white;
+  padding: 10px 8px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.pdf-table td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.pdf-table tr:hover {
+  background: #f5f5f5;
+}
+
+.pdf-footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 10px;
+  color: #999;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+}
+
+/* PDF Export Styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #pdf-export-content, #pdf-export-content * {
+    visibility: visible;
+  }
+  #pdf-export-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}
+
+.pdf-export-wrapper {
+  font-family: 'Plus Jakarta Sans', 'DM Sans', sans-serif;
+  padding: 20px;
+  background: white;
+}
+
+.pdf-header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #1a2d6b;
+}
+
+.pdf-header h2 {
+  color: #1a2d6b;
+  margin-bottom: 5px;
+  font-size: 18px;
+}
+
+.pdf-header h3 {
+  color: #1a2d6b;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.pdf-header p {
+  color: #666;
+  font-size: 11px;
+}
+
+.pdf-date {
+  margin-bottom: 15px;
+  font-size: 10px;
+  color: #666;
+  text-align: right;
+}
+
+.pdf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10px;
+}
+
+.pdf-table th {
+  background: #1a2d6b;
+  color: white;
+  padding: 8px 6px;
+  text-align: left;
+}
+
+.pdf-table td {
+  padding: 6px;
+  border-bottom: 1px solid #ddd;
+}
+
+.pdf-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 9px;
+  color: #999;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+}
+
+/* ============================================================
+   LOG TABLE STYLES - PRESISI & RAPI
+   ============================================================ */
+.log-table-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+}
+
+.log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  min-width: 800px;
+}
+
+.log-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-2);
+  background: #f8f9fd;
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+}
+
+.log-table th i {
+  margin-right: 6px;
+  font-size: 12px;
+}
+
+.log-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.log-table tr:last-child td {
+  border-bottom: none;
+}
+
+.log-table tbody tr {
+  transition: all 0.2s ease;
+}
+
+.log-table tbody tr:hover {
+  background: #f8f9fd;
+}
+
+/* Kolom spesifik */
+.log-table th:nth-child(1),
+.log-table td:nth-child(1) {
+  width: 150px;
+  white-space: nowrap;
+  font-family: monospace;
+  font-size: 11px;
+  color: var(--text-2);
+}
+
+.log-table th:nth-child(2),
+.log-table td:nth-child(2) {
+  width: 120px;
+  font-weight: 500;
+}
+
+.log-table th:nth-child(3),
+.log-table td:nth-child(3) {
+  width: 90px;
+  text-align: center;
+}
+
+.log-table th:nth-child(4),
+.log-table td:nth-child(4) {
+  width: 120px;
+}
+
+.log-table th:nth-child(5),
+.log-table td:nth-child(5) {
+  min-width: 250px;
+  word-break: break-word;
+}
+
+.log-table th:nth-child(6),
+.log-table td:nth-child(6) {
+  width: 120px;
+  font-family: monospace;
+  font-size: 11px;
+}
+
+/* Badge pill untuk aksi */
+.log-aksi-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 10.5px;
+  font-weight: 600;
+  text-align: center;
+  min-width: 65px;
+}
+
+.log-aksi-upload {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.log-aksi-print {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.log-aksi-review {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.log-aksi-login {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.log-aksi-update {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.log-aksi-hapus {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* IP Address styling */
+.ip-address {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  background: #f1f5f9;
+  padding: 4px 8px;
+  border-radius: 6px;
+  display: inline-block;
+  letter-spacing: 0.5px;
+}
+
+/* Username styling */
+.username-cell {
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.username-cell i {
+  font-size: 12px;
+  margin-right: 6px;
+  color: var(--blue-500);
+}
+
+/* Detail text */
+.detail-cell {
+  max-width: 300px;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.4;
+  color: var(--text-2);
+}
+
+/* Waktu styling */
+.waktu-cell {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: var(--text-2);
 }
 
 </style>
@@ -1049,118 +1624,115 @@ a { text-decoration: none; color: inherit; }
   </div>
   <span class="badge-role"><?= $role_name ?></span>
 </div>
+<!-- HERO BANNER -->
+<div class="hero-banner">
+  <div class="hero-left">
+    <div class="hero-eyebrow" id="hero-date-text"></div>
+    <div class="hero-title">Sistem Manajemen Printer<br>dan Arsip Dokumen</div>
+    <div class="hero-sub">Bappeda Kabupaten Banyuwangi</div>
+    <button class="hero-btn">
+      Get Started
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M2 7h10M8 3l4 4-4 4"/>
+      </svg>
+    </button>
+  </div>
+  <div class="hero-right">
+    <div class="hero-card">
+      <div class="hero-card-icon">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 2h9l4 4v13H6V2z"/><path d="M14 2v5h5"/><path d="M9 12h6M9 15h4"/>
+        </svg>
+      </div>
+      <div class="hero-card-num">0</div>
+      <div class="hero-card-label">Total Dokumen</div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-icon">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 9V3H18V9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="13" width="12" height="6"/>
+        </svg>
+      </div>
+      <div class="hero-card-num">4</div>
+      <div class="hero-card-label">Printer Aktif</div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-icon">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="10" cy="10" r="8"/><path d="M10 6v4l3 2"/>
+        </svg>
+      </div>
+      <div class="hero-card-num">0</div>
+      <div class="hero-card-label">Total User</div>
+    </div>
+  </div>
+</div>
+<!-- STATS -->
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-label">Total User</div>
+    <div class="stat-row">
+      <div class="stat-val">0</div>
+      <div class="stat-icon" style="background:#eff4ff;">
+        <svg viewBox="0 0 20 20" fill="var(--blue-600)">
+          <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+        </svg>
+      </div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-trend trend-up">
+      <span class="trend-dot">↑</span> 8.5% dari kemarin
+    </div>
+  </div>
 
-        <!-- HERO -->
-        <div class="hero-banner">
-          <div class="hero-left">
-            <div class="hero-eyebrow" id="hero-date-text"></div>
-            <div class="hero-title">Sistem Manajemen Printer<br>dan Arsip Dokumen</div>
-            <div class="hero-sub">Bappeda Kabupaten Banyuwangi</div>
-            <button class="hero-btn">
-              Get Started
-              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M2 7h10M8 3l4 4-4 4"/>
-              </svg>
-            </button>
-          </div>
-          <div class="hero-right">
-            <div class="hero-card">
-              <div class="hero-card-icon">
-                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M6 2h9l4 4v13H6V2z"/><path d="M14 2v5h5"/><path d="M9 12h6M9 15h4"/>
-                </svg>
-              </div>
-              <div class="hero-card-num">150</div>
-              <div class="hero-card-label">Total Dokumen</div>
-            </div>
-            <div class="hero-card">
-              <div class="hero-card-icon">
-                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M6 9V3H18V9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="13" width="12" height="6"/>
-                </svg>
-              </div>
-              <div class="hero-card-num">4</div>
-              <div class="hero-card-label">Printer Aktif</div>
-            </div>
-            <div class="hero-card">
-              <div class="hero-card-icon">
-                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <circle cx="10" cy="10" r="8"/><path d="M10 6v4l3 2"/>
-                </svg>
-              </div>
-              <div class="hero-card-num">60</div>
-              <div class="hero-card-label">Total User</div>
-            </div>
-          </div>
-        </div>
+  <div class="stat-card">
+    <div class="stat-label">Total Dokumen</div>
+    <div class="stat-row">
+      <div class="stat-val">0</div>
+      <div class="stat-icon" style="background:#fffbeb;">
+        <svg viewBox="0 0 20 20" fill="var(--amber)">
+          <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+        </svg>
+      </div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-trend trend-up">
+      <span class="trend-dot">↑</span> 1.3% dari minggu lalu
+    </div>
+  </div>
 
-        <!-- STATS -->
-        <div class="stat-grid">
-          <div class="stat-card">
-            <div class="stat-label">Total User</div>
-            <div class="stat-row">
-              <div class="stat-val">60</div>
-              <div class="stat-icon" style="background:#eff4ff;">
-                <svg viewBox="0 0 20 20" fill="var(--blue-600)">
-                  <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
-                </svg>
-              </div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-trend trend-up">
-              <span class="trend-dot">↑</span> 8.5% dari kemarin
-            </div>
-          </div>
+  <div class="stat-card">
+    <div class="stat-label">Dokumen Selesai</div>
+    <div class="stat-row">
+      <div class="stat-val">0</div>
+      <div class="stat-icon" style="background:var(--green-bg);">
+        <svg viewBox="0 0 20 20" fill="var(--green)">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+        </svg>
+      </div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-trend trend-down">
+      <span class="trend-dot">↓</span> 4.3% dari kemarin
+    </div>
+  </div>
 
-          <div class="stat-card">
-            <div class="stat-label">Total Dokumen</div>
-            <div class="stat-row">
-              <div class="stat-val">150</div>
-              <div class="stat-icon" style="background:#fffbeb;">
-                <svg viewBox="0 0 20 20" fill="var(--amber)">
-                  <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
-                </svg>
-              </div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-trend trend-up">
-              <span class="trend-dot">↑</span> 1.3% dari minggu lalu
-            </div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-label">Dokumen Selesai</div>
-            <div class="stat-row">
-              <div class="stat-val">89</div>
-              <div class="stat-icon" style="background:var(--green-bg);">
-                <svg viewBox="0 0 20 20" fill="var(--green)">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                </svg>
-              </div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-trend trend-down">
-              <span class="trend-dot">↓</span> 4.3% dari kemarin
-            </div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-label">Dokumen On Going</div>
-            <div class="stat-row">
-              <div class="stat-val">2,040</div>
-              <div class="stat-icon" style="background:#eff4ff;">
-                <svg viewBox="0 0 20 20" fill="var(--blue-600)">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
-                </svg>
-              </div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-trend trend-up">
-              <span class="trend-dot">↑</span> 1.8% dari kemarin
-            </div>
-          </div>
-        </div>
-
+  <div class="stat-card">
+    <div class="stat-label">Dokumen On Going</div>
+    <div class="stat-row">
+      <div class="stat-val">0</div>
+      <div class="stat-icon" style="background:#eff4ff;">
+        <svg viewBox="0 0 20 20" fill="var(--blue-600)">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+        </svg>
+      </div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-trend trend-up">
+      <span class="trend-dot">↑</span> 1.8% dari kemarin
+    </div>
+  </div>
+</div>
         <!-- CONTENT GRID -->
         <div class="content-grid">
 
@@ -1284,7 +1856,7 @@ a { text-decoration: none; color: inherit; }
                   <th>Bidang</th>
                   <th>Tanggal</th>
                   <th>Status</th>
-                  <th style="width:80px;">Aksi</th>
+                  <th style="width:50px;">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -1315,142 +1887,208 @@ a { text-decoration: none; color: inherit; }
       </div>
     </div>
     <button class="btn btn-primary" onclick="openUploadModal(currentBidangId)">
-  <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 2a1 1 0 011 1v4h4a1 1 0 010 2H9v4a1 1 0 01-2 0V9H3a1 1 0 010-2h4V3a1 1 0 011-1z"/></svg>
+  <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14" style="margin-right:6px;">
+    <path d="M8 2a1 1 0 011 1v4h4a1 1 0 010 2H9v4a1 1 0 01-2 0V9H3a1 1 0 010-2h4V3a1 1 0 011-1z"/>
+  </svg>
   Upload Dokumen
 </button>
   </div>
-
-  <!-- Category Cards -->
-  <div class="doc-cat-grid">
-    <div class="doc-cat-card">
-      <div class="doc-cat-icon" style="background:#eff4ff;">
-        <svg viewBox="0 0 18 18" fill="var(--blue-600)"><path fill-rule="evenodd" d="M3 3a2 2 0 012-2h5.586A2 2 0 0112 1.586L15.414 5A2 2 0 0116 6.414V15a2 2 0 01-2 2H5a2 2 0 01-2-2V3zm9 0v3h3L12 3z" clip-rule="evenodd"/></svg>
-      </div>
-      <div class="doc-cat-name">Surat Keputusan</div>
-      <div class="doc-cat-count">12 dokumen</div>
+<!-- Category Cards -->
+<div class="doc-cat-grid">
+  <!-- Card Surat Keputusan -->
+  <div class="doc-cat-card">
+    <div class="doc-cat-icon" style="background:#eff4ff;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+        <polyline points="10 9 9 9 8 9"/>
+      </svg>
     </div>
-    <div class="doc-cat-card">
-      <div class="doc-cat-icon" style="background:#fffbeb;">
-        <svg viewBox="0 0 18 18" fill="var(--amber)"><path d="M2 4a2 2 0 012-2h5l2 2h5a2 2 0 012 2v7a2 2 0 01-2 2H4a2 2 0 01-2-2V4z"/></svg>
-      </div>
-      <div class="doc-cat-name">Laporan</div>
-      <div class="doc-cat-count">8 dokumen</div>
-    </div>
-    <div class="doc-cat-card">
-      <div class="doc-cat-icon" style="background:var(--green-bg);">
-        <svg viewBox="0 0 18 18" fill="var(--green)"><path d="M3 3a1 1 0 011-1h10a1 1 0 010 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h10a1 1 0 010 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h6a1 1 0 010 2H4a1 1 0 01-1-1z"/></svg>
-      </div>
-      <div class="doc-cat-name">Nota Dinas</div>
-      <div class="doc-cat-count">5 dokumen</div>
-    </div>
+    <div class="doc-cat-name">Surat Keputusan</div>
+    <div class="doc-cat-count" id="count-sk-bidang">0 dokumen</div>
   </div>
 
-  <!-- Table -->
-  <div class="card">
-    <div class="table-toolbar">
-      <div class="card-title" id="bidang-doc-title">Daftar Dokumen — Bidang Penelitian, Pengembangan dan Pengendalian Evaluasi</div>
-      <div class="table-toolbar-right">
-        <div class="mini-search">
-          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="5.5" cy="5.5" r="4"/><path d="M9 9l2.5 2.5"/>
-          </svg>
-          <input type="text" id="bidang-search" placeholder="Cari dokumen..." oninput="filterBidangTable()">
-        </div>
-        <select class="sel-filter" id="bidang-status-filter" onchange="filterBidangTable()">
-          <option value="">Semua Status</option>
-          <option value="Selesai">Selesai</option>
-          <option value="Review">Review</option>
-          <option value="On Going">On Going</option>
-        </select>
-        <button class="btn btn-sm">
-          <svg viewBox="0 0 14 14" fill="currentColor"><path d="M2 2h10l-4 5v5l-2-1V7L2 2z"/></svg>
-          Export
-        </button>
-        <button class="btn btn-sm btn-primary">+ Tambah</button>
-      </div>
+  <!-- Card Laporan -->
+  <div class="doc-cat-card">
+    <div class="doc-cat-icon" style="background:#fffbeb;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12v3a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4v-3"/>
+        <path d="M12 2v8l3-3-3-3z"/>
+        <path d="M12 10V2"/>
+        <path d="M12 10l-3-3 3-3z"/>
+        <line x1="5" y1="15" x2="19" y2="15"/>
+      </svg>
     </div>
+    <div class="doc-cat-name">Laporan</div>
+    <div class="doc-cat-count" id="count-laporan-bidang">0 dokumen</div>
+  </div>
+
+  <!-- Card Nota Dinas -->
+  <div class="doc-cat-card">
+    <div class="doc-cat-icon" style="background:var(--green-bg);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 4h16v16H4z"/>
+        <line x1="8" y1="8" x2="16" y2="8"/>
+        <line x1="8" y1="12" x2="16" y2="12"/>
+        <line x1="8" y1="16" x2="12" y2="16"/>
+        <path d="M18 4L14 8"/>
+        <path d="M6 20L10 16"/>
+      </svg>
+    </div>
+    <div class="doc-cat-name">Nota Dinas</div>
+    <div class="doc-cat-count" id="count-nota-bidang">0 dokumen</div>
+  </div>
+</div>
+
+  <!-- Table -->
+<div class="card">
+  <div class="table-toolbar">
+    <div class="card-title" id="bidang-doc-title">Daftar Dokumen — Bidang Penelitian, Pengembangan dan Pengendalian Evaluasi</div>
+    <div class="table-toolbar-right">
+      <div class="mini-search">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="5.5" cy="5.5" r="4"/><path d="M9 9l2.5 2.5"/>
+        </svg>
+        <input type="text" id="bidang-search" placeholder="Cari dokumen..." oninput="filterBidangTable()">
+      </div>
+      <select class="sel-filter" id="bidang-status-filter" onchange="filterBidangTable()">
+        <option value="">Semua Status</option>
+        <option value="Selesai">Selesai</option>
+        <option value="Review">Review</option>
+        <option value="On Going">On Going</option>
+      </select>
+      
+    </div>
+  </div>
+  <div class="table-responsive">
     <table class="tbl">
       <thead>
         <tr>
-          <th style="width:40px;">No</th>
+          <th>No</th>
+          <th>Preview</th>
           <th>Nama Dokumen</th>
           <th>Kategori</th>
           <th>Tanggal Upload</th>
           <th>Diupload Oleh</th>
           <th>Status</th>
-          <th style="width:100px;">Aksi</th>
+          <th>Aksi</th>
         </tr>
       </thead>
       <tbody id="bidang-tbody">
         <tr>
-          <td colspan="7" style="text-align:center;padding:30px;color:var(--text-3);">Pilih bidang dari menu sidebar untuk melihat dokumen</td>
+          <td colspan="8" class="empty-state-table">
+            <div class="icon">📂</div>
+            <p>Pilih bidang dari menu sidebar untuk melihat dokumen</p>
+           </td>
         </tr>
       </tbody>
     </table>
   </div>
+</div>
 </section>
 
       <!-- ======== LOG AKTIVITAS ======== -->
-      <section id="panel-log" class="panel">
-        <div class="page-hdr">
-          <div class="page-hdr-left">
-            <div class="page-hdr-icon">
-              <svg viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
-              </svg>
-            </div>
-            <div>
-              <div class="page-hdr-title">Log Aktivitas</div>
-              <div class="page-hdr-sub">Riwayat seluruh aktivitas sistem</div>
-            </div>
-          </div>
-          <button class="btn">
-            <svg viewBox="0 0 14 14" fill="currentColor"><path d="M7 1a6 6 0 100 12A6 6 0 007 1zm1 9H6V6h2v4zm0-5H6V3h2v2z"/></svg>
-            Export Log
-          </button>
+<section id="panel-log" class="panel">
+  <div class="page-hdr">
+    <div class="page-hdr-left">
+      <div class="page-hdr-icon">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+        </svg>
+      </div>
+      <div>
+        <div class="page-hdr-title">Log Aktivitas</div>
+        <div class="page-hdr-sub">Riwayat seluruh aktivitas sistem</div>
+      </div>
+    </div>
+    <button class="btn" onclick="exportLogToPDF()">
+      <svg viewBox="0 0 14 14" fill="currentColor" width="14" height="14" style="margin-right:6px;">
+        <path d="M7 1a6 6 0 100 12A6 6 0 007 1zm1 9H6V6h2v4zm0-5H6V3h2v2z"/>
+      </svg>
+      Export PDF
+    </button>
+  </div>
+  <div class="card">
+  <div class="table-toolbar">
+    <div class="card-title">
+      <i class="fas fa-history"></i> Riwayat Aktivitas
+    </div>
+    <div class="table-toolbar-right">
+      <!-- FILTER TANGGAL -->
+      <div class="date-range-filter" style="display: flex; gap: 8px; align-items: center;">
+        <div class="mini-search">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="1" y="2" width="12" height="11" rx="1" stroke="currentColor"/>
+            <line x1="4" y1="1" x2="4" y2="4" stroke="currentColor"/>
+            <line x1="10" y1="1" x2="10" y2="4" stroke="currentColor"/>
+            <line x1="1" y1="6" x2="13" y2="6" stroke="currentColor"/>
+          </svg>
+          <input type="date" id="log-date-start" placeholder="Dari Tanggal" style="width: 130px;">
         </div>
-        <div class="card">
-          <div class="table-toolbar">
-            <div class="card-title">Riwayat Aktivitas</div>
-            <div class="table-toolbar-right">
-              <select class="sel-filter">
-                <option>Semua Aksi</option>
-                <option>Upload</option>
-                <option>Print</option>
-                <option>Review</option>
-                <option>Login</option>
-                <option>Update</option>
-              </select>
-              <div class="mini-search">
-                <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5.5" cy="5.5" r="4"/><path d="M9 9l2.5 2.5"/></svg>
-                <input type="text" placeholder="Cari aktivitas...">
-              </div>
-            </div>
-          </div>
-          <table class="tbl">
-            <thead>
-              <tr>
-                <th>Waktu</th>
-                <th>User</th>
-                <th>Aksi</th>
-                <th>Modul</th>
-                <th>Detail</th>
-                <th>IP</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>20/04 09:14</td><td>Admin</td><td><span class="pill pill-upload">Upload</span></td><td>Bidang A</td><td>SK Kepala Dinas No.12</td><td style="color:var(--text-3);">192.168.1.10</td></tr>
-              <tr><td>20/04 08:52</td><td>Operator</td><td><span class="pill pill-print">Print</span></td><td>Printer</td><td>Canon G3010 — 3 halaman</td><td style="color:var(--text-3);">192.168.1.14</td></tr>
-              <tr><td>20/04 08:30</td><td>Reviewer</td><td><span class="pill pill-review">Review</span></td><td>Bidang C</td><td>Proposal Anggaran Q2</td><td style="color:var(--text-3);">192.168.1.22</td></tr>
-              <tr><td>20/04 08:01</td><td>System</td><td><span class="pill pill-login">Login</span></td><td>Auth</td><td>Rini Marlina berhasil masuk</td><td style="color:var(--text-3);">192.168.1.30</td></tr>
-              <tr><td>19/04 16:45</td><td>Admin</td><td><span class="pill pill-done">Update</span></td><td>Bidang B</td><td>Status dokumen diperbarui</td><td style="color:var(--text-3);">192.168.1.10</td></tr>
-              <tr><td>19/04 15:20</td><td>Operator</td><td><span class="pill pill-upload">Upload</span></td><td>Bidang D</td><td>Nota Dinas Koordinasi</td><td style="color:var(--text-3);">192.168.1.14</td></tr>
-              <tr><td>19/04 14:05</td><td>Kepala</td><td><span class="pill pill-review">Review</span></td><td>Bidang A</td><td>Rencana Kerja Q2 disetujui</td><td style="color:var(--text-3);">192.168.1.5</td></tr>
-              <tr><td>19/04 11:30</td><td>Admin</td><td><span class="pill pill-print">Print</span></td><td>Printer</td><td>Epson L3110 — 8 halaman</td><td style="color:var(--text-3);">192.168.1.10</td></tr>
-            </tbody>
-          </table>
+        <span style="color: var(--text-3);">s.d.</span>
+        <div class="mini-search">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="1" y="2" width="12" height="11" rx="1" stroke="currentColor"/>
+            <line x1="4" y1="1" x2="4" y2="4" stroke="currentColor"/>
+            <line x1="10" y1="1" x2="10" y2="4" stroke="currentColor"/>
+            <line x1="1" y1="6" x2="13" y2="6" stroke="currentColor"/>
+          </svg>
+          <input type="date" id="log-date-end" placeholder="Sampai Tanggal" style="width: 130px;">
         </div>
-      </section>
+        <button class="btn btn-sm" onclick="filterLogByDate()" style="background: var(--blue-600); color: white;">
+          <svg viewBox="0 0 14 14" fill="currentColor" width="12" height="12">
+            <path d="M12 8a4 4 0 0 1-8 0M4 6a4 4 0 0 1 8 0M7 2v4M5 2h4"/>
+          </svg>
+          Tampilkan
+        </button>
+      </div>
+      <select class="sel-filter" id="log-aksi-filter" onchange="filterLogTable()">
+        <option value="">Semua Aksi</option>
+        <option value="Upload"> Upload</option>
+        <option value="Print"> Print</option>
+        <option value="Review"> Review</option>
+        <option value="Login"> Login</option>
+        <option value="Update"> Update</option>
+        <option value="Hapus"> Hapus</option>
+      </select>
+      <div class="mini-search">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="5.5" cy="5.5" r="4"/><path d="M9 9l2.5 2.5"/>
+        </svg>
+        <input type="text" id="log-search" placeholder="Cari user, detail, atau IP..." oninput="filterLogTable()">
+      </div>
+      <button class="btn btn-sm" onclick="refreshLogData()">
+        <svg viewBox="0 0 14 14" fill="currentColor" width="12" height="12">
+          <path d="M12 8a4 4 0 0 1-8 0M4 6a4 4 0 0 1 8 0M7 2v4M5 2h4"/>
+        </svg>
+        Refresh
+      </button>
+    </div>
+  </div>
+  <div class="log-table-wrapper">
+    <table class="log-table">
+      <thead>
+        <tr>
+          <th><i class="fas fa-clock"></i> Waktu</th>
+          <th><i class="fas fa-user"></i> User</th>
+          <th><i class="fas fa-tag"></i> Aksi</th>
+          <th><i class="fas fa-cube"></i> Modul</th>
+          <th><i class="fas fa-info-circle"></i> Detail</th>
+          <th><i class="fas fa-network-wired"></i> IP Address</th>
+        </tr>
+      </thead>
+      <tbody id="log-tbody">
+        <tr><td colspan="6" style="text-align:center;padding:60px;">
+          <div class="modern-spinner"></div>
+          <p style="margin-top: 10px;">Memuat data log...</p>
+        </td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</section>
 
       <!-- ======== PRINT LAPORAN ======== -->
       <section id="panel-laporan" class="panel">
@@ -1707,10 +2345,10 @@ a { text-decoration: none; color: inherit; }
       <div class="form-group" style="margin-bottom:15px;">
         <label class="form-label">Kategori</label>
         <select name="kategori" class="form-control" required>
-          <option value="Surat Keputusan">Surat Keputusan</option>
-          <option value="Laporan">Laporan</option>
-          <option value="Nota Dinas">Nota Dinas</option>
-        </select>
+  <option value="Surat Keputusan">Surat Keputusan</option>
+  <option value="Laporan">Laporan</option>
+  <option value="Nota Dinas">Nota Dinas</option>
+</select>
       </div>
       <div class="form-group" style="margin-bottom:15px;">
         <label class="form-label">Status</label>
@@ -1745,10 +2383,10 @@ a { text-decoration: none; color: inherit; }
     </main>
   </div>
 </div>
-
-<!-- ============================================================
-     JAVASCRIPT
-     ============================================================ -->
+<!-- Library untuk generate PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 // ================= LOGOUT FUNCTION =================
@@ -1887,60 +2525,7 @@ const bidangShortName = {
   e: 'Sarpras'
 };
 
-const bidangData = {
-  a: { 
-    name: 'Bidang Penelitian, Pengembangan dan Pengendalian Evaluasi',
-    shortName: 'Litbang',
-    docs: [
-      { no:1, nama:'SK No.001/2026', kategori:'Surat Keputusan', tgl:'15 Apr 2026', user:'Admin Bidang', status:'Selesai' },
-      { no:2, nama:'Laporan Bulanan Februari', kategori:'Laporan', tgl:'12 Apr 2026', user:'Staf A1', status:'Review' },
-      { no:3, nama:'Nota Dinas 03/IV/2026', kategori:'Nota Dinas', tgl:'10 Apr 2026', user:'Kepala Bidang', status:'On Going' },
-      { no:4, nama:'Rencana Kerja Q2 2026', kategori:'Laporan', tgl:'08 Apr 2026', user:'Staf A2', status:'Selesai' },
-      { no:5, nama:'SK Penunjukan Tim', kategori:'Surat Keputusan', tgl:'05 Apr 2026', user:'Admin Bidang', status:'Selesai' },
-    ]
-  },
-  b: { 
-    name: 'Bidang Perencanaan Pembangunan',
-    shortName: 'Perencanaan',
-    docs: [
-      { no:1, nama:'Laporan Kinerja Q1', kategori:'Laporan', tgl:'17 Apr 2026', user:'Staf B1', status:'Selesai' },
-      { no:2, nama:'SK Pengangkatan Pejabat', kategori:'Surat Keputusan', tgl:'14 Apr 2026', user:'Kepala Bidang', status:'Review' },
-      { no:3, nama:'Nota Dinas Rapat Koordinasi', kategori:'Nota Dinas', tgl:'11 Apr 2026', user:'Admin Bidang', status:'On Going' },
-      { no:4, nama:'Rekap Kehadiran April', kategori:'Laporan', tgl:'09 Apr 2026', user:'Staf B2', status:'On Going' },
-    ]
-  },
-  c: { 
-    name: 'Bidang Ekonomi',
-    shortName: 'Ekonomi',
-    docs: [
-      { no:1, nama:'Proposal Anggaran Q2', kategori:'Laporan', tgl:'19 Apr 2026', user:'Staf C1', status:'Review' },
-      { no:2, nama:'SK Penyesuaian Tarif', kategori:'Surat Keputusan', tgl:'13 Apr 2026', user:'Kepala Bidang', status:'Selesai' },
-      { no:3, nama:'Rekapitulasi Dana Kegiatan', kategori:'Laporan', tgl:'09 Apr 2026', user:'Admin Bidang', status:'On Going' },
-    ]
-  },
-  d: { 
-    name: 'Bidang Kesejahteraan Rakyat dan Pemerintahan',
-    shortName: 'Kesra',
-    docs: [
-      { no:1, nama:'Nota Dinas Koordinasi Lintas', kategori:'Nota Dinas', tgl:'17 Apr 2026', user:'Admin Bidang', status:'Selesai' },
-      { no:2, nama:'SK Bidang D No.05/2026', kategori:'Surat Keputusan', tgl:'10 Apr 2026', user:'Kepala Bidang', status:'Selesai' },
-      { no:3, nama:'Laporan Evaluasi Semester', kategori:'Laporan', tgl:'07 Apr 2026', user:'Staf D1', status:'On Going' },
-      { no:4, nama:'Nota Kebutuhan Anggaran', kategori:'Nota Dinas', tgl:'04 Apr 2026', user:'Staf D2', status:'Review' },
-    ]
-  },
-  e: { 
-    name: 'Bidang Sarana Prasarana Wilayah dan Lingkungan',
-    shortName: 'Sarpras',
-    docs: [
-      { no:1, nama:'Perencanaan Infrastruktur Jalan', kategori:'Laporan', tgl:'20 Apr 2026', user:'Staf E1', status:'Selesai' },
-      { no:2, nama:'SK Pembangunan Pasar', kategori:'Surat Keputusan', tgl:'18 Apr 2026', user:'Kepala Bidang', status:'Review' },
-      { no:3, nama:'Nota Dinas Pengadaan Alat Berat', kategori:'Nota Dinas', tgl:'15 Apr 2026', user:'Admin Bidang', status:'On Going' },
-      { no:4, nama:'Rencana Tata Ruang Wilayah', kategori:'Laporan', tgl:'12 Apr 2026', user:'Staf E2', status:'Selesai' },
-      { no:5, nama:'SK Penataan Lingkungan', kategori:'Surat Keputusan', tgl:'10 Apr 2026', user:'Kepala Bidang', status:'On Going' },
-      { no:6, nama:'Laporan Pengelolaan Sampah', kategori:'Laporan', tgl:'08 Apr 2026', user:'Staf E3', status:'Review' },
-    ]
-  },
-};
+
 
 let currentBidang = null;
 
@@ -1985,89 +2570,74 @@ function toggleBidang(id, name) {
   }
 }
 
-function navigateDok(id, shortName) {
+function navigateDok(id) {
   currentBidang = id;
-  const data = bidangData[id];
-  
-  // Gunakan nama lengkap dari data
-  const fullName = data.name;
-  const short = data.shortName;
-  
-  // Set judul halaman dengan nama lengkap
+  currentBidangId = id;
+
+  const bidangNama = {
+    a: 'Bidang Penelitian, Pengembangan dan Pengendalian Evaluasi',
+    b: 'Bidang Perencanaan Pembangunan',
+    c: 'Bidang Ekonomi',
+    d: 'Bidang Kesejahteraan Rakyat dan Pemerintahan',
+    e: 'Bidang Sarana Prasarana Wilayah dan Lingkungan'
+  };
+
+  const bidangShort = {
+    a: 'Litbang',
+    b: 'Perencanaan',
+    c: 'Ekonomi',
+    d: 'Kesra',
+    e: 'Sarpras'
+  };
+
+  const fullName = bidangNama[id] || 'Bidang';
+  const short = bidangShort[id] || '';
+
   document.getElementById('bidang-title').textContent = fullName;
   document.getElementById('bidang-doc-title').textContent = `Daftar Dokumen — ${fullName}`;
-  
-  // Set subtitle dengan nama pendek
+
   const bidangSubtitle = document.querySelector('#panel-bidang .page-hdr-sub');
   if (bidangSubtitle) {
     bidangSubtitle.textContent = `Manajemen Dokumen ${short}`;
   }
 
-  // clear filters
-  const searchInput = document.getElementById('bidang-search');
-  const filterSelect = document.getElementById('bidang-status-filter');
-  if (searchInput) searchInput.value = '';
-  if (filterSelect) filterSelect.value = '';
+  // reset filter
+  document.getElementById('bidang-search').value = '';
+  document.getElementById('bidang-status-filter').value = '';
 
-  renderBidangTable(data.docs);
+  // 🔥 INI WAJIB
+  loadDokumenFromDB(id);
+
   showPanel('bidang');
 
-  // deactivate other nav items
   document.querySelectorAll('.nav-item[data-panel]').forEach(n => n.classList.remove('active'));
 
-  // mark sub-item active
   document.querySelectorAll('.sub-item').forEach(s => s.classList.remove('active'));
   const subItems = document.querySelectorAll('#sub-b' + id + ' .sub-item');
   if (subItems.length) subItems[0].classList.add('active');
 }
 
-/* ---- TABLE RENDER ---- */
-const pillMap = {
-  'Selesai':  'pill-done',
-  'Review':   'pill-review',
-  'On Going': 'pill-progress',
-};
-
-function renderBidangTable(docs) {
-  const tbody = document.getElementById('bidang-tbody');
-  if (!docs || docs.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--text-3);">Tidak ada dokumen ditemukan.</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = docs.map(d => `
-    <tr>
-      <td>${d.no}</td>
-      <td>${d.nama}</td>
-      <td>${d.kategori}</td>
-      <td>${d.tgl}</td>
-      <td>${d.user}</td>
-      <td><span class="pill ${pillMap[d.status] || ''}">${d.status}</span></td>
-      <td>
-        <span class="link-act" style="margin-right:8px;">Lihat</span>
-        <span class="link-danger">Hapus</span>
-      </td>
-    </tr>
-  `).join('');
-}
-
-function filterBidangTable() {
-  if (!currentBidang) return;
-  const q = document.getElementById('bidang-search').value.toLowerCase();
-  const st = document.getElementById('bidang-status-filter').value;
-  const docs = bidangData[currentBidang].docs.filter(d => {
-    const matchQ = !q || d.nama.toLowerCase().includes(q) || d.kategori.toLowerCase().includes(q);
-    const matchSt = !st || d.status === st;
-    return matchQ && matchSt;
-  });
-  renderBidangTable(docs);
-}
 
 // ================= UPLOAD DOKUMEN =================
 let currentBidangId = null;
 
-function openUploadModal(bidangId) {
-  currentBidangId = bidangId;
-  document.getElementById('upload_id_bidang').value = bidangId;
+function openUploadModal() {
+  console.log('currentBidang:', currentBidang);
+
+  // pakai currentBidang, bukan parameter
+  if (!currentBidang) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Pilih bidang dulu!',
+      text: 'Silakan pilih bidang sebelum upload dokumen'
+    });
+    return;
+  }
+
+  currentBidangId = currentBidang;
+
+  document.getElementById('upload_id_bidang').value = currentBidang;
+
   document.getElementById('modalUpload').style.display = 'flex';
 }
 
@@ -2077,98 +2647,205 @@ function closeUploadModal() {
 }
 
 // Submit upload form
-$('#formUploadDokumen').on('submit', function(e) {
-  e.preventDefault();
-  
-  const formData = new FormData(this);
-  
-  Swal.fire({
-    title: 'Uploading...',
-    text: 'Mohon tunggu',
-    allowOutsideClick: false,
-    didOpen: () => {
-      Swal.showLoading();
+$(document).ready(function() {
+  $('#formUploadDokumen').off('submit').on('submit', function(e) {
+    e.preventDefault();
+    
+    // Validasi file
+    const fileInput = document.querySelector('input[name="file_dokumen"]');
+    if (!fileInput.files || fileInput.files.length === 0) {
+      Swal.fire('Error!', 'Pilih file terlebih dahulu', 'error');
+      return;
     }
-  });
-  
-  $.ajax({
-    url: '<?= base_url('IDE/upload_dokumen') ?>',
-    type: 'POST',
-    data: formData,
-    processData: false,
-    contentType: false,
-    success: function(response) {
-      const res = JSON.parse(response);
-      Swal.close();
-      
-      if (res.status === 'success') {
-        Swal.fire('Berhasil!', 'Dokumen berhasil diupload', 'success');
-        closeUploadModal();
-        // Refresh tabel dokumen
-        if (currentBidangId) {
-          loadDokumenFromDB(currentBidangId);
-        }
-      } else {
-        Swal.fire('Error!', res.message, 'error');
+    
+    const formData = new FormData(this);
+    
+    Swal.fire({
+      title: 'Uploading...',
+      text: 'Mohon tunggu, sedang mengupload dokumen',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
       }
-    },
-    error: function() {
-      Swal.close();
-      Swal.fire('Error!', 'Terjadi kesalahan saat upload', 'error');
-    }
+    });
+    
+    $.ajax({
+      url: '<?= base_url('IDE/upload_dokumen') ?>',
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      dataType: 'json',
+      timeout: 30000,
+      success: function(response) {
+        Swal.close();
+        
+        if (response.status === 'success') {
+          Swal.fire('Berhasil!', response.message, 'success');
+          closeUploadModal();
+          // Refresh tabel dokumen
+          if (currentBidangId) {
+            loadDokumenFromDB(currentBidangId);
+          }
+          // Refresh dashboard stats
+          if (typeof loadDashboardStats === 'function') {
+            loadDashboardStats();
+          }
+        } else {
+          Swal.fire('Error!', response.message || 'Gagal upload dokumen', 'error');
+        }
+      },
+      error: function(xhr, status, error) {
+        Swal.close();
+        let errorMsg = 'Terjadi kesalahan saat upload';
+        if (xhr.responseJSON && xhr.responseJSON.message) {
+          errorMsg = xhr.responseJSON.message;
+        } else if (status === 'timeout') {
+          errorMsg = 'Timeout, file terlalu besar atau koneksi lambat';
+        }
+        Swal.fire('Error!', errorMsg, 'error');
+        console.error('Upload error:', error);
+      }
+    });
   });
 });
 
 // ================= LOAD DOKUMEN FROM DATABASE =================
 function loadDokumenFromDB(bidangId) {
+  if (!bidangId) return;
+
+  console.log('Ambil data dari DB:', bidangId);
+
+  $('#bidang-tbody').html(`
+    <tr><td colspan="8" style="text-align:center;padding:40px;">
+      <div class="modern-spinner"></div>
+      <p>Memuat data...</p>
+    </td></tr>
+  `);
+
   $.ajax({
     url: '<?= base_url('IDE/get_dokumen_by_bidang') ?>',
     type: 'POST',
     data: { id_bidang: bidangId },
     dataType: 'json',
-    success: function(response) {
-      if (response.status === 'success') {
-        renderDokumenTable(response.data);
+    success: function(res) {
+      console.log('Response:', res);
+      if (res.status === 'success') {
+        renderDokumenTable(res.data);
+        
+        // ========== UPDATE CATEGORY CARDS PER BIDANG ==========
+        // Hitung jumlah dokumen per kategori untuk bidang ini
+        let countSK = 0;
+        let countLaporan = 0;
+        let countNota = 0;
+        
+        res.data.forEach(function(doc) {
+          if (doc.kategori === 'Surat Keputusan') countSK++;
+          else if (doc.kategori === 'Laporan') countLaporan++;
+          else if (doc.kategori === 'Nota Dinas') countNota++;
+        });
+        
+        // Update tampilan category cards di panel bidang
+        $('#count-sk-bidang').text(countSK + ' dokumen');
+        $('#count-laporan-bidang').text(countLaporan + ' dokumen');
+        $('#count-nota-bidang').text(countNota + ' dokumen');
+        
+        console.log('Kategori counts - SK:', countSK, 'Laporan:', countLaporan, 'Nota:', countNota);
+      } else {
+        $('#bidang-tbody').html(`<td><td colspan="8">Gagal load数据</td></tr>`);
       }
     },
     error: function() {
-      console.error('Gagal memuat dokumen');
+      $('#bidang-tbody').html(`<td><td colspan="8">Server error</td></tr>`);
     }
   });
 }
 
-// Render tabel dengan thumbnail
+// ================= RENDER TABEL DOKUMEN (LENGKAP) =================
 function renderDokumenTable(dokumen) {
   const tbody = document.getElementById('bidang-tbody');
+  
+  // Jika tidak ada dokumen
   if (!dokumen || dokumen.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:30px;">Tidak ada dokumen</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:60px 20px;color:var(--text-3);">
+      <div style="font-size:48px; margin-bottom:15px;">📄</div>
+      Belum ada dokumen. Klik tombol "Upload Dokumen" untuk menambahkan.
+    </td></tr>`;
     return;
   }
   
+  // Debug: lihat data yang diterima
+  console.log('Data dokumen:', dokumen);
+  console.log('Kategori dari dokumen pertama:', dokumen[0]?.kategori);
+  
   tbody.innerHTML = dokumen.map((doc, index) => {
-    const isImage = doc.file_type.startsWith('image/');
-    const thumbnailHtml = isImage && doc.thumbnail ? 
-      `<img src="<?= base_url() ?>${doc.thumbnail}" class="doc-thumbnail" onclick="previewDokumen('${doc.file_path}', '${doc.file_type}', '${doc.nama_dokumen}')">` :
-      `<div class="file-icon" onclick="previewDokumen('${doc.file_path}', '${doc.file_type}', '${doc.nama_dokumen}')">
-         <i class="fas fa-file-pdf"></i>
-       </div>`;
+    // Tentukan thumbnail berdasarkan tipe file
+    let thumbnailHtml = '';
+    const baseUrl = '<?= base_url() ?>';
+    
+    if (doc.file_type && doc.file_type.startsWith('image/')) {
+      const thumbUrl = doc.thumbnail ? baseUrl + doc.thumbnail : baseUrl + doc.file_path;
+      thumbnailHtml = `<img src="${thumbUrl}" class="doc-thumbnail" onclick="previewDokumen('${doc.file_path}', '${doc.file_type}', '${escapeHtml(doc.nama_dokumen)}')" 
+        style="width:50px; height:50px; object-fit:cover; border-radius:8px; cursor:pointer; border:1px solid #e2e8f0;" 
+        onerror="this.src='${baseUrl}assets/img/no-image.png'">`;
+    } else if (doc.file_type === 'application/pdf') {
+      thumbnailHtml = `<div onclick="previewDokumen('${doc.file_path}', '${doc.file_type}', '${escapeHtml(doc.nama_dokumen)}')" 
+        style="width:50px; height:50px; background:#fee2e2; border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:24px;">
+        📄
+      </div>`;
+    } else {
+      thumbnailHtml = `<div onclick="previewDokumen('${doc.file_path}', '${doc.file_type}', '${escapeHtml(doc.nama_dokumen)}')" 
+        style="width:50px; height:50px; background:#dbeafe; border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:24px;">
+        📎
+      </div>`;
+    }
+    
+    const statusClass = doc.status === 'Selesai' ? 'pill-done' : (doc.status === 'Review' ? 'pill-review' : 'pill-progress');
+    const uploadDate = doc.upload_date_formatted || (doc.upload_date ? new Date(doc.upload_date).toLocaleDateString('id-ID') : '-');
+    const fileSize = doc.file_size_formatted || (doc.file_size ? Math.round(doc.file_size / 1024) + ' KB' : '-');
+    
+    // Pastikan kategori tidak undefined/null
+    const kategori = doc.kategori || 'Tidak ada kategori';
     
     return `
-      <tr>
-        <td>${index + 1}</td>
-        <td>${thumbnailHtml}</td>
-        <td>${doc.nama_dokumen}</td>
-        <td>${doc.kategori}</td>
-        <td>${doc.upload_date}</td>
-        <td>${doc.uploaded_by}</td>
-        <td><span class="pill ${getPillClass(doc.status)}">${doc.status}</span></td>
-        <td>
-          <span class="link-act" onclick="previewDokumen('${doc.file_path}', '${doc.file_type}', '${doc.nama_dokumen}')">Lihat</span>
-          <span class="link-danger" onclick="deleteDokumen(${doc.id_dokumen})">Hapus</span>
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:12px 8px; text-align:center;">${index + 1}</td>
+        <td style="padding:12px 8px; text-align:center;">${thumbnailHtml}</td>
+        <td style="padding:12px 8px;">
+          <strong>${escapeHtml(doc.nama_dokumen)}</strong>
+          <br><span style="font-size:10px; color:var(--text-3);">${fileSize}</span>
+        </td>
+        <td style="padding:12px 8px;">
+          <span class="badge-kategori" style="
+            display:inline-block;
+            padding:4px 10px;
+            border-radius:20px;
+            font-size:11px;
+            font-weight:500;
+            background:${kategori === 'Surat Keputusan' ? '#e0e7ff' : (kategori === 'Laporan' ? '#dcfce7' : '#fed7aa')};
+            color:${kategori === 'Surat Keputusan' ? '#4338ca' : (kategori === 'Laporan' ? '#166534' : '#9a3412')};
+          ">
+            ${escapeHtml(kategori)}
+          </span>
+        </td>
+        <td style="padding:12px 8px;">${uploadDate}</td>
+        <td style="padding:12px 8px;">${escapeHtml(doc.uploaded_by)}</td>
+        <td style="padding:12px 8px;"><span class="pill ${statusClass}">${doc.status}</span></td>
+        <td style="padding:12px 8px; white-space:nowrap;">
+          <span class="link-act" onclick="previewDokumen('${doc.file_path}', '${doc.file_type}', '${escapeHtml(doc.nama_dokumen)}')" style="margin-right:12px; cursor:pointer; color:#2563eb;"> Lihat</span>
+          <span class="link-danger" onclick="deleteDokumen(${doc.id_dokumen})" style="cursor:pointer; color:#dc2626;">Hapus</span>
         </td>
       </tr>
     `;
   }).join('');
+}
+
+// Helper escape HTML
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
 }
 
 function getPillClass(status) {
@@ -2180,22 +2857,118 @@ function getPillClass(status) {
   return map[status] || '';
 }
 
-// ================= PREVIEW DOKUMEN =================
+// ================= DASHBOARD STATS (LENGKAP DARI DATABASE) =================
+function loadDashboardStats() {
+  $.ajax({
+    url: '<?= base_url('IDE/get_dashboard_stats') ?>',
+    type: 'GET',
+    dataType: 'json',
+    success: function(response) {
+      if (response.status === 'success') {
+        // ========== HERO CARDS ==========
+        // Total Dokumen (Card ke-1)
+        $('.hero-card-num').eq(0).text(formatNumber(response.total_dokumen || 0));
+        
+        // Printer Aktif (Card ke-2)
+        $('.hero-card-num').eq(1).text(formatNumber(response.total_printer_aktif || 4));
+        
+        // Total User (Card ke-3)
+        $('.hero-card-num').eq(2).text(formatNumber(response.total_user || 0));
+        
+        // ========== STAT CARDS ==========
+        // Total User (Stat Card ke-1)
+        $('.stat-val').eq(0).text(formatNumber(response.total_user || 0));
+        
+        // Total Dokumen (Stat Card ke-2)
+        $('.stat-val').eq(1).text(formatNumber(response.total_dokumen || 0));
+        
+        // Dokumen Selesai (Stat Card ke-3)
+        $('.stat-val').eq(2).text(formatNumber(response.dokumen_selesai || 0));
+        
+        // Dokumen On Going (Stat Card ke-4)
+        $('.stat-val').eq(3).text(formatNumber(response.dokumen_ongoing || 0));
+        
+        // ========== UPDATE CATEGORY CARDS (Jenis Dokumen) ==========
+        // Update menggunakan ID
+        $('#count-sk').text((response.dokumen_sk || 0) + ' dokumen');
+        $('#count-laporan').text((response.dokumen_laporan || 0) + ' dokumen');
+        $('#count-nota').text((response.dokumen_nota || 0) + ' dokumen');
+        
+        // ========== UPDATE TREND ==========
+        if (response.trend_data) {
+          $('.stat-trend').eq(0).html(`<span class="trend-dot">${response.trend_data.user_trend === '+8.5%' ? '↑' : '↓'}</span> ${response.trend_data.user_trend} dari kemarin`);
+          $('.stat-trend').eq(1).html(`<span class="trend-dot">${response.trend_data.dokumen_trend === '+1.3%' ? '↑' : '↓'}</span> ${response.trend_data.dokumen_trend} dari minggu lalu`);
+          $('.stat-trend').eq(2).html(`<span class="trend-dot">${response.trend_data.selesai_trend === '-4.3%' ? '↓' : '↑'}</span> ${response.trend_data.selesai_trend} dari kemarin`);
+          $('.stat-trend').eq(3).html(`<span class="trend-dot">${response.trend_data.ongoing_trend === '+1.8%' ? '↑' : '↓'}</span> ${response.trend_data.ongoing_trend} dari kemarin`);
+        }
+        
+        // ========== UPDATE PER BIDANG (untuk category cards bidang) ==========
+        if (response.dokumen_per_bidang) {
+          const bidangMap = { a: 0, b: 1, c: 2, d: 3, e: 4 };
+          for (const [kode, data] of Object.entries(response.dokumen_per_bidang)) {
+            const index = bidangMap[kode];
+            if (index !== undefined) {
+              $('.doc-cat-count').eq(index).text(`${data.total} dokumen`);
+            }
+          }
+        }
+        
+        console.log('Dashboard stats updated:', response);
+      } else {
+        console.error('Failed to load stats:', response);
+        setDefaultStats();
+      }
+    },
+    error: function(xhr, status, error) {
+      console.error('Error loading dashboard stats:', error);
+      setDefaultStats();
+    }
+  });
+}
+
+// Helper function untuk format angka
+function formatNumber(num) {
+  if (num >= 1000 && num < 1000000) {
+    return (num / 1000).toFixed(1) + 'K';
+  } else if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + 'M';
+  }
+  return num.toString();
+}
+
+// Set default stats jika error
+function setDefaultStats() {
+  $('.hero-card-num').eq(0).text('0');
+  $('.hero-card-num').eq(1).text('4');
+  $('.hero-card-num').eq(2).text('0');
+  $('.stat-val').eq(0).text('0');
+  $('.stat-val').eq(1).text('0');
+  $('.stat-val').eq(2).text('0');
+  $('.stat-val').eq(3).text('0');
+  $('.doc-cat-count').eq(0).text('0 dokumen');
+  $('.doc-cat-count').eq(1).text('0 dokumen');
+  $('.doc-cat-count').eq(2).text('0 dokumen');
+}
+
+// ================= PREVIEW DOKUMEN (VERSI AWAL) =================
 function previewDokumen(filePath, fileType, fileName) {
-  document.getElementById('previewTitle').textContent = fileName;
+  document.getElementById('previewTitle').textContent = fileName || 'Preview Dokumen';
   const previewDiv = document.getElementById('previewContent');
+  const baseUrl = '<?= base_url() ?>';
+  const fullUrl = baseUrl + filePath;
   
-  if (fileType.startsWith('image/')) {
-    previewDiv.innerHTML = `<img src="<?= base_url() ?>${filePath}" style="max-width:100%; max-height:70vh;">`;
+  if (fileType && fileType.startsWith('image/')) {
+    previewDiv.innerHTML = `<img src="${fullUrl}" style="max-width:100%; max-height:70vh; border-radius:8px;" alt="${escapeHtml(fileName)}">`;
   } else if (fileType === 'application/pdf') {
-    previewDiv.innerHTML = `<iframe src="<?= base_url() ?>${filePath}" style="width:100%; height:70vh;" frameborder="0"></iframe>`;
+    previewDiv.innerHTML = `<iframe src="${fullUrl}" style="width:100%; height:70vh;" frameborder="0"></iframe>`;
   } else {
     previewDiv.innerHTML = `
-      <div style="padding:40px; text-align:center;">
-        <i class="fas fa-file" style="font-size:64px; color:var(--blue-600);"></i>
-        <p style="margin-top:20px;">File tidak dapat dipreview langsung</p>
-        <a href="<?= base_url() ?>${filePath}" class="btn btn-primary" download style="margin-top:15px;">
-          Download File
+      <div style="padding:60px 20px; text-align:center;">
+        <div style="font-size:64px; margin-bottom:20px;">📄</div>
+        <p style="margin-bottom:20px; color:var(--text-2);">File tidak dapat dipreview langsung</p>
+        <p style="margin-bottom:15px; font-size:12px; color:var(--text-3);">Tipe file: ${fileType || 'Unknown'}</p>
+        <a href="${fullUrl}" class="btn btn-primary" download target="_blank">
+          ⬇️ Download File
         </a>
       </div>
     `;
@@ -2213,52 +2986,692 @@ function closePreviewModal() {
 function deleteDokumen(idDokumen) {
   Swal.fire({
     title: 'Yakin hapus?',
-    text: 'Dokumen akan dihapus permanen',
+    text: 'Dokumen akan dihapus permanen!',
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#dc2626',
+    cancelButtonColor: '#64748b',
     confirmButtonText: 'Ya, Hapus!',
     cancelButtonText: 'Batal'
   }).then((result) => {
     if (result.isConfirmed) {
+      Swal.fire({
+        title: 'Menghapus...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
+      
       $.ajax({
         url: '<?= base_url('IDE/delete_dokumen') ?>',
         type: 'POST',
         data: { id_dokumen: idDokumen },
         dataType: 'json',
+        timeout: 10000,
         success: function(response) {
+          Swal.close();
           if (response.status === 'success') {
             Swal.fire('Terhapus!', response.message, 'success');
             if (currentBidangId) {
               loadDokumenFromDB(currentBidangId);
             }
+            // Refresh dashboard stats
+            if (typeof loadDashboardStats === 'function') {
+              loadDashboardStats();
+            }
           } else {
-            Swal.fire('Error!', response.message, 'error');
+            Swal.fire('Error!', response.message || 'Gagal menghapus dokumen', 'error');
           }
         },
-        error: function() {
-          Swal.fire('Error!', 'Gagal menghapus dokumen', 'error');
+        error: function(xhr, status, error) {
+          Swal.close();
+          Swal.fire('Error!', 'Gagal menghubungi server', 'error');
+          console.error('Delete error:', error);
         }
       });
     }
   });
 }
 
-// Update navigateDok untuk memuat dari database
-const originalNavigateDok = navigateDok;
-navigateDok = function(id, shortName) {
-  currentBidangId = id;
-  originalNavigateDok(id, shortName);
-  loadDokumenFromDB(id);
-};
+// ================= FILTER DOKUMEN =================
+function filterBidangTable() {
+  const searchText = $('#bidang-search').val().toLowerCase();
+  const statusFilter = $('#bidang-status-filter').val();
+  
+  $('#bidang-tbody tr').each(function() {
+    const namaDokumen = $(this).find('td:eq(2)').text().toLowerCase();
+    const status = $(this).find('td:eq(6) .pill').text();
+    let show = true;
+    
+    if (searchText && !namaDokumen.includes(searchText)) show = false;
+    if (statusFilter && status !== statusFilter) show = false;
+    
+    $(this).toggle(show);
+  });
+}
 
-/* ---- DATE ---- */
-const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-const now = new Date();
-const dateStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
-document.getElementById('greeting-date').textContent = dateStr;
-document.getElementById('hero-date-text').textContent = dateStr;
+// ================= SPINNER ANIMATION CSS =================
+// Tambahkan CSS untuk spinner jika belum ada
+if (!document.querySelector('#spinner-style')) {
+  const style = document.createElement('style');
+  style.id = 'spinner-style';
+  style.textContent = `
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .modern-spinner {
+      width: 30px;
+      height: 30px;
+      border: 3px solid #e2e8f0;
+      border-top-color: #3b82f6;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 10px;
+    }
+    .doc-thumbnail {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .doc-thumbnail:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+
+
+// ================= EXPORT DOKUMEN TABLE TO PDF =================
+// ================= EXPORT DOKUMEN TO PDF (DENGAN LOGO) =================
+function exportDokumenToPDF() {
+  const dokumenData = [];
+  
+  $('#bidang-tbody tr').each(function() {
+    const row = $(this);
+    const namaDokumen = row.find('td:eq(2) strong').text();
+    const kategori = row.find('td:eq(3) .badge-kategori').text();
+    const uploadDate = row.find('td:eq(4)').text();
+    const uploadedBy = row.find('td:eq(5)').text();
+    const status = row.find('td:eq(6) .pill').text();
+    
+    if (namaDokumen) {
+      dokumenData.push({
+        nama: namaDokumen,
+        kategori: kategori,
+        tanggal: uploadDate,
+        user: uploadedBy,
+        status: status
+      });
+    }
+  });
+  
+  if (dokumenData.length === 0) {
+    Swal.fire('Info', 'Tidak ada data dokumen untuk diexport', 'info');
+    return;
+  }
+  
+  const now = new Date();
+  const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const dateStr = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+  const bidangTitle = document.getElementById('bidang-title').textContent;
+  const logoUrl = '<?= base_url('assets/img/bappeda.png') ?>';
+  
+  let htmlContent = `
+    <div class="pdf-export-wrapper">
+      <div class="pdf-header">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px; flex-wrap: wrap;">
+          <img src="${logoUrl}" alt="Logo Bappeda Banyuwangi" style="height: 60px; width: auto; object-fit: contain;">
+          <div style="text-align: center;">
+            <h2 style="margin: 0; color: #1a2d6b;">SISTEM MANAJEMEN KANTOR (SMB)</h2>
+            <h3 style="margin: 5px 0 0 0; color: #1a2d6b;">BAPPEDA KABUPATEN BANYUWANGI</h3>
+          </div>
+        </div>
+        <p>Laporan Dokumen - ${escapeHtml(bidangTitle)}</p>
+      </div>
+      <div class="pdf-date">
+        <strong>Tanggal Export:</strong> ${dateStr}<br>
+        <strong>User:</strong> ${escapeHtml('<?= $display_name ?>')} (${escapeHtml('<?= $role_name ?>')})
+      </div>
+      <table class="pdf-table">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama Dokumen</th>
+            <th>Kategori</th>
+            <th>Tanggal Upload</th>
+            <th>Diupload Oleh</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+  `;
+  
+  dokumenData.forEach((item, index) => {
+    htmlContent += `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${escapeHtml(item.nama)}</td>
+        <td>${escapeHtml(item.kategori)}</td>
+        <td>${escapeHtml(item.tanggal)}</td>
+        <td>${escapeHtml(item.user)}</td>
+        <td>${escapeHtml(item.status)}</td>
+      </tr>
+    `;
+  });
+  
+  htmlContent += `
+        </tbody>
+      </table>
+      <div class="pdf-footer">
+        <p>Dokumen ini dibuat secara otomatis oleh sistem SMB Bappeda Banyuwangi</p>
+        <p>Total Dokumen: ${dokumenData.length}</p>
+      </div>
+    </div>
+  `;
+  
+  Swal.fire({
+    title: 'Membuat PDF...',
+    text: 'Mohon tunggu',
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading()
+  });
+  
+  const element = document.createElement('div');
+  element.innerHTML = htmlContent;
+  document.body.appendChild(element);
+  
+  const opt = {
+    margin: [0.5, 0.5, 0.5, 0.5],
+    filename: `Dokumen_${bidangTitle.replace(/\s/g, '_')}_${dateStr.replace(/\s/g, '_')}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, letterRendering: true },
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+  };
+  
+  html2pdf().set(opt).from(element).save().then(() => {
+    document.body.removeChild(element);
+    Swal.fire({
+      icon: 'success',
+      title: 'Berhasil!',
+      text: 'File PDF telah berhasil di-download',
+      timer: 2000,
+      showConfirmButton: false
+    });
+  }).catch(error => {
+    document.body.removeChild(element);
+    Swal.fire({
+      icon: 'error',
+      title: 'Gagal!',
+      text: 'Terjadi kesalahan saat membuat PDF'
+    });
+  });
+}
+
+// ================= LOG AKTIVITAS FUNCTIONS =================
+let allLogData = [];
+let currentDateStart = '';
+let currentDateEnd = '';
+
+function loadLogAktivitas() {
+  console.log('Loading log aktivitas...');
+  
+  $('#log-tbody').html(`
+    <tr><td colspan="6" style="text-align:center;padding:40px;">
+      <div class="modern-spinner"></div>
+      <p>Memuat data log...</p>
+    </td></tr>
+  `);
+  
+  $.ajax({
+    url: '<?= base_url('IDE/get_log_aktivitas') ?>',
+    type: 'GET',
+    dataType: 'json',
+    timeout: 10000,
+    success: function(response) {
+      if (response.status === 'success') {
+        allLogData = response.data;
+        renderLogTable(allLogData);
+        console.log('Log data loaded:', allLogData.length, 'records');
+      } else {
+        $('#log-tbody').html(`<tr><td colspan="6" class="empty-state-table">
+          <div class="icon">⚠️</div>
+          <p>Gagal memuat data log</p>
+        </td></tr>`);
+      }
+    },
+    error: function(xhr, status, error) {
+      console.error('Error loading log:', error);
+      $('#log-tbody').html(`<tr><td colspan="6" class="empty-state-table">
+        <div class="icon">❌</div>
+        <p>Error memuat data dari server</p>
+       </td></tr>`);
+    }
+  });
+}
+
+function renderLogTable(logs) {
+  const tbody = document.getElementById('log-tbody');
+  
+  if (!logs || logs.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" class="empty-state-table">
+      <div class="icon"></div>
+      <p>Belum ada aktivitas tercatat</p>
+      <p style="font-size: 12px; margin-top: 8px;">Lakukan aktivitas seperti upload, print, atau login untuk mencatat log</p>
+    </td></tr>`;
+    return;
+  }
+  
+  const getAksiClass = (aksi) => {
+    const map = {
+      'Upload': 'log-aksi-upload',
+      'Print': 'log-aksi-print',
+      'Review': 'log-aksi-review',
+      'Login': 'log-aksi-login',
+      'Update': 'log-aksi-update',
+      'Hapus': 'log-aksi-hapus',
+      'Delete': 'log-aksi-hapus'
+    };
+    return map[aksi] || 'log-aksi-upload';
+  };
+  
+  const getAksiIcon = (aksi) => {
+    const map = {
+      'Upload': '',
+      'Print': '',
+      'Review': '',
+      'Login': '',
+      'Update': '',
+      'Hapus': '',
+      'Delete': ''
+    };
+    return map[aksi] || '';
+  };
+  
+  tbody.innerHTML = logs.map((log, index) => {
+    const waktu = log.waktu || '-';
+    const username = log.username || '-';
+    const aksi = log.aksi || '-';
+    const modul = log.modul || '-';
+    const detail = log.detail || '-';
+    let ip = log.ip_address || '-';
+    
+    // Format IP agar lebih rapi
+    if (ip === '::1') ip = '127.0.0.1';
+    
+    const aksiClass = getAksiClass(aksi);
+    const aksiIcon = getAksiIcon(aksi);
+    
+    return `
+      <tr>
+        <td class="waktu-cell">${escapeHtml(waktu)}</td>
+        <td class="username-cell">
+          <i class=""></i> ${escapeHtml(username)}
+        </td>
+        <td>
+          <span class="log-aksi-badge ${aksiClass}">
+            ${aksiIcon} ${escapeHtml(aksi)}
+          </span>
+        </td>
+        <td>
+          <i class=""></i> ${escapeHtml(modul)}
+        </td>
+        <td class="detail-cell">
+          <i class="" style="opacity: 0.6; margin-right: 6px;"></i>
+          ${escapeHtml(detail)}
+        </td>
+        <td>
+          <code class="ip-address">
+            <i class=""></i> ${escapeHtml(ip)}
+          </code>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function filterLogTable() {
+  const searchText = $('#log-search').val().toLowerCase();
+  const aksiFilter = $('#log-aksi-filter').val();
+  const dateStart = $('#log-date-start').val();
+  const dateEnd = $('#log-date-end').val();
+  
+  let filtered = [...allLogData];
+  
+  // Filter berdasarkan teks pencarian
+  if (searchText) {
+    filtered = filtered.filter(log => 
+      (log.username || '').toLowerCase().includes(searchText) ||
+      (log.detail || '').toLowerCase().includes(searchText) ||
+      (log.modul || '').toLowerCase().includes(searchText)
+    );
+  }
+  
+  // Filter berdasarkan aksi
+  if (aksiFilter) {
+    filtered = filtered.filter(log => log.aksi === aksiFilter);
+  }
+  
+  // Filter berdasarkan rentang tanggal
+  if (dateStart) {
+    const startDate = new Date(dateStart);
+    filtered = filtered.filter(log => {
+      const logDate = new Date(log.waktu.split(' ')[0].split('/').reverse().join('-'));
+      return logDate >= startDate;
+    });
+  }
+  
+  if (dateEnd) {
+    const endDate = new Date(dateEnd);
+    endDate.setHours(23, 59, 59);
+    filtered = filtered.filter(log => {
+      const logDate = new Date(log.waktu.split(' ')[0].split('/').reverse().join('-'));
+      return logDate <= endDate;
+    });
+  }
+  
+  renderLogTable(filtered);
+  console.log('Filtered logs:', filtered.length);
+}
+
+function filterLogByDate() {
+  filterLogTable();
+}
+
+function refreshLogData() {
+  $('#log-date-start').val('');
+  $('#log-date-end').val('');
+  $('#log-aksi-filter').val('');
+  $('#log-search').val('');
+  loadLogAktivitas();
+}
+
+// ================= EXPORT LOG TO PDF (DENGAN LOGO) =================
+function exportLogToPDF() {
+  // Ambil data yang sedang ditampilkan (setelah filter)
+  const logData = [];
+  $('#log-tbody tr').each(function() {
+    const row = $(this);
+    const waktu = row.find('td:eq(0)').text();
+    const user = row.find('td:eq(1)').text();
+    const aksi = row.find('td:eq(2) .pill').text();
+    const modul = row.find('td:eq(3)').text();
+    const detail = row.find('td:eq(4)').text();
+    const ip = row.find('td:eq(5) code').text() || row.find('td:eq(5)').text();
+    
+    if (waktu && !waktu.includes('Memuat') && !waktu.includes('Belum')) {
+      logData.push({ waktu, user, aksi, modul, detail, ip });
+    }
+  });
+  
+  if (logData.length === 0) {
+    Swal.fire('Info', 'Tidak ada data log untuk diexport', 'info');
+    return;
+  }
+  
+  const now = new Date();
+  const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  const dateStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+  const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
+  
+  // Filter info untuk PDF
+  const startDate = $('#log-date-start').val();
+  const endDate = $('#log-date-end').val();
+  const aksiFilter = $('#log-aksi-filter').val();
+  const searchText = $('#log-search').val();
+  
+  let filterInfo = '';
+  if (startDate || endDate) filterInfo += `Periode: ${startDate || 'Awal'} s.d. ${endDate || 'Sekarang'} | `;
+  if (aksiFilter) filterInfo += `Aksi: ${aksiFilter} | `;
+  if (searchText) filterInfo += `Pencarian: ${searchText} | `;
+  
+  // Logo Bappeda dari asset lokal
+  const logoUrl = '<?= base_url('assets/img/bappeda.png') ?>';
+  
+  let htmlContent = `
+    <div class="pdf-export-wrapper">
+      <div class="pdf-header">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px; flex-wrap: wrap;">
+          <img src="${logoUrl}" alt="Logo Bappeda Banyuwangi" style="height: 60px; width: auto; object-fit: contain;">
+          <div style="text-align: center;">
+            <h2 style="margin: 0; color: #1a2d6b;">SISTEM MANAJEMEN KANTOR (SMB)</h2>
+            <h3 style="margin: 5px 0 0 0; color: #1a2d6b;">BAPPEDA KABUPATEN BANYUWANGI</h3>
+          </div>
+        </div>
+        <p style="margin-top: 10px;">Laporan Log Aktivitas Sistem</p>
+      </div>
+      <div class="pdf-date">
+        <strong>Tanggal Export:</strong> ${dateStr} ${timeStr}<br>
+        <strong>User:</strong> ${escapeHtml('<?= $display_name ?>')} (${escapeHtml('<?= $role_name ?>')})<br>
+        <strong>Total Data:</strong> ${logData.length} aktivitas<br>
+        ${filterInfo ? `<strong>Filter:</strong> ${filterInfo}<br>` : ''}
+      </div>
+      <table class="pdf-table">
+        <thead>
+          <tr>
+            <th style="width:15%">Waktu</th>
+            <th style="width:10%">User</th>
+            <th style="width:8%">Aksi</th>
+            <th style="width:10%">Modul</th>
+            <th style="width:40%">Detail</th>
+            <th style="width:12%">IP Address</th>
+          </tr>
+        </thead>
+        <tbody>
+  `;
+  
+  logData.forEach((item, index) => {
+    htmlContent += `
+      <tr>
+        <td>${escapeHtml(item.waktu)}</td>
+        <td>${escapeHtml(item.user)}</td>
+        <td>${escapeHtml(item.aksi)}</td>
+        <td>${escapeHtml(item.modul)}</td>
+        <td>${escapeHtml(item.detail)}</td>
+        <td>${escapeHtml(item.ip)}</td>
+      </tr>
+    `;
+  });
+  
+  htmlContent += `
+        </tbody>
+      </table>
+      <div class="pdf-footer">
+        <p>Dokumen ini dibuat secara otomatis oleh sistem SMB Bappeda Banyuwangi</p>
+        <p>* Laporan ini merupakan bukti sah aktivitas sistem</p>
+      </div>
+    </div>
+  `;
+  
+  Swal.fire({
+    title: 'Membuat PDF...',
+    text: 'Mohon tunggu, sedang memproses export data',
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading()
+  });
+  
+  const element = document.createElement('div');
+  element.innerHTML = htmlContent;
+  document.body.appendChild(element);
+  
+  const opt = {
+    margin: [0.5, 0.5, 0.5, 0.5],
+    filename: `Log_Aktivitas_SMB_${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}-${now.getDate().toString().padStart(2,'0')}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, letterRendering: true, useCORS: true },
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+  };
+  
+  html2pdf().set(opt).from(element).save().then(() => {
+    document.body.removeChild(element);
+    Swal.fire({
+      icon: 'success',
+      title: 'Berhasil!',
+      text: 'File PDF telah berhasil di-download',
+      timer: 2000,
+      showConfirmButton: false
+    });
+  }).catch(error => {
+    document.body.removeChild(element);
+    Swal.fire({
+      icon: 'error',
+      title: 'Gagal!',
+      text: 'Terjadi kesalahan saat membuat PDF'
+    });
+  });
+}
+
+// ================= INISIALISASI SAAT HALAMAN SIAP =================
+$(document).ready(function() {
+  console.log('Document Ready - Inisialisasi SMB Bappeda');
+  
+  // ========== 1. INISIALISASI VARIABEL GLOBAL ==========
+  if (typeof currentBidangId === 'undefined') {
+    currentBidangId = 'a';
+  }
+  if (typeof currentBidang === 'undefined') {
+    currentBidang = 'a';
+  }
+  
+  // ========== 2. CEK AKTIFKAN BIDANG PERTAMA ==========
+  const activeNav = document.querySelector('.nav-item.open');
+  if (activeNav && activeNav.id) {
+    const match = activeNav.id.match(/nav-b([a-e])/);
+    if (match) {
+      currentBidangId = match[1];
+      currentBidang = match[1];
+      console.log('Bidang aktif ditemukan:', currentBidangId);
+    }
+  }
+  
+  // ========== 3. LOAD DASHBOARD STATS ==========
+  loadDashboardStats();
+  
+  // ========== 4. EVENT LISTENER FORM UPLOAD ==========
+  $('#formUploadDokumen').off('submit').on('submit', function(e) {
+    e.preventDefault();
+    
+    const fileInput = document.querySelector('input[name="file_dokumen"]');
+    if (!fileInput.files || fileInput.files.length === 0) {
+      Swal.fire('Error!', 'Pilih file terlebih dahulu', 'error');
+      return;
+    }
+    
+    const formData = new FormData(this);
+    
+    Swal.fire({
+      title: 'Uploading...',
+      text: 'Mohon tunggu, sedang mengupload dokumen',
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading()
+    });
+    
+    $.ajax({
+      url: '<?= base_url('IDE/upload_dokumen') ?>',
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      dataType: 'json',
+      timeout: 30000,
+      success: function(response) {
+        Swal.close();
+        if (response.status === 'success') {
+          Swal.fire('Berhasil!', response.message, 'success');
+          closeUploadModal();
+          if (currentBidangId) loadDokumenFromDB(currentBidangId);
+          loadDashboardStats();
+        } else {
+          Swal.fire('Error!', response.message || 'Gagal upload dokumen', 'error');
+        }
+      },
+      error: function(xhr, status, error) {
+        Swal.close();
+        let errorMsg = 'Terjadi kesalahan saat upload';
+        if (xhr.responseJSON && xhr.responseJSON.message) errorMsg = xhr.responseJSON.message;
+        else if (status === 'timeout') errorMsg = 'Timeout, file terlalu besar atau koneksi lambat';
+        Swal.fire('Error!', errorMsg, 'error');
+        console.error('Upload error:', error);
+      }
+    });
+  });
+  
+  // ========== 5. DETEKSI PERUBAHAN PANEL UNTUK LOAD LOG ==========
+  const logObserver = new MutationObserver(function() {
+    const activePanel = document.querySelector('.panel.active');
+    if (activePanel && activePanel.id === 'panel-log') {
+      console.log('Panel log aktif, memuat data...');
+      loadLogAktivitas();
+    }
+  });
+  
+  logObserver.observe(document.body, {
+    attributes: true,
+    attributeFilter: ['class'],
+    subtree: true
+  });
+  
+  // ========== 6. EVENT LISTENER SEARCH & FILTER ==========
+  $('#bidang-search').on('input', function() {
+    filterBidangTable();
+  });
+  
+  $('#bidang-status-filter').on('change', function() {
+    filterBidangTable();
+  });
+  
+  // ========== 7. EVENT LISTENER UNTUK FILTER LOG ==========
+  $('#log-search').on('input', function() {
+    filterLogTable();
+  });
+  
+  $('#log-aksi-filter').on('change', function() {
+    filterLogTable();
+  });
+  
+  // ========== 8. DISPLAY DATE & TIME ==========
+  const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 
+                  'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+  const now = new Date();
+  const dateStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+  
+  const greetingDate = document.getElementById('greeting-date');
+  const heroDateText = document.getElementById('hero-date-text');
+  
+  if (greetingDate) greetingDate.textContent = dateStr;
+  if (heroDateText) heroDateText.textContent = dateStr;
+  
+  // ========== 9. EVENT LISTENER UNTUK TOMBOL LOGOUT ==========
+  const logoutBtn = document.querySelector('.logout-btn');
+  if (logoutBtn) {
+    logoutBtn.removeEventListener('click', handleLogout);
+    logoutBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      handleLogout();
+    });
+    logoutBtn.style.cursor = 'pointer';
+  }
+  
+  // ========== 10. AUTO REFRESH DOKUMEN ==========
+  const observer = new MutationObserver(function() {
+    const activePanel = document.querySelector('.panel.active');
+    if (activePanel && activePanel.id === 'panel-bidang' && currentBidangId) {
+      loadDokumenFromDB(currentBidangId);
+    }
+  });
+  
+  observer.observe(document.body, {
+    attributes: true,
+    attributeFilter: ['class'],
+    subtree: true
+  });
+  
+  console.log('Inisialisasi selesai. Current bidang:', currentBidangId);
+});
+
+
 </script>
 </body>
 </html>

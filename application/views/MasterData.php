@@ -30,6 +30,7 @@
       color: var(--apple-text);
       background: var(--apple-white);
       overflow-x: hidden;
+      padding-top: 64px;
     }
 
     /* Header & Navbar */
@@ -76,7 +77,8 @@
 
     /* Hero */
     .master-hero {
-      position: relative; background: #001428; padding: 160px 0 100px; overflow: hidden; color: white;
+      position: relative; background: #001428; padding: 80px 0 100px; overflow: hidden; color: white;
+      margin-top: 0;
     }
     .master-hero::before {
       content: ''; position: absolute; inset: 0;
@@ -102,56 +104,170 @@
       font-size: 1.05rem; color: rgba(255,255,255,0.7); max-width: 620px; margin: 0 auto 48px; line-height: 1.7;
     }
 
-    /* Filter */
-    .filter-bar {
-      background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-      border-radius: 12px; padding: 1.6rem 2rem;
-      margin: -80px auto 60px; max-width: 1200px; position: relative; z-index: 10;
-    }
-    .filter-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;
-    }
-    .filter-grid select, .filter-grid input {
-      padding: 10px 12px; border: 1px solid #D2D2D7; border-radius: 8px; font-size: 0.95rem;
+    /* === MAIN CARD CONTAINER (Filter + Project Grid dalam 1 Card) === */
+    .main-card-container {
+      max-width: 1200px;
+      margin: -60px auto 60px;
+      padding: 0 24px;
+      position: relative;
+      z-index: 10;
     }
 
-    /* Project Card */
+    .main-card {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      border: 1px solid #E5E7EB;
+      transition: all 0.3s ease;
+    }
+
+    .main-card:hover {
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Filter Section dalam Card */
+    .filter-section {
+      padding: 28px 32px;
+      background: linear-gradient(135deg, #F8FAFE 0%, #FFFFFF 100%);
+      border-bottom: 1px solid #E5E7EB;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .filter-group label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #6B7280;
+      margin-bottom: 6px;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .filter-group select,
+    .filter-group input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #D2D2D7;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s ease;
+      background: white;
+    }
+
+    .filter-group select:focus,
+    .filter-group input:focus {
+      outline: none;
+      border-color: #007AFF;
+      box-shadow: 0 0 0 3px rgba(0,122,255,0.1);
+    }
+
+    /* Content Section (Title + Project Grid) */
+    .content-section {
+      padding: 32px;
+    }
+
+    .section-header {
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .section-title-area h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #001428;
+      margin-bottom: 6px;
+    }
+
+    .section-title-area p {
+      font-size: 0.9rem;
+      color: #6B7280;
+      border-left: 3px solid #007AFF;
+      padding-left: 12px;
+    }
+
+    .result-count {
+      font-size: 0.85rem;
+      color: #6B7280;
+      background: #F3F4F6;
+      padding: 6px 14px;
+      border-radius: 20px;
+    }
+
+    /* Project Grid */
     .project-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px; max-width: 1200px; margin: 0 auto; padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
     }
+
     .project-card {
-      background: #fff; border: 1px solid #E5E7EB; border-radius: 10px;
-      padding: 20px; transition: all 0.25s ease; height: 100%; display: flex; flex-direction: column;
+      background: #fff;
+      border: 1px solid #E5E7EB;
+      border-radius: 16px;
+      padding: 20px;
+      transition: all 0.25s ease;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
     }
+
     .project-card:hover {
-      box-shadow: 0 15px 35px rgba(0,0,0,0.08); transform: translateY(-4px); border-color: #007AFF;
+      transform: translateY(-4px);
+      border-color: #007AFF;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.08);
     }
 
     .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
     .pemda-logo {
       width: 48px; height: 48px; border-radius: 8px; overflow: hidden; flex-shrink: 0;
       border: 1px solid #E5E7EB;
+      background: white;
     }
     .pemda-logo img { width: 100%; height: 100%; object-fit: contain; }
 
     .project-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
     .badge {
-      font-size: 0.73rem; padding: 5px 12px; border-radius: 6px; font-weight: 600;
+      font-size: 0.7rem; padding: 4px 10px; border-radius: 6px; font-weight: 600;
       background: white; color: #007AFF; border: 1px solid #007AFF;
     }
 
     .project-card h3 {
-      font-size: 1.08rem; font-weight: 700; color: #001428; margin-bottom: 12px; line-height: 1.35;
+      font-size: 1rem; font-weight: 700; color: #001428; margin-bottom: 12px; line-height: 1.4;
     }
 
     .microsite-btn {
-      margin-top: auto; padding: 11px 20px; background: #007AFF; color: white;
-      font-weight: 600; font-size: 0.9rem; border-radius: 8px; text-decoration: none;
+      margin-top: auto; padding: 10px 16px; background: #007AFF; color: white;
+      font-weight: 600; font-size: 0.85rem; border-radius: 8px; text-decoration: none;
       display: flex; align-items: center; justify-content: center; gap: 8px;
       transition: all 0.25s ease;
     }
     .microsite-btn:hover { background: #0056CC; transform: translateY(-2px); }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #9CA3AF;
+    }
+    .empty-state i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+    .empty-state p {
+      font-size: 1rem;
+    }
 
     /* Modal Login */
     .modal {
@@ -189,9 +305,14 @@
 
     @media (max-width: 992px) {
       .project-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+      .filter-section { padding: 20px 24px; }
+      .content-section { padding: 24px; }
     }
     @media (max-width: 576px) {
       .project-grid { grid-template-columns: 1fr; }
+      .filter-section { padding: 16px 20px; }
+      .content-section { padding: 20px; }
+      .section-header { flex-direction: column; align-items: flex-start; }
     }
     </style>
 </head>
@@ -226,7 +347,6 @@
       <span class="logo-text">Inti Desain Ekonomi Consultant</span>
     </div>
     <nav class="nav-menu">
-      <!-- Navbar Anda yang lengkap (sama persis) -->
       <div class="dropdown">
         <a href="#about" class="dropbtn">Tentang <span class="arrow-down"></span></a>
         <div class="dropdown-content mega-dropdown">
@@ -316,198 +436,223 @@
   </div>
 </section>
 
-<!-- Filter -->
-<div class="filter-bar">
-  <div class="filter-grid">
-    <div>
-      <label style="font-size:0.85rem;color:#6B7280;margin-bottom:6px;display:block;">Tahun</label>
-      <select id="filterTahun" class="form-select">
-        <option value="">Semua Tahun</option>
-      </select>
+<!-- === MAIN CARD: Filter + Project Grid dalam 1 Card === -->
+<div class="main-card-container">
+  <div class="main-card">
+    
+    <!-- Filter Section -->
+    <div class="filter-section">
+      <div class="filter-grid">
+        <div class="filter-group">
+          <label><i class="fa-regular fa-calendar"></i> Tahun</label>
+          <select id="filterTahun">
+            <option value="">Semua Tahun</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label><i class="fa-regular fa-building"></i> Kota / Kabupaten</label>
+          <select id="filterWilayah">
+            <option value="">Semua Daerah</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label><i class="fa-regular fa-folder"></i> Nama Dinas</label>
+          <select id="filterDinas">
+            <option value="">Semua Dinas</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label><i class="fa-regular fa-magnifying-glass"></i> Cari Proyek</label>
+          <input type="text" id="searchInput" placeholder="Ketik judul proyek...">
+        </div>
+      </div>
     </div>
-    <div>
-      <label style="font-size:0.85rem;color:#6B7280;margin-bottom:6px;display:block;">Kota / Kabupaten</label>
-      <select id="filterWilayah" class="form-select">
-        <option value="">Semua Daerah</option>
-      </select>
-    </div>
-    <div>
-      <label style="font-size:0.85rem;color:#6B7280;margin-bottom:6px;display:block;">Nama Dinas</label>
-      <select id="filterDinas" class="form-select">
-        <option value="">Semua Dinas</option>
-      </select>
-    </div>
-    <div>
-      <label style="font-size:0.85rem;color:#6B7280;margin-bottom:6px;display:block;">Cari Proyek</label>
-      <input type="text" id="searchInput" class="form-control" placeholder="Ketik judul proyek...">
+
+    <!-- Content Section -->
+    <div class="content-section">
+      <div class="section-header">
+        <div class="section-title-area">
+          <h2>📋 Daftar Proyek</h2>
+          <p>Kelola dan akses semua proyek riset & konsultasi IDE Consultant</p>
+        </div>
+        <div class="result-count" id="resultCount">
+          Menampilkan <span id="visibleCount">0</span> proyek
+        </div>
+      </div>
+
+      <!-- Project Grid -->
+      <div class="project-grid" id="projectGrid">
+        <!-- === PROYEK 1 === -->
+        <div class="project-card" data-tahun="2026" data-wilayah="Kab. Situbondo" data-dinas="Bappeda">
+          <div class="card-header">
+            <div class="pemda-logo">
+              <img src="<?= base_url('assets/img/partner/kab.situbondo.jpg') ?>" alt="Kab Situbondo">
+            </div>
+          </div>
+          <div class="project-meta">
+            <span class="badge">2026</span>
+            <span class="badge">Kab. Situbondo</span>
+            <span class="badge">Bappeda</span>
+          </div>
+          <h3>LKPJ Bupati Kabupaten Situbondo Tahun 2025</h3>
+          <a href="<?= base_url('IDE/LKPJSitubondo') ?>" class="microsite-btn" target="_blank">
+            <i class="fa-solid fa-arrow-right"></i> Buka Microsite
+          </a>
+        </div>
+
+        <!-- === PROYEK 2 === -->
+        <div class="project-card" data-tahun="2026" data-wilayah="Kab. Banyuwangi" data-dinas="Bappeda">
+          <div class="card-header">
+            <div class="pemda-logo">
+              <img src="<?= base_url('assets/img/partner/kab.banyuwangi.jpg') ?>" alt="Kab Banyuwangi">
+            </div>
+          </div>
+          <div class="project-meta">
+            <span class="badge">2026</span>
+            <span class="badge">Kab. Banyuwangi</span>
+            <span class="badge">Bappeda</span>
+          </div>
+          <h3>LKPJ Bupati Kabupaten Banyuwangi Tahun 2025</h3>
+          <a href="<?= base_url('IDE/LKPJBanyuwangi') ?>" class="microsite-btn" target="_blank">
+            <i class="fa-solid fa-arrow-right"></i> Buka Microsite
+          </a>
+        </div>
+
+        <!-- === PROYEK 3 === -->
+        <div class="project-card" data-tahun="2026" data-wilayah="Kab. Situbondo" data-dinas="Bappeda">
+          <div class="card-header">
+            <div class="pemda-logo">
+              <img src="<?= base_url('assets/img/partner/kab.situbondo.jpg') ?>" alt="Kab Situbondo">
+            </div>
+          </div>
+          <div class="project-meta">
+            <span class="badge">2026</span>
+            <span class="badge">Kab. Situbondo</span>
+            <span class="badge">Bappeda</span>
+          </div>
+          <h3>Rencana Strategis Situbondo</h3>
+          <a href="<?= base_url('IDE/RenstraSitubondo') ?>" class="microsite-btn" target="_blank">
+            <i class="fa-solid fa-arrow-right"></i> Buka Microsite
+          </a>
+        </div>
+
+        <!-- === PROYEK 4 === -->
+        <div class="project-card" data-tahun="2026" data-wilayah="Kab. Banyuwangi" data-dinas="Bappeda">
+          <div class="card-header">
+            <div class="pemda-logo">
+              <img src="<?= base_url('assets/img/partner/kab.banyuwangi.jpg') ?>" alt="Kab Banyuwangi">
+            </div>
+          </div>
+          <div class="project-meta">
+            <span class="badge">2026</span>
+            <span class="badge">Kab. Banyuwangi</span>
+            <span class="badge">Bappeda</span>
+          </div>
+          <h3>Rencana Strategis Banyuwangi</h3>
+          <a href="<?= base_url('IDE/RenstraBanyuwangi') ?>" class="microsite-btn" target="_blank">
+            <i class="fa-solid fa-arrow-right"></i> Buka Microsite
+          </a>
+        </div>
+
+        <!-- === PROYEK 5 === -->
+        <div class="project-card" data-tahun="2025" data-wilayah="Kab. Situbondo" data-dinas="Seluruh OPD">
+          <div class="card-header">
+            <div class="pemda-logo">
+              <img src="<?= base_url('assets/img/partner/kab.situbondo.jpg') ?>" alt="Kab Situbondo">
+            </div>
+          </div>
+          <div class="project-meta">
+            <span class="badge">2025</span>
+            <span class="badge">Kab. Situbondo</span>
+            <span class="badge">OPD</span>
+          </div>
+          <h3>Survei IKM Situbondo</h3>
+          <a href="<?= base_url('IDE/SurveiIKMSitubondo') ?>" class="microsite-btn" target="_blank">
+            <i class="fa-solid fa-arrow-right"></i> Buka Microsite
+          </a>
+        </div>
+
+        <!-- === PROYEK 6 === -->
+        <div class="project-card" data-tahun="2025" data-wilayah="Kab. Situbondo" data-dinas="Bappeda">
+          <div class="card-header">
+            <div class="pemda-logo">
+              <img src="<?= base_url('assets/img/partner/kab.situbondo.jpg') ?>" alt="Kab Situbondo">
+            </div>
+          </div>
+          <div class="project-meta">
+            <span class="badge">2025</span>
+            <span class="badge">Kab. Situbondo</span>
+            <span class="badge">Bappeda</span>
+          </div>
+          <h3>IPPD Kabupaten Situbondo</h3>
+          <a href="<?= base_url('IDE/IPPDSitubondo') ?>" class="microsite-btn" target="_blank">
+            <i class="fa-solid fa-arrow-right"></i> Buka Microsite
+          </a>
+        </div>
+
+        <!-- === PROYEK 7 === -->
+        <div class="project-card" data-tahun="2025" data-wilayah="Kab. Banyuwangi" data-dinas="Bappeda">
+          <div class="card-header">
+            <div class="pemda-logo">
+              <img src="<?= base_url('assets/img/partner/kab.banyuwangi.jpg') ?>" alt="Kab Banyuwangi">
+            </div>
+          </div>
+          <div class="project-meta">
+            <span class="badge">2025</span>
+            <span class="badge">Kab. Banyuwangi</span>
+            <span class="badge">Bappeda</span>
+          </div>
+          <h3>IPPD Kabupaten Banyuwangi</h3>
+          <a href="<?= base_url('IDE/IPPDBanyuwangi') ?>" class="microsite-btn" target="_blank">
+            <i class="fa-solid fa-arrow-right"></i> Buka Microsite
+          </a>
+        </div>
+
+        <!-- === PROYEK 8 === -->
+        <div class="project-card" data-tahun="2025" data-wilayah="Kab. Banyuwangi" data-dinas="Dinas Sosial">
+          <div class="card-header">
+            <div class="pemda-logo">
+              <img src="<?= base_url('assets/img/partner/kab.banyuwangi.jpg') ?>" alt="Kab Banyuwangi">
+            </div>
+          </div>
+          <div class="project-meta">
+            <span class="badge">2025</span>
+            <span class="badge">Kab. Banyuwangi</span>
+            <span class="badge">Dinas Sosial</span>
+          </div>
+          <h3>Renja - Renstra Kab Banyuwangi</h3>
+          <a href="<?= base_url('IDE/DinasSosialBanyuwangi') ?>" class="microsite-btn" target="_blank">
+            <i class="fa-solid fa-arrow-right"></i> Buka Microsite
+          </a>
+        </div>
+
+        <!-- === PROYEK 9 === -->
+        <div class="project-card" data-tahun="2025" data-wilayah="Kab. Ponorogo" data-dinas="Bappeda">
+          <div class="card-header">
+            <div class="pemda-logo">
+              <img src="<?= base_url('assets/img/partner/kab.ponorogo.png') ?>" alt="Kab Ponorogo">
+            </div>
+          </div>
+          <div class="project-meta">
+            <span class="badge">2025</span>
+            <span class="badge">Kab. Ponorogo</span>
+            <span class="badge">Bappeda</span>
+          </div>
+          <h3>BPR Ponorogo</h3>
+          <a href="<?= base_url('IDE/KabupatenPonorogo') ?>" class="microsite-btn" target="_blank">
+            <i class="fa-solid fa-arrow-right"></i> Buka Microsite
+          </a>
+        </div>
+      </div>
+
+      <!-- Empty State (hidden by default) -->
+      <div id="emptyState" class="empty-state" style="display: none;">
+        <i class="fa-regular fa-folder-open"></i>
+        <p>Tidak ada proyek yang ditemukan</p>
+      </div>
     </div>
   </div>
 </div>
-
-<!-- Project Grid -->
-<section style="padding-bottom: 100px;">
-  <div class="project-grid" id="projectGrid">
-     <!-- === PROYEK 1 === -->
-    <div class="project-card" data-tahun="2026" data-wilayah="Kab. Situbondo" data-dinas="Bappeda">
-      <div class="card-header">
-        <div class="pemda-logo">
-          <img src="<?= base_url('assets/img/partner/kab.situbondo.jpg') ?>" alt="Kab Situbondo">
-        </div>
-      </div>
-      <div class="project-meta">
-        <span class="badge">2026</span>
-        <span class="badge">Kab. Situbondo</span>
-        <span class="badge">Bappeda</span>
-      </div>
-      <h3>LKPJ Bupati Kabupaten Situbondo Tahun 2025</h3>
-      <a href="<?= base_url('IDE/LKPJSitubondo') ?>" class="microsite-btn" target="_blank">
-        <i class="fa-solid fa-arrow-right"></i> Buka Microsite
-      </a>
-    </div>
-
-    <!-- === PROYEK 2 === -->
-    <div class="project-card" data-tahun="2026" data-wilayah="Kab. Banyuwangi" data-dinas="Bappeda">
-      <div class="card-header">
-        <div class="pemda-logo">
-          <img src="<?= base_url('assets/img/partner/kab.banyuwangi.jpg') ?>" alt="Kab Banyuwangi">
-        </div>
-      </div>
-      <div class="project-meta">
-        <span class="badge">2026</span>
-        <span class="badge">Kab. Banyuwangi</span>
-        <span class="badge">Bappeda</span>
-      </div>
-      <h3>LKPJ Bupati Kabupaten Banyuwangi Tahun 2025</h3>
-      <a href="<?= base_url('IDE/LKPJBanyuwangi') ?>" class="microsite-btn" target="_blank">
-        <i class="fa-solid fa-arrow-right"></i> Buka Microsite
-      </a>
-    </div>
-
-    <!-- === PROYEK 3 === -->
-    <div class="project-card" data-tahun="2026" data-wilayah="Kab. Situbondo" data-dinas="Bappeda">
-      <div class="card-header">
-        <div class="pemda-logo">
-          <img src="<?= base_url('assets/img/partner/kab.situbondo.jpg') ?>" alt="Kab Situbondo">
-        </div>
-      </div>
-      <div class="project-meta">
-        <span class="badge">2026</span>
-        <span class="badge">Kab. Situbondo</span>
-        <span class="badge">Bappeda</span>
-      </div>
-      <h3>Rencana Strategis Situbondo</h3>
-      <a href="<?= base_url('IDE/RenstraSitubondo') ?>" class="microsite-btn" target="_blank">
-        <i class="fa-solid fa-arrow-right"></i> Buka Microsite
-      </a>
-    </div>
-
-    <!-- === PROYEK 4 === -->
-    <div class="project-card" data-tahun="2026" data-wilayah="Kab. Banyuwangi" data-dinas="Bappeda">
-      <div class="card-header">
-        <div class="pemda-logo">
-          <img src="<?= base_url('assets/img/partner/kab.banyuwangi.jpg') ?>" alt="Kab Banyuwangi">
-        </div>
-      </div>
-      <div class="project-meta">
-        <span class="badge">2026</span>
-        <span class="badge">Kab. Banyuwangi</span>
-        <span class="badge">Bappeda</span>
-      </div>
-      <h3>Rencana Strategis Banyuwangi</h3>
-      <a href="<?= base_url('IDE/RenstraBanyuwangi') ?>" class="microsite-btn" target="_blank">
-        <i class="fa-solid fa-arrow-right"></i> Buka Microsite
-      </a>
-    </div>
-
-    <!-- === PROYEK 5 === -->
-    <div class="project-card" data-tahun="2025" data-wilayah="Kab. Situbondo" data-dinas="Seluruh OPD">
-      <div class="card-header">
-        <div class="pemda-logo">
-          <img src="<?= base_url('assets/img/partner/kab.situbondo.jpg') ?>" alt="Kab Situbondo">
-        </div>
-      </div>
-      <div class="project-meta">
-        <span class="badge">2025</span>
-        <span class="badge">Kab. Situbondo</span>
-        <span class="badge">OPD</span>
-      </div>
-      <h3>Survei IKM Situbondo</h3>
-      <a href="<?= base_url('IDE/SurveiIKMSitubondo') ?>" class="microsite-btn" target="_blank">
-        <i class="fa-solid fa-arrow-right"></i> Buka Microsite
-      </a>
-    </div>
-
-    <!-- === PROYEK 6 === -->
-    <div class="project-card" data-tahun="2025" data-wilayah="Kab. Situbondo" data-dinas="Bappeda">
-      <div class="card-header">
-        <div class="pemda-logo">
-          <img src="<?= base_url('assets/img/partner/kab.situbondo.jpg') ?>" alt="Kab Situbondo">
-        </div>
-      </div>
-      <div class="project-meta">
-        <span class="badge">2025</span>
-        <span class="badge">Kab. Situbondo</span>
-        <span class="badge">Bappeda</span>
-      </div>
-      <h3>IPPD Kabupaten Situbondo</h3>
-      <a href="<?= base_url('IDE/IPPDSitubondo') ?>" class="microsite-btn" target="_blank">
-        <i class="fa-solid fa-arrow-right"></i> Buka Microsite
-      </a>
-    </div>
-
-    <!-- === PROYEK 7 === -->
-    <div class="project-card" data-tahun="2025" data-wilayah="Kab. Banyuwangi" data-dinas="Bappeda">
-      <div class="card-header">
-        <div class="pemda-logo">
-          <img src="<?= base_url('assets/img/partner/kab.banyuwangi.jpg') ?>" alt="Kab Banyuwangi">
-        </div>
-      </div>
-      <div class="project-meta">
-        <span class="badge">2025</span>
-        <span class="badge">Kab. Banyuwangi</span>
-        <span class="badge">Bappeda</span>
-      </div>
-      <h3>IPPD Kabupaten Banyuwangi</h3>
-      <a href="<?= base_url('IDE/IPPDBanyuwangi') ?>" class="microsite-btn" target="_blank">
-        <i class="fa-solid fa-arrow-right"></i> Buka Microsite
-      </a>
-    </div>
-
-    <div class="project-card" data-tahun="2025" data-wilayah="Kab. Banyuwangi" data-dinas="Dinas Sosial">
-      <div class="card-header">
-        <div class="pemda-logo">
-          <img src="<?= base_url('assets/img/partner/kab.banyuwangi.jpg') ?>" alt="Kab Banyuwangi">
-        </div>
-      </div>
-      <div class="project-meta">
-        <span class="badge">2025</span>
-        <span class="badge">Kab. Banyuwangi</span>
-        <span class="badge">Dinas Sosial</span>
-      </div>
-      <h3>Renja - Renstra Kab Banyuwangi</h3>
-      <a href="<?= base_url('IDE/DinasSosialBanyuwangi') ?>" class="microsite-btn" target="_blank">
-        <i class="fa-solid fa-arrow-right"></i> Buka Microsite
-      </a>
-    </div>
-
-    <div class="project-card" data-tahun="2025" data-wilayah="Kab. Ponorogo" data-dinas="Bappeda">
-      <div class="card-header">
-        <div class="pemda-logo">
-          <img src="<?= base_url('assets/img/partner/kab.ponorogo.png') ?>" alt="Kab Ponorogo">
-        </div>
-      </div>
-      <div class="project-meta">
-        <span class="badge">2025</span>
-        <span class="badge">Kab. Ponorogo</span>
-        <span class="badge">Bappeda</span>
-      </div>
-      <h3>BPR Ponorogo</h3>
-      <a href="<?= base_url('IDE/KabupatenPonorogo') ?>" class="microsite-btn" target="_blank">
-        <i class="fa-solid fa-arrow-right"></i> Buka Microsite
-      </a>
-    </div>
-  </div>
-</section>
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -528,11 +673,10 @@ window.onclick = function(event) {
   }
 };
 
-// ==================== FUNGSI LOGIN (Diperbaiki & Lebih Stabil) ====================
+// ==================== FUNGSI LOGIN ====================
 jQuery(document).ready(function($) {
   "use strict";
 
-  // Enter key support
   $('#Username, #Password').on('keypress', function(e) {
     if (e.which === 13) {
       e.preventDefault();
@@ -540,7 +684,6 @@ jQuery(document).ready(function($) {
     }
   });
 
-  // Login Handler
   $("#Masuk").click(function() {
     var username = $("#Username").val().trim();
     var password = $("#Password").val().trim();
@@ -578,6 +721,9 @@ jQuery(document).ready(function($) {
 // ==================== AUTO FILTER ====================
 document.addEventListener('DOMContentLoaded', function() {
   const cards = document.querySelectorAll('.project-card');
+  const projectGrid = document.getElementById('projectGrid');
+  const emptyState = document.getElementById('emptyState');
+  const visibleCountSpan = document.getElementById('visibleCount');
 
   const tahunSet = new Set();
   const wilayahSet = new Set();
@@ -593,7 +739,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (dinas) dinasSet.add(dinas);
   });
 
-  // Isi dropdown secara otomatis
   const filterTahun = document.getElementById('filterTahun');
   Array.from(tahunSet).sort((a,b) => b-a).forEach(tahun => {
     const opt = document.createElement('option');
@@ -618,6 +763,26 @@ document.addEventListener('DOMContentLoaded', function() {
     filterDinas.appendChild(opt);
   });
 
+<<<<<<< HEAD
+=======
+  function updateResultCount() {
+    let visible = 0;
+    cards.forEach(card => {
+      if (card.style.display !== 'none') visible++;
+    });
+    visibleCountSpan.textContent = visible;
+    
+    // Show/hide empty state
+    if (visible === 0) {
+      projectGrid.style.display = 'none';
+      emptyState.style.display = 'block';
+    } else {
+      projectGrid.style.display = 'grid';
+      emptyState.style.display = 'none';
+    }
+  }
+
+>>>>>>> 1298e37c128dbc95e84099e3ba781efb24020bcc
   function filterProjects() {
     const search   = document.getElementById('searchInput').value.toLowerCase().trim();
     const tahun    = document.getElementById('filterTahun').value;
@@ -637,12 +802,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
       card.style.display = (matchSearch && matchTahun && matchWilayah && matchDinas) ? 'flex' : 'none';
     });
+    
+    updateResultCount();
   }
 
   document.getElementById('searchInput').addEventListener('input', filterProjects);
   document.getElementById('filterTahun').addEventListener('change', filterProjects);
   document.getElementById('filterWilayah').addEventListener('change', filterProjects);
   document.getElementById('filterDinas').addEventListener('change', filterProjects);
+  
+  // Initial count
+  updateResultCount();
 });
 </script>
 
