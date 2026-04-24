@@ -1961,33 +1961,31 @@ public function InputIKMYogyakarta()
     echo '</pre>';
 }
 
-       // ====================== SMB - SISTEM MANAJEMEN BAPPEDA ======================
+  
+
+    // ====================== SMB - SISTEM MANAJEMEN BAPPEDA ======================
 
     /**
      * Halaman Login SMB (View)
      */
     public function SmbLoginPage()
     {
-        // Jika sudah login SMB, langsung redirect ke dashboard
         if ($this->session->userdata('smb_logged_in')) {
             redirect('IDE/SmbDashboard');
         }
-
         $this->load->view('Smb/auth_smb');
     }
 
     /**
-     * Proses Login SMB (dipanggil via AJAX dari form)
+     * Proses Login SMB
      */
     public function SmbLogin()
     {
-        // ==================== CORS ====================
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Methods: POST, OPTIONS');
         header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
         header('Access-Control-Allow-Credentials: true');
 
-        // Handle Preflight OPTIONS Request
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
             header('Access-Control-Max-Age: 86400');
             exit(0);
@@ -2001,12 +1999,9 @@ public function InputIKMYogyakarta()
             return;
         }
 
-        // Ambil data user dari tabel akun
         $user = $this->db->get_where('akun', ['Username' => $username])->row_array();
 
         if ($user && password_verify($password, $user['Password'])) {
-
-            // Buat session khusus SMB
             $session_data = [
                 'smb_logged_in' => true,
                 'user_id'       => $user['Username'],
@@ -2015,11 +2010,8 @@ public function InputIKMYogyakarta()
                 'level'         => (int)$user['Level'],
                 'system'        => 'SMB_Bappeda'
             ];
-
             $this->session->set_userdata($session_data);
-
-            echo '1';   // Login berhasil
-
+            echo '1';
         } else {
             echo "Username atau Password salah!";
         }
@@ -2030,133 +2022,113 @@ public function InputIKMYogyakarta()
      */
     public function SmbDashboard()
     {
-        // Proteksi: Harus sudah login SMB
         if (!$this->session->userdata('smb_logged_in')) {
             redirect('IDE/SmbLoginPage');
         }
-
-        $data['title']     = 'Dashboard SMB - Bappeda';
+        $data['title'] = 'Dashboard SMB - Bappeda';
         $data['nama_user'] = $this->session->userdata('nama_lengkap') ?? 'Pengguna SMB';
-
         $this->load->view('Smb/smb_dashboard', $data);
     }
 
     /**
      * Logout SMB
      */
-       public function SmbLogout()
-{
-    // Set header untuk JSON response
-    $this->output
-        ->set_content_type('application/json')
-        ->set_header('Access-Control-Allow-Origin: *')
-        ->set_header('Access-Control-Allow-Methods: POST, GET, OPTIONS')
-        ->set_header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization')
-        ->set_header('Access-Control-Allow-Credentials: true');
-    
-    // Hapus session SMB
-    $this->session->unset_userdata('smb_logged_in');
-    $this->session->unset_userdata('user_id');
-    $this->session->unset_userdata('username');
-    $this->session->unset_userdata('nama_lengkap');
-    $this->session->unset_userdata('level');
-    $this->session->unset_userdata('system');
-    
-    // Destroy session
-    $this->session->sess_destroy();
-    
-    // Kirim response JSON
-    echo json_encode([
-        'status' => 'success',
-        'message' => 'Logout berhasil',
-        'redirect' => base_url('IDE/SmbLoginPage')
-    ]);
-}
+    public function SmbLogout()
+    {
+        $this->output
+            ->set_content_type('application/json')
+            ->set_header('Access-Control-Allow-Origin: *');
+        
+        $this->session->unset_userdata('smb_logged_in');
+        $this->session->unset_userdata('user_id');
+        $this->session->unset_userdata('username');
+        $this->session->unset_userdata('nama_lengkap');
+        $this->session->unset_userdata('level');
+        $this->session->unset_userdata('system');
+        $this->session->sess_destroy();
+        
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'Logout berhasil',
+            'redirect' => base_url('IDE/SmbLoginPage')
+        ]);
+    }
 
-// ==================== DOKUMEN METHODS ====================
+    // ==================== DOKUMEN METHODS ====================
     
     /**
      * Upload Dokumen ke Database
      */
     public function upload_dokumen() {
-    // Cek session login
-    if (!$this->session->userdata('smb_logged_in')) {
-        echo json_encode(['status' => 'error', 'message' => 'Session expired, silakan login kembali']);
-        return;
-    }
-    
-    // Konfigurasi upload
-    $config['upload_path'] = FCPATH . 'uploads/dokumen/';
-    $config['allowed_types'] = 'pdf|doc|docx|xls|xlsx|jpg|jpeg|png|zip|rar';
-    $config['max_size'] = 10240; // 10MB
-    $config['encrypt_name'] = TRUE; // Enkripsi nama file untuk keamanan
-    
-    // Buat folder jika belum ada
-    if (!is_dir($config['upload_path'])) {
-        mkdir($config['upload_path'], 0777, true);
-    }
-    
-    $this->load->library('upload', $config);
-    
-    // Proses upload
-    if (!$this->upload->do_upload('file_dokumen')) {
-        echo json_encode(['status' => 'error', 'message' => $this->upload->display_errors('', '')]);
-        return;
-    }
-    
-    $upload_data = $this->upload->data();
-    
-    // Generate thumbnail untuk gambar
-    $thumbnail = null;
-    if (in_array($upload_data['file_type'], ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'])) {
-        $thumbnail = $this->_generate_thumbnail($upload_data['full_path'], $upload_data['file_name']);
-    }
-    
-    // Data dokumen
-    $id_bidang = $this->input->post('id_bidang');
-    $nama_dokumen = $this->input->post('nama_dokumen');
-    $kategori = $this->input->post('kategori');
-    $status = $this->input->post('status');
-    $username = $this->session->userdata('username');
-    
-    // Mapping id_bidang ke nama bidang
-    $bidang_map = [
-        'a' => 'Bidang Litbang',
-        'b' => 'Bidang Perencanaan',
-        'c' => 'Bidang Ekonomi',
-        'd' => 'Bidang Kesra',
-        'e' => 'Bidang Sarpras'
-    ];
-    $nama_bidang = isset($bidang_map[$id_bidang]) ? $bidang_map[$id_bidang] : 'Unknown';
-    
-    $data = array(
-        'id_bidang' => $id_bidang,
-        'nama_dokumen' => $nama_dokumen,
-        'kategori' => $kategori,
-        'file_name' => $upload_data['file_name'],
-        'file_path' => 'uploads/dokumen/' . $upload_data['file_name'],
-        'file_type' => $upload_data['file_type'],
-        'file_size' => $upload_data['file_size'],
-        'thumbnail' => $thumbnail,
-        'uploaded_by' => $username,
-        'upload_date' => date('Y-m-d H:i:s'),
-        'status' => $status
-    );
-    
-    // Simpan ke database
-    if ($this->db->insert('smb_dokumen', $data)) {
-        // Log aktivitas UPLOAD (bukan Hapus!)
-        $this->_log_aktivitas($username, 'Upload', $nama_bidang, "Upload dokumen: $nama_dokumen");
+        if (!$this->session->userdata('smb_logged_in')) {
+            echo json_encode(['status' => 'error', 'message' => 'Session expired, silakan login kembali']);
+            return;
+        }
         
-        echo json_encode([
-            'status' => 'success', 
-            'message' => 'Dokumen berhasil diupload',
-            'data' => $data
-        ]);
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'Gagal menyimpan ke database']);
+        $config['upload_path'] = FCPATH . 'uploads/dokumen/';
+        $config['allowed_types'] = 'pdf|doc|docx|xls|xlsx|jpg|jpeg|png|zip|rar';
+        $config['max_size'] = 10240;
+        $config['encrypt_name'] = TRUE;
+        
+        if (!is_dir($config['upload_path'])) {
+            mkdir($config['upload_path'], 0777, true);
+        }
+        
+        $this->load->library('upload', $config);
+        
+        if (!$this->upload->do_upload('file_dokumen')) {
+            echo json_encode(['status' => 'error', 'message' => $this->upload->display_errors('', '')]);
+            return;
+        }
+        
+        $upload_data = $this->upload->data();
+        
+        $thumbnail = null;
+        if (in_array($upload_data['file_type'], ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'])) {
+            $thumbnail = $this->_generate_thumbnail($upload_data['full_path'], $upload_data['file_name']);
+        }
+        
+        $id_bidang = $this->input->post('id_bidang');
+        $nama_dokumen = $this->input->post('nama_dokumen');
+        $kategori = $this->input->post('kategori');
+        $status = $this->input->post('status');
+        $username = $this->session->userdata('username');
+        
+        $bidang_map = [
+            'a' => 'Bidang Litbang',
+            'b' => 'Bidang Perencanaan',
+            'c' => 'Bidang Ekonomi',
+            'd' => 'Bidang Kesra',
+            'e' => 'Bidang Sarpras'
+        ];
+        $nama_bidang = isset($bidang_map[$id_bidang]) ? $bidang_map[$id_bidang] : 'Unknown';
+        
+        $data = array(
+            'id_bidang' => $id_bidang,
+            'nama_dokumen' => $nama_dokumen,
+            'kategori' => $kategori,
+            'file_name' => $upload_data['file_name'],
+            'file_path' => 'uploads/dokumen/' . $upload_data['file_name'],
+            'file_type' => $upload_data['file_type'],
+            'file_size' => $upload_data['file_size'],
+            'thumbnail' => $thumbnail,
+            'uploaded_by' => $username,
+            'upload_date' => date('Y-m-d H:i:s'),
+            'status' => $status
+        );
+        
+        if ($this->db->insert('smb_dokumen', $data)) {
+            $this->_log_aktivitas($username, 'Upload', $nama_bidang, "Upload dokumen: $nama_dokumen");
+            
+            echo json_encode([
+                'status' => 'success', 
+                'message' => 'Dokumen berhasil diupload',
+                'data' => $data
+            ]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Gagal menyimpan ke database']);
+        }
     }
-}
     
     /**
      * Generate Thumbnail untuk Gambar
@@ -2187,37 +2159,14 @@ public function InputIKMYogyakarta()
     }
     
     /**
- * Tambah log aktivitas
- */
-private function _log_aktivitas($username, $aksi, $modul, $detail) {
-    // Ambil IP address
-    $ip = $this->input->ip_address();
-    
-    // Konversi localhost ke format yang lebih mudah dibaca
-    if ($ip == '::1') {
-        $ip = 'Localhost (127.0.0.1)';
-    }
-    
-    // Atau jika ingin tetap IPv4
-    if ($ip == '::1') {
-        $ip = '127.0.0.1';
-    }
-    
-    $data = array(
-        'username' => $username,
-        'aksi' => $aksi,
-        'modul' => $modul,
-        'detail' => $detail,
-        'ip_address' => $ip,
-        'waktu' => date('Y-m-d H:i:s')
-    );
-    $this->db->insert('smb_aktivitas_log', $data);
-}
-    
-    /**
-     * Get Dokumen by Bidang (AJAX)
+     * Get Dokumen by Bidang
      */
     public function get_dokumen_by_bidang() {
+        if (!$this->session->userdata('smb_logged_in')) {
+            echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+            return;
+        }
+        
         $id_bidang = $this->input->post('id_bidang');
         
         if (empty($id_bidang)) {
@@ -2227,19 +2176,866 @@ private function _log_aktivitas($username, $aksi, $modul, $detail) {
         
         $dokumen = $this->db->get_where('smb_dokumen', ['id_bidang' => $id_bidang])->result_array();
         
-        // Format tanggal
         foreach ($dokumen as &$doc) {
             $doc['upload_date_formatted'] = date('d M Y H:i', strtotime($doc['upload_date']));
-            $doc['file_size_formatted'] = $this->_format_file_size($doc['file_size']);
+            $doc['file_size_formatted'] = $this->_formatBytes($doc['file_size']);
         }
         
         echo json_encode(['status' => 'success', 'data' => $dokumen]);
     }
     
     /**
-     * Format File Size
+     * Delete Dokumen
      */
-    private function _format_file_size($bytes) {
+    public function delete_dokumen() {
+        if (!$this->session->userdata('smb_logged_in')) {
+            echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+            return;
+        }
+        
+        $id_dokumen = $this->input->post('id_dokumen');
+        $dokumen = $this->db->get_where('smb_dokumen', ['id_dokumen' => $id_dokumen])->row_array();
+        
+        if ($dokumen) {
+            $file_path = FCPATH . $dokumen['file_path'];
+            if (file_exists($file_path)) {
+                unlink($file_path);
+            }
+            
+            if (!empty($dokumen['thumbnail'])) {
+                $thumb_path = FCPATH . $dokumen['thumbnail'];
+                if (file_exists($thumb_path)) {
+                    unlink($thumb_path);
+                }
+            }
+            
+            $this->db->delete('smb_dokumen', ['id_dokumen' => $id_dokumen]);
+            
+            $this->_log_aktivitas(
+                $this->session->userdata('username'), 
+                'Hapus', 
+                'Dokumen', 
+                "Menghapus dokumen: " . $dokumen['nama_dokumen']
+            );
+            
+            echo json_encode(['status' => 'success', 'message' => 'Dokumen berhasil dihapus']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Dokumen tidak ditemukan']);
+        }
+    }
+    
+    /**
+     * Get Log Aktivitas
+     */
+    public function get_log_aktivitas() {
+        if (!$this->session->userdata('smb_logged_in')) {
+            echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+            return;
+        }
+        
+        $start_date = $this->input->get('start_date');
+        $end_date = $this->input->get('end_date');
+        $aksi = $this->input->get('aksi');
+        $search = $this->input->get('search');
+        
+        $this->db->order_by('waktu', 'DESC');
+        
+        if (!empty($start_date)) {
+            $this->db->where('DATE(waktu) >=', date('Y-m-d', strtotime($start_date)));
+        }
+        if (!empty($end_date)) {
+            $this->db->where('DATE(waktu) <=', date('Y-m-d', strtotime($end_date)));
+        }
+        if (!empty($aksi)) {
+            $this->db->where('aksi', $aksi);
+        }
+        if (!empty($search)) {
+            $this->db->group_start()
+                ->like('username', $search)
+                ->or_like('detail', $search)
+                ->or_like('modul', $search)
+                ->group_end();
+        }
+        
+        $logs = $this->db->limit(500)->get('smb_aktivitas_log')->result_array();
+        
+        foreach ($logs as &$log) {
+            $log['waktu'] = date('d/m/Y H:i:s', strtotime($log['waktu']));
+            $log['ip_address'] = $log['ip_address'] ?? '-';
+            $log['detail'] = $log['detail'] ?? '-';
+        }
+        
+        echo json_encode(['status' => 'success', 'data' => $logs]);
+    }
+    
+    /**
+     * Get Statistik Dashboard
+     */
+    public function get_dashboard_stats() {
+        if (!$this->session->userdata('smb_logged_in')) {
+            echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+            return;
+        }
+        
+        $total_dokumen = $this->db->count_all('smb_dokumen');
+        $total_user = $this->db->count_all('akun');
+        $total_printer = $this->db->count_all('smb_printer');
+        $printer_online = $this->db->where('status', 'online')->count_all_results('smb_printer');
+        
+        $dokumen_selesai = $this->db->where('status', 'Selesai')->count_all_results('smb_dokumen');
+        $dokumen_review = $this->db->where('status', 'Review')->count_all_results('smb_dokumen');
+        $dokumen_ongoing = $this->db->where('status', 'On Going')->count_all_results('smb_dokumen');
+        
+        $dokumen_sk = $this->db->where('kategori', 'Surat Keputusan')->count_all_results('smb_dokumen');
+        $dokumen_laporan = $this->db->where('kategori', 'Laporan')->count_all_results('smb_dokumen');
+        $dokumen_nota = $this->db->where('kategori', 'Nota Dinas')->count_all_results('smb_dokumen');
+        
+        $bidang_list = [
+            'a' => 'Bidang Litbang',
+            'b' => 'Bidang Perencanaan',
+            'c' => 'Bidang Ekonomi',
+            'd' => 'Bidang Kesra',
+            'e' => 'Bidang Sarpras'
+        ];
+        
+        $dokumen_per_bidang = [];
+        foreach ($bidang_list as $kode => $nama) {
+            $count = $this->db->where('id_bidang', $kode)->count_all_results('smb_dokumen');
+            $dokumen_per_bidang[$kode] = [
+                'nama' => $nama,
+                'total' => (int)$count
+            ];
+        }
+        
+        $total_print = $this->db->count_all('smb_print_log');
+        $print_success = $this->db->where('status', 'success')->count_all_results('smb_print_log');
+        $print_failed = $this->db->where('status', 'failed')->count_all_results('smb_print_log');
+        $total_paper_used = $this->db->select_sum('jumlah_kertas')->get('smb_print_log')->row()->jumlah_kertas ?: 0;
+        
+        echo json_encode([
+            'status' => 'success',
+            'total_dokumen' => (int)$total_dokumen,
+            'total_user' => (int)$total_user,
+            'total_printer' => (int)$total_printer,
+            'printer_online' => (int)$printer_online,
+            'dokumen_selesai' => (int)$dokumen_selesai,
+            'dokumen_review' => (int)$dokumen_review,
+            'dokumen_ongoing' => (int)$dokumen_ongoing,
+            'dokumen_sk' => (int)$dokumen_sk,
+            'dokumen_laporan' => (int)$dokumen_laporan,
+            'dokumen_nota' => (int)$dokumen_nota,
+            'dokumen_per_bidang' => $dokumen_per_bidang,
+            'print_stats' => [
+                'total' => (int)$total_print,
+                'success' => (int)$print_success,
+                'failed' => (int)$print_failed,
+                'total_paper_used' => (int)$total_paper_used
+            ],
+            'trend_data' => [
+                'user_trend' => '+8.5%',
+                'dokumen_trend' => '+1.3%',
+                'selesai_trend' => '-4.3%',
+                'ongoing_trend' => '+1.8%'
+            ]
+        ]);
+    }
+    
+    public function file($path) {
+        $fullPath = FCPATH . $path;
+        if (!file_exists($fullPath)) {
+            show_404();
+        }
+        header('Content-Type: ' . mime_content_type($fullPath));
+        header('Content-Disposition: inline; filename="' . basename($fullPath) . '"');
+        readfile($fullPath);
+    }
+    
+    // ==================== MANAJEMEN PRINTER ====================
+    
+    /**
+     * Get all printers
+     */
+    public function get_printers() {
+        if (!$this->session->userdata('smb_logged_in')) {
+            echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+            return;
+        }
+        
+        $printers = $this->db->order_by('nama_printer', 'ASC')->get('smb_printer')->result_array();
+        
+        foreach ($printers as &$printer) {
+            $printer['stock_percentage'] = $printer['kapasitas_kertas'] > 0 ? 
+                round(($printer['stock_kertas'] / $printer['kapasitas_kertas']) * 100) : 0;
+            $printer['is_low_stock'] = $printer['stock_kertas'] <= $printer['min_stock_warning'];
+            $printer['connection_display'] = $this->_get_connection_display($printer);
+            $printer['current_queue'] = $this->db->where('id_printer', $printer['id_printer'])
+                                                  ->where('queue_status', 'pending')
+                                                  ->count_all_results('smb_print_queue');
+            $printer['total_print_count'] = $printer['total_print_count'] ?? 0;
+        }
+        
+        echo json_encode(['status' => 'success', 'data' => $printers]);
+    }
+    
+    /**
+     * Get printer detail
+     */
+    public function get_printer_detail() {
+        if (!$this->session->userdata('smb_logged_in')) {
+            echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+            return;
+        }
+        
+        $id_printer = $this->input->post('id_printer');
+        $printer = $this->db->get_where('smb_printer', ['id_printer' => $id_printer])->row_array();
+        
+        if ($printer) {
+            $queue_count = $this->db->where('id_printer', $id_printer)
+                                     ->where('queue_status', 'pending')
+                                     ->count_all_results('smb_print_queue');
+            
+            $printer['current_queue'] = $queue_count;
+            
+            echo json_encode(['status' => 'success', 'data' => $printer]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Printer tidak ditemukan']);
+        }
+    }
+    
+    /**
+     * Test printer connection with real print
+     */
+    public function test_printer_connection() {
+        if (!$this->session->userdata('smb_logged_in')) {
+            echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+            return;
+        }
+        
+        $id_printer = $this->input->post('id_printer');
+        $printer = $this->db->get_where('smb_printer', ['id_printer' => $id_printer])->row_array();
+        
+        if (!$printer) {
+            echo json_encode(['status' => 'error', 'message' => 'Printer tidak ditemukan']);
+            return;
+        }
+        
+        $start_time = microtime(true);
+        $test_result = $this->_test_print_real($printer);
+        $response_time = round((microtime(true) - $start_time) * 1000);
+        
+        $new_status = $test_result['success'] ? 'online' : 'offline';
+        $this->db->where('id_printer', $id_printer);
+        $this->db->update('smb_printer', [
+            'status' => $new_status,
+            'last_status_check' => date('Y-m-d H:i:s'),
+            'status_message' => $test_result['message']
+        ]);
+        
+        echo json_encode([
+            'status' => $test_result['success'] ? 'success' : 'error',
+            'message' => $test_result['message'],
+            'details' => $test_result['details'] ?? '',
+            'response_time_ms' => $response_time,
+            'printer_status' => $new_status
+        ]);
+    }
+    
+    /**
+     * Test print real (kirim file test ke printer)
+     */
+    private function _test_print_real($printer) {
+        $testFile = FCPATH . 'uploads/temp/test_print_' . time() . '.txt';
+        if (!is_dir(FCPATH . 'uploads/temp/')) {
+            mkdir(FCPATH . 'uploads/temp/', 0777, true);
+        }
+        
+        $testContent = "=== TEST PRINTER ===\n";
+        $testContent .= "Waktu: " . date('Y-m-d H:i:s') . "\n";
+        $testContent .= "Printer: " . $printer['nama_printer'] . "\n";
+        $testContent .= "Status: TEST KONEKSI BERHASIL\n";
+        $testContent .= "===================\n";
+        file_put_contents($testFile, $testContent);
+        
+        $result = ['success' => false, 'message' => '', 'details' => ''];
+        
+        switch ($printer['connection_type']) {
+            case 'network':
+                $result = $this->_test_network_print($testFile, $printer);
+                break;
+            case 'shared':
+                $result = $this->_test_shared_print($testFile, $printer);
+                break;
+            case 'usb':
+                $result = $this->_test_usb_print($testFile, $printer);
+                break;
+            default:
+                $result = ['success' => false, 'message' => 'Tipe koneksi tidak dikenal'];
+        }
+        
+        if (file_exists($testFile)) {
+            unlink($testFile);
+        }
+        
+        return $result;
+    }
+    
+    private function _test_network_print($testFile, $printer) {
+        if (empty($printer['ip_address'])) {
+            return ['success' => false, 'message' => 'IP Address tidak dikonfigurasi'];
+        }
+        
+        $port = $printer['port'] ?? 9100;
+        
+        try {
+            $fp = @fsockopen($printer['ip_address'], $port, $errno, $errstr, 5);
+            if (!$fp) {
+                return ['success' => false, 'message' => "Tidak bisa konek ke {$printer['ip_address']}:{$port} - $errstr"];
+            }
+            
+            $data = file_get_contents($testFile);
+            fwrite($fp, $data);
+            fclose($fp);
+            
+            return ['success' => true, 'message' => "Test print berhasil dikirim ke {$printer['ip_address']}:{$port}"];
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+    
+    private function _test_shared_print($testFile, $printer) {
+        if (empty($printer['share_path'])) {
+            $cleanName = str_replace(' ', '', $printer['nama_printer']);
+            $printer['share_path'] = '\\\\localhost\\' . $cleanName;
+        }
+        
+        $sharePath = str_replace('\\\\', '\\', $printer['share_path']);
+        
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $command = 'copy /B "' . $testFile . '" "' . $sharePath . '" 2>&1';
+            exec($command, $output, $returnCode);
+            
+            if ($returnCode === 0) {
+                return ['success' => true, 'message' => "Test print berhasil dikirim ke $sharePath"];
+            }
+            
+            $printerNameOnly = basename($sharePath);
+            $command3 = 'print /D:' . $printerNameOnly . ' "' . $testFile . '" 2>&1';
+            exec($command3, $output3, $returnCode3);
+            
+            if ($returnCode3 === 0) {
+                return ['success' => true, 'message' => "Test print berhasil dikirim ke printer: $printerNameOnly"];
+            }
+            
+            return [
+                'success' => false, 
+                'message' => "Gagal print ke shared printer",
+                'details' => "Periksa: 1) Printer sudah dishare? 2) Share path: $sharePath"
+            ];
+        } else {
+            $command = "smbclient " . escapeshellarg($sharePath) . " -N -c \"put " . escapeshellarg($testFile) . "\" 2>&1";
+            exec($command, $output, $returnCode);
+            
+            if ($returnCode === 0) {
+                return ['success' => true, 'message' => "Test print berhasil via Samba ke $sharePath"];
+            } else {
+                return ['success' => false, 'message' => "Gagal print via Samba: " . implode(' ', $output)];
+            }
+        }
+    }
+    
+    private function _test_usb_print($testFile, $printer) {
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $availablePorts = [];
+            $cmd = 'wmic printer get Name,PortName /format:csv 2>&1';
+            exec($cmd, $output);
+            
+            foreach ($output as $line) {
+                if (strpos($line, 'USB') !== false) {
+                    $parts = str_getcsv($line);
+                    if (isset($parts[1]) && strpos($parts[1], 'USB') !== false) {
+                        $availablePorts[] = trim($parts[1]);
+                    }
+                }
+            }
+            
+            foreach ($availablePorts as $port) {
+                $command = 'copy /B "' . $testFile . '" ' . $port . ' 2>&1';
+                exec($command, $output, $returnCode);
+                
+                if ($returnCode === 0) {
+                    $this->db->where('id_printer', $printer['id_printer']);
+                    $this->db->update('smb_printer', ['usb_port' => $port]);
+                    
+                    return ['success' => true, 'message' => "Test print berhasil ke USB Port: $port"];
+                }
+            }
+            
+            return [
+                'success' => false, 
+                'message' => "Tidak ada USB printer terdeteksi",
+                'details' => "Port tersedia: " . implode(', ', $availablePorts)
+            ];
+        } else {
+            $devices = glob('/dev/usb/lp*');
+            foreach ($devices as $device) {
+                $command = 'cat "' . $testFile . '" > ' . $device . ' 2>&1';
+                exec($command, $output, $returnCode);
+                if ($returnCode === 0) {
+                    return ['success' => true, 'message' => "Test print berhasil ke $device"];
+                }
+            }
+            return ['success' => false, 'message' => "Tidak ada USB printer terdeteksi"];
+        }
+    }
+    
+    /**
+     * Add new printer
+     */
+    public function add_printer() {
+        if (!$this->session->userdata('smb_logged_in')) {
+            echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+            return;
+        }
+        
+        $data = [
+            'nama_printer' => $this->input->post('nama_printer'),
+            'lokasi' => $this->input->post('lokasi'),
+            'connection_type' => $this->input->post('connection_type'),
+            'stock_kertas' => $this->input->post('stock_kertas') ?: 500,
+            'kapasitas_kertas' => 500,
+            'min_stock_warning' => 50,
+            'status' => 'offline'
+        ];
+        
+        if ($data['connection_type'] == 'network') {
+            $data['ip_address'] = $this->input->post('ip_address');
+            $data['port'] = $this->input->post('port') ?: 9100;
+            if (empty($data['ip_address'])) {
+                echo json_encode(['status' => 'error', 'message' => 'IP Address wajib diisi']);
+                return;
+            }
+        } else {
+            $cleanName = str_replace(' ', '', $data['nama_printer']);
+            $data['share_path'] = '\\\\localhost\\' . $cleanName;
+            $data['usb_port'] = $this->input->post('usb_port');
+        }
+        
+        if ($this->db->insert('smb_printer', $data)) {
+            $id_printer = $this->db->insert_id();
+            $printer = $this->db->get_where('smb_printer', ['id_printer' => $id_printer])->row_array();
+            $test_result = $this->_test_print_real($printer);
+            
+            $this->db->where('id_printer', $id_printer);
+            $this->db->update('smb_printer', [
+                'status' => $test_result['success'] ? 'online' : 'offline',
+                'status_message' => $test_result['message']
+            ]);
+            
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Printer berhasil ditambahkan',
+                'test_result' => $test_result,
+                'id_printer' => $id_printer
+            ]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Gagal menambahkan printer']);
+        }
+    }
+    
+    /**
+     * Update printer
+     */
+    public function update_printer() {
+        if (!$this->session->userdata('smb_logged_in')) {
+            echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+            return;
+        }
+        
+        $id_printer = $this->input->post('id_printer');
+        $data = [];
+        
+        $fields = ['nama_printer', 'lokasi', 'connection_type', 
+                   'ip_address', 'port', 'share_path', 'usb_port',
+                   'stock_kertas', 'min_stock_warning'];
+        
+        foreach ($fields as $field) {
+            $value = $this->input->post($field);
+            if ($value !== null) {
+                $data[$field] = $value;
+            }
+        }
+        
+        if (empty($data)) {
+            echo json_encode(['status' => 'error', 'message' => 'Tidak ada data yang diupdate']);
+            return;
+        }
+        
+        $this->db->where('id_printer', $id_printer);
+        if ($this->db->update('smb_printer', $data)) {
+            echo json_encode(['status' => 'success', 'message' => 'Printer berhasil diupdate']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Gagal mengupdate printer']);
+        }
+    }
+    
+    /**
+     * Delete printer
+     */
+    public function delete_printer() {
+        if (!$this->session->userdata('smb_logged_in')) {
+            echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+            return;
+        }
+        
+        $id_printer = $this->input->post('id_printer');
+        
+        $this->db->where('id_printer', $id_printer);
+        if ($this->db->delete('smb_printer')) {
+            echo json_encode(['status' => 'success', 'message' => 'Printer berhasil dihapus']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Gagal menghapus printer']);
+        }
+    }
+    
+    /**
+     * Add paper stock
+     */
+    public function add_paper_stock() {
+        if (!$this->session->userdata('smb_logged_in')) {
+            echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+            return;
+        }
+        
+        $id_printer = $this->input->post('id_printer');
+        $jumlah_tambah = (int)$this->input->post('jumlah_tambah', 0);
+        
+        if ($jumlah_tambah <= 0) {
+            echo json_encode(['status' => 'error', 'message' => 'Jumlah tidak valid']);
+            return;
+        }
+        
+        $printer = $this->db->get_where('smb_printer', ['id_printer' => $id_printer])->row_array();
+        if ($printer) {
+            $new_stock = $printer['stock_kertas'] + $jumlah_tambah;
+            $this->db->where('id_printer', $id_printer);
+            $this->db->update('smb_printer', ['stock_kertas' => $new_stock]);
+            
+            echo json_encode([
+                'status' => 'success',
+                'message' => "Stock kertas berhasil ditambah",
+                'new_stock' => $new_stock
+            ]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Printer tidak ditemukan']);
+        }
+    }
+    
+    // ==================== PROSES PRINT ====================
+    
+    /**
+     * Print dokumen
+     */
+    public function print_dokumen() {
+        if (!$this->session->userdata('smb_logged_in')) {
+            echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+            return;
+        }
+        
+        $id_dokumen = $this->input->post('id_dokumen');
+        $id_printer = $this->input->post('id_printer');
+        $jumlah_kertas = (int)$this->input->post('jumlah_kertas', 1);
+        $jumlah_copy = (int)$this->input->post('jumlah_copy', 1);
+        $username = $this->session->userdata('username');
+        
+        $dokumen = $this->db->get_where('smb_dokumen', ['id_dokumen' => $id_dokumen])->row_array();
+        if (!$dokumen) {
+            echo json_encode(['status' => 'error', 'message' => 'Dokumen tidak ditemukan']);
+            return;
+        }
+        
+        $printer = $this->db->get_where('smb_printer', ['id_printer' => $id_printer])->row_array();
+        if (!$printer) {
+            echo json_encode(['status' => 'error', 'message' => 'Printer tidak ditemukan']);
+            return;
+        }
+        
+        $total_kertas = $jumlah_kertas * $jumlah_copy;
+        if ($printer['stock_kertas'] < $total_kertas) {
+            echo json_encode([
+                'status' => 'error', 
+                'message' => "Stock kertas tidak mencukupi! Sisa: {$printer['stock_kertas']} lembar"
+            ]);
+            return;
+        }
+        
+        $file_path = FCPATH . $dokumen['file_path'];
+        $print_result = $this->_execute_print_real($file_path, $printer);
+        
+        if ($print_result['success']) {
+            $new_stock = $printer['stock_kertas'] - $total_kertas;
+            $this->db->where('id_printer', $id_printer);
+            $this->db->update('smb_printer', [
+                'stock_kertas' => $new_stock,
+                'total_print_count' => ($printer['total_print_count'] ?? 0) + 1,
+                'total_paper_used' => ($printer['total_paper_used'] ?? 0) + $total_kertas,
+                'last_print_time' => date('Y-m-d H:i:s')
+            ]);
+            
+            $this->_log_print($id_dokumen, $id_printer, $username, $dokumen['nama_dokumen'], 
+                             1, $total_kertas, 'success', null);
+            
+            $bidang_map = ['a' => 'Litbang', 'b' => 'Perencanaan', 'c' => 'Ekonomi', 'd' => 'Kesra', 'e' => 'Sarpras'];
+            $nama_bidang = $bidang_map[$dokumen['id_bidang']] ?? 'Unknown';
+            
+             $detail_log = "Print dokumen: {$dokumen['nama_dokumen']} - {$total_kertas} lembar - Printer: {$printer['nama_printer']}";
+    
+    $this->_log_aktivitas(
+        $username,
+        'Print',
+        $nama_bidang,
+        $detail_log  // Detail lengkap
+    );
+            
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Dokumen berhasil diprint',
+                'data' => [
+                    'printer' => $printer['nama_printer'],
+                    'sisa_kertas' => $new_stock,
+                    'jumlah_kertas' => $total_kertas,
+                    'dokumen' => $dokumen['nama_dokumen']
+                ]
+            ]);
+        } else {
+            $this->_log_print($id_dokumen, $id_printer, $username, $dokumen['nama_dokumen'], 
+                             1, $total_kertas, 'failed', $print_result['message']);
+            
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Print gagal: ' . $print_result['message']
+            ]);
+        }
+    }
+    
+    private function _execute_print_real($file_path, $printer) {
+        if (!file_exists($file_path)) {
+            return ['success' => false, 'message' => 'File dokumen tidak ditemukan'];
+        }
+        
+        switch ($printer['connection_type']) {
+            case 'network':
+                return $this->_print_to_network_real($file_path, $printer);
+            case 'shared':
+                return $this->_print_to_shared_real($file_path, $printer);
+            case 'usb':
+                return $this->_print_to_usb_real($file_path, $printer);
+            default:
+                return ['success' => false, 'message' => 'Tipe koneksi tidak didukung'];
+        }
+    }
+    
+    private function _print_to_network_real($file_path, $printer) {
+        try {
+            $fp = @fsockopen($printer['ip_address'], $printer['port'], $errno, $errstr, 10);
+            if (!$fp) {
+                return ['success' => false, 'message' => "Tidak bisa konek ke printer: $errstr"];
+            }
+            
+            $data = file_get_contents($file_path);
+            if ($data === false) {
+                fclose($fp);
+                return ['success' => false, 'message' => 'Gagal membaca file'];
+            }
+            
+            fwrite($fp, $data);
+            fclose($fp);
+            
+            return ['success' => true, 'message' => 'Print berhasil'];
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+    
+    private function _print_to_shared_real($file_path, $printer) {
+        $sharePath = str_replace('\\\\', '\\', $printer['share_path']);
+        
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $command = 'copy /B "' . $file_path . '" "' . $sharePath . '" 2>&1';
+            exec($command, $output, $returnCode);
+            
+            if ($returnCode === 0) {
+                return ['success' => true, 'message' => 'Print berhasil'];
+            } else {
+                $printerName = basename($sharePath);
+                $command2 = 'print /D:' . $printerName . ' "' . $file_path . '" 2>&1';
+                exec($command2, $output2, $returnCode2);
+                
+                if ($returnCode2 === 0) {
+                    return ['success' => true, 'message' => 'Print berhasil'];
+                }
+                
+                return ['success' => false, 'message' => 'Gagal print: ' . implode(' ', $output)];
+            }
+        } else {
+            $command = "smbclient " . escapeshellarg($sharePath) . " -N -c \"put " . escapeshellarg($file_path) . "\" 2>&1";
+            exec($command, $output, $returnCode);
+            
+            if ($returnCode === 0) {
+                return ['success' => true, 'message' => 'Print berhasil via Samba'];
+            } else {
+                return ['success' => false, 'message' => 'Gagal print via Samba'];
+            }
+        }
+    }
+    
+    private function _print_to_usb_real($file_path, $printer) {
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $port = $printer['usb_port'] ?: 'USB001';
+            $command = 'copy /B "' . $file_path . '" ' . $port . ' 2>&1';
+            exec($command, $output, $returnCode);
+            
+            if ($returnCode === 0) {
+                return ['success' => true, 'message' => 'Print berhasil ke USB'];
+            } else {
+                return ['success' => false, 'message' => 'Gagal print ke USB: ' . implode(' ', $output)];
+            }
+        } else {
+            $device = $printer['usb_port'] ?: '/dev/usb/lp0';
+            $command = 'cat "' . $file_path . '" > ' . $device . ' 2>&1';
+            exec($command, $output, $returnCode);
+            
+            if ($returnCode === 0) {
+                return ['success' => true, 'message' => 'Print berhasil ke USB device'];
+            } else {
+                return ['success' => false, 'message' => 'Gagal print ke USB device'];
+            }
+        }
+    }
+    
+    /**
+     * Get print history
+     */
+    public function get_print_history() {
+        if (!$this->session->userdata('smb_logged_in')) {
+            echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+            return;
+        }
+        
+        $limit = (int)$this->input->get('limit') ?: 100;
+        $username = $this->input->get('username');
+        
+        $this->db->select('pl.*, p.nama_printer, p.lokasi, p.connection_type')
+                 ->from('smb_print_log pl')
+                 ->join('smb_printer p', 'p.id_printer = pl.id_printer', 'left');
+        
+        if ($username) {
+            $this->db->where('pl.username', $username);
+        }
+        
+        $this->db->order_by('pl.waktu_print', 'DESC')->limit($limit);
+        $logs = $this->db->get()->result_array();
+        
+        foreach ($logs as &$log) {
+            $log['waktu_print_formatted'] = date('d/m/Y H:i:s', strtotime($log['waktu_print']));
+        }
+        
+        echo json_encode(['status' => 'success', 'data' => $logs]);
+    }
+    
+    /**
+     * Get print queue
+     */
+    public function get_print_queue() {
+        if (!$this->session->userdata('smb_logged_in')) {
+            echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+            return;
+        }
+        
+        $id_printer = $this->input->get('id_printer');
+        
+        $this->db->select('q.*, p.nama_printer, p.lokasi')
+                 ->from('smb_print_queue q')
+                 ->join('smb_printer p', 'p.id_printer = q.id_printer', 'left');
+        
+        if ($id_printer) {
+            $this->db->where('q.id_printer', $id_printer);
+        }
+        
+        $this->db->where('q.queue_status', 'pending')
+                 ->order_by('q.priority', 'DESC')
+                 ->order_by('q.created_at', 'ASC');
+        
+        $queue = $this->db->get()->result_array();
+        
+        echo json_encode(['status' => 'success', 'data' => $queue]);
+    }
+    
+    /**
+     * Cancel print queue
+     */
+    public function cancel_print_queue() {
+        if (!$this->session->userdata('smb_logged_in')) {
+            echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+            return;
+        }
+        
+        $id_queue = $this->input->post('id_queue');
+        
+        $this->db->where('id_queue', $id_queue);
+        $this->db->where('queue_status', 'pending');
+        
+        if ($this->db->update('smb_print_queue', ['queue_status' => 'cancelled', 'status' => 'cancelled'])) {
+            echo json_encode(['status' => 'success', 'message' => 'Antrian print dibatalkan']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Gagal membatalkan antrian']);
+        }
+    }
+    
+    private function _log_aktivitas($username, $aksi, $modul, $detail) {
+    $ip = $this->input->ip_address();
+    if ($ip == '::1') $ip = '127.0.0.1';
+    
+    $data = [
+        'username' => $username,
+        'aksi' => $aksi,
+        'modul' => $modul,
+        'detail' => $detail,
+        'ip_address' => $ip,
+        'waktu' => date('Y-m-d H:i:s')
+    ];
+    $this->db->insert('smb_aktivitas_log', $data);
+} 
+    
+    private function _log_print($id_dokumen, $id_printer, $username, $nama_dokumen, 
+                                $jumlah_halaman, $jumlah_kertas, $status, $error_message = null) {
+        $data = [
+            'id_dokumen' => $id_dokumen,
+            'id_printer' => $id_printer,
+            'username' => $username,
+            'nama_dokumen' => $nama_dokumen,
+            'jumlah_halaman' => $jumlah_halaman,
+            'jumlah_kertas' => $jumlah_kertas,
+            'status' => $status,
+            'error_message' => $error_message,
+            'waktu_print' => date('Y-m-d H:i:s')
+        ];
+        $this->db->insert('smb_print_log', $data);
+    }
+    
+    private function _get_connection_display($printer) {
+        switch ($printer['connection_type']) {
+            case 'network':
+                return $printer['ip_address'] . ':' . $printer['port'];
+            case 'shared':
+                return $printer['share_path'];
+            case 'usb':
+                return $printer['usb_port'] ?: 'Auto-detect';
+            default:
+                return '-';
+        }
+    }
+    
+    private function _formatBytes($bytes) {
         if ($bytes >= 1048576) {
             return round($bytes / 1048576, 2) . ' MB';
         } elseif ($bytes >= 1024) {
@@ -2248,175 +3044,118 @@ private function _log_aktivitas($username, $aksi, $modul, $detail) {
             return $bytes . ' B';
         }
     }
-    
     /**
-     * Delete Dokumen
-     */
-    public function delete_dokumen() {
+ * Log aktivitas preview dokumen
+ */
+public function log_preview() {
     if (!$this->session->userdata('smb_logged_in')) {
         echo json_encode(['status' => 'error', 'message' => 'Session expired']);
         return;
     }
     
     $id_dokumen = $this->input->post('id_dokumen');
+    $username = $this->session->userdata('username');
+    
     $dokumen = $this->db->get_where('smb_dokumen', ['id_dokumen' => $id_dokumen])->row_array();
     
     if ($dokumen) {
-        // Hapus file fisik
-        $file_path = FCPATH . $dokumen['file_path'];
-        if (file_exists($file_path)) {
-            unlink($file_path);
-        }
+        $bidang_map = ['a' => 'Litbang', 'b' => 'Perencanaan', 'c' => 'Ekonomi', 'd' => 'Kesra', 'e' => 'Sarpras'];
+        $nama_bidang = $bidang_map[$dokumen['id_bidang']] ?? 'Unknown';
         
-        // Hapus thumbnail jika ada
-        if (!empty($dokumen['thumbnail'])) {
-            $thumb_path = FCPATH . $dokumen['thumbnail'];
-            if (file_exists($thumb_path)) {
-                unlink($thumb_path);
-            }
-        }
-        
-        // Hapus dari database
-        $this->db->delete('smb_dokumen', ['id_dokumen' => $id_dokumen]);
-        
-        // Log aktivitas HAPUS
         $this->_log_aktivitas(
-            $this->session->userdata('username'), 
-            'Hapus', 
-            'Dokumen', 
-            "Menghapus dokumen: " . $dokumen['nama_dokumen']
+            $username,
+            'Preview',
+            $nama_bidang,
+            "Melihat preview dokumen: {$dokumen['nama_dokumen']}"
         );
         
-        echo json_encode(['status' => 'success', 'message' => 'Dokumen berhasil dihapus']);
+        echo json_encode(['status' => 'success']);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Dokumen tidak ditemukan']);
     }
 }
-    
-    /**
-     * Get Log Aktivitas (untuk halaman log)
-     */
-    /**
- * Get Log Aktivitas (untuk halaman log)
- */
+
 /**
- * Get Log Aktivitas (untuk halaman log)
+ * Log print dari preview (via tombol print)
  */
-public function get_log_aktivitas() {
-    $start_date = $this->input->get('start_date');
-    $end_date = $this->input->get('end_date');
-    $aksi = $this->input->get('aksi');
-    $search = $this->input->get('search');
-    
-    $this->db->order_by('waktu', 'DESC');
-    
-    if (!empty($start_date)) {
-        $this->db->where('DATE(waktu) >=', date('Y-m-d', strtotime($start_date)));
-    }
-    if (!empty($end_date)) {
-        $this->db->where('DATE(waktu) <=', date('Y-m-d', strtotime($end_date)));
-    }
-    if (!empty($aksi)) {
-        $this->db->where('aksi', $aksi);
-    }
-    if (!empty($search)) {
-        $this->db->group_start()
-            ->like('username', $search)
-            ->or_like('detail', $search)
-            ->or_like('modul', $search)
-            ->group_end();
+public function log_print_from_preview() {
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+        return;
     }
     
-    $logs = $this->db->limit(500)->get('smb_aktivitas_log')->result_array();
+    $id_dokumen = $this->input->post('id_dokumen');
+    $nama_dokumen = $this->input->post('nama_dokumen');
+    $jumlah_kertas = (int)$this->input->post('jumlah_kertas', 1);
+    $range_halaman = $this->input->post('range_halaman', 'Semua');
+    $source = $this->input->post('source', 'print_button');
     
-    foreach ($logs as &$log) {
-        $log['waktu'] = date('d/m/Y H:i:s', strtotime($log['waktu']));
-        $log['ip_address'] = $log['ip_address'] ?? '-';
-        $log['detail'] = $log['detail'] ?? '-';
+    // PASTIKAN jumlah_kertas minimal 1
+    if ($jumlah_kertas <= 0) {
+        $jumlah_kertas = 1;
     }
     
-    echo json_encode(['status' => 'success', 'data' => $logs]);
-}
+    $username = $this->session->userdata('username');
     
-    /**
-     * Get Statistik Dashboard
-     */
-    /**
- * Get Statistik Dashboard
- */
-/**
- * Get Statistik Dashboard (LENGKAP)
- */
-public function get_dashboard_stats() {
-    // Total semua dokumen
-    $total_dokumen = $this->db->count_all('smb_dokumen');
-    
-    // Total user dari tabel akun
-    $total_user = $this->db->count_all('akun');
-    
-    // Total printer aktif
-    $total_printer_aktif = 4;
-    
-    // ========== DOKUMEN BERDASARKAN STATUS ==========
-    $dokumen_selesai = $this->db->where('status', 'Selesai')->count_all_results('smb_dokumen');
-    $dokumen_review = $this->db->where('status', 'Review')->count_all_results('smb_dokumen');
-    $dokumen_ongoing = $this->db->where('status', 'On Going')->count_all_results('smb_dokumen');
-    
-    // ========== DOKUMEN BERDASARKAN KATEGORI ==========
-    $dokumen_sk = $this->db->where('kategori', 'Surat Keputusan')->count_all_results('smb_dokumen');
-    $dokumen_laporan = $this->db->where('kategori', 'Laporan')->count_all_results('smb_dokumen');
-    $dokumen_nota = $this->db->where('kategori', 'Nota Dinas')->count_all_results('smb_dokumen');
-    
-    // ========== DOKUMEN PER BIDANG ==========
-    $bidang_list = [
-        'a' => 'Bidang Litbang',
-        'b' => 'Bidang Perencanaan',
-        'c' => 'Bidang Ekonomi',
-        'd' => 'Bidang Kesra',
-        'e' => 'Bidang Sarpras'
-    ];
-    
-    $dokumen_per_bidang = [];
-    foreach ($bidang_list as $kode => $nama) {
-        $count = $this->db->where('id_bidang', $kode)->count_all_results('smb_dokumen');
-        $dokumen_per_bidang[$kode] = [
-            'nama' => $nama,
-            'total' => (int)$count
-        ];
+    // Ambil data dokumen
+    $dokumen = $this->db->get_where('smb_dokumen', ['id_dokumen' => $id_dokumen])->row_array();
+    if (!$dokumen) {
+        echo json_encode(['status' => 'error', 'message' => 'Dokumen tidak ditemukan']);
+        return;
     }
     
-    // Return JSON lengkap
-    echo json_encode([
+    // Ambil printer default (prioritas online, lalu pertama)
+    $printer = $this->db->get_where('smb_printer', ['status' => 'online'])->row_array();
+    if (!$printer) {
+        $printer = $this->db->order_by('id_printer', 'ASC')->get('smb_printer', 1)->row_array();
+    }
+    
+    $bidang_map = ['a' => 'Litbang', 'b' => 'Perencanaan', 'c' => 'Ekonomi', 'd' => 'Kesra', 'e' => 'Sarpras'];
+    $nama_bidang = $bidang_map[$dokumen['id_bidang']] ?? 'Unknown';
+    $printer_name = $printer ? $printer['nama_printer'] : 'Printer tidak tersedia';
+    
+    // Detail log lengkap
+    $detail_log = "Print dokumen: {$nama_dokumen} - {$jumlah_kertas} lembar - Printer: {$printer_name}";
+    if ($range_halaman !== 'Semua' && !empty($range_halaman)) {
+        $detail_log .= " - Halaman: {$range_halaman}";
+    }
+    
+    // Kurangi stock kertas jika printer ada
+    if ($printer && $printer['stock_kertas'] >= $jumlah_kertas) {
+        $new_stock = $printer['stock_kertas'] - $jumlah_kertas;
+        $this->db->where('id_printer', $printer['id_printer']);
+        $this->db->update('smb_printer', [
+            'stock_kertas' => max(0, $new_stock),
+            'total_print_count' => ($printer['total_print_count'] ?? 0) + 1,
+            'total_paper_used' => ($printer['total_paper_used'] ?? 0) + $jumlah_kertas,
+            'last_print_time' => date('Y-m-d H:i:s')
+        ]);
+    }
+    
+    // Log aktivitas
+    $this->_log_aktivitas(
+        $username,
+        'Print (via Preview)',
+        $nama_bidang,
+        $detail_log
+    );
+    
+    // Log print detail
+    $this->db->insert('smb_print_log', [
+        'id_dokumen' => $id_dokumen,
+        'id_printer' => $printer ? $printer['id_printer'] : null,
+        'username' => $username,
+        'nama_dokumen' => $nama_dokumen,
+        'jumlah_halaman' => 1,
+        'jumlah_kertas' => $jumlah_kertas,
         'status' => 'success',
-        'total_dokumen' => (int)$total_dokumen,
-        'total_user' => (int)$total_user,
-        'total_printer_aktif' => (int)$total_printer_aktif,
-        'dokumen_selesai' => (int)$dokumen_selesai,
-        'dokumen_review' => (int)$dokumen_review,
-        'dokumen_ongoing' => (int)$dokumen_ongoing,
-        'dokumen_sk' => (int)$dokumen_sk,
-        'dokumen_laporan' => (int)$dokumen_laporan,
-        'dokumen_nota' => (int)$dokumen_nota,
-        'dokumen_per_bidang' => $dokumen_per_bidang,
-        'trend_data' => [
-            'user_trend' => '+8.5%',
-            'dokumen_trend' => '+1.3%',
-            'selesai_trend' => '-4.3%',
-            'ongoing_trend' => '+1.8%'
-        ]
+        'waktu_print' => date('Y-m-d H:i:s')
+    ]);
+    
+    echo json_encode([
+        'status' => 'success', 
+        'message' => 'Print log recorded',
+        'detail' => $detail_log
     ]);
 }
-    public function file($path)
-{
-    $fullPath = FCPATH . $path;
-
-    if (!file_exists($fullPath)) {
-        show_404();
-    }
-
-    header('Content-Type: ' . mime_content_type($fullPath));
-    header('Content-Disposition: inline; filename="' . basename($fullPath) . '"');
-    readfile($fullPath);
 }
-}
-

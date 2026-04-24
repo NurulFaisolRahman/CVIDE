@@ -1394,6 +1394,95 @@ a { text-decoration: none; color: inherit; }
   color: var(--text-2);
 }
 
+/* ============================================================
+   PRINTER CARD STYLES (TAMBAHKAN)
+   ============================================================ */
+.printer-card {
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--surface);
+}
+
+.printer-card:hover {
+    border-color: var(--blue-400);
+    background: var(--blue-50);
+    transform: translateY(-1px);
+}
+
+.printer-card.selected {
+    border-color: var(--blue-600);
+    background: var(--blue-50);
+    box-shadow: 0 0 0 2px rgba(47,82,196,0.2);
+}
+
+.printer-status {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.printer-status.online { background: var(--green); box-shadow: 0 0 0 2px rgba(22,163,74,0.2); }
+.printer-status.idle { background: var(--amber); box-shadow: 0 0 0 2px rgba(217,119,6,0.2); }
+.printer-status.offline { background: var(--red); box-shadow: 0 0 0 2px rgba(220,38,38,0.2); }
+.printer-status.error { background: var(--red); box-shadow: 0 0 0 2px rgba(220,38,38,0.2); }
+
+.status-text {
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.stock-bar {
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.stock-fill {
+    height: 6px;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.print-summary {
+    background: var(--page-bg);
+    padding: 12px;
+    border-radius: var(--radius);
+    margin-top: 10px;
+}
+
+.print-summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+}
+
+.print-summary-item:last-child {
+    border-bottom: none;
+}
+
+.stock-warning {
+    background: #fef3c7;
+    border-left: 3px solid var(--amber);
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+.stock-warning a {
+    color: var(--blue-600);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 </style>
 </head>
 <body>
@@ -1512,12 +1601,20 @@ a { text-decoration: none; color: inherit; }
         </svg>
         Log Aktivitas
       </div>
+      <div class="nav-item" data-panel="printer" onclick="navigate(this)">
+    <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M6 9V3H18V9M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 13h12v6H6z"/>
+        <rect x="8" y="15" width="4" height="2" fill="white"/>
+    </svg>
+    Manajemen Printer
+</div>
       <div class="nav-item" data-panel="laporan" onclick="navigate(this)">
         <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clip-rule="evenodd"/>
         </svg>
         Print Laporan
       </div>
+
 
       <div class="nav-section">App Lainnya</div>
       <div class="nav-item" data-panel="satu-data" onclick="navigate(this)">
@@ -1628,7 +1725,7 @@ a { text-decoration: none; color: inherit; }
 <div class="hero-banner">
   <div class="hero-left">
     <div class="hero-eyebrow" id="hero-date-text"></div>
-    <div class="hero-title">Sistem Manajemen Printer<br>dan Arsip Dokumen</div>
+    <div class="hero-title">Sistem Manajemen Kantor<br>dan Perencanaan</div>
     <div class="hero-sub">Bappeda Kabupaten Banyuwangi</div>
     <button class="hero-btn">
       Get Started
@@ -2280,6 +2377,103 @@ a { text-decoration: none; color: inherit; }
         </div>
         <div class="card"><div class="card-body"><div class="empty-state"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5 8.118V12c0 .414.168.789.44 1.06A8.06 8.06 0 0010 15a8.06 8.06 0 004.56-1.94A1.5 1.5 0 0015 12V8.118l2.394-1.198a1 1 0 000-1.84l-7-3z"/></svg><p>Sistem Informasi Pemerintah Daerah (SIPD) Kabupaten Banyuwangi.</p><br><button class="btn btn-primary">Akses SIPD</button></div></div></div>
       </section>
+      <!-- ======== MANAJEMEN PRINTER ======== -->
+<section id="panel-printer" class="panel">
+    <div class="page-hdr">
+        <div class="page-hdr-left">
+            <div class="page-hdr-icon">
+                <svg viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M6 9V3H18V9M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 13h12v6H6z"/>
+                </svg>
+            </div>
+            <div>
+                <div class="page-hdr-title">Manajemen Printer</div>
+                <div class="page-hdr-sub">Kelola printer, stock kertas, dan pengaturan</div>
+            </div>
+        </div>
+        <button class="btn btn-primary" onclick="showAddPrinterModal()">
+            <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14">
+                <path d="M8 2a1 1 0 011 1v4h4a1 1 0 010 2H9v4a1 1 0 01-2 0V9H3a1 1 0 010-2h4V3a1 1 0 011-1z"/>
+            </svg>
+            Tambah Printer
+        </button>
+    </div>
+
+    <!-- Statistik Ringkas -->
+    <div class="stat-grid" style="margin-bottom:20px;">
+        <div class="stat-card">
+            <div class="stat-label">Total Printer</div>
+            <div class="stat-row">
+                <div class="stat-val" id="printer-total-count">0</div>
+                <div class="stat-icon" style="background:#eff4ff;">
+                    <svg viewBox="0 0 20 20" fill="var(--blue-600)"><path d="M6 9V3H18V9M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/></svg>
+                </div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-trend" id="printer-total-trend">Total semua printer</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Printer Online</div>
+            <div class="stat-row">
+                <div class="stat-val" id="printer-online-count">0</div>
+                <div class="stat-icon" style="background:var(--green-bg);">
+                    <svg viewBox="0 0 20 20" fill="var(--green)"><circle cx="10" cy="10" r="8"/></svg>
+                </div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-trend trend-up" id="printer-online-trend">Siap digunakan</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Total Kertas</div>
+            <div class="stat-row">
+                <div class="stat-val" id="printer-paper-total">0</div>
+                <div class="stat-icon" style="background:#fffbeb;">
+                    <svg viewBox="0 0 20 20" fill="var(--amber)"><path d="M4 4h12v12H4z"/></svg>
+                </div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-trend" id="printer-paper-trend">Total stock kertas</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Total Print</div>
+            <div class="stat-row">
+                <div class="stat-val" id="printer-print-total">0</div>
+                <div class="stat-icon" style="background:#dbeafe;">
+                    <svg viewBox="0 0 20 20" fill="var(--blue-600)"><path d="M6 9V3H18V9M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/></svg>
+                </div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-trend" id="printer-print-trend">Total dokumen tercetak</div>
+        </div>
+    </div>
+
+    <!-- Daftar Printer -->
+    <div class="card">
+        <div class="card-head">
+            <div class="card-title">
+                <i class="fas fa-print"></i> Daftar Printer
+            </div>
+            <div class="table-toolbar-right">
+                <div class="mini-search">
+                    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor">
+                        <circle cx="5.5" cy="5.5" r="4"/><path d="M9 9l2.5 2.5"/>
+                    </svg>
+                    <input type="text" id="printer-search" placeholder="Cari printer..." oninput="filterPrinterList()">
+                </div>
+                <button class="btn btn-sm" onclick="refreshPrinterList()">
+                    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M12 8a4 4 0 0 1-8 0M4 6a4 4 0 0 1 8 0M7 2v4M5 2h4"/></svg>
+                    Refresh
+                </button>
+            </div>
+        </div>
+        <div id="printer-list-manager" style="padding:16px;">
+            <div class="empty-state">
+                <div class="modern-spinner"></div>
+                <p>Memuat daftar printer...</p>
+            </div>
+        </div>
+    </div>
+</section>
 
       <!-- ======== SETTINGS ======== -->
       <section id="panel-settings" class="panel">
@@ -2369,19 +2563,70 @@ a { text-decoration: none; color: inherit; }
     </form>
   </div>
 </div>
-
 <!-- Modal Preview Dokumen -->
 <div id="modalPreview" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1001; align-items:center; justify-content:center;">
-  <div style="background:#fff; border-radius:16px; width:800px; max-width:90%; max-height:90%; overflow:auto; padding:20px;">
-    <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
-      <h3 id="previewTitle" style="font-size:18px;">Preview Dokumen</h3>
-      <span onclick="closePreviewModal()" style="cursor:pointer; font-size:24px;">&times;</span>
+    <div style="background:#fff; border-radius:16px; width:850px; max-width:90%; max-height:90%; overflow:auto; padding:20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h3 id="previewTitle" style="font-size:18px;">Preview Dokumen</h3>
+            <div>
+                <button class="btn btn-primary btn-sm" id="printFromPreviewBtn" style="margin-right:10px; background:#16a34a; color:white;">
+                    <i class="fas fa-print"></i> Print Dokumen
+                </button>
+                <button class="btn btn-danger btn-sm" onclick="closePreviewModal()" style="background:#dc2626; color:white;">
+                    <i class="fas fa-times"></i> Tutup
+                </button>
+            </div>
+        </div>
+        <div id="previewContent" style="text-align:center;"></div>
     </div>
-    <div id="previewContent" style="text-align:center;"></div>
-  </div>
 </div>
-    </main>
-  </div>
+
+<!-- Modal Print Dokumen - VERSI LANGSUNG PRINT -->
+<div id="modalPrint" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1002; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; width:450px; max-width:90%; padding:24px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+            <h3 style="font-size:18px;">
+                <i class="fas fa-print"></i> Print Dokumen
+            </h3>
+            <span onclick="closePrintModal()" style="cursor:pointer; font-size:24px;">&times;</span>
+        </div>
+        
+        <div id="print-dokumen-info" style="margin-bottom:20px; padding:12px; background:#e0e7ff; border-radius:8px;">
+            <strong>📄 Dokumen:</strong> <span id="print-dokumen-nama"></span><br>
+            <strong>📏 Estimasi Halaman:</strong> <span id="print-estimasi-halaman">1</span> halaman
+        </div>
+        
+        <!-- Informasi Printer Default -->
+        <div id="default-printer-info" style="margin-bottom:15px; padding:12px; background:var(--page-bg); border-radius:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <span style="font-size:12px; color:var(--text-2);">🖨️ Printer Default:</span>
+                    <strong id="default-printer-name">Memuat...</strong>
+                </div>
+                <button class="btn btn-sm" onclick="openPrinterManager()" style="padding:4px 8px; font-size:11px;">
+                    <i class="fas fa-cog"></i> Ganti
+                </button>
+            </div>
+            <div id="default-printer-stock" style="font-size:11px; color:var(--text-3); margin-top:5px;"></div>
+        </div>
+        
+        <!-- Jumlah Copy -->
+        <div class="form-group" style="margin-bottom:15px;">
+            <label class="form-label">Jumlah Copy</label>
+            <input type="number" id="print-jumlah-copy" class="form-control" value="1" min="1" max="10" onchange="updatePrintSummarySimple()">
+        </div>
+        
+        <!-- Ringkasan -->
+        <div id="print-summary-simple" class="print-summary" style="margin-bottom:15px;"></div>
+        
+        <!-- Actions -->
+        <div style="display:flex; gap:10px; margin-top:20px;">
+            <button class="btn btn-primary" onclick="executePrintSimple()" style="flex:1;">
+                <i class="fas fa-print"></i> Print Sekarang
+            </button>
+            <button class="btn" onclick="closePrintModal()">Batal</button>
+        </div>
+    </div>
 </div>
 <!-- Library untuk generate PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -2389,6 +2634,7 @@ a { text-decoration: none; color: inherit; }
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+  let currentPreviewDokumen = null;
 // ================= LOGOUT FUNCTION =================
 // ================= LOGOUT FUNCTION (PERBAIKAN) =================
 function handleLogout() {
@@ -2761,83 +3007,84 @@ function loadDokumenFromDB(bidangId) {
   });
 }
 
-// ================= RENDER TABEL DOKUMEN (LENGKAP) =================
+// ================= RENDER TABEL DOKUMEN (LENGKAP DENGAN TOMBOL PRINT) =================
 function renderDokumenTable(dokumen) {
-  const tbody = document.getElementById('bidang-tbody');
-  
-  // Jika tidak ada dokumen
-  if (!dokumen || dokumen.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:60px 20px;color:var(--text-3);">
-      <div style="font-size:48px; margin-bottom:15px;">📄</div>
-      Belum ada dokumen. Klik tombol "Upload Dokumen" untuk menambahkan.
-    </td></tr>`;
-    return;
-  }
-  
-  // Debug: lihat data yang diterima
-  console.log('Data dokumen:', dokumen);
-  console.log('Kategori dari dokumen pertama:', dokumen[0]?.kategori);
-  
-  tbody.innerHTML = dokumen.map((doc, index) => {
-    // Tentukan thumbnail berdasarkan tipe file
-    let thumbnailHtml = '';
-    const baseUrl = '<?= base_url() ?>';
+    const tbody = document.getElementById('bidang-tbody');
     
-    if (doc.file_type && doc.file_type.startsWith('image/')) {
-      const thumbUrl = doc.thumbnail ? baseUrl + doc.thumbnail : baseUrl + doc.file_path;
-      thumbnailHtml = `<img src="${thumbUrl}" class="doc-thumbnail" onclick="previewDokumen('${doc.file_path}', '${doc.file_type}', '${escapeHtml(doc.nama_dokumen)}')" 
-        style="width:50px; height:50px; object-fit:cover; border-radius:8px; cursor:pointer; border:1px solid #e2e8f0;" 
-        onerror="this.src='${baseUrl}assets/img/no-image.png'">`;
-    } else if (doc.file_type === 'application/pdf') {
-      thumbnailHtml = `<div onclick="previewDokumen('${doc.file_path}', '${doc.file_type}', '${escapeHtml(doc.nama_dokumen)}')" 
-        style="width:50px; height:50px; background:#fee2e2; border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:24px;">
-        📄
-      </div>`;
-    } else {
-      thumbnailHtml = `<div onclick="previewDokumen('${doc.file_path}', '${doc.file_type}', '${escapeHtml(doc.nama_dokumen)}')" 
-        style="width:50px; height:50px; background:#dbeafe; border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:24px;">
-        📎
-      </div>`;
+    // Jika tidak ada dokumen
+    if (!dokumen || dokumen.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:60px 20px;color:var(--text-3);">
+            <div style="font-size:48px; margin-bottom:15px;">📄</div>
+            Belum ada dokumen. Klik tombol "Upload Dokumen" untuk menambahkan.
+        </td></tr>`;
+        return;
     }
     
-    const statusClass = doc.status === 'Selesai' ? 'pill-done' : (doc.status === 'Review' ? 'pill-review' : 'pill-progress');
-    const uploadDate = doc.upload_date_formatted || (doc.upload_date ? new Date(doc.upload_date).toLocaleDateString('id-ID') : '-');
-    const fileSize = doc.file_size_formatted || (doc.file_size ? Math.round(doc.file_size / 1024) + ' KB' : '-');
-    
-    // Pastikan kategori tidak undefined/null
-    const kategori = doc.kategori || 'Tidak ada kategori';
-    
-    return `
-      <tr style="border-bottom:1px solid var(--border);">
-        <td style="padding:12px 8px; text-align:center;">${index + 1}</td>
-        <td style="padding:12px 8px; text-align:center;">${thumbnailHtml}</td>
-        <td style="padding:12px 8px;">
-          <strong>${escapeHtml(doc.nama_dokumen)}</strong>
-          <br><span style="font-size:10px; color:var(--text-3);">${fileSize}</span>
-        </td>
-        <td style="padding:12px 8px;">
-          <span class="badge-kategori" style="
-            display:inline-block;
-            padding:4px 10px;
-            border-radius:20px;
-            font-size:11px;
-            font-weight:500;
-            background:${kategori === 'Surat Keputusan' ? '#e0e7ff' : (kategori === 'Laporan' ? '#dcfce7' : '#fed7aa')};
-            color:${kategori === 'Surat Keputusan' ? '#4338ca' : (kategori === 'Laporan' ? '#166534' : '#9a3412')};
-          ">
-            ${escapeHtml(kategori)}
-          </span>
-        </td>
-        <td style="padding:12px 8px;">${uploadDate}</td>
-        <td style="padding:12px 8px;">${escapeHtml(doc.uploaded_by)}</td>
-        <td style="padding:12px 8px;"><span class="pill ${statusClass}">${doc.status}</span></td>
-        <td style="padding:12px 8px; white-space:nowrap;">
-          <span class="link-act" onclick="previewDokumen('${doc.file_path}', '${doc.file_type}', '${escapeHtml(doc.nama_dokumen)}')" style="margin-right:12px; cursor:pointer; color:#2563eb;"> Lihat</span>
-          <span class="link-danger" onclick="deleteDokumen(${doc.id_dokumen})" style="cursor:pointer; color:#dc2626;">Hapus</span>
-        </td>
-      </tr>
-    `;
-  }).join('');
+    tbody.innerHTML = dokumen.map((doc, index) => {
+        // Tentukan thumbnail berdasarkan tipe file
+        let thumbnailHtml = '';
+        const baseUrl = '<?= base_url() ?>';
+        
+        if (doc.file_type && doc.file_type.startsWith('image/')) {
+            const thumbUrl = doc.thumbnail ? baseUrl + doc.thumbnail : baseUrl + doc.file_path;
+            thumbnailHtml = `<img src="${thumbUrl}" class="doc-thumbnail" onclick="previewDokumen('${doc.file_path}', '${doc.file_type}', '${escapeHtml(doc.nama_dokumen)}')" 
+                style="width:50px; height:50px; object-fit:cover; border-radius:8px; cursor:pointer; border:1px solid #e2e8f0;" 
+                onerror="this.src='${baseUrl}assets/img/no-image.png'">`;
+        } else if (doc.file_type === 'application/pdf') {
+            thumbnailHtml = `<div onclick="previewDokumen('${doc.file_path}', '${doc.file_type}', '${escapeHtml(doc.nama_dokumen)}')" 
+                style="width:50px; height:50px; background:#fee2e2; border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:24px;">
+                📄
+            </div>`;
+        } else {
+            thumbnailHtml = `<div onclick="previewDokumen('${doc.file_path}', '${doc.file_type}', '${escapeHtml(doc.nama_dokumen)}')" 
+                style="width:50px; height:50px; background:#dbeafe; border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:24px;">
+                📎
+            </div>`;
+        }
+        
+        const statusClass = doc.status === 'Selesai' ? 'pill-done' : (doc.status === 'Review' ? 'pill-review' : 'pill-progress');
+        const uploadDate = doc.upload_date_formatted || (doc.upload_date ? new Date(doc.upload_date).toLocaleDateString('id-ID') : '-');
+        const fileSize = doc.file_size_formatted || (doc.file_size ? Math.round(doc.file_size / 1024) + ' KB' : '-');
+        const kategori = doc.kategori || 'Tidak ada kategori';
+        
+        return `
+            <tr style="border-bottom:1px solid var(--border);">
+                <td style="padding:12px 8px; text-align:center;">${index + 1}</td>
+                <td style="padding:12px 8px; text-align:center;">${thumbnailHtml}</td>
+                <td style="padding:12px 8px;">
+                    <strong>${escapeHtml(doc.nama_dokumen)}</strong>
+                    <br><span style="font-size:10px; color:var(--text-3);">${fileSize}</span>
+                </td>
+                <td style="padding:12px 8px;">
+                    <span class="badge-kategori" style="
+                        display:inline-block;
+                        padding:4px 10px;
+                        border-radius:20px;
+                        font-size:11px;
+                        font-weight:500;
+                        background:${kategori === 'Surat Keputusan' ? '#e0e7ff' : (kategori === 'Laporan' ? '#dcfce7' : '#fed7aa')};
+                        color:${kategori === 'Surat Keputusan' ? '#4338ca' : (kategori === 'Laporan' ? '#166534' : '#9a3412')};
+                    ">
+                        ${escapeHtml(kategori)}
+                    </span>
+                </td>
+                <td style="padding:12px 8px;">${uploadDate}</td>
+                <td style="padding:12px 8px;">${escapeHtml(doc.uploaded_by)}</td>
+                <td style="padding:12px 8px;"><span class="pill ${statusClass}">${doc.status}</span></td>
+                <td style="padding:12px 8px; white-space:nowrap;">
+                    <span class="link-act" onclick="previewDokumen('${doc.file_path}', '${doc.file_type}', '${escapeHtml(doc.nama_dokumen)}', ${doc.id_dokumen})" style="margin-right:8px;">
+    <i class="fas fa-eye"></i> Lihat
+</span>
+                    <span class="link-act" onclick="openPrintModal(${doc.id_dokumen}, '${escapeHtml(doc.nama_dokumen)}')" style="margin-right:8px; color:#16a34a;">
+                        <i class="fas fa-print"></i> Print
+                    </span>
+                    <span class="link-danger" onclick="deleteDokumen(${doc.id_dokumen})">
+                        <i class="fas fa-trash"></i> Hapus
+                    </span>
+                </td>
+            </tr>
+        `;
+    }).join('');
 }
 
 // Helper escape HTML
@@ -2950,36 +3197,386 @@ function setDefaultStats() {
   $('.doc-cat-count').eq(2).text('0 dokumen');
 }
 
-// ================= PREVIEW DOKUMEN (VERSI AWAL) =================
-function previewDokumen(filePath, fileType, fileName) {
-  document.getElementById('previewTitle').textContent = fileName || 'Preview Dokumen';
-  const previewDiv = document.getElementById('previewContent');
-  const baseUrl = '<?= base_url() ?>';
-  const fullUrl = baseUrl + filePath;
-  
-  if (fileType && fileType.startsWith('image/')) {
-    previewDiv.innerHTML = `<img src="${fullUrl}" style="max-width:100%; max-height:70vh; border-radius:8px;" alt="${escapeHtml(fileName)}">`;
-  } else if (fileType === 'application/pdf') {
-    previewDiv.innerHTML = `<iframe src="${fullUrl}" style="width:100%; height:70vh;" frameborder="0"></iframe>`;
-  } else {
-    previewDiv.innerHTML = `
-      <div style="padding:60px 20px; text-align:center;">
-        <div style="font-size:64px; margin-bottom:20px;">📄</div>
-        <p style="margin-bottom:20px; color:var(--text-2);">File tidak dapat dipreview langsung</p>
-        <p style="margin-bottom:15px; font-size:12px; color:var(--text-3);">Tipe file: ${fileType || 'Unknown'}</p>
-        <a href="${fullUrl}" class="btn btn-primary" download target="_blank">
-          ⬇️ Download File
-        </a>
-      </div>
+let printLogSent = false; // Flag untuk mencegah duplikasi log
+
+function previewDokumen(filePath, fileType, fileName, id_dokumen) {
+    // Simpan data dokumen
+    currentPreviewDokumen = {
+        id: id_dokumen,
+        nama: fileName,
+        path: filePath,
+        type: fileType
+    };
+    
+    // LOG PREVIEW ke server
+    $.ajax({
+        url: '<?= base_url('IDE/log_preview') ?>',
+        type: 'POST',
+        data: { id_dokumen: id_dokumen },
+        dataType: 'json',
+        async: false
+    });
+    
+    // Tampilkan preview
+    document.getElementById('previewTitle').textContent = fileName || 'Preview Dokumen';
+    const previewDiv = document.getElementById('previewContent');
+    const baseUrl = '<?= base_url() ?>';
+    const fullUrl = baseUrl + filePath;
+    
+    let contentHtml = '';
+    
+    if (fileType && fileType.startsWith('image/')) {
+        contentHtml = `
+            <img src="${fullUrl}" style="max-width:100%; max-height:70vh;" alt="${escapeHtml(fileName)}">
+            <div style="margin-top:10px; font-size:12px; color:var(--text-3);">
+                <i class="fas fa-print"></i> Klik tombol "Print Dokumen" di atas untuk mencetak
+            </div>
+        `;
+    } 
+    else if (fileType === 'application/pdf') {
+        // Gunakan embed untuk PDF yang lebih stabil
+        contentHtml = `
+            <embed id="pdf-embed"
+                   src="${fullUrl}#toolbar=1&navpanes=1&scrollbar=1"
+                   type="application/pdf"
+                   style="width:100%; height:70vh;"
+                   onerror="handlePDFError('${fullUrl}')">
+            </embed>
+            <div style="margin-top:10px; font-size:12px; color:var(--text-3); text-align:center;">
+                <i class="fas fa-info-circle"></i> Jika PDF tidak muncul, 
+                <a href="${fullUrl}" target="_blank">klik di sini</a> untuk membuka di tab baru
+            </div>
+        `;
+    }
+    else {
+        contentHtml = `
+            <div style="padding:60px 20px; text-align:center;">
+                <div style="font-size:64px; margin-bottom:20px;">📄</div>
+                <p>File tidak dapat dipreview langsung</p>
+                <a href="${fullUrl}" class="btn btn-primary" download target="_blank">⬇️ Download File</a>
+            </div>
+        `;
+    }
+    
+    previewDiv.innerHTML = contentHtml;
+    document.getElementById('modalPreview').style.display = 'flex';
+}
+
+function handlePDFError(fullUrl) {
+    console.log('PDF gagal dimuat:', fullUrl);
+    const previewDiv = document.getElementById('previewContent');
+    previewDiv.innerHTML += `
+        <div style="color:red; margin-top:10px; padding:10px; background:#fee2e2; border-radius:8px;">
+            ⚠️ Gagal memuat PDF. 
+            <a href="${fullUrl}" target="_blank" style="color:#2563eb;">Klik di sini untuk membuka file di tab baru</a>
+        </div>
     `;
-  }
-  
-  document.getElementById('modalPreview').style.display = 'flex';
+}
+/**
+ * Pasang event listener global untuk deteksi print (Ctrl+P)
+ * Ini akan menangkap print dari halaman manapun
+ */
+function attachGlobalPrintListener(id_dokumen, nama_dokumen) {
+    let hasLogged = false;
+    
+    const printHandler = function() {
+        if (!hasLogged && currentPreviewDokumen && currentPreviewDokumen.id === id_dokumen) {
+            hasLogged = true;
+            
+            // Kirim log print ke server
+            $.ajax({
+                url: '<?= base_url('IDE/log_print_from_preview') ?>',
+                type: 'POST',
+                data: {
+                    id_dokumen: id_dokumen,
+                    nama_dokumen: nama_dokumen,
+                    jumlah_kertas: 1,
+                    source: 'ctrl_p'
+                },
+                dataType: 'json',
+                async: true,
+                success: function(response) {
+                    console.log('Print log recorded:', response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Print Tercatat',
+                        text: `Aktivitas print untuk "${nama_dokumen}" telah tercatat`,
+                        timer: 1500,
+                        showConfirmButton: false,
+                        position: 'top-end',
+                        toast: true
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to record print log:', error);
+                }
+            });
+        }
+    };
+    
+    // Hapus event listener lama jika ada
+    window.removeEventListener('beforeprint', printHandler);
+    // Pasang event listener baru
+    window.addEventListener('beforeprint', printHandler);
+    
+    // Hapus setelah 5 menit
+    setTimeout(() => {
+        window.removeEventListener('beforeprint', printHandler);
+    }, 300000);
+}
+/**
+ * Pasang event listener untuk deteksi print pada PDF iframe
+ */
+function attachPrintListenerToPDF(id_dokumen, nama_dokumen) {
+    const iframe = document.getElementById('pdf-iframe');
+    
+    if (!iframe) return;
+    
+    // Coba akses iframe contentWindow
+    iframe.onload = function() {
+        try {
+            const iframeWindow = iframe.contentWindow;
+            
+            // Pasang event listener untuk beforeprint
+            iframeWindow.addEventListener('beforeprint', function() {
+                logPrintFromPreview(id_dokumen, nama_dokumen, 1);
+            });
+            
+            // Alternatif: untuk PDF.js atau browser tertentu
+            iframeWindow.addEventListener('afterprint', function() {
+                console.log('Print process completed');
+            });
+            
+            console.log('Print listener attached to PDF iframe');
+        } catch(e) {
+            console.log('Cannot access iframe - cross-origin restriction:', e);
+            // Fallback: gunakan metode polling
+            fallbackPrintDetection(id_dokumen, nama_dokumen);
+        }
+    };
+}
+
+/**
+ * Fallback untuk deteksi print (polling)
+ */
+function fallbackPrintDetection(id_dokumen, nama_dokumen) {
+    let lastPrintCheck = 0;
+    const checkInterval = setInterval(() => {
+        const now = Date.now();
+        // Jika sudah di atas 5 menit, hentikan polling
+        if (now - lastPrintCheck > 300000) {
+            clearInterval(checkInterval);
+            return;
+        }
+        
+        // Tidak bisa deteksi secara akurat, 
+        // tapi kita asumsikan user akan print dari tab terpisah
+    }, 5000);
+}
+
+/**
+ * Pasang event listener untuk deteksi print pada gambar
+ */
+function attachPrintListenerToImage(id_dokumen, nama_dokumen) {
+    // Tangkap event print dari window (Ctrl+P)
+    const printHandler = function() {
+        logPrintFromPreview(id_dokumen, nama_dokumen, 1);
+        window.removeEventListener('beforeprint', printHandler);
+    };
+    
+    window.addEventListener('beforeprint', printHandler);
+    
+    // Hapus setelah 5 menit jika tidak digunakan
+    setTimeout(() => {
+        window.removeEventListener('beforeprint', printHandler);
+    }, 300000);
+}
+
+/**
+ * Kirim log print ke server
+ */
+function logPrintFromPreview(id_dokumen, nama_dokumen, jumlah_kertas = 1) {
+    // Cegah duplikasi log
+    if (printLogSent) return;
+    printLogSent = true;
+    
+    $.ajax({
+        url: '<?= base_url('IDE/log_print_from_preview') ?>',
+        type: 'POST',
+        data: {
+            id_dokumen: id_dokumen,
+            nama_dokumen: nama_dokumen,
+            jumlah_kertas: jumlah_kertas,
+            source: 'pdf_viewer'
+        },
+        dataType: 'json',
+        success: function(response) {
+            console.log('Print log recorded:', response);
+            
+            // Tampilkan notifikasi kecil (opsional)
+            if (response.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Print Tercatat',
+                    text: `Aktivitas print untuk "${nama_dokumen}" telah tercatat`,
+                    timer: 1500,
+                    showConfirmButton: false,
+                    position: 'top-end',
+                    toast: true
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Failed to record print log:', error);
+            printLogSent = false; // Reset agar bisa dicoba lagi
+        }
+    });
+}
+
+function printFromPreview() {
+    if (!currentPreviewDokumen) {
+        Swal.fire('Error', 'Tidak ada dokumen yang dipreview', 'error');
+        return;
+    }
+    
+    // Tampilkan dialog dengan jumlah copy
+    Swal.fire({
+        title: 'Print Dokumen',
+        html: `
+            <div style="text-align:left;">
+                <p><strong>📄 Dokumen:</strong> ${escapeHtml(currentPreviewDokumen.nama)}</p>
+                <p><strong>📁 Tipe:</strong> ${currentPreviewDokumen.type || 'Unknown'}</p>
+                <div class="form-group" style="margin-top:15px;">
+                    <label class="form-label">Jumlah Copy:</label>
+                    <input type="number" id="print_copies" class="form-control" value="1" min="1" max="10" style="width:100%; padding:8px;">
+                </div>
+            </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: '🖨️ Print Sekarang',
+        cancelButtonText: 'Batal',
+        width: '450px',
+        preConfirm: () => {
+            const copies = parseInt(document.getElementById('print_copies').value);
+            if (isNaN(copies) || copies < 1) {
+                Swal.showValidationMessage('Jumlah copy minimal 1');
+                return false;
+            }
+            return { copies: copies };
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const jumlahCopy = result.value.copies;
+            const totalKertas = jumlahCopy;
+            
+            // Loading
+            Swal.fire({
+                title: 'Memproses...',
+                text: 'Mencatat aktivitas print...',
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading()
+            });
+            
+            // Kirim log print ke server
+            $.ajax({
+                url: '<?= base_url('IDE/log_print_from_preview') ?>',
+                type: 'POST',
+                data: {
+                    id_dokumen: currentPreviewDokumen.id,
+                    nama_dokumen: currentPreviewDokumen.nama,
+                    jumlah_kertas: totalKertas,
+                    source: 'print_button'
+                },
+                dataType: 'json',
+                success: function(response) {
+                    console.log('Print log recorded:', response);
+                    Swal.close();
+                    
+                    if (response.status === 'success') {
+                        // NOTIFIKASI SUKSES LOG
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Print Tercatat!',
+                            html: `${response.detail || `Print dokumen: ${currentPreviewDokumen.nama} - ${totalKertas} lembar`}`,
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        
+                        // EKSEKUSI PRINT
+                        executePrintFromPreview();
+                    } else {
+                        Swal.fire('Error', response.message || 'Gagal mencatat log print', 'error');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to record print log:', error);
+                    Swal.close();
+                    
+                    // TETAP LANJUTKAN PRINT
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Log Gagal Tercatat',
+                        text: 'Print tetap dilanjutkan, tetapi log tidak tersimpan',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    executePrintFromPreview();
+                }
+            });
+        }
+    });
+}
+
+function executePrintFromPreview() {
+    const fileType = currentPreviewDokumen.type;
+    const baseUrl = '<?= base_url() ?>';
+    const fileUrl = baseUrl + currentPreviewDokumen.path;
+    
+    if (fileType === 'application/pdf') {
+        // Method 1: Coba print dari embed
+        const embed = document.getElementById('pdf-embed');
+        if (embed) {
+            try {
+                embed.print();
+                return;
+            } catch(e) {
+                console.log('Embed print failed:', e);
+            }
+        }
+        
+        // Method 2: Buka di tab baru lalu print
+        const printWindow = window.open(fileUrl, '_blank');
+        if (printWindow) {
+            printWindow.onload = function() {
+                printWindow.print();
+            };
+        } else {
+            // Method 3: Popup terblokir, kasih link
+            Swal.fire({
+                icon: 'info',
+                title: 'Popup Terblokir',
+                html: `Silakan <a href="${fileUrl}" target="_blank">klik di sini</a> untuk membuka file, lalu tekan Ctrl+P untuk print.`,
+                confirmButtonText: 'OK'
+            });
+        }
+    } else {
+        // Untuk gambar dan file lain, buka di tab baru
+        const printWindow = window.open(fileUrl, '_blank');
+        if (printWindow) {
+            printWindow.onload = function() {
+                printWindow.print();
+            };
+        }
+    }
 }
 
 function closePreviewModal() {
-  document.getElementById('modalPreview').style.display = 'none';
-  document.getElementById('previewContent').innerHTML = '';
+    document.getElementById('modalPreview').style.display = 'none';
+    const previewDiv = document.getElementById('previewContent');
+    if (previewDiv) {
+        previewDiv.innerHTML = '';
+    }
+    currentPreviewDokumen = null;
 }
 
 // ================= DELETE DOKUMEN =================
@@ -3263,16 +3860,18 @@ function renderLogTable(logs) {
   
   const getAksiClass = (aksi) => {
     const map = {
-      'Upload': 'log-aksi-upload',
-      'Print': 'log-aksi-print',
-      'Review': 'log-aksi-review',
-      'Login': 'log-aksi-login',
-      'Update': 'log-aksi-update',
-      'Hapus': 'log-aksi-hapus',
-      'Delete': 'log-aksi-hapus'
+        'Upload': 'log-aksi-upload',
+        'Print': 'log-aksi-print',
+        'Print (via Preview)': 'log-aksi-print',  // TAMBAHKAN INI
+        'Preview': 'log-aksi-review',
+        'Review': 'log-aksi-review',
+        'Login': 'log-aksi-login',
+        'Update': 'log-aksi-update',
+        'Hapus': 'log-aksi-hapus',
+        'Delete': 'log-aksi-hapus'
     };
     return map[aksi] || 'log-aksi-upload';
-  };
+};
   
   const getAksiIcon = (aksi) => {
     const map = {
@@ -3384,6 +3983,572 @@ function refreshLogData() {
   $('#log-search').val('');
   loadLogAktivitas();
 }
+
+// ==================== PRINTER MANAGEMENT FUNCTIONS ====================
+
+let currentPrintDokumen = null;
+let selectedPrinter = null;
+let printersData = [];
+
+/**
+ * Open print modal (VERSI SIMPLE LANGSUNG PRINT)
+ */
+function openPrintModal(id_dokumen, nama_dokumen) {
+    currentPrintDokumen = { id_dokumen, nama_dokumen };
+    
+    document.getElementById('print-dokumen-nama').textContent = nama_dokumen;
+    document.getElementById('print-jumlah-copy').value = '1';
+    
+    // Load default printer
+    loadDefaultPrinter();
+    updatePrintSummarySimple();
+    
+    document.getElementById('modalPrint').style.display = 'flex';
+}
+
+/**
+ * Close print modal
+ */
+function closePrintModal() {
+    document.getElementById('modalPrint').style.display = 'none';
+    currentPrintDokumen = null;
+}
+
+/**
+ * Load printers real dari database
+ */
+function loadRealPrinters() {
+    const container = document.getElementById('printer-list-container');
+    container.innerHTML = '<div class="empty-state"><div class="modern-spinner"></div><p>Memuat daftar printer...</p></div>';
+    
+    $.ajax({
+        url: '<?= base_url('IDE/get_printers') ?>',
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success') {
+                printersData = response.data;
+                renderPrinterListReal(printersData);
+            } else {
+                container.innerHTML = '<div class="empty-state">❌ Gagal memuat daftar printer</div>';
+            }
+        },
+        error: function() {
+            container.innerHTML = '<div class="empty-state">⚠️ Error koneksi ke server</div>';
+        }
+    });
+}
+
+/**
+ * Render printer list dengan status real-time
+ */
+function renderPrinterListReal(printers) {
+    const container = document.getElementById('printer-list-container');
+    
+    if (!printers || printers.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <div style="font-size:48px;">🖨️</div>
+                <p>Belum ada printer terdaftar</p>
+                <button class="btn btn-sm" onclick="showAddPrinterModal()" style="margin-top:10px;">
+                    + Tambah Printer
+                </button>
+            </div>`;
+        return;
+    }
+    
+    container.innerHTML = printers.map(printer => `
+        <div class="printer-card" onclick="selectPrinterReal(${printer.id_printer})" data-printer-id="${printer.id_printer}">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <strong>${escapeHtml(printer.nama_printer)}</strong>
+                    <br>
+                    <small style="color:var(--text-2);">
+                        <i class="fas fa-map-marker-alt"></i> ${escapeHtml(printer.lokasi)}
+                    </small>
+                    <br>
+                    <small style="color:var(--text-3);">
+                        <i class="fas fa-plug"></i> ${printer.connection_display}
+                    </small>
+                </div>
+                <div style="text-align:right;">
+                    <span class="printer-status ${printer.status}"></span>
+                    <span style="font-size:11px; font-weight:600;">${printer.status.toUpperCase()}</span>
+                    ${printer.current_queue > 0 ? `<div><small>📋 Antrian: ${printer.current_queue}</small></div>` : ''}
+                </div>
+            </div>
+            <div style="margin-top:8px; font-size:12px;">
+                <div style="display:flex; justify-content:space-between;">
+                    <span>📄 Stock Kertas:</span>
+                    <strong style="color: ${printer.is_low_stock ? 'var(--red)' : 'var(--green)'}">
+                        ${printer.stock_kertas} / ${printer.kapasitas_kertas} lembar
+                    </strong>
+                </div>
+                <div class="stock-bar" style="margin-top:4px;">
+                    <div class="stock-fill" style="width: ${printer.stock_percentage}%; 
+                         background: ${printer.is_low_stock ? 'var(--red)' : 'var(--green)'}; 
+                         height:4px; border-radius:2px;"></div>
+                </div>
+                ${printer.is_low_stock ? '<div style="color:var(--red); margin-top:4px;">⚠️ Stok menipis!</div>' : ''}
+            </div>
+            <div style="margin-top:8px; font-size:11px; color:var(--text-3);">
+                <i class="fas fa-chart-line"></i> Total print: ${printer.total_print_count || 0}
+            </div>
+        </div>
+    `).join('');
+}
+
+/**
+ * Select printer real
+ */
+function selectPrinterReal(printerId) {
+    selectedPrinter = printersData.find(p => p.id_printer === printerId);
+    
+    if (!selectedPrinter) return;
+    
+    // Update UI
+    document.querySelectorAll('.printer-card').forEach(card => {
+        card.classList.remove('selected');
+        if (card.dataset.printerId == printerId) {
+            card.classList.add('selected');
+        }
+    });
+    
+    updatePrintSummaryReal();
+}
+
+/**
+ * Update print summary based on selected printer
+ */
+function updatePrintSummaryReal() {
+    const jumlahCopy = parseInt(document.getElementById('print-jumlah-copy').value) || 1;
+    const estimasiHalaman = 1; // Bisa dihitung dari file
+    const totalKertas = jumlahCopy * estimasiHalaman;
+    
+    const summaryDiv = document.getElementById('print-summary');
+    
+    if (!selectedPrinter) {
+        summaryDiv.innerHTML = '<div class="empty-state">Pilih printer terlebih dahulu</div>';
+        return;
+    }
+    
+    const stockAfter = selectedPrinter.stock_kertas - totalKertas;
+    const isStockEnough = stockAfter >= 0;
+    
+    summaryDiv.innerHTML = `
+        <div class="print-summary-item">
+            <span>🖨️ Printer:</span>
+            <strong>${escapeHtml(selectedPrinter.nama_printer)}</strong>
+        </div>
+        <div class="print-summary-item">
+            <span>📄 Dokumen:</span>
+            <strong>${escapeHtml(currentPrintDokumen.nama_dokumen)}</strong>
+        </div>
+        <div class="print-summary-item">
+            <span>📋 Jumlah Copy:</span>
+            <strong>${jumlahCopy} x</strong>
+        </div>
+        <div class="print-summary-item">
+            <span>📄 Total Kertas:</span>
+            <strong>${totalKertas} lembar</strong>
+        </div>
+        <div class="print-summary-item">
+            <span>📊 Stock Saat Ini:</span>
+            <strong>${selectedPrinter.stock_kertas} lembar</strong>
+        </div>
+        <div class="print-summary-item">
+            <span>📈 Stock Setelah Print:</span>
+            <strong style="color: ${isStockEnough ? 'var(--green)' : 'var(--red)'}">
+                ${stockAfter} lembar
+                ${!isStockEnough ? ' ❌ TIDAK CUKUP!' : ''}
+            </strong>
+        </div>
+        <div class="print-summary-item">
+            <span>🔌 Tipe Koneksi:</span>
+            <strong>${selectedPrinter.connection_type.toUpperCase()}</strong>
+        </div>
+    `;
+    
+    if (selectedPrinter.is_low_stock) {
+        summaryDiv.innerHTML += `
+            <div class="stock-warning">
+                ⚠️ <strong>Peringatan:</strong> Stock kertas menipis (${selectedPrinter.stock_kertas} lembar). 
+                <a href="#" onclick="showAddPaperModal(${selectedPrinter.id_printer})">Isi ulang</a>
+            </div>
+        `;
+    }
+}
+
+/**
+ * Execute print to real printer
+ */
+function executePrintReal() {
+    if (!selectedPrinter) {
+        Swal.fire('Peringatan', 'Pilih printer terlebih dahulu', 'warning');
+        return;
+    }
+    
+    if (selectedPrinter.status !== 'online') {
+        Swal.fire('Error', `Printer sedang ${selectedPrinter.status}. Tidak dapat melakukan print.`, 'error');
+        return;
+    }
+    
+    const jumlahCopy = parseInt(document.getElementById('print-jumlah-copy').value) || 1;
+    const totalKertas = jumlahCopy; // 1 halaman per copy
+    
+    if (selectedPrinter.stock_kertas < totalKertas) {
+        Swal.fire('Error', `Stock kertas tidak mencukupi! Sisa: ${selectedPrinter.stock_kertas} lembar`, 'error');
+        return;
+    }
+    
+    // Show loading
+    Swal.fire({
+        title: 'Memproses Print...',
+        text: `Mengirim ke printer ${selectedPrinter.nama_printer}`,
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+    
+    $.ajax({
+        url: '<?= base_url('IDE/print_dokumen') ?>',
+        type: 'POST',
+        data: {
+            id_dokumen: currentPrintDokumen.id_dokumen,
+            id_printer: selectedPrinter.id_printer,
+            jumlah_halaman: 1,
+            jumlah_kertas: totalKertas,
+            jumlah_copy: jumlahCopy
+        },
+        dataType: 'json',
+        success: function(response) {
+            Swal.close();
+            closePrintModal();
+            
+            if (response.status === 'success') {
+                showPrintResultReal('success', '✅ Print Berhasil!', response.message, response.data);
+                
+                // Refresh data
+                if (currentBidangId) loadDokumenFromDB(currentBidangId);
+                loadDashboardStats();
+                
+                // Refresh log if active
+                if (document.querySelector('.panel.active')?.id === 'panel-log') {
+                    loadLogAktivitas();
+                }
+            } else {
+                showPrintResultReal('error', '❌ Print Gagal!', response.message, null);
+            }
+        },
+        error: function(xhr, status, error) {
+            Swal.close();
+            closePrintModal();
+            showPrintResultReal('error', '⚠️ Error!', 'Terjadi kesalahan: ' + error, null);
+            console.error('Print error:', error);
+        }
+    });
+}
+
+/**
+ * Test printer connection
+ */
+function testPrinterConnection(printerId) {
+    Swal.fire({
+        title: 'Testing Koneksi Printer...',
+        text: 'Mohon tunggu',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+    
+    $.ajax({
+        url: '<?= base_url('IDE/test_printer_connection') ?>',
+        type: 'POST',
+        data: { id_printer: printerId },
+        dataType: 'json',
+        success: function(response) {
+            Swal.close();
+            
+            if (response.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Koneksi Berhasil',
+                    html: `
+                        ✅ Printer dapat dijangkau<br>
+                        ⚡ Response time: ${response.response_time_ms} ms<br>
+                        📡 Status: ${response.printer_status.toUpperCase()}
+                    `,
+                    timer: 3000
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Koneksi Gagal',
+                    html: `
+                        ❌ ${response.message}<br>
+                        💡 Periksa kabel/koneksi printer
+                    `
+                });
+            }
+            
+            // Refresh printer list
+            loadRealPrinters();
+        },
+        error: function() {
+            Swal.close();
+            Swal.fire('Error', 'Gagal melakukan test koneksi', 'error');
+        }
+    });
+}
+
+/**
+ * Show add paper modal
+ */
+function showAddPaperModal(printerId) {
+    Swal.fire({
+        title: 'Tambah Stock Kertas',
+        html: `
+            <input type="number" id="jumlah_kertas" class="swal2-input" placeholder="Jumlah lembar" min="1" max="500">
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Tambah',
+        cancelButtonText: 'Batal',
+        preConfirm: () => {
+            const jumlah = document.getElementById('jumlah_kertas').value;
+            if (!jumlah || jumlah <= 0) {
+                Swal.showValidationMessage('Jumlah tidak valid');
+                return false;
+            }
+            return { jumlah: parseInt(jumlah) };
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            addPaperStock(printerId, result.value.jumlah);
+        }
+    });
+}
+
+/**
+ * Add paper stock to printer
+ */
+function addPaperStock(printerId, jumlah) {
+    Swal.fire({
+        title: 'Menambah Stock...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+    
+    $.ajax({
+        url: '<?= base_url('IDE/add_paper_stock') ?>',
+        type: 'POST',
+        data: {
+            id_printer: printerId,
+            jumlah_tambah: jumlah
+        },
+        dataType: 'json',
+        success: function(response) {
+            Swal.close();
+            
+            if (response.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    html: `Stock kertas bertambah ${jumlah} lembar.<br>Total sekarang: ${response.new_stock} lembar`,
+                    timer: 2000
+                });
+                loadRealPrinters();
+            } else {
+                Swal.fire('Error', response.message, 'error');
+            }
+        },
+        error: function() {
+            Swal.close();
+            Swal.fire('Error', 'Gagal menambah stock', 'error');
+        }
+    });
+}
+
+/**
+ * Show add printer modal
+ */
+function showAddPrinterModal() {
+    Swal.fire({
+        title: 'Tambah Printer Baru',
+        html: `
+            <form id="formAddPrinter" style="text-align:left;">
+                <div class="form-group">
+                    <label>Nama Printer:</label>
+                    <input type="text" id="nama_printer" class="swal2-input" placeholder="Contoh: Canon G3010" required>
+                </div>
+                <div class="form-group">
+                    <label>Lokasi:</label>
+                    <input type="text" id="lokasi" class="swal2-input" placeholder="Contoh: Lantai 1 - Ruang Litbang" required>
+                </div>
+                <div class="form-group">
+                    <label>Tipe Koneksi:</label>
+                    <select id="connection_type" class="swal2-select" onchange="togglePrinterFields()">
+                        <option value="network">Network (TCP/IP)</option>
+                        <option value="shared">Shared Printer (Windows)</option>
+                        <option value="usb">USB Local</option>
+                    </select>
+                </div>
+                <div id="network-fields">
+                    <div class="form-group">
+                        <label>IP Address:</label>
+                        <input type="text" id="ip_address" class="swal2-input" placeholder="192.168.1.100">
+                    </div>
+                    <div class="form-group">
+                        <label>Port:</label>
+                        <input type="number" id="port" class="swal2-input" value="9100">
+                    </div>
+                </div>
+                <div id="shared-fields" style="display:none;">
+                    <div class="form-group">
+                        <label>Share Path:</label>
+                        <input type="text" id="share_path" class="swal2-input" placeholder="\\\\server\\printer">
+                    </div>
+                </div>
+                <div id="usb-fields" style="display:none;">
+                    <div class="form-group">
+                        <label>USB Port:</label>
+                        <input type="text" id="usb_port" class="swal2-input" placeholder="USB001">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Stock Kertas Awal:</label>
+                    <input type="number" id="stock_kertas" class="swal2-input" value="500">
+                </div>
+            </form>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Simpan & Test',
+        cancelButtonText: 'Batal',
+        width: '600px',
+        preConfirm: () => {
+            const connectionType = document.getElementById('connection_type').value;
+            const data = {
+                nama_printer: document.getElementById('nama_printer').value,
+                lokasi: document.getElementById('lokasi').value,
+                connection_type: connectionType,
+                stock_kertas: document.getElementById('stock_kertas').value
+            };
+            
+            if (connectionType === 'network') {
+                data.ip_address = document.getElementById('ip_address').value;
+                data.port = document.getElementById('port').value;
+                if (!data.ip_address) {
+                    Swal.showValidationMessage('IP Address wajib diisi untuk printer jaringan');
+                    return false;
+                }
+            } else if (connectionType === 'shared') {
+                data.share_path = document.getElementById('share_path').value;
+                if (!data.share_path) {
+                    Swal.showValidationMessage('Share path wajib diisi untuk shared printer');
+                    return false;
+                }
+            } else if (connectionType === 'usb') {
+                data.usb_port = document.getElementById('usb_port').value;
+                if (!data.usb_port) {
+                    Swal.showValidationMessage('USB Port wajib diisi untuk USB printer');
+                    return false;
+                }
+            }
+            
+            return data;
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            saveNewPrinter(result.value);
+        }
+    });
+}
+
+/**
+ * Toggle printer fields based on connection type
+ */
+function togglePrinterFields() {
+    const type = document.getElementById('connection_type').value;
+    document.getElementById('network-fields').style.display = type === 'network' ? 'block' : 'none';
+    document.getElementById('shared-fields').style.display = type === 'shared' ? 'block' : 'none';
+    document.getElementById('usb-fields').style.display = type === 'usb' ? 'block' : 'none';
+}
+
+/**
+ * Save new printer
+ */
+function saveNewPrinter(printerData) {
+    Swal.fire({
+        title: 'Menyimpan & Testing...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+    
+    $.ajax({
+        url: '<?= base_url('IDE/add_printer') ?>',
+        type: 'POST',
+        data: printerData,
+        dataType: 'json',
+        success: function(response) {
+            Swal.close();
+            
+            if (response.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Printer Ditambahkan!',
+                    html: `
+                        ✅ Printer berhasil ditambahkan<br>
+                        🔌 Test koneksi: ${response.test_result.success ? 'BERHASIL' : 'GAGAL'}<br>
+                        📡 Pesan: ${response.test_result.message}
+                    `
+                });
+                loadRealPrinters();
+            } else {
+                Swal.fire('Error', response.message, 'error');
+            }
+        },
+        error: function() {
+            Swal.close();
+            Swal.fire('Error', 'Gagal menambahkan printer', 'error');
+        }
+    });
+}
+
+/**
+ * Show print result
+ */
+function showPrintResultReal(type, title, message, data) {
+    const iconMap = { success: '✅', error: '❌', warning: '⚠️' };
+    
+    let detailsHtml = '';
+    if (data && type === 'success') {
+        detailsHtml = `
+            <div style="margin-top:15px; text-align:left; background:var(--page-bg); padding:12px; border-radius:8px;">
+                <strong>📊 Detail Print:</strong><br>
+                🖨️ Printer: ${escapeHtml(data.printer)}<br>
+                📄 Dokumen: ${escapeHtml(data.dokumen)}<br>
+                📋 Jumlah Kertas: ${data.jumlah_kertas} lembar<br>
+                📈 Sisa Kertas: ${data.sisa_kertas} lembar<br>
+                ⚡ Waktu Proses: ${data.processing_time || 'N/A'}
+            </div>
+        `;
+    }
+    
+    Swal.fire({
+        icon: type === 'success' ? 'success' : 'error',
+        title: title,
+        html: `<p>${message}</p>${detailsHtml}`,
+        timer: type === 'success' ? 4000 : undefined,
+        showConfirmButton: true
+    });
+}
+
+/**
+ * Close print modal
+ */
+function closePrintModal() {
+    document.getElementById('modalPrint').style.display = 'none';
+    selectedPrinter = null;
+    currentPrintDokumen = null;
+}
+
 
 // ================= EXPORT LOG TO PDF (DENGAN LOGO) =================
 function exportLogToPDF() {
@@ -3521,6 +4686,461 @@ function exportLogToPDF() {
   });
 }
 
+// ==================== MANAJEMEN PRINTER (SEPERTI WPS OFFICE) ====================
+
+let printersList = [];
+let selectedPrinterId = null;
+let defaultPrinter = null;
+
+/**
+ * Load daftar printer untuk manajemen
+ */
+function loadPrinterManagement() {
+    const container = document.getElementById('printer-list-manager');
+    container.innerHTML = '<div class="empty-state"><div class="modern-spinner"></div><p>Memuat daftar printer...</p></div>';
+    
+    $.ajax({
+        url: '<?= base_url('IDE/get_printers') ?>',
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success') {
+                printersList = response.data;
+                renderPrinterManagementList(printersList);
+                updatePrinterStats(printersList);
+                
+                // Set default printer (yang pertama atau yang status online)
+                const onlinePrinters = printersList.filter(p => p.status === 'online');
+                if (onlinePrinters.length > 0) {
+                    defaultPrinter = onlinePrinters[0];
+                } else if (printersList.length > 0) {
+                    defaultPrinter = printersList[0];
+                }
+                
+                // Simpan default printer ke localStorage
+                if (defaultPrinter) {
+                    localStorage.setItem('default_printer_id', defaultPrinter.id_printer);
+                }
+            } else {
+                container.innerHTML = '<div class="empty-state">❌ Gagal memuat daftar printer</div>';
+            }
+        },
+        error: function() {
+            container.innerHTML = '<div class="empty-state">⚠️ Error koneksi ke server</div>';
+        }
+    });
+}
+
+/**
+ * Render daftar printer untuk manajemen (seperti WPS Office)
+ */
+function renderPrinterManagementList(printers) {
+    const container = document.getElementById('printer-list-manager');
+    
+    if (!printers || printers.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <div style="font-size:48px;">🖨️</div>
+                <p>Belum ada printer terdaftar</p>
+                <button class="btn btn-primary" onclick="showAddPrinterModal()" style="margin-top:15px;">
+                    + Tambah Printer
+                </button>
+            </div>`;
+        return;
+    }
+    
+    container.innerHTML = `
+        <div style="display:flex; flex-direction:column; gap:12px;">
+            ${printers.map(printer => `
+                <div class="printer-manager-card" data-printer-id="${printer.id_printer}" style="
+                    border: 2px solid ${selectedPrinterId === printer.id_printer ? 'var(--blue-600)' : 'var(--border)'};
+                    border-radius: var(--radius);
+                    padding: 16px;
+                    background: ${selectedPrinterId === printer.id_printer ? 'var(--blue-50)' : 'var(--surface)'};
+                    transition: all 0.2s;
+                ">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <div style="flex:1;">
+                            <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                                <span class="printer-status ${printer.status}" style="width:12px; height:12px;"></span>
+                                <strong style="font-size:14px;">${escapeHtml(printer.nama_printer)}</strong>
+                                ${printer.status === 'online' ? '<span class="pill pill-done" style="font-size:9px;">Online</span>' : '<span class="pill pill-danger" style="font-size:9px;">Offline</span>'}
+                                ${selectedPrinterId === printer.id_printer ? '<span class="pill pill-print" style="background:#2563eb; color:white;">Default</span>' : ''}
+                            </div>
+                            <div style="font-size:12px; color:var(--text-2); margin-bottom:4px;">
+                                <i class="fas fa-map-marker-alt"></i> ${escapeHtml(printer.lokasi)}
+                            </div>
+                            <div style="font-size:11px; color:var(--text-3); margin-bottom:8px;">
+                                <i class="fas fa-plug"></i> ${printer.connection_display}
+                            </div>
+                            <div style="display:flex; gap:15px; font-size:12px;">
+                                <span>📄 Stock: <strong>${printer.stock_kertas}</strong> / ${printer.kapasitas_kertas}</span>
+                                <span>📊 Total print: <strong>${printer.total_print_count || 0}</strong></span>
+                            </div>
+                            ${printer.is_low_stock ? '<div style="color:var(--red); font-size:11px; margin-top:5px;">⚠️ Stock menipis! Segera isi ulang.</div>' : ''}
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <button class="btn btn-sm" onclick="setAsDefaultPrinter(${printer.id_printer})" style="padding:4px 10px;" title="Jadikan default">
+                                <i class="fas fa-star"></i> Default
+                            </button>
+                            <button class="btn btn-sm" onclick="testPrinterConnectionManager(${printer.id_printer})" style="padding:4px 10px;" title="Test koneksi">
+                                <i class="fas fa-plug"></i> Test
+                            </button>
+                            <button class="btn btn-sm" onclick="addPaperStockManager(${printer.id_printer})" style="padding:4px 10px;" title="Tambah kertas">
+                                <i class="fas fa-plus"></i> Kertas
+                            </button>
+                            <button class="btn btn-sm" onclick="deletePrinterManager(${printer.id_printer})" style="padding:4px 10px; color:var(--red);" title="Hapus printer">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+        <div style="margin-top:15px; text-align:center;">
+            <button class="btn" onclick="showAddPrinterModal()" style="border:1px dashed var(--blue-600); color:var(--blue-600);">
+                <i class="fas fa-plus"></i> Tambah Printer Baru
+            </button>
+        </div>
+    `;
+}
+
+/**
+ * Set printer sebagai default
+ */
+function setAsDefaultPrinter(printerId) {
+    const printer = printersList.find(p => p.id_printer === printerId);
+    if (printer) {
+        defaultPrinter = printer;
+        selectedPrinterId = printerId;
+        localStorage.setItem('default_printer_id', printerId);
+        
+        // Update tampilan
+        renderPrinterManagementList(printersList);
+        
+        Swal.fire({
+            icon: 'success',
+            title: 'Printer Default',
+            text: `${printer.nama_printer} sekarang menjadi printer default`,
+            timer: 1500,
+            showConfirmButton: false
+        });
+    }
+}
+
+/**
+ * Test koneksi printer dari manajemen
+ */
+function testPrinterConnectionManager(printerId) {
+    Swal.fire({
+        title: 'Testing Koneksi...',
+        text: 'Mohon tunggu',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+    
+    $.ajax({
+        url: '<?= base_url('IDE/test_printer_connection') ?>',
+        type: 'POST',
+        data: { id_printer: printerId },
+        dataType: 'json',
+        success: function(response) {
+            Swal.close();
+            if (response.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Koneksi Berhasil',
+                    html: `✅ ${response.message}<br>⚡ Response: ${response.response_time_ms} ms`,
+                    timer: 2000
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Koneksi Gagal',
+                    html: `❌ ${response.message}<br><br>💡 Periksa kabel/koneksi printer`
+                });
+            }
+            refreshPrinterList();
+        },
+        error: function() {
+            Swal.close();
+            Swal.fire('Error', 'Gagal melakukan test koneksi', 'error');
+        }
+    });
+}
+
+/**
+ * Tambah stock kertas dari manajemen
+ */
+function addPaperStockManager(printerId) {
+    Swal.fire({
+        title: 'Tambah Stock Kertas',
+        input: 'number',
+        inputLabel: 'Jumlah lembar',
+        inputValue: 500,
+        inputAttributes: {
+            min: 1,
+            max: 500,
+            step: 1
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Tambah',
+        cancelButtonText: 'Batal',
+        preConfirm: (jumlah) => {
+            if (!jumlah || jumlah <= 0) {
+                Swal.showValidationMessage('Jumlah tidak valid');
+                return false;
+            }
+            return parseInt(jumlah);
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            addPaperStock(printerId, result.value);
+        }
+    });
+}
+
+/**
+ * Hapus printer dari manajemen
+ */
+function deletePrinterManager(printerId) {
+    const printer = printersList.find(p => p.id_printer === printerId);
+    
+    Swal.fire({
+        title: 'Hapus Printer?',
+        text: `Apakah Anda yakin ingin menghapus "${printer?.nama_printer}"?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '<?= base_url('IDE/delete_printer') ?>',
+                type: 'POST',
+                data: { id_printer: printerId },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire('Terhapus!', response.message, 'success');
+                        refreshPrinterList();
+                        if (defaultPrinter?.id_printer === printerId) {
+                            defaultPrinter = null;
+                            localStorage.removeItem('default_printer_id');
+                        }
+                    } else {
+                        Swal.fire('Error!', response.message, 'error');
+                    }
+                },
+                error: function() {
+                    Swal.fire('Error!', 'Gagal menghapus printer', 'error');
+                }
+            });
+        }
+    });
+}
+
+/**
+ * Refresh daftar printer
+ */
+function refreshPrinterList() {
+    loadPrinterManagement();
+    loadRealPrinters(); // Untuk modal print
+}
+
+/**
+ * Update statistik printer
+ */
+function updatePrinterStats(printers) {
+    const total = printers.length;
+    const online = printers.filter(p => p.status === 'online').length;
+    const totalPaper = printers.reduce((sum, p) => sum + (p.stock_kertas || 0), 0);
+    const totalPrint = printers.reduce((sum, p) => sum + (p.total_print_count || 0), 0);
+    
+    document.getElementById('printer-total-count').textContent = total;
+    document.getElementById('printer-online-count').textContent = online;
+    document.getElementById('printer-paper-total').textContent = totalPaper.toLocaleString();
+    document.getElementById('printer-print-total').textContent = totalPrint.toLocaleString();
+}
+
+/**
+ * Filter printer list
+ */
+function filterPrinterList() {
+    const search = document.getElementById('printer-search')?.value.toLowerCase() || '';
+    const filtered = printersList.filter(p => 
+        p.nama_printer.toLowerCase().includes(search) || 
+        p.lokasi.toLowerCase().includes(search)
+    );
+    renderPrinterManagementList(filtered);
+}
+
+/**
+ * Buka manajemen printer dari modal print
+ */
+function openPrinterManager() {
+    closePrintModal();
+    navigateToPanel('printer');
+}
+
+/**
+ * Print sederhana (langsung ke default printer)
+ */
+function executePrintSimple() {
+    if (!defaultPrinter) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Tidak Ada Printer',
+            text: 'Silakan tambah dan set default printer terlebih dahulu',
+            showConfirmButton: true
+        }).then(() => {
+            navigateToPanel('printer');
+        });
+        return;
+    }
+    
+    if (defaultPrinter.status !== 'online') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Printer Offline',
+            text: `Printer ${defaultPrinter.nama_printer} sedang offline. Periksa koneksi printer.`,
+            showConfirmButton: true
+        });
+        return;
+    }
+    
+    const jumlahCopy = parseInt(document.getElementById('print-jumlah-copy').value) || 1;
+    const totalKertas = jumlahCopy;
+    
+    if (defaultPrinter.stock_kertas < totalKertas) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Stock Tidak Cukup',
+            text: `Stock kertas: ${defaultPrinter.stock_kertas} lembar`,
+            footer: '<a href="#" onclick="openPrinterManager()">Kelola printer</a>'
+        });
+        return;
+    }
+    
+    Swal.fire({
+        title: 'Memproses Print...',
+        text: `Mengirim ke ${defaultPrinter.nama_printer}`,
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+    
+    $.ajax({
+        url: '<?= base_url('IDE/print_dokumen') ?>',
+        type: 'POST',
+        data: {
+            id_dokumen: currentPrintDokumen.id_dokumen,
+            id_printer: defaultPrinter.id_printer,
+            jumlah_halaman: 1,
+            jumlah_kertas: totalKertas,
+            jumlah_copy: jumlahCopy
+        },
+        dataType: 'json',
+        success: function(response) {
+            Swal.close();
+            closePrintModal();
+            
+            if (response.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: '✅ Print Berhasil!',
+                    html: `
+                        Printer: ${response.data.printer}<br>
+                        Jumlah Kertas: ${response.data.jumlah_kertas} lembar<br>
+                        Sisa Kertas: ${response.data.sisa_kertas} lembar
+                    `,
+                    timer: 3000
+                });
+                
+                if (currentBidangId) loadDokumenFromDB(currentBidangId);
+                loadDashboardStats();
+                if (document.querySelector('.panel.active')?.id === 'panel-log') {
+                    loadLogAktivitas();
+                }
+            } else {
+                Swal.fire('❌ Print Gagal!', response.message, 'error');
+            }
+        },
+        error: function() {
+            Swal.close();
+            Swal.fire('Error!', 'Terjadi kesalahan saat print', 'error');
+        }
+    });
+}
+
+/**
+ * Update ringkasan print sederhana
+ */
+function updatePrintSummarySimple() {
+    const jumlahCopy = parseInt(document.getElementById('print-jumlah-copy').value) || 1;
+    const totalKertas = jumlahCopy;
+    
+    const summaryDiv = document.getElementById('print-summary-simple');
+    
+    if (!defaultPrinter) {
+        summaryDiv.innerHTML = '<div class="empty-state">⚠️ Belum ada printer default. <a href="#" onclick="openPrinterManager()">Tambahkan printer</a></div>';
+        return;
+    }
+    
+    const stockAfter = defaultPrinter.stock_kertas - totalKertas;
+    const isStockEnough = stockAfter >= 0;
+    
+    summaryDiv.innerHTML = `
+        <div class="print-summary-item">
+            <span>📄 Dokumen:</span>
+            <strong>${escapeHtml(currentPrintDokumen?.nama_dokumen || '-')}</strong>
+        </div>
+        <div class="print-summary-item">
+            <span>📋 Jumlah Copy:</span>
+            <strong>${jumlahCopy} x</strong>
+        </div>
+        <div class="print-summary-item">
+            <span>📄 Total Kertas:</span>
+            <strong>${totalKertas} lembar</strong>
+        </div>
+        <div class="print-summary-item">
+            <span>📊 Stock Setelah Print:</span>
+            <strong style="color: ${isStockEnough ? 'green' : 'red'}">
+                ${stockAfter} lembar
+            </strong>
+        </div>
+    `;
+}
+
+/**
+ * Load default printer dari localStorage
+ */
+function loadDefaultPrinter() {
+    const savedId = localStorage.getItem('default_printer_id');
+    if (savedId && printersList.length > 0) {
+        const found = printersList.find(p => p.id_printer == savedId);
+        if (found) {
+            defaultPrinter = found;
+            selectedPrinterId = found.id_printer;
+        } else if (printersList.length > 0) {
+            defaultPrinter = printersList[0];
+            selectedPrinterId = printersList[0].id_printer;
+        }
+    } else if (printersList.length > 0) {
+        defaultPrinter = printersList[0];
+        selectedPrinterId = printersList[0].id_printer;
+    }
+    
+    // Update tampilan default printer di modal
+    if (defaultPrinter) {
+        document.getElementById('default-printer-name').textContent = defaultPrinter.nama_printer;
+        document.getElementById('default-printer-stock').innerHTML = `Stock: ${defaultPrinter.stock_kertas} lembar | Status: ${defaultPrinter.status.toUpperCase()}`;
+    } else {
+        document.getElementById('default-printer-name').textContent = 'Belum ada printer';
+        document.getElementById('default-printer-stock').innerHTML = 'Silakan tambah printer terlebih dahulu';
+    }
+}
+
 // ================= INISIALISASI SAAT HALAMAN SIAP =================
 $(document).ready(function() {
   console.log('Document Ready - Inisialisasi SMB Bappeda');
@@ -3543,6 +5163,11 @@ $(document).ready(function() {
       console.log('Bidang aktif ditemukan:', currentBidangId);
     }
   }
+
+  $(document).on('click', '#printFromPreviewBtn', function() {
+    printFromPreview();
+});
+  
   
   // ========== 3. LOAD DASHBOARD STATS ==========
   loadDashboardStats();
@@ -3594,6 +5219,20 @@ $(document).ready(function() {
         console.error('Upload error:', error);
       }
     });
+    // ========== LOAD PANEL PRINTER SAAT AKTIF ==========
+const printerObserver = new MutationObserver(function() {
+    const activePanel = document.querySelector('.panel.active');
+    if (activePanel && activePanel.id === 'panel-printer') {
+        console.log('Panel printer aktif, memuat data...');
+        loadPrinterManagement();
+    }
+});
+
+printerObserver.observe(document.body, {
+    attributes: true,
+    attributeFilter: ['class'],
+    subtree: true
+});
   });
   
   // ========== 5. DETEKSI PERUBAHAN PANEL UNTUK LOAD LOG ==========
@@ -3629,18 +5268,43 @@ $(document).ready(function() {
     filterLogTable();
   });
   
-  // ========== 8. DISPLAY DATE & TIME ==========
-  const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 
-                  'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-  const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-  const now = new Date();
-  const dateStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
-  
-  const greetingDate = document.getElementById('greeting-date');
-  const heroDateText = document.getElementById('hero-date-text');
-  
-  if (greetingDate) greetingDate.textContent = dateStr;
-  if (heroDateText) heroDateText.textContent = dateStr;
+  // ========== DISPLAY DATE & TIME WIB - REKOMENDASI ==========
+function updateDateTimeWIB() {
+    const now = new Date();
+    
+    // Format tanggal
+    const dateOptions = {
+        timeZone: 'Asia/Jakarta',
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    };
+    
+    // Format jam
+    const timeOptions = {
+        timeZone: 'Asia/Jakarta',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    };
+    
+    const dateStr = now.toLocaleDateString('id-ID', dateOptions);
+    const timeStr = now.toLocaleTimeString('id-ID', timeOptions);
+    
+    const greetingDate = document.getElementById('greeting-date');
+    const heroDateText = document.getElementById('hero-date-text');
+    
+    if (greetingDate) greetingDate.textContent = `${dateStr} | ${timeStr} WIB`;
+    if (heroDateText) heroDateText.textContent = dateStr;
+}
+
+// Panggil pertama kali
+updateDateTimeWIB();
+
+// Update setiap detik (biar jam berjalan)
+setInterval(updateDateTimeWIB, 1000);
   
   // ========== 9. EVENT LISTENER UNTUK TOMBOL LOGOUT ==========
   const logoutBtn = document.querySelector('.logout-btn');
