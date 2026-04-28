@@ -312,11 +312,11 @@
       groupLabel: "DOKUMEN",
       icon: "fa-book-open",
       items: [
-        { name: "DATA", url: "https://docs.google.com/spreadsheets/d/1dTwwtAGaqIKpgCT1pIOG7KmkeQwIDpxy/edit?usp=sharing&ouid=111910061241978135081&rtpof=true&sd=true", icon: "fa-light fa-file-excel" },
+        { name: "DATA", url: "https://drive.google.com/drive/folders/1AhX-nGXD8vA7xZPvV6Sfw8qQdeSZf-QJ?usp=drive_link", icon: "fa-light fa-file-excel" },
         { name: "BAB 1 PENDAHULUAN ", url: "https://docs.google.com/document/d/1CS9U0wZsocBC5lMOi-bvg5It782uwPef/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true", icon: "fa-light fa-file" },
         { name: "BAB 2 METODE PENELITIAN", url: "https://docs.google.com/document/d/1z4AX491mpf_chyshcMRkMUzYLPiNM5lUkmgpWnW8uNI/edit?usp=drive_link", icon: "fa-light fa-file" },
         { name: "BAB 3 GAMBARAN UMUM", url: "https://docs.google.com/document/d/1I34Db67PfTaVCGpORnlvAUUMLPrSNo3POuU7L8ZVhL0/edit?usp=drive_link", icon: "fa-light fa-file" },
-        { name: "BAB 4 ", url: "https://docs.google.com/document/d/1nFjASYr7xbZRIx-neGCpoNrHEMV2kTgz6zWQVvdn8r0/edit?usp=drive_link", icon: "fa-light fa-file" },
+        { name: "BAB 4 ROADMAP HILIRISASI", url: "https://docs.google.com/document/d/1nFjASYr7xbZRIx-neGCpoNrHEMV2kTgz6zWQVvdn8r0/edit?usp=drive_link", icon: "fa-light fa-file" },
         { name: "BAB 5 PENUTUP", url: "https://docs.google.com/document/d/1UpX1ppizP_SLJX6pR2CpXlKEFhcrzB8lGQUaeLuo86k/edit?usp=drive_link", icon: "fa-light fa-file" }  
     ]
     },
@@ -374,8 +374,8 @@
       return;
     }
     Swal.fire({
-      title: `<span style="font-weight: 700; font-size:1rem;">📄 ${itemName}</span>`,
-      html: `<div style="color:#8A734C; font-size:0.75rem;">Dokumen strategis roadmaps & kolaborasi daerah</div>`,
+      title: `<span style="font-weight: 700; font-size:1rem;">${itemName}</span>`,
+      html: `<div style="color:#8A734C; font-size:0.75rem;">Apakah anda yakin ingin membuka Dokumen ini ?</div>`,
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#C28A3E',
