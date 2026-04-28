@@ -379,7 +379,7 @@
         { name: "Dinas Pemberdayaan Masyarakat dan Desa", url: "https://docs.google.com/spreadsheets/d/1MSEW-VUsx_AINCnqzf6gDwC8Bs58qGGlaclQ97kg-Ik/edit?usp=drive_link", icon: "fa-users" },
         { name: "Dinas Pemadam Kebakaran & Penyelamatan", url: "https://drive.google.com/open?id=1AlB589hJzFB5VeZFKxwka_DOJA-nPGpXZI4NPT5lcXs&usp=drive_copy", icon: "fa-fire-extinguisher" },
         { name: "Dinas PU Pengairan", url: "https://docs.google.com/spreadsheets/d/1LaLHeDIGKfzWb3nPs5YNV4umRlNpp4VKfavegWkrwNQ/edit?usp=drive_link", icon: "fa-water" },
-        { name: "Dinas PU Cipta Karya & Perumahan", url: "https://docs.google.com/spreadsheets/d/16rjJ9DsafCsMkbMTbs4O5EV1QQ73OrhSWLTJ6HjUqpQ/edit?usp=drive_link", icon: "fa-hard-hat" },
+        { name: "Dinas PU Cipta Karya, Perumahan dan Permukiman", url: "https://docs.google.com/spreadsheets/d/16rjJ9DsafCsMkbMTbs4O5EV1QQ73OrhSWLTJ6HjUqpQ/edit?usp=drive_link", icon: "fa-hard-hat" },
         { name: "Dinas Lingkungan Hidup", url: "https://docs.google.com/spreadsheets/d/1JFVQ6GX4ZDZHWQMJJmcVg9TfUifR3TEFrGgjTwMwdE4/edit?usp=drive_link", icon: "fa-leaf" },
         { name: "Dinas Koperasi, UM & Perdagangan", url: "https://docs.google.com/spreadsheets/d/1rbQPgjVKB7hDwHOA8xOKQvt7J69Cpsgh7TD35NySw2c/edit?usp=drive_link", icon: "fa-store" },
         { name: "Dinas Kominfo & Persandian", url: "https://docs.google.com/spreadsheets/d/1NxpHHJ0cp4KTAHMgVwOwUaDZ9h31QOrY0Gv9vE_Zvb8/edit?usp=drive_link", icon: "fa-laptop-code" },
@@ -397,7 +397,7 @@
         { name: "Bapenda", url: "https://docs.google.com/spreadsheets/d/1EV45IwQfiw75XSpAalqjsbOQa-7G1u8iauqaNiX4Bzg/edit?usp=drive_link", icon: "fa-receipt" },
         { name: "BPBD", url: "https://docs.google.com/spreadsheets/d/1nUTcZxNmAf1jNJl0tBALq74vxwRKJVfaMgn5wbQx6BE/edit?usp=drive_link", icon: "fa-tornado" },
         { name: "Bakesbangpol", url: "https://docs.google.com/spreadsheets/d/142iKSYVhYsIKPtjwmFJhlNFYFZPpK9zwbUjnxvkr6Pk/edit?usp=drive_link", icon: "fa-flag-checkered" },
-        { name: "BKPSDM (Badan Kepegawaian)", url: "https://docs.google.com/spreadsheets/d/11RAy7FCNzYAGixRyvyK7QnFchyEl9-kQuxi3Gpzb7zQ/edit?usp=drive_link", icon: "fa-user-graduate" }
+        { name: "Badan Kepegawaian, Pendidikan dan Pelatihan", url: "https://docs.google.com/spreadsheets/d/11RAy7FCNzYAGixRyvyK7QnFchyEl9-kQuxi3Gpzb7zQ/edit?usp=drive_link", icon: "fa-user-graduate" }
       ]
     },
     {
