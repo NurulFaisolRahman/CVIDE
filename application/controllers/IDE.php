@@ -1947,9 +1947,14 @@ public function InputIKMYogyakarta()
     public function UsulanPerangkatDaerahBWI2027() {
     $data['title'] = 'Usulan Perangkat Daerah BWI 2027';
 
-    $this->load->view('UsulanPerangkatDaerahBWI2027'); // ⬅️ ini yang penting
+    $this->load->view('UsulanPerangkatDaerahBWI2027'); 
 }
 
+public function RoadmapHilirisasiBanyuwangi2026() {
+    $data['title'] = 'Roadmap Hilirisasi Banyuwangi 2026';
+
+    $this->load->view('RoadmapHilirisasiBanyuwangi2026'); 
+}
     public function MasterData() {
     $data['title'] = 'Master Data Proyek | IDE Consultant';
     $this->load->view('MasterData', $data);
