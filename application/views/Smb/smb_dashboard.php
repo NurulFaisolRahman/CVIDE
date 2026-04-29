@@ -1518,77 +1518,130 @@ a { text-decoration: none; color: inherit; }
         Dashboard
       </div>
 
-      <div class="nav-section">Menu Bidang</div>
+      <!-- ============================================================
+     MENU BIDANG SESUAI STRUKTUR ORGANISASI
+     ============================================================ -->
+<div class="nav-section">Menu Bidang</div>
 
-<!-- Bidang Litbang -->
-<div class="nav-item" id="nav-ba" onclick="toggleBidang('a','Bidang Penelitian, Pengembangan dan Pengendalian Evaluasi')">
+<!-- Kepala Badan -->
+<div class="nav-item" id="nav-bkepala" onclick="toggleBidang('kepala','Kepala Badan')">
   <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
-    <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 010 2H7a1 1 0 01-1-1zm1 3a1 1 0 000 2h4a1 1 0 000-2H7z" clip-rule="evenodd"/>
+    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
   </svg>
-  Bidang Litbang
+  Kepala Badan
   <svg class="nav-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4.5 2.5l3 3-3 3"/></svg>
 </div>
-<div class="sub-menu" id="sub-ba">
-  <div class="sub-item" onclick="navigateDok('a','Litbang')">
+<div class="sub-menu" id="sub-bkepala">
+  <div class="sub-item" onclick="navigateDok('kepala','Kepala Badan')">
     <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
     Dokumen
   </div>
 </div>
 
-<!-- Bidang Perencanaan -->
-<div class="nav-item" id="nav-bb" onclick="toggleBidang('b','Bidang Perencanaan Pembangunan')">
+<!-- Sekretariat -->
+<div class="nav-item" id="nav-bsekretariat" onclick="toggleBidang('sekretariat','Sekretariat')">
+  <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+    <path d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/>
+    <path d="M8 7h4M8 10h4M8 13h2"/>
+  </svg>
+  Sekretariat
+  <svg class="nav-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4.5 2.5l3 3-3 3"/></svg>
+</div>
+<div class="sub-menu" id="sub-bsekretariat">
+  <div class="sub-item" onclick="navigateDok('sekretariat','Sekretariat')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    Dokumen
+  </div>
+</div>
+
+<!-- Bidang Perencanaan Pembangunan -->
+<div class="nav-item" id="nav-bperencanaan" onclick="toggleBidang('perencanaan','Bidang Perencanaan Pembangunan')">
   <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
     <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 010 2H7a1 1 0 01-1-1zm1 3a1 1 0 000 2h4a1 1 0 000-2H7z" clip-rule="evenodd"/>
   </svg>
-  Bidang Perencanaan
+  Bidang Perencanaan Pembangunan
   <svg class="nav-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4.5 2.5l3 3-3 3"/></svg>
 </div>
-<div class="sub-menu" id="sub-bb">
-  <div class="sub-item" onclick="navigateDok('b','Perencanaan')">
+<div class="sub-menu" id="sub-bperencanaan">
+  <div class="sub-item" onclick="navigateDok('perencanaan','Perencanaan Pembangunan')">
     <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
     Dokumen
   </div>
 </div>
 
 <!-- Bidang Ekonomi -->
-<div class="nav-item" id="nav-bc" onclick="toggleBidang('c','Bidang Ekonomi')">
+<div class="nav-item" id="nav-bekonomi" onclick="toggleBidang('ekonomi','Bidang Ekonomi')">
   <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
-    <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 010 2H7a1 1 0 01-1-1zm1 3a1 1 0 000 2h4a1 1 0 000-2H7z" clip-rule="evenodd"/>
+    <path d="M4 4h12v2H4V4zM4 8h12v2H4V8zM4 12h8v2H4v-2z"/>
+    <path d="M16 12l-4 4-2-2-2 2-4-4"/>
   </svg>
   Bidang Ekonomi
   <svg class="nav-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4.5 2.5l3 3-3 3"/></svg>
 </div>
-<div class="sub-menu" id="sub-bc">
-  <div class="sub-item" onclick="navigateDok('c','Ekonomi')">
+<div class="sub-menu" id="sub-bekonomi">
+  <div class="sub-item" onclick="navigateDok('ekonomi','Ekonomi')">
     <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
     Dokumen
   </div>
 </div>
 
-<!-- Bidang Kesra -->
-<div class="nav-item" id="nav-bd" onclick="toggleBidang('d','Bidang Kesejahteraan Rakyat dan Pemerintahan')">
+<!-- Bidang Sarana, Prasarana Wilayah dan Lingkungan -->
+<div class="nav-item" id="nav-bsarpras" onclick="toggleBidang('sarpras','Bidang Sarana, Prasarana Wilayah dan Lingkungan')">
   <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
-    <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 010 2H7a1 1 0 01-1-1zm1 3a1 1 0 000 2h4a1 1 0 000-2H7z" clip-rule="evenodd"/>
+    <path d="M3 12h14v5H3zM6 7h8v3H6z"/>
+    <rect x="5" y="3" width="10" height="4" rx="1"/>
   </svg>
-  Bidang Kesra
+  Bidang Sarpras Wilayah & Lingkungan
   <svg class="nav-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4.5 2.5l3 3-3 3"/></svg>
 </div>
-<div class="sub-menu" id="sub-bd">
-  <div class="sub-item" onclick="navigateDok('d','Kesra')">
+<div class="sub-menu" id="sub-bsarpras">
+  <div class="sub-item" onclick="navigateDok('sarpras','Sarpras')">
     <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
     Dokumen
   </div>
 </div>
-<!-- Bidang Sarpras -->
-<div class="nav-item" id="nav-be" onclick="toggleBidang('e','Bidang Sarana Prasarana Wilayah dan Lingkungan')">
+
+<!-- Bidang Kesejahteraan Rakyat dan Pemerintahan -->
+<div class="nav-item" id="nav-bkesra" onclick="toggleBidang('kesra','Bidang Kesejahteraan Rakyat dan Pemerintahan')">
   <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
-    <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 010 2H7a1 1 0 01-1-1zm1 3a1 1 0 000 2h4a1 1 0 000-2H7z" clip-rule="evenodd"/>
+    <path d="M10 2l1.5 4.5L16 5l-2.5 4L16 13l-4.5-1.5L10 16l-1.5-4.5L4 13l2.5-4L4 5l4.5 1.5L10 2z"/>
   </svg>
-  Bidang Sarpras
+  Bidang Kesra & Pemerintahan
   <svg class="nav-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4.5 2.5l3 3-3 3"/></svg>
 </div>
-<div class="sub-menu" id="sub-be">
-  <div class="sub-item" onclick="navigateDok('e','Sarpras')">
+<div class="sub-menu" id="sub-bkesra">
+  <div class="sub-item" onclick="navigateDok('kesra','Kesra')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    Dokumen
+  </div>
+</div>
+
+<!-- Bidang Penelitian, Pengembangan dan Pengendalian Evaluasi -->
+<div class="nav-item" id="nav-blitbang" onclick="toggleBidang('litbang','Bidang Penelitian, Pengembangan dan Pengendalian Evaluasi')">
+  <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+    <path d="M12 4l1.5 2L16 5l-2 3 2 3-2.5-1L12 12l-1-3.5L9 10l1-3-1-3 2.5 1L12 4z"/>
+    <circle cx="7" cy="7" r="3"/>
+  </svg>
+  Bidang Litbang & Evaluasi
+  <svg class="nav-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4.5 2.5l3 3-3 3"/></svg>
+</div>
+<div class="sub-menu" id="sub-blitbang">
+  <div class="sub-item" onclick="navigateDok('litbang','Litbang')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    Dokumen
+  </div>
+</div>
+
+<!-- Kelompok Jabatan Fungsional -->
+<div class="nav-item" id="nav-bfungsional" onclick="toggleBidang('fungsional','Kelompok Jabatan Fungsional')">
+  <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+    <path d="M7 3a2 2 0 00-2 2v2a2 2 0 002 2h6a2 2 0 002-2V5a2 2 0 00-2-2H7zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h10a2 2 0 002-2v-2a2 2 0 00-2-2H5z"/>
+  </svg>
+  Kelompok Jabatan Fungsional
+  <svg class="nav-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4.5 2.5l3 3-3 3"/></svg>
+</div>
+<div class="sub-menu" id="sub-bfungsional">
+  <div class="sub-item" onclick="navigateDok('fungsional','Fungsional')">
     <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
     Dokumen
   </div>
@@ -2752,28 +2805,40 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// Mapping ID bidang ke nama lengkap
-// Mapping ID bidang ke nama lengkap
+// ================= MAPPING BIDANG SESUAI STRUKTUR =================
 const bidangFullName = {
-  a: 'Bidang Penelitian, Pengembangan dan Pengendalian Evaluasi',
-  b: 'Bidang Perencanaan Pembangunan',
-  c: 'Bidang Ekonomi',
-  d: 'Bidang Kesejahteraan Rakyat dan Pemerintahan',
-  e: 'Bidang Sarana Prasarana Wilayah dan Lingkungan'
+  kepala: 'Kepala Badan',
+  sekretariat: 'Sekretariat',
+  perencanaan: 'Bidang Perencanaan Pembangunan',
+  ekonomi: 'Bidang Ekonomi',
+  sarpras: 'Bidang Sarana, Prasarana Wilayah dan Lingkungan',
+  kesra: 'Bidang Kesejahteraan Rakyat dan Pemerintahan',
+  litbang: 'Bidang Penelitian, Pengembangan dan Pengendalian Evaluasi',
+  fungsional: 'Kelompok Jabatan Fungsional'
 };
 
-// Mapping ID bidang ke nama pendek untuk navigasi
 const bidangShortName = {
-  a: 'Litbang',
-  b: 'Perencanaan',
-  c: 'Ekonomi',
-  d: 'Kesra',
-  e: 'Sarpras'
+  kepala: 'Kepala Badan',
+  sekretariat: 'Sekretariat',
+  perencanaan: 'Perencanaan',
+  ekonomi: 'Ekonomi',
+  sarpras: 'Sarpras',
+  kesra: 'Kesra',
+  litbang: 'Litbang',
+  fungsional: 'Fungsional'
 };
 
-
-
-let currentBidang = null;
+// Data dokumen per bidang (contoh awal)
+const bidangData = {
+  kepala: { name: 'Kepala Badan', docs: [] },
+  sekretariat: { name: 'Sekretariat', docs: [] },
+  perencanaan: { name: 'Bidang Perencanaan Pembangunan', docs: [] },
+  ekonomi: { name: 'Bidang Ekonomi', docs: [] },
+  sarpras: { name: 'Bidang Sarana, Prasarana Wilayah dan Lingkungan', docs: [] },
+  kesra: { name: 'Bidang Kesejahteraan Rakyat dan Pemerintahan', docs: [] },
+  litbang: { name: 'Bidang Penelitian, Pengembangan dan Pengendalian Evaluasi', docs: [] },
+  fungsional: { name: 'Kelompok Jabatan Fungsional', docs: [] }
+};
 
 /* ---- NAVIGATION ---- */
 function navigate(el) {
@@ -2796,14 +2861,14 @@ function showPanel(id) {
   document.querySelector('.page-content').scrollTop = 0;
 }
 
-/* ---- BIDANG ACCORDION ---- */
 function toggleBidang(id, name) {
   const navEl = document.getElementById('nav-b' + id);
   const subEl = document.getElementById('sub-b' + id);
   const isOpen = subEl.classList.contains('open');
 
-  // close all (tambah 'e')
-  ['a','b','c','d','e'].forEach(x => {
+  // close all - tambahkan semua id bidang baru
+  const allBidang = ['kepala', 'sekretariat', 'perencanaan', 'ekonomi', 'sarpras', 'kesra', 'litbang', 'fungsional'];
+  allBidang.forEach(x => {
     const sub = document.getElementById('sub-b' + x);
     const nav = document.getElementById('nav-b' + x);
     if (sub) sub.classList.remove('open');
