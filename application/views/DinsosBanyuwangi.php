@@ -503,10 +503,10 @@
             </a>
             <a class="doc-item" onclick="window.open('https://docs.google.com/document/d/1BSptQkE8FNZTXJ0hvSgyIAqsNQVtIVP9/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')">
               <div class="di-icon di-blue"><i class="fas fa-list-ul"></i></div>
-              <div class="di-label">Daftar Isi</div>
+              <div class="di-label">Daftar Isi, Tabel dan Gambar</div>
               <i class="fas fa-chevron-right di-arrow"></i>
             </a>
-            <a class="doc-item" onclick="window.open('https://docs.google.com/document/d/1Cp_G5kPOIAAgy2jtznA6AM9JhbmhhSYX/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')">
+            <!-- <a class="doc-item" onclick="window.open('https://docs.google.com/document/d/1Cp_G5kPOIAAgy2jtznA6AM9JhbmhhSYX/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')">
               <div class="di-icon di-blue"><i class="fas fa-table-list"></i></div>
               <div class="di-label">Daftar Tabel</div>
               <i class="fas fa-chevron-right di-arrow"></i>
@@ -515,7 +515,7 @@
               <div class="di-icon di-blue"><i class="fas fa-images"></i></div>
               <div class="di-label">Daftar Gambar</div>
               <i class="fas fa-chevron-right di-arrow"></i>
-            </a>
+            </a> -->
             <a class="doc-item" onclick="window.open('https://docs.google.com/document/d/19kmEeXTOfnOsicbelQ7nUyK2_38bYpmM/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')">
               <div class="di-icon di-teal"><i class="fas fa-book-open"></i></div>
               <div class="di-label">BAB I — Pendahuluan</div>
@@ -578,10 +578,10 @@
             </a>
             <a class="doc-item" onclick="window.open('https://docs.google.com/document/d/1WbXkJ2PLp7G-HofhCt5F0Y0vRQTEBFmb/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')">
               <div class="di-icon di-blue"><i class="fas fa-list-ul"></i></div>
-              <div class="di-label">Daftar Isi</div>
+              <div class="di-label">Daftar Isi, Tabel dan Gambar</div>
               <i class="fas fa-chevron-right di-arrow"></i>
             </a>
-            <a class="doc-item" onclick="window.open('https://docs.google.com/document/d/1FEoTILfK5ZVuLzvfCy8gldYsrXFoFDlg/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')">
+            <!-- <a class="doc-item" onclick="window.open('https://docs.google.com/document/d/1FEoTILfK5ZVuLzvfCy8gldYsrXFoFDlg/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')">
               <div class="di-icon di-blue"><i class="fas fa-table-list"></i></div>
               <div class="di-label">Daftar Tabel</div>
               <i class="fas fa-chevron-right di-arrow"></i>
@@ -590,7 +590,7 @@
               <div class="di-icon di-blue"><i class="fas fa-images"></i></div>
               <div class="di-label">Daftar Gambar</div>
               <i class="fas fa-chevron-right di-arrow"></i>
-            </a>
+            </a> -->
             <a class="doc-item" onclick="window.open('https://docs.google.com/document/d/1BMvOpjRXi7duitYgKvfthYF90j-NDELn/edit?usp=drive_link&ouid=111910061241978135081&rtpof=true&sd=true')">
               <div class="di-icon di-sky"><i class="fas fa-book-open"></i></div>
               <div class="di-label">BAB I — Pendahuluan</div>
