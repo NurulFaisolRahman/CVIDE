@@ -1709,6 +1709,7 @@ a { text-decoration: none; color: inherit; }
       </div>
 
       <div class="nav-section">Menu Bidang</div>
+      
 
 <!-- Bidang Litbang -->
 <div class="nav-item" id="nav-ba" onclick="toggleBidang('a','Bidang Penelitian, Pengembangan dan Pengendalian Evaluasi')">
@@ -1785,6 +1786,8 @@ a { text-decoration: none; color: inherit; }
     Dokumen
   </div>
 </div>
+
+
 
       <div class="nav-section">Aktivitas</div>
       <div class="nav-item" data-panel="log" onclick="navigate(this)">
@@ -2281,7 +2284,7 @@ a { text-decoration: none; color: inherit; }
       </div>
       <div>
         <div class="page-hdr-title">Log Aktivitas</div>
-        <div class="page-hdr-sub">Riwayat seluruh aktivitas sistem</div>
+        <div class="page-hdr-sub">Riwayat seluruh aktivitas sistem per bidang</div>
       </div>
     </div>
     <button class="btn" onclick="exportLogToPDF()">
@@ -2291,87 +2294,110 @@ a { text-decoration: none; color: inherit; }
       Export PDF
     </button>
   </div>
+  
   <div class="card">
-  <div class="table-toolbar">
-    <div class="card-title">
-      <i class="fas fa-history"></i> Riwayat Aktivitas
-    </div>
-    <div class="table-toolbar-right">
-      <!-- FILTER TANGGAL -->
-      <div class="date-range-filter" style="display: flex; gap: 8px; align-items: center;">
+    <div class="table-toolbar">
+      <div class="card-title">
+        <i class="fas fa-history"></i> Riwayat Aktivitas
+      </div>
+      <div class="table-toolbar-right">
+        <!-- PILIH BIDANG UTAMA -->
+        <select class="sel-filter" id="log-bidang-pilih" onchange="loadLogByBidang()" style="min-width: 160px; font-weight: 500;">
+          <option value="">-- Pilih Bidang --</option>
+          <option value="Litbang">📊 Bidang Litbang</option>
+          <option value="Perencanaan">📋 Bidang Perencanaan</option>
+          <option value="Ekonomi">💰 Bidang Ekonomi</option>
+          <option value="Kesra">❤️ Bidang Kesra</option>
+          <option value="Sarpras">🏗️ Bidang Sarpras</option>
+        </select>
+        
+        <!-- FILTER TANGGAL -->
+        <div class="date-range-filter" style="display: flex; gap: 8px; align-items: center;">
+          <div class="mini-search">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="1" y="2" width="12" height="11" rx="1" stroke="currentColor"/>
+              <line x1="4" y1="1" x2="4" y2="4" stroke="currentColor"/>
+              <line x1="10" y1="1" x2="10" y2="4" stroke="currentColor"/>
+              <line x1="1" y1="6" x2="13" y2="6" stroke="currentColor"/>
+            </svg>
+            <input type="date" id="log-date-start" placeholder="Dari Tanggal">
+          </div>
+          <span style="color: var(--text-3);">s.d.</span>
+          <div class="mini-search">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="1" y="2" width="12" height="11" rx="1" stroke="currentColor"/>
+              <line x1="4" y1="1" x2="4" y2="4" stroke="currentColor"/>
+              <line x1="10" y1="1" x2="10" y2="4" stroke="currentColor"/>
+              <line x1="1" y1="6" x2="13" y2="6" stroke="currentColor"/>
+            </svg>
+            <input type="date" id="log-date-end" placeholder="Sampai Tanggal">
+          </div>
+          <button class="btn btn-sm" onclick="filterLogByDate()" style="background: var(--blue-600); color: white;">
+            <svg viewBox="0 0 14 14" fill="currentColor" width="12" height="12">
+              <path d="M12 8a4 4 0 0 1-8 0M4 6a4 4 0 0 1 8 0M7 2v4M5 2h4"/>
+            </svg>
+            Tampilkan
+          </button>
+        </div>
+        
+        <!-- FILTER AKSI -->
+        <select class="sel-filter" id="log-aksi-filter" onchange="filterLogTable()">
+          <option value="">Semua Aksi</option>
+          <option value="Upload">📤 Upload</option>
+          <option value="Print (via Preview)">🖱️ Print Preview</option>
+          <option value="Print">🖨️ Print</option>
+          <option value="Review">📝 Review</option>
+          <option value="Login">🔐 Login</option>
+          <option value="Update">✏️ Update</option>
+          <option value="Hapus">🗑️ Hapus</option>
+        </select>
+        
+        <!-- PENCARIAN -->
         <div class="mini-search">
           <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="1" y="2" width="12" height="11" rx="1" stroke="currentColor"/>
-            <line x1="4" y1="1" x2="4" y2="4" stroke="currentColor"/>
-            <line x1="10" y1="1" x2="10" y2="4" stroke="currentColor"/>
-            <line x1="1" y1="6" x2="13" y2="6" stroke="currentColor"/>
+            <circle cx="5.5" cy="5.5" r="4"/><path d="M9 9l2.5 2.5"/>
           </svg>
-          <input type="date" id="log-date-start" placeholder="Dari Tanggal" style="width: 130px;">
+          <input type="text" id="log-search" placeholder="Cari user, detail, atau IP..." oninput="filterLogTable()">
         </div>
-        <span style="color: var(--text-3);">s.d.</span>
-        <div class="mini-search">
-          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="1" y="2" width="12" height="11" rx="1" stroke="currentColor"/>
-            <line x1="4" y1="1" x2="4" y2="4" stroke="currentColor"/>
-            <line x1="10" y1="1" x2="10" y2="4" stroke="currentColor"/>
-            <line x1="1" y1="6" x2="13" y2="6" stroke="currentColor"/>
-          </svg>
-          <input type="date" id="log-date-end" placeholder="Sampai Tanggal" style="width: 130px;">
-        </div>
-        <button class="btn btn-sm" onclick="filterLogByDate()" style="background: var(--blue-600); color: white;">
+        
+        <button class="btn btn-sm" onclick="refreshLogData()">
           <svg viewBox="0 0 14 14" fill="currentColor" width="12" height="12">
             <path d="M12 8a4 4 0 0 1-8 0M4 6a4 4 0 0 1 8 0M7 2v4M5 2h4"/>
           </svg>
-          Tampilkan
+          Refresh
         </button>
       </div>
-      <select class="sel-filter" id="log-aksi-filter" onchange="filterLogTable()">
-        <option value="">Semua Aksi</option>
-        <option value="Upload"> Upload</option>
-        <option value="Print (via Preview)"> Print (via Preview)</option>
-        <option value="Print"> Print</option>
-        <option value="Review"> Review</option>
-        <option value="Login"> Login</option>
-        <option value="Update"> Update</option>
-        <option value="Hapus"> Hapus</option>
-      </select>
-      <div class="mini-search">
-        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="5.5" cy="5.5" r="4"/><path d="M9 9l2.5 2.5"/>
-        </svg>
-        <input type="text" id="log-search" placeholder="Cari user, detail, atau IP..." oninput="filterLogTable()">
-      </div>
-      <button class="btn btn-sm" onclick="refreshLogData()">
-        <svg viewBox="0 0 14 14" fill="currentColor" width="12" height="12">
-          <path d="M12 8a4 4 0 0 1-8 0M4 6a4 4 0 0 1 8 0M7 2v4M5 2h4"/>
-        </svg>
-        Refresh
-      </button>
+    </div>
+    
+    <!-- INFO BIDANG YANG DIPILIH -->
+    <div id="bidang-info" style="padding: 12px 20px; background: #f0f4ff; border-bottom: 1px solid var(--border); display: none;">
+      <i class="fas fa-building"></i> Menampilkan log untuk bidang: 
+      <strong id="bidang-terpilih-label"></strong>
+    </div>
+    
+    <div class="log-table-wrapper">
+      <table class="log-table">
+        <thead>
+          <tr>
+            <th><i class="fas fa-clock"></i> Waktu</th>
+            <th><i class="fas fa-user"></i> User</th>
+            <th><i class="fas fa-tag"></i> Aksi</th>
+            <th><i class="fas fa-building"></i> Bidang</th>
+            <th><i class="fas fa-cube"></i> Modul</th>
+            <th><i class="fas fa-info-circle"></i> Detail</th>
+            <th><i class="fas fa-network-wired"></i> IP Address</th>
+          </tr>
+        </thead>
+        <tbody id="log-tbody">
+          <tr><td colspan="7" style="text-align:center;padding:60px;">
+            <div class="modern-spinner"></div>
+            <p style="margin-top: 10px;">Silakan pilih bidang terlebih dahulu</p>
+          </td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
-  <div class="log-table-wrapper">
-    <table class="log-table">
-      <thead>
-        <tr>
-          <th><i class="fas fa-clock"></i> Waktu</th>
-          <th><i class="fas fa-user"></i> User</th>
-          <th><i class="fas fa-tag"></i> Aksi</th>
-          <th><i class="fas fa-cube"></i> Modul</th>
-          <th><i class="fas fa-info-circle"></i> Detail</th>
-          <th><i class="fas fa-network-wired"></i> IP Address</th>
-        </tr>
-      </thead>
-      <tbody id="log-tbody">
-        <tr><td colspan="6" style="text-align:center;padding:60px;">
-          <div class="modern-spinner"></div>
-          <p style="margin-top: 10px;">Memuat data log...</p>
-        </td></tr>
-      </tbody>
-    </table>
-  </div>
-</div>
 </section>
-
       <!-- ======== PRINT LAPORAN ======== -->
       <section id="panel-laporan" class="panel">
         <div class="page-hdr">
