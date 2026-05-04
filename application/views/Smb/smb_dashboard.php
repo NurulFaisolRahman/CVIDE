@@ -1,4 +1,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
 <?php
 
@@ -45,6 +49,88 @@ $initial = strtoupper(substr($display_name, 0, 2));
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+
+  /* ============================================================
+   PAGINATION STYLES
+   ============================================================ */
+.pagination-container {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    background: #ffffff;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.pagination {
+    margin: 0;
+    gap: 5px;
+}
+
+.pagination .page-item .page-link {
+    color: var(--text-1);
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.pagination .page-item .page-link:hover {
+    background: var(--blue-50);
+    border-color: var(--blue-400);
+    color: var(--blue-600);
+}
+
+.pagination .page-item.active .page-link {
+    background: var(--blue-600);
+    border-color: var(--blue-600);
+    color: #ffffff;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: var(--text-3);
+    background: var(--page-bg);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.pagination-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 12px;
+    color: var(--text-2);
+}
+
+.pagination-info select {
+    height: 32px;
+    padding: 0 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 12px;
+    font-family: inherit;
+    background: var(--surface);
+    color: var(--text-1);
+    outline: none;
+    cursor: pointer;
+}
+
+.pagination-info select:focus {
+    border-color: var(--blue-400);
+}
+
+/* Responsive pagination */
+@media (max-width: 768px) {
+    .pagination .page-item .page-link {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+    
+    .pagination-info span {
+        font-size: 11px;
+    }
+}
 /* ============================================================
    RESET & BASE
    ============================================================ */
@@ -594,6 +680,138 @@ a { text-decoration: none; color: inherit; }
 .p-idle    { background: var(--amber-bg); color: var(--amber-text); }
 .p-offline { background: var(--red-bg); color: var(--red-text); }
 
+/* ============================================================
+   STAT KERTAS CARDS
+   ============================================================ */
+.stat-kertas-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 1px solid var(--border);
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+.stat-kertas-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.stat-kertas-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.bg-primary-light {
+    background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+    color: #4338ca;
+}
+
+.bg-success-light {
+    background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+    color: #166534;
+}
+
+.bg-warning-light {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    color: #92400e;
+}
+
+.bg-info-light {
+    background: linear-gradient(135deg, #cffafe, #a5f3fc);
+    color: #0e7490;
+}
+
+.stat-kertas-info {
+    flex: 1;
+}
+
+.stat-kertas-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-2);
+    margin-bottom: 4px;
+}
+
+.stat-kertas-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-1);
+    line-height: 1.2;
+    font-family: var(--font-main);
+}
+
+.stat-kertas-unit {
+    font-size: 10px;
+    color: var(--text-3);
+    margin-left: 4px;
+}
+
+.total-kertas-container {
+    background: linear-gradient(135deg, #1a2d6b 0%, #162060 100%);
+    border-radius: var(--radius);
+    padding: 15px 20px;
+    margin-top: 15px;
+}
+
+.total-kertas-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.5px;
+}
+
+.total-kertas-label i {
+    margin-right: 8px;
+}
+
+.total-kertas-value {
+    font-size: 32px;
+    font-weight: 800;
+    color: #ffffff;
+    font-family: var(--font-main);
+}
+
+.total-kertas-unit {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-left: 5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .stat-kertas-card {
+        padding: 12px;
+    }
+    
+    .stat-kertas-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .stat-kertas-icon i {
+        font-size: 18px;
+    }
+    
+    .stat-kertas-value {
+        font-size: 20px;
+    }
+    
+    .total-kertas-value {
+        font-size: 24px;
+    }
+}
+
 /* Modal Detail Rekap Print User */
 .modal-user-rekap {
     display: none;
@@ -1032,6 +1250,42 @@ a { text-decoration: none; color: inherit; }
 
 .sel-filter:focus {
   border-color: var(--blue-400);
+}
+
+/* Badge Bidang di Log Aktivitas */
+.log-bidang-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 10.5px;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.log-bidang-litbang {
+    background: #e0e7ff;
+    color: #4338ca;
+}
+
+.log-bidang-perencanaan {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.log-bidang-ekonomi {
+    background: #fed7aa;
+    color: #9a3412;
+}
+
+.log-bidang-kesra {
+    background: #fbcfe8;
+    color: #be185d;
+}
+
+.log-bidang-sarpras {
+    background: #cffafe;
+    color: #0e7490;
 }
 /* ============================================================
    PILLS / BADGES
@@ -1724,6 +1978,30 @@ a { text-decoration: none; color: inherit; }
     <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
     Dokumen
   </div>
+  <div class="sub-item" onclick="navigateComingSoon('a', 'e-perencanaan')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-Perencanaan
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('a', 'e-monev')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-Monev
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('a', 'e-lkpj')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-LKPJ
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('a', 'e-ippd')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-IPPD
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('a', 'e-perjanjian-kinerja')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-Perjanjian Kinerja
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('a', 'sistem-inventarisasi')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    Sistem Inventarisasi Permasalahan/Isu Strategis Daerah
+  </div>
 </div>
 
 <!-- Bidang Perencanaan -->
@@ -1739,6 +2017,30 @@ a { text-decoration: none; color: inherit; }
     <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
     Dokumen
   </div>
+  <div class="sub-item" onclick="navigateComingSoon('b', 'e-perencanaan')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-Perencanaan
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('b', 'e-budgeting')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-Budgeting
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('b', 'e-monev')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-Monev
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('b', 'e-ippd')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-IPPD
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('b', 'e-perjanjian-kinerja')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-Perjanjian Kinerja
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('b', 'sistem-inventarisasi')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    Sistem Inventarisasi Permasalahan/Isu Strategis Daerah
+  </div>
 </div>
 
 <!-- Bidang Ekonomi -->
@@ -1749,12 +2051,30 @@ a { text-decoration: none; color: inherit; }
   Bidang Ekonomi
   <svg class="nav-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4.5 2.5l3 3-3 3"/></svg>
 </div>
-
-
 <div class="sub-menu" id="sub-bc">
   <div class="sub-item" onclick="navigateDok('c','Ekonomi')">
     <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
     Dokumen
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('c', 'e-monev')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-Monev
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('c', 'sistem-inventarisasi')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    Sistem Inventarisasi Permasalahan/Isu Strategis Daerah
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('c', 'sistem-analisa-ekonomi')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    Sistem Analisa Ekonomi Makro Daerah
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('c', 'sistem-csr')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    Sistem Pelaporan Online CSR
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('c', 'e-perjanjian-kinerja')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-Perjanjian Kinerja
   </div>
 </div>
 
@@ -1771,7 +2091,24 @@ a { text-decoration: none; color: inherit; }
     <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
     Dokumen
   </div>
+  <div class="sub-item" onclick="navigateComingSoon('d', 'sistem-penanggulangan-kemiskinan')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    Sistem Manajemen Penanggulangan Kemiskinan Daerah
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('d', 'e-monev')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-Monev
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('d', 'e-perjanjian-kinerja')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-Perjanjian Kinerja
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('d', 'sistem-inventarisasi')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    Sistem Inventarisasi Permasalahan/Isu Strategis Daerah
+  </div>
 </div>
+
 <!-- Bidang Sarpras -->
 <div class="nav-item" id="nav-be" onclick="toggleBidang('e','Bidang Sarana Prasarana Wilayah dan Lingkungan')">
   <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
@@ -1784,6 +2121,49 @@ a { text-decoration: none; color: inherit; }
   <div class="sub-item" onclick="navigateDok('e','Sarpras')">
     <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
     Dokumen
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('e', 'e-monev')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-Monev
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('e', 'sistem-inventarisasi')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    Sistem Inventarisasi Permasalahan/Isu Strategis Daerah
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('e', 'e-perjanjian-kinerja')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-Perjanjian Kinerja
+  </div>
+</div>
+
+<!-- Bidang Sekretariat -->
+<div class="nav-item" id="nav-bf" onclick="toggleBidang('f','Bidang Sekretariat')">
+  <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+    <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 010 2H7a1 1 0 01-1-1zm1 3a1 1 0 000 2h4a1 1 0 000-2H7z" clip-rule="evenodd"/>
+  </svg>
+  Bidang Sekretariat
+  <svg class="nav-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4.5 2.5l3 3-3 3"/></svg>
+</div>
+<div class="sub-menu" id="sub-bf">
+  <div class="sub-item" onclick="navigateDok('f','Sekretariat')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    Dokumen
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('f', 'e-kinerja')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-Kinerja
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('f', 'e-sop')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-SOP
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('f', 'sistem-arsip')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    Sistem Manajemen Arsip & Persuratan
+  </div>
+  <div class="sub-item" onclick="navigateComingSoon('f', 'e-perjanjian-kinerja')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    E-Perjanjian Kinerja
   </div>
 </div>
 
@@ -2273,7 +2653,7 @@ a { text-decoration: none; color: inherit; }
 </div>
 </section>
 
-      <!-- ======== LOG AKTIVITAS ======== -->
+<!-- ======== LOG AKTIVITAS ======== -->
 <section id="panel-log" class="panel">
   <div class="page-hdr">
     <div class="page-hdr-left">
@@ -2303,12 +2683,13 @@ a { text-decoration: none; color: inherit; }
       <div class="table-toolbar-right">
         <!-- PILIH BIDANG UTAMA -->
         <select class="sel-filter" id="log-bidang-pilih" onchange="loadLogByBidang()" style="min-width: 160px; font-weight: 500;">
-          <option value="">-- Pilih Bidang --</option>
+          <option value="">-- Semua Bidang --</option>
           <option value="Litbang">📊 Bidang Litbang</option>
           <option value="Perencanaan">📋 Bidang Perencanaan</option>
           <option value="Ekonomi">💰 Bidang Ekonomi</option>
           <option value="Kesra">❤️ Bidang Kesra</option>
           <option value="Sarpras">🏗️ Bidang Sarpras</option>
+          <option value="Sekretariat">📁 Bidang Sekretariat</option>
         </select>
         
         <!-- FILTER TANGGAL -->
@@ -2346,6 +2727,7 @@ a { text-decoration: none; color: inherit; }
           <option value="Upload">📤 Upload</option>
           <option value="Print (via Preview)">🖱️ Print Preview</option>
           <option value="Print">🖨️ Print</option>
+          <option value="Preview">👁️ Preview</option>
           <option value="Review">📝 Review</option>
           <option value="Login">🔐 Login</option>
           <option value="Update">✏️ Update</option>
@@ -2368,6 +2750,100 @@ a { text-decoration: none; color: inherit; }
         </button>
       </div>
     </div>
+
+    <!-- ======== CARD TOTAL KERTAS TERPAKAI ======== -->
+<div class="card mb-4" id="kertas-terpakai-card">
+    <div class="card-head">
+        <div class="card-title">
+            <i class="bi bi-printer-fill"></i> Total Kertas Terpakai
+        </div>
+        <span class="card-action" onclick="refreshKertasTerpakai()">
+            <i class="bi bi-arrow-repeat"></i> Refresh
+        </span>
+    </div>
+    <div class="card-body">
+        <div class="row g-4">
+            <!-- Stat Hari Ini -->
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-kertas-card" id="stat-hari">
+                    <div class="stat-kertas-icon bg-primary-light">
+                        <i class="bi bi-calendar-day fs-4"></i>
+                    </div>
+                    <div class="stat-kertas-info">
+                        <div class="stat-kertas-label">HARI INI</div>
+                        <div class="stat-kertas-value" id="total-kertas-hari">0</div>
+                        <div class="stat-kertas-unit">lembar kertas</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stat 7 Hari -->
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-kertas-card" id="stat-minggu">
+                    <div class="stat-kertas-icon bg-success-light">
+                        <i class="bi bi-calendar-week fs-4"></i>
+                    </div>
+                    <div class="stat-kertas-info">
+                        <div class="stat-kertas-label">7 HARI</div>
+                        <div class="stat-kertas-value" id="total-kertas-minggu">0</div>
+                        <div class="stat-kertas-unit">lembar kertas</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stat 30 Hari -->
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-kertas-card" id="stat-bulan">
+                    <div class="stat-kertas-icon bg-warning-light">
+                        <i class="bi bi-calendar-month fs-4"></i>
+                    </div>
+                    <div class="stat-kertas-info">
+                        <div class="stat-kertas-label">30 HARI</div>
+                        <div class="stat-kertas-value" id="total-kertas-bulan">0</div>
+                        <div class="stat-kertas-unit">lembar kertas</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stat Tahun Ini -->
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-kertas-card" id="stat-tahun">
+                    <div class="stat-kertas-icon bg-info-light">
+                        <i class="bi bi-calendar-year fs-4"></i>
+                    </div>
+                    <div class="stat-kertas-info">
+                        <div class="stat-kertas-label">TAHUN INI</div>
+                        <div class="stat-kertas-value" id="total-kertas-tahun">0</div>
+                        <div class="stat-kertas-unit">lembar kertas</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Total Keseluruhan -->
+        <div class="total-kertas-container mt-3 pt-2 border-top">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="total-kertas-label">
+                        <i class="bi bi-printer"></i> TOTAL KESELURUHAN
+                    </span>
+                </div>
+                <div>
+                    <span class="total-kertas-value" id="total-kertas-semua">0</span>
+                    <span class="total-kertas-unit">lembar</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Info Bidang yang difilter -->
+        <div id="bidang-filter-info" class="mt-2" style="display: none;">
+            <small class="text-muted">
+                <i class="bi bi-funnel-fill"></i> Menampilkan data untuk bidang: 
+                <strong id="bidang-filter-nama"></strong>
+            </small>
+        </div>
+    </div>
+</div>
     
     <!-- INFO BIDANG YANG DIPILIH -->
     <div id="bidang-info" style="padding: 12px 20px; background: #f0f4ff; border-bottom: 1px solid var(--border); display: none;">
@@ -2392,9 +2868,33 @@ a { text-decoration: none; color: inherit; }
           <tr><td colspan="7" style="text-align:center;padding:60px;">
             <div class="modern-spinner"></div>
             <p style="margin-top: 10px;">Silakan pilih bidang terlebih dahulu</p>
-          </td></tr>
+           </div></td>
         </tbody>
       </table>
+    </div>
+    
+    <!-- PAGINATION SECTION - TAMBAHKAN INI -->
+    <div class="pagination-container">
+      <div class="row align-items-center">
+        <div class="col-md-6 mb-2 mb-md-0">
+          <div class="pagination-info">
+            <span id="log-info-text">Menampilkan 0 dari 0 data</span>
+            <select id="log-per-page" class="form-select form-select-sm" style="width: auto;" onchange="changePerPage()">
+              <option value="10">10 per halaman</option>
+              <option value="25" selected>25 per halaman</option>
+              <option value="50">50 per halaman</option>
+              <option value="100">100 per halaman</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <nav aria-label="Log pagination">
+            <ul class="pagination justify-content-end" id="log-pagination">
+              <!-- Pagination akan di-generate oleh JavaScript -->
+            </ul>
+          </nav>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -2696,6 +3196,8 @@ a { text-decoration: none; color: inherit; }
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Bootstrap 5 JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 // ================= LOGOUT FUNCTION =================
 // ================= LOGOUT FUNCTION (PERBAIKAN) =================
@@ -2821,7 +3323,8 @@ const bidangFullName = {
   b: 'Bidang Perencanaan Pembangunan',
   c: 'Bidang Ekonomi',
   d: 'Bidang Kesejahteraan Rakyat dan Pemerintahan',
-  e: 'Bidang Sarana Prasarana Wilayah dan Lingkungan'
+  e: 'Bidang Sarana Prasarana Wilayah dan Lingkungan',
+  f: 'Bidang Sekretariat'  
 };
 
 // Mapping ID bidang ke nama pendek untuk navigasi
@@ -2830,7 +3333,8 @@ const bidangShortName = {
   b: 'Perencanaan',
   c: 'Ekonomi',
   d: 'Kesra',
-  e: 'Sarpras'
+  e: 'Sarpras',
+  f: 'Sekretariat' 
 };
 
 
@@ -2864,8 +3368,8 @@ function toggleBidang(id, name) {
   const subEl = document.getElementById('sub-b' + id);
   const isOpen = subEl.classList.contains('open');
 
-  // close all (tambah 'e')
-  ['a','b','c','d','e'].forEach(x => {
+  // close all (tambah 'f')
+  ['a','b','c','d','e','f'].forEach(x => {
     const sub = document.getElementById('sub-b' + x);
     const nav = document.getElementById('nav-b' + x);
     if (sub) sub.classList.remove('open');
@@ -2887,7 +3391,8 @@ function navigateDok(id) {
     b: 'Bidang Perencanaan Pembangunan',
     c: 'Bidang Ekonomi',
     d: 'Bidang Kesejahteraan Rakyat dan Pemerintahan',
-    e: 'Bidang Sarana Prasarana Wilayah dan Lingkungan'
+    e: 'Bidang Sarana Prasarana Wilayah dan Lingkungan',
+    f: 'Bidang Sekretariat'  // ← TAMBAHKAN INI
   };
 
   const bidangShort = {
@@ -2895,7 +3400,8 @@ function navigateDok(id) {
     b: 'Perencanaan',
     c: 'Ekonomi',
     d: 'Kesra',
-    e: 'Sarpras'
+    e: 'Sarpras',
+    f: 'Sekretariat'  // ← TAMBAHKAN INI
   };
 
   const fullName = bidangNama[id] || 'Bidang';
@@ -2913,7 +3419,7 @@ function navigateDok(id) {
   document.getElementById('bidang-search').value = '';
   document.getElementById('bidang-status-filter').value = '';
 
-  // 🔥 INI WAJIB
+  // load dokumen dari DB
   loadDokumenFromDB(id);
 
   showPanel('bidang');
@@ -2923,6 +3429,92 @@ function navigateDok(id) {
   document.querySelectorAll('.sub-item').forEach(s => s.classList.remove('active'));
   const subItems = document.querySelectorAll('#sub-b' + id + ' .sub-item');
   if (subItems.length) subItems[0].classList.add('active');
+}
+
+// ================= FUNGSI UNTUK MENU COMING SOON =================
+function navigateComingSoon(bidangId, menuName) {
+  // Sembunyikan panel bidang yang aktif
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  
+  // Buat atau ambil panel coming-soon
+  let comingSoonPanel = document.getElementById('panel-comingsoon');
+  if (!comingSoonPanel) {
+    comingSoonPanel = document.createElement('section');
+    comingSoonPanel.id = 'panel-comingsoon';
+    comingSoonPanel.className = 'panel';
+    comingSoonPanel.innerHTML = `
+      <div class="page-hdr">
+        <div class="page-hdr-left">
+          <div class="page-hdr-icon">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <div>
+            <div class="page-hdr-title" id="comingsoon-title">Menu</div>
+            <div class="page-hdr-sub" id="comingsoon-subtitle">Fitur sedang dalam pengembangan</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="empty-state" style="padding: 80px 20px;">
+            <div style="font-size: 80px; margin-bottom: 20px;">🚧</div>
+            <h3 style="margin-bottom: 10px; color: var(--text-1);">Coming Soon</h3>
+            <p style="color: var(--text-2); margin-bottom: 8px;">Fitur ini sedang dalam tahap pengembangan</p>
+            <p style="color: var(--text-3); font-size: 12px;" id="comingsoon-detail">Mohon maaf atas ketidaknyamanannya</p>
+            <div style="margin-top: 30px; padding: 20px; background: #f8f9fd; border-radius: 12px; text-align: left; max-width: 400px; margin-left: auto; margin-right: auto;">
+              <div id="comingsoon-apps-list" style="font-size: 13px; color: var(--text-2);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    document.querySelector('.page-content').appendChild(comingSoonPanel);
+  }
+  
+  // Update judul berdasarkan menu yang dipilih
+  const menuTitles = {
+    // Sekretariat
+    'e-kinerja': { title: 'E-Kinerja', subtitle: 'Sistem Informasi Kinerja Pegawai', apps: ['E-Kinerja'] },
+    'e-sop': { title: 'E-SOP', subtitle: 'Sistem Informasi Standar Operasional Prosedur', apps: ['E-SOP'] },
+    'sistem-arsip': { title: 'Sistem Manajemen Arsip & Persuratan', subtitle: 'Manajemen Arsip dan Persuratan Digital', apps: ['Sistem Manajemen Arsip dan Persuratan'] },
+    'e-perjanjian-kinerja': { title: 'E-Perjanjian Kinerja', subtitle: 'Sistem Perjanjian Kinerja', apps: ['E-Perjanjian Kinerja'] },
+    
+    // Ekonomi
+    'e-monev': { title: 'E-Monev', subtitle: 'Sistem Monitoring dan Evaluasi', apps: ['E-Monev'] },
+    'sistem-inventarisasi': { title: 'Sistem Inventarisasi Permasalahan', subtitle: 'Inventarisasi Isu Strategis Daerah', apps: ['Sistem Inventarisasi Permasalahan/Isu Strategis Daerah'] },
+    'sistem-analisa-ekonomi': { title: 'Sistem Analisa Ekonomi Makro', subtitle: 'Analisis Ekonomi Makro Daerah', apps: ['Sistem Analisa Ekonomi Makro Daerah'] },
+    'sistem-csr': { title: 'Sistem Pelaporan CSR', subtitle: 'Pelaporan Corporate Social Responsibility Online', apps: ['Sistem Pelaporan Online CSR'] },
+    
+    // Litbang
+    'e-perencanaan': { title: 'E-Perencanaan', subtitle: 'Sistem Perencanaan Pembangunan', apps: ['E-Perencanaan'] },
+    'e-lkpj': { title: 'E-LKPJ', subtitle: 'Laporan Keterangan Pertanggungjawaban', apps: ['E-LKPJ'] },
+    'e-ippd': { title: 'E-IPPD', subtitle: 'Informasi Penyelenggaraan Pemerintah Daerah', apps: ['E-IPPD'] }
+  };
+  
+  const menu = menuTitles[menuName] || { 
+    title: menuName.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()), 
+    subtitle: 'Fitur sedang dalam pengembangan',
+    apps: [menuName.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())]
+  };
+  
+  document.getElementById('comingsoon-title').textContent = menu.title;
+  document.getElementById('comingsoon-subtitle').textContent = menu.subtitle;
+  
+  // Tampilkan daftar aplikasi yang terkait
+  const appsListHtml = `
+    <strong style="display: block; margin-bottom: 12px; color: var(--text-1);">📋 Aplikasi yang Digunakan:</strong>
+    <ul style="margin: 0; padding-left: 20px;">
+      ${menu.apps.map(app => `<li style="margin-bottom: 8px;">${app}</li>`).join('')}
+    </ul>
+  `;
+  document.getElementById('comingsoon-apps-list').innerHTML = appsListHtml;
+  
+  comingSoonPanel.classList.add('active');
+  
+  // Scroll ke atas
+  document.querySelector('.page-content').scrollTop = 0;
 }
 
 
@@ -3516,55 +4108,349 @@ function exportDokumenToPDF() {
 }
 
 // ================= LOG AKTIVITAS FUNCTIONS =================
-let allLogData = [];
-let currentDateStart = '';
-let currentDateEnd = '';
+// ================= PAGINATION GLOBAL VARIABLES =================
+let currentPage = 1;
+let perPage = 10;
+let filteredData = [];
 
-function loadLogAktivitas() {
-  console.log('Loading log aktivitas...');
-  
-  $('#log-tbody').html(`
-    <tr><td colspan="6" style="text-align:center;padding:40px;">
-      <div class="modern-spinner"></div>
-      <p>Memuat data log...</p>
-    </td></tr>
-  `);
-  
-  $.ajax({
-    url: '<?= base_url('IDE/get_log_aktivitas') ?>',
-    type: 'GET',
-    dataType: 'json',
-    timeout: 10000,
-    success: function(response) {
-      if (response.status === 'success') {
-        allLogData = response.data;
-        renderLogTable(allLogData);
-        console.log('Log data loaded:', allLogData.length, 'records');
-      } else {
-        $('#log-tbody').html(`<tr><td colspan="6" class="empty-state-table">
-          <div class="icon">⚠️</div>
-          <p>Gagal memuat data log</p>
-        </td></tr>`);
-      }
-    },
-    error: function(xhr, status, error) {
-      console.error('Error loading log:', error);
-      $('#log-tbody').html(`<tr><td colspan="6" class="empty-state-table">
-        <div class="icon">❌</div>
-        <p>Error memuat data dari server</p>
-       </td></tr>`);
+// ================= UPDATE PAGINATION =================
+function updatePagination() {
+    if (!filteredData || filteredData.length === 0) {
+        $('#log-pagination').empty();
+        $('#log-info-text').text('Menampilkan 0 dari 0 data');
+        return;
     }
-  });
+    
+    const totalItems = filteredData.length;
+    const totalPages = Math.ceil(totalItems / perPage);
+    const startIndex = (currentPage - 1) * perPage;
+    const endIndex = Math.min(startIndex + perPage, totalItems);
+    const currentData = filteredData.slice(startIndex, endIndex);
+    
+    // Update info text
+    $('#log-info-text').text(`Menampilkan ${startIndex + 1} - ${endIndex} dari ${totalItems} data`);
+    
+    // Generate pagination buttons
+    let paginationHtml = '';
+    
+    // Previous button
+    paginationHtml += `
+        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+            <a class="page-link" href="#" onclick="goToPage(${currentPage - 1}); return false;">
+                <i class="bi bi-chevron-left"></i>
+            </a>
+        </li>
+    `;
+    
+    // Calculate page range to show (max 5 pages)
+    let startPage = Math.max(1, currentPage - 2);
+    let endPage = Math.min(totalPages, startPage + 4);
+    
+    if (endPage - startPage < 4 && startPage > 1) {
+        startPage = Math.max(1, endPage - 4);
+    }
+    
+    // First page button if needed
+    if (startPage > 1) {
+        paginationHtml += `
+            <li class="page-item"><a class="page-link" href="#" onclick="goToPage(1); return false;">1</a></li>
+            ${startPage > 2 ? '<li class="page-item disabled"><span class="page-link">...</span></li>' : ''}
+        `;
+    }
+    
+    // Page buttons
+    for (let i = startPage; i <= endPage; i++) {
+        paginationHtml += `
+            <li class="page-item ${currentPage === i ? 'active' : ''}">
+                <a class="page-link" href="#" onclick="goToPage(${i}); return false;">${i}</a>
+            </li>
+        `;
+    }
+    
+    // Last page button if needed
+    if (endPage < totalPages) {
+        paginationHtml += `
+            ${endPage < totalPages - 1 ? '<li class="page-item disabled"><span class="page-link">...</span></li>' : ''}
+            <li class="page-item"><a class="page-link" href="#" onclick="goToPage(${totalPages}); return false;">${totalPages}</a></li>
+        `;
+    }
+    
+    // Next button
+    paginationHtml += `
+        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+            <a class="page-link" href="#" onclick="goToPage(${currentPage + 1}); return false;">
+                <i class="bi bi-chevron-right"></i>
+            </a>
+        </li>
+    `;
+    
+    $('#log-pagination').html(paginationHtml);
+    
+    // Render current page data
+    renderLogTable(currentData);
 }
 
+// ================= TOTAL KERTAS TERPAKAI FUNCTIONS =================
+let currentBidangFilterKertas = '';
+
+// Load total kertas terpakai
+function loadTotalKertasTerpakai(bidang = '') {
+    currentBidangFilterKertas = bidang;
+    
+    // Update info bidang yang difilter
+    if (bidang && bidang !== '') {
+        $('#bidang-filter-info').show();
+        $('#bidang-filter-nama').text(bidang);
+    } else {
+        $('#bidang-filter-info').hide();
+    }
+    
+    // Load per periode
+    const periods = ['hari', 'minggu', 'bulan', 'tahun'];
+    
+    periods.forEach(period => {
+        $.ajax({
+            url: '<?= base_url('IDE/get_total_kertas_terpakai') ?>',
+            type: 'GET',
+            data: { bidang: bidang, periode: period },
+            dataType: 'json',
+            async: true,
+            success: function(response) {
+                if (response.status === 'success') {
+                    let elementId = '';
+                    switch(period) {
+                        case 'hari': elementId = 'total-kertas-hari'; break;
+                        case 'minggu': elementId = 'total-kertas-minggu'; break;
+                        case 'bulan': elementId = 'total-kertas-bulan'; break;
+                        case 'tahun': elementId = 'total-kertas-tahun'; break;
+                    }
+                    $('#' + elementId).text(formatNumberRibuan(response.total_kertas));
+                    
+                    // Update tooltip dengan detail print
+                    $(`#${elementId}`).attr('title', `${response.total_print} kali print (${response.success_count} berhasil, ${response.failed_count} gagal)`);
+                }
+            },
+            error: function() {
+                console.error('Error loading kertas untuk periode:', period);
+            }
+        });
+    });
+    
+    // Load total keseluruhan
+    $.ajax({
+        url: '<?= base_url('IDE/get_total_kertas_terpakai') ?>',
+        type: 'GET',
+        data: { bidang: bidang },
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success') {
+                $('#total-kertas-semua').text(formatNumberRibuan(response.total_kertas));
+                $('#total-kertas-semua').attr('title', `${response.total_print} total print (${response.success_count} sukses, ${response.failed_count} gagal)`);
+            }
+        },
+        error: function() {
+            console.error('Error loading total kertas keseluruhan');
+        }
+    });
+}
+
+// Refresh kertas terpakai (dengan filter bidang saat ini)
+function refreshKertasTerpakai() {
+    const currentBidang = $('#log-bidang-pilih').val();
+    loadTotalKertasTerpakai(currentBidang);
+}
+
+// Format angka dengan pemisah ribuan
+function formatNumberRibuan(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+// Modified loadLogByBidang - update total kertas juga
+function loadLogByBidang() {
+    const bidang = $('#log-bidang-pilih').val();
+    loadTotalKertasTerpakai(bidang);  // ← Update total kertas berdasarkan bidang
+    loadLogAktivitas();                // Load log aktivitas
+}
+
+// Modified refreshLogData - reset total kertas
+function refreshLogData() {
+    $('#log-date-start').val('');
+    $('#log-date-end').val('');
+    $('#log-aksi-filter').val('');
+    $('#log-search').val('');
+    $('#log-per-page').val('25');
+    perPage = 25;
+    
+    const selectedBidang = $('#log-bidang-pilih').val();
+    if (selectedBidang !== '') {
+        $('#log-bidang-pilih').val('');
+        loadTotalKertasTerpakai('');   // Reset total kertas ke semua bidang
+        loadLogAktivitas();
+    } else {
+        loadTotalKertasTerpakai('');
+        loadLogAktivitas();
+    }
+}
+
+// ================= GO TO PAGE =================
+function goToPage(page) {
+    if (page < 1 || page > Math.ceil(filteredData.length / perPage)) return;
+    currentPage = page;
+    updatePagination();
+}
+
+// ================= CHANGE ITEMS PER PAGE =================
+function changePerPage() {
+    perPage = parseInt($('#log-per-page').val());
+    currentPage = 1;
+    
+    // Apply current filters to get filteredData
+    applyFiltersAndPagination();
+}
+
+// ================= APPLY FILTERS AND UPDATE PAGINATION =================
+function applyFiltersAndPagination() {
+    const searchText = $('#log-search').val().toLowerCase();
+    const aksiFilter = $('#log-aksi-filter').val();
+    const dateStart = $('#log-date-start').val();
+    const dateEnd = $('#log-date-end').val();
+    
+    let filtered = [...allLogData];
+    
+    // Filter berdasarkan teks pencarian
+    if (searchText) {
+        filtered = filtered.filter(log => 
+            (log.username || '').toLowerCase().includes(searchText) ||
+            (log.detail || '').toLowerCase().includes(searchText) ||
+            (log.modul || '').toLowerCase().includes(searchText)
+        );
+    }
+    
+    // Filter berdasarkan aksi
+    if (aksiFilter) {
+        filtered = filtered.filter(log => log.aksi === aksiFilter);
+    }
+    
+    // Filter berdasarkan rentang tanggal
+    if (dateStart) {
+        const startDate = new Date(dateStart);
+        filtered = filtered.filter(log => {
+            if (!log.waktu) return false;
+            const parts = log.waktu.split(' ');
+            const dateParts = parts[0].split('/');
+            const logDate = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+            return logDate >= startDate;
+        });
+    }
+    
+    if (dateEnd) {
+        const endDate = new Date(dateEnd);
+        endDate.setHours(23, 59, 59);
+        filtered = filtered.filter(log => {
+            if (!log.waktu) return false;
+            const parts = log.waktu.split(' ');
+            const dateParts = parts[0].split('/');
+            const logDate = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+            return logDate <= endDate;
+        });
+    }
+    
+    filteredData = filtered;
+    currentPage = 1;
+    updatePagination();
+}
+
+// ================= MODIFIED FILTER LOG TABLE =================
+function filterLogTable() {
+    applyFiltersAndPagination();
+}
+
+// ================= MODIFIED LOAD LOG AKTIVITAS =================
+function loadLogAktivitas() {
+    console.log('Loading log aktivitas...');
+    
+    $('#log-tbody').html(`
+        <tr><td colspan="7" style="text-align:center;padding:40px;">
+            <div class="modern-spinner"></div>
+            <p>Memuat data log...</p>
+        </div></td>
+    `);
+    
+    const bidangFilter = $('#log-bidang-pilih').val();
+    currentBidangFilter = bidangFilter;
+    
+    if (bidangFilter) {
+        $('#bidang-info').show();
+        $('#bidang-terpilih-label').text(bidangFilter);
+    } else {
+        $('#bidang-info').hide();
+    }
+    
+    $.ajax({
+        url: '<?= base_url('IDE/get_log_aktivitas') ?>',
+        type: 'GET',
+        data: { bidang: bidangFilter },
+        dataType: 'json',
+        timeout: 10000,
+        success: function(response) {
+            if (response.status === 'success') {
+                allLogData = response.data;
+                filteredData = [...allLogData];
+                currentPage = 1;
+                updatePagination();
+                console.log('Log data loaded:', allLogData.length, 'records');
+            } else {
+                $('#log-tbody').html(`<tr><td colspan="7" class="empty-state-table">
+                    <div class="icon">⚠️</div>
+                    <p>Gagal memuat data log</p>
+                 </div></td>`);
+                $('#log-pagination').empty();
+                $('#log-info-text').text('Menampilkan 0 dari 0 data');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading log:', error);
+            $('#log-tbody').html(`<tr><td colspan="7" class="empty-state-table">
+                <div class="icon">❌</div>
+                <p>Error memuat data dari server</p>
+              </div></td>`);
+            $('#log-pagination').empty();
+            $('#log-info-text').text('Menampilkan 0 dari 0 data');
+        }
+    });
+}
+
+// ================= MODIFIED REFRESH LOG DATA =================
+function refreshLogData() {
+    $('#log-date-start').val('');
+    $('#log-date-end').val('');
+    $('#log-aksi-filter').val('');
+    $('#log-search').val('');
+    $('#log-per-page').val('25');
+    perPage = 25;
+    
+    if ($('#log-bidang-pilih').val() !== '') {
+        $('#log-bidang-pilih').val('');
+        loadLogAktivitas();
+    } else {
+        loadLogAktivitas();
+    }
+}
+
+// ================= MODIFIED FILTER LOG BY DATE =================
+function filterLogByDate() {
+    applyFiltersAndPagination();
+}
+
+// ================= RENDER LOG TABLE =================
 function renderLogTable(logs) {
     const tbody = document.getElementById('log-tbody');
     
     if (!logs || logs.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="empty-state-table">
+        tbody.innerHTML = `<tr><td colspan="7" class="empty-state-table">
             <div class="icon">📭</div>
-            <p>Belum ada aktivitas tercatat</p>
-        </td></tr>`;
+            <p>Belum ada aktivitas tercatat untuk bidang ini</p>
+          </div></td>`;
         return;
     }
     
@@ -3572,7 +4458,7 @@ function renderLogTable(logs) {
         const map = {
             'Upload': 'log-aksi-upload',
             'Print': 'log-aksi-print',
-            'Print (via Preview)': 'log-aksi-print',  // ← TAMBAHKAN INI
+            'Print (via Preview)': 'log-aksi-print',
             'Review': 'log-aksi-review',
             'Login': 'log-aksi-login',
             'Update': 'log-aksi-update',
@@ -3582,18 +4468,41 @@ function renderLogTable(logs) {
         return map[aksi] || 'log-aksi-upload';
     };
     
+    const getBidangBadge = (bidang) => {
+  if (!bidang || bidang === '-') return '<span class="pill" style="background:#e2e8f0; color:#475569;">-</span>';
+  
+  const warna = {
+    'Litbang': '#e0e7ff',
+    'Perencanaan': '#dcfce7',
+    'Ekonomi': '#fed7aa',
+    'Kesra': '#fbcfe8',
+    'Sarpras': '#cffafe',
+    'Sekretariat': '#e9d5ff'   // ← TAMBAHKAN INI
+  };
+  const warnaText = {
+    'Litbang': '#4338ca',
+    'Perencanaan': '#166534',
+    'Ekonomi': '#9a3412',
+    'Kesra': '#be185d',
+    'Sarpras': '#0e7490',
+    'Sekretariat': '#6b21a5'   // ← TAMBAHKAN INI (ungu tua)
+  };
+  
+  return `<span class="pill" style="background:${warna[bidang] || '#e2e8f0'}; color:${warnaText[bidang] || '#475569'};">${escapeHtml(bidang)}</span>`;
+};
+    
     tbody.innerHTML = logs.map((log, index) => {
         const waktu = log.waktu || '-';
         const username = log.username || '-';
         const aksi = log.aksi || '-';
         const modul = log.modul || '-';
         const detail = log.detail || '-';
+        const bidang = log.bidang || '-';
         let ip = log.ip_address || '-';
         
         if (ip === '::1') ip = '127.0.0.1';
         const aksiClass = getAksiClass(aksi);
         
-        // 🔥 JIKA AKSI PRINT ATAU PRINT VIA PREVIEW, BUAT DETAIL BISA DIKLIK 🔥
         let detailHtml = '';
         if (aksi === 'Print' || aksi === 'Print (via Preview)') {
             const escapedDetail = escapeHtml(detail);
@@ -3605,12 +4514,11 @@ function renderLogTable(logs) {
             detailHtml = escapeHtml(detail);
         }
         
-        // Badge untuk aksi print via preview (opsional)
         let aksiDisplay = aksi;
         if (aksi === 'Print (via Preview)') {
-            aksiDisplay = '🖱️ Print Preview';
+            aksiDisplay = 'Print Preview';
         } else if (aksi === 'Print') {
-            aksiDisplay = '🖨️ Print';
+            aksiDisplay = 'Print';
         }
         
         return `
@@ -3624,123 +4532,90 @@ function renderLogTable(logs) {
                         ${escapeHtml(aksiDisplay)}
                     </span>
                 </td>
+                <td>${getBidangBadge(bidang)}</td>
                 <td>${escapeHtml(modul)}</td>
                 <td class="detail-cell">${detailHtml}</td>
                 <td><code class="ip-address">${escapeHtml(ip)}</code></td>
-            <tr>
+            </tr>
         `;
     }).join('');
 }
-  
-  const getAksiClass = (aksi) => {
-    const map = {
-      'Upload': 'log-aksi-upload',
-      'Print': 'log-aksi-print',
-      'Review': 'log-aksi-review',
-      'Login': 'log-aksi-login',
-      'Update': 'log-aksi-update',
-      'Hapus': 'log-aksi-hapus',
-      'Delete': 'log-aksi-hapus'
-    };
-    return map[aksi] || 'log-aksi-upload';
-  };
-  
-  const getAksiIcon = (aksi) => {
-    const map = {
-      'Upload': '',
-      'Print': '',
-      'Review': '',
-      'Login': '',
-      'Update': '',
-      'Hapus': '',
-      'Delete': ''
-    };
-    return map[aksi] || '';
-  };
-  
-  tbody.innerHTML = logs.map((log, index) => {
-    const waktu = log.waktu || '-';
-    const username = log.username || '-';
-    const aksi = log.aksi || '-';
-    const modul = log.modul || '-';
-    const detail = log.detail || '-';
-    let ip = log.ip_address || '-';
-    
-    // Format IP agar lebih rapi
-    if (ip === '::1') ip = '127.0.0.1';
-    
-    const aksiClass = getAksiClass(aksi);
-    const aksiIcon = getAksiIcon(aksi);
-    
-    return `
-      <tr>
-        <td class="waktu-cell">${escapeHtml(waktu)}</td>
-        <td class="username-cell">
-          <i class=""></i> ${escapeHtml(username)}
-        </td>
-        <td>
-          <span class="log-aksi-badge ${aksiClass}">
-            ${aksiIcon} ${escapeHtml(aksi)}
-          </span>
-        </td>
-        <td>
-          <i class=""></i> ${escapeHtml(modul)}
-        </td>
-        <td class="detail-cell">
-          <i class="" style="opacity: 0.6; margin-right: 6px;"></i>
-          ${escapeHtml(detail)}
-        </td>
-        <td>
-          <code class="ip-address">
-            <i class=""></i> ${escapeHtml(ip)}
-          </code>
-        </td>
-      </tr>
-    `;
-  }).join('');
 
+// ================= FILTER LOG TABLE =================
 function filterLogTable() {
-  const searchText = $('#log-search').val().toLowerCase();
-  const aksiFilter = $('#log-aksi-filter').val();
-  const dateStart = $('#log-date-start').val();
-  const dateEnd = $('#log-date-end').val();
-  
-  let filtered = [...allLogData];
-  
-  // Filter berdasarkan teks pencarian
-  if (searchText) {
-    filtered = filtered.filter(log => 
-      (log.username || '').toLowerCase().includes(searchText) ||
-      (log.detail || '').toLowerCase().includes(searchText) ||
-      (log.modul || '').toLowerCase().includes(searchText)
-    );
-  }
-  
-  // Filter berdasarkan aksi
-  if (aksiFilter) {
-    filtered = filtered.filter(log => log.aksi === aksiFilter);
-  }
-  
-  // Filter berdasarkan rentang tanggal
-  if (dateStart) {
-    const startDate = new Date(dateStart);
-    filtered = filtered.filter(log => {
-      const logDate = new Date(log.waktu.split(' ')[0].split('/').reverse().join('-'));
-      return logDate >= startDate;
-    });
-  }
-  
-  if (dateEnd) {
-    const endDate = new Date(dateEnd);
-    endDate.setHours(23, 59, 59);
-    filtered = filtered.filter(log => {
-      const logDate = new Date(log.waktu.split(' ')[0].split('/').reverse().join('-'));
-      return logDate <= endDate;
-    });
-  }
-  
-  renderLogTable(filtered);
-  console.log('Filtered logs:', filtered.length);
+    const searchText = $('#log-search').val().toLowerCase();
+    const aksiFilter = $('#log-aksi-filter').val();
+    const dateStart = $('#log-date-start').val();
+    const dateEnd = $('#log-date-end').val();
+    
+    let filtered = [...allLogData];
+    
+    // Filter berdasarkan teks pencarian
+    if (searchText) {
+        filtered = filtered.filter(log => 
+            (log.username || '').toLowerCase().includes(searchText) ||
+            (log.detail || '').toLowerCase().includes(searchText) ||
+            (log.modul || '').toLowerCase().includes(searchText)
+        );
+    }
+    
+    // Filter berdasarkan aksi
+    if (aksiFilter) {
+        filtered = filtered.filter(log => log.aksi === aksiFilter);
+    }
+    
+    // Filter berdasarkan rentang tanggal
+    if (dateStart) {
+        const startDate = new Date(dateStart);
+        filtered = filtered.filter(log => {
+            if (!log.waktu) return false;
+            const parts = log.waktu.split(' ');
+            const dateParts = parts[0].split('/');
+            const logDate = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+            return logDate >= startDate;
+        });
+    }
+    
+    if (dateEnd) {
+        const endDate = new Date(dateEnd);
+        endDate.setHours(23, 59, 59);
+        filtered = filtered.filter(log => {
+            if (!log.waktu) return false;
+            const parts = log.waktu.split(' ');
+            const dateParts = parts[0].split('/');
+            const logDate = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+            return logDate <= endDate;
+        });
+    }
+    
+    renderLogTable(filtered);
+    console.log('Filtered logs:', filtered.length);
+}
+
+// ================= LOAD LOG BERDASARKAN BIDANG =================
+function loadLogByBidang() {
+    loadLogAktivitas();  // Reload dengan parameter bidang baru
+}
+
+// ================= FILTER LOG BY DATE =================
+function filterLogByDate() {
+    filterLogTable();
+}
+
+// ================= REFRESH LOG DATA =================
+function refreshLogData() {
+    $('#log-date-start').val('');
+    $('#log-date-end').val('');
+    $('#log-aksi-filter').val('');
+    $('#log-search').val('');
+    
+    // Reset filter bidang ke default
+    if ($('#log-bidang-pilih').val() !== '') {
+        $('#log-bidang-pilih').val('');
+        loadLogAktivitas();
+    } else {
+        loadLogAktivitas();
+    }
 }
 
 // ==================== REKAP PRINT DARI LOG AKTIVITAS ====================
@@ -4199,6 +5074,35 @@ $(document).ready(function() {
   });
   
   console.log('Inisialisasi selesai. Current bidang:', currentBidangId);
+});
+
+// ========== INITIALIZE TOTAL KERTAS TERPAKAI ==========
+// Load total kertas saat panel log pertama kali dibuka
+const logPanelObserver = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        const activePanel = document.querySelector('.panel.active');
+        if (activePanel && activePanel.id === 'panel-log') {
+            console.log('Panel log aktif, load total kertas...');
+            loadTotalKertasTerpakai($('#log-bidang-pilih').val());
+            logPanelObserver.disconnect(); // Hentikan observer setelah pertama kali
+        }
+    });
+});
+
+logPanelObserver.observe(document.body, {
+    attributes: true,
+    attributeFilter: ['class'],
+    subtree: true
+});
+
+// Load total kertas jika panel log sudah aktif saat halaman dimuat
+if (document.querySelector('#panel-log.active')) {
+    loadTotalKertasTerpakai($('#log-bidang-pilih').val());
+}
+
+// Event listener untuk perubahan filter bidang
+$('#log-bidang-pilih').on('change', function() {
+    loadTotalKertasTerpakai($(this).val());
 });
 
 

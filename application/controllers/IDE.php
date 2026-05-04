@@ -2262,49 +2262,248 @@ private function _generate_thumbnail($file_path, $file_name) {
         }
     }
     
-    /**
-     * Get Log Aktivitas
-     */
     public function get_log_aktivitas() {
-        if (!$this->session->userdata('smb_logged_in')) {
-            echo json_encode(['status' => 'error', 'message' => 'Session expired']);
-            return;
-        }
-        
-        $start_date = $this->input->get('start_date');
-        $end_date = $this->input->get('end_date');
-        $aksi = $this->input->get('aksi');
-        $search = $this->input->get('search');
-        
-        $this->db->order_by('waktu', 'DESC');
-        
-        if (!empty($start_date)) {
-            $this->db->where('DATE(waktu) >=', date('Y-m-d', strtotime($start_date)));
-        }
-        if (!empty($end_date)) {
-            $this->db->where('DATE(waktu) <=', date('Y-m-d', strtotime($end_date)));
-        }
-        if (!empty($aksi)) {
-            $this->db->where('aksi', $aksi);
-        }
-        if (!empty($search)) {
-            $this->db->group_start()
-                ->like('username', $search)
-                ->or_like('detail', $search)
-                ->or_like('modul', $search)
-                ->group_end();
-        }
-        
-        $logs = $this->db->limit(500)->get('smb_aktivitas_log')->result_array();
-        
-        foreach ($logs as &$log) {
-            $log['waktu'] = date('d/m/Y H:i:s', strtotime($log['waktu']));
-            $log['ip_address'] = $log['ip_address'] ?? '-';
-            $log['detail'] = $log['detail'] ?? '-';
-        }
-        
-        echo json_encode(['status' => 'success', 'data' => $logs]);
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+        return;
     }
+    
+    $start_date = $this->input->get('start_date');
+    $end_date = $this->input->get('end_date');
+    $aksi = $this->input->get('aksi');
+    $search = $this->input->get('search');
+    $bidang_filter = $this->input->get('bidang');
+    
+    // Join dengan tabel akun untuk mendapatkan bidang user
+    $this->db->select('l.*, a.Bidang as user_bidang');
+    $this->db->from('smb_aktivitas_log l');
+    $this->db->join('akun a', 'a.Username = l.username', 'left');
+    
+    // FILTER BERDASARKAN BIDANG YANG DIPILIH
+    if (!empty($bidang_filter) && $bidang_filter !== '') {
+        // Mapping nama bidang ke nilai di database - TAMBAHKAN SEKRETARIAT
+        $bidang_map = [
+            'Litbang' => 'Litbang',
+            'Perencanaan' => 'Perencanaan',
+            'Ekonomi' => 'Ekonomi',
+            'Kesra' => 'Kesra',
+            'Sarpras' => 'Sarpras',
+            'Sekretariat' => 'Sekretariat'  // ← TAMBAHKAN INI
+        ];
+        
+        if (isset($bidang_map[$bidang_filter])) {
+            $this->db->where('a.Bidang', $bidang_map[$bidang_filter]);
+        }
+    }
+    
+    // SuperAdmin (level 1) bisa lihat semua log
+    // Selain itu, hanya bisa lihat log dari bidangnya sendiri
+    $user_level = $this->session->userdata('level');
+    $user_bidang = $this->session->userdata('bidang');
+    
+    if ($user_level != 1 && !empty($user_bidang)) {
+        // Non-admin hanya bisa melihat log dari bidangnya sendiri
+        if (empty($bidang_filter) || $bidang_filter === '') {
+            $this->db->where('a.Bidang', $user_bidang);
+        }
+    }
+    
+    if (!empty($start_date)) {
+        $this->db->where('DATE(l.waktu) >=', date('Y-m-d', strtotime($start_date)));
+    }
+    if (!empty($end_date)) {
+        $this->db->where('DATE(l.waktu) <=', date('Y-m-d', strtotime($end_date)));
+    }
+    if (!empty($aksi)) {
+        $this->db->where('l.aksi', $aksi);
+    }
+    if (!empty($search)) {
+        $this->db->group_start()
+            ->like('l.username', $search)
+            ->or_like('l.detail', $search)
+            ->or_like('l.modul', $search)
+            ->group_end();
+    }
+    
+    $this->db->order_by('l.waktu', 'DESC');
+    $this->db->limit(500);
+    $logs = $this->db->get()->result_array();
+    
+    foreach ($logs as &$log) {
+        $log['waktu'] = date('d/m/Y H:i:s', strtotime($log['waktu']));
+        $log['ip_address'] = $log['ip_address'] ?? '-';
+        $log['detail'] = $log['detail'] ?? '-';
+        $log['bidang'] = $log['user_bidang'] ?? '-';
+    }
+    
+    echo json_encode(['status' => 'success', 'data' => $logs]);
+}
+
+/**
+ * Get total kertas terpakai dengan filter bidang dan periode
+ */
+public function get_total_kertas_terpakai() {
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+        return;
+    }
+    
+    $bidang = $this->input->get('bidang');
+    $periode = $this->input->get('periode'); // 'hari', 'minggu', 'bulan', 'tahun'
+    
+    // Query dasar
+    $this->db->select('SUM(pl.jumlah_kertas) as total_kertas, COUNT(*) as total_print, 
+                       SUM(CASE WHEN pl.status = "success" THEN 1 ELSE 0 END) as success_count,
+                       SUM(CASE WHEN pl.status = "failed" THEN 1 ELSE 0 END) as failed_count');
+    $this->db->from('smb_print_log pl');
+    $this->db->join('akun a', 'a.Username = pl.username', 'left');
+    
+    // Filter berdasarkan bidang
+    if (!empty($bidang) && $bidang !== '') {
+        $bidang_map = [
+            'Litbang' => 'Litbang',
+            'Perencanaan' => 'Perencanaan',
+            'Ekonomi' => 'Ekonomi',
+            'Kesra' => 'Kesra',
+            'Sarpras' => 'Sarpras',
+            'Sekretariat' => 'Sekretariat'
+        ];
+        
+        if (isset($bidang_map[$bidang])) {
+            $this->db->where('a.Bidang', $bidang_map[$bidang]);
+        }
+    }
+    
+    // Filter berdasarkan periode
+    $now = date('Y-m-d H:i:s');
+    switch ($periode) {
+        case 'hari':
+            $this->db->where('DATE(pl.waktu_print)', date('Y-m-d'));
+            break;
+        case 'minggu':
+            $this->db->where('pl.waktu_print >=', date('Y-m-d H:i:s', strtotime('-7 days')));
+            break;
+        case 'bulan':
+            $this->db->where('pl.waktu_print >=', date('Y-m-d H:i:s', strtotime('-30 days')));
+            break;
+        case 'tahun':
+            $this->db->where('YEAR(pl.waktu_print)', date('Y'));
+            break;
+        default:
+            // Semua waktu
+            break;
+    }
+    
+    $result = $this->db->get()->row_array();
+    
+    echo json_encode([
+        'status' => 'success',
+        'total_kertas' => (int)($result['total_kertas'] ?? 0),
+        'total_print' => (int)($result['total_print'] ?? 0),
+        'success_count' => (int)($result['success_count'] ?? 0),
+        'failed_count' => (int)($result['failed_count'] ?? 0)
+    ]);
+}
+
+/**
+ * Get rekap kertas terpakai per periode (Hari, Minggu, Bulan, Tahun)
+ * Bisa difilter per bidang
+ */
+public function get_rekap_kertas_terpakai() {
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+        return;
+    }
+    
+    $bidang = $this->input->get('bidang');
+    
+    // Mapping bidang
+    $bidang_map = [
+        'Litbang' => 'Litbang',
+        'Perencanaan' => 'Perencanaan',
+        'Ekonomi' => 'Ekonomi',
+        'Kesra' => 'Kesra',
+        'Sarpras' => 'Sarpras',
+        'Sekretariat' => 'Sekretariat'
+    ];
+    
+    $bidang_condition = "";
+    $params = [];
+    
+    if (!empty($bidang) && $bidang !== '' && isset($bidang_map[$bidang])) {
+        $bidang_condition = " AND a.Bidang = ?";
+        $params[] = $bidang_map[$bidang];
+    }
+    
+    // Query untuk rekap per periode
+    $queries = [
+        'hari' => "SELECT COALESCE(SUM(pl.jumlah_kertas), 0) as total 
+                   FROM smb_print_log pl 
+                   LEFT JOIN akun a ON a.Username = pl.username 
+                   WHERE DATE(pl.waktu_print) = CURDATE() $bidang_condition",
+        
+        'minggu' => "SELECT COALESCE(SUM(pl.jumlah_kertas), 0) as total 
+                     FROM smb_print_log pl 
+                     LEFT JOIN akun a ON a.Username = pl.username 
+                     WHERE pl.waktu_print >= DATE_SUB(NOW(), INTERVAL 7 DAY) $bidang_condition",
+        
+        'bulan' => "SELECT COALESCE(SUM(pl.jumlah_kertas), 0) as total 
+                    FROM smb_print_log pl 
+                    LEFT JOIN akun a ON a.Username = pl.username 
+                    WHERE pl.waktu_print >= DATE_SUB(NOW(), INTERVAL 30 DAY) $bidang_condition",
+        
+        'tahun' => "SELECT COALESCE(SUM(pl.jumlah_kertas), 0) as total 
+                    FROM smb_print_log pl 
+                    LEFT JOIN akun a ON a.Username = pl.username 
+                    WHERE YEAR(pl.waktu_print) = YEAR(CURDATE()) $bidang_condition"
+    ];
+    
+    $rekap = [];
+    foreach ($queries as $key => $sql) {
+        $query = $this->db->query($sql, $params);
+        $rekap[$key] = (int)$query->row()->total;
+    }
+    
+    echo json_encode([
+        'status' => 'success',
+        'data' => $rekap
+    ]);
+}
+
+/**
+ * Get mapping username ke bidang
+ */
+public function get_user_bidang_mapping() {
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+        return;
+    }
+    
+    $user_level = $this->session->userdata('level');
+    
+    if ($user_level == 1) {
+        // SuperAdmin bisa lihat mapping semua user
+        $users = $this->db->select('Username, Bidang')
+                          ->where('Bidang IS NOT NULL')
+                          ->where('Bidang !=', '')
+                          ->get('akun')
+                          ->result_array();
+    } else {
+        // User biasa hanya bisa lihat bidangnya sendiri
+        $user_bidang = $this->session->userdata('bidang');
+        $users = $this->db->select('Username, Bidang')
+                          ->where('Bidang', $user_bidang)
+                          ->get('akun')
+                          ->result_array();
+    }
+    
+    $mapping = [];
+    foreach ($users as $user) {
+        $mapping[$user['Username']] = $user['Bidang'];
+    }
+    
+    echo json_encode(['status' => 'success', 'data' => $mapping]);
+}
     
     /**
      * Get Statistik Dashboard
