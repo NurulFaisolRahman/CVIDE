@@ -3113,6 +3113,116 @@ public function log_preview() {
     }
 }
 
+// ==================== GET USER PRINT REKAP FROM DATABASE ====================
+public function get_user_print_rekap() {
+    // Cek session login SMB
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+        return;
+    }
+    
+    $username = $this->input->post('username', TRUE);
+    if (empty($username)) {
+        echo json_encode(['status' => 'error', 'message' => 'Username tidak boleh kosong']);
+        return;
+    }
+    
+    // 1. Ambil semua data print log untuk user ini dari smb_print_log
+    $print_logs = $this->db
+        ->select('pl.*, p.nama_printer')
+        ->from('smb_print_log pl')
+        ->join('smb_printer p', 'p.id_printer = pl.id_printer', 'left')
+        ->where('pl.username', $username)
+        ->order_by('pl.waktu_print', 'DESC')
+        ->get()
+        ->result_array();
+    
+    // 2. Hitung rekap per periode
+    $today_start = date('Y-m-d 00:00:00');
+    $today_end   = date('Y-m-d 23:59:59');
+    $week_start  = date('Y-m-d 00:00:00', strtotime('-7 days'));
+    $month_start = date('Y-m-d 00:00:00', strtotime('-30 days'));
+    $year_start  = date('Y-01-01 00:00:00');
+    
+    $rekap = [
+        'hari'   => ['lembar' => 0, 'sukses' => 0, 'gagal' => 0],
+        'minggu' => ['lembar' => 0, 'sukses' => 0, 'gagal' => 0],
+        'bulan'  => ['lembar' => 0, 'sukses' => 0, 'gagal' => 0],
+        'tahun'  => ['lembar' => 0, 'sukses' => 0, 'gagal' => 0]
+    ];
+    
+    $total_lembar = 0;
+    $total_sukses = 0;
+    $total_gagal  = 0;
+    
+    foreach ($print_logs as $log) {
+        $waktu = strtotime($log['waktu_print']);
+        
+        // Tentukan periode
+        $is_today = ($waktu >= strtotime($today_start) && $waktu <= strtotime($today_end));
+        $is_week  = ($waktu >= strtotime($week_start));
+        $is_month = ($waktu >= strtotime($month_start));
+        $is_year  = ($waktu >= strtotime($year_start));
+        
+        $lembar = (int)$log['jumlah_kertas'];
+        $is_success = ($log['status'] == 'success');
+        
+        // Akumulasi
+        if ($is_today) {
+            $rekap['hari']['lembar'] += $lembar;
+            if ($is_success) $rekap['hari']['sukses']++;
+            else $rekap['hari']['gagal']++;
+        }
+        if ($is_week) {
+            $rekap['minggu']['lembar'] += $lembar;
+            if ($is_success) $rekap['minggu']['sukses']++;
+            else $rekap['minggu']['gagal']++;
+        }
+        if ($is_month) {
+            $rekap['bulan']['lembar'] += $lembar;
+            if ($is_success) $rekap['bulan']['sukses']++;
+            else $rekap['bulan']['gagal']++;
+        }
+        if ($is_year) {
+            $rekap['tahun']['lembar'] += $lembar;
+            if ($is_success) $rekap['tahun']['sukses']++;
+            else $rekap['tahun']['gagal']++;
+        }
+        
+        // Total keseluruhan
+        $total_lembar += $lembar;
+        if ($is_success) $total_sukses++;
+        else $total_gagal++;
+    }
+    
+    // 3. Siapkan data detail print untuk ditampilkan (10 terbaru)
+    $print_details = [];
+    foreach (array_slice($print_logs, 0, 10) as $log) {
+        $print_details[] = [
+            'waktu'         => date('d/m/Y H:i:s', strtotime($log['waktu_print'])),
+            'nama_dokumen'  => $log['nama_dokumen'],
+            'jumlah_kertas' => (int)$log['jumlah_kertas'],
+            'status'        => $log['status'],
+            'nama_printer'  => $log['nama_printer'] ?? '-'
+        ];
+    }
+    
+    // 4. Kirim response
+    echo json_encode([
+        'status'        => 'success',
+        'username'      => $username,
+        'total_lembar'  => $total_lembar,
+        'total_print'   => count($print_logs),
+        'success_count' => $total_sukses,
+        'failed_count'  => $total_gagal,
+        'hari'          => $rekap['hari'],
+        'minggu'        => $rekap['minggu'],
+        'bulan'         => $rekap['bulan'],
+        'tahun'         => $rekap['tahun'],
+        'print_details' => $print_details
+    ]);
+}
+
 /**
  * Log print dari preview (via tombol print)
  */

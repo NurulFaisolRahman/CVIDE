@@ -594,6 +594,145 @@ a { text-decoration: none; color: inherit; }
 .p-idle    { background: var(--amber-bg); color: var(--amber-text); }
 .p-offline { background: var(--red-bg); color: var(--red-text); }
 
+/* Modal Detail Rekap Print User */
+.modal-user-rekap {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1002;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-user-rekap-content {
+    background: white;
+    border-radius: 20px;
+    width: 750px;
+    max-width: 90%;
+    max-height: 85vh;
+    overflow: auto;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    animation: modalSlideIn 0.3s ease;
+}
+
+.modal-user-rekap-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #1a2d6b 0%, #162060 100%);
+    color: white;
+    border-radius: 20px 20px 0 0;
+}
+
+.modal-user-rekap-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modal-user-rekap-close {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.modal-user-rekap-close:hover {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.1);
+}
+
+.modal-user-rekap-body {
+    padding: 24px;
+}
+
+.user-rekap-summary {
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8edf8 100%);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.user-rekap-item {
+    text-align: center;
+    flex: 1;
+    min-width: 100px;
+}
+
+.user-rekap-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-2);
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.user-rekap-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--navy-700);
+}
+
+.user-rekap-unit {
+    font-size: 10px;
+    color: black;
+    margin-top: 4px;
+}
+
+.user-detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 15px;
+}
+
+.user-detail-table th {
+    background: #f8f9fd;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-1);
+    border-bottom: 2px solid var(--border);
+}
+
+.user-detail-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.user-detail-table tr:hover {
+    background: #f8f9fd;
+}
+
+.rekap-badge-user {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    background: var(--blue-50);
+    color: var(--blue-600);
+}
+
 /* ============================================================
    TABLES
    ============================================================ */
@@ -1355,6 +1494,146 @@ a { text-decoration: none; color: inherit; }
   color: #991b1b;
 }
 
+/* Modal Detail Rekap dari Log Aktivitas */
+.modal-log-rekap {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1002;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-log-rekap-content {
+    background: white;
+    border-radius: 20px;
+    width: 700px;
+    max-width: 90%;
+    max-height: 85vh;
+    overflow: auto;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-log-rekap-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #1a2d6b 0%, #162060 100%);
+    color: white;
+    border-radius: 20px 20px 0 0;
+}
+
+.modal-log-rekap-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modal-log-rekap-close {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-log-rekap-close:hover {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.1);
+}
+
+.modal-log-rekap-body {
+    padding: 24px;
+}
+
+.log-rekap-summary {
+    background: #f0f4ff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.log-rekap-item {
+    text-align: center;
+    flex: 1;
+    min-width: 100px;
+}
+
+.log-rekap-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-2);
+    margin-bottom: 5px;
+}
+
+.log-rekap-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--navy-700);
+}
+
+.log-rekap-unit {
+    font-size: 10px;
+    color: var(--text-3);
+}
+
+.log-user-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 15px;
+}
+
+.log-user-table th {
+    background: #f8f9fd;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid var(--border);
+}
+
+.log-user-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.log-user-table tr:hover {
+    background: #f8f9fd;
+}
+
+.user-print-click {
+    cursor: pointer;
+    color: var(--blue-600);
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+.user-print-click:hover {
+    color: var(--blue-800);
+}
+
 /* IP Address styling */
 .ip-address {
   font-family: 'Courier New', monospace;
@@ -2049,6 +2328,7 @@ a { text-decoration: none; color: inherit; }
       <select class="sel-filter" id="log-aksi-filter" onchange="filterLogTable()">
         <option value="">Semua Aksi</option>
         <option value="Upload"> Upload</option>
+        <option value="Print (via Preview)"> Print (via Preview)</option>
         <option value="Print"> Print</option>
         <option value="Review"> Review</option>
         <option value="Login"> Login</option>
@@ -3252,16 +3532,79 @@ function loadLogAktivitas() {
 }
 
 function renderLogTable(logs) {
-  const tbody = document.getElementById('log-tbody');
-  
-  if (!logs || logs.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" class="empty-state-table">
-      <div class="icon"></div>
-      <p>Belum ada aktivitas tercatat</p>
-      <p style="font-size: 12px; margin-top: 8px;">Lakukan aktivitas seperti upload, print, atau login untuk mencatat log</p>
-    </td></tr>`;
-    return;
-  }
+    const tbody = document.getElementById('log-tbody');
+    
+    if (!logs || logs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="empty-state-table">
+            <div class="icon">📭</div>
+            <p>Belum ada aktivitas tercatat</p>
+        </td></tr>`;
+        return;
+    }
+    
+    const getAksiClass = (aksi) => {
+        const map = {
+            'Upload': 'log-aksi-upload',
+            'Print': 'log-aksi-print',
+            'Print (via Preview)': 'log-aksi-print',  // ← TAMBAHKAN INI
+            'Review': 'log-aksi-review',
+            'Login': 'log-aksi-login',
+            'Update': 'log-aksi-update',
+            'Hapus': 'log-aksi-hapus',
+            'Delete': 'log-aksi-hapus'
+        };
+        return map[aksi] || 'log-aksi-upload';
+    };
+    
+    tbody.innerHTML = logs.map((log, index) => {
+        const waktu = log.waktu || '-';
+        const username = log.username || '-';
+        const aksi = log.aksi || '-';
+        const modul = log.modul || '-';
+        const detail = log.detail || '-';
+        let ip = log.ip_address || '-';
+        
+        if (ip === '::1') ip = '127.0.0.1';
+        const aksiClass = getAksiClass(aksi);
+        
+        // 🔥 JIKA AKSI PRINT ATAU PRINT VIA PREVIEW, BUAT DETAIL BISA DIKLIK 🔥
+        let detailHtml = '';
+        if (aksi === 'Print' || aksi === 'Print (via Preview)') {
+            const escapedDetail = escapeHtml(detail);
+            detailHtml = `<span style="cursor:pointer; color:var(--blue-600); text-decoration:underline; font-weight:500;" 
+                              onclick="showPrintRekapFromLog('${escapeHtml(username)}', '${escapedDetail.replace(/'/g, "\\'")}')">
+                              ${escapedDetail}
+                          </span>`;
+        } else {
+            detailHtml = escapeHtml(detail);
+        }
+        
+        // Badge untuk aksi print via preview (opsional)
+        let aksiDisplay = aksi;
+        if (aksi === 'Print (via Preview)') {
+            aksiDisplay = '🖱️ Print Preview';
+        } else if (aksi === 'Print') {
+            aksiDisplay = '🖨️ Print';
+        }
+        
+        return `
+            <tr>
+                <td class="waktu-cell">${escapeHtml(waktu)}</td>
+                <td class="username-cell">
+                    <i class="fas fa-user"></i> ${escapeHtml(username)}
+                </td>
+                <td>
+                    <span class="log-aksi-badge ${aksiClass}">
+                        ${escapeHtml(aksiDisplay)}
+                    </span>
+                </td>
+                <td>${escapeHtml(modul)}</td>
+                <td class="detail-cell">${detailHtml}</td>
+                <td><code class="ip-address">${escapeHtml(ip)}</code></td>
+            <tr>
+        `;
+    }).join('');
+}
   
   const getAksiClass = (aksi) => {
     const map = {
@@ -3329,7 +3672,6 @@ function renderLogTable(logs) {
       </tr>
     `;
   }).join('');
-}
 
 function filterLogTable() {
   const searchText = $('#log-search').val().toLowerCase();
@@ -3373,6 +3715,159 @@ function filterLogTable() {
   
   renderLogTable(filtered);
   console.log('Filtered logs:', filtered.length);
+}
+
+// ==================== REKAP PRINT DARI LOG AKTIVITAS ====================
+
+function showPrintRekapFromLog(username, detailLog) {
+    // Buka modal
+    $('#modalPrintRekap').css('display', 'flex');
+    $('#modalPrintRekapTitle').html(`📊 Rekap Print - ${escapeHtml(username)}`);
+    
+    // Tampilkan loading
+    $('#modalPrintRekapBody').html(`
+        <div style="text-align:center;padding:40px;">
+            <div class="modern-spinner"></div>
+            <p>Memuat data rekap untuk user <strong>${escapeHtml(username)}</strong> dari database print log...</p>
+        </div>
+    `);
+    
+    // Ambil data dari server (panggil fungsi baru)
+    $.ajax({
+        url: '<?= base_url('IDE/get_user_print_rekap') ?>',  // ← nama fungsi baru
+        type: 'POST',
+        data: { username: username },
+        dataType: 'json',
+        timeout: 10000,
+        success: function(response) {
+            if (response.status === 'success') {
+                renderPrintRekapFromLog(response);
+            } else {
+                $('#modalPrintRekapBody').html(`
+                    <div style="text-align:center;padding:40px;color:red;">
+                        <p>❌ Gagal memuat data</p>
+                        <p>${response.message || 'Silakan coba lagi'}</p>
+                    </div>
+                `);
+            }
+        },
+        error: function(xhr, status, error) {
+            $('#modalPrintRekapBody').html(`
+                <div style="text-align:center;padding:40px;color:red;">
+                    <p>❌ Error: ${error}</p>
+                    <p>Silakan refresh halaman dan coba lagi</p>
+                </div>
+            `);
+        }
+    });
+}
+
+function renderPrintRekapFromLog(data) {
+    let html = '';
+    
+    // Header dengan info user
+    html += `
+        <div style="margin-bottom: 20px;">
+            <span class="rekap-badge-user">👤 ${escapeHtml(data.username)}</span>
+            <span style="margin-left: 10px; font-size: 11px; color: var(--text-3);">
+                📊 Data dari tabel print log
+            </span>
+        </div>
+    `;
+    
+    // 4 Kartu Rekap Periode (HARI, MINGGU, BULAN, TAHUN)
+    html += `
+        <div class="user-rekap-summary" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+            <!-- HARI INI -->
+            <div class="user-rekap-item" style="background: #e8f0fe; border-radius: 12px; padding: 12px;">
+                <div class="user-rekap-label">📅 HARI INI</div>
+                <div class="user-rekap-value" style="font-size: 24px;">${formatNumber(data.hari.lembar)}</div>
+                <div class="user-rekap-unit">kertas </div>
+                <div style="font-size: 10px; color: green; margin-top: 5px;">✓ ${data.hari.sukses} berhasil</div>
+            </div>
+            <!-- 7 HARI -->
+            <div class="user-rekap-item" style="background: #e6f7e6; border-radius: 12px; padding: 12px;">
+                <div class="user-rekap-label">📆 7 HARI</div>
+                <div class="user-rekap-value" style="font-size: 24px;">${formatNumber(data.minggu.lembar)}</div>
+                <div class="user-rekap-unit">kertas </div>
+                <div style="font-size: 10px; color: green; margin-top: 5px;">✓ ${data.minggu.sukses} berhasil</div>
+            </div>
+            <!-- 30 HARI -->
+            <div class="user-rekap-item" style="background: #fef3e6; border-radius: 12px; padding: 12px;">
+                <div class="user-rekap-label">📊 30 HARI</div>
+                <div class="user-rekap-value" style="font-size: 24px;">${formatNumber(data.bulan.lembar)}</div>
+                <div class="user-rekap-unit">kertas </div>
+                <div style="font-size: 10px; color: green; margin-top: 5px;">✓ ${data.bulan.sukses} berhasil</div>
+            </div>
+            <!-- TAHUN INI -->
+            <div class="user-rekap-item" style="background: #f0e6fe; border-radius: 12px; padding: 12px;">
+                <div class="user-rekap-label">🎯 TAHUN ${new Date().getFullYear()}</div>
+                <div class="user-rekap-value" style="font-size: 24px;">${formatNumber(data.tahun.lembar)}</div>
+                <div class="user-rekap-unit">kertas </div>
+                <div style="font-size: 10px; color: green; margin-top: 5px;">✓ ${data.tahun.sukses} berhasil</div>
+            </div>
+        </div>
+    `;
+    
+    // Tabel Rincian Print (dari smb_print_log)
+    if (data.print_details && data.print_details.length > 0) {
+        html += `
+            <h4 style="margin: 20px 0 10px 0;">📜 Rincian Print Terbaru</h4>
+            <div style="overflow-x: auto;">
+                <table class="user-detail-table">
+                    <thead>
+                        <tr>
+                            <th>Waktu</th>
+                            <th>Nama Dokumen</th>
+                            <th>Jumlah Lembar</th>
+                            <th>Printer</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+        
+        data.print_details.forEach(print => {
+            let statusBadge = print.status === 'success' 
+                ? '<span style="background:#dcfce7; color:#166534; padding:4px 10px; border-radius:20px; font-size:11px;">✓ Berhasil</span>'
+                : '<span style="background:#fee2e2; color:#991b1b; padding:4px 10px; border-radius:20px; font-size:11px;">✗ Gagal</span>';
+            
+            html += `
+                <tr>
+                    <td style="white-space: nowrap;">${escapeHtml(print.waktu)}</td>
+                    <td style="max-width: 250px; word-break: break-word;"><strong>${escapeHtml(print.nama_dokumen)}</strong></td>
+                    <td style="text-align: center;">${print.jumlah_kertas} lembar</td>
+                    <td>${escapeHtml(print.nama_printer)}</td>
+                    <td style="text-align: center;">${statusBadge}</td>
+                </tr>
+            `;
+        });
+        
+        html += `</tbody></table></div>`;
+    }
+    
+    // Jika tidak ada data
+    if (data.total_lembar === 0) {
+        html += `
+            <div style="text-align:center;padding:40px;">
+                <p>📭 User <strong>${escapeHtml(data.username)}</strong> belum melakukan aktivitas print</p>
+                <p style="font-size:12px; color:var(--text-3);">Belum ada riwayat print untuk user ini</p>
+            </div>
+        `;
+    }
+    
+    $('#modalPrintRekapBody').html(html);
+}
+
+function closeModalPrintRekap() {
+    $('#modalPrintRekap').css('display', 'none');
+    $('#modalPrintRekapBody').html('<div style="text-align:center;padding:40px;"><div class="modern-spinner"></div><p>Memuat data...</p></div>');
+}
+
+function formatNumber(num) {
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+    return num.toString();
 }
 
 function filterLogByDate() {
@@ -3521,6 +4016,13 @@ function exportLogToPDF() {
       text: 'Terjadi kesalahan saat membuat PDF'
     });
   });
+}
+
+function addPrintViaPreviewFilter() {
+    const filterSelect = $('#log-aksi-filter');
+    if (filterSelect.length && !filterSelect.find('option[value="Print (via Preview)"]').length) {
+        filterSelect.append('<option value="Print (via Preview)"> Print (via Preview)</option>');
+    }
 }
 
 // ================= INISIALISASI SAAT HALAMAN SIAP =================
@@ -3675,5 +4177,53 @@ $(document).ready(function() {
 
 
 </script>
+
+<!-- Modal Detail Rekap dari Log Aktivitas -->
+<div id="modalLogRekap" class="modal-log-rekap">
+    <div class="modal-log-rekap-content">
+        <div class="modal-log-rekap-header">
+            <h3 id="modalLogRekapTitle">Rekap Print</h3>
+            <button class="modal-log-rekap-close" onclick="closeModalLogRekap()">&times;</button>
+        </div>
+        <div class="modal-log-rekap-body" id="modalLogRekapBody">
+            <div style="text-align:center;padding:40px;">
+                <div class="modern-spinner"></div>
+                <p>Memuat data...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Detail Print Per User -->
+<div id="modalUserPrintDetail" class="modal-log-rekap">
+    <div class="modal-log-rekap-content">
+        <div class="modal-log-rekap-header">
+            <h3 id="modalUserPrintTitle">Detail Print User</h3>
+            <button class="modal-log-rekap-close" onclick="closeModalUserPrintDetail()">&times;</button>
+        </div>
+        <div class="modal-log-rekap-body" id="modalUserPrintBody">
+            <div style="text-align:center;padding:40px;">
+                <div class="modern-spinner"></div>
+                <p>Memuat data...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Detail Rekap Print dari Log Aktivitas -->
+<div id="modalPrintRekap" class="modal-user-rekap">
+    <div class="modal-user-rekap-content">
+        <div class="modal-user-rekap-header">
+            <h3 id="modalPrintRekapTitle">Detail Rekap Print</h3>
+            <button class="modal-user-rekap-close" onclick="closeModalPrintRekap()">&times;</button>
+        </div>
+        <div class="modal-user-rekap-body" id="modalPrintRekapBody">
+            <div style="text-align:center;padding:40px;">
+                <div class="modern-spinner"></div>
+                <p>Memuat data...</p>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
