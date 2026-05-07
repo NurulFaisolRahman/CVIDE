@@ -1987,6 +1987,12 @@ public function RoadmapHilirisasiBanyuwangi2026() {
         $this->load->view('Smb/auth_smb');
     }
 
+   
+
+    public function SmbLandingPage() {
+    $this->load->view('Smb/SmbLandingPage');
+}
+
     // ==================== LOGIN LOG SYSTEM ====================
 
 /**
