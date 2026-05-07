@@ -1971,6 +1971,7 @@ public function RoadmapHilirisasiBanyuwangi2026() {
     echo '</pre>';
 }
 
+
   
 
     // ====================== SMB - SISTEM MANAJEMEN BAPPEDA ======================
@@ -1986,48 +1987,576 @@ public function RoadmapHilirisasiBanyuwangi2026() {
         $this->load->view('Smb/auth_smb');
     }
 
-    /**
-     * Proses Login SMB
-     */
-    public function SmbLogin()
-    {
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Methods: POST, OPTIONS');
-        header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
-        header('Access-Control-Allow-Credentials: true');
+    // ==================== LOGIN LOG SYSTEM ====================
 
-        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-            header('Access-Control-Max-Age: 86400');
-            exit(0);
-        }
+/**
+ * Catat Login User
+ * Panggil method ini setelah user berhasil login
+ */
+public function log_login() {
+    if (!$this->session->userdata('smb_logged_in')) {
+        return;
+    }
+    
+    $username = $this->session->userdata('username');
+    $bidang = $this->session->userdata('bidang');
+    
+    // Hentikan session login sebelumnya yang masih active untuk user yang sama
+    $this->db->where('username', $username);
+    $this->db->where('status', 'active');
+    $this->db->update('smb_login_log', [
+        'status' => 'timed_out',
+        'logout_time' => date('Y-m-d H:i:s')
+    ]);
+    
+    $data = [
+        'username' => $username,
+        'bidang' => $bidang,
+        'ip_address' => $this->input->ip_address(),
+        'user_agent' => $this->input->user_agent(),
+        'login_time' => date('Y-m-d H:i:s'),
+        'status' => 'active'
+    ];
+    
+    $this->db->insert('smb_login_log', $data);
+    
+    // Simpan id_log ke session untuk update logout nanti
+    $this->session->set_userdata('current_login_id', $this->db->insert_id());
+}
 
-        $username = $this->input->post('username', TRUE);
-        $password = $this->input->post('password', TRUE);
-
-        if (empty($username) || empty($password)) {
-            echo "Username dan Password harus diisi!";
-            return;
-        }
-
-        $user = $this->db->get_where('akun', ['Username' => $username])->row_array();
-
-        if ($user && password_verify($password, $user['Password'])) {
-            $session_data = [
-                'smb_logged_in' => true,
-                'user_id'       => $user['Username'],
-                'username'      => $user['Username'],
-                'nama_lengkap'  => $user['Username'],
-                'level'         => (int)$user['Level'],
-                'system'        => 'SMB_Bappeda'
-            ];
-            $this->session->set_userdata($session_data);
-            echo '1';
-        } else {
-            echo "Username atau Password salah!";
+/**
+ * Catat Logout User
+ * Panggil method ini saat user logout
+ */
+public function log_logout() {
+    $login_id = $this->session->userdata('current_login_id');
+    
+    if ($login_id) {
+        $login = $this->db->get_where('smb_login_log', ['id_log' => $login_id])->row_array();
+        
+        if ($login && $login['status'] == 'active') {
+            $logout_time = date('Y-m-d H:i:s');
+            $login_time = strtotime($login['login_time']);
+            $logout_timestamp = strtotime($logout_time);
+            $duration = $logout_timestamp - $login_time;
+            
+            $this->db->where('id_log', $login_id);
+            $this->db->update('smb_login_log', [
+                'logout_time' => $logout_time,
+                'duration_seconds' => $duration,
+                'status' => 'logged_out'
+            ]);
         }
     }
+}
 
-    /**
+/**
+ * Get Login Log dengan Filter (dengan pagination dan total count)
+ */
+public function get_login_log() {
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Unauthorized']);
+        return;
+    }
+    
+    $username = $this->input->get('username');
+    $bidang = $this->input->get('bidang');
+    $start_date = $this->input->get('start_date');
+    $end_date = $this->input->get('end_date');
+    $search = $this->input->get('search');
+    $limit = (int)$this->input->get('limit') ?: 25;
+    $offset = (int)$this->input->get('offset') ?: 0;
+    
+    // Query untuk menghitung total (tanpa limit)
+    $this->db->select('COUNT(*) as total');
+    $this->db->from('smb_login_log l');
+    
+    // Filter berdasarkan bidang (join ke akun)
+    if (!empty($bidang)) {
+        $this->db->join('akun a', 'a.Username = l.username', 'left');
+        $bidang_map = [
+            'Litbang' => 'Litbang',
+            'Perencanaan' => 'Perencanaan', 
+            'Ekonomi' => 'Ekonomi',
+            'Kesra' => 'Kesra',
+            'Sarpras' => 'Sarpras',
+            'Sekretariat' => 'Sekretariat'
+        ];
+        if (isset($bidang_map[$bidang])) {
+            $this->db->where('a.Bidang', $bidang_map[$bidang]);
+        }
+    }
+    
+    // Filter username spesifik
+    if (!empty($username)) {
+        $this->db->where('l.username', $username);
+    }
+    
+    // Filter tanggal
+    if (!empty($start_date)) {
+        $this->db->where('DATE(l.login_time) >=', date('Y-m-d', strtotime($start_date)));
+    }
+    if (!empty($end_date)) {
+        $this->db->where('DATE(l.login_time) <=', date('Y-m-d', strtotime($end_date)));
+    }
+    
+    // Filter pencarian
+    if (!empty($search)) {
+        $this->db->group_start()
+            ->like('l.username', $search)
+            ->or_like('l.ip_address', $search)
+            ->group_end();
+    }
+    
+    $total_result = $this->db->get()->row_array();
+    $total = (int)($total_result['total'] ?? 0);
+    
+    // Query untuk mengambil data (dengan limit)
+    $this->db->select('l.*');
+    $this->db->from('smb_login_log l');
+    
+    // Filter bidang (join ke akun)
+    if (!empty($bidang)) {
+        $this->db->join('akun a', 'a.Username = l.username', 'left');
+        $bidang_map = [
+            'Litbang' => 'Litbang',
+            'Perencanaan' => 'Perencanaan', 
+            'Ekonomi' => 'Ekonomi',
+            'Kesra' => 'Kesra',
+            'Sarpras' => 'Sarpras',
+            'Sekretariat' => 'Sekretariat'
+        ];
+        if (isset($bidang_map[$bidang])) {
+            $this->db->where('a.Bidang', $bidang_map[$bidang]);
+        }
+    }
+    
+    // Filter username spesifik
+    if (!empty($username)) {
+        $this->db->where('l.username', $username);
+    }
+    
+    // Filter tanggal
+    if (!empty($start_date)) {
+        $this->db->where('DATE(l.login_time) >=', date('Y-m-d', strtotime($start_date)));
+    }
+    if (!empty($end_date)) {
+        $this->db->where('DATE(l.login_time) <=', date('Y-m-d', strtotime($end_date)));
+    }
+    
+    // Filter pencarian
+    if (!empty($search)) {
+        $this->db->group_start()
+            ->like('l.username', $search)
+            ->or_like('l.ip_address', $search)
+            ->group_end();
+    }
+    
+    $this->db->order_by('l.login_time', 'DESC');
+    $this->db->limit($limit, $offset);
+    $logs = $this->db->get()->result_array();
+    
+    foreach ($logs as &$log) {
+        $log['login_time_formatted'] = date('d/m/Y H:i:s', strtotime($log['login_time']));
+        $log['logout_time_formatted'] = $log['logout_time'] ? date('d/m/Y H:i:s', strtotime($log['logout_time'])) : '-';
+        $log['duration_formatted'] = $this->_formatDuration($log['duration_seconds']);
+        $log['status_badge'] = $this->_getStatusBadge($log['status']);
+        
+        // Ambil bidang dari tabel akun
+        $akun = $this->db->get_where('akun', ['Username' => $log['username']])->row_array();
+        $log['bidang'] = $akun['Bidang'] ?? '-';
+    }
+    
+    echo json_encode([
+        'status' => 'success', 
+        'data' => $logs,
+        'total' => $total,  // ← TAMBAHKAN INI
+        'limit' => $limit,
+        'offset' => $offset
+    ]);
+}
+
+/**
+ * Get Statistik Login per Akun
+ */
+public function get_login_stats() {
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Unauthorized']);
+        return;
+    }
+    
+    $username = $this->input->get('username');
+    $bidang = $this->input->get('bidang');
+    $periode = $this->input->get('periode'); // 'hari', 'minggu', 'bulan', 'tahun'
+    
+    $this->db->select('
+        COUNT(*) as total_login,
+        SUM(CASE WHEN status = "active" THEN 1 ELSE 0 END) as active_sessions,
+        AVG(duration_seconds) as avg_duration,
+        SUM(duration_seconds) as total_duration
+    ');
+    $this->db->from('smb_login_log l');
+    
+    // Join ke akun untuk filter bidang
+    if (!empty($bidang)) {
+        $this->db->join('akun a', 'a.Username = l.username', 'left');
+        $bidang_map = [
+            'Litbang' => 'Litbang',
+            'Perencanaan' => 'Perencanaan',
+            'Ekonomi' => 'Ekonomi', 
+            'Kesra' => 'Kesra',
+            'Sarpras' => 'Sarpras',
+            'Sekretariat' => 'Sekretariat'
+        ];
+        if (isset($bidang_map[$bidang])) {
+            $this->db->where('a.Bidang', $bidang_map[$bidang]);
+        }
+    }
+    
+    // Filter username
+    if (!empty($username)) {
+        $this->db->where('l.username', $username);
+    }
+    
+    // Filter periode
+    switch ($periode) {
+        case 'hari':
+            $this->db->where('DATE(l.login_time)', date('Y-m-d'));
+            break;
+        case 'minggu':
+            $this->db->where('l.login_time >=', date('Y-m-d H:i:s', strtotime('-7 days')));
+            break;
+        case 'bulan':
+            $this->db->where('l.login_time >=', date('Y-m-d H:i:s', strtotime('-30 days')));
+            break;
+        case 'tahun':
+            $this->db->where('YEAR(l.login_time)', date('Y'));
+            break;
+    }
+    
+    $result = $this->db->get()->row_array();
+    
+    echo json_encode([
+        'status' => 'success',
+        'total_login' => (int)($result['total_login'] ?? 0),
+        'active_sessions' => (int)($result['active_sessions'] ?? 0),
+        'avg_duration' => $this->_formatDuration($result['avg_duration']),
+        'total_duration' => $this->_formatDuration($result['total_duration'])
+    ]);
+}
+
+/**
+ * Get Rekap Login per Akun (Dengan Pagination)
+ */
+public function get_login_rekap_per_akun()
+{
+    // Cek session login SMB
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Unauthorized']);
+        return;
+    }
+    
+    $bidang = $this->input->get('bidang');
+    $periode = $this->input->get('periode'); // 'hari', 'minggu', 'bulan', 'tahun'
+    $limit = (int)$this->input->get('limit') ?: 10;
+    $page = (int)$this->input->get('page') ?: 1;
+    $offset = ($page - 1) * $limit;
+    $search = $this->input->get('search');
+    
+    // Query untuk menghitung total (tanpa limit)
+    $this->db->select('COUNT(DISTINCT l.username) as total');
+    $this->db->from('smb_login_log l');
+    $this->db->join('akun a', 'a.Username = l.username', 'left');
+    
+    // Filter bidang
+    if (!empty($bidang)) {
+        $bidang_map = [
+            'Litbang' => 'Litbang',
+            'Perencanaan' => 'Perencanaan',
+            'Ekonomi' => 'Ekonomi',
+            'Kesra' => 'Kesra', 
+            'Sarpras' => 'Sarpras',
+            'Sekretariat' => 'Sekretariat'
+        ];
+        if (isset($bidang_map[$bidang])) {
+            $this->db->where('a.Bidang', $bidang_map[$bidang]);
+        }
+    }
+    
+    // Filter pencarian username
+    if (!empty($search)) {
+        $this->db->like('l.username', $search);
+    }
+    
+    // Filter periode
+    switch ($periode) {
+        case 'hari':
+            $this->db->where('DATE(l.login_time)', date('Y-m-d'));
+            break;
+        case 'minggu':
+            $this->db->where('l.login_time >=', date('Y-m-d H:i:s', strtotime('-7 days')));
+            break;
+        case 'bulan':
+            $this->db->where('l.login_time >=', date('Y-m-d H:i:s', strtotime('-30 days')));
+            break;
+        case 'tahun':
+            $this->db->where('YEAR(l.login_time)', date('Y'));
+            break;
+        default:
+            // Tidak ada filter periode (semua waktu)
+            break;
+    }
+    
+    $total_result = $this->db->get()->row_array();
+    $total = (int)($total_result['total'] ?? 0);
+    $total_pages = ceil($total / $limit);
+    
+    // Query untuk mengambil data (dengan limit)
+    $this->db->select('
+        l.username,
+        a.Bidang as user_bidang,
+        COUNT(*) as total_login,
+        SUM(l.duration_seconds) as total_duration,
+        AVG(l.duration_seconds) as avg_duration,
+        MAX(l.login_time) as last_login,
+        SUM(CASE WHEN l.status = "active" THEN 1 ELSE 0 END) as active_sessions
+    ');
+    $this->db->from('smb_login_log l');
+    $this->db->join('akun a', 'a.Username = l.username', 'left');
+    
+    // Filter bidang
+    if (!empty($bidang)) {
+        $bidang_map = [
+            'Litbang' => 'Litbang',
+            'Perencanaan' => 'Perencanaan',
+            'Ekonomi' => 'Ekonomi',
+            'Kesra' => 'Kesra', 
+            'Sarpras' => 'Sarpras',
+            'Sekretariat' => 'Sekretariat'
+        ];
+        if (isset($bidang_map[$bidang])) {
+            $this->db->where('a.Bidang', $bidang_map[$bidang]);
+        }
+    }
+    
+    // Filter pencarian username
+    if (!empty($search)) {
+        $this->db->like('l.username', $search);
+    }
+    
+    // Filter periode
+    switch ($periode) {
+        case 'hari':
+            $this->db->where('DATE(l.login_time)', date('Y-m-d'));
+            break;
+        case 'minggu':
+            $this->db->where('l.login_time >=', date('Y-m-d H:i:s', strtotime('-7 days')));
+            break;
+        case 'bulan':
+            $this->db->where('l.login_time >=', date('Y-m-d H:i:s', strtotime('-30 days')));
+            break;
+        case 'tahun':
+            $this->db->where('YEAR(l.login_time)', date('Y'));
+            break;
+        default:
+            // Tidak ada filter periode (semua waktu)
+            break;
+    }
+    
+    $this->db->group_by('l.username');
+    $this->db->order_by('total_login', 'DESC');
+    $this->db->limit($limit, $offset);
+    $users = $this->db->get()->result_array();
+    
+    foreach ($users as &$user) {
+        $user['total_duration_formatted'] = $this->_formatDuration($user['total_duration']);
+        $user['avg_duration_formatted'] = $this->_formatDuration($user['avg_duration']);
+        $user['last_login_formatted'] = $user['last_login'] ? date('d/m/Y H:i:s', strtotime($user['last_login'])) : '-';
+        $user['bidang'] = $user['user_bidang'] ?? '-';
+        $user['total_login'] = (int)$user['total_login'];
+        $user['active_sessions'] = (int)($user['active_sessions'] ?? 0);
+    }
+    
+    echo json_encode([
+        'status' => 'success', 
+        'data' => $users,
+        'total' => $total,
+        'total_pages' => $total_pages,
+        'current_page' => $page,
+        'per_page' => $limit
+    ]);
+}
+
+/**
+ * Get Rekap Login (Statistik per periode)
+ */
+public function get_login_rekap()
+{
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Unauthorized']);
+        return;
+    }
+    
+    $bidang = $this->input->get('bidang');
+    $username = $this->input->get('username');
+    
+    $periods = ['hari', 'minggu', 'bulan', 'tahun'];
+    $rekap = [];
+    
+    foreach ($periods as $period) {
+        $this->db->select('
+            COUNT(*) as login_count,
+            SUM(duration_seconds) as total_duration,
+            AVG(duration_seconds) as avg_duration
+        ');
+        $this->db->from('smb_login_log l');
+        $this->db->join('akun a', 'a.Username = l.username', 'left');
+        
+        // Filter bidang
+        if (!empty($bidang)) {
+            $bidang_map = [
+                'Litbang' => 'Litbang', 'Perencanaan' => 'Perencanaan',
+                'Ekonomi' => 'Ekonomi', 'Kesra' => 'Kesra',
+                'Sarpras' => 'Sarpras', 'Sekretariat' => 'Sekretariat'
+            ];
+            if (isset($bidang_map[$bidang])) {
+                $this->db->where('a.Bidang', $bidang_map[$bidang]);
+            }
+        }
+        
+        // Filter username
+        if (!empty($username)) {
+            $this->db->where('l.username', $username);
+        }
+        
+        // Filter periode
+        switch ($period) {
+            case 'hari':
+                $this->db->where('DATE(l.login_time)', date('Y-m-d'));
+                break;
+            case 'minggu':
+                $this->db->where('l.login_time >=', date('Y-m-d H:i:s', strtotime('-7 days')));
+                break;
+            case 'bulan':
+                $this->db->where('l.login_time >=', date('Y-m-d H:i:s', strtotime('-30 days')));
+                break;
+            case 'tahun':
+                $this->db->where('YEAR(l.login_time)', date('Y'));
+                break;
+        }
+        
+        $result = $this->db->get()->row_array();
+        
+        $rekap[$period] = [
+            'login_count' => (int)($result['login_count'] ?? 0),
+            'total_duration' => (int)($result['total_duration'] ?? 0),
+            'avg_duration' => (int)($result['avg_duration'] ?? 0),
+            'duration_formatted' => $this->_formatDuration($result['total_duration'] ?? 0)
+        ];
+    }
+    
+    echo json_encode(['status' => 'success', 'data' => $rekap]);
+}
+
+/**
+ * Get Top Users Login (terbanyak login)
+ */
+public function get_login_top_users()
+{
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Unauthorized']);
+        return;
+    }
+    
+    $bidang = $this->input->get('bidang');
+    $periode = $this->input->get('periode'); // 'hari', 'minggu', 'bulan', 'tahun'
+    $limit = (int)$this->input->get('limit') ?: 10;
+    
+    $this->db->select('
+        l.username,
+        a.Bidang as bidang,
+        COUNT(*) as login_count,
+        SUM(l.duration_seconds) as total_duration,
+        AVG(l.duration_seconds) as avg_duration
+    ');
+    $this->db->from('smb_login_log l');
+    $this->db->join('akun a', 'a.Username = l.username', 'left');
+    
+    // Filter bidang
+    if (!empty($bidang)) {
+        $bidang_map = [
+            'Litbang' => 'Litbang',
+            'Perencanaan' => 'Perencanaan',
+            'Ekonomi' => 'Ekonomi',
+            'Kesra' => 'Kesra',
+            'Sarpras' => 'Sarpras',
+            'Sekretariat' => 'Sekretariat'
+        ];
+        if (isset($bidang_map[$bidang])) {
+            $this->db->where('a.Bidang', $bidang_map[$bidang]);
+        }
+    }
+    
+    // Filter periode
+    switch ($periode) {
+        case 'hari':
+            $this->db->where('DATE(l.login_time)', date('Y-m-d'));
+            break;
+        case 'minggu':
+            $this->db->where('l.login_time >=', date('Y-m-d H:i:s', strtotime('-7 days')));
+            break;
+        case 'bulan':
+            $this->db->where('l.login_time >=', date('Y-m-d H:i:s', strtotime('-30 days')));
+            break;
+        case 'tahun':
+            $this->db->where('YEAR(l.login_time)', date('Y'));
+            break;
+    }
+    
+    $this->db->group_by('l.username');
+    $this->db->order_by('login_count', 'DESC');
+    $this->db->limit($limit);
+    $users = $this->db->get()->result_array();
+    
+    foreach ($users as &$user) {
+        $user['duration_formatted'] = $this->_formatDuration($user['total_duration']);
+        $user['login_count'] = (int)$user['login_count'];
+        $user['bidang'] = $user['bidang'] ?? '-';
+    }
+    
+    echo json_encode(['status' => 'success', 'data' => $users]);
+}
+
+/**
+ * Format Duration (detik ke format HH:MM:SS)
+ */
+private function _formatDuration($seconds) {
+    if (!$seconds || $seconds <= 0) return '00:00:00';
+    
+    $hours = floor($seconds / 3600);
+    $minutes = floor(($seconds % 3600) / 60);
+    $secs = $seconds % 60;
+    
+    return sprintf("%02d:%02d:%02d", $hours, $minutes, $secs);
+}
+
+/**
+ * Get Status Badge HTML
+ */
+private function _getStatusBadge($status) {
+    switch ($status) {
+        case 'active':
+            return '<span class="badge-status active-status"><i class="fas fa-circle"></i> Active</span>';
+        case 'logged_out':
+            return '<span class="badge-status logout-status"><i class="fas fa-check-circle"></i> Logged Out</span>';
+        case 'timed_out':
+            return '<span class="badge-status timeout-status"><i class="fas fa-clock"></i> Timed Out</span>';
+        default:
+            return '<span class="badge-status">-</span>';
+    }
+}
+
+ /**
      * Dashboard SMB
      */
     public function SmbDashboard()
@@ -2041,28 +2570,81 @@ public function RoadmapHilirisasiBanyuwangi2026() {
     }
 
     /**
-     * Logout SMB
-     */
-    public function SmbLogout()
-    {
-        $this->output
-            ->set_content_type('application/json')
-            ->set_header('Access-Control-Allow-Origin: *');
-        
-        $this->session->unset_userdata('smb_logged_in');
-        $this->session->unset_userdata('user_id');
-        $this->session->unset_userdata('username');
-        $this->session->unset_userdata('nama_lengkap');
-        $this->session->unset_userdata('level');
-        $this->session->unset_userdata('system');
-        $this->session->sess_destroy();
-        
-        echo json_encode([
-            'status' => 'success',
-            'message' => 'Logout berhasil',
-            'redirect' => base_url('IDE/SmbLoginPage')
-        ]);
+ * Proses Login SMB
+ */
+public function SmbLogin()
+{
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: POST, OPTIONS');
+    header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    header('Access-Control-Allow-Credentials: true');
+
+    if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+        header('Access-Control-Max-Age: 86400');
+        exit(0);
     }
+
+    $username = $this->input->post('username', TRUE);
+    $password = $this->input->post('password', TRUE);
+
+    if (empty($username) || empty($password)) {
+        echo "Username dan Password harus diisi!";
+        return;
+    }
+
+    $user = $this->db->get_where('akun', ['Username' => $username])->row_array();
+
+    if ($user && password_verify($password, $user['Password'])) {
+        $session_data = [
+            'smb_logged_in' => true,
+            'user_id'       => $user['Username'],
+            'username'      => $user['Username'],
+            'nama_lengkap'  => $user['Username'],
+            'level'         => (int)$user['Level'],
+            'bidang'        => $user['Bidang'] ?? null,  // <-- TAMBAHKAN INI
+            'system'        => 'SMB_Bappeda'
+        ];
+        $this->session->set_userdata($session_data);
+        
+        // ========== TAMBAHKAN: CATAT LOGIN ==========
+        $this->log_login();  // <-- PANGGIL METHOD INI
+        
+        echo '1';
+    } else {
+        echo "Username atau Password salah!";
+    }
+}
+
+/**
+ * Logout SMB
+ */
+public function SmbLogout()
+{
+    $this->output
+        ->set_content_type('application/json')
+        ->set_header('Access-Control-Allow-Origin: *');
+    
+    // ========== TAMBAHKAN: CATAT LOGOUT ==========
+    $this->log_logout();  // <-- PANGGIL METHOD INI
+    
+    $this->session->unset_userdata('smb_logged_in');
+    $this->session->unset_userdata('user_id');
+    $this->session->unset_userdata('username');
+    $this->session->unset_userdata('nama_lengkap');
+    $this->session->unset_userdata('level');
+    $this->session->unset_userdata('system');
+    $this->session->unset_userdata('bidang');  // <-- TAMBAHKAN
+    $this->session->unset_userdata('current_login_id');  // <-- TAMBAHKAN
+    $this->session->sess_destroy();
+    
+    echo json_encode([
+        'status' => 'success',
+        'message' => 'Logout berhasil',
+        'redirect' => base_url('IDE/SmbLoginPage')
+    ]);
+}
+
+
 
     // ==================== DOKUMEN METHODS - UPLOAD & LOAD ====================
 
@@ -2337,6 +2919,193 @@ private function _generate_thumbnail($file_path, $file_name) {
     }
     
     echo json_encode(['status' => 'success', 'data' => $logs]);
+}
+
+/**
+ * Get list of users/accounts by bidang (untuk dropdown filter)
+ */
+// controller/IDE.php - Perbaiki method ini
+public function get_akun_by_bidang() {
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+        return;
+    }
+    
+    $bidang = $this->input->get('bidang');
+    
+    $this->db->select('Username, Bidang');
+    $this->db->from('akun');
+    
+    // Mapping bidang yang lebih fleksibel
+    if (!empty($bidang) && $bidang !== '') {
+        // Coba match dengan berbagai kemungkinan nilai
+        $bidang_map = [
+            'Litbang' => ['Litbang', 'Penelitian', 'Litbang Bappeda'],
+            'Perencanaan' => ['Perencanaan', 'Perencanaan Pembangunan'],
+            'Ekonomi' => ['Ekonomi', 'Bidang Ekonomi'],
+            'Kesra' => ['Kesra', 'Kesejahteraan Rakyat'],
+            'Sarpras' => ['Sarpras', 'Sarana Prasarana'],
+            'Sekretariat' => ['Sekretariat', 'Sekretariat Bappeda', 'Kesekretariatan']
+        ];
+        
+        if (isset($bidang_map[$bidang])) {
+            $this->db->where_in('Bidang', $bidang_map[$bidang]);
+        } else {
+            $this->db->where('Bidang', $bidang);
+        }
+    }
+    
+    $this->db->order_by('Username', 'ASC');
+    $akun = $this->db->get()->result_array();
+    
+    // Tambahkan debug untuk memastikan data ada
+    error_log("get_akun_by_bidang - Bidang: $bidang, Total Akun: " . count($akun));
+    
+    echo json_encode([
+        'status' => 'success',
+        'data' => $akun,
+        'bidang_filter' => $bidang
+    ]);
+}
+
+/**
+ * Get log aktivitas per akun (filter by username)
+ */
+public function get_log_aktivitas_by_akun() {
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+        return;
+    }
+    
+    $username = $this->input->get('username');
+    $bidang = $this->input->get('bidang');
+    $start_date = $this->input->get('start_date');
+    $end_date = $this->input->get('end_date');
+    $aksi = $this->input->get('aksi');
+    $search = $this->input->get('search');
+    
+    // Query dengan join ke akun
+    $this->db->select('l.*, a.Bidang as user_bidang');
+    $this->db->from('smb_aktivitas_log l');
+    $this->db->join('akun a', 'a.Username = l.username', 'left');
+    
+    // Filter berdasarkan username (akun spesifik)
+    if (!empty($username)) {
+        $this->db->where('l.username', $username);
+    }
+    
+    // Filter berdasarkan bidang (jika tidak ada filter akun spesifik)
+    if (empty($username) && !empty($bidang)) {
+        $bidang_map = [
+            'Litbang' => 'Litbang',
+            'Perencanaan' => 'Perencanaan',
+            'Ekonomi' => 'Ekonomi',
+            'Kesra' => 'Kesra',
+            'Sarpras' => 'Sarpras',
+            'Sekretariat' => 'Sekretariat'
+        ];
+        
+        if (isset($bidang_map[$bidang])) {
+            $this->db->where('a.Bidang', $bidang_map[$bidang]);
+        }
+    }
+    
+    // Filter tanggal
+    if (!empty($start_date)) {
+        $this->db->where('DATE(l.waktu) >=', date('Y-m-d', strtotime($start_date)));
+    }
+    if (!empty($end_date)) {
+        $this->db->where('DATE(l.waktu) <=', date('Y-m-d', strtotime($end_date)));
+    }
+    
+    // Filter aksi
+    if (!empty($aksi)) {
+        $this->db->where('l.aksi', $aksi);
+    }
+    
+    // Filter pencarian
+    if (!empty($search)) {
+        $this->db->group_start()
+            ->like('l.username', $search)
+            ->or_like('l.detail', $search)
+            ->or_like('l.modul', $search)
+            ->group_end();
+    }
+    
+    $this->db->order_by('l.waktu', 'DESC');
+    $this->db->limit(500);
+    $logs = $this->db->get()->result_array();
+    
+    foreach ($logs as &$log) {
+        $log['waktu'] = date('d/m/Y H:i:s', strtotime($log['waktu']));
+        $log['ip_address'] = $log['ip_address'] ?? '-';
+        $log['detail'] = $log['detail'] ?? '-';
+        $log['bidang'] = $log['user_bidang'] ?? '-';
+    }
+    
+    echo json_encode(['status' => 'success', 'data' => $logs]);
+}
+
+/**
+ * Get rekap kertas per akun
+ */
+public function get_kertas_rekap_by_akun() {
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+        return;
+    }
+    
+    $username = $this->input->get('username');
+    $bidang = $this->input->get('bidang');
+    $periode = $this->input->get('periode'); // 'hari', 'minggu', 'bulan', 'tahun'
+    
+    $this->db->select('SUM(pl.jumlah_kertas) as total_kertas, COUNT(*) as total_print');
+    $this->db->from('smb_print_log pl');
+    $this->db->join('akun a', 'a.Username = pl.username', 'left');
+    
+    // Filter berdasarkan username spesifik
+    if (!empty($username)) {
+        $this->db->where('pl.username', $username);
+    }
+    // Filter berdasarkan bidang
+    else if (!empty($bidang)) {
+        $bidang_map = [
+            'Litbang' => 'Litbang',
+            'Perencanaan' => 'Perencanaan',
+            'Ekonomi' => 'Ekonomi',
+            'Kesra' => 'Kesra',
+            'Sarpras' => 'Sarpras',
+            'Sekretariat' => 'Sekretariat'
+        ];
+        
+        if (isset($bidang_map[$bidang])) {
+            $this->db->where('a.Bidang', $bidang_map[$bidang]);
+        }
+    }
+    
+    // Filter periode
+    switch ($periode) {
+        case 'hari':
+            $this->db->where('DATE(pl.waktu_print)', date('Y-m-d'));
+            break;
+        case 'minggu':
+            $this->db->where('pl.waktu_print >=', date('Y-m-d H:i:s', strtotime('-7 days')));
+            break;
+        case 'bulan':
+            $this->db->where('pl.waktu_print >=', date('Y-m-d H:i:s', strtotime('-30 days')));
+            break;
+        case 'tahun':
+            $this->db->where('YEAR(pl.waktu_print)', date('Y'));
+            break;
+    }
+    
+    $result = $this->db->get()->row_array();
+    
+    echo json_encode([
+        'status' => 'success',
+        'total_kertas' => (int)($result['total_kertas'] ?? 0),
+        'total_print' => (int)($result['total_print'] ?? 0)
+    ]);
 }
 
 /**

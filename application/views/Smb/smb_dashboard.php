@@ -131,6 +131,76 @@ $initial = strtoupper(substr($display_name, 0, 2));
         font-size: 11px;
     }
 }
+
+/* Empty State dengan pesan informatif */
+.empty-state-table {
+    text-align: center;
+    padding: 80px 20px !important;
+    background: #fafbff;
+}
+
+.empty-state-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.empty-state-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-1);
+    margin-bottom: 8px;
+}
+
+.empty-state-message {
+    font-size: 13px;
+    color: var(--text-2);
+    margin-bottom: 5px;
+}
+
+.empty-state-suggestion {
+    font-size: 12px;
+    color: var(--text-3);
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border);
+    display: inline-block;
+}
+
+.empty-state-filter {
+    background: #f0f4ff;
+    border-radius: 12px;
+    padding: 15px 20px;
+    margin-top: 20px;
+    text-align: left;
+    display: inline-block;
+}
+
+.empty-state-filter p {
+    margin: 5px 0;
+    font-size: 12px;
+}
+
+.empty-state-filter i {
+    margin-right: 8px;
+    color: var(--blue-600);
+}
+
+/* Loading spinner */
+.modern-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #e2e8f0;
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
 /* ============================================================
    RESET & BASE
    ============================================================ */
@@ -1452,170 +1522,167 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* ============================================================
-   PDF EXPORT STYLES
+   PDF EXPORT STYLES - LENGKAP DENGAN STATISTIK KERTAS
    ============================================================ */
 @media print {
-  body * {
-    visibility: hidden;
-  }
-  #pdf-export-content, #pdf-export-content * {
-    visibility: visible;
-  }
-  #pdf-export-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    body * {
+        visibility: hidden;
+    }
+    #pdf-export-content, #pdf-export-content * {
+        visibility: visible;
+    }
+    #pdf-export-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 20px;
+    }
+    .no-print {
+        display: none !important;
+    }
+}
+
+.pdf-export-wrapper {
+    font-family: 'Plus Jakarta Sans', 'DM Sans', sans-serif;
     padding: 20px;
-  }
-  .no-print {
-    display: none !important;
-  }
-}
-
-/* Style untuk konten PDF yang akan diexport */
-.pdf-export-wrapper {
-  font-family: 'Plus Jakarta Sans', 'DM Sans', sans-serif;
-  padding: 20px;
-  background: white;
+    background: white;
 }
 
 .pdf-header {
-  text-align: center;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #1a2d6b;
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #1a2d6b;
 }
 
 .pdf-header h2 {
-  color: #1a2d6b;
-  margin-bottom: 5px;
-  font-size: 20px;
-}
-
-.pdf-header p {
-  color: #666;
-  font-size: 12px;
-  margin: 5px 0;
-}
-
-.pdf-date {
-  text-align: right;
-  margin-bottom: 20px;
-  font-size: 11px;
-  color: #666;
-}
-
-.pdf-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 11px;
-}
-
-.pdf-table th {
-  background: #1a2d6b;
-  color: white;
-  padding: 10px 8px;
-  text-align: left;
-  font-weight: 600;
-}
-
-.pdf-table td {
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
-}
-
-.pdf-table tr:hover {
-  background: #f5f5f5;
-}
-
-.pdf-footer {
-  margin-top: 30px;
-  text-align: center;
-  font-size: 10px;
-  color: #999;
-  padding-top: 20px;
-  border-top: 1px solid #ddd;
-}
-
-/* PDF Export Styles */
-@media print {
-  body * {
-    visibility: hidden;
-  }
-  #pdf-export-content, #pdf-export-content * {
-    visibility: visible;
-  }
-  #pdf-export-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-  }
-}
-
-.pdf-export-wrapper {
-  font-family: 'Plus Jakarta Sans', 'DM Sans', sans-serif;
-  padding: 20px;
-  background: white;
-}
-
-.pdf-header {
-  text-align: center;
-  margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 2px solid #1a2d6b;
-}
-
-.pdf-header h2 {
-  color: #1a2d6b;
-  margin-bottom: 5px;
-  font-size: 18px;
+    color: #1a2d6b;
+    margin-bottom: 5px;
+    font-size: 18px;
 }
 
 .pdf-header h3 {
-  color: #1a2d6b;
-  margin-bottom: 5px;
-  font-size: 14px;
+    color: #1a2d6b;
+    margin-bottom: 5px;
+    font-size: 14px;
 }
 
 .pdf-header p {
-  color: #666;
-  font-size: 11px;
+    color: #666;
+    font-size: 11px;
 }
 
 .pdf-date {
-  margin-bottom: 15px;
-  font-size: 10px;
-  color: #666;
-  text-align: right;
+    margin-bottom: 15px;
+    font-size: 10px;
+    color: #666;
+    text-align: right;
+}
+
+.pdf-filter-info {
+    background: #f0f4ff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 10px;
+    border-left: 3px solid #1a2d6b;
+}
+
+.pdf-filter-info p {
+    margin: 3px 0;
+}
+
+.pdf-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+    page-break-inside: avoid;
+}
+
+.pdf-stat-card {
+    background: #f8f9fd;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+}
+
+.pdf-stat-label {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.pdf-stat-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1a2d6b;
+}
+
+.pdf-stat-unit {
+    font-size: 8px;
+    color: #999;
+}
+
+.pdf-total-card {
+    background: linear-gradient(135deg, #1a2d6b 0%, #162060 100%);
+    border-radius: 10px;
+    padding: 12px 20px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    page-break-inside: avoid;
+}
+
+.pdf-total-label {
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.pdf-total-value {
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.pdf-total-unit {
+    font-size: 10px;
+    margin-left: 5px;
 }
 
 .pdf-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 10px;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9px;
+    page-break-inside: avoid;
 }
 
 .pdf-table th {
-  background: #1a2d6b;
-  color: white;
-  padding: 8px 6px;
-  text-align: left;
+    background: #1a2d6b;
+    color: white;
+    padding: 8px 6px;
+    text-align: left;
+    font-weight: 600;
 }
 
 .pdf-table td {
-  padding: 6px;
-  border-bottom: 1px solid #ddd;
+    padding: 6px;
+    border-bottom: 1px solid #ddd;
 }
 
 .pdf-footer {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 9px;
-  color: #999;
-  padding-top: 10px;
-  border-top: 1px solid #ddd;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 8px;
+    color: #999;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+    page-break-inside: avoid;
 }
 
 /* ============================================================
@@ -2176,12 +2243,23 @@ a { text-decoration: none; color: inherit; }
         </svg>
         Log Aktivitas
       </div>
+
+      <!-- Di dalam sidebar-nav, setelah menu Log Aktivitas -->
+<div class="nav-item" data-panel="loginlog" onclick="navigate(this)">
+    <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.586l-2.707 2.707a1 1 0 01-1.414 0L5.586 15H5a2 2 0 01-2-2V5zm3 4a1 1 0 100 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+    </svg>
+    Log Login
+</div>
+
       <div class="nav-item" data-panel="laporan" onclick="navigate(this)">
         <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clip-rule="evenodd"/>
         </svg>
         Print Laporan
       </div>
+
+      
 
       <div class="nav-section">App Lainnya</div>
       <div class="nav-item" data-panel="satu-data" onclick="navigate(this)">
@@ -2275,6 +2353,218 @@ a { text-decoration: none; color: inherit; }
          PAGE CONTENT
          ============================================================ -->
     <main class="page-content">
+
+    <!-- ======== LOG LOGIN PANEL ======== -->
+<section id="panel-loginlog" class="panel">
+    <div class="page-hdr">
+        <div class="page-hdr-left">
+            <div class="page-hdr-icon">
+                <svg viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.586l-2.707 2.707a1 1 0 01-1.414 0L5.586 15H5a2 2 0 01-2-2V5zm3 4a1 1 0 100 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                </svg>
+            </div>
+            <div>
+                <div class="page-hdr-title">Log Login</div>
+                <div class="page-hdr-sub">Riwayat login dan logout pengguna sistem</div>
+            </div>
+        </div>
+        <button class="btn" onclick="exportLoginLogToPDF()">
+            <svg viewBox="0 0 14 14" fill="currentColor" width="14" height="14" style="margin-right:6px;">
+                <path d="M7 1a6 6 0 100 12A6 6 0 007 1zm1 9H6V6h2v4zm0-5H6V3h2v2z"/>
+            </svg>
+            Export PDF
+        </button>
+    </div>
+
+    
+
+    <!-- Filter Toolbar -->
+    <div class="card">
+        <div class="table-toolbar">
+            <div class="card-title">
+                <i class="fas fa-history"></i> Riwayat Login/Logout
+            </div>
+            <div class="table-toolbar-right">
+                <select class="sel-filter" id="loginlog-bidang-pilih" onchange="onLoginLogBidangChange()" style="min-width: 160px;">
+                    <option value="">-- Semua Bidang --</option>
+                    <option value="Litbang">📊 Bidang Litbang</option>
+                    <option value="Perencanaan">📋 Bidang Perencanaan</option>
+                    <option value="Ekonomi">💰 Bidang Ekonomi</option>
+                    <option value="Kesra">❤️ Bidang Kesra</option>
+                    <option value="Sarpras">🏗️ Bidang Sarpras</option>
+                    <option value="Sekretariat">📁 Bidang Sekretariat</option>
+                </select>
+                
+                <select class="sel-filter" id="loginlog-akun-pilih" onchange="loadLoginLog()" style="min-width: 160px;">
+                    <option value="">-- Semua Akun --</option>
+                </select>
+
+                <div class="date-range-filter" style="display: flex; gap: 8px; align-items: center;">
+                    <div class="mini-search">
+                        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="1" y="2" width="12" height="11" rx="1"/>
+                            <line x1="4" y1="1" x2="4" y2="4"/>
+                            <line x1="10" y1="1" x2="10" y2="4"/>
+                            <line x1="1" y1="6" x2="13" y2="6"/>
+                        </svg>
+                        <input type="date" id="loginlog-date-start" placeholder="Dari Tanggal">
+                    </div>
+                    <span style="color: var(--text-3);">s.d.</span>
+                    <div class="mini-search">
+                        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="1" y="2" width="12" height="11" rx="1"/>
+                            <line x1="4" y1="1" x2="4" y2="4"/>
+                            <line x1="10" y1="1" x2="10" y2="4"/>
+                            <line x1="1" y1="6" x2="13" y2="6"/>
+                        </svg>
+                        <input type="date" id="loginlog-date-end" placeholder="Sampai Tanggal">
+                    </div>
+                    <button class="btn btn-sm" onclick="filterLoginLogByDate()" style="background: var(--blue-600); color: white;">
+                        <svg viewBox="0 0 14 14" fill="currentColor" width="12" height="12">
+                            <path d="M12 8a4 4 0 0 1-8 0M4 6a4 4 0 0 1 8 0M7 2v4M5 2h4"/>
+                        </svg>
+                        Tampilkan
+                    </button>
+                </div>
+                
+                <select class="sel-filter" id="loginlog-periode-filter" onchange="loadLoginStats()">
+                    <option value="hari">Hari Ini</option>
+                    <option value="minggu" selected>7 Hari</option>
+                    <option value="bulan">30 Hari</option>
+                    <option value="tahun">Tahun Ini</option>
+                </select>
+
+                <div class="mini-search">
+                    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="5.5" cy="5.5" r="4"/>
+                        <path d="M9 9l2.5 2.5"/>
+                    </svg>
+                    <input type="text" id="loginlog-search" placeholder="Cari user atau IP..." oninput="filterLoginLogTable()">
+                </div>
+                
+                <button class="btn btn-sm" onclick="refreshLoginLog()">
+                    <svg viewBox="0 0 14 14" fill="currentColor" width="12" height="12">
+                        <path d="M12 8a4 4 0 0 1-8 0M4 6a4 4 0 0 1 8 0M7 2v4M5 2h4"/>
+                    </svg>
+                    Refresh
+                </button>
+            </div>
+        </div>
+
+        <!-- Tabel Log Login -->
+        <div class="log-table-wrapper">
+            <table class="log-table">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-clock"></i> Login Time</th>
+                        <th><i class="fas fa-sign-out-alt"></i> Logout Time</th>
+                        <th><i class="fas fa-user"></i> User</th>
+                        <th><i class="fas fa-building"></i> Bidang</th>
+                        <th><i class="fas fa-hourglass-half"></i> Durasi</th>
+                        <th><i class="fas fa-network-wired"></i> IP Address</th>
+                        <th><i class="fas fa-circle"></i> Status</th>
+                    </tr>
+                </thead>
+                <tbody id="loginlog-tbody">
+                    <tr><td colspan="7" style="text-align:center;padding:60px;">
+                        <div class="modern-spinner"></div>
+                        <p>Memuat data login log...</p>
+                    </td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-container">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-2 mb-md-0">
+                    <div class="pagination-info">
+                        <span id="loginlog-info-text">Menampilkan 0 dari 0 data</span>
+                        <select id="loginlog-per-page" class="form-select form-select-sm" style="width: auto;" onchange="changeLoginLogPerPage()">
+                            <option value="10">10 per halaman</option>
+                            <option value="25" selected>25 per halaman</option>
+                            <option value="50">50 per halaman</option>
+                            <option value="100">100 per halaman</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <nav aria-label="Login log pagination">
+                        <ul class="pagination justify-content-end" id="loginlog-pagination"></ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rekap per Akun -->
+    <!-- Rekap per Akun -->
+<div class="card mt-4">
+    <div class="card-head">
+        <div class="card-title">
+            <i class="fas fa-chart-bar"></i> Rekap Login per Akun
+        </div>
+        <div class="card-actions" style="display: flex; gap: 10px;">
+            <div class="mini-search" style="height: 32px;">
+                <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="5.5" cy="5.5" r="4"/>
+                    <path d="M9 9l2.5 2.5"/>
+                </svg>
+                <input type="text" id="rekap-search" placeholder="Cari user..." style="width: 150px;" onkeyup="searchRekapUser()">
+            </div>
+            <span class="card-action" onclick="loadLoginRekapPerAkun()">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </span>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="tbl">
+            <thead>
+                <tr>
+                    <th style="width: 50px;">No</th>
+                    <th>Username</th>
+                    <th>Bidang</th>
+                    <th>Total Login</th>
+                    <th>Total Durasi</th>
+                    <th>Rata-rata Durasi</th>
+                    <th>Login Terakhir</th>
+                    <th style="width: 100px;">Status</th>
+                </tr>
+            </thead>
+            <tbody id="loginlog-rekap-tbody">
+                <tr><td colspan="8" style="text-align:center;padding:40px;">
+                    <div class="modern-spinner"></div>
+                    <p>Memuat data...</p>
+                 </div></td>
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Pagination untuk Rekap Login -->
+    <div class="pagination-container" id="rekap-pagination-container">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-2 mb-md-0">
+                <div class="pagination-info">
+                    <span id="rekap-info-text">Menampilkan 0 dari 0 data</span>
+                    <select id="rekap-per-page" class="form-select form-select-sm" style="width: auto;" onchange="changeRekapPerPage()">
+                        <option value="5">5 per halaman</option>
+                        <option value="10" selected>10 per halaman</option>
+                        <option value="25">25 per halaman</option>
+                        <option value="50">50 per halaman</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <nav aria-label="Rekap login pagination">
+                    <ul class="pagination justify-content-end" id="rekap-pagination">
+                        <!-- Pagination akan di-generate oleh JavaScript -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
 
       <!-- ======== DASHBOARD PANEL ======== -->
       <section id="panel-dashboard" class="panel active">
@@ -2680,76 +2970,79 @@ a { text-decoration: none; color: inherit; }
       <div class="card-title">
         <i class="fas fa-history"></i> Riwayat Aktivitas
       </div>
-      <div class="table-toolbar-right">
-        <!-- PILIH BIDANG UTAMA -->
-        <select class="sel-filter" id="log-bidang-pilih" onchange="loadLogByBidang()" style="min-width: 160px; font-weight: 500;">
-          <option value="">-- Semua Bidang --</option>
-          <option value="Litbang">📊 Bidang Litbang</option>
-          <option value="Perencanaan">📋 Bidang Perencanaan</option>
-          <option value="Ekonomi">💰 Bidang Ekonomi</option>
-          <option value="Kesra">❤️ Bidang Kesra</option>
-          <option value="Sarpras">🏗️ Bidang Sarpras</option>
-          <option value="Sekretariat">📁 Bidang Sekretariat</option>
+       <div class="table-toolbar-right">
+        <!-- PILIH BIDANG -->
+        <select class="sel-filter" id="log-bidang-pilih" onchange="onBidangChange()" style="min-width: 160px;">
+            <option value="">-- Semua Bidang --</option>
+            <option value="Litbang">📊 Bidang Litbang</option>
+            <option value="Perencanaan">📋 Bidang Perencanaan</option>
+            <option value="Ekonomi">💰 Bidang Ekonomi</option>
+            <option value="Kesra">❤️ Bidang Kesra</option>
+            <option value="Sarpras">🏗️ Bidang Sarpras</option>
+            <option value="Sekretariat">📁 Bidang Sekretariat</option>
+        </select>
+        
+        <!-- PILIH AKUN (dinamis berdasarkan bidang yang dipilih) -->
+        <select class="sel-filter" id="log-akun-pilih" onchange="loadLogAktivitas()" style="min-width: 160px;">
+            <option value="">-- Semua Akun --</option>
         </select>
         
         <!-- FILTER TANGGAL -->
         <div class="date-range-filter" style="display: flex; gap: 8px; align-items: center;">
-          <div class="mini-search">
-            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="1" y="2" width="12" height="11" rx="1" stroke="currentColor"/>
-              <line x1="4" y1="1" x2="4" y2="4" stroke="currentColor"/>
-              <line x1="10" y1="1" x2="10" y2="4" stroke="currentColor"/>
-              <line x1="1" y1="6" x2="13" y2="6" stroke="currentColor"/>
-            </svg>
-            <input type="date" id="log-date-start" placeholder="Dari Tanggal">
-          </div>
-          <span style="color: var(--text-3);">s.d.</span>
-          <div class="mini-search">
-            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="1" y="2" width="12" height="11" rx="1" stroke="currentColor"/>
-              <line x1="4" y1="1" x2="4" y2="4" stroke="currentColor"/>
-              <line x1="10" y1="1" x2="10" y2="4" stroke="currentColor"/>
-              <line x1="1" y1="6" x2="13" y2="6" stroke="currentColor"/>
-            </svg>
-            <input type="date" id="log-date-end" placeholder="Sampai Tanggal">
-          </div>
-          <button class="btn btn-sm" onclick="filterLogByDate()" style="background: var(--blue-600); color: white;">
-            <svg viewBox="0 0 14 14" fill="currentColor" width="12" height="12">
-              <path d="M12 8a4 4 0 0 1-8 0M4 6a4 4 0 0 1 8 0M7 2v4M5 2h4"/>
-            </svg>
-            Tampilkan
-          </button>
+            <div class="mini-search">
+                <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="1" y="2" width="12" height="11" rx="1"/>
+                    <line x1="4" y1="1" x2="4" y2="4"/>
+                    <line x1="10" y1="1" x2="10" y2="4"/>
+                    <line x1="1" y1="6" x2="13" y2="6"/>
+                </svg>
+                <input type="date" id="log-date-start" placeholder="Dari Tanggal">
+            </div>
+            <span style="color: var(--text-3);">s.d.</span>
+            <div class="mini-search">
+                <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="1" y="2" width="12" height="11" rx="1"/>
+                    <line x1="4" y1="1" x2="4" y2="4"/>
+                    <line x1="10" y1="1" x2="10" y2="4"/>
+                    <line x1="1" y1="6" x2="13" y2="6"/>
+                </svg>
+                <input type="date" id="log-date-end" placeholder="Sampai Tanggal">
+            </div>
+            <button class="btn btn-sm" onclick="filterLogByDate()" style="background: var(--blue-600); color: white;">
+                <svg viewBox="0 0 14 14" fill="currentColor" width="12" height="12">
+                    <path d="M12 8a4 4 0 0 1-8 0M4 6a4 4 0 0 1 8 0M7 2v4M5 2h4"/>
+                </svg>
+                Tampilkan
+            </button>
         </div>
         
         <!-- FILTER AKSI -->
         <select class="sel-filter" id="log-aksi-filter" onchange="filterLogTable()">
-          <option value="">Semua Aksi</option>
-          <option value="Upload">📤 Upload</option>
-          <option value="Print (via Preview)">🖱️ Print Preview</option>
-          <option value="Print">🖨️ Print</option>
-          <option value="Preview">👁️ Preview</option>
-          <option value="Review">📝 Review</option>
-          <option value="Login">🔐 Login</option>
-          <option value="Update">✏️ Update</option>
-          <option value="Hapus">🗑️ Hapus</option>
+            <option value="">Semua Aksi</option>
+            <option value="Upload">📤 Upload</option>
+            <option value="Print (via Preview)">🖱️ Print Preview</option>
+            <option value="Print">🖨️ Print</option>
+            <option value="Preview">👁️ Preview</option>
+
         </select>
         
         <!-- PENCARIAN -->
         <div class="mini-search">
-          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="5.5" cy="5.5" r="4"/><path d="M9 9l2.5 2.5"/>
-          </svg>
-          <input type="text" id="log-search" placeholder="Cari user, detail, atau IP..." oninput="filterLogTable()">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="5.5" cy="5.5" r="4"/>
+                <path d="M9 9l2.5 2.5"/>
+            </svg>
+            <input type="text" id="log-search" placeholder="Cari user, detail, atau IP..." oninput="filterLogTable()">
         </div>
         
         <button class="btn btn-sm" onclick="refreshLogData()">
-          <svg viewBox="0 0 14 14" fill="currentColor" width="12" height="12">
-            <path d="M12 8a4 4 0 0 1-8 0M4 6a4 4 0 0 1 8 0M7 2v4M5 2h4"/>
-          </svg>
-          Refresh
+            <svg viewBox="0 0 14 14" fill="currentColor" width="12" height="12">
+                <path d="M12 8a4 4 0 0 1-8 0M4 6a4 4 0 0 1 8 0M7 2v4M5 2h4"/>
+            </svg>
+            Refresh
         </button>
-      </div>
     </div>
+</div>
 
     <!-- ======== CARD TOTAL KERTAS TERPAKAI ======== -->
 <div class="card mb-4" id="kertas-terpakai-card">
@@ -2833,14 +3126,6 @@ a { text-decoration: none; color: inherit; }
                     <span class="total-kertas-unit">lembar</span>
                 </div>
             </div>
-        </div>
-        
-        <!-- Info Bidang yang difilter -->
-        <div id="bidang-filter-info" class="mt-2" style="display: none;">
-            <small class="text-muted">
-                <i class="bi bi-funnel-fill"></i> Menampilkan data untuk bidang: 
-                <strong id="bidang-filter-nama"></strong>
-            </small>
         </div>
     </div>
 </div>
@@ -3661,6 +3946,224 @@ function loadDokumenFromDB(bidangId) {
   });
 }
 
+// ==================== LOAD REKAP LOGIN PER AKUN ====================
+function loadLoginRekapPerAkun() {
+    console.log('Loading rekap login per akun...');
+    
+    $('#loginlog-rekap-tbody').html(`
+        <tr><td colspan="7" style="text-align:center;padding:40px;">
+            <div class="modern-spinner"></div>
+            <p>Memuat data rekap...</p>
+        </div></td>
+    `);
+    
+    const bidang = $('#loginlog-bidang-pilih').val();
+    const periode = $('#loginlog-periode-filter').val();
+    
+    $.ajax({
+        url: '<?= base_url('IDE/get_login_rekap_per_akun') ?>',
+        type: 'GET',
+        data: { bidang: bidang, periode: periode },
+        dataType: 'json',
+        timeout: 10000,
+        success: function(response) {
+            if (response.status === 'success') {
+                renderLoginRekapPerAkun(response.data);
+                console.log('Rekap login loaded:', response.data.length, 'records');
+            } else {
+                $('#loginlog-rekap-tbody').html(`<tr><td colspan="7" class="empty-state-table">
+                    <div class="icon">⚠️</div>
+                    <p>Gagal memuat data rekap</p>
+                </div></table>`);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading rekap:', error);
+            $('#loginlog-rekap-tbody').html(`<tr><td colspan="7" class="empty-state-table">
+                <div class="icon">❌</div>
+                <p>Error: ${error}</p>
+                <p style="font-size:12px;">Silakan refresh halaman dan coba lagi</p>
+            </div></td>`);
+        }
+    });
+}
+
+// Render tabel rekap login per akun
+function renderLoginRekapPerAkun(users) {
+    const tbody = document.getElementById('loginlog-rekap-tbody');
+    
+    if (!users || users.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="empty-state-table" style="padding: 60px 20px;">
+            <div class="empty-state-icon" style="font-size: 64px; margin-bottom: 20px; opacity: 0.5;">📊</div>
+            <div class="empty-state-title">Belum Ada Data Login</div>
+            <div class="empty-state-message">Tidak ada riwayat login yang tercatat</div>
+            <div class="empty-state-suggestion">
+                <i class="fas fa-lightbulb"></i> Tips: Pengguna akan tercatat setelah melakukan login
+            </div>
+        </div></td>`;
+        return;
+    }
+    
+    let html = '';
+    users.forEach((user, index) => {
+        // Tentukan badge warna berdasarkan jumlah login
+        let loginBadge = '';
+        if (user.total_login >= 10) {
+            loginBadge = '<span class="pill pill-done">🔥 Sangat Aktif</span>';
+        } else if (user.total_login >= 5) {
+            loginBadge = '<span class="pill pill-progress">✅ Aktif</span>';
+        } else if (user.total_login >= 1) {
+            loginBadge = '<span class="pill pill-review">📱 Kurang Aktif</span>';
+        } else {
+            loginBadge = '<span class="pill pill-danger">⚪ Tidak Aktif</span>';
+        }
+        
+        html += `
+            <tr>
+                <td style="text-align:center;">${index + 1}</td>
+                <td>
+                    <strong>${escapeHtml(user.username)}</strong>
+                 </div></td>
+                <td>${escapeHtml(user.bidang)}</div></td>
+                <td style="text-align:center;"><span class="pill pill-done" style="background:#e0e7ff; color:#4338ca;">${user.total_login} kali</span></td>
+                <td style="text-align:center;"><span class="pill pill-print">${user.total_duration_formatted}</span></div></td>
+                <td style="text-align:center;"><span class="pill pill-review">${user.avg_duration_formatted}</span></div></div></td>
+                <td style="text-align:center;">${user.last_login_formatted}</div></td>
+                <td style="text-align:center;">${loginBadge}</div></td>
+            </tr>
+        `;
+    });
+    
+    tbody.innerHTML = html;
+}
+
+// Load Top Users
+function loadTopUsers() {
+    const periode = $('#loginlog-periode-filter').val();
+    const bidang = $('#loginlog-bidang-pilih').val();
+    
+    $('#top-user-tbody').html(`
+        <tr><td colspan="5" style="text-align:center;padding:40px;">
+            <div class="modern-spinner"></div>
+            <p>Memuat data...</p>
+         </div></td>
+    `);
+    
+    $.ajax({
+        url: '<?= base_url('IDE/get_login_top_users') ?>',
+        type: 'GET',
+        data: { bidang: bidang, periode: periode, limit: 10 },
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success' && response.data.length > 0) {
+                let html = '';
+                response.data.forEach((user, index) => {
+                    html += `
+                        <tr>
+                            <td style="text-align:center;">${index + 1}</td>
+                            <td><strong>${escapeHtml(user.username)}</strong></td>
+                            <td>${escapeHtml(user.bidang || '-')}</td>
+                            <td style="text-align:center;"><span class="pill pill-done" style="background:#e0e7ff; color:#4338ca;">${user.login_count} kali</span></td>
+                            <td><span class="pill pill-print">${user.duration_formatted}</span></td>
+                        </tr>
+                    `;
+                });
+                $('#top-user-tbody').html(html);
+            } else {
+                $('#top-user-tbody').html(`<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-3);">
+                    <div style="font-size:48px; margin-bottom:15px;">📭</div>
+                    Belum ada data login
+                 </div></td>`);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading top users:', error);
+            $('#top-user-tbody').html(`<table><td colspan="5" style="text-align:center;padding:40px;color:red;">
+                Gagal memuat data: ${error}
+             </div></td>`);
+        }
+    });
+}
+
+// Load Login Stats (rekap periode)
+function loadLoginStats() {
+    const bidang = $('#loginlog-bidang-pilih').val();
+    const username = $('#loginlog-akun-pilih').val();
+    const periode = $('#loginlog-periode-filter').val();
+    
+    // Update tampilan rekap berdasarkan periode yang dipilih
+    loadLoginRekapPerAkun();
+    loadTopUsers();
+}
+
+// Function untuk onLoginLogBidangChange (event handler)
+function onLoginLogBidangChange() {
+    const bidang = $('#loginlog-bidang-pilih').val();
+    
+    // Load akun berdasarkan bidang
+    if (bidang) {
+        $.ajax({
+            url: '<?= base_url('IDE/get_akun_by_bidang') ?>',
+            type: 'GET',
+            data: { bidang: bidang },
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    let options = '<option value="">-- Semua Akun --</option>';
+                    response.data.forEach(function(akun) {
+                        options += `<option value="${escapeHtml(akun.Username)}">👤 ${escapeHtml(akun.Username)}</option>`;
+                    });
+                    $('#loginlog-akun-pilih').html(options);
+                }
+            }
+        });
+    } else {
+        $('#loginlog-akun-pilih').html('<option value="">-- Semua Akun --</option>');
+    }
+    
+    // Refresh semua data
+    loginLogCurrentPage = 1;
+    loadLoginLog();
+    loadLoginRekapPerAkun();
+    loadTopUsers();
+}
+
+// Inisialisasi saat halaman loginlog panel aktif
+$(document).ready(function() {
+    // Observer untuk panel loginlog
+    const loginLogPanelObserver = new MutationObserver(function() {
+        const activePanel = document.querySelector('.panel.active');
+        if (activePanel && activePanel.id === 'panel-loginlog') {
+            console.log('Panel loginlog aktif, memuat data rekap...');
+            loadLoginRekapPerAkun();
+            loadTopUsers();
+            loginLogPanelObserver.disconnect();
+        }
+    });
+    
+    loginLogPanelObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class'],
+        subtree: true
+    });
+    
+    // Jika panel loginlog sudah aktif saat halaman dimuat
+    if (document.querySelector('#panel-loginlog.active')) {
+        loadLoginRekapPerAkun();
+        loadTopUsers();
+    }
+    
+    // Event listener untuk perubahan filter
+    $('#loginlog-periode-filter').on('change', function() {
+        loadLoginRekapPerAkun();
+        loadTopUsers();
+    });
+    
+    $('#loginlog-bidang-pilih').on('change', function() {
+        onLoginLogBidangChange();
+    });
+});
+
 // ================= RENDER TABEL DOKUMEN (LENGKAP) =================
 function renderDokumenTable(dokumen) {
   const tbody = document.getElementById('bidang-tbody');
@@ -3757,6 +4260,681 @@ function getPillClass(status) {
   return map[status] || '';
 }
 
+// ==================== PAGINATION REKAP LOGIN PER AKUN ====================
+let rekapCurrentPage = 1;
+let rekapPerPage = 10;
+let rekapTotalData = 0;
+let rekapTotalPages = 0;
+let rekapSearchKeyword = '';
+
+// Load rekap login per akun dengan pagination
+function loadLoginRekapPerAkun() {
+    console.log('Loading rekap login per akun...');
+    
+    $('#loginlog-rekap-tbody').html(`
+        <tr><td colspan="8" style="text-align:center;padding:40px;">
+            <div class="modern-spinner"></div>
+            <p>Memuat data rekap...</p>
+        </div></tr>
+    `);
+    
+    const bidang = $('#loginlog-bidang-pilih').val();
+    const periode = $('#loginlog-periode-filter').val();
+    
+    $.ajax({
+        url: '<?= base_url('IDE/get_login_rekap_per_akun') ?>',
+        type: 'GET',
+        data: { 
+            bidang: bidang, 
+            periode: periode,
+            page: rekapCurrentPage,
+            limit: rekapPerPage,
+            search: rekapSearchKeyword
+        },
+        dataType: 'json',
+        timeout: 10000,
+        success: function(response) {
+            if (response.status === 'success') {
+                rekapTotalData = response.total || 0;
+                rekapTotalPages = response.total_pages || 0;
+                
+                renderLoginRekapPerAkun(response.data);
+                updateRekapPagination();
+                
+                console.log('Rekap login loaded:', response.data.length, 'of', rekapTotalData, 'records');
+            } else {
+                $('#loginlog-rekap-tbody').html(`<tr><td colspan="8" class="empty-state-table">
+                    <div class="icon">⚠️</div>
+                    <p>Gagal memuat data rekap</p>
+                </div></tr>`);
+                updateRekapPagination();
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading rekap:', error);
+            $('#loginlog-rekap-tbody').html(`<tr><td colspan="8" class="empty-state-table">
+                <div class="icon">❌</div>
+                <p>Error: ${error}</p>
+                <p style="font-size:12px;">Silakan refresh halaman dan coba lagi</p>
+            </div></tr>`);
+            updateRekapPagination();
+        }
+    });
+}
+
+// Render tabel rekap login per akun
+function renderLoginRekapPerAkun(users) {
+    const tbody = document.getElementById('loginlog-rekap-tbody');
+    
+    if (!users || users.length === 0) {
+        const noDataMessage = rekapSearchKeyword ? 
+            `Tidak ditemukan user dengan keyword "${escapeHtml(rekapSearchKeyword)}"` : 
+            'Belum ada data login yang tercatat';
+        
+        tbody.innerHTML = `<tr><td colspan="8" class="empty-state-table" style="padding: 60px 20px;">
+            <div class="empty-state-icon" style="font-size: 64px; margin-bottom: 20px; opacity: 0.5;">📊</div>
+            <div class="empty-state-title">${rekapSearchKeyword ? 'Tidak Ditemukan' : 'Belum Ada Data'}</div>
+            <div class="empty-state-message">${noDataMessage}</div>
+            ${rekapSearchKeyword ? `
+                <div class="empty-state-suggestion">
+                    <i class="fas fa-lightbulb"></i> Tips: Coba gunakan keyword lain atau hapus filter pencarian
+                </div>
+            ` : `
+                <div class="empty-state-suggestion">
+                    <i class="fas fa-lightbulb"></i> Tips: Pengguna akan tercatat setelah melakukan login ke sistem
+                </div>
+            `}
+        </div></td>`;
+        return;
+    }
+    
+    const startNumber = (rekapCurrentPage - 1) * rekapPerPage;
+    
+    let html = '';
+    users.forEach((user, index) => {
+        // Tentukan badge warna berdasarkan jumlah login
+        let loginBadge = '';
+        let loginBadgeClass = '';
+        if (user.total_login >= 10) {
+            loginBadge = '🔥 Sangat Aktif';
+            loginBadgeClass = 'pill-done';
+        } else if (user.total_login >= 5) {
+            loginBadge = '✅ Aktif';
+            loginBadgeClass = 'pill-progress';
+        } else if (user.total_login >= 1) {
+            loginBadge = '📱 Kurang Aktif';
+            loginBadgeClass = 'pill-review';
+        } else {
+            loginBadge = '⚪ Tidak Aktif';
+            loginBadgeClass = 'pill-danger';
+        }
+        
+        // Status session aktif
+        let sessionBadge = '';
+        if (user.active_sessions > 0) {
+            sessionBadge = '<span class="pill" style="background:#dcfce7; color:#166534; margin-left: 5px;"><i class="fas fa-circle" style="font-size: 8px;"></i> Online</span>';
+        }
+        
+        html += `
+            <tr>
+                <td style="text-align:center;">${startNumber + index + 1}</td>
+                <td class="username-cell">
+                    <i class="fas fa-user"></i> <strong>${escapeHtml(user.username)}</strong>
+                    ${sessionBadge}
+                 </div></td>
+                <td><span class="pill" style="background:#e0e7ff; color:#4338ca;">${escapeHtml(user.bidang)}</span></div></td>
+                <td style="text-align:center;"><span class="pill ${loginBadgeClass}" style="font-weight:600;">${user.total_login} kali</span></div></td>
+                <td style="text-align:center;"><span class="pill pill-print">${user.total_duration_formatted}</span></div></td>
+                <td style="text-align:center;"><span class="pill pill-review">${user.avg_duration_formatted}</span></div></div></td>
+                <td style="text-align:center;"><span class="pill" style="background:#f0f4ff;">${user.last_login_formatted}</span></div></td>
+                <td style="text-align:center;"><span class="pill ${loginBadgeClass}">${loginBadge}</span></div></td>
+            </tr>
+        `;
+    });
+    
+    tbody.innerHTML = html;
+}
+
+// Update pagination untuk rekap login
+function updateRekapPagination() {
+    const startIndex = (rekapCurrentPage - 1) * rekapPerPage;
+    const endIndex = Math.min(startIndex + rekapPerPage, rekapTotalData);
+    
+    if (rekapTotalData === 0) {
+        $('#rekap-info-text').text('Menampilkan 0 dari 0 data');
+        $('#rekap-pagination').empty();
+        return;
+    }
+    
+    $('#rekap-info-text').text(`Menampilkan ${startIndex + 1} - ${endIndex} dari ${rekapTotalData} data`);
+    
+    let paginationHtml = '';
+    
+    // Previous button
+    paginationHtml += `<li class="page-item ${rekapCurrentPage === 1 ? 'disabled' : ''}">
+        <a class="page-link" href="#" onclick="goToRekapPage(${rekapCurrentPage - 1}); return false;">
+            <i class="bi bi-chevron-left"></i>
+        </a>
+    </li>`;
+    
+    // Page numbers
+    let startPage = Math.max(1, rekapCurrentPage - 2);
+    let endPage = Math.min(rekapTotalPages, startPage + 4);
+    
+    if (endPage - startPage < 4 && startPage > 1) {
+        startPage = Math.max(1, endPage - 4);
+    }
+    
+    if (startPage > 1) {
+        paginationHtml += `<li class="page-item"><a class="page-link" href="#" onclick="goToRekapPage(1); return false;">1</a></li>`;
+        if (startPage > 2) paginationHtml += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+        paginationHtml += `<li class="page-item ${rekapCurrentPage === i ? 'active' : ''}">
+            <a class="page-link" href="#" onclick="goToRekapPage(${i}); return false;">${i}</a>
+        </li>`;
+    }
+    
+    if (endPage < rekapTotalPages) {
+        if (endPage < rekapTotalPages - 1) paginationHtml += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        paginationHtml += `<li class="page-item"><a class="page-link" href="#" onclick="goToRekapPage(${rekapTotalPages}); return false;">${rekapTotalPages}</a></li>`;
+    }
+    
+    // Next button
+    paginationHtml += `<li class="page-item ${rekapCurrentPage === rekapTotalPages ? 'disabled' : ''}">
+        <a class="page-link" href="#" onclick="goToRekapPage(${rekapCurrentPage + 1}); return false;">
+            <i class="bi bi-chevron-right"></i>
+        </a>
+    </li>`;
+    
+    $('#rekap-pagination').html(paginationHtml);
+}
+
+// Go to specific page on rekap
+function goToRekapPage(page) {
+    if (page < 1 || page > rekapTotalPages) return;
+    rekapCurrentPage = page;
+    loadLoginRekapPerAkun();
+}
+
+// Change per page on rekap
+function changeRekapPerPage() {
+    rekapPerPage = parseInt($('#rekap-per-page').val());
+    rekapCurrentPage = 1;
+    loadLoginRekapPerAkun();
+}
+
+// Search user on rekap
+function searchRekapUser() {
+    rekapSearchKeyword = $('#rekap-search').val().trim();
+    rekapCurrentPage = 1;
+    loadLoginRekapPerAkun();
+}
+
+// Reset rekap search
+function resetRekapSearch() {
+    $('#rekap-search').val('');
+    rekapSearchKeyword = '';
+    rekapCurrentPage = 1;
+    loadLoginRekapPerAkun();
+}
+
+// Override onLoginLogBidangChange untuk reset rekap pagination
+const originalOnLoginLogBidangChange = onLoginLogBidangChange;
+onLoginLogBidangChange = function() {
+    rekapCurrentPage = 1;
+    rekapSearchKeyword = '';
+    $('#rekap-search').val('');
+    if (originalOnLoginLogBidangChange) originalOnLoginLogBidangChange();
+    loadLoginRekapPerAkun();
+};
+
+// Override onLoginLogPeriodeChange
+$('#loginlog-periode-filter').off('change').on('change', function() {
+    rekapCurrentPage = 1;
+    loadLoginRekapPerAkun();
+    loadTopUsers();
+});
+
+// ==================== LOGIN LOG FUNCTIONS ====================
+
+let allLoginLogData = [];
+let loginLogCurrentPage = 1;
+let loginLogPerPage = 25;
+
+// Load login log dari server
+function loadLoginLog() {
+    console.log('Loading login log...');
+    
+    $('#loginlog-tbody').html(`
+        <tr><td colspan="7" style="text-align:center;padding:40px;">
+            <div class="modern-spinner"></div>
+            <p>Memuat data login log...</p>
+        </td></tr>
+    `);
+    
+    const bidang = $('#loginlog-bidang-pilih').val();
+    const username = $('#loginlog-akun-pilih').val();
+    const startDate = $('#loginlog-date-start').val();
+    const endDate = $('#loginlog-date-end').val();
+    
+    $.ajax({
+        url: '<?= base_url('IDE/get_login_log') ?>',
+        type: 'GET',
+        data: {
+            bidang: bidang,
+            username: username,
+            start_date: startDate,
+            end_date: endDate,
+            limit: loginLogPerPage,
+            offset: (loginLogCurrentPage - 1) * loginLogPerPage
+        },
+        dataType: 'json',
+        timeout: 10000,
+        success: function(response) {
+            if (response.status === 'success') {
+                allLoginLogData = response.data;
+                const total = response.total;
+                const totalPages = Math.ceil(total / loginLogPerPage);
+                
+                renderLoginLogTable(allLoginLogData);
+                updateLoginLogPagination(totalPages, total);
+                
+                console.log('Login log loaded:', allLoginLogData.length, 'records');
+            } else {
+                $('#loginlog-tbody').html(`<tr><td colspan="7" class="empty-state-table">
+                    <div class="icon">⚠️</div>
+                    <p>Gagal memuat data login log</p>
+                </td></tr>`);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading login log:', error);
+            $('#loginlog-tbody').html(`<tr><td colspan="7" class="empty-state-table">
+                <div class="icon">❌</div>
+                <p>Error memuat data dari server</p>
+            </td></tr>`);
+        }
+    });
+    
+    // Load rekap data juga
+    loadLoginRekap();
+}
+
+// Load rekap login (statistik)
+function loadLoginRekap() {
+    const bidang = $('#loginlog-bidang-pilih').val();
+    const username = $('#loginlog-akun-pilih').val();
+    
+    $.ajax({
+        url: '<?= base_url('IDE/get_login_rekap') ?>',
+        type: 'GET',
+        data: { bidang: bidang, username: username },
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success') {
+                const data = response.data;
+                
+                $('#login-count-hari').text(data.hari.login_count);
+                $('#login-duration-hari').text(data.hari.duration_formatted);
+                
+                $('#login-count-minggu').text(data.minggu.login_count);
+                $('#login-duration-minggu').text(data.minggu.duration_formatted);
+                
+                $('#login-count-bulan').text(data.bulan.login_count);
+                $('#login-duration-bulan').text(data.bulan.duration_formatted);
+                
+                $('#login-count-tahun').text(data.tahun.login_count);
+                $('#login-duration-tahun').text(data.tahun.duration_formatted);
+            }
+        },
+        error: function() {
+            console.error('Error loading login rekap');
+        }
+    });
+}
+
+// Load top users
+function loadTopUsers() {
+    const periode = $('#top-user-periode').val();
+    const bidang = $('#loginlog-bidang-pilih').val();
+    
+    $('#top-user-tbody').html(`
+        <tr><td colspan="5" style="text-align:center;padding:40px;">
+            <div class="modern-spinner"></div>
+            <p>Memuat data...</p>
+        </td></tr>
+    `);
+    
+    $.ajax({
+        url: '<?= base_url('IDE/get_login_top_users') ?>',
+        type: 'GET',
+        data: { bidang: bidang, periode: periode, limit: 10 },
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success' && response.data.length > 0) {
+                let html = '';
+                response.data.forEach((user, index) => {
+                    html += `
+                        <tr>
+                            <td style="text-align:center;">${index + 1}</td>
+                            <td><strong>${escapeHtml(user.username)}</strong></td>
+                            <td>${escapeHtml(user.bidang || '-')}</td>
+                            <td style="text-align:center;"><span class="pill pill-done">${user.login_count} kali</span></td>
+                            <td>${user.duration_formatted}</td>
+                        </tr>
+                    `;
+                });
+                $('#top-user-tbody').html(html);
+            } else {
+                $('#top-user-tbody').html(`<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-3);">
+                    <div style="font-size:48px; margin-bottom:15px;">📭</div>
+                    Belum ada data login
+                </td></td></tr>`);
+            }
+        },
+        error: function() {
+            $('#top-user-tbody').html(`<tr><td colspan="5" style="text-align:center;padding:40px;color:red;">
+                Gagal memuat data
+            <tr></td></tr>`);
+        }
+    });
+}
+
+// Render tabel login log
+function renderLoginLogTable(logs) {
+    const tbody = document.getElementById('loginlog-tbody');
+    
+    if (!logs || logs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="empty-state-table" style="padding: 60px 20px;">
+            <div class="empty-state-icon" style="font-size: 64px; margin-bottom: 20px; opacity: 0.5;">📭</div>
+            <div class="empty-state-title">Belum Ada Data Login</div>
+            <div class="empty-state-message">Tidak ada riwayat login yang ditemukan</div>
+        </div></td>`;
+        return;
+    }
+    
+    tbody.innerHTML = logs.map((log, index) => {
+        let ip = log.ip_address || '-';
+        if (ip === '::1') ip = '127.0.0.1';
+        
+        return `
+            <tr>
+                <td class="waktu-cell">${escapeHtml(log.login_time_formatted)}</td>
+                <td class="waktu-cell">${escapeHtml(log.logout_time_formatted)}</td>
+                <td class="waktu-cell">${escapeHtml(log.duration_formatted)}</td>
+                <td class="username-cell"><i class="fas fa-user"></i> ${escapeHtml(log.username)}</td>
+                <td>${escapeHtml(log.bidang || '-')}</td>
+                <td><code class="ip-address">${escapeHtml(ip)}</code></td>
+                <td>${log.status_badge}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+// Update pagination login log
+function updateLoginLogPagination(totalPages, totalItems) {
+    const startIndex = (loginLogCurrentPage - 1) * loginLogPerPage;
+    const endIndex = Math.min(startIndex + loginLogPerPage, totalItems);
+    
+    $('#loginlog-info-text').text(`Menampilkan ${startIndex + 1} - ${endIndex} dari ${totalItems} data`);
+    
+    let paginationHtml = '';
+    
+    paginationHtml += `<li class="page-item ${loginLogCurrentPage === 1 ? 'disabled' : ''}">
+        <a class="page-link" href="#" onclick="goToLoginLogPage(${loginLogCurrentPage - 1}); return false;">
+            <i class="bi bi-chevron-left"></i>
+        </a>
+    </li>`;
+    
+    let startPage = Math.max(1, loginLogCurrentPage - 2);
+    let endPage = Math.min(totalPages, startPage + 4);
+    
+    if (endPage - startPage < 4 && startPage > 1) {
+        startPage = Math.max(1, endPage - 4);
+    }
+    
+    if (startPage > 1) {
+        paginationHtml += `<li class="page-item"><a class="page-link" href="#" onclick="goToLoginLogPage(1); return false;">1</a></li>`;
+        if (startPage > 2) paginationHtml += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+        paginationHtml += `<li class="page-item ${loginLogCurrentPage === i ? 'active' : ''}">
+            <a class="page-link" href="#" onclick="goToLoginLogPage(${i}); return false;">${i}</a>
+        </li>`;
+    }
+    
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) paginationHtml += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        paginationHtml += `<li class="page-item"><a class="page-link" href="#" onclick="goToLoginLogPage(${totalPages}); return false;">${totalPages}</a></li>`;
+    }
+    
+    paginationHtml += `<li class="page-item ${loginLogCurrentPage === totalPages ? 'disabled' : ''}">
+        <a class="page-link" href="#" onclick="goToLoginLogPage(${loginLogCurrentPage + 1}); return false;">
+            <i class="bi bi-chevron-right"></i>
+        </a>
+    </li>`;
+    
+    $('#loginlog-pagination').html(paginationHtml);
+}
+
+// Go to page
+function goToLoginLogPage(page) {
+    if (page < 1) return;
+    loginLogCurrentPage = page;
+    loadLoginLog();
+}
+
+// Change per page
+function changeLoginLogPerPage() {
+    loginLogPerPage = parseInt($('#loginlog-per-page').val());
+    loginLogCurrentPage = 1;
+    loadLoginLog();
+}
+
+// Filter by date
+function filterLoginLogByDate() {
+    loginLogCurrentPage = 1;
+    loadLoginLog();
+}
+
+// Filter table (client-side)
+function filterLoginLogTable() {
+    const searchText = $('#loginlog-search').val().toLowerCase();
+    
+    if (!searchText) {
+        // Reload from server with current filters
+        loginLogCurrentPage = 1;
+        loadLoginLog();
+        return;
+    }
+    
+    // Client-side filtering for search only
+    const bidang = $('#loginlog-bidang-pilih').val();
+    const username = $('#loginlog-akun-pilih').val();
+    const startDate = $('#loginlog-date-start').val();
+    const endDate = $('#loginlog-date-end').val();
+    
+    $.ajax({
+        url: '<?= base_url('IDE/get_login_log') ?>',
+        type: 'GET',
+        data: {
+            bidang: bidang,
+            username: username,
+            start_date: startDate,
+            end_date: endDate,
+            limit: 1000,
+            offset: 0
+        },
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success') {
+                let filtered = response.data;
+                
+                if (searchText) {
+                    filtered = filtered.filter(log => 
+                        (log.username || '').toLowerCase().includes(searchText) ||
+                        (log.ip_address || '').toLowerCase().includes(searchText)
+                    );
+                }
+                
+                renderLoginLogTable(filtered);
+                $('#loginlog-pagination').empty();
+                $('#loginlog-info-text').text(`Menampilkan ${filtered.length} dari ${filtered.length} data (hasil filter)`);
+            }
+        }
+    });
+}
+
+// Refresh login log
+function refreshLoginLog() {
+    $('#loginlog-date-start').val('');
+    $('#loginlog-date-end').val('');
+    $('#loginlog-search').val('');
+    loginLogCurrentPage = 1;
+    loadLoginLog();
+    loadTopUsers();
+}
+
+// Load akun untuk filter login log
+$('#loginlog-bidang-pilih').on('change', function() {
+    const bidang = $(this).val();
+    if (bidang) {
+        $.ajax({
+            url: '<?= base_url('IDE/get_akun_by_bidang') ?>',
+            type: 'GET',
+            data: { bidang: bidang },
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    let options = '<option value="">-- Semua Akun --</option>';
+                    response.data.forEach(function(akun) {
+                        options += `<option value="${escapeHtml(akun.Username)}">👤 ${escapeHtml(akun.Username)}</option>`;
+                    });
+                    $('#loginlog-akun-pilih').html(options);
+                }
+            }
+        });
+    } else {
+        $('#loginlog-akun-pilih').html('<option value="">-- Semua Akun --</option>');
+    }
+    loadLoginLog();
+});
+
+$('#loginlog-akun-pilih').on('change', function() {
+    loginLogCurrentPage = 1;
+    loadLoginLog();
+});
+
+// Export login log to PDF
+async function exportLoginLogToPDF() {
+    const bidang = $('#loginlog-bidang-pilih').val();
+    const username = $('#loginlog-akun-pilih').val();
+    const startDate = $('#loginlog-date-start').val();
+    const endDate = $('#loginlog-date-end').val();
+    
+    Swal.fire({
+        title: 'Membuat PDF...',
+        text: 'Mohon tunggu, sedang memproses data',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+    
+    try {
+        // Ambil semua data
+        const response = await $.ajax({
+            url: '<?= base_url('IDE/get_login_log') ?>',
+            type: 'GET',
+            data: { bidang: bidang, username: username, start_date: startDate, end_date: endDate, limit: 5000, offset: 0 },
+            dataType: 'json'
+        });
+        
+        if (response.status !== 'success') {
+            throw new Error('Gagal mengambil data');
+        }
+        
+        const logs = response.data;
+        const logoUrl = '<?= base_url('assets/img/bappeda.png') ?>';
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('id-ID');
+        
+        let htmlContent = `
+            <div class="pdf-export-wrapper">
+                <div class="pdf-header">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                        <img src="${logoUrl}" alt="Logo" style="height: 50px;">
+                        <div>
+                            <h2>SISTEM MANAJEMEN KANTOR (SMB)</h2>
+                            <h3>BAPPEDA KABUPATEN BANYUWANGI</h3>
+                        </div>
+                    </div>
+                    <p>Laporan Log Login Pengguna</p>
+                </div>
+                <div class="pdf-date">
+                    <strong>Tanggal Export:</strong> ${dateStr}<br>
+                    <strong>Total Data:</strong> ${logs.length} login records
+                </div>
+                <table class="pdf-table">
+                    <thead>
+                        <tr>
+                            <th>Waktu Login</th>
+                            <th>Waktu Logout</th>
+                            <th>Durasi</th>
+                            <th>User</th>
+                            <th>Bidang</th>
+                            <th>IP Address</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+        
+        logs.forEach(log => {
+            htmlContent += `
+                <tr>
+                    <td>${log.login_time_formatted}</td>
+                    <td>${log.logout_time_formatted}</td>
+                    <td>${log.duration_formatted}</td>
+                    <td>${escapeHtml(log.username)}</td>
+                    <td>${escapeHtml(log.bidang || '-')}</td>
+                    <td>${log.ip_address || '-'}</td>
+                    <td>${log.status}</td>
+                </tr>
+            `;
+        });
+        
+        htmlContent += `
+                    </tbody>
+                </table>
+                <div class="pdf-footer">
+                    <p>Dokumen ini dibuat secara otomatis oleh sistem SMB Bappeda Banyuwangi</p>
+                </div>
+            </div>
+        `;
+        
+        const element = document.createElement('div');
+        element.innerHTML = htmlContent;
+        document.body.appendChild(element);
+        
+        const opt = {
+            margin: [0.5, 0.5, 0.5, 0.5],
+            filename: `Login_Log_${dateStr.replace(/\//g, '-')}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+        };
+        
+        await html2pdf().set(opt).from(element).save();
+        document.body.removeChild(element);
+        
+        Swal.fire('Berhasil!', 'File PDF telah di-download', 'success');
+    } catch (error) {
+        Swal.fire('Error!', 'Gagal membuat PDF: ' + error.message, 'error');
+    }
+}
+
 // ================= DASHBOARD STATS (LENGKAP DARI DATABASE) =================
 function loadDashboardStats() {
   $.ajax({
@@ -3850,31 +5028,68 @@ function setDefaultStats() {
   $('.doc-cat-count').eq(2).text('0 dokumen');
 }
 
-// ================= PREVIEW DOKUMEN (VERSI AWAL) =================
+// Ganti fungsi previewDokumen dengan yang sudah merekam log preview
 function previewDokumen(filePath, fileType, fileName) {
-  document.getElementById('previewTitle').textContent = fileName || 'Preview Dokumen';
-  const previewDiv = document.getElementById('previewContent');
-  const baseUrl = '<?= base_url() ?>';
-  const fullUrl = baseUrl + filePath;
-  
-  if (fileType && fileType.startsWith('image/')) {
-    previewDiv.innerHTML = `<img src="${fullUrl}" style="max-width:100%; max-height:70vh; border-radius:8px;" alt="${escapeHtml(fileName)}">`;
-  } else if (fileType === 'application/pdf') {
-    previewDiv.innerHTML = `<iframe src="${fullUrl}" style="width:100%; height:70vh;" frameborder="0"></iframe>`;
-  } else {
-    previewDiv.innerHTML = `
-      <div style="padding:60px 20px; text-align:center;">
-        <div style="font-size:64px; margin-bottom:20px;">📄</div>
-        <p style="margin-bottom:20px; color:var(--text-2);">File tidak dapat dipreview langsung</p>
-        <p style="margin-bottom:15px; font-size:12px; color:var(--text-3);">Tipe file: ${fileType || 'Unknown'}</p>
-        <a href="${fullUrl}" class="btn btn-primary" download target="_blank">
-          ⬇️ Download File
-        </a>
-      </div>
-    `;
-  }
-  
-  document.getElementById('modalPreview').style.display = 'flex';
+    // Ambil id_dokumen dari parameter atau atribut data
+    // Kita perlu cara mendapatkan id_dokumen. Modifikasi panggilan preview
+    
+    document.getElementById('previewTitle').textContent = fileName || 'Preview Dokumen';
+    const previewDiv = document.getElementById('previewContent');
+    const baseUrl = '<?= base_url() ?>';
+    const fullUrl = baseUrl + filePath;
+    
+    // === TAMBAHKAN: Log aktivitas preview ===
+    // Cari id_dokumen dari baris tabel yang diklik
+    // Karena kita tidak punya id_dokumen di parameter, kita perlu mencari dari DOM
+    let idDokumen = null;
+    const clickSource = event ? event.target : null;
+    if (clickSource) {
+        const row = $(clickSource).closest('tr');
+        if (row.length) {
+            // Cari tombol delete/hapus untuk mendapatkan id_dokumen
+            const deleteBtn = row.find('.link-danger');
+            if (deleteBtn.length && deleteBtn.attr('onclick')) {
+                const match = deleteBtn.attr('onclick').match(/deleteDokumen\((\d+)\)/);
+                if (match) idDokumen = match[1];
+            }
+        }
+    }
+    
+    // Kirim log preview ke server
+    if (idDokumen) {
+        $.ajax({
+            url: '<?= base_url('IDE/log_preview') ?>',
+            type: 'POST',
+            data: { id_dokumen: idDokumen },
+            dataType: 'json',
+            success: function(response) {
+                console.log('Preview logged:', response);
+            },
+            error: function(xhr, status, error) {
+                console.error('Failed to log preview:', error);
+            }
+        });
+    }
+    
+    // Tampilkan preview
+    if (fileType && fileType.startsWith('image/')) {
+        previewDiv.innerHTML = `<img src="${fullUrl}" style="max-width:100%; max-height:70vh; border-radius:8px;" alt="${escapeHtml(fileName)}">`;
+    } else if (fileType === 'application/pdf') {
+        previewDiv.innerHTML = `<iframe src="${fullUrl}" style="width:100%; height:70vh;" frameborder="0"></iframe>`;
+    } else {
+        previewDiv.innerHTML = `
+            <div style="padding:60px 20px; text-align:center;">
+                <div style="font-size:64px; margin-bottom:20px;">📄</div>
+                <p style="margin-bottom:20px; color:var(--text-2);">File tidak dapat dipreview langsung</p>
+                <p style="margin-bottom:15px; font-size:12px; color:var(--text-3);">Tipe file: ${fileType || 'Unknown'}</p>
+                <a href="${fullUrl}" class="btn btn-primary" download target="_blank">
+                    ⬇️ Download File
+                </a>
+            </div>
+        `;
+    }
+    
+    document.getElementById('modalPreview').style.display = 'flex';
 }
 
 function closePreviewModal() {
@@ -4365,7 +5580,82 @@ function filterLogTable() {
     applyFiltersAndPagination();
 }
 
-// ================= MODIFIED LOAD LOG AKTIVITAS =================
+
+// ================= MODIFIED REFRESH LOG DATA =================
+function refreshLogData() {
+    $('#log-date-start').val('');
+    $('#log-date-end').val('');
+    $('#log-aksi-filter').val('');
+    $('#log-search').val('');
+    $('#log-per-page').val('25');
+    perPage = 25;
+    
+    if ($('#log-bidang-pilih').val() !== '') {
+        $('#log-bidang-pilih').val('');
+        loadLogAktivitas();
+    } else {
+        loadLogAktivitas();
+    }
+}
+
+// ================= VARIABEL GLOBAL =================
+let currentBidangFilter = '';
+let currentAkunFilter = '';
+
+// ================= LOAD AKUN BERDASARKAN BIDANG =================
+function loadAkunByBidang(bidang) {
+    if (!bidang || bidang === '') {
+        $('#log-akun-pilih').html('<option value="">-- Semua Akun --</option>');
+        return;
+    }
+    
+    $.ajax({
+        url: '<?= base_url('IDE/get_akun_by_bidang') ?>',
+        type: 'GET',
+        data: { bidang: bidang },
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success' && response.data.length > 0) {
+                let options = '<option value="">-- Semua Akun --</option>';
+                response.data.forEach(function(akun) {
+                    options += `<option value="${escapeHtml(akun.Username)}">👤 ${escapeHtml(akun.Username)}</option>`;
+                });
+                $('#log-akun-pilih').html(options);
+                
+                // Reset pilihan akun
+                $('#log-akun-pilih').val('');
+                currentAkunFilter = '';
+            } else {
+                $('#log-akun-pilih').html('<option value="">-- Tidak ada akun --</option>');
+            }
+        },
+        error: function() {
+            console.error('Error loading akun for bidang:', bidang);
+            $('#log-akun-pilih').html('<option value="">-- Gagal memuat akun --</option>');
+        }
+    });
+}
+
+// ================= EVENT HANDLER SAAT BIDANG BERUBAH =================
+function onBidangChange() {
+    const selectedBidang = $('#log-bidang-pilih').val();
+    currentBidangFilter = selectedBidang || '';
+    
+    // Load akun berdasarkan bidang yang dipilih
+    loadAkunByBidang(selectedBidang);
+    
+    // Reset pilihan akun
+    $('#log-akun-pilih').val('');
+    currentAkunFilter = '';
+    
+    // Load log aktivitas
+    loadLogAktivitas();
+    
+    // Load total kertas terpakai
+    loadTotalKertasTerpakai(selectedBidang);
+}
+
+// ================= MODIFIED LOAD LOG AKTIVITAS (dengan filter akun) =================
 function loadLogAktivitas() {
     console.log('Loading log aktivitas...');
     
@@ -4377,28 +5667,82 @@ function loadLogAktivitas() {
     `);
     
     const bidangFilter = $('#log-bidang-pilih').val();
-    currentBidangFilter = bidangFilter;
+    const akunFilter = $('#log-akun-pilih').val();
+    currentBidangFilter = bidangFilter || '';
+    currentAkunFilter = akunFilter || '';
     
-    if (bidangFilter) {
+    // Update info panel
+    if (akunFilter) {
         $('#bidang-info').show();
-        $('#bidang-terpilih-label').text(bidangFilter);
+        $('#bidang-terpilih-label').html(`Akun: ${escapeHtml(akunFilter)} ${bidangFilter ? `(Bidang: ${bidangFilter})` : ''}`);
+    } else if (bidangFilter) {
+        $('#bidang-info').show();
+        $('#bidang-terpilih-label').text(`Bidang: ${bidangFilter}`);
     } else {
         $('#bidang-info').hide();
     }
     
+    // Gunakan endpoint yang berbeda berdasarkan apakah ada filter akun
+    let endpoint = '<?= base_url('IDE/get_log_aktivitas') ?>';
+    let params = {};
+    
+    if (akunFilter) {
+        endpoint = '<?= base_url('IDE/get_log_aktivitas_by_akun') ?>';
+        params.username = akunFilter;
+    } else if (bidangFilter) {
+        params.bidang = bidangFilter;
+    }
+    
     $.ajax({
-        url: '<?= base_url('IDE/get_log_aktivitas') ?>',
+        url: endpoint,
         type: 'GET',
-        data: { bidang: bidangFilter },
+        data: params,
         dataType: 'json',
         timeout: 10000,
         success: function(response) {
             if (response.status === 'success') {
                 allLogData = response.data;
+                
+                // ========== TAMBAHKAN: CEK DATA KOSONG ==========
+                if (!allLogData || allLogData.length === 0) {
+                    let emptyMessage = '';
+                    if (akunFilter) {
+                        emptyMessage = `Belum ada aktivitas tercatat untuk akun <strong>${escapeHtml(akunFilter)}</strong>`;
+                    } else if (bidangFilter) {
+                        emptyMessage = `Belum ada aktivitas tercatat untuk bidang <strong>${escapeHtml(bidangFilter)}</strong>`;
+                    } else {
+                        emptyMessage = 'Belum ada aktivitas tercatat di sistem';
+                    }
+                    
+                    $('#log-tbody').html(`
+                        <tr><td colspan="7" class="empty-state-table" style="padding: 60px 20px;">
+                            <div class="empty-state-icon" style="font-size: 64px; margin-bottom: 20px; opacity: 0.5;">${akunFilter ? '👤' : '📭'}</div>
+                            <div class="empty-state-title" style="font-size: 18px; font-weight: 600; color: var(--text-1); margin-bottom: 8px;">Data Tidak Tersedia</div>
+                            <div class="empty-state-message" style="font-size: 13px; color: var(--text-2); margin-bottom: 5px;">${emptyMessage}</div>
+                            <div class="empty-state-suggestion" style="font-size: 12px; color: var(--text-3); margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border); display: inline-block;">
+                                <i class="fas fa-lightbulb"></i> Tips: Coba pilih bidang atau akun lain, atau lakukan aktivitas terlebih dahulu
+                            </div>
+                            ${akunFilter ? `
+                            
+                            ` : ''}
+                        </div></td>
+                    `);
+                    $('#log-pagination').empty();
+                    $('#log-info-text').text('Menampilkan 0 dari 0 data');
+                    filteredData = [];
+                    return;  // ← TAMBAHKAN: HENTIKAN PROSES
+                }
+                // ========== END TAMBAHKAN ==========
+                
                 filteredData = [...allLogData];
                 currentPage = 1;
                 updatePagination();
                 console.log('Log data loaded:', allLogData.length, 'records');
+                
+                // Update statistik akun jika ada
+                if (akunFilter) {
+                    loadAkunStats(akunFilter);
+                }
             } else {
                 $('#log-tbody').html(`<tr><td colspan="7" class="empty-state-table">
                     <div class="icon">⚠️</div>
@@ -4420,6 +5764,69 @@ function loadLogAktivitas() {
     });
 }
 
+// ================= LOAD STATISTIK AKUN (kertas terpakai) =================
+function loadAkunStats(username) {
+    const periods = ['hari', 'minggu', 'bulan', 'tahun'];
+    
+    // Reset tampilan
+    $('#total-kertas-hari').text('0');
+    $('#total-kertas-minggu').text('0');
+    $('#total-kertas-bulan').text('0');
+    $('#total-kertas-tahun').text('0');
+    $('#total-kertas-semua').text('0');
+    
+    periods.forEach(period => {
+        $.ajax({
+            url: '<?= base_url('IDE/get_kertas_rekap_by_akun') ?>',
+            type: 'GET',
+            data: { username: username, periode: period },
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    let elementId = '';
+                    switch(period) {
+                        case 'hari': elementId = 'total-kertas-hari'; break;
+                        case 'minggu': elementId = 'total-kertas-minggu'; break;
+                        case 'bulan': elementId = 'total-kertas-bulan'; break;
+                        case 'tahun': elementId = 'total-kertas-tahun'; break;
+                    }
+                    const totalKertas = response.total_kertas;
+                    $('#' + elementId).text(formatNumberRibuan(totalKertas));
+                    
+                    if (totalKertas === 0) {
+                        $(`#${elementId}`).attr('title', 'Belum ada aktivitas print untuk periode ini');
+                    } else {
+                        $(`#${elementId}`).attr('title', `${response.total_print} kali print untuk akun ini`);
+                    }
+                }
+            },
+            error: function() {
+                console.error('Error loading akun stats for period:', period);
+            }
+        });
+    });
+    
+    // Load total keseluruhan untuk akun
+    $.ajax({
+        url: '<?= base_url('IDE/get_kertas_rekap_by_akun') ?>',
+        type: 'GET',
+        data: { username: username },
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success') {
+                const totalKertas = response.total_kertas;
+                $('#total-kertas-semua').text(formatNumberRibuan(totalKertas));
+                
+                if (totalKertas === 0) {
+                    $('#total-kertas-semua').attr('title', 'Akun ini belum pernah melakukan print');
+                } else {
+                    $('#total-kertas-semua').attr('title', `${response.total_print} total print untuk akun ini`);
+                }
+            }
+        }
+    });
+}
+
 // ================= MODIFIED REFRESH LOG DATA =================
 function refreshLogData() {
     $('#log-date-start').val('');
@@ -4429,28 +5836,372 @@ function refreshLogData() {
     $('#log-per-page').val('25');
     perPage = 25;
     
+    // Reset filter bidang
     if ($('#log-bidang-pilih').val() !== '') {
         $('#log-bidang-pilih').val('');
+        loadAkunByBidang('');
+        $('#log-akun-pilih').val('');
+        loadTotalKertasTerpakai('');
+        loadLogAktivitas();
+    } else if ($('#log-akun-pilih').val() !== '') {
+        $('#log-akun-pilih').val('');
+        loadTotalKertasTerpakai('');
         loadLogAktivitas();
     } else {
         loadLogAktivitas();
     }
 }
 
-// ================= MODIFIED FILTER LOG BY DATE =================
-function filterLogByDate() {
-    applyFiltersAndPagination();
+// ================= MODIFIED FILTER LOG TABLE (dengan filter akun) =================
+function filterLogTable() {
+    const searchText = $('#log-search').val().toLowerCase();
+    const aksiFilter = $('#log-aksi-filter').val();
+    const dateStart = $('#log-date-start').val();
+    const dateEnd = $('#log-date-end').val();
+    const akunFilter = $('#log-akun-pilih').val();
+    
+    let filtered = [...allLogData];
+    
+    // Filter berdasarkan akun
+    if (akunFilter) {
+        filtered = filtered.filter(log => log.username === akunFilter);
+    }
+    
+    // Filter berdasarkan teks pencarian
+    if (searchText) {
+        filtered = filtered.filter(log => 
+            (log.username || '').toLowerCase().includes(searchText) ||
+            (log.detail || '').toLowerCase().includes(searchText) ||
+            (log.modul || '').toLowerCase().includes(searchText)
+        );
+    }
+    
+    // Filter berdasarkan aksi
+    if (aksiFilter) {
+        filtered = filtered.filter(log => log.aksi === aksiFilter);
+    }
+    
+    // Filter berdasarkan rentang tanggal
+    if (dateStart) {
+        const startDate = new Date(dateStart);
+        filtered = filtered.filter(log => {
+            if (!log.waktu) return false;
+            const parts = log.waktu.split(' ');
+            const dateParts = parts[0].split('/');
+            const logDate = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+            return logDate >= startDate;
+        });
+    }
+    
+    if (dateEnd) {
+        const endDate = new Date(dateEnd);
+        endDate.setHours(23, 59, 59);
+        filtered = filtered.filter(log => {
+            if (!log.waktu) return false;
+            const parts = log.waktu.split(' ');
+            const dateParts = parts[0].split('/');
+            const logDate = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+            return logDate <= endDate;
+        });
+    }
+    
+    filteredData = filtered;
+    currentPage = 1;
+    updatePagination();
 }
 
-// ================= RENDER LOG TABLE =================
+// ================= MODIFIED TOTAL KERTAS TERPAKAI (support akun filter) =================
+function loadTotalKertasTerpakai(bidang = '') {
+    const akun = $('#log-akun-pilih').val();
+    currentBidangFilterKertas = bidang;
+    
+    // Update info bidang/akun yang difilter
+    if (akun) {
+        $('#bidang-filter-info').show();
+        $('#bidang-filter-nama').html(`Akun: ${escapeHtml(akun)} ${bidang ? `(Bidang: ${bidang})` : ''}`);
+    } else if (bidang && bidang !== '') {
+        $('#bidang-filter-info').show();
+        $('#bidang-filter-nama').text(bidang);
+    } else {
+        $('#bidang-filter-info').hide();
+    }
+    
+    // Jika ada filter akun, gunakan endpoint khusus
+    if (akun) {
+        loadAkunStats(akun);
+        return;
+    }
+    
+    // Load berdasarkan bidang
+    const periods = ['hari', 'minggu', 'bulan', 'tahun'];
+    
+    periods.forEach(period => {
+        $.ajax({
+            url: '<?= base_url('IDE/get_total_kertas_terpakai') ?>',
+            type: 'GET',
+            data: { bidang: bidang, periode: period },
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    let elementId = '';
+                    switch(period) {
+                        case 'hari': elementId = 'total-kertas-hari'; break;
+                        case 'minggu': elementId = 'total-kertas-minggu'; break;
+                        case 'bulan': elementId = 'total-kertas-bulan'; break;
+                        case 'tahun': elementId = 'total-kertas-tahun'; break;
+                    }
+                    $('#' + elementId).text(formatNumberRibuan(response.total_kertas));
+                }
+            },
+            error: function() {
+                console.error('Error loading kertas untuk periode:', period);
+            }
+        });
+    });
+    
+    // Load total keseluruhan
+    $.ajax({
+        url: '<?= base_url('IDE/get_total_kertas_terpakai') ?>',
+        type: 'GET',
+        data: { bidang: bidang },
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success') {
+                $('#total-kertas-semua').text(formatNumberRibuan(response.total_kertas));
+            }
+        }
+    });
+}
+
+// ================= MODIFIED RENDER LOG TABLE =================
 function renderLogTable(logs) {
     const tbody = document.getElementById('log-tbody');
     
     if (!logs || logs.length === 0) {
         tbody.innerHTML = `<tr><td colspan="7" class="empty-state-table">
             <div class="icon">📭</div>
-            <p>Belum ada aktivitas tercatat untuk bidang ini</p>
+            <p>Belum ada aktivitas tercatat ${currentAkunFilter ? `untuk akun <strong>${escapeHtml(currentAkunFilter)}</strong>` : (currentBidangFilter ? `untuk bidang <strong>${escapeHtml(currentBidangFilter)}</strong>` : '')}</p>
           </div></td>`;
+        return;
+    }
+    
+    const getAksiClass = (aksi) => {
+        const map = {
+            'Upload': 'log-aksi-upload',
+            'Print': 'log-aksi-print',
+            'Print (via Preview)': 'log-aksi-print',
+            'Review': 'log-aksi-review',
+            'Login': 'log-aksi-login',
+            'Update': 'log-aksi-update',
+            'Hapus': 'log-aksi-hapus',
+            'Delete': 'log-aksi-hapus'
+        };
+        return map[aksi] || 'log-aksi-upload';
+    };
+    
+    const getBidangBadge = (bidang) => {
+        if (!bidang || bidang === '-') return '<span class="pill" style="background:#e2e8f0; color:#475569;">-</span>';
+        
+        const warna = {
+            'Litbang': '#e0e7ff',
+            'Perencanaan': '#dcfce7',
+            'Ekonomi': '#fed7aa',
+            'Kesra': '#fbcfe8',
+            'Sarpras': '#cffafe',
+            'Sekretariat': '#e9d5ff'
+        };
+        const warnaText = {
+            'Litbang': '#4338ca',
+            'Perencanaan': '#166534',
+            'Ekonomi': '#9a3412',
+            'Kesra': '#be185d',
+            'Sarpras': '#0e7490',
+            'Sekretariat': '#6b21a5'
+        };
+        
+        return `<span class="pill" style="background:${warna[bidang] || '#e2e8f0'}; color:${warnaText[bidang] || '#475569'};">${escapeHtml(bidang)}</span>`;
+    };
+    
+    tbody.innerHTML = logs.map((log, index) => {
+        const waktu = log.waktu || '-';
+        const username = log.username || '-';
+        const aksi = log.aksi || '-';
+        const modul = log.modul || '-';
+        const detail = log.detail || '-';
+        const bidang = log.bidang || '-';
+        let ip = log.ip_address || '-';
+        
+        if (ip === '::1') ip = '127.0.0.1';
+        const aksiClass = getAksiClass(aksi);
+        
+        let detailHtml = '';
+        if (aksi === 'Print' || aksi === 'Print (via Preview)') {
+            const escapedDetail = escapeHtml(detail);
+            detailHtml = `<span style="cursor:pointer; color:var(--blue-600); text-decoration:underline; font-weight:500;" 
+                              onclick="showPrintRekapFromLog('${escapeHtml(username)}', '${escapedDetail.replace(/'/g, "\\'")}')">
+                              ${escapedDetail}
+                          </span>`;
+        } else {
+            detailHtml = escapeHtml(detail);
+        }
+        
+        let aksiDisplay = aksi;
+        if (aksi === 'Print (via Preview)') {
+            aksiDisplay = 'Print Preview';
+        } else if (aksi === 'Print') {
+            aksiDisplay = 'Print';
+        }
+        
+        return `
+            <tr>
+                <td class="waktu-cell">${escapeHtml(waktu)}</td>
+                <td class="username-cell">
+                    <i class="fas fa-user"></i> 
+                    <span onclick="filterByAkun('${escapeHtml(username)}')" style="cursor:pointer; color:var(--blue-600); text-decoration:underline;">
+                        ${escapeHtml(username)}
+                    </span>
+                </td>
+                <td>
+                    <span class="log-aksi-badge ${aksiClass}">
+                        ${escapeHtml(aksiDisplay)}
+                    </span>
+                </td>
+                <td>${getBidangBadge(bidang)}</td>
+                <td>${escapeHtml(modul)}</td>
+                <td class="detail-cell">${detailHtml}</td>
+                <td><code class="ip-address">${escapeHtml(ip)}</code></td>
+            </tr>
+        `;
+    }).join('');
+}
+
+// ================= FILTER BY AKUN (klik username) =================
+function filterByAkun(username) {
+    // Set dropdown akun ke username yang dipilih
+    $('#log-akun-pilih').val(username);
+    currentAkunFilter = username;
+    
+    // Reset filter bidang
+    $('#log-bidang-pilih').val('');
+    currentBidangFilter = '';
+    
+    // Load log untuk akun tersebut
+    loadLogAktivitas();
+    
+    // Update tampilan
+    Swal.fire({
+        icon: 'info',
+        title: 'Filter Akun',
+        text: `Menampilkan aktivitas untuk akun: ${username}`,
+        timer: 1500,
+        showConfirmButton: false
+    });
+}
+
+// ================= UPDATE PAGINATION (perbaikan) =================
+function updatePagination() {
+    if (!filteredData || filteredData.length === 0) {
+        $('#log-pagination').empty();
+        $('#log-info-text').text('Menampilkan 0 dari 0 data');
+        return;
+    }
+    
+    const totalItems = filteredData.length;
+    const totalPages = Math.ceil(totalItems / perPage);
+    const startIndex = (currentPage - 1) * perPage;
+    const endIndex = Math.min(startIndex + perPage, totalItems);
+    const currentData = filteredData.slice(startIndex, endIndex);
+    
+    $('#log-info-text').text(`Menampilkan ${startIndex + 1} - ${endIndex} dari ${totalItems} data`);
+    
+    let paginationHtml = '';
+    
+    paginationHtml += `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+        <a class="page-link" href="#" onclick="goToPage(${currentPage - 1}); return false;">
+            <i class="bi bi-chevron-left"></i>
+        </a>
+    </li>`;
+    
+    let startPage = Math.max(1, currentPage - 2);
+    let endPage = Math.min(totalPages, startPage + 4);
+    
+    if (endPage - startPage < 4 && startPage > 1) {
+        startPage = Math.max(1, endPage - 4);
+    }
+    
+    if (startPage > 1) {
+        paginationHtml += `<li class="page-item"><a class="page-link" href="#" onclick="goToPage(1); return false;">1</a></li>`;
+        if (startPage > 2) paginationHtml += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+        paginationHtml += `<li class="page-item ${currentPage === i ? 'active' : ''}">
+            <a class="page-link" href="#" onclick="goToPage(${i}); return false;">${i}</a>
+        </li>`;
+    }
+    
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) paginationHtml += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        paginationHtml += `<li class="page-item"><a class="page-link" href="#" onclick="goToPage(${totalPages}); return false;">${totalPages}</a></li>`;
+    }
+    
+    paginationHtml += `<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+        <a class="page-link" href="#" onclick="goToPage(${currentPage + 1}); return false;">
+            <i class="bi bi-chevron-right"></i>
+        </a>
+    </li>`;
+    
+    $('#log-pagination').html(paginationHtml);
+    renderLogTable(currentData);
+}
+
+// ================= INISIALISASI ULANG =================
+$(document).ready(function() {
+    // Load akun default saat halaman dimuat
+    loadAkunByBidang('');
+    
+    // Event listener untuk filter akun
+    $('#log-akun-pilih').on('change', function() {
+        loadLogAktivitas();
+        loadTotalKertasTerpakai($('#log-bidang-pilih').val());
+    });
+});
+
+// ================= MODIFIED FILTER LOG BY DATE =================
+function filterLogByDate() {
+    applyFiltersAndPagination();
+}
+
+// ================= MODIFIED RENDER LOG TABLE =================
+function renderLogTable(logs) {
+    const tbody = document.getElementById('log-tbody');
+    
+    if (!logs || logs.length === 0) {
+        // ========== TAMBAHKAN: PESAN LEBIH INFORMATIF ==========
+        let emptyIcon = '📭';
+        let emptyMessage = '';
+        
+        if (currentAkunFilter) {
+            emptyIcon = '👤';
+            emptyMessage = `Belum ada aktivitas tercatat untuk akun <strong>${escapeHtml(currentAkunFilter)}</strong>`;
+        } else if (currentBidangFilter) {
+            emptyIcon = '📂';
+            emptyMessage = `Belum ada aktivitas tercatat untuk bidang <strong>${escapeHtml(currentBidangFilter)}</strong>`;
+        } else {
+            emptyMessage = 'Belum ada aktivitas tercatat di sistem';
+        }
+        
+        tbody.innerHTML = `
+            <tr><td colspan="7" class="empty-state-table" style="padding: 60px 20px;">
+                <div class="empty-state-icon" style="font-size: 64px; margin-bottom: 20px; opacity: 0.5;">${emptyIcon}</div>
+                <div class="empty-state-title" style="font-size: 18px; font-weight: 600; color: var(--text-1); margin-bottom: 8px;">Data Tidak Tersedia</div>
+                <div class="empty-state-message" style="font-size: 13px; color: var(--text-2); margin-bottom: 5px;">${emptyMessage}</div>
+                <div class="empty-state-suggestion" style="font-size: 12px; color: var(--text-3); margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border); display: inline-block;">
+                    <i class="fas fa-lightbulb"></i> Tips: Coba pilih bidang atau akun lain
+                </div>
+            </div></td>
+        `;
+        // ========== END TAMBAHKAN ==========
         return;
     }
     
@@ -4620,29 +6371,46 @@ function refreshLogData() {
 
 // ==================== REKAP PRINT DARI LOG AKTIVITAS ====================
 
+// ==================== REKAP PRINT DARI LOG AKTIVITAS ====================
 function showPrintRekapFromLog(username, detailLog) {
-    // Buka modal
     $('#modalPrintRekap').css('display', 'flex');
     $('#modalPrintRekapTitle').html(`📊 Rekap Print - ${escapeHtml(username)}`);
     
-    // Tampilkan loading
     $('#modalPrintRekapBody').html(`
         <div style="text-align:center;padding:40px;">
             <div class="modern-spinner"></div>
-            <p>Memuat data rekap untuk user <strong>${escapeHtml(username)}</strong> dari database print log...</p>
+            <p>Memuat data rekap untuk user <strong>${escapeHtml(username)}</strong>...</p>
         </div>
     `);
     
-    // Ambil data dari server (panggil fungsi baru)
     $.ajax({
-        url: '<?= base_url('IDE/get_user_print_rekap') ?>',  // ← nama fungsi baru
+        url: '<?= base_url('IDE/get_user_print_rekap') ?>',
         type: 'POST',
         data: { username: username },
         dataType: 'json',
         timeout: 10000,
         success: function(response) {
             if (response.status === 'success') {
-                renderPrintRekapFromLog(response);
+                // ========== TAMBAHKAN: CEK DATA KOSONG ==========
+                if (response.total_lembar === 0 && response.print_details.length === 0) {
+                    $('#modalPrintRekapBody').html(`
+                        <div style="text-align:center;padding:60px 20px;">
+                            <div style="font-size: 64px; margin-bottom: 20px; opacity: 0.5;">🖨️</div>
+                            <div style="font-size: 18px; font-weight: 600; color: var(--text-1); margin-bottom: 8px;">Tidak Ada Data Print</div>
+                            <div style="font-size: 13px; color: var(--text-2); margin-bottom: 15px;">
+                                Akun <strong>${escapeHtml(username)}</strong> belum pernah melakukan aktivitas print
+                            </div>
+                            <div style="background: #f0f4ff; border-radius: 12px; padding: 15px 20px; margin-top: 20px; text-align: left; max-width: 300px; margin: 20px auto 0;">
+                                <p style="margin: 0 0 5px 0;"><i class="fas fa-info-circle"></i> Informasi Akun:</p>
+                                <p style="margin: 0; font-size: 12px;">Username: <strong>${escapeHtml(username)}</strong></p>
+                                <p style="margin: 5px 0 0 0; font-size: 12px;">Status: Belum pernah melakukan print</p>
+                            </div>
+                        </div>
+                    `);
+                } else {
+                    renderPrintRekapFromLog(response);
+                }
+                // ========== END TAMBAHKAN ==========
             } else {
                 $('#modalPrintRekapBody').html(`
                     <div style="text-align:center;padding:40px;color:red;">
@@ -4666,49 +6434,62 @@ function showPrintRekapFromLog(username, detailLog) {
 function renderPrintRekapFromLog(data) {
     let html = '';
     
-    // Header dengan info user
     html += `
         <div style="margin-bottom: 20px;">
             <span class="rekap-badge-user">👤 ${escapeHtml(data.username)}</span>
             <span style="margin-left: 10px; font-size: 11px; color: var(--text-3);">
-                📊 Data dari tabel print log
+                📊 Total print: ${data.total_print} kali | Total lembar: ${formatNumber(data.total_lembar)}
             </span>
         </div>
     `;
     
-    // 4 Kartu Rekap Periode (HARI, MINGGU, BULAN, TAHUN)
+    // ========== TAMBAHKAN: CEK NILAI 0 UNTUK TAMPILAN LEBIH BAIK ==========
+    const getStatusText = (sukses, lembar) => {
+        if (lembar === 0) return 'Tidak ada print';
+        if (sukses > 0) return `✓ ${sukses} berhasil`;
+        return 'Semua gagal';
+    };
+    // ========== END TAMBAHKAN ==========
+    
     html += `
         <div class="user-rekap-summary" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
-            <!-- HARI INI -->
             <div class="user-rekap-item" style="background: #e8f0fe; border-radius: 12px; padding: 12px;">
                 <div class="user-rekap-label">📅 HARI INI</div>
                 <div class="user-rekap-value" style="font-size: 24px;">${formatNumber(data.hari.lembar)}</div>
-                <div class="user-rekap-unit">kertas </div>
-                <div style="font-size: 10px; color: green; margin-top: 5px;">✓ ${data.hari.sukses} berhasil</div>
+                <div class="user-rekap-unit">kertas</div>
+                <!-- ========== TAMBAHKAN: TEXT DINAMIS ========== -->
+                <div style="font-size: 10px; color: ${data.hari.lembar > 0 ? 'green' : '#999'}; margin-top: 5px;">
+                    ${getStatusText(data.hari.sukses, data.hari.lembar)}
+                </div>
+                <!-- ========== END TAMBAHKAN ========== -->
             </div>
-            <!-- 7 HARI -->
             <div class="user-rekap-item" style="background: #e6f7e6; border-radius: 12px; padding: 12px;">
                 <div class="user-rekap-label">📆 7 HARI</div>
                 <div class="user-rekap-value" style="font-size: 24px;">${formatNumber(data.minggu.lembar)}</div>
-                <div class="user-rekap-unit">kertas </div>
-                <div style="font-size: 10px; color: green; margin-top: 5px;">✓ ${data.minggu.sukses} berhasil</div>
+                <div class="user-rekap-unit">kertas</div>
+                <div style="font-size: 10px; color: ${data.minggu.lembar > 0 ? 'green' : '#999'}; margin-top: 5px;">
+                    ${getStatusText(data.minggu.sukses, data.minggu.lembar)}
+                </div>
             </div>
-            <!-- 30 HARI -->
             <div class="user-rekap-item" style="background: #fef3e6; border-radius: 12px; padding: 12px;">
                 <div class="user-rekap-label">📊 30 HARI</div>
                 <div class="user-rekap-value" style="font-size: 24px;">${formatNumber(data.bulan.lembar)}</div>
-                <div class="user-rekap-unit">kertas </div>
-                <div style="font-size: 10px; color: green; margin-top: 5px;">✓ ${data.bulan.sukses} berhasil</div>
+                <div class="user-rekap-unit">kertas</div>
+                <div style="font-size: 10px; color: ${data.bulan.lembar > 0 ? 'green' : '#999'}; margin-top: 5px;">
+                    ${getStatusText(data.bulan.sukses, data.bulan.lembar)}
+                </div>
             </div>
-            <!-- TAHUN INI -->
             <div class="user-rekap-item" style="background: #f0e6fe; border-radius: 12px; padding: 12px;">
                 <div class="user-rekap-label">🎯 TAHUN ${new Date().getFullYear()}</div>
                 <div class="user-rekap-value" style="font-size: 24px;">${formatNumber(data.tahun.lembar)}</div>
-                <div class="user-rekap-unit">kertas </div>
-                <div style="font-size: 10px; color: green; margin-top: 5px;">✓ ${data.tahun.sukses} berhasil</div>
+                <div class="user-rekap-unit">kertas</div>
+                <div style="font-size: 10px; color: ${data.tahun.lembar > 0 ? 'green' : '#999'}; margin-top: 5px;">
+                    ${getStatusText(data.tahun.sukses, data.tahun.lembar)}
+                </div>
             </div>
         </div>
     `;
+    
     
     // Tabel Rincian Print (dari smb_print_log)
     if (data.print_details && data.print_details.length > 0) {
@@ -4783,148 +6564,333 @@ function refreshLogData() {
   loadLogAktivitas();
 }
 
-// ================= EXPORT LOG TO PDF (DENGAN LOGO) =================
-function exportLogToPDF() {
-  // Ambil data yang sedang ditampilkan (setelah filter)
-  const logData = [];
-  $('#log-tbody tr').each(function() {
-    const row = $(this);
-    const waktu = row.find('td:eq(0)').text();
-    const user = row.find('td:eq(1)').text();
-    const aksi = row.find('td:eq(2) .pill').text();
-    const modul = row.find('td:eq(3)').text();
-    const detail = row.find('td:eq(4)').text();
-    const ip = row.find('td:eq(5) code').text() || row.find('td:eq(5)').text();
+// ================= EXPORT LOG TO PDF (SEMUA HALAMAN DENGAN PAGINATION) =================
+async function exportLogToPDF() {
+    // Tampilkan loading
+    Swal.fire({
+        title: 'Membuat PDF...',
+        text: 'Mohon tunggu, sedang memproses semua data',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
     
-    if (waktu && !waktu.includes('Memuat') && !waktu.includes('Belum')) {
-      logData.push({ waktu, user, aksi, modul, detail, ip });
+    try {
+        // 1. Ambil SEMUA data log (bukan hanya halaman aktif)
+        // Gunakan data asli yang sudah difilter (filteredData), bukan hanya current page
+        const allFilteredData = filteredData; // Ini sudah berisi semua data setelah filter
+        
+        if (!allFilteredData || allFilteredData.length === 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Tidak Ada Data',
+                text: 'Tidak ada data log untuk diexport'
+            });
+            return;
+        }
+        
+        // 2. Ambil data total kertas terpakai (sesuai filter yang dipilih)
+        const bidangFilter = $('#log-bidang-pilih').val();
+        const akunFilter = $('#log-akun-pilih').val();
+        
+        // Panggil API untuk mendapatkan total kertas
+        let kertasData = {
+            hari: 0,
+            minggu: 0,
+            bulan: 0,
+            tahun: 0,
+            total: 0
+        };
+        
+        try {
+            if (akunFilter) {
+                // Jika filter akun aktif, ambil data per akun
+                const response = await $.ajax({
+                    url: '<?= base_url('IDE/get_kertas_rekap_by_akun') ?>',
+                    type: 'GET',
+                    data: { username: akunFilter },
+                    dataType: 'json',
+                    async: false
+                });
+                if (response.status === 'success') {
+                    kertasData.total = response.total_kertas;
+                }
+                
+                // Ambil per periode
+                const periods = ['hari', 'minggu', 'bulan', 'tahun'];
+                for (const period of periods) {
+                    const resp = await $.ajax({
+                        url: '<?= base_url('IDE/get_kertas_rekap_by_akun') ?>',
+                        type: 'GET',
+                        data: { username: akunFilter, periode: period },
+                        dataType: 'json',
+                        async: false
+                    });
+                    if (resp.status === 'success') {
+                        kertasData[period] = resp.total_kertas;
+                    }
+                }
+            } else {
+                // Jika filter bidang atau semua data
+                const response = await $.ajax({
+                    url: '<?= base_url('IDE/get_total_kertas_terpakai') ?>',
+                    type: 'GET',
+                    data: { bidang: bidangFilter },
+                    dataType: 'json',
+                    async: false
+                });
+                if (response.status === 'success') {
+                    kertasData.total = response.total_kertas;
+                }
+                
+                // Ambil per periode
+                const periods = ['hari', 'minggu', 'bulan', 'tahun'];
+                for (const period of periods) {
+                    const resp = await $.ajax({
+                        url: '<?= base_url('IDE/get_total_kertas_terpakai') ?>',
+                        type: 'GET',
+                        data: { bidang: bidangFilter, periode: period },
+                        dataType: 'json',
+                        async: false
+                    });
+                    if (resp.status === 'success') {
+                        kertasData[period] = resp.total_kertas;
+                    }
+                }
+            }
+        } catch(e) {
+            console.error('Error fetching kertas data:', e);
+        }
+        
+        // 3. Siapkan info filter untuk ditampilkan di PDF
+        const now = new Date();
+        const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+        const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+        const dateStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+        const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
+        
+        // Filter info yang diterapkan
+        const startDate = $('#log-date-start').val();
+        const endDate = $('#log-date-end').val();
+        const aksiFilterVal = $('#log-aksi-filter').val();
+        const searchText = $('#log-search').val();
+        
+        let filterLines = [];
+        if (akunFilter) filterLines.push(`Akun: ${akunFilter}`);
+        else if (bidangFilter) filterLines.push(`Bidang: ${bidangFilter}`);
+        else filterLines.push(`Semua Bidang`);
+        
+        if (startDate || endDate) filterLines.push(`Periode: ${startDate || 'Awal'} s.d. ${endDate || 'Sekarang'}`);
+        if (aksiFilterVal) filterLines.push(`Aksi: ${aksiFilterVal}`);
+        if (searchText) filterLines.push(`Pencarian: ${searchText}`);
+        
+        // 4. Konversi data log ke format yang mudah digunakan
+        const logData = [];
+        for (const log of allFilteredData) {
+            logData.push({
+                waktu: log.waktu || '-',
+                user: log.username || '-',
+                aksi: log.aksi || '-',
+                bidang: log.bidang || '-',
+                modul: log.modul || '-',
+                detail: log.detail || '-',
+                ip: log.ip_address || '-'
+            });
+        }
+        
+        // 5. Hitung jumlah halaman yang dibutuhkan (misal 25 baris per halaman)
+        const ROWS_PER_PAGE = 25;
+        const totalPages = Math.ceil(logData.length / ROWS_PER_PAGE);
+        
+        // 6. Buat HTML untuk SEMUA HALAMAN PDF
+        const logoUrl = '<?= base_url('assets/img/bappeda.png') ?>';
+        
+        // Header untuk setiap halaman (akan diulang)
+        const getPageHeader = (pageNum) => `
+            <div style="page-break-before: ${pageNum === 1 ? 'avoid' : 'always'};">
+            <div class="pdf-header">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px; flex-wrap: wrap;">
+                    <img src="${logoUrl}" alt="Logo Bappeda Banyuwangi" style="height: 50px; width: auto; object-fit: contain;">
+                    <div style="text-align: center;">
+                        <h2 style="margin: 0;">SISTEM MANAJEMEN KANTOR (SMB)</h2>
+                        <h3 style="margin: 5px 0 0 0;">BAPPEDA KABUPATEN BANYUWANGI</h3>
+                    </div>
+                </div>
+                <p>Laporan Log Aktivitas Sistem</p>
+            </div>
+            
+            <div class="pdf-date">
+                <strong>Tanggal Export:</strong> ${dateStr} ${timeStr}<br>
+                <strong>User:</strong> ${escapeHtml('<?= $display_name ?>')} (${escapeHtml('<?= $role_name ?>')})<br>
+                <strong>Total Data:</strong> ${logData.length} aktivitas<br>
+                <strong>Halaman:</strong> ${pageNum} dari ${totalPages}
+            </div>
+        `;
+        
+        // Header statistik (hanya di halaman pertama)
+        const statsSection = `
+            <div class="pdf-filter-info">
+                <strong><i class="fas fa-filter"></i> Filter yang Diterapkan:</strong>
+                ${filterLines.map(line => `<p>📌 ${line}</p>`).join('')}
+            </div>
+            
+            <div class="pdf-stats-grid">
+                <div class="pdf-stat-card">
+                    <div class="pdf-stat-label">HARI INI</div>
+                    <div class="pdf-stat-value">${formatNumberRibuan(kertasData.hari)}</div>
+                    <div class="pdf-stat-unit">lembar kertas</div>
+                </div>
+                <div class="pdf-stat-card">
+                    <div class="pdf-stat-label">7 HARI</div>
+                    <div class="pdf-stat-value">${formatNumberRibuan(kertasData.minggu)}</div>
+                    <div class="pdf-stat-unit">lembar kertas</div>
+                </div>
+                <div class="pdf-stat-card">
+                    <div class="pdf-stat-label">30 HARI</div>
+                    <div class="pdf-stat-value">${formatNumberRibuan(kertasData.bulan)}</div>
+                    <div class="pdf-stat-unit">lembar kertas</div>
+                </div>
+                <div class="pdf-stat-card">
+                    <div class="pdf-stat-label">TAHUN INI</div>
+                    <div class="pdf-stat-value">${formatNumberRibuan(kertasData.tahun)}</div>
+                    <div class="pdf-stat-unit">lembar kertas</div>
+                </div>
+            </div>
+            
+            <div class="pdf-total-card">
+                <span class="pdf-total-label"><i class="bi bi-printer"></i> TOTAL KESELURUHAN</span>
+                <span>
+                    <span class="pdf-total-value">${formatNumberRibuan(kertasData.total)}</span>
+                    <span class="pdf-total-unit">lembar</span>
+                </span>
+            </div>
+        `;
+        
+        // Footer untuk setiap halaman
+        const getPageFooter = (pageNum) => `
+            <div class="pdf-footer">
+                <p>Dokumen ini dibuat secara otomatis oleh sistem SMB Bappeda Banyuwangi</p>
+                <p>Halaman ${pageNum} dari ${totalPages} | Total Data: ${logData.length} aktivitas</p>
+            </div>
+            </div>
+        `;
+        
+        // Tabel header
+        const tableHeader = `
+            <table class="pdf-table" style="width:100%; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th style="width:12%;">Waktu</th>
+                        <th style="width:10%;">User</th>
+                        <th style="width:8%;">Aksi</th>
+                        <th style="width:10%;">Bidang</th>
+                        <th style="width:10%;">Modul</th>
+                        <th style="width:35%;">Detail</th>
+                        <th style="width:15%;">IP Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        
+        const tableFooter = `
+                </tbody>
+            </table>
+        `;
+        
+        // 7. Bangun HTML untuk semua halaman
+        let htmlContent = '';
+        
+        for (let page = 1; page <= totalPages; page++) {
+            const startIndex = (page - 1) * ROWS_PER_PAGE;
+            const endIndex = Math.min(startIndex + ROWS_PER_PAGE, logData.length);
+            const pageData = logData.slice(startIndex, endIndex);
+            
+            // Tambahkan header halaman
+            htmlContent += getPageHeader(page);
+            
+            // Tambahkan statistik hanya di halaman pertama
+            if (page === 1) {
+                htmlContent += statsSection;
+            }
+            
+            // Tambahkan tabel
+            htmlContent += tableHeader;
+            
+            // Isi data
+            for (const item of pageData) {
+                // Potong detail jika terlalu panjang
+                let detailText = item.detail;
+                if (detailText && detailText.length > 150) {
+                    detailText = detailText.substring(0, 150) + '...';
+                }
+                
+                htmlContent += `
+                    <tr>
+                        <td>${escapeHtml(item.waktu)}</td>
+                        <td>${escapeHtml(item.user)}</td>
+                        <td>${escapeHtml(item.aksi)}</td>
+                        <td>${escapeHtml(item.bidang)}</td>
+                        <td>${escapeHtml(item.modul)}</td>
+                        <td>${escapeHtml(detailText)}</td>
+                        <td>${escapeHtml(item.ip)}</td>
+                    </tr>
+                `;
+            }
+            
+            // Tambahkan footer tabel dan footer halaman
+            htmlContent += tableFooter;
+            htmlContent += getPageFooter(page);
+        }
+        
+        // 8. Bungkus dengan wrapper utama
+        const finalHtml = `
+            <div class="pdf-export-wrapper" style="font-family: 'Plus Jakarta Sans', 'DM Sans', sans-serif; padding: 20px; background: white;">
+                ${htmlContent}
+            </div>
+        `;
+        
+        // 9. Generate PDF
+        const element = document.createElement('div');
+        element.innerHTML = finalHtml;
+        document.body.appendChild(element);
+        
+        const opt = {
+            margin: [0.5, 0.5, 0.5, 0.5],
+            filename: `Log_Aktivitas_SMB_${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}-${now.getDate().toString().padStart(2,'0')}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, letterRendering: true, useCORS: true },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+        };
+        
+        await html2pdf().set(opt).from(element).save();
+        document.body.removeChild(element);
+        
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: `File PDF dengan ${totalPages} halaman telah berhasil di-download`,
+            timer: 2000,
+            showConfirmButton: false
+        });
+        
+    } catch(error) {
+        console.error('PDF Export error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: 'Terjadi kesalahan saat membuat PDF: ' + error.message
+        });
     }
-  });
-  
-  if (logData.length === 0) {
-    Swal.fire('Info', 'Tidak ada data log untuk diexport', 'info');
-    return;
-  }
-  
-  const now = new Date();
-  const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-  const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-  const dateStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
-  const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
-  
-  // Filter info untuk PDF
-  const startDate = $('#log-date-start').val();
-  const endDate = $('#log-date-end').val();
-  const aksiFilter = $('#log-aksi-filter').val();
-  const searchText = $('#log-search').val();
-  
-  let filterInfo = '';
-  if (startDate || endDate) filterInfo += `Periode: ${startDate || 'Awal'} s.d. ${endDate || 'Sekarang'} | `;
-  if (aksiFilter) filterInfo += `Aksi: ${aksiFilter} | `;
-  if (searchText) filterInfo += `Pencarian: ${searchText} | `;
-  
-  // Logo Bappeda dari asset lokal
-  const logoUrl = '<?= base_url('assets/img/bappeda.png') ?>';
-  
-  let htmlContent = `
-    <div class="pdf-export-wrapper">
-      <div class="pdf-header">
-        <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px; flex-wrap: wrap;">
-          <img src="${logoUrl}" alt="Logo Bappeda Banyuwangi" style="height: 60px; width: auto; object-fit: contain;">
-          <div style="text-align: center;">
-            <h2 style="margin: 0; color: #1a2d6b;">SISTEM MANAJEMEN KANTOR (SMB)</h2>
-            <h3 style="margin: 5px 0 0 0; color: #1a2d6b;">BAPPEDA KABUPATEN BANYUWANGI</h3>
-          </div>
-        </div>
-        <p style="margin-top: 10px;">Laporan Log Aktivitas Sistem</p>
-      </div>
-      <div class="pdf-date">
-        <strong>Tanggal Export:</strong> ${dateStr} ${timeStr}<br>
-        <strong>User:</strong> ${escapeHtml('<?= $display_name ?>')} (${escapeHtml('<?= $role_name ?>')})<br>
-        <strong>Total Data:</strong> ${logData.length} aktivitas<br>
-        ${filterInfo ? `<strong>Filter:</strong> ${filterInfo}<br>` : ''}
-      </div>
-      <table class="pdf-table">
-        <thead>
-          <tr>
-            <th style="width:15%">Waktu</th>
-            <th style="width:10%">User</th>
-            <th style="width:8%">Aksi</th>
-            <th style="width:10%">Modul</th>
-            <th style="width:40%">Detail</th>
-            <th style="width:12%">IP Address</th>
-          </tr>
-        </thead>
-        <tbody>
-  `;
-  
-  logData.forEach((item, index) => {
-    htmlContent += `
-      <tr>
-        <td>${escapeHtml(item.waktu)}</td>
-        <td>${escapeHtml(item.user)}</td>
-        <td>${escapeHtml(item.aksi)}</td>
-        <td>${escapeHtml(item.modul)}</td>
-        <td>${escapeHtml(item.detail)}</td>
-        <td>${escapeHtml(item.ip)}</td>
-      </tr>
-    `;
-  });
-  
-  htmlContent += `
-        </tbody>
-      </table>
-      <div class="pdf-footer">
-        <p>Dokumen ini dibuat secara otomatis oleh sistem SMB Bappeda Banyuwangi</p>
-        <p>* Laporan ini merupakan bukti sah aktivitas sistem</p>
-      </div>
-    </div>
-  `;
-  
-  Swal.fire({
-    title: 'Membuat PDF...',
-    text: 'Mohon tunggu, sedang memproses export data',
-    allowOutsideClick: false,
-    didOpen: () => Swal.showLoading()
-  });
-  
-  const element = document.createElement('div');
-  element.innerHTML = htmlContent;
-  document.body.appendChild(element);
-  
-  const opt = {
-    margin: [0.5, 0.5, 0.5, 0.5],
-    filename: `Log_Aktivitas_SMB_${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}-${now.getDate().toString().padStart(2,'0')}.pdf`,
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, letterRendering: true, useCORS: true },
-    jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
-  };
-  
-  html2pdf().set(opt).from(element).save().then(() => {
-    document.body.removeChild(element);
-    Swal.fire({
-      icon: 'success',
-      title: 'Berhasil!',
-      text: 'File PDF telah berhasil di-download',
-      timer: 2000,
-      showConfirmButton: false
-    });
-  }).catch(error => {
-    document.body.removeChild(element);
-    Swal.fire({
-      icon: 'error',
-      title: 'Gagal!',
-      text: 'Terjadi kesalahan saat membuat PDF'
-    });
-  });
 }
-
 function addPrintViaPreviewFilter() {
     const filterSelect = $('#log-aksi-filter');
     if (filterSelect.length && !filterSelect.find('option[value="Print (via Preview)"]').length) {
         filterSelect.append('<option value="Print (via Preview)"> Print (via Preview)</option>');
     }
 }
+
+
 
 // ================= INISIALISASI SAAT HALAMAN SIAP =================
 $(document).ready(function() {
