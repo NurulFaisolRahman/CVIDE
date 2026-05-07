@@ -2246,6 +2246,160 @@ public function get_login_stats() {
 }
 
 /**
+ * Get Detail Rekap Login per Akun (dengan durasi dalam jam)
+ */
+public function get_login_detail_rekap_by_akun() {
+    // Cek session login SMB
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Unauthorized']);
+        return;
+    }
+    
+    $username = $this->input->get('username', TRUE);
+    if (empty($username)) {
+        echo json_encode(['status' => 'error', 'message' => 'Username tidak boleh kosong']);
+        return;
+    }
+    
+    // Data untuk response
+    $response = [
+        'status' => 'success',
+        'username' => $username,
+        'bidang' => '',
+        'periods' => []
+    ];
+    
+    // Ambil bidang user dari tabel akun
+    $akun = $this->db->get_where('akun', ['Username' => $username])->row_array();
+    $response['bidang'] = $akun['Bidang'] ?? '-';
+    
+    // Periode yang akan dihitung
+    $periods = [
+        'hari' => ['label' => 'Hari Ini', 'start' => date('Y-m-d 00:00:00')],
+        'minggu' => ['label' => '7 Hari Terakhir', 'start' => date('Y-m-d H:i:s', strtotime('-7 days'))],
+        'bulan' => ['label' => '30 Hari Terakhir', 'start' => date('Y-m-d H:i:s', strtotime('-30 days'))],
+        'tahun' => ['label' => 'Tahun Ini', 'start' => date('Y-01-01 00:00:00')],
+        'semua' => ['label' => 'Semua Waktu', 'start' => null]
+    ];
+    
+    foreach ($periods as $key => $period) {
+        // Query untuk periode tertentu
+        $this->db->select('
+            COUNT(*) as login_count,
+            SUM(duration_seconds) as total_duration_seconds,
+            MAX(login_time) as last_login,
+            MIN(login_time) as first_login
+        ');
+        $this->db->from('smb_login_log');
+        $this->db->where('username', $username);
+        $this->db->where('status !=', 'active'); // Hanya session yang sudah selesai
+        
+        if ($period['start']) {
+            $this->db->where('login_time >=', $period['start']);
+        }
+        
+        $result = $this->db->get()->row_array();
+        
+        // Query untuk session masih aktif
+        $active_session = $this->db
+            ->select('login_time, duration_seconds')
+            ->from('smb_login_log')
+            ->where('username', $username)
+            ->where('status', 'active')
+            ->get()
+            ->row_array();
+        
+        $total_duration_seconds = (int)($result['total_duration_seconds'] ?? 0);
+        
+        // Jika ada session aktif, hitung durasi sementara
+        if ($active_session) {
+            $active_duration = time() - strtotime($active_session['login_time']);
+            $total_duration_seconds += $active_duration;
+        }
+        
+        // Hitung rata-rata durasi
+        $login_count = (int)($result['login_count'] ?? 0);
+        $avg_duration_seconds = $login_count > 0 ? round($total_duration_seconds / $login_count) : 0;
+        
+        // Format durasi ke jam:menit:detik
+        $total_formatted = $this->_formatDurationToTime($total_duration_seconds);
+        $avg_formatted = $this->_formatDurationToTime($avg_duration_seconds);
+        
+        // Dapatkan tanggal login pertama dan terakhir
+        $first_login = $result['first_login'] ? date('d/m/Y H:i:s', strtotime($result['first_login'])) : '-';
+        $last_login = $result['last_login'] ? date('d/m/Y H:i:s', strtotime($result['last_login'])) : '-';
+        
+        // Hitung rentang hari antara login pertama dan terakhir
+        $range_days = 0;
+        if ($result['first_login'] && $result['last_login']) {
+            $first = new DateTime($result['first_login']);
+            $last = new DateTime($result['last_login']);
+            $range_days = $first->diff($last)->days + 1;
+        }
+        
+        // Rata-rata login per hari
+        $avg_per_day = $range_days > 0 ? round($login_count / $range_days, 2) : $login_count;
+        
+        $response['periods'][$key] = [
+            'label' => $period['label'],
+            'login_count' => $login_count,
+            'total_duration_seconds' => $total_duration_seconds,
+            'total_duration_formatted' => $total_formatted,
+            'total_duration_hours' => round($total_duration_seconds / 3600, 2),
+            'avg_duration_seconds' => $avg_duration_seconds,
+            'avg_duration_formatted' => $avg_formatted,
+            'avg_duration_minutes' => round($avg_duration_seconds / 60, 1),
+            'first_login' => $first_login,
+            'last_login' => $last_login,
+            'range_days' => $range_days,
+            'avg_per_day' => $avg_per_day
+        ];
+    }
+    
+    // Ambil detail log login per hari (untuk chart/graph)
+    $daily_logs = $this->db
+        ->select('DATE(login_time) as login_date, COUNT(*) as count, SUM(duration_seconds) as total_seconds')
+        ->from('smb_login_log')
+        ->where('username', $username)
+        ->where('login_time >=', date('Y-m-d H:i:s', strtotime('-30 days')))
+        ->group_by('DATE(login_time)')
+        ->order_by('login_date', 'DESC')
+        ->limit(30)
+        ->get()
+        ->result_array();
+    
+    foreach ($daily_logs as &$daily) {
+        $daily['date_formatted'] = date('d/m/Y', strtotime($daily['login_date']));
+        $daily['total_formatted'] = $this->_formatDurationToTime($daily['total_seconds']);
+    }
+    $response['daily_logs'] = $daily_logs;
+    
+    echo json_encode($response);
+}
+
+/**
+ * Format detik ke format HH:MM:SS atau Jam:Menit
+ */
+private function _formatDurationToTime($seconds) {
+    if (!$seconds || $seconds <= 0) return '0 jam';
+    
+    $hours = floor($seconds / 3600);
+    $minutes = floor(($seconds % 3600) / 60);
+    $secs = $seconds % 60;
+    
+    if ($hours > 0) {
+        if ($minutes > 0) {
+            return "{$hours} jam {$minutes} menit";
+        }
+        return "{$hours} jam";
+    } elseif ($minutes > 0) {
+        return "{$minutes} menit";
+    } else {
+        return "{$secs} detik";
+    }
+}
+
+/**
  * Get Rekap Login per Akun (Dengan Pagination)
  */
 public function get_login_rekap_per_akun()

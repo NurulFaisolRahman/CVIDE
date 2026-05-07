@@ -1376,6 +1376,81 @@ a { text-decoration: none; color: inherit; }
 /* ============================================================
    BUTTONS
    ============================================================ */
+
+   /* Modal Detail Rekap Login */
+.modal-user-rekap {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 1002;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-user-rekap-content {
+    background: white;
+    border-radius: 20px;
+    max-width: 900px;
+    width: 90%;
+    max-height: 85vh;
+    overflow: auto;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    animation: modalSlideIn 0.3s ease;
+}
+
+.modal-user-rekap-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #1a2d6b 0%, #162060 100%);
+    color: white;
+    border-radius: 20px 20px 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.modal-user-rekap-close {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.modal-user-rekap-close:hover {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.1);
+}
+
+.modal-user-rekap-body {
+    padding: 24px;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .btn {
   display: inline-flex; align-items: center; gap: 6px;
   font-family: inherit; font-size: 12.5px; font-weight: 500;
@@ -2529,6 +2604,7 @@ a { text-decoration: none; color: inherit; }
                     <th>Rata-rata Durasi</th>
                     <th>Login Terakhir</th>
                     <th style="width: 100px;">Status</th>
+                    <th style="width: 100px;">Aksi</th>
                 </tr>
             </thead>
             <tbody id="loginlog-rekap-tbody">
@@ -3463,6 +3539,22 @@ a { text-decoration: none; color: inherit; }
   </div>
 </div>
 
+<!-- Modal Detail Rekap Login per Akun -->
+<div id="modalLoginDetail" class="modal-user-rekap" style="display:none;">
+    <div class="modal-user-rekap-content" style="max-width: 900px; width: 90%;">
+        <div class="modal-user-rekap-header" style="background: linear-gradient(135deg, #1a2d6b 0%, #162060 100%);">
+            <h3 id="modalLoginDetailTitle" style="margin: 0; color: white;">Detail Rekap Login</h3>
+            <button class="modal-user-rekap-close" onclick="closeModalLoginDetail()" style="background: rgba(255,255,255,0.2); color: white;">&times;</button>
+        </div>
+        <div class="modal-user-rekap-body" id="modalLoginDetailBody" style="padding: 24px;">
+            <div style="text-align:center;padding:40px;">
+                <div class="modern-spinner"></div>
+                <p>Memuat data...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Preview Dokumen -->
 <div id="modalPreview" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1001; align-items:center; justify-content:center;">
   <div style="background:#fff; border-radius:16px; width:800px; max-width:90%; max-height:90%; overflow:auto; padding:20px;">
@@ -3988,55 +4080,6 @@ function loadLoginRekapPerAkun() {
     });
 }
 
-// Render tabel rekap login per akun
-function renderLoginRekapPerAkun(users) {
-    const tbody = document.getElementById('loginlog-rekap-tbody');
-    
-    if (!users || users.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="empty-state-table" style="padding: 60px 20px;">
-            <div class="empty-state-icon" style="font-size: 64px; margin-bottom: 20px; opacity: 0.5;">📊</div>
-            <div class="empty-state-title">Belum Ada Data Login</div>
-            <div class="empty-state-message">Tidak ada riwayat login yang tercatat</div>
-            <div class="empty-state-suggestion">
-                <i class="fas fa-lightbulb"></i> Tips: Pengguna akan tercatat setelah melakukan login
-            </div>
-        </div></td>`;
-        return;
-    }
-    
-    let html = '';
-    users.forEach((user, index) => {
-        // Tentukan badge warna berdasarkan jumlah login
-        let loginBadge = '';
-        if (user.total_login >= 10) {
-            loginBadge = '<span class="pill pill-done">🔥 Sangat Aktif</span>';
-        } else if (user.total_login >= 5) {
-            loginBadge = '<span class="pill pill-progress">✅ Aktif</span>';
-        } else if (user.total_login >= 1) {
-            loginBadge = '<span class="pill pill-review">📱 Kurang Aktif</span>';
-        } else {
-            loginBadge = '<span class="pill pill-danger">⚪ Tidak Aktif</span>';
-        }
-        
-        html += `
-            <tr>
-                <td style="text-align:center;">${index + 1}</td>
-                <td>
-                    <strong>${escapeHtml(user.username)}</strong>
-                 </div></td>
-                <td>${escapeHtml(user.bidang)}</div></td>
-                <td style="text-align:center;"><span class="pill pill-done" style="background:#e0e7ff; color:#4338ca;">${user.total_login} kali</span></td>
-                <td style="text-align:center;"><span class="pill pill-print">${user.total_duration_formatted}</span></div></td>
-                <td style="text-align:center;"><span class="pill pill-review">${user.avg_duration_formatted}</span></div></div></td>
-                <td style="text-align:center;">${user.last_login_formatted}</div></td>
-                <td style="text-align:center;">${loginBadge}</div></td>
-            </tr>
-        `;
-    });
-    
-    tbody.innerHTML = html;
-}
-
 // Load Top Users
 function loadTopUsers() {
     const periode = $('#loginlog-periode-filter').val();
@@ -4331,7 +4374,7 @@ function renderLoginRekapPerAkun(users) {
             `Tidak ditemukan user dengan keyword "${escapeHtml(rekapSearchKeyword)}"` : 
             'Belum ada data login yang tercatat';
         
-        tbody.innerHTML = `<tr><td colspan="8" class="empty-state-table" style="padding: 60px 20px;">
+        tbody.innerHTML = `<tr><td colspan="9" class="empty-state-table" style="padding: 60px 20px;">
             <div class="empty-state-icon" style="font-size: 64px; margin-bottom: 20px; opacity: 0.5;">📊</div>
             <div class="empty-state-title">${rekapSearchKeyword ? 'Tidak Ditemukan' : 'Belum Ada Data'}</div>
             <div class="empty-state-message">${noDataMessage}</div>
@@ -4374,6 +4417,14 @@ function renderLoginRekapPerAkun(users) {
         if (user.active_sessions > 0) {
             sessionBadge = '<span class="pill" style="background:#dcfce7; color:#166534; margin-left: 5px;"><i class="fas fa-circle" style="font-size: 8px;"></i> Online</span>';
         }
+
+        // TOMBOL DETAIL
+        let detailButton = `
+            <button class="btn btn-sm" style="background: #3b82f6; color: white; padding: 4px 12px; font-size: 11px; border: none; border-radius: 6px;" 
+                    onclick="showLoginDetailRekap('${escapeHtml(user.username)}')">
+                <i class="fas fa-chart-line"></i> Detail
+            </button>
+        `;
         
         html += `
             <tr>
@@ -4388,6 +4439,7 @@ function renderLoginRekapPerAkun(users) {
                 <td style="text-align:center;"><span class="pill pill-review">${user.avg_duration_formatted}</span></div></div></td>
                 <td style="text-align:center;"><span class="pill" style="background:#f0f4ff;">${user.last_login_formatted}</span></div></td>
                 <td style="text-align:center;"><span class="pill ${loginBadgeClass}">${loginBadge}</span></div></td>
+                <td style="text-align:center;">${detailButton}</div> <!-- KOLOM AKSI -->
             </tr>
         `;
     });
@@ -4496,6 +4548,213 @@ $('#loginlog-periode-filter').off('change').on('change', function() {
     loadLoginRekapPerAkun();
     loadTopUsers();
 });
+
+// ==================== DETAIL REKAP LOGIN PER AKUN ====================
+
+// ==================== DETAIL REKAP LOGIN PER AKUN ====================
+
+/**
+ * Menampilkan modal detail rekap login untuk user tertentu
+ * @param {string} username - Username yang akan dilihat detailnya
+ */
+function showLoginDetailRekap(username) {
+    // Tampilkan modal loading
+    $('#modalLoginDetail').css('display', 'flex');
+    $('#modalLoginDetailTitle').html(`📊 Detail Rekap Login - ${escapeHtml(username)}`);
+    
+    $('#modalLoginDetailBody').html(`
+        <div style="text-align:center;padding:40px;">
+            <div class="modern-spinner"></div>
+            <p>Memuat data rekap login untuk <strong>${escapeHtml(username)}</strong>...</p>
+        </div>
+    `);
+    
+    $.ajax({
+        url: '<?= base_url('IDE/get_login_detail_rekap_by_akun') ?>',
+        type: 'GET',
+        data: { username: username },
+        dataType: 'json',
+        timeout: 15000,
+        success: function(response) {
+            if (response.status === 'success') {
+                renderLoginDetailRekap(response);
+            } else {
+                $('#modalLoginDetailBody').html(`
+                    <div style="text-align:center;padding:40px;color:red;">
+                        <p>❌ Gagal memuat data</p>
+                        <p>${response.message || 'Silakan coba lagi'}</p>
+                    </div>
+                `);
+            }
+        },
+        error: function(xhr, status, error) {
+            $('#modalLoginDetailBody').html(`
+                <div style="text-align:center;padding:40px;color:red;">
+                    <p>❌ Error: ${error}</p>
+                    <p>Silakan refresh halaman dan coba lagi</p>
+                </div>
+            `);
+        }
+    });
+}
+
+/**
+ * Render tampilan detail rekap login
+ */
+function renderLoginDetailRekap(data) {
+    const periods = ['hari', 'minggu', 'bulan', 'tahun', 'semua'];
+    const periodIcons = {
+        'hari': '📅',
+        'minggu': '📆',
+        'bulan': '📊',
+        'tahun': '🎯',
+        'semua': '📈'
+    };
+    
+    let html = `
+        <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div>
+                <span class="rekap-badge-user" style="background: #1a2d6b; color: white; padding: 8px 16px;">
+                    👤 ${escapeHtml(data.username)}
+                </span>
+                <span class="rekap-badge-user" style="background: #e0e7ff; color: #4338ca; margin-left: 8px;">
+                    🏢 ${escapeHtml(data.bidang)}
+                </span>
+            </div>
+        </div>
+    `;
+    
+    // Card per periode
+    html += `
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px;">
+    `;
+    
+    for (const period of periods) {
+        const p = data.periods[period];
+        if (!p) continue;
+        
+        // Warna background berbeda per periode
+        let bgColor = '#f8f9fd';
+        let borderColor = '#e2e8f0';
+        if (period === 'hari') { bgColor = '#e8f0fe'; borderColor = '#3b82f6'; }
+        if (period === 'minggu') { bgColor = '#e6f7e6'; borderColor = '#22c55e'; }
+        if (period === 'bulan') { bgColor = '#fef3e6'; borderColor = '#f59e0b'; }
+        if (period === 'tahun') { bgColor = '#f0e6fe'; borderColor = '#8b5cf6'; }
+        if (period === 'semua') { bgColor = '#fee2e2'; borderColor = '#ef4444'; }
+        
+        html += `
+            <div style="background: ${bgColor}; border-radius: 16px; padding: 16px; border-left: 4px solid ${borderColor};">
+                <div style="font-size: 24px; margin-bottom: 8px;">${periodIcons[period]}</div>
+                <div style="font-weight: 600; font-size: 14px; color: #1e293b;">${p.label}</div>
+                <div style="font-size: 28px; font-weight: 800; color: #0f172a; margin: 8px 0;">
+                    ${p.total_duration_formatted}
+                </div>
+                <div style="font-size: 11px; color: #64748b; margin-top: 8px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 8px;">
+                    <div>📊 ${p.login_count} kali login</div>
+                    <div>⏱️ Rata-rata: ${p.avg_duration_formatted}</div>
+                    ${period !== 'semua' ? `<div>📅 Rata-rata: ${p.avg_per_day} login/hari</div>` : ''}
+                </div>
+            </div>
+        `;
+    }
+    
+    html += `</div>`;
+    
+    // Ringkasan statistik tambahan
+    const semua = data.periods.semua;
+    html += `
+        <div style="background: linear-gradient(135deg, #1a2d6b 0%, #162060 100%); border-radius: 16px; padding: 20px; margin-bottom: 25px; color: white;">
+            <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
+                <div>
+                    <div style="font-size: 12px; opacity: 0.7;">Total Waktu Login</div>
+                    <div style="font-size: 36px; font-weight: 800;">${semua.total_duration_formatted}</div>
+                </div>
+                <div>
+                    <div style="font-size: 12px; opacity: 0.7;">Total Login</div>
+                    <div style="font-size: 36px; font-weight: 800;">${semua.login_count} kali</div>
+                </div>
+                <div>
+                    <div style="font-size: 12px; opacity: 0.7;">Rata-rata per Login</div>
+                    <div style="font-size: 24px; font-weight: 700;">${semua.avg_duration_formatted}</div>
+                </div>
+                <div>
+                    <div style="font-size: 12px; opacity: 0.7;">Periode Aktivitas</div>
+                    <div style="font-size: 18px; font-weight: 600;">${semua.range_days} hari</div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Tabel aktivitas login per hari (30 hari terakhir)
+    if (data.daily_logs && data.daily_logs.length > 0) {
+        html += `
+            <h4 style="margin: 20px 0 10px 0; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-chart-line"></i> Aktivitas Login 30 Hari Terakhir
+            </h4>
+            <div style="overflow-x: auto;">
+                <table class="user-detail-table" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Jumlah Login</th>
+                            <th>Total Durasi</th>
+                            <th>Rata-rata per Login</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+        
+        for (const daily of data.daily_logs) {
+            let avgPerLogin = daily.count > 0 ? Math.round(daily.total_seconds / daily.count / 60) : 0;
+            let avgText = avgPerLogin > 0 ? `${avgPerLogin} menit` : '< 1 menit';
+            
+            html += `
+                <tr>
+                    <td>${escapeHtml(daily.date_formatted)}</div></td>
+                    <td style="text-align: center;"><span class="pill pill-done">${daily.count} kali</span></div></td>
+                    <td><strong>${daily.total_formatted}</strong></div></td>
+                    <td>${avgText}</div></td>
+                </tr>
+            `;
+        }
+        
+        html += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+    } else {
+        html += `
+            <div style="text-align:center;padding:30px; background: #f8f9fd; border-radius: 12px;">
+                <p>📭 Belum ada aktivitas login dalam 30 hari terakhir</p>
+            </div>
+        `;
+    }
+    
+    // Tips interpretasi
+    html += `
+        <div style="margin-top: 20px; padding: 15px; background: #f0f4ff; border-radius: 12px; font-size: 11px; color: #475569;">
+            <i class="fas fa-info-circle"></i> <strong>Informasi:</strong>
+            Durasi dihitung dari waktu login hingga logout. Jika session masih aktif, dihitung sampai waktu saat ini.
+            ${data.periods.semua.login_count > 0 ? `<br>📌 User ini aktif selama ${Math.round(data.periods.semua.total_duration_seconds / 3600)} jam total dari ${data.periods.semua.range_days} hari masa aktif.` : ''}
+        </div>
+    `;
+    
+    $('#modalLoginDetailBody').html(html);
+}
+
+/**
+ * Tutup modal detail rekap login
+ */
+function closeModalLoginDetail() {
+    $('#modalLoginDetail').css('display', 'none');
+    $('#modalLoginDetailBody').html(`
+        <div style="text-align:center;padding:40px;">
+            <div class="modern-spinner"></div>
+            <p>Memuat data...</p>
+        </div>
+    `);
+}
 
 // ==================== LOGIN LOG FUNCTIONS ====================
 
@@ -5580,24 +5839,6 @@ function filterLogTable() {
     applyFiltersAndPagination();
 }
 
-
-// ================= MODIFIED REFRESH LOG DATA =================
-function refreshLogData() {
-    $('#log-date-start').val('');
-    $('#log-date-end').val('');
-    $('#log-aksi-filter').val('');
-    $('#log-search').val('');
-    $('#log-per-page').val('25');
-    perPage = 25;
-    
-    if ($('#log-bidang-pilih').val() !== '') {
-        $('#log-bidang-pilih').val('');
-        loadLogAktivitas();
-    } else {
-        loadLogAktivitas();
-    }
-}
-
 // ================= VARIABEL GLOBAL =================
 let currentBidangFilter = '';
 let currentAkunFilter = '';
@@ -5971,108 +6212,6 @@ function loadTotalKertasTerpakai(bidang = '') {
             }
         }
     });
-}
-
-// ================= MODIFIED RENDER LOG TABLE =================
-function renderLogTable(logs) {
-    const tbody = document.getElementById('log-tbody');
-    
-    if (!logs || logs.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="empty-state-table">
-            <div class="icon">📭</div>
-            <p>Belum ada aktivitas tercatat ${currentAkunFilter ? `untuk akun <strong>${escapeHtml(currentAkunFilter)}</strong>` : (currentBidangFilter ? `untuk bidang <strong>${escapeHtml(currentBidangFilter)}</strong>` : '')}</p>
-          </div></td>`;
-        return;
-    }
-    
-    const getAksiClass = (aksi) => {
-        const map = {
-            'Upload': 'log-aksi-upload',
-            'Print': 'log-aksi-print',
-            'Print (via Preview)': 'log-aksi-print',
-            'Review': 'log-aksi-review',
-            'Login': 'log-aksi-login',
-            'Update': 'log-aksi-update',
-            'Hapus': 'log-aksi-hapus',
-            'Delete': 'log-aksi-hapus'
-        };
-        return map[aksi] || 'log-aksi-upload';
-    };
-    
-    const getBidangBadge = (bidang) => {
-        if (!bidang || bidang === '-') return '<span class="pill" style="background:#e2e8f0; color:#475569;">-</span>';
-        
-        const warna = {
-            'Litbang': '#e0e7ff',
-            'Perencanaan': '#dcfce7',
-            'Ekonomi': '#fed7aa',
-            'Kesra': '#fbcfe8',
-            'Sarpras': '#cffafe',
-            'Sekretariat': '#e9d5ff'
-        };
-        const warnaText = {
-            'Litbang': '#4338ca',
-            'Perencanaan': '#166534',
-            'Ekonomi': '#9a3412',
-            'Kesra': '#be185d',
-            'Sarpras': '#0e7490',
-            'Sekretariat': '#6b21a5'
-        };
-        
-        return `<span class="pill" style="background:${warna[bidang] || '#e2e8f0'}; color:${warnaText[bidang] || '#475569'};">${escapeHtml(bidang)}</span>`;
-    };
-    
-    tbody.innerHTML = logs.map((log, index) => {
-        const waktu = log.waktu || '-';
-        const username = log.username || '-';
-        const aksi = log.aksi || '-';
-        const modul = log.modul || '-';
-        const detail = log.detail || '-';
-        const bidang = log.bidang || '-';
-        let ip = log.ip_address || '-';
-        
-        if (ip === '::1') ip = '127.0.0.1';
-        const aksiClass = getAksiClass(aksi);
-        
-        let detailHtml = '';
-        if (aksi === 'Print' || aksi === 'Print (via Preview)') {
-            const escapedDetail = escapeHtml(detail);
-            detailHtml = `<span style="cursor:pointer; color:var(--blue-600); text-decoration:underline; font-weight:500;" 
-                              onclick="showPrintRekapFromLog('${escapeHtml(username)}', '${escapedDetail.replace(/'/g, "\\'")}')">
-                              ${escapedDetail}
-                          </span>`;
-        } else {
-            detailHtml = escapeHtml(detail);
-        }
-        
-        let aksiDisplay = aksi;
-        if (aksi === 'Print (via Preview)') {
-            aksiDisplay = 'Print Preview';
-        } else if (aksi === 'Print') {
-            aksiDisplay = 'Print';
-        }
-        
-        return `
-            <tr>
-                <td class="waktu-cell">${escapeHtml(waktu)}</td>
-                <td class="username-cell">
-                    <i class="fas fa-user"></i> 
-                    <span onclick="filterByAkun('${escapeHtml(username)}')" style="cursor:pointer; color:var(--blue-600); text-decoration:underline;">
-                        ${escapeHtml(username)}
-                    </span>
-                </td>
-                <td>
-                    <span class="log-aksi-badge ${aksiClass}">
-                        ${escapeHtml(aksiDisplay)}
-                    </span>
-                </td>
-                <td>${getBidangBadge(bidang)}</td>
-                <td>${escapeHtml(modul)}</td>
-                <td class="detail-cell">${detailHtml}</td>
-                <td><code class="ip-address">${escapeHtml(ip)}</code></td>
-            </tr>
-        `;
-    }).join('');
 }
 
 // ================= FILTER BY AKUN (klik username) =================
@@ -6544,24 +6683,6 @@ function renderPrintRekapFromLog(data) {
 function closeModalPrintRekap() {
     $('#modalPrintRekap').css('display', 'none');
     $('#modalPrintRekapBody').html('<div style="text-align:center;padding:40px;"><div class="modern-spinner"></div><p>Memuat data...</p></div>');
-}
-
-function formatNumber(num) {
-    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-    return num.toString();
-}
-
-function filterLogByDate() {
-  filterLogTable();
-}
-
-function refreshLogData() {
-  $('#log-date-start').val('');
-  $('#log-date-end').val('');
-  $('#log-aksi-filter').val('');
-  $('#log-search').val('');
-  loadLogAktivitas();
 }
 
 // ================= EXPORT LOG TO PDF (SEMUA HALAMAN DENGAN PAGINATION) =================
