@@ -320,4 +320,20 @@ public function EditPendapatanKegiatan(){
     $this->load->view('Admin/Header',$Data);
 		$this->load->view('Admin/JurnalKegiatan',$Data);
   }
+
+  public function HapusKegiatan() {
+    $id = $this->input->post('id');
+    if ($id) {
+        $this->db->where('Id', $id);
+        $hapus = $this->db->delete('nama_tabel_pendapatan_anda');
+        
+        if ($hapus) {
+            echo json_encode(['status' => 'success', 'message' => 'Data berhasil dihapus']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Gagal menghapus data']);
+        }
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'ID tidak ditemukan']);
+    }
+}
 }
