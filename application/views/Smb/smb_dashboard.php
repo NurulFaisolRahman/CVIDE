@@ -44,7 +44,7 @@ $initial = strtoupper(substr($display_name, 0, 2));
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SMB Bappeda — Sistem Manajemen Kantor</title>
+<title>Bappeda Smart Office Management</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -2120,6 +2120,10 @@ a { text-decoration: none; color: inherit; }
     <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
     Dokumen
   </div>
+  <div class="sub-item" onclick="navigateDok('a','Litbang')">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
+    Data
+  </div>
   <div class="sub-item" onclick="navigateComingSoon('a', 'e-perencanaan')">
     <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
     E-Perencanaan
@@ -2658,7 +2662,7 @@ a { text-decoration: none; color: inherit; }
 <div class="hero-banner">
   <div class="hero-left">
     <div class="hero-eyebrow" id="hero-date-text"></div>
-    <div class="hero-title">Sistem Manajemen Printer<br>dan Arsip Dokumen</div>
+    <div class="hero-title">Smart Office Management</div>
     <div class="hero-sub">Bappeda Kabupaten Banyuwangi</div>
     <button class="hero-btn">
       Get Started

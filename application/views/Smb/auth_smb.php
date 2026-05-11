@@ -303,9 +303,9 @@
             <div class="brand-icon animate__animated animate__fadeInDown">
                 <i class="fas fa-building-columns"></i>
             </div>
-            <h3 class="animate__animated animate__fadeInUp">SMB Bappeda</h3>
+            <h3 class="animate__animated animate__fadeInUp">Bappeda</h3>
             <p class="subtitle animate__animated animate__fadeInUp animate__delay-1s">
-                <i class="fas fa-shield-alt"></i> Enterprise Management Suite
+                <i class="fas fa-shield-alt"></i> Office Management System
             </p>
         </div>
 
