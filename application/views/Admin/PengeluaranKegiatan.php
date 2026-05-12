@@ -60,7 +60,7 @@
 <!-- /page content -->
 </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?=base_url("vendors/jquery/dist/jquery.min.js")?>"></script>
 <script src="<?=base_url("vendors/bootstrap/dist/js/bootstrap.bundle.min.js")?>"></script>
 <script src="<?=base_url("build/js/custom.min.js")?>"></script>
@@ -72,7 +72,7 @@
         $('#TabelPendapatan').DataTable({
             "ordering": true,
             "bInfo": true,
-            "lengthMenu": [[7, 30, 50, -1], [7, 30, 50, "All"]],
+            "lengthMenu": [[7, 30, 50, 100, -1], [7, 30, 50, 100, "All"]],
             "language": {
                 "paginate": {
                     'previous': '<i class="fa fa-chevron-left"></i>',

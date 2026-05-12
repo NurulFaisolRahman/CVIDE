@@ -209,7 +209,7 @@
         $('#TabelPendapatan').DataTable({
             "ordering": true,
             "bInfo": true,
-            "lengthMenu": [[7, 30, 50, -1], [7, 30, 50, "All"]],
+            "lengthMenu": [[7, 30, 50, 100, -1], [7, 30, 50, 100, "All"]],
             "language": {
                 "paginate": {
                     'previous': '<i class="fa fa-chevron-left"></i>',
