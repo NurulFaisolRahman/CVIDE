@@ -72,7 +72,7 @@
         $('#TabelPendapatan').DataTable({
             "ordering": true,
             "bInfo": true,
-            "lengthMenu": [[7, 30, 50, 100, -1], [7, 30, 50, 100, "All"]],
+            "lengthMenu": [[7, 30, 50, -1], [7, 30, 50, "All"]],
             "language": {
                 "paginate": {
                     'previous': '<i class="fa fa-chevron-left"></i>',
@@ -126,58 +126,79 @@
         window.location = currentUrl.toString();
     }
      function hapusKegiatan(id) {
-        Swal.fire({
-            title: 'Apakah Anda yakin?',
-            text: "Data kegiatan yang dihapus tidak dapat dikembalikan!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Ya, Hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                var BaseURL = '<?=base_url()?>';
-                
-                $.ajax({
-                    url: BaseURL + "Admin/HapusKegiatan",
-                    type: "POST",
-                    data: { id: id },
-                    dataType: "json",
-                    success: function(response) {
-                        if (response.status == 'success') {
-                            Swal.fire(
-                                'Terhapus!',
-                                response.message,
-                                'success'
-                            );
-                            // Hapus baris dari tabel
+
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Data kegiatan yang dihapus tidak dapat dikembalikan!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+
+            var BaseURL = '<?=base_url()?>';
+
+            $.ajax({
+                url: BaseURL + "Admin/HapusKegiatan",
+                type: "POST",
+                data: { id: id },
+                dataType: "json",
+
+                success: function(response) {
+
+                    console.log(response);
+
+                    if (response.status == 'success') {
+
+                        Swal.fire({
+                            title: 'Berhasil!',
+                            text: response.message,
+                            icon: 'success'
+                        }).then(() => {
+
                             $('#row_' + id).fadeOut(500, function() {
                                 $(this).remove();
-                                // Refresh nomor urut
-                                var table = $('#TabelPendapatan').DataTable();
-                                table.ajax.reload();
-                                location.reload(); // Reload page untuk refresh data
                             });
-                        } else {
-                            Swal.fire(
-                                'Gagal!',
-                                response.message,
-                                'error'
-                            );
-                        }
-                    },
-                    error: function() {
-                        Swal.fire(
-                            'Error!',
-                            'Terjadi kesalahan saat menghapus data.',
-                            'error'
-                        );
+
+                            location.reload();
+
+                        });
+
+                    } else {
+
+                        Swal.fire({
+                            title: 'Gagal!',
+                            text: response.message,
+                            icon: 'error'
+                        });
+
                     }
-                });
-            }
-        });
-    }
+
+                },
+
+                error: function(xhr) {
+
+                    console.log(xhr.responseText);
+
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Terjadi kesalahan saat menghapus data.',
+                        icon: 'error'
+                    });
+
+                }
+
+            });
+
+        }
+
+    });
+
+}
 
 </script>
 </body>
