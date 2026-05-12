@@ -57,7 +57,7 @@
         $('#TabelKas').DataTable({
             "ordering": true,
             "bInfo": true,
-            "lengthMenu": [[15, 30, 50, -1], [15, 30, 50, "All"]],
+            "lengthMenu": [[15, 30, 50, 100, -1], [15, 30, 50, 100, "All"]],
             "language": {
                 "paginate": {
                     'previous': '<i class="fa fa-chevron-left"></i>',
