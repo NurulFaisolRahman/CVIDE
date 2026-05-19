@@ -1993,9 +1993,96 @@ public function RoadmapHilirisasiBanyuwangi2026() {
     $this->load->view('Smb/SmbLandingPage');
 }
 
-    // ==================== LOGIN LOG SYSTEM ====================
+/**
+ * Simpan analisis data ke database
+ */
+public function simpan_analisis_data() {
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+        return;
+    }
+    
+    $data = array(
+        'judul' => $this->input->post('judul'),
+        'indikator' => $this->input->post('indikator'),
+        'data_aktual' => $this->input->post('data_aktual'),
+        'kesimpulan' => $this->input->post('kesimpulan'),
+        'rekomendasi' => $this->input->post('rekomendasi'),
+        'created_by' => $this->session->userdata('username'),
+        'created_at' => date('Y-m-d H:i:s')
+    );
+    
+    if ($this->db->insert('smb_analisis_data', $data)) {
+        echo json_encode(['status' => 'success', 'message' => 'Analisis berhasil disimpan']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Gagal menyimpan analisis']);
+    }
+}
 
 /**
+ * Get riwayat analisis data
+ */
+public function get_riwayat_analisis() {
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+        return;
+    }
+    
+    $this->db->order_by('created_at', 'DESC');
+    $this->db->limit(50);
+    $query = $this->db->get('smb_analisis_data');
+    $data = $query->result();
+    
+    foreach ($data as &$item) {
+        $item->tanggal = date('d/m/Y H:i', strtotime($item->created_at));
+    }
+    
+    echo json_encode(['status' => 'success', 'data' => $data]);
+}
+
+/**
+ * Get detail analisis by ID
+ */
+public function get_analisis_detail() {
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+        return;
+    }
+    
+    $id_analisis = $this->input->post('id_analisis');
+    $query = $this->db->get_where('smb_analisis_data', ['id_analisis' => $id_analisis]);
+    
+    if ($query->num_rows() > 0) {
+        $data = $query->row();
+        $data->tanggal = date('d/m/Y H:i', strtotime($data->created_at));
+        echo json_encode(['status' => 'success', 'data' => $data]);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Data tidak ditemukan']);
+    }
+}
+
+/**
+ * Delete analisis data
+ */
+public function delete_analisis_data() {
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+        return;
+    }
+    
+    $id_analisis = $this->input->post('id_analisis');
+    
+    if ($this->db->delete('smb_analisis_data', ['id_analisis' => $id_analisis])) {
+        echo json_encode(['status' => 'success', 'message' => 'Analisis berhasil dihapus']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Gagal menghapus analisis']);
+    }
+}
+
+/**
+
+
+    
  * Catat Login User
  * Panggil method ini setelah user berhasil login
  */
@@ -3438,74 +3525,79 @@ public function get_user_bidang_mapping() {
      * Get Statistik Dashboard
      */
     public function get_dashboard_stats() {
-        if (!$this->session->userdata('smb_logged_in')) {
-            echo json_encode(['status' => 'error', 'message' => 'Session expired']);
-            return;
-        }
-        
-        $total_dokumen = $this->db->count_all('smb_dokumen');
-        $total_user = $this->db->count_all('akun');
-        $total_printer = $this->db->count_all('smb_printer');
-        $printer_online = $this->db->where('status', 'online')->count_all_results('smb_printer');
-        
-        $dokumen_selesai = $this->db->where('status', 'Selesai')->count_all_results('smb_dokumen');
-        $dokumen_review = $this->db->where('status', 'Review')->count_all_results('smb_dokumen');
-        $dokumen_ongoing = $this->db->where('status', 'On Going')->count_all_results('smb_dokumen');
-        
-        $dokumen_sk = $this->db->where('kategori', 'Surat Keputusan')->count_all_results('smb_dokumen');
-        $dokumen_laporan = $this->db->where('kategori', 'Laporan')->count_all_results('smb_dokumen');
-        $dokumen_nota = $this->db->where('kategori', 'Nota Dinas')->count_all_results('smb_dokumen');
-        
-        $bidang_list = [
-            'a' => 'Bidang Litbang',
-            'b' => 'Bidang Perencanaan',
-            'c' => 'Bidang Ekonomi',
-            'd' => 'Bidang Kesra',
-            'e' => 'Bidang Sarpras'
-        ];
-        
-        $dokumen_per_bidang = [];
-        foreach ($bidang_list as $kode => $nama) {
-            $count = $this->db->where('id_bidang', $kode)->count_all_results('smb_dokumen');
-            $dokumen_per_bidang[$kode] = [
-                'nama' => $nama,
-                'total' => (int)$count
-            ];
-        }
-        
-        $total_print = $this->db->count_all('smb_print_log');
-        $print_success = $this->db->where('status', 'success')->count_all_results('smb_print_log');
-        $print_failed = $this->db->where('status', 'failed')->count_all_results('smb_print_log');
-        $total_paper_used = $this->db->select_sum('jumlah_kertas')->get('smb_print_log')->row()->jumlah_kertas ?: 0;
-        
-        echo json_encode([
-            'status' => 'success',
-            'total_dokumen' => (int)$total_dokumen,
-            'total_user' => (int)$total_user,
-            'total_printer' => (int)$total_printer,
-            'printer_online' => (int)$printer_online,
-            'dokumen_selesai' => (int)$dokumen_selesai,
-            'dokumen_review' => (int)$dokumen_review,
-            'dokumen_ongoing' => (int)$dokumen_ongoing,
-            'dokumen_sk' => (int)$dokumen_sk,
-            'dokumen_laporan' => (int)$dokumen_laporan,
-            'dokumen_nota' => (int)$dokumen_nota,
-            'dokumen_per_bidang' => $dokumen_per_bidang,
-            'print_stats' => [
-                'total' => (int)$total_print,
-                'success' => (int)$print_success,
-                'failed' => (int)$print_failed,
-                'total_paper_used' => (int)$total_paper_used
-            ],
-            'trend_data' => [
-                'user_trend' => '+8.5%',
-                'dokumen_trend' => '+1.3%',
-                'selesai_trend' => '-4.3%',
-                'ongoing_trend' => '+1.8%'
-            ]
-        ]);
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+        return;
     }
     
+    $total_dokumen = $this->db->count_all('smb_dokumen');
+    $total_user = $this->db->count_all('akun');
+    $total_printer = $this->db->count_all('smb_printer');
+    $printer_online = $this->db->where('status', 'online')->count_all_results('smb_printer');
+    
+    $dokumen_selesai = $this->db->where('status', 'Selesai')->count_all_results('smb_dokumen');
+    $dokumen_review = $this->db->where('status', 'Review')->count_all_results('smb_dokumen');
+    $dokumen_ongoing = $this->db->where('status', 'On Going')->count_all_results('smb_dokumen');
+    
+    $dokumen_sk = $this->db->where('kategori', 'Surat Keputusan')->count_all_results('smb_dokumen');
+    $dokumen_laporan = $this->db->where('kategori', 'Laporan')->count_all_results('smb_dokumen');
+    $dokumen_nota = $this->db->where('kategori', 'Nota Dinas')->count_all_results('smb_dokumen');
+    
+    // ========== TAMBAH: TOTAL KERTAS TERPAKAI ==========
+    $total_kertas_terpakai = $this->db->select_sum('jumlah_kertas')->get('smb_print_log')->row()->jumlah_kertas ?: 0;
+    
+    // ========== TAMBAH: TOTAL PRINT ==========
+    $total_print = $this->db->count_all('smb_print_log');
+    $print_success = $this->db->where('status', 'success')->count_all_results('smb_print_log');
+    $print_failed = $this->db->where('status', 'failed')->count_all_results('smb_print_log');
+    
+    $bidang_list = [
+        'a' => 'Bidang Litbang',
+        'b' => 'Bidang Perencanaan',
+        'c' => 'Bidang Ekonomi',
+        'd' => 'Bidang Kesra',
+        'e' => 'Bidang Sarpras'
+    ];
+    
+    $dokumen_per_bidang = [];
+    foreach ($bidang_list as $kode => $nama) {
+        $count = $this->db->where('id_bidang', $kode)->count_all_results('smb_dokumen');
+        $dokumen_per_bidang[$kode] = [
+            'nama' => $nama,
+            'total' => (int)$count
+        ];
+    }
+    
+    echo json_encode([
+        'status' => 'success',
+        // Hero Cards
+        'total_dokumen' => (int)$total_dokumen,
+        'total_printer_aktif' => (int)$printer_online,  // ← FIX: untuk hero card printer
+        'total_user' => (int)$total_user,
+        // Stat Cards
+        'total_user_stat' => (int)$total_user,
+        'total_dokumen_stat' => (int)$total_dokumen,
+        'dokumen_selesai' => (int)$dokumen_selesai,
+        'dokumen_ongoing' => (int)$dokumen_ongoing,
+        // Info tambahan untuk stat cards alternatif
+        'total_print' => (int)$total_print,
+        'total_kertas_terpakai' => (int)$total_kertas_terpakai,
+        'print_success' => (int)$print_success,
+        'print_failed' => (int)$print_failed,
+        // Category cards
+        'dokumen_sk' => (int)$dokumen_sk,
+        'dokumen_laporan' => (int)$dokumen_laporan,
+        'dokumen_nota' => (int)$dokumen_nota,
+        'dokumen_per_bidang' => $dokumen_per_bidang,
+        // Trend data (opsional)
+        'trend_data' => [
+            'user_trend' => '+8.5%',
+            'dokumen_trend' => '+1.3%',
+            'selesai_trend' => '-4.3%',
+            'ongoing_trend' => '+1.8%'
+        ]
+    ]);
+}
     public function file($path) {
         $fullPath = FCPATH . $path;
         if (!file_exists($fullPath)) {
@@ -4354,7 +4446,14 @@ public function get_user_print_rekap() {
 /**
  * Log print dari preview (via tombol print)
  */
+/**
+ * Log print dari preview (via tombol print)
+ */
 public function log_print_from_preview() {
+    // Debug log
+    error_log('=== log_print_from_preview called ===');
+    error_log('POST: ' . print_r($this->input->post(), true));
+    
     if (!$this->session->userdata('smb_logged_in')) {
         echo json_encode(['status' => 'error', 'message' => 'Session expired']);
         return;
@@ -4362,13 +4461,13 @@ public function log_print_from_preview() {
     
     $id_dokumen = $this->input->post('id_dokumen');
     $nama_dokumen = $this->input->post('nama_dokumen');
-    $jumlah_kertas = (int)$this->input->post('jumlah_kertas', 1);
+    $jumlah_kertas = max(1, (int)$this->input->post('jumlah_kertas', 1));
     $range_halaman = $this->input->post('range_halaman', 'Semua');
     $source = $this->input->post('source', 'print_button');
     
-    // PASTIKAN jumlah_kertas minimal 1
-    if ($jumlah_kertas <= 0) {
-        $jumlah_kertas = 1;
+    if (empty($id_dokumen)) {
+        echo json_encode(['status' => 'error', 'message' => 'ID dokumen tidak valid']);
+        return;
     }
     
     $username = $this->session->userdata('username');
@@ -4380,13 +4479,14 @@ public function log_print_from_preview() {
         return;
     }
     
-    // Ambil printer default (prioritas online, lalu pertama)
+    // Ambil printer default (prioritas online)
     $printer = $this->db->get_where('smb_printer', ['status' => 'online'])->row_array();
     if (!$printer) {
         $printer = $this->db->order_by('id_printer', 'ASC')->get('smb_printer', 1)->row_array();
     }
     
-    $bidang_map = ['a' => 'Litbang', 'b' => 'Perencanaan', 'c' => 'Ekonomi', 'd' => 'Kesra', 'e' => 'Sarpras'];
+    // Mapping bidang
+    $bidang_map = ['a' => 'Litbang', 'b' => 'Perencanaan', 'c' => 'Ekonomi', 'd' => 'Kesra', 'e' => 'Sarpras', 'f' => 'Sekretariat'];
     $nama_bidang = $bidang_map[$dokumen['id_bidang']] ?? 'Unknown';
     $printer_name = $printer ? $printer['nama_printer'] : 'Printer tidak tersedia';
     
@@ -4395,6 +4495,7 @@ public function log_print_from_preview() {
     if ($range_halaman !== 'Semua' && !empty($range_halaman)) {
         $detail_log .= " - Halaman: {$range_halaman}";
     }
+    $detail_log .= " - Sumber: " . ($source == 'preview_print_button' ? 'Preview Modal' : 'Tombol Print');
     
     // Kurangi stock kertas jika printer ada
     if ($printer && $printer['stock_kertas'] >= $jumlah_kertas) {
@@ -4408,7 +4509,7 @@ public function log_print_from_preview() {
         ]);
     }
     
-    // Log aktivitas
+    // LOG AKTIVITAS KE smb_aktivitas_log
     $this->_log_aktivitas(
         $username,
         'Print (via Preview)',
@@ -4416,8 +4517,8 @@ public function log_print_from_preview() {
         $detail_log
     );
     
-    // Log print detail
-    $this->db->insert('smb_print_log', [
+    // LOG PRINT DETAIL KE smb_print_log
+    $print_data = [
         'id_dokumen' => $id_dokumen,
         'id_printer' => $printer ? $printer['id_printer'] : null,
         'username' => $username,
@@ -4426,12 +4527,58 @@ public function log_print_from_preview() {
         'jumlah_kertas' => $jumlah_kertas,
         'status' => 'success',
         'waktu_print' => date('Y-m-d H:i:s')
-    ]);
+    ];
     
-    echo json_encode([
-        'status' => 'success', 
-        'message' => 'Print log recorded',
-        'detail' => $detail_log
-    ]);
+    $insert = $this->db->insert('smb_print_log', $print_data);
+    
+    if ($insert) {
+        error_log("Print log inserted with ID: " . $this->db->insert_id());
+        echo json_encode([
+            'status' => 'success', 
+            'message' => 'Print activity telah dicatat',
+            'detail' => $detail_log,
+            'print_id' => $this->db->insert_id()
+        ]);
+    } else {
+        error_log("Failed to insert print log");
+        echo json_encode([
+            'status' => 'error', 
+            'message' => 'Gagal menyimpan log print ke database'
+        ]);
+    }
 }
+
+/**
+ * Get analisis terbaru (untuk export PDF)
+ */
+public function get_latest_analisis() {
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+        return;
+    }
+    
+    // Ambil analisis terbaru berdasarkan created_at
+    $this->db->order_by('created_at', 'DESC');
+    $this->db->limit(1);
+    $query = $this->db->get('smb_analisis_data');
+    
+    if ($query->num_rows() > 0) {
+        $data = $query->row_array();
+        echo json_encode([
+            'status' => 'success',
+            'data' => [
+                'judul' => $data['judul'],
+                'kesimpulan' => $data['kesimpulan'],
+                'rekomendasi' => $data['rekomendasi'],
+                'tanggal' => date('d/m/Y H:i', strtotime($data['created_at']))
+            ]
+        ]);
+    } else {
+        echo json_encode([
+            'status' => 'success',
+            'data' => null
+        ]);
+    }
+}
+
 }

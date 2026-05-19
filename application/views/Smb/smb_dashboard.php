@@ -4,6 +4,7 @@
 <!-- Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
+
 <?php
 
 // Di file smb_dashboard.php - PASTIKAN INI DI AWAL
@@ -2069,6 +2070,299 @@ a { text-decoration: none; color: inherit; }
   color: var(--text-2);
 }
 
+/* Animasi untuk chart */
+.chart-container canvas {
+    transition: all 0.3s ease;
+}
+
+/* Hover effect untuk card chart */
+.chart-card:hover {
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+/* Styling untuk select chart type */
+#chart-type {
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+#chart-type:hover {
+    border-color: var(--blue-400);
+    background: var(--blue-50);
+}
+
+/* Tooltip custom untuk chart */
+.chartjs-tooltip {
+    background: #1e293b !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 6px 12px !important;
+    font-size: 11px !important;
+}
+
+/* ============================================================
+   EXPORT LAPORAN PDF STYLES - PROFESSIONAL & PRESISI
+   ============================================================ */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #report-export-content, #report-export-content * {
+        visibility: visible;
+    }
+    #report-export-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 40px;
+        background: white;
+        font-family: 'Times New Roman', 'Times New Roman', Times, serif;
+    }
+}
+
+.report-export-wrapper {
+    font-family: 'Times New Roman', 'Times New Roman', Times, serif;
+    padding: 40px;
+    background: white;
+    max-width: 1000px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* Header Laporan */
+.report-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #000000;
+}
+
+.report-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.report-logo-img {
+    height: 65px;
+    width: auto;
+}
+
+.report-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.report-subtitle {
+    font-size: 14px;
+    color: #333333;
+    margin-top: 5px;
+}
+
+.report-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    padding-top: 8px;
+    border-top: 1px solid #cccccc;
+    font-size: 10px;
+    color: #555555;
+}
+
+/* Section Styles */
+.report-section {
+    margin-bottom: 25px;
+    page-break-inside: avoid;
+}
+
+.report-section-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #999999;
+    margin-bottom: 15px;
+}
+
+/* Info Cards Grid */
+.report-info-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.report-info-card {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #dddddd;
+}
+
+.report-info-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #555555;
+    margin-bottom: 6px;
+}
+
+.report-info-value {
+    font-size: 22px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.report-info-unit {
+    font-size: 9px;
+    color: #777777;
+}
+
+/* Data Source Card */
+.report-source-card {
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    border-left: 3px solid #1a2d6b;
+}
+
+.report-source-item {
+    display: inline-block;
+    margin-right: 25px;
+    margin-bottom: 5px;
+    font-size: 11px;
+}
+
+.report-source-label {
+    font-weight: 600;
+    color: #444444;
+}
+
+.report-source-value {
+    color: #000000;
+}
+
+/* Data Table */
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    margin-bottom: 20px;
+}
+
+.report-table th {
+    background: #e8e8e8;
+    color: #000000;
+    padding: 8px 10px;
+    text-align: center;
+    border: 1px solid #cccccc;
+    font-weight: bold;
+}
+
+.report-table td {
+    padding: 6px 10px;
+    border: 1px solid #dddddd;
+    text-align: center;
+}
+
+.report-table td:first-child {
+    text-align: center;
+    font-weight: bold;
+}
+
+.report-table td:nth-child(2) {
+    text-align: right;
+}
+
+/* Trend styling - tanpa simbol */
+.report-trend-up {
+    color: #2e7d32;
+}
+
+.report-trend-down {
+    color: #c62828;
+}
+
+.report-trend-neutral {
+    color: #757575;
+}
+
+/* Analysis Section */
+.report-analysis {
+    background: #fafafa;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 20px;
+    border: 1px solid #e0e0e0;
+}
+
+.report-analysis-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #dddddd;
+}
+
+.report-analysis-content {
+    font-size: 11px;
+    line-height: 1.5;
+    color: #333333;
+    text-align: justify;
+}
+
+.report-recommendation {
+    background: #f5f5f0;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 15px;
+    border: 1px solid #e0e0e0;
+}
+
+.report-recommendation-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #dddddd;
+}
+
+/* Tren container */
+.report-trend-container {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid #eeeeee;
+}
+
+.report-trend-item {
+    margin: 4px 0;
+    font-size: 11px;
+    color: #444444;
+}
+
+/* Footer */
+.report-footer {
+    margin-top: 30px;
+    padding-top: 12px;
+    border-top: 1px solid #cccccc;
+    text-align: center;
+    font-size: 9px;
+    color: #777777;
+}
+
 </style>
 </head>
 <body>
@@ -2088,9 +2382,9 @@ a { text-decoration: none; color: inherit; }
          style="display: block; margin: 0 auto;">
   </div>
   <div class="brand-text">
-    <div class="brand-name" style="font-size: 14px; font-weight: 700;">SMB Bappeda</div>
+    <div class="brand-name" style="font-size: 14px; font-weight: 700;">Smart Office<br>Bappeda Banyuwangi</div>
     <div class="brand-sub" style="font-size: 9px; line-height: 1.4; color: rgba(255,255,255,0.5);">
-      Sistem Manajemen Kantor<br>Bappeda Banyuwangi
+     
     </div>
   </div>
 </div>
@@ -2120,10 +2414,13 @@ a { text-decoration: none; color: inherit; }
     <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
     Dokumen
   </div>
-  <div class="sub-item" onclick="navigateDok('a','Litbang')">
-    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
-    Data
-  </div>
+  <div class="sub-item" onclick="navigateToData()">
+    <svg viewBox="0 0 14 14" fill="currentColor">
+        <path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/>
+        <path d="M12 10l-2-2-2 2 2 2 2-2z"/>
+    </svg>
+    Data 
+</div>
   <div class="sub-item" onclick="navigateComingSoon('a', 'e-perencanaan')">
     <svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 2a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h8a1 1 0 000-2H3zm0 4a1 1 0 000 2h5a1 1 0 000-2H3z"/></svg>
     E-Perencanaan
@@ -2428,223 +2725,383 @@ a { text-decoration: none; color: inherit; }
       </div>
     </header>
 
-    <!-- ============================================================
+<!-- ============================================================
          PAGE CONTENT
          ============================================================ -->
-    <main class="page-content">
+<main class="page-content">
 
     <!-- ======== LOG LOGIN PANEL ======== -->
-<section id="panel-loginlog" class="panel">
-    <div class="page-hdr">
-        <div class="page-hdr-left">
-            <div class="page-hdr-icon">
-                <svg viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.586l-2.707 2.707a1 1 0 01-1.414 0L5.586 15H5a2 2 0 01-2-2V5zm3 4a1 1 0 100 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+    <section id="panel-loginlog" class="panel">
+        <div class="page-hdr">
+            <div class="page-hdr-left">
+                <div class="page-hdr-icon">
+                    <svg viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.586l-2.707 2.707a1 1 0 01-1.414 0L5.586 15H5a2 2 0 01-2-2V5zm3 4a1 1 0 100 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="page-hdr-title">Log Login</div>
+                    <div class="page-hdr-sub">Riwayat login dan logout pengguna sistem</div>
+                </div>
+            </div>
+            <button class="btn" onclick="exportLoginLogToPDF()">
+                <svg viewBox="0 0 14 14" fill="currentColor" width="14" height="14" style="margin-right:6px;">
+                    <path d="M7 1a6 6 0 100 12A6 6 0 007 1zm1 9H6V6h2v4zm0-5H6V3h2v2z"/>
                 </svg>
-            </div>
-            <div>
-                <div class="page-hdr-title">Log Login</div>
-                <div class="page-hdr-sub">Riwayat login dan logout pengguna sistem</div>
-            </div>
+                Export PDF
+            </button>
         </div>
-        <button class="btn" onclick="exportLoginLogToPDF()">
-            <svg viewBox="0 0 14 14" fill="currentColor" width="14" height="14" style="margin-right:6px;">
-                <path d="M7 1a6 6 0 100 12A6 6 0 007 1zm1 9H6V6h2v4zm0-5H6V3h2v2z"/>
-            </svg>
-            Export PDF
-        </button>
-    </div>
 
-    
+        <!-- Filter Toolbar -->
+        <div class="card">
+            <div class="table-toolbar">
+                <div class="card-title">
+                    <i class="fas fa-history"></i> Riwayat Login/Logout
+                </div>
+                <div class="table-toolbar-right">
+                    <select class="sel-filter" id="loginlog-bidang-pilih" onchange="onLoginLogBidangChange()" style="min-width: 160px;">
+                        <option value="">-- Semua Bidang --</option>
+                        <option value="Litbang"> Bidang Litbang</option>
+                        <option value="Perencanaan"> Bidang Perencanaan</option>
+                        <option value="Ekonomi"> Bidang Ekonomi</option>
+                        <option value="Kesra"> Bidang Kesra</option>
+                        <option value="Sarpras"> Bidang Sarpras</option>
+                        <option value="Sekretariat"> Bidang Sekretariat</option>
+                    </select>
+                    
+                    <select class="sel-filter" id="loginlog-akun-pilih" onchange="loadLoginLog()" style="min-width: 160px;">
+                        <option value="">-- Semua Akun --</option>
+                    </select>
 
-    <!-- Filter Toolbar -->
-    <div class="card">
-        <div class="table-toolbar">
-            <div class="card-title">
-                <i class="fas fa-history"></i> Riwayat Login/Logout
-            </div>
-            <div class="table-toolbar-right">
-                <select class="sel-filter" id="loginlog-bidang-pilih" onchange="onLoginLogBidangChange()" style="min-width: 160px;">
-                    <option value="">-- Semua Bidang --</option>
-                    <option value="Litbang">📊 Bidang Litbang</option>
-                    <option value="Perencanaan">📋 Bidang Perencanaan</option>
-                    <option value="Ekonomi">💰 Bidang Ekonomi</option>
-                    <option value="Kesra">❤️ Bidang Kesra</option>
-                    <option value="Sarpras">🏗️ Bidang Sarpras</option>
-                    <option value="Sekretariat">📁 Bidang Sekretariat</option>
-                </select>
-                
-                <select class="sel-filter" id="loginlog-akun-pilih" onchange="loadLoginLog()" style="min-width: 160px;">
-                    <option value="">-- Semua Akun --</option>
-                </select>
+                    <div class="date-range-filter" style="display: flex; gap: 8px; align-items: center;">
+                        <div class="mini-search">
+                            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <rect x="1" y="2" width="12" height="11" rx="1"/>
+                                <line x1="4" y1="1" x2="4" y2="4"/>
+                                <line x1="10" y1="1" x2="10" y2="4"/>
+                                <line x1="1" y1="6" x2="13" y2="6"/>
+                            </svg>
+                            <input type="date" id="loginlog-date-start" placeholder="Dari Tanggal">
+                        </div>
+                        <span style="color: var(--text-3);">s.d.</span>
+                        <div class="mini-search">
+                            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <rect x="1" y="2" width="12" height="11" rx="1"/>
+                                <line x1="4" y1="1" x2="4" y2="4"/>
+                                <line x1="10" y1="1" x2="10" y2="4"/>
+                                <line x1="1" y1="6" x2="13" y2="6"/>
+                            </svg>
+                            <input type="date" id="loginlog-date-end" placeholder="Sampai Tanggal">
+                        </div>
+                        <button class="btn btn-sm" onclick="filterLoginLogByDate()" style="background: var(--blue-600); color: white;">
+                            <svg viewBox="0 0 14 14" fill="currentColor" width="12" height="12">
+                                <path d="M12 8a4 4 0 0 1-8 0M4 6a4 4 0 0 1 8 0M7 2v4M5 2h4"/>
+                            </svg>
+                            Tampilkan
+                        </button>
+                    </div>
+                    
+                    <select class="sel-filter" id="loginlog-periode-filter" onchange="loadLoginStats()">
+                        <option value="hari">Hari Ini</option>
+                        <option value="minggu" selected>7 Hari</option>
+                        <option value="bulan">30 Hari</option>
+                        <option value="tahun">Tahun Ini</option>
+                    </select>
 
-                <div class="date-range-filter" style="display: flex; gap: 8px; align-items: center;">
                     <div class="mini-search">
                         <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="1" y="2" width="12" height="11" rx="1"/>
-                            <line x1="4" y1="1" x2="4" y2="4"/>
-                            <line x1="10" y1="1" x2="10" y2="4"/>
-                            <line x1="1" y1="6" x2="13" y2="6"/>
+                            <circle cx="5.5" cy="5.5" r="4"/>
+                            <path d="M9 9l2.5 2.5"/>
                         </svg>
-                        <input type="date" id="loginlog-date-start" placeholder="Dari Tanggal">
+                        <input type="text" id="loginlog-search" placeholder="Cari user atau IP..." oninput="filterLoginLogTable()">
                     </div>
-                    <span style="color: var(--text-3);">s.d.</span>
-                    <div class="mini-search">
-                        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="1" y="2" width="12" height="11" rx="1"/>
-                            <line x1="4" y1="1" x2="4" y2="4"/>
-                            <line x1="10" y1="1" x2="10" y2="4"/>
-                            <line x1="1" y1="6" x2="13" y2="6"/>
-                        </svg>
-                        <input type="date" id="loginlog-date-end" placeholder="Sampai Tanggal">
-                    </div>
-                    <button class="btn btn-sm" onclick="filterLoginLogByDate()" style="background: var(--blue-600); color: white;">
+                    
+                    <button class="btn btn-sm" onclick="refreshLoginLog()">
                         <svg viewBox="0 0 14 14" fill="currentColor" width="12" height="12">
                             <path d="M12 8a4 4 0 0 1-8 0M4 6a4 4 0 0 1 8 0M7 2v4M5 2h4"/>
                         </svg>
-                        Tampilkan
+                        Refresh
                     </button>
                 </div>
-                
-                <select class="sel-filter" id="loginlog-periode-filter" onchange="loadLoginStats()">
-                    <option value="hari">Hari Ini</option>
-                    <option value="minggu" selected>7 Hari</option>
-                    <option value="bulan">30 Hari</option>
-                    <option value="tahun">Tahun Ini</option>
-                </select>
-
-                <div class="mini-search">
-                    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <circle cx="5.5" cy="5.5" r="4"/>
-                        <path d="M9 9l2.5 2.5"/>
-                    </svg>
-                    <input type="text" id="loginlog-search" placeholder="Cari user atau IP..." oninput="filterLoginLogTable()">
-                </div>
-                
-                <button class="btn btn-sm" onclick="refreshLoginLog()">
-                    <svg viewBox="0 0 14 14" fill="currentColor" width="12" height="12">
-                        <path d="M12 8a4 4 0 0 1-8 0M4 6a4 4 0 0 1 8 0M7 2v4M5 2h4"/>
-                    </svg>
-                    Refresh
-                </button>
             </div>
-        </div>
 
-        <!-- Tabel Log Login -->
-        <div class="log-table-wrapper">
-            <table class="log-table">
-                <thead>
-                    <tr>
-                        <th><i class="fas fa-clock"></i> Login Time</th>
-                        <th><i class="fas fa-sign-out-alt"></i> Logout Time</th>
-                        <th><i class="fas fa-user"></i> User</th>
-                        <th><i class="fas fa-building"></i> Bidang</th>
-                        <th><i class="fas fa-hourglass-half"></i> Durasi</th>
-                        <th><i class="fas fa-network-wired"></i> IP Address</th>
-                        <th><i class="fas fa-circle"></i> Status</th>
-                    </tr>
-                </thead>
-                <tbody id="loginlog-tbody">
-                    <tr><td colspan="7" style="text-align:center;padding:60px;">
-                        <div class="modern-spinner"></div>
-                        <p>Memuat data login log...</p>
-                    </td></tr>
-                </tbody>
-            </table>
-        </div>
+            <!-- Tabel Log Login -->
+            <div class="log-table-wrapper">
+                <table class="log-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-clock"></i> Login Time</th>
+                            <th><i class="fas fa-sign-out-alt"></i> Logout Time</th>
+                            <th><i class="fas fa-user"></i> User</th>
+                            <th><i class="fas fa-building"></i> Bidang</th>
+                            <th><i class="fas fa-hourglass-half"></i> Durasi</th>
+                            <th><i class="fas fa-network-wired"></i> IP Address</th>
+                            <th><i class="fas fa-circle"></i> Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loginlog-tbody">
+                        <tr><td colspan="7" style="text-align:center;padding:60px;">
+                            <div class="modern-spinner"></div>
+                            <p>Memuat data login log...</p>
+                         </div></td>
+                    </tbody>
+                </table>
+            </div>
 
-        <!-- Pagination -->
-        <div class="pagination-container">
-            <div class="row align-items-center">
-                <div class="col-md-6 mb-2 mb-md-0">
-                    <div class="pagination-info">
-                        <span id="loginlog-info-text">Menampilkan 0 dari 0 data</span>
-                        <select id="loginlog-per-page" class="form-select form-select-sm" style="width: auto;" onchange="changeLoginLogPerPage()">
-                            <option value="10">10 per halaman</option>
-                            <option value="25" selected>25 per halaman</option>
-                            <option value="50">50 per halaman</option>
-                            <option value="100">100 per halaman</option>
-                        </select>
+            <!-- Pagination -->
+            <div class="pagination-container">
+                <div class="row align-items-center">
+                    <div class="col-md-6 mb-2 mb-md-0">
+                        <div class="pagination-info">
+                            <span id="loginlog-info-text">Menampilkan 0 dari 0 data</span>
+                            <select id="loginlog-per-page" class="form-select form-select-sm" style="width: auto;" onchange="changeLoginLogPerPage()">
+                                <option value="10">10 per halaman</option>
+                                <option value="25" selected>25 per halaman</option>
+                                <option value="50">50 per halaman</option>
+                                <option value="100">100 per halaman</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <nav aria-label="Login log pagination">
+                            <ul class="pagination justify-content-end" id="loginlog-pagination"></ul>
+                        </nav>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <nav aria-label="Login log pagination">
-                        <ul class="pagination justify-content-end" id="loginlog-pagination"></ul>
-                    </nav>
+            </div>
+        </div>
+
+        <!-- Rekap per Akun -->
+        <div class="card mt-4">
+            <div class="card-head">
+                <div class="card-title">
+                    <i class="fas fa-chart-bar"></i> Rekap Login per Akun
+                </div>
+                <div class="card-actions" style="display: flex; gap: 10px;">
+                    <div class="mini-search" style="height: 32px;">
+                        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="5.5" cy="5.5" r="4"/>
+                            <path d="M9 9l2.5 2.5"/>
+                        </svg>
+                        <input type="text" id="rekap-search" placeholder="Cari user..." style="width: 150px;" onkeyup="searchRekapUser()">
+                    </div>
+                    <span class="card-action" onclick="loadLoginRekapPerAkun()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </span>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="tbl">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">No</th>
+                            <th>Username</th>
+                            <th>Bidang</th>
+                            <th>Total Login</th>
+                            <th>Total Durasi</th>
+                            <th>Rata-rata Durasi</th>
+                            <th>Login Terakhir</th>
+                            <th style="width: 100px;">Status</th>
+                            <th style="width: 100px;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loginlog-rekap-tbody">
+                        <tr><td colspan="8" style="text-align:center;padding:40px;">
+                            <div class="modern-spinner"></div>
+                            <p>Memuat data...</p>
+                         </div></td>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination untuk Rekap Login -->
+            <div class="pagination-container" id="rekap-pagination-container">
+                <div class="row align-items-center">
+                    <div class="col-md-6 mb-2 mb-md-0">
+                        <div class="pagination-info">
+                            <span id="rekap-info-text">Menampilkan 0 dari 0 data</span>
+                            <select id="rekap-per-page" class="form-select form-select-sm" style="width: auto;" onchange="changeRekapPerPage()">
+                                <option value="5">5 per halaman</option>
+                                <option value="10" selected>10 per halaman</option>
+                                <option value="25">25 per halaman</option>
+                                <option value="50">50 per halaman</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <nav aria-label="Rekap login pagination">
+                            <ul class="pagination justify-content-end" id="rekap-pagination"></ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   <!-- ==================== DATA INDIKATOR PANEL ==================== -->
+<section id="panel-data" class="panel">
+    <div class="page-hdr">
+    <div class="page-hdr-left">
+        <div class="page-hdr-icon">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+                <path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h7a1 1 0 100-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3zM15 8a1 1 0 10-2 0v5.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L15 13.586V8z"/>
+            </svg>
+        </div>
+        <div>
+            <div class="page-hdr-title" id="data-title">Data Indikator</div>
+            <div class="page-hdr-sub" id="data-subtitle">Portal Satu Data Banyuwangi</div>
+        </div>
+    </div>
+    
+    <div style="display: flex; gap: 10px;">
+        <!-- Tombol Export Laporan PDF -->
+        <button class="btn btn-primary" onclick="exportDataReportToPDF()" style="background: #dc2626; border-color: #dc2626;">
+            <i class="fas fa-file-pdf"></i> Export Laporan PDF
+        </button>
+        <button class="btn btn-sm" onclick="loadDataFromAPI()">
+            <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+    </div>
+</div>
+
+    <!-- Informasi Sumber Data -->
+    <div class="card mb-4">
+        <div class="card-body" style="background: linear-gradient(135deg, #e8f0fe 0%, #d4e2fc 100%);">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="d-flex align-items-center gap-3">
+                        <div>
+                            <h5 class="mb-1" id="data-indikator-name">Hibah</h5>
+                            <p class="mb-0 text-muted small">Sumber: <span id="produsen-data">Badan Pendapatan Daerah</span> | Urusan: <span id="urusan-data">Pendapatan Daerah</span><span id="urusan-data"> ( satudata.banyuwangikab.go.id )</span></p>
+                            <p class="mb-0 text-muted small">Satuan: <span id="satuan-data">Rp Milyar</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-end">
+                    <a href="https://satudata.banyuwangikab.go.id/" target="_blank" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-box-arrow-up-right"></i> Portal Satu Data
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Rekap per Akun -->
-    <!-- Rekap per Akun -->
-<div class="card mt-4">
+    <!-- Statistik Ringkas -->
+    <div class="stat-grid mb-4">
+        <div class="stat-card">
+            <div class="stat-label">Total Data</div>
+            <div class="stat-row">
+                <div class="stat-val" id="stat-total-data">0</div>
+                <div class="stat-icon" style="background:#eff4ff;"><svg viewBox="0 0 20 20" fill="#2f52c4"><path d="M3 3h14v14H3z"/></svg></div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-trend">Tahun tersedia</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Nilai Tertinggi</div>
+            <div class="stat-row">
+                <div class="stat-val" id="stat-nilai-tertinggi">0</div>
+                <div class="stat-icon" style="background:#fffbeb;"><svg viewBox="0 0 20 20" fill="#d97706"><path d="M10 2l3 5 5 1-4 4 1 5-5-2-5 2 1-5-4-4 5-1 3-5z"/></svg></div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-trend trend-up" id="stat-tahun-tertinggi">-</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Nilai Terendah</div>
+            <div class="stat-row">
+                <div class="stat-val" id="stat-nilai-terendah">0</div>
+                <div class="stat-icon" style="background:#dcfce7;"><svg viewBox="0 0 20 20" fill="#16a34a"><path d="M10 2l3 5 5 1-4 4 1 5-5-2-5 2 1-5-4-4 5-1 3-5z"/></svg></div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-trend trend-down" id="stat-tahun-terendah">-</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Rata-rata</div>
+            <div class="stat-row">
+                <div class="stat-val" id="stat-rata-rata">0</div>
+                <div class="stat-icon" style="background:#dbeafe;"><svg viewBox="0 0 20 20" fill="#2f52c4"><path d="M10 2v16M4 6l6-4 6 4M4 14l6 4 6-4"/></svg></div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-trend">periode 2019-2024</div>
+        </div>
+    </div>
+
+    <!-- Tabel Data -->
+    <div class="card mb-4">
+        <div class="card-head">
+            <div class="card-title"><i class="fas fa-table"></i> Data Per Tahun</div>
+            <div class="table-toolbar-right">
+                <div class="mini-search">
+                    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor"><circle cx="5.5" cy="5.5" r="4"/><path d="M9 9l2.5 2.5"/></svg>
+                    <input type="text" id="data-search" placeholder="Cari tahun..." oninput="filterDataTable()" style="width:130px;">
+                </div>
+                <button class="btn btn-sm" onclick="exportDataToExcel()"><i class="fas fa-file-excel"></i> Excel</button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="tbl">
+                <thead><tr><th>Tahun</th><th>Nilai (Rp Milyar)</th><th>Trend</th><th>Aksi</th></tr></thead>
+                <tbody id="data-tbody"><tr><td colspan="4"><div class="modern-spinner"></div><p>Memuat data...</p></td></tr></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Grafik -->
+<div class="card mb-4 chart-card">
     <div class="card-head">
         <div class="card-title">
-            <i class="fas fa-chart-bar"></i> Rekap Login per Akun
+            <i class="fas fa-chart-line"></i> Grafik Tren Data
         </div>
-        <div class="card-actions" style="display: flex; gap: 10px;">
-            <div class="mini-search" style="height: 32px;">
-                <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <circle cx="5.5" cy="5.5" r="4"/>
-                    <path d="M9 9l2.5 2.5"/>
-                </svg>
-                <input type="text" id="rekap-search" placeholder="Cari user..." style="width: 150px;" onkeyup="searchRekapUser()">
-            </div>
-            <span class="card-action" onclick="loadLoginRekapPerAkun()">
-                <i class="fas fa-sync-alt"></i> Refresh
-            </span>
-        </div>
+        <select id="chart-type" class="sel-filter" onchange="renderChart()" style="width:120px;">
+            <option value="line">Line Chart</option>
+            <option value="bar">Bar Chart</option>
+        </select>
     </div>
-    <div class="table-responsive">
-        <table class="tbl">
-            <thead>
-                <tr>
-                    <th style="width: 50px;">No</th>
-                    <th>Username</th>
-                    <th>Bidang</th>
-                    <th>Total Login</th>
-                    <th>Total Durasi</th>
-                    <th>Rata-rata Durasi</th>
-                    <th>Login Terakhir</th>
-                    <th style="width: 100px;">Status</th>
-                    <th style="width: 100px;">Aksi</th>
-                </tr>
-            </thead>
-            <tbody id="loginlog-rekap-tbody">
-                <tr><td colspan="8" style="text-align:center;padding:40px;">
-                    <div class="modern-spinner"></div>
-                    <p>Memuat data...</p>
-                 </div></td>
-            </tbody>
-        </table>
-    </div>
-    
-    <!-- Pagination untuk Rekap Login -->
-    <div class="pagination-container" id="rekap-pagination-container">
-        <div class="row align-items-center">
-            <div class="col-md-6 mb-2 mb-md-0">
-                <div class="pagination-info">
-                    <span id="rekap-info-text">Menampilkan 0 dari 0 data</span>
-                    <select id="rekap-per-page" class="form-select form-select-sm" style="width: auto;" onchange="changeRekapPerPage()">
-                        <option value="5">5 per halaman</option>
-                        <option value="10" selected>10 per halaman</option>
-                        <option value="25">25 per halaman</option>
-                        <option value="50">50 per halaman</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <nav aria-label="Rekap login pagination">
-                    <ul class="pagination justify-content-end" id="rekap-pagination">
-                        <!-- Pagination akan di-generate oleh JavaScript -->
-                    </ul>
-                </nav>
-            </div>
+    <div class="card-body">
+        <div class="chart-container">
+            <canvas id="data-chart"></canvas>
         </div>
     </div>
 </div>
+
+    <!-- Analisis Manual -->
+    <div class="card">
+        <div class="card-head">
+            <div class="card-title"><i class="fas fa-edit"></i> Analisis Data</div>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label class="form-label">Judul Analisis</label>
+                <input type="text" id="analisis-judul-input" class="form-control" placeholder="Contoh: Analisis Hibah 2025-2030">
+            </div>
+            <div class="form-group mt-3">
+                <label class="form-label">Analisis / Kesimpulan</label>
+                <textarea id="analisis-kesimpulan-input" class="form-control" rows="5" placeholder="Tuliskan analisis dan kesimpulan Anda..."></textarea>
+            </div>
+            <div class="form-group mt-3">
+                <label class="form-label">Rekomendasi (Opsional)</label>
+                <textarea id="analisis-rekomendasi-input" class="form-control" rows="3" placeholder="Tuliskan rekomendasi..."></textarea>
+            </div>
+            <div class="form-actions mt-3">
+                <button class="btn btn-primary" onclick="simpanAnalisisManual()">
+                    <i class="fas fa-save"></i> Simpan Analisis
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Riwayat Analisis -->
+    <div class="card mt-4">
+        <div class="card-head">
+            <div class="card-title"><i class="fas fa-history"></i> Riwayat Analisis Tersimpan</div>
+            <span class="card-action" onclick="loadRiwayatAnalisis()">Refresh</span>
+        </div>
+        <div id="riwayat-analisis-list" style="padding:15px;">
+            <div class="empty-state"><p>Belum ada analisis tersimpan</p></div>
+        </div>
+    </div>
 </section>
+    
 
       <!-- ======== DASHBOARD PANEL ======== -->
       <section id="panel-dashboard" class="panel active">
@@ -3054,12 +3511,12 @@ a { text-decoration: none; color: inherit; }
         <!-- PILIH BIDANG -->
         <select class="sel-filter" id="log-bidang-pilih" onchange="onBidangChange()" style="min-width: 160px;">
             <option value="">-- Semua Bidang --</option>
-            <option value="Litbang">📊 Bidang Litbang</option>
-            <option value="Perencanaan">📋 Bidang Perencanaan</option>
-            <option value="Ekonomi">💰 Bidang Ekonomi</option>
-            <option value="Kesra">❤️ Bidang Kesra</option>
-            <option value="Sarpras">🏗️ Bidang Sarpras</option>
-            <option value="Sekretariat">📁 Bidang Sekretariat</option>
+            <option value="Litbang"> Bidang Litbang</option>
+            <option value="Perencanaan"> Bidang Perencanaan</option>
+            <option value="Ekonomi"> Bidang Ekonomi</option>
+            <option value="Kesra"> Bidang Kesra</option>
+            <option value="Sarpras"> Bidang Sarpras</option>
+            <option value="Sekretariat"> Bidang Sekretariat</option>
         </select>
         
         <!-- PILIH AKUN (dinamis berdasarkan bidang yang dipilih) -->
@@ -3566,6 +4023,29 @@ a { text-decoration: none; color: inherit; }
       <h3 id="previewTitle" style="font-size:18px;">Preview Dokumen</h3>
       <span onclick="closePreviewModal()" style="cursor:pointer; font-size:24px;">&times;</span>
     </div>
+    
+    <!-- TAMBAHKAN HIDDEN INPUT UNTUK MENYIMPAN DATA DOKUMEN -->
+    <input type="hidden" id="preview-dokumen-id" value="">
+    <input type="hidden" id="preview-dokumen-nama" value="">
+    <input type="hidden" id="preview-dokumen-path" value="">
+    
+    <!-- TAMBAHKAN FORM PRINT SETTINGS -->
+    <div style="background: #f0f4ff; padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+      <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+        <div>
+          <label style="font-size: 12px; font-weight: 600;">Jumlah Lembar:</label>
+          <input type="number" id="print-jumlah-lembar" value="1" min="1" max="100" style="width: 80px; padding: 5px; border-radius: 6px; border: 1px solid #ccc;">
+        </div>
+        <div>
+          <label style="font-size: 12px; font-weight: 600;">Range Halaman:</label>
+          <input type="text" id="print-range-halaman" placeholder="Semua" style="width: 120px; padding: 5px; border-radius: 6px; border: 1px solid #ccc;">
+        </div>
+        <button id="btn-print-preview" class="btn btn-primary" style="background: #2563eb;">
+          <i class="fas fa-print"></i> Print Dokumen
+        </button>
+      </div>
+    </div>
+    
     <div id="previewContent" style="text-align:center;"></div>
   </div>
 </div>
@@ -3573,6 +4053,13 @@ a { text-decoration: none; color: inherit; }
   </div>
 </div>
 <!-- Library untuk generate PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- TAMBAHKAN INI - Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<!-- Bootstrap 5 JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -4379,7 +4866,7 @@ function renderLoginRekapPerAkun(users) {
             'Belum ada data login yang tercatat';
         
         tbody.innerHTML = `<tr><td colspan="9" class="empty-state-table" style="padding: 60px 20px;">
-            <div class="empty-state-icon" style="font-size: 64px; margin-bottom: 20px; opacity: 0.5;">📊</div>
+            <div class="empty-state-icon" style="font-size: 64px; margin-bottom: 20px; opacity: 0.5;"></div>
             <div class="empty-state-title">${rekapSearchKeyword ? 'Tidak Ditemukan' : 'Belum Ada Data'}</div>
             <div class="empty-state-message">${noDataMessage}</div>
             ${rekapSearchKeyword ? `
@@ -4564,7 +5051,7 @@ $('#loginlog-periode-filter').off('change').on('change', function() {
 function showLoginDetailRekap(username) {
     // Tampilkan modal loading
     $('#modalLoginDetail').css('display', 'flex');
-    $('#modalLoginDetailTitle').html(`📊 Detail Rekap Login - ${escapeHtml(username)}`);
+    $('#modalLoginDetailTitle').html(` Detail Rekap Login - ${escapeHtml(username)}`);
     
     $('#modalLoginDetailBody').html(`
         <div style="text-align:center;padding:40px;">
@@ -4608,11 +5095,11 @@ function showLoginDetailRekap(username) {
 function renderLoginDetailRekap(data) {
     const periods = ['hari', 'minggu', 'bulan', 'tahun', 'semua'];
     const periodIcons = {
-        'hari': '📅',
-        'minggu': '📆',
-        'bulan': '📊',
-        'tahun': '🎯',
-        'semua': '📈'
+        'hari': '',
+        'minggu': '',
+        'bulan': '',
+        'tahun': '',
+        'semua': ''
     };
     
     let html = `
@@ -4654,9 +5141,9 @@ function renderLoginDetailRekap(data) {
                     ${p.total_duration_formatted}
                 </div>
                 <div style="font-size: 11px; color: #64748b; margin-top: 8px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 8px;">
-                    <div>📊 ${p.login_count} kali login</div>
-                    <div>⏱️ Rata-rata: ${p.avg_duration_formatted}</div>
-                    ${period !== 'semua' ? `<div>📅 Rata-rata: ${p.avg_per_day} login/hari</div>` : ''}
+                    <div> ${p.login_count} kali login</div>
+                    <div> Rata-rata: ${p.avg_duration_formatted}</div>
+                    ${period !== 'semua' ? `<div> Rata-rata: ${p.avg_per_day} login/hari</div>` : ''}
                 </div>
             </div>
         `;
@@ -5129,7 +5616,7 @@ async function exportLoginLogToPDF() {
                     <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
                         <img src="${logoUrl}" alt="Logo" style="height: 50px;">
                         <div>
-                            <h2>SISTEM MANAJEMEN KANTOR (SMB)</h2>
+                            <h2>Smart Office Management</h2>
                             <h3>BAPPEDA KABUPATEN BANYUWANGI</h3>
                         </div>
                     </div>
@@ -5172,7 +5659,7 @@ async function exportLoginLogToPDF() {
                     </tbody>
                 </table>
                 <div class="pdf-footer">
-                    <p>Dokumen ini dibuat secara otomatis oleh sistem SMB Bappeda Banyuwangi</p>
+                    <p>Dokumen ini dibuat secara otomatis oleh sistem Smart Office Management Bappeda</p>
                 </div>
             </div>
         `;
@@ -5291,25 +5778,16 @@ function setDefaultStats() {
   $('.doc-cat-count').eq(2).text('0 dokumen');
 }
 
-// Ganti fungsi previewDokumen dengan yang sudah merekam log preview
+// ================= PREVIEW DOKUMEN DENGAN LOG PRINT =================
 function previewDokumen(filePath, fileType, fileName) {
-    // Ambil id_dokumen dari parameter atau atribut data
-    // Kita perlu cara mendapatkan id_dokumen. Modifikasi panggilan preview
-    
-    document.getElementById('previewTitle').textContent = fileName || 'Preview Dokumen';
-    const previewDiv = document.getElementById('previewContent');
-    const baseUrl = '<?= base_url() ?>';
-    const fullUrl = baseUrl + filePath;
-    
-    // === TAMBAHKAN: Log aktivitas preview ===
-    // Cari id_dokumen dari baris tabel yang diklik
-    // Karena kita tidak punya id_dokumen di parameter, kita perlu mencari dari DOM
+    // AMBIL ID DOKUMEN dari atribut data atau dari baris tabel
     let idDokumen = null;
+    
+    // Cari ID dokumen dari tombol hapus di baris yang sama
     const clickSource = event ? event.target : null;
     if (clickSource) {
         const row = $(clickSource).closest('tr');
         if (row.length) {
-            // Cari tombol delete/hapus untuk mendapatkan id_dokumen
             const deleteBtn = row.find('.link-danger');
             if (deleteBtn.length && deleteBtn.attr('onclick')) {
                 const match = deleteBtn.attr('onclick').match(/deleteDokumen\((\d+)\)/);
@@ -5318,7 +5796,29 @@ function previewDokumen(filePath, fileType, fileName) {
         }
     }
     
-    // Kirim log preview ke server
+    // Jika masih null, coba cari dari elemen lain
+    if (!idDokumen) {
+        // Coba dari atribut data-id
+        const dataId = $(clickSource).closest('[data-id-dokumen]').attr('data-id-dokumen');
+        if (dataId) idDokumen = dataId;
+    }
+    
+    console.log('Preview dokumen - ID:', idDokumen, 'Nama:', fileName);
+    
+    // SIMPAN ke hidden input untuk digunakan saat print
+    if (idDokumen) {
+        document.getElementById('preview-dokumen-id').value = idDokumen;
+        document.getElementById('preview-dokumen-nama').value = fileName;
+        document.getElementById('preview-dokumen-path').value = filePath;
+    }
+    
+    // Tampilkan preview
+    document.getElementById('previewTitle').textContent = fileName || 'Preview Dokumen';
+    const previewDiv = document.getElementById('previewContent');
+    const baseUrl = '<?= base_url() ?>';
+    const fullUrl = baseUrl + filePath;
+    
+    // LOG PREVIEW (tanpa print)
     if (idDokumen) {
         $.ajax({
             url: '<?= base_url('IDE/log_preview') ?>',
@@ -5334,27 +5834,24 @@ function previewDokumen(filePath, fileType, fileName) {
         });
     }
     
-    // Tampilkan preview
+    // Tampilkan konten preview
     if (fileType && fileType.startsWith('image/')) {
-        previewDiv.innerHTML = `<img src="${fullUrl}" style="max-width:100%; max-height:70vh; border-radius:8px;" alt="${escapeHtml(fileName)}">`;
+        previewDiv.innerHTML = `<img src="${fullUrl}" style="max-width:100%; max-height:60vh; border-radius:8px;" alt="${escapeHtml(fileName)}">`;
     } else if (fileType === 'application/pdf') {
-        previewDiv.innerHTML = `<iframe src="${fullUrl}" style="width:100%; height:70vh;" frameborder="0"></iframe>`;
+        previewDiv.innerHTML = `<iframe src="${fullUrl}" style="width:100%; height:60vh;" frameborder="0"></iframe>`;
     } else {
         previewDiv.innerHTML = `
             <div style="padding:60px 20px; text-align:center;">
                 <div style="font-size:64px; margin-bottom:20px;">📄</div>
                 <p style="margin-bottom:20px; color:var(--text-2);">File tidak dapat dipreview langsung</p>
-                <p style="margin-bottom:15px; font-size:12px; color:var(--text-3);">Tipe file: ${fileType || 'Unknown'}</p>
-                <a href="${fullUrl}" class="btn btn-primary" download target="_blank">
-                    ⬇️ Download File
-                </a>
+                <a href="${fullUrl}" class="btn btn-primary" download target="_blank">⬇️ Download File</a>
             </div>
         `;
     }
     
+    // Tampilkan modal
     document.getElementById('modalPreview').style.display = 'flex';
 }
-
 function closePreviewModal() {
   document.getElementById('modalPreview').style.display = 'none';
   document.getElementById('previewContent').innerHTML = '';
@@ -5500,7 +5997,7 @@ function exportDokumenToPDF() {
         <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px; flex-wrap: wrap;">
           <img src="${logoUrl}" alt="Logo Bappeda Banyuwangi" style="height: 60px; width: auto; object-fit: contain;">
           <div style="text-align: center;">
-            <h2 style="margin: 0; color: #1a2d6b;">SISTEM MANAJEMEN KANTOR (SMB)</h2>
+            <h2 style="margin: 0; color: #1a2d6b;">Smart Office Management</h2>
             <h3 style="margin: 5px 0 0 0; color: #1a2d6b;">BAPPEDA KABUPATEN BANYUWANGI</h3>
           </div>
         </div>
@@ -5541,7 +6038,7 @@ function exportDokumenToPDF() {
         </tbody>
       </table>
       <div class="pdf-footer">
-        <p>Dokumen ini dibuat secara otomatis oleh sistem SMB Bappeda Banyuwangi</p>
+        <p>Dokumen ini dibuat secara otomatis oleh sistem Smart Office Management</p>
         <p>Total Dokumen: ${dokumenData.length}</p>
       </div>
     </div>
@@ -6517,7 +7014,7 @@ function refreshLogData() {
 // ==================== REKAP PRINT DARI LOG AKTIVITAS ====================
 function showPrintRekapFromLog(username, detailLog) {
     $('#modalPrintRekap').css('display', 'flex');
-    $('#modalPrintRekapTitle').html(`📊 Rekap Print - ${escapeHtml(username)}`);
+    $('#modalPrintRekapTitle').html(` Rekap Print - ${escapeHtml(username)}`);
     
     $('#modalPrintRekapBody').html(`
         <div style="text-align:center;padding:40px;">
@@ -6581,7 +7078,7 @@ function renderPrintRekapFromLog(data) {
         <div style="margin-bottom: 20px;">
             <span class="rekap-badge-user">👤 ${escapeHtml(data.username)}</span>
             <span style="margin-left: 10px; font-size: 11px; color: var(--text-3);">
-                📊 Total print: ${data.total_print} kali | Total lembar: ${formatNumber(data.total_lembar)}
+                 Total print: ${data.total_print} kali | Total lembar: ${formatNumber(data.total_lembar)}
             </span>
         </div>
     `;
@@ -6597,7 +7094,7 @@ function renderPrintRekapFromLog(data) {
     html += `
         <div class="user-rekap-summary" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
             <div class="user-rekap-item" style="background: #e8f0fe; border-radius: 12px; padding: 12px;">
-                <div class="user-rekap-label">📅 HARI INI</div>
+                <div class="user-rekap-label"> HARI INI</div>
                 <div class="user-rekap-value" style="font-size: 24px;">${formatNumber(data.hari.lembar)}</div>
                 <div class="user-rekap-unit">kertas</div>
                 <!-- ========== TAMBAHKAN: TEXT DINAMIS ========== -->
@@ -6607,7 +7104,7 @@ function renderPrintRekapFromLog(data) {
                 <!-- ========== END TAMBAHKAN ========== -->
             </div>
             <div class="user-rekap-item" style="background: #e6f7e6; border-radius: 12px; padding: 12px;">
-                <div class="user-rekap-label">📆 7 HARI</div>
+                <div class="user-rekap-label"> 7 HARI</div>
                 <div class="user-rekap-value" style="font-size: 24px;">${formatNumber(data.minggu.lembar)}</div>
                 <div class="user-rekap-unit">kertas</div>
                 <div style="font-size: 10px; color: ${data.minggu.lembar > 0 ? 'green' : '#999'}; margin-top: 5px;">
@@ -6615,7 +7112,7 @@ function renderPrintRekapFromLog(data) {
                 </div>
             </div>
             <div class="user-rekap-item" style="background: #fef3e6; border-radius: 12px; padding: 12px;">
-                <div class="user-rekap-label">📊 30 HARI</div>
+                <div class="user-rekap-label"> 30 HARI</div>
                 <div class="user-rekap-value" style="font-size: 24px;">${formatNumber(data.bulan.lembar)}</div>
                 <div class="user-rekap-unit">kertas</div>
                 <div style="font-size: 10px; color: ${data.bulan.lembar > 0 ? 'green' : '#999'}; margin-top: 5px;">
@@ -6623,7 +7120,7 @@ function renderPrintRekapFromLog(data) {
                 </div>
             </div>
             <div class="user-rekap-item" style="background: #f0e6fe; border-radius: 12px; padding: 12px;">
-                <div class="user-rekap-label">🎯 TAHUN ${new Date().getFullYear()}</div>
+                <div class="user-rekap-label"> TAHUN ${new Date().getFullYear()}</div>
                 <div class="user-rekap-value" style="font-size: 24px;">${formatNumber(data.tahun.lembar)}</div>
                 <div class="user-rekap-unit">kertas</div>
                 <div style="font-size: 10px; color: ${data.tahun.lembar > 0 ? 'green' : '#999'}; margin-top: 5px;">
@@ -6637,7 +7134,7 @@ function renderPrintRekapFromLog(data) {
     // Tabel Rincian Print (dari smb_print_log)
     if (data.print_details && data.print_details.length > 0) {
         html += `
-            <h4 style="margin: 20px 0 10px 0;">📜 Rincian Print Terbaru</h4>
+            <h4 style="margin: 20px 0 10px 0;"> Rincian Print Terbaru</h4>
             <div style="overflow-x: auto;">
                 <table class="user-detail-table">
                     <thead>
@@ -6838,7 +7335,7 @@ async function exportLogToPDF() {
                 <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px; flex-wrap: wrap;">
                     <img src="${logoUrl}" alt="Logo Bappeda Banyuwangi" style="height: 50px; width: auto; object-fit: contain;">
                     <div style="text-align: center;">
-                        <h2 style="margin: 0;">SISTEM MANAJEMEN KANTOR (SMB)</h2>
+                        <h2 style="margin: 0;">Smart Office Management</h2>
                         <h3 style="margin: 5px 0 0 0;">BAPPEDA KABUPATEN BANYUWANGI</h3>
                     </div>
                 </div>
@@ -6895,7 +7392,7 @@ async function exportLogToPDF() {
         // Footer untuk setiap halaman
         const getPageFooter = (pageNum) => `
             <div class="pdf-footer">
-                <p>Dokumen ini dibuat secara otomatis oleh sistem SMB Bappeda Banyuwangi</p>
+                <p>Dokumen ini dibuat secara otomatis oleh sistem Smart Office Management</p>
                 <p>Halaman ${pageNum} dari ${totalPages} | Total Data: ${logData.length} aktivitas</p>
             </div>
             </div>
@@ -7195,6 +7692,1191 @@ if (document.querySelector('#panel-log.active')) {
 $('#log-bidang-pilih').on('change', function() {
     loadTotalKertasTerpakai($(this).val());
 });
+
+// ==================== DATA INDIKATOR PANEL ====================
+let dataIndikator = null;
+let dataSeries = [];
+let chartInstance = null;
+const baseUrl = '<?= base_url() ?>';
+
+// Navigasi ke panel data
+function navigateToData() {
+    showPanel('data');
+    loadDataFromAPI();
+    loadRiwayatAnalisis();
+    
+    // Update active state di sidebar
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.sub-item').forEach(s => s.classList.remove('active'));
+    const dataMenuItem = document.querySelector('.sub-item[onclick*="navigateToData"]');
+    if (dataMenuItem) dataMenuItem.classList.add('active');
+}
+
+// Load data dari API Satu Data (menggunakan fetch langsung)
+async function loadDataFromAPI() {
+    $('#data-tbody').html(`<tr><td colspan="4" style="text-align:center;padding:40px;">
+        <div class="modern-spinner"></div>
+        <p>Memuat data dari Portal Satu Data...</p>
+    </div></td></tr>`);
+    
+    try {
+        // Gunakan fetch langsung ke API (tanpa proxy)
+        const response = await fetch('https://satudata.banyuwangikab.go.id/api/indikator?id=63&api-key=data_bwi2023');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const result = await response.json();
+        
+        if (result.result && result.result.status === 200) {
+            dataIndikator = result.result;
+            
+            // Update header info
+            $('#data-indikator-name').text(dataIndikator.Indikator || 'Hibah');
+            $('#produsen-data').text(dataIndikator['Produsen Data'] || 'Badan Pendapatan Daerah');
+            $('#urusan-data').text(dataIndikator.Urusan || 'Pendapatan Daerah');
+            $('#satuan-data').text(dataIndikator.Satuan || 'Rp Milyar');
+            $('#data-subtitle').text(`${dataIndikator.Indikator} - ${dataIndikator.Satuan}`);
+            
+            // Proses data series
+            const rawData = dataIndikator.data[0] || {};
+            dataSeries = [];
+            
+            for (const [tahun, nilai] of Object.entries(rawData)) {
+                if (nilai !== '' && nilai !== null && nilai !== undefined) {
+                    dataSeries.push({
+                        tahun: parseInt(tahun),
+                        nilai: parseFloat(nilai)
+                    });
+                }
+            }
+            
+            dataSeries.sort((a, b) => a.tahun - b.tahun);
+            
+            renderDataTable();
+            updateDataStats();
+            renderChart();
+            
+            console.log('Data loaded:', dataSeries);
+        } else {
+            throw new Error('Invalid response from API');
+        }
+    } catch (error) {
+        console.error('Error loading data:', error);
+        $('#data-tbody').html(`<tr><td colspan="4" style="text-align:center;padding:40px;color:red;">
+            <div style="font-size:48px;">⚠️</div>
+            <p>Gagal memuat data dari Portal Satu Data</p>
+            <p style="font-size:12px; margin-top:10px;">Error: ${error.message}</p>
+            <button class="btn btn-sm mt-3" onclick="loadDataFromAPI()">Coba Lagi</button>
+        </div></tr>`);
+    }
+}
+
+// Render tabel data
+function renderDataTable() {
+    const tbody = document.getElementById('data-tbody');
+    
+    if (!dataSeries || dataSeries.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:40px;">Tidak ada数据</div><tr>`;
+        return;
+    }
+    
+    tbody.innerHTML = dataSeries.map((item, index) => {
+        let trendHtml = '';
+        if (index > 0) {
+            const prevValue = dataSeries[index - 1].nilai;
+            const diff = item.nilai - prevValue;
+            const percent = prevValue !== 0 ? (diff / prevValue * 100).toFixed(1) : 0;
+            if (diff > 0) {
+                trendHtml = `<span style="color: var(--green);">↑ +${diff.toFixed(2)} (${percent}%)</span>`;
+            } else if (diff < 0) {
+                trendHtml = `<span style="color: var(--red);">↓ ${diff.toFixed(2)} (${percent}%)</span>`;
+            } else {
+                trendHtml = `<span style="color: var(--text-3);">→ 0 (0%)</span>`;
+            }
+        } else {
+            trendHtml = `<span style="color: var(--text-3);">-</span>`;
+        }
+        
+        return `
+            <tr>
+                <td><strong>${item.tahun}</strong></div></td>
+                <td>${formatNumber(item.nilai)}</div></td>
+                <td>${trendHtml}</div></td>
+                <td>
+                    <button class="btn btn-sm" onclick="editDataTahun(${item.tahun}, ${item.nilai})">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                 </div></td>
+            </tr>
+        `;
+    }).join('');
+    
+    $('#stat-total-data').text(dataSeries.length);
+}
+
+function updateDataStats() {
+    if (!dataSeries || dataSeries.length === 0) return;
+    
+    const values = dataSeries.map(d => d.nilai);
+    const maxValue = Math.max(...values);
+    const minValue = Math.min(...values);
+    const avgValue = values.reduce((a, b) => a + b, 0) / values.length;
+    const maxYear = dataSeries.find(d => d.nilai === maxValue)?.tahun || '-';
+    const minYear = dataSeries.find(d => d.nilai === minValue)?.tahun || '-';
+    
+    $('#stat-nilai-tertinggi').text(formatNumber(maxValue));
+    $('#stat-tahun-tertinggi').text(maxYear);
+    $('#stat-nilai-terendah').text(formatNumber(minValue));
+    $('#stat-tahun-terendah').text(minYear);
+    $('#stat-rata-rata').text(formatNumber(avgValue));
+}
+
+function renderChart() {
+    if (!dataSeries || dataSeries.length === 0) return;
+    
+    const ctx = document.getElementById('data-chart').getContext('2d');
+    const chartType = $('#chart-type').val();
+    
+    if (chartInstance) chartInstance.destroy();
+    
+    // Pengaturan warna berdasarkan jenis chart
+    let backgroundColor, borderColor;
+    
+    if (chartType === 'line') {
+        backgroundColor = 'rgba(47, 82, 196, 0.1)';
+        borderColor = '#2f52c4';
+    } else { // bar chart
+        backgroundColor = 'rgba(47, 82, 196, 0.7)';
+        borderColor = '#2f52c4';
+    }
+    
+    chartInstance = new Chart(ctx, {
+        type: chartType,
+        data: {
+            labels: dataSeries.map(d => d.tahun.toString()),
+            datasets: [{
+                label: dataIndikator?.Indikator || 'Hibah',
+                data: dataSeries.map(d => d.nilai),
+                backgroundColor: backgroundColor,
+                borderColor: borderColor,
+                borderWidth: chartType === 'line' ? 2 : 1,
+                fill: chartType === 'line',
+                tension: chartType === 'line' ? 0.3 : undefined,
+                pointBackgroundColor: chartType === 'line' ? '#2f52c4' : undefined,
+                pointBorderColor: chartType === 'line' ? '#fff' : undefined,
+                pointRadius: chartType === 'line' ? 3 : undefined,
+                pointHoverRadius: chartType === 'line' ? 5 : undefined,
+                pointBorderWidth: chartType === 'line' ? 1 : undefined,
+                // Untuk bar chart
+                barPercentage: 0.7,
+                categoryPercentage: 0.8,
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        font: { size: 11, weight: '500' },
+                        boxWidth: 10,
+                        padding: 8
+                    }
+                },
+                tooltip: {
+                    bodyFont: { size: 11 },
+                    titleFont: { size: 11 },
+                    callbacks: {
+                        label: (ctx) => {
+                            let label = ctx.dataset.label || '';
+                            let value = formatNumber(ctx.raw);
+                            return `${label}: ${value} ${dataIndikator?.Satuan || 'Rp Milyar'}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: dataIndikator?.Satuan || 'Rp Milyar',
+                        font: { size: 10, weight: '500' }
+                    },
+                    ticks: {
+                        font: { size: 10 },
+                        stepSize: chartType === 'bar' ? undefined : undefined,
+                        callback: function(value) {
+                            return formatNumber(value);
+                        }
+                    },
+                    grid: {
+                        drawBorder: true,
+                        color: '#e2e8f0'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Tahun',
+                        font: { size: 10, weight: '500' }
+                    },
+                    ticks: {
+                        font: { size: 10 }
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            layout: {
+                padding: {
+                    top: 10,
+                    bottom: 5,
+                    left: 5,
+                    right: 5
+                }
+            },
+            // Untuk bar chart
+            elements: {
+                bar: {
+                    backgroundColor: 'rgba(47, 82, 196, 0.8)',
+                    hoverBackgroundColor: '#2f52c4'
+                }
+            }
+        }
+    });
+}
+function formatNumber(num) {
+    if (num === undefined || num === null) return '0';
+    return num.toLocaleString('id-ID');
+}
+// Update statistik ringkas
+function updateDataStats() {
+    if (!dataSeries || dataSeries.length === 0) return;
+    
+    const values = dataSeries.map(d => d.nilai);
+    const maxValue = Math.max(...values);
+    const minValue = Math.min(...values);
+    const avgValue = values.reduce((a, b) => a + b, 0) / values.length;
+    const maxYear = dataSeries.find(d => d.nilai === maxValue)?.tahun || '-';
+    const minYear = dataSeries.find(d => d.nilai === minValue)?.tahun || '-';
+    
+    $('#stat-nilai-tertinggi').text(formatNumber(maxValue));
+    $('#stat-tahun-tertinggi').text(maxYear);
+    $('#stat-nilai-terendah').text(formatNumber(minValue));
+    $('#stat-tahun-terendah').text(minYear);
+    $('#stat-rata-rata').text(formatNumber(avgValue));
+}
+
+// Render chart
+function renderChart() {
+    if (!dataSeries || dataSeries.length === 0) return;
+    
+    const ctx = document.getElementById('data-chart').getContext('2d');
+    const chartType = $('#chart-type').val();
+    
+    if (chartInstance) chartInstance.destroy();
+    
+    chartInstance = new Chart(ctx, {
+        type: chartType,
+        data: {
+            labels: dataSeries.map(d => d.tahun.toString()),
+            datasets: [{
+                label: dataIndikator?.Indikator || 'Hibah',
+                data: dataSeries.map(d => d.nilai),
+                backgroundColor: chartType === 'line' ? 'rgba(47,82,196,0.1)' : 'rgba(47,82,196,0.7)',
+                borderColor: '#2f52c4',
+                borderWidth: 2,
+                fill: chartType === 'line',
+                tension: 0.3,
+                pointBackgroundColor: '#2f52c4',
+                pointBorderColor: '#fff',
+                pointRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: (ctx) => `${ctx.dataset.label}: ${formatNumber(ctx.raw)} ${dataIndikator?.Satuan || 'Rp Milyar'}`
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: dataIndikator?.Satuan || 'Rp Milyar' }
+                },
+                x: { title: { display: true, text: 'Tahun' } }
+            }
+        }
+    });
+}
+
+// Filter data table
+function filterDataTable() {
+    const search = $('#data-search').val().toLowerCase();
+    if (!search) { renderDataTable(); return; }
+    
+    const filtered = dataSeries.filter(d => d.tahun.toString().includes(search));
+    if (filtered.length === 0) {
+        $('#data-tbody').html('<tr><td colspan="4">Tidak ditemukan</div></td>');
+    } else {
+        $('#data-tbody').html(filtered.map((item, i) => {
+            let trend = '-';
+            if (i > 0) {
+                const diff = item.nilai - filtered[i-1].nilai;
+                trend = diff > 0 ? `↑ +${diff.toFixed(2)}` : diff < 0 ? `↓ ${diff.toFixed(2)}` : '→ 0';
+            }
+            return `<tr><td>${item.tahun}</div><td>${formatNumber(item.nilai)}</div><td>${trend}</div><td><button class="btn btn-sm" onclick="editDataTahun(${item.tahun}, ${item.nilai})"><i class="fas fa-edit"></i></button></div></tr>`;
+        }).join(''));
+    }
+}
+
+// Edit data tahun
+function editDataTahun(tahun, nilai) {
+    Swal.fire({
+        title: `Edit Data ${tahun}`,
+        html: `<input type="number" id="edit-nilai" class="form-control" value="${nilai}" step="0.01">`,
+        showCancelButton: true,
+        confirmButtonText: 'Simpan',
+        preConfirm: () => {
+            const newVal = parseFloat(document.getElementById('edit-nilai').value);
+            if (isNaN(newVal)) Swal.showValidationMessage('Masukkan angka valid');
+            return { tahun, nilai: newVal };
+        }
+    }).then(result => {
+        if (result.isConfirmed) {
+            const idx = dataSeries.findIndex(d => d.tahun === result.value.tahun);
+            if (idx !== -1) {
+                dataSeries[idx].nilai = result.value.nilai;
+                renderDataTable();
+                updateDataStats();
+                renderChart();
+                Swal.fire('Berhasil!', 'Data diperbarui', 'success');
+            }
+        }
+    });
+}
+
+// Simpan analisis manual
+function simpanAnalisisManual() {
+    const judul = $('#analisis-judul-input').val().trim();
+    const kesimpulan = $('#analisis-kesimpulan-input').val().trim();
+    const rekomendasi = $('#analisis-rekomendasi-input').val().trim();
+    
+    if (!judul) {
+        Swal.fire('Error', 'Judul analisis harus diisi', 'error');
+        return;
+    }
+    
+    Swal.fire({
+        title: 'Menyimpan...',
+        text: 'Mohon tunggu',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+    
+    $.ajax({
+        url: baseUrl + 'IDE/simpan_analisis_data',
+        type: 'POST',
+        data: {
+            judul: judul,
+            indikator: dataIndikator?.Indikator || 'Hibah',
+            data_aktual: JSON.stringify(dataSeries),
+            kesimpulan: kesimpulan,
+            rekomendasi: rekomendasi
+        },
+        dataType: 'json',
+        success: function(response) {
+            Swal.close();
+            if (response.status === 'success') {
+                $('#analisis-judul-input').val('');
+                $('#analisis-kesimpulan-input').val('');
+                $('#analisis-rekomendasi-input').val('');
+                
+                Swal.fire('Berhasil!', 'Analisis tersimpan', 'success');
+                loadRiwayatAnalisis();
+            } else {
+                Swal.fire('Error', response.message || 'Gagal menyimpan', 'error');
+            }
+        },
+        error: function() {
+            Swal.close();
+            Swal.fire('Error', 'Gagal menyimpan analisis', 'error');
+        }
+    });
+}
+
+// Load riwayat analisis
+function loadRiwayatAnalisis() {
+    $('#riwayat-analisis-list').html('<div class="modern-spinner"></div><p>Memuat...</p>');
+    
+    $.ajax({
+        url: baseUrl + 'IDE/get_riwayat_analisis',
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success' && response.data.length > 0) {
+                let html = '<div style="max-height:300px;overflow-y:auto;">';
+                response.data.forEach(a => {
+                    html += `
+                        <div style="padding:12px;border-bottom:1px solid var(--border);cursor:pointer;" onclick="viewAnalisisDetail(${a.id_analisis})">
+                            <div style="display:flex;justify-content:space-between;align-items:center;">
+                                <div>
+                                    <strong> ${escapeHtml(a.judul)}</strong>
+                                    <br><small style="color:var(--text-3);">${escapeHtml(a.indikator)} | ${a.tanggal}</small>
+                                </div>
+                                <button class="btn btn-sm" onclick="event.stopPropagation();deleteAnalisis(${a.id_analisis})" style="color:var(--red);">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div style="font-size:12px;margin-top:5px;color:var(--text-2);">
+                                ${escapeHtml((a.kesimpulan || '').substring(0, 100))}${(a.kesimpulan || '').length > 100 ? '...' : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                $('#riwayat-analisis-list').html(html);
+            } else {
+                $('#riwayat-analisis-list').html(`
+                    <div class="empty-state" style="padding:30px;">
+                        <p>Belum ada analisis tersimpan</p>
+                        <p style="font-size:12px;">Klik tombol "Simpan Analisis" untuk menyimpan analisis Anda</p>
+                    </div>
+                `);
+            }
+        },
+        error: function() {
+            $('#riwayat-analisis-list').html('<div class="empty-state"><p>Gagal memuat riwayat</p></div>');
+        }
+    });
+}
+
+// View detail analisis
+function viewAnalisisDetail(id) {
+    $.ajax({
+        url: baseUrl + 'IDE/get_analisis_detail',
+        type: 'POST',
+        data: { id_analisis: id },
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success') {
+                const d = response.data;
+                Swal.fire({
+                    title: d.judul,
+                    html: `
+                        <div style="text-align:left;">
+                            <p><strong> Indikator:</strong> ${escapeHtml(d.indikator)}</p>
+                            <p><strong> Tanggal:</strong> ${d.tanggal}</p>
+                            <div class="mt-3"><strong> Analisis/Kesimpulan:</strong><p class="mt-2">${escapeHtml(d.kesimpulan || '-')}</p></div>
+                            ${d.rekomendasi ? `<div class="mt-3"><strong> Rekomendasi:</strong><p class="mt-2">${escapeHtml(d.rekomendasi)}</p></div>` : ''}
+                        </div>
+                    `,
+                    width: '650px'
+                });
+            }
+        }
+    });
+}
+
+// Delete analisis
+function deleteAnalisis(id) {
+    Swal.fire({
+        title: 'Hapus analisis?',
+        text: 'Data tidak dapat dikembalikan',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        confirmButtonText: 'Ya, Hapus'
+    }).then(result => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: baseUrl + 'IDE/delete_analisis_data',
+                type: 'POST',
+                data: { id_analisis: id },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire('Terhapus!', '', 'success');
+                        loadRiwayatAnalisis();
+                    }
+                }
+            });
+        }
+    });
+}
+
+// Export data to Excel
+function exportDataToExcel() {
+    const wsData = [['Tahun', 'Nilai (Rp Milyar)', 'Keterangan']];
+    dataSeries.forEach(d => wsData.push([d.tahun, d.nilai, 'Data Aktual']));
+    
+    const ws = XLSX.utils.aoa_to_sheet(wsData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Data Indikator');
+    XLSX.writeFile(wb, `Data_Indikator_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+
+// Format number
+function formatNumber(num) {
+    if (num === undefined || num === null) return '0';
+    return num.toLocaleString('id-ID');
+}
+
+// ==================== EXPORT LAPORAN PDF PROFESIONAL (TANPA SIMBOL) ====================
+async function exportDataReportToPDF() {
+    Swal.fire({
+        title: 'Membuat Laporan PDF...',
+        text: 'Mohon tunggu, sedang memproses data',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+    
+    try {
+        // Ambil data analisis dari input
+        const judulAnalisis = $('#analisis-judul-input').val().trim() || 'Analisis Data Indikator';
+        const kesimpulanAnalisis = $('#analisis-kesimpulan-input').val().trim() || 'Belum ada analisis yang ditambahkan';
+        const rekomendasiAnalisis = $('#analisis-rekomendasi-input').val().trim() || '';
+        
+        // Hitung statistik
+        const values = dataSeries.map(d => d.nilai);
+        const totalData = dataSeries.length;
+        const nilaiTertinggi = Math.max(...values);
+        const nilaiTerendah = Math.min(...values);
+        const rataRata = values.reduce((a, b) => a + b, 0) / values.length;
+        const tahunTertinggi = dataSeries.find(d => d.nilai === nilaiTertinggi)?.tahun || '-';
+        const tahunTerendah = dataSeries.find(d => d.nilai === nilaiTerendah)?.tahun || '-';
+        
+        // Siapkan data tren (tanpa simbol)
+        let trendText = '';
+        for (let i = 1; i < dataSeries.length; i++) {
+            const diff = dataSeries[i].nilai - dataSeries[i-1].nilai;
+            const percent = dataSeries[i-1].nilai !== 0 ? (diff / dataSeries[i-1].nilai * 100).toFixed(1) : 0;
+            const arah = diff > 0 ? 'meningkat' : (diff < 0 ? 'menurun' : 'stabil');
+            const arahText = diff > 0 ? 'naik' : (diff < 0 ? 'turun' : 'tetap');
+            trendText += `<div class="report-trend-item">Tahun ${dataSeries[i].tahun}: Nilai ${arahText} sebesar ${Math.abs(diff).toFixed(2)} (${percent > 0 ? '+' : ''}${percent}%) dari tahun sebelumnya</div>`;
+        }
+        
+        // Logo URL
+        const logoUrl = '<?= base_url('assets/img/bappeda.png') ?>';
+        const now = new Date();
+        const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        const dateStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+        const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+        
+        // Format angka tanpa simbol
+        const formatNumberRibuan = (num) => {
+            return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        };
+        
+        // Buat HTML Laporan (tanpa simbol)
+        const htmlContent = `
+            <div class="report-export-wrapper" id="report-export-content">
+                <!-- HEADER -->
+                <div class="report-header">
+                    <div class="report-logo">
+                        <img src="${logoUrl}" alt="Logo Bappeda" class="report-logo-img">
+                        <div>
+                            <div class="report-title">Smart Office Management</div>
+                            <div class="report-subtitle">Bappeda Kabupaten Banyuwangi</div>
+                        </div>
+                    </div>
+                    <div class="report-meta">
+                        <span>Tanggal Export: ${dateStr} | ${timeStr} WIB</span>
+                        <span>User: <?= $display_name ?> (<?= $role_name ?>)</span>
+                        <span>ID Laporan: SMB-${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}-${now.getTime().toString().slice(-6)}</span>
+                    </div>
+                </div>
+                
+                <!-- INFORMASI INDIKATOR -->
+                <div class="report-section">
+                    <div class="report-section-title">INFORMASI INDIKATOR</div>
+                    <div class="report-source-card">
+                        <div class="report-source-item">
+                            <span class="report-source-label">Indikator:</span>
+                            <span class="report-source-value"> ${escapeHtml(dataIndikator?.Indikator || 'Hibah')}</span>
+                        </div>
+                        <div class="report-source-item">
+                            <span class="report-source-label">Produsen Data:</span>
+                            <span class="report-source-value"> ${escapeHtml(dataIndikator?.['Produsen Data'] || 'Badan Pendapatan Daerah')}</span>
+                        </div>
+                        <div class="report-source-item">
+                            <span class="report-source-label">Urusan:</span>
+                            <span class="report-source-value"> ${escapeHtml(dataIndikator?.Urusan || 'Pendapatan Daerah')}</span>
+                        </div>
+                        <div class="report-source-item">
+                            <span class="report-source-label">Satuan:</span>
+                            <span class="report-source-value"> ${escapeHtml(dataIndikator?.Satuan || 'Rp Milyar')}</span>
+                        </div>
+                        <div class="report-source-item">
+                            <span class="report-source-label">Sumber Data:</span>
+                            <span class="report-source-value"> Portal Satu Data Banyuwangi</span>
+                        </div>
+                        <div class="report-source-item">
+                            <span class="report-source-label">Periode Data:</span>
+                            <span class="report-source-value"> ${dataSeries[0]?.tahun || '-'} - ${dataSeries[dataSeries.length-1]?.tahun || '-'}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- STATISTIK RINGKAS -->
+                <div class="report-section">
+                    <div class="report-section-title">STATISTIK RINGKAS</div>
+                    <div class="report-info-grid">
+                        <div class="report-info-card">
+                            <div class="report-info-label">TOTAL DATA</div>
+                            <div class="report-info-value">${totalData}</div>
+                            <div class="report-info-unit">tahun tersedia</div>
+                        </div>
+                        <div class="report-info-card">
+                            <div class="report-info-label">NILAI TERTINGGI</div>
+                            <div class="report-info-value">${formatNumber(nilaiTertinggi)}</div>
+                            <div class="report-info-unit">tahun ${tahunTertinggi}</div>
+                        </div>
+                        <div class="report-info-card">
+                            <div class="report-info-label">NILAI TERENDAH</div>
+                            <div class="report-info-value">${formatNumber(nilaiTerendah)}</div>
+                            <div class="report-info-unit">tahun ${tahunTerendah}</div>
+                        </div>
+                        <div class="report-info-card">
+                            <div class="report-info-label">RATA-RATA</div>
+                            <div class="report-info-value">${formatNumber(rataRata)}</div>
+                            <div class="report-info-unit">per tahun</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- DATA PER TAHUN -->
+                <div class="report-section">
+                    <div class="report-section-title">DATA PER TAHUN</div>
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th style="width:20%">TAHUN</th>
+                                <th style="width:30%">NILAI (${escapeHtml(dataIndikator?.Satuan || 'Rp Milyar')})</th>
+                                <th style="width:25%">PERUBAHAN</th>
+                                <th style="width:25%">PERSENTASE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${dataSeries.map((item, index) => {
+                                let perubahanHtml = '-';
+                                let persenHtml = '-';
+                                let trendClass = '';
+                                
+                                if (index > 0) {
+                                    const prevValue = dataSeries[index - 1].nilai;
+                                    const diff = item.nilai - prevValue;
+                                    const percent = prevValue !== 0 ? (diff / prevValue * 100).toFixed(1) : 0;
+                                    trendClass = diff > 0 ? 'report-trend-up' : (diff < 0 ? 'report-trend-down' : 'report-trend-neutral');
+                                    const arahText = diff > 0 ? 'naik' : (diff < 0 ? 'turun' : 'tetap');
+                                    perubahanHtml = `${arahText} ${Math.abs(diff).toFixed(2)}`;
+                                    persenHtml = `<span class="${trendClass}">${percent > 0 ? '+' : ''}${percent}%</span>`;
+                                }
+                                
+                                return `
+                                    <tr>
+                                        <td style="font-weight:bold">${item.tahun}</td>
+                                        <td style="text-align:right">${formatNumber(item.nilai)}</td>
+                                        <td style="text-align:center">${perubahanHtml}</td>
+                                        <td style="text-align:center">${persenHtml}</td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- TREND ANALISIS -->
+                ${trendText ? `
+                <div class="report-section">
+                    <div class="report-section-title">TREND ANALISIS</div>
+                    <div class="report-trend-container">
+                        ${trendText}
+                    </div>
+                </div>
+                ` : ''}
+                
+                <!-- KESIMPULAN DAN ANALISIS -->
+                <div class="report-analysis">
+                    <div class="report-analysis-title">KESIMPULAN DAN ANALISIS</div>
+                    <div class="report-analysis-content">
+                        <strong>Judul Analisis:</strong> ${escapeHtml(judulAnalisis)}<br><br>
+                        <strong>Hasil Analisis:</strong><br>
+                        ${escapeHtml(kesimpulanAnalisis).replace(/\n/g, '<br>')}
+                    </div>
+                </div>
+                
+                <!-- REKOMENDASI -->
+                ${rekomendasiAnalisis ? `
+                <div class="report-recommendation">
+                    <div class="report-recommendation-title">REKOMENDASI</div>
+                    <div class="report-analysis-content">
+                        ${escapeHtml(rekomendasiAnalisis).replace(/\n/g, '<br>')}
+                    </div>
+                </div>
+                ` : ''}
+                
+                <!-- FOOTER -->
+                <div class="report-footer">
+                    <div>Dokumen ini dibuat secara otomatis oleh Smart Office Management Bappeda Kabupaten Banyuwangi</div>
+                    <div>Laporan ini merupakan dokumen resmi yang sah sebagai bukti analisis data indikator</div>
+                    <div>Sistem informasi terintegrasi untuk mendukung perencanaan pembangunan daerah</div>
+                </div>
+            </div>
+        `;
+        
+        // Buat element sementara
+        const element = document.createElement('div');
+        element.innerHTML = htmlContent;
+        document.body.appendChild(element);
+        
+        // Konfigurasi PDF
+        const opt = {
+            margin: [0.7, 0.7, 0.7, 0.7],
+            filename: `Laporan_Analisis_Data_${dataIndikator?.Indikator || 'Hibah'}_${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}-${now.getDate().toString().padStart(2,'0')}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { 
+                scale: 2, 
+                letterRendering: true, 
+                useCORS: true,
+                logging: false
+            },
+            jsPDF: { 
+                unit: 'in', 
+                format: 'a4', 
+                orientation: 'portrait' 
+            }
+        };
+        
+        // Generate PDF
+        await html2pdf().set(opt).from(element).save();
+        
+        // Hapus element sementara
+        document.body.removeChild(element);
+        
+        // Tampilkan notifikasi sukses
+        Swal.fire({
+            icon: 'success',
+            title: 'Laporan Berhasil Diexport',
+            html: `File PDF laporan analisis data telah tersimpan.<br><strong>${dataIndikator?.Indikator || 'Hibah'}</strong> - ${dateStr}`,
+            timer: 3000,
+            showConfirmButton: false
+        });
+        
+    } catch (error) {
+        console.error('Export PDF error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal Export PDF',
+            text: 'Terjadi kesalahan: ' + error.message
+        });
+    }
+}
+
+// ================= RECORD PRINT LOG DARI PREVIEW =================
+function recordPrintFromPreview() {
+    const idDokumen = document.getElementById('preview-dokumen-id').value;
+    const namaDokumen = document.getElementById('preview-dokumen-nama').value;
+    const jumlahLembar = document.getElementById('print-jumlah-lembar').value || 1;
+    const rangeHalaman = document.getElementById('print-range-halaman').value || 'Semua';
+    
+    if (!idDokumen) {
+        console.error('ID Dokumen tidak ditemukan!');
+        // Coba ambil dari URL atau sumber lain
+        Swal.fire('Error', 'ID Dokumen tidak ditemukan, print log tidak tersimpan', 'warning');
+        return false;
+    }
+    
+    console.log('Recording print log - ID:', idDokumen, 'Lembar:', jumlahLembar);
+    
+    // Kirim AJAX sync (biar pasti tercatat sebelum print)
+    let success = false;
+    
+    $.ajax({
+        url: '<?= base_url('IDE/log_print_from_preview') ?>',
+        type: 'POST',
+        data: {
+            id_dokumen: idDokumen,
+            nama_dokumen: namaDokumen,
+            jumlah_kertas: parseInt(jumlahLembar),
+            range_halaman: rangeHalaman,
+            source: 'preview_print_button'
+        },
+        dataType: 'json',
+        async: false,  // IMPORTANT: biar proses print menunggu sampai log tercatat
+        success: function(response) {
+            console.log('Print log recorded:', response);
+            if (response.status === 'success') {
+                success = true;
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Print Log Tercatat',
+                    text: response.message || 'Print activity telah dicatat',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            } else {
+                console.error('Failed to record:', response.message);
+                Swal.fire('Error', response.message || 'Gagal mencatat log print', 'error');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', error);
+            Swal.fire('Error', 'Gagal menghubungi server: ' + error, 'error');
+        }
+    });
+    
+    return success;
+}
+
+// ================= HANDLE PRINT DARI PREVIEW =================
+function handlePrintFromPreview() {
+    // Tampilkan loading
+    Swal.fire({
+        title: 'Memproses...',
+        text: 'Mencatat aktivitas print',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+    
+    // Catat log dulu
+    $.ajax({
+        url: '<?= base_url('IDE/log_print_from_preview') ?>',
+        type: 'POST',
+        data: {
+            id_dokumen: document.getElementById('preview-dokumen-id').value,
+            nama_dokumen: document.getElementById('preview-dokumen-nama').value,
+            jumlah_kertas: parseInt(document.getElementById('print-jumlah-lembar').value || 1),
+            range_halaman: document.getElementById('print-range-halaman').value || 'Semua',
+            source: 'preview_print_button'
+        },
+        dataType: 'json',
+        success: function(response) {
+            Swal.close();
+            if (response.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Print Log Tercatat',
+                    text: response.message,
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    // Setelah log tercatat, jalankan print
+                    window.print();
+                });
+            } else {
+                Swal.fire('Error', response.message || 'Gagal mencatat log print', 'error');
+            }
+        },
+        error: function(xhr, status, error) {
+            Swal.close();
+            console.error('Error recording print log:', error);
+            // TETAP LANJUTKAN PRINT meskipun log gagal
+            Swal.fire({
+                title: 'Peringatan',
+                text: 'Gagal mencatat log print, tetapi print akan dilanjutkan',
+                icon: 'warning',
+                timer: 1500,
+                showConfirmButton: false
+            }).then(() => {
+                window.print();
+            });
+        }
+    });
+}
+
+// ================= PASANG EVENT LISTENER SAAT MODAL DIBUKA =================
+function setupPrintButtonListener() {
+    const printBtn = document.getElementById('btn-print-preview');
+    if (printBtn) {
+        // Hapus listener lama jika ada
+        const newBtn = printBtn.cloneNode(true);
+        printBtn.parentNode.replaceChild(newBtn, printBtn);
+        
+        // Pasang listener baru
+        newBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            handlePrintFromPreview();
+        });
+    }
+}
+
+// Observer untuk modal preview (pasang listener setiap modal terbuka)
+const previewModalObserver = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'style') {
+            const modal = document.getElementById('modalPreview');
+            if (modal && modal.style.display === 'flex') {
+                setupPrintButtonListener();
+            }
+        }
+    });
+});
+
+const modalPreview = document.getElementById('modalPreview');
+if (modalPreview) {
+    previewModalObserver.observe(modalPreview, { attributes: true });
+}
+
+async function exportDataReportToPDF() {
+    Swal.fire({
+        title: 'Membuat Laporan PDF...',
+        text: 'Mohon tunggu, sedang memproses data',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+    
+    try {
+        // ========== UBAH: Ambil data analisis dari DATABASE, bukan dari input form ==========
+        let judulAnalisis = 'Analisis Data Indikator';
+        let kesimpulanAnalisis = 'Belum ada analisis yang ditambahkan';
+        let rekomendasiAnalisis = '';
+        
+        // Ambil analisis TERBARU dari database
+        try {
+            const response = await $.ajax({
+                url: '<?= base_url('IDE/get_latest_analisis') ?>',
+                type: 'GET',
+                dataType: 'json',
+                async: false
+            });
+            
+            if (response.status === 'success' && response.data) {
+                judulAnalisis = response.data.judul || judulAnalisis;
+                kesimpulanAnalisis = response.data.kesimpulan || kesimpulanAnalisis;
+                rekomendasiAnalisis = response.data.rekomendasi || '';
+                console.log('Menggunakan analisis dari database:', judulAnalisis);
+            } else {
+                console.log('Tidak ada analisis di database, menggunakan default');
+            }
+        } catch(e) {
+            console.error('Gagal mengambil analisis dari database:', e);
+        }
+        
+        // ========== SISANYA SAMA PERSIS SEPERTI SEBELUMNYA ==========
+        // Hitung statistik
+        const values = dataSeries.map(d => d.nilai);
+        const totalData = dataSeries.length;
+        const nilaiTertinggi = Math.max(...values);
+        const nilaiTerendah = Math.min(...values);
+        const rataRata = values.reduce((a, b) => a + b, 0) / values.length;
+        const tahunTertinggi = dataSeries.find(d => d.nilai === nilaiTertinggi)?.tahun || '-';
+        const tahunTerendah = dataSeries.find(d => d.nilai === nilaiTerendah)?.tahun || '-';
+        
+        // Siapkan data tren
+        let trendText = '';
+        for (let i = 1; i < dataSeries.length; i++) {
+            const diff = dataSeries[i].nilai - dataSeries[i-1].nilai;
+            const percent = dataSeries[i-1].nilai !== 0 ? (diff / dataSeries[i-1].nilai * 100).toFixed(1) : 0;
+            const arahText = diff > 0 ? 'naik' : (diff < 0 ? 'turun' : 'tetap');
+            trendText += `<div class="report-trend-item">Tahun ${dataSeries[i].tahun}: Nilai ${arahText} sebesar ${Math.abs(diff).toFixed(2)} (${percent > 0 ? '+' : ''}${percent}%) dari tahun sebelumnya</div>`;
+        }
+        
+        const logoUrl = '<?= base_url('assets/img/bappeda.png') ?>';
+        const now = new Date();
+        const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        const dateStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+        const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+        
+        const formatNumberRibuan = (num) => num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        
+        // Buat HTML Laporan (SAMA PERSIS SEPERTI SEBELUMNYA)
+        const htmlContent = `
+            <div class="report-export-wrapper" id="report-export-content">
+                <div class="report-header">
+                    <div class="report-logo">
+                        <img src="${logoUrl}" alt="Logo Bappeda" class="report-logo-img">
+                        <div>
+                            <div class="report-title">Smart Office Management</div>
+                            <div class="report-subtitle">Bappeda Kabupaten Banyuwangi</div>
+                        </div>
+                    </div>
+                    <div class="report-meta">
+                        <span>Tanggal Export: ${dateStr} | ${timeStr} WIB</span>
+                        <span>User: <?= $display_name ?> (<?= $role_name ?>)</span>
+                        <span>ID Laporan: SMB-${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}-${now.getTime().toString().slice(-6)}</span>
+                    </div>
+                </div>
+                
+                <div class="report-section">
+                    <div class="report-section-title">INFORMASI INDIKATOR</div>
+                    <div class="report-source-card">
+                        <div class="report-source-item">
+                            <span class="report-source-label">Indikator:</span>
+                            <span class="report-source-value"> ${escapeHtml(dataIndikator?.Indikator || 'Hibah')}</span>
+                        </div>
+                        <div class="report-source-item">
+                            <span class="report-source-label">Produsen Data:</span>
+                            <span class="report-source-value"> ${escapeHtml(dataIndikator?.['Produsen Data'] || 'Badan Pendapatan Daerah')}</span>
+                        </div>
+                        <div class="report-source-item">
+                            <span class="report-source-label">Urusan:</span>
+                            <span class="report-source-value"> ${escapeHtml(dataIndikator?.Urusan || 'Pendapatan Daerah')}</span>
+                        </div>
+                        <div class="report-source-item">
+                            <span class="report-source-label">Satuan:</span>
+                            <span class="report-source-value"> ${escapeHtml(dataIndikator?.Satuan || 'Rp Milyar')}</span>
+                        </div>
+                        <div class="report-source-item">
+                            <span class="report-source-label">Sumber Data:</span>
+                            <span class="report-source-value"> Portal Satu Data Banyuwangi</span>
+                        </div>
+                        <div class="report-source-item">
+                            <span class="report-source-label">Periode Data:</span>
+                            <span class="report-source-value"> ${dataSeries[0]?.tahun || '-'} - ${dataSeries[dataSeries.length-1]?.tahun || '-'}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="report-section">
+                    <div class="report-section-title">STATISTIK RINGKAS</div>
+                    <div class="report-info-grid">
+                        <div class="report-info-card">
+                            <div class="report-info-label">TOTAL DATA</div>
+                            <div class="report-info-value">${totalData}</div>
+                            <div class="report-info-unit">tahun tersedia</div>
+                        </div>
+                        <div class="report-info-card">
+                            <div class="report-info-label">NILAI TERTINGGI</div>
+                            <div class="report-info-value">${formatNumber(nilaiTertinggi)}</div>
+                            <div class="report-info-unit">tahun ${tahunTertinggi}</div>
+                        </div>
+                        <div class="report-info-card">
+                            <div class="report-info-label">NILAI TERENDAH</div>
+                            <div class="report-info-value">${formatNumber(nilaiTerendah)}</div>
+                            <div class="report-info-unit">tahun ${tahunTerendah}</div>
+                        </div>
+                        <div class="report-info-card">
+                            <div class="report-info-label">RATA-RATA</div>
+                            <div class="report-info-value">${formatNumber(rataRata)}</div>
+                            <div class="report-info-unit">per tahun</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="report-section">
+                    <div class="report-section-title">DATA PER TAHUN</div>
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th style="width:20%">TAHUN</th>
+                                <th style="width:30%">NILAI (${escapeHtml(dataIndikator?.Satuan || 'Rp Milyar')})</th>
+                                <th style="width:25%">PERUBAHAN</th>
+                                <th style="width:25%">PERSENTASE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${dataSeries.map((item, index) => {
+                                let perubahanHtml = '-';
+                                let persenHtml = '-';
+                                let trendClass = '';
+                                
+                                if (index > 0) {
+                                    const prevValue = dataSeries[index - 1].nilai;
+                                    const diff = item.nilai - prevValue;
+                                    const percent = prevValue !== 0 ? (diff / prevValue * 100).toFixed(1) : 0;
+                                    trendClass = diff > 0 ? 'report-trend-up' : (diff < 0 ? 'report-trend-down' : 'report-trend-neutral');
+                                    const arahText = diff > 0 ? 'naik' : (diff < 0 ? 'turun' : 'tetap');
+                                    perubahanHtml = `${arahText} ${Math.abs(diff).toFixed(2)}`;
+                                    persenHtml = `<span class="${trendClass}">${percent > 0 ? '+' : ''}${percent}%</span>`;
+                                }
+                                
+                                return `
+                                    <tr>
+                                        <td style="font-weight:bold">${item.tahun}</td>
+                                        <td style="text-align:right">${formatNumber(item.nilai)}</td>
+                                        <td style="text-align:center">${perubahanHtml}</td>
+                                        <td style="text-align:center">${persenHtml}</td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                
+                ${trendText ? `
+                <div class="report-section">
+                    <div class="report-section-title">TREND ANALISIS</div>
+                    <div class="report-trend-container">
+                        ${trendText}
+                    </div>
+                </div>
+                ` : ''}
+                
+                <!-- KESIMPULAN DAN ANALISIS - Menggunakan data dari DATABASE -->
+                <div class="report-analysis">
+                    <div class="report-analysis-title">KESIMPULAN DAN ANALISIS</div>
+                    <div class="report-analysis-content">
+                        <strong>Judul Analisis:</strong> ${escapeHtml(judulAnalisis)}<br><br>
+                        <strong>Hasil Analisis:</strong><br>
+                        ${escapeHtml(kesimpulanAnalisis).replace(/\n/g, '<br>')}
+                    </div>
+                </div>
+                
+                ${rekomendasiAnalisis ? `
+                <div class="report-recommendation">
+                    <div class="report-recommendation-title">REKOMENDASI</div>
+                    <div class="report-analysis-content">
+                        ${escapeHtml(rekomendasiAnalisis).replace(/\n/g, '<br>')}
+                    </div>
+                </div>
+                ` : ''}
+                
+                <div class="report-footer">
+                    <div>Dokumen ini dibuat secara otomatis oleh Smart Office Management Bappeda Kabupaten Banyuwangi</div>
+                    <div>Laporan ini merupakan dokumen resmi yang sah sebagai bukti analisis data indikator</div>
+                    <div>Sistem informasi terintegrasi untuk mendukung perencanaan pembangunan daerah</div>
+                </div>
+            </div>
+        `;
+        
+        const element = document.createElement('div');
+        element.innerHTML = htmlContent;
+        document.body.appendChild(element);
+        
+        const opt = {
+            margin: [0.7, 0.7, 0.7, 0.7],
+            filename: `Laporan_Analisis_Data_${dataIndikator?.Indikator || 'Hibah'}_${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}-${now.getDate().toString().padStart(2,'0')}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, letterRendering: true, useCORS: true },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+        
+        await html2pdf().set(opt).from(element).save();
+        document.body.removeChild(element);
+        
+        Swal.fire({
+            icon: 'success',
+            title: 'Laporan Berhasil Diexport',
+            html: `File PDF laporan analisis data telah tersimpan.<br><strong>${dataIndikator?.Indikator || 'Hibah'}</strong> - ${dateStr}`,
+            timer: 3000,
+            showConfirmButton: false
+        });
+        
+    } catch (error) {
+        console.error('Export PDF error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal Export PDF',
+            text: 'Terjadi kesalahan: ' + error.message
+        });
+    }
+}
 
 
 </script>

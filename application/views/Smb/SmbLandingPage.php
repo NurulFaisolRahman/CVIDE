@@ -1144,6 +1144,215 @@ footer {
   object-fit: contain;
   display: block;
 }
+
+/* Perbaikan untuk icon di quick links */
+.qlink-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  transition: all 0.3s ease;
+}
+
+.qlink-icon svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
+.qlink:hover .qlink-icon {
+  transform: translateY(-3px);
+}
+
+.qlink-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dark);
+  line-height: 1.35;
+}
+
+/* Responsif untuk mobile */
+@media (max-width: 768px) {
+  .qlink-icon {
+    width: 44px;
+    height: 44px;
+  }
+  .qlink-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .qlink-label {
+    font-size: 10px;
+  }
+}
+.modal-video {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.95);
+  z-index: 10000;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+
+.modal-video.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-video-container {
+  position: relative;
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px;
+  animation: modalZoomIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalZoomIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-video-close {
+  position: absolute;
+  top: -50px;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  z-index: 10;
+}
+
+.modal-video-close:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: rotate(90deg);
+}
+
+.modal-video-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.modal-video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  height: 0;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  background: #000;
+}
+
+.modal-video-wrapper iframe,
+.modal-video-wrapper video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.modal-video-caption {
+  text-align: center;
+  margin-top: 20px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.modal-video-caption h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: #fff;
+}
+
+.modal-video-caption p {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* Tombol Buka Modal */
+.btn-video-modal {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #1340c4 0%, #0e28a0 100%);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(19, 64, 196, 0.3);
+}
+
+.btn-video-modal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(19, 64, 196, 0.4);
+}
+
+.btn-video-modal svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-video-container {
+    width: 95%;
+  }
+  
+  .modal-video-close {
+    top: -45px;
+    right: 0;
+    width: 35px;
+    height: 35px;
+  }
+  
+  .modal-video-caption h3 {
+    font-size: 16px;
+  }
+  
+  .modal-video-caption p {
+    font-size: 11px;
+  }
+}
 </style>
 </head>
 <body>
@@ -1232,10 +1441,13 @@ footer {
         Menuju Banyuwangi<br>yang <span class="accent">Cerdas & Maju</span>
       </h1>
       <div class="hero-actions">
-        <button class="btn-hero-ghost" onclick="window.open('https://www.youtube.com/embed/6Ydn3v320lg?autoplay=1&si=rGZd08GSm4f7QU6f', '_blank', 'width=800,height=500')">
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="8" r="7"/><polygon points="6,5 12,8 6,11" fill="currentColor" stroke="none"/></svg>
-          Profil Bappeda
-        </button>
+        <button class="btn-hero-ghost" onclick="openYouTubeVideo('6Ydn3v320lg')">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+    <circle cx="8" cy="8" r="7"/>
+    <polygon points="6,5 12,8 6,11" fill="currentColor" stroke="none"/>
+  </svg>
+  Profil Bappeda
+</button>
       </div>
     </div>
   </div>
@@ -1257,6 +1469,30 @@ footer {
     <span class="hero-info-badge">Berita Terbaru</span>
   </div>
 </section>
+
+<div id="modalVideo" class="modal-video" onclick="closeModalVideo(event)">
+  <div class="modal-video-container" onclick="event.stopPropagation()">
+    <div class="modal-video-close" onclick="closeModalVideo()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="modal-video-wrapper">
+      <iframe 
+        id="videoPlayer"
+        src="https://www.youtube.com/embed/6Ydn3v320lg?autoplay=0&rel=0&modestbranding=1&playsinline=1"
+        title="Video Profil Banyuwangi"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+    <div class="modal-video-caption">
+      <h3>Banyuwangi — The Sunrise of Java</h3>
+      <p>Menuju Banyuwangi yang Cerdas, Maju, dan Berkelanjutan</p>
+    </div>
+  </div>
+</div>
 
 <!-- ===================================================
      STATISTICS BAR
@@ -1573,7 +1809,7 @@ footer {
 </section>
 
 <!-- ===================================================
-     QUICK LINKS (SEMUA MENGGUNAKAN GAMBAR)
+     QUICK LINKS (ICON SAJA)
      =================================================== -->
 <section class="quicklink-section" id="kontak">
   <div class="container">
@@ -1581,39 +1817,72 @@ footer {
       <h2 class="section-title">Akses <span>Cepat</span> Portal</h2>
     </div>
     <div class="quicklink-grid">
+      <!-- Satu Data -->
       <a href="https://satudata.banyuwangikab.go.id" class="qlink" target="_blank" rel="noopener noreferrer">
-        <div class="qlink-icon" style="background:#eff4ff;">
-          <img src="/CVIDE/assets/img/satudata.png" alt="Satu Data">
+        <div class="qlink-icon" style="background:#e0e7ff;">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#4338ca" stroke-width="1.8">
+            <path d="M4 4h16v16H4zM9 9h6v6H9z" stroke="currentColor" fill="none"/>
+            <path d="M9 9l6 6M15 9l-6 6" stroke="currentColor"/>
+            <circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/>
+          </svg>
         </div>
         <div class="qlink-label">Satu Data</div>
       </a>
+
+      <!-- E-LKPI -->
       <a href="https://elkpi.banyuwangikab.go.id" class="qlink" target="_blank" rel="noopener noreferrer">
-        <div class="qlink-icon" style="background:#fff7ed;">
-          <img src="assets/img/elkpi.png" alt="E-LKPI">
+        <div class="qlink-icon" style="background:#fed7aa;">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#c2410c" stroke-width="1.8">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor"/>
+            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
+          </svg>
         </div>
         <div class="qlink-label">E-LKPI</div>
       </a>
+
+      <!-- SIPD -->
       <a href="https://sipd.banyuwangikab.go.id" class="qlink" target="_blank" rel="noopener noreferrer">
-        <div class="qlink-icon" style="background:#f0fdf4;">
-          <img src="assets/img/sipd.png" alt="SIPD">
+        <div class="qlink-icon" style="background:#dcfce7;">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#15803d" stroke-width="1.8">
+            <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor"/>
+            <rect x="7" y="4" width="10" height="16" rx="1" stroke="currentColor" fill="none"/>
+            <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+          </svg>
         </div>
         <div class="qlink-label">SIPD</div>
       </a>
+
+      <!-- GIS Banyuwangi -->
       <a href="https://gis.banyuwangikab.go.id" class="qlink" target="_blank" rel="noopener noreferrer">
-        <div class="qlink-icon" style="background:#fdf4ff;">
-          <img src="assets/img/gis.png" alt="GIS Banyuwangi">
+        <div class="qlink-icon" style="background:#e9d5ff;">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#6b21a5" stroke-width="1.8">
+            <path d="M12 2c-4 0-7 3-7 7 0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z" stroke="currentColor" fill="none"/>
+            <circle cx="12" cy="9" r="3" fill="currentColor" stroke="none"/>
+          </svg>
         </div>
         <div class="qlink-label">GIS Banyuwangi</div>
       </a>
+
+      <!-- E-Monitoring -->
       <a href="https://emonitoring.banyuwangikab.go.id" class="qlink" target="_blank" rel="noopener noreferrer">
-        <div class="qlink-icon" style="background:#eff4ff;">
-          <img src="assets/img/emonitoring.png" alt="E-Monitoring">
+        <div class="qlink-icon" style="background:#cffafe;">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#0e7490" stroke-width="1.8">
+            <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" fill="none"/>
+            <path d="M12 8v4l3 3" stroke="currentColor"/>
+            <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/>
+          </svg>
         </div>
         <div class="qlink-label">E-Monitoring</div>
       </a>
+
+      <!-- Portal ASN -->
       <a href="https://portal-asn.banyuwangikab.go.id" class="qlink" target="_blank" rel="noopener noreferrer">
-        <div class="qlink-icon" style="background:#fff7ed;">
-          <img src="assets/img/portal-asn.png" alt="Portal ASN">
+        <div class="qlink-icon" style="background:#f1f5f9;">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#475569" stroke-width="1.8">
+            <circle cx="12" cy="8" r="4" stroke="currentColor" fill="none"/>
+            <path d="M5 20v-2a7 7 0 0114 0v2" stroke="currentColor" fill="none"/>
+            <rect x="9" y="13" width="6" height="6" rx="1" stroke="currentColor" fill="none"/>
+          </svg>
         </div>
         <div class="qlink-label">Portal ASN</div>
       </a>
@@ -1873,6 +2142,163 @@ window.addEventListener('scroll', function() {
     }
   });
 });
+
+function openModalVideo(videoUrl = null) {
+  const modal = document.getElementById('modalVideo');
+  const iframe = document.getElementById('videoPlayer');
+  
+  // Jika ada URL video yang diberikan, gunakan URL tersebut
+  if (videoUrl) {
+    // Deteksi apakah URL dari YouTube
+    if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+      let embedUrl = videoUrl;
+      // Konversi ke embed URL jika belum
+      if (videoUrl.includes('watch?v=')) {
+        const videoId = videoUrl.split('v=')[1].split('&')[0];
+        embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+      } else if (videoUrl.includes('youtu.be/')) {
+        const videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
+        embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+      } else if (!videoUrl.includes('autoplay=1')) {
+        embedUrl = videoUrl + (videoUrl.includes('?') ? '&autoplay=1' : '?autoplay=1');
+      }
+      iframe.src = embedUrl;
+    } else {
+      // Untuk file video lokal atau external
+      iframe.src = videoUrl + (videoUrl.includes('?') ? '&autoplay=1' : '?autoplay=1');
+    }
+  } else {
+    // Default video profil Banyuwangi
+    iframe.src = "https://www.youtube.com/embed/6Ydn3v320lg?autoplay=1&rel=0&modestbranding=1&playsinline=1";
+  }
+  
+  // Tampilkan modal
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden'; // Mencegah scroll halaman
+  
+  // Tambahkan event listener untuk tombol ESC
+  document.addEventListener('keydown', handleVideoModalEsc);
+}
+
+/**
+ * Menutup modal video dan menghentikan video
+ * @param {Event} event - Event click (optional)
+ */
+function closeModalVideo(event) {
+  // Jika event ada dan target bukan modal container, jangan tutup
+  if (event && event.target !== document.getElementById('modalVideo') && 
+      !event.target.classList.contains('modal-video-close')) {
+    return;
+  }
+  
+  const modal = document.getElementById('modalVideo');
+  const iframe = document.getElementById('videoPlayer');
+  
+  // Hentikan video dengan mengosongkan src
+  iframe.src = "about:blank";
+  setTimeout(() => {
+    iframe.src = "https://www.youtube.com/embed/6Ydn3v320lg?autoplay=0&rel=0&modestbranding=1&playsinline=1";
+  }, 100);
+  
+  // Sembunyikan modal
+  modal.classList.remove('active');
+  document.body.style.overflow = ''; // Kembalikan scroll
+  
+  // Hapus event listener ESC
+  document.removeEventListener('keydown', handleVideoModalEsc);
+}
+
+/**
+ * Handler untuk tombol ESC
+ * @param {KeyboardEvent} e 
+ */
+function handleVideoModalEsc(e) {
+  if (e.key === 'Escape') {
+    closeModalVideo();
+  }
+}
+
+/**
+ * Membuka modal dengan video YouTube menggunakan ID
+ * @param {string} videoId - YouTube video ID
+ */
+function openYouTubeVideo(videoId) {
+  const iframe = document.getElementById('videoPlayer');
+  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+  document.getElementById('modalVideo').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  document.addEventListener('keydown', handleVideoModalEsc);
+}
+
+/**
+ * Membuka modal dengan file video lokal
+ * @param {string} videoPath - Path file video
+ */
+function openLocalVideo(videoPath) {
+  const iframe = document.getElementById('videoPlayer');
+  // Untuk video lokal, kita perlu membuat elemen video
+  const modalWrapper = document.querySelector('.modal-video-wrapper');
+  iframe.style.display = 'none';
+  
+  // Buat elemen video jika belum ada
+  let videoElement = document.getElementById('localVideoPlayer');
+  if (!videoElement) {
+    videoElement = document.createElement('video');
+    videoElement.id = 'localVideoPlayer';
+    videoElement.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%;';
+    videoElement.controls = true;
+    videoElement.autoplay = true;
+    modalWrapper.appendChild(videoElement);
+  }
+  
+  videoElement.style.display = 'block';
+  iframe.style.display = 'none';
+  videoElement.src = videoPath;
+  videoElement.load();
+  videoElement.play();
+  
+  document.getElementById('modalVideo').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+// Inisialisasi: Pasang event listener untuk tombol-tombol yang membuka modal
+document.addEventListener('DOMContentLoaded', function() {
+  // Tombol "Profil Bappeda" di hero section
+  const profilBtn = document.querySelector('.btn-hero-ghost');
+  if (profilBtn) {
+    // Hapus event listener lama jika ada
+    const newProfilBtn = profilBtn.cloneNode(true);
+    profilBtn.parentNode.replaceChild(newProfilBtn, profilBtn);
+    
+    newProfilBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      openModalVideo('https://www.youtube.com/embed/6Ydn3v320lg?autoplay=1');
+    });
+  }
+  
+  // Tombol-tombol lain yang ingin membuka video profil
+  const videoTriggers = document.querySelectorAll('[data-video-trigger]');
+  videoTriggers.forEach(trigger => {
+    trigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      const videoUrl = this.getAttribute('data-video-url') || 'https://www.youtube.com/embed/6Ydn3v320lg?autoplay=1';
+      openModalVideo(videoUrl);
+    });
+  });
+  
+  // Tambahkan tombol video modal di CTA section jika diperlukan
+  const ctaButtons = document.querySelectorAll('.btn-cta-outline');
+  ctaButtons.forEach(btn => {
+    if (btn.textContent.includes('Panduan') || btn.textContent.includes('Video')) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        openModalVideo('https://www.youtube.com/embed/6Ydn3v320lg?autoplay=1');
+      });
+    }
+  });
+});
+
+
 </script>
 </body>
 </html>

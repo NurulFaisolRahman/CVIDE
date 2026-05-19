@@ -305,7 +305,7 @@
             </div>
             <h3 class="animate__animated animate__fadeInUp">Bappeda</h3>
             <p class="subtitle animate__animated animate__fadeInUp animate__delay-1s">
-                <i class="fas fa-shield-alt"></i> Office Management System
+                <i class="]"></i> Smart System
             </p>
         </div>
 
