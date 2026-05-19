@@ -1993,31 +1993,7 @@ public function RoadmapHilirisasiBanyuwangi2026() {
     $this->load->view('Smb/SmbLandingPage');
 }
 
-/**
- * Simpan analisis data ke database
- */
-public function simpan_analisis_data() {
-    if (!$this->session->userdata('smb_logged_in')) {
-        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
-        return;
-    }
-    
-    $data = array(
-        'judul' => $this->input->post('judul'),
-        'indikator' => $this->input->post('indikator'),
-        'data_aktual' => $this->input->post('data_aktual'),
-        'kesimpulan' => $this->input->post('kesimpulan'),
-        'rekomendasi' => $this->input->post('rekomendasi'),
-        'created_by' => $this->session->userdata('username'),
-        'created_at' => date('Y-m-d H:i:s')
-    );
-    
-    if ($this->db->insert('smb_analisis_data', $data)) {
-        echo json_encode(['status' => 'success', 'message' => 'Analisis berhasil disimpan']);
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'Gagal menyimpan analisis']);
-    }
-}
+
 
 /**
  * Get riwayat analisis data
@@ -2040,44 +2016,6 @@ public function get_riwayat_analisis() {
     echo json_encode(['status' => 'success', 'data' => $data]);
 }
 
-/**
- * Get detail analisis by ID
- */
-public function get_analisis_detail() {
-    if (!$this->session->userdata('smb_logged_in')) {
-        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
-        return;
-    }
-    
-    $id_analisis = $this->input->post('id_analisis');
-    $query = $this->db->get_where('smb_analisis_data', ['id_analisis' => $id_analisis]);
-    
-    if ($query->num_rows() > 0) {
-        $data = $query->row();
-        $data->tanggal = date('d/m/Y H:i', strtotime($data->created_at));
-        echo json_encode(['status' => 'success', 'data' => $data]);
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'Data tidak ditemukan']);
-    }
-}
-
-/**
- * Delete analisis data
- */
-public function delete_analisis_data() {
-    if (!$this->session->userdata('smb_logged_in')) {
-        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
-        return;
-    }
-    
-    $id_analisis = $this->input->post('id_analisis');
-    
-    if ($this->db->delete('smb_analisis_data', ['id_analisis' => $id_analisis])) {
-        echo json_encode(['status' => 'success', 'message' => 'Analisis berhasil dihapus']);
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'Gagal menghapus analisis']);
-    }
-}
 
 /**
 
@@ -4547,17 +4485,362 @@ public function log_print_from_preview() {
         ]);
     }
 }
-
 /**
- * Get analisis terbaru (untuk export PDF)
+ * ==================== MANAJEMEN API DINAMIS ====================
  */
-public function get_latest_analisis() {
-    if (!$this->session->userdata('smb_logged_in')) {
-        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+
+// Get semua konfigurasi API
+public function get_api_configs() {
+    header('Content-Type: application/json');
+    
+    try {
+        $configs = $this->db->get('smb_api_config')->result_array();
+        
+        echo json_encode([
+            'status' => 'success',
+            'data' => $configs
+        ]);
+    } catch (Exception $e) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ]);
+    }
+}
+
+// Get konfigurasi API by kode
+public function get_api_config_by_kode() {
+    header('Content-Type: application/json');
+    
+    $kode = $this->input->get('kode');
+    if (!$kode) {
+        echo json_encode(['status' => 'error', 'message' => 'Kode API required']);
         return;
     }
     
-    // Ambil analisis terbaru berdasarkan created_at
+    $config = $this->db->get_where('smb_api_config', ['kode_api' => $kode])->row_array();
+    
+    if ($config) {
+        echo json_encode(['status' => 'success', 'data' => $config]);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Config not found']);
+    }
+}
+// Save API Config
+public function save_api_config() {
+    header('Content-Type: application/json');
+    
+    $indikator_id = $this->input->post('indikator_id');
+    if (empty($indikator_id)) {
+        echo json_encode(['status' => 'error', 'message' => 'ID Indikator wajib diisi']);
+        return;
+    }
+    
+    $data = [
+        'nama_data' => $this->input->post('nama_data'),
+        'kode_api' => $this->input->post('kode_api'),
+        'indikator_id' => $indikator_id,  // ← TAMBAHKAN INI
+        'url_api' => $this->input->post('url_api'),
+        'api_key' => $this->input->post('api_key'),
+        'metode' => $this->input->post('metode'),
+        'indikator_field' => $this->input->post('indikator_field'),
+        'produsen_field' => $this->input->post('produsen_field'),
+        'urusan_field' => $this->input->post('urusan_field'),
+        'satuan_field' => $this->input->post('satuan_field'),
+        'data_field' => $this->input->post('data_field'),
+        'tahun_field' => $this->input->post('tahun_field'),
+        'nilai_field' => $this->input->post('nilai_field'),
+        'created_by' => $this->session->userdata('user_id'),
+        'created_at' => date('Y-m-d H:i:s')
+    ];
+    
+    // Cek apakah kode sudah ada
+    $exists = $this->db->get_where('smb_api_config', ['kode_api' => $data['kode_api']])->row();
+    
+    if ($exists) {
+        echo json_encode(['status' => 'error', 'message' => 'Kode API sudah digunakan']);
+        return;
+    }
+    
+    $this->db->insert('smb_api_config', $data);
+    
+    if ($this->db->affected_rows() > 0) {
+        echo json_encode(['status' => 'success', 'message' => 'API Config berhasil ditambahkan']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Gagal menyimpan']);
+    }
+}
+
+// Update API Config
+public function update_api_config() {
+    header('Content-Type: application/json');
+    
+    $id_api = $this->input->post('id_api');
+    if (!$id_api) {
+        echo json_encode(['status' => 'error', 'message' => 'ID API required']);
+        return;
+    }
+    
+    $data = [
+        'nama_data' => $this->input->post('nama_data'),
+        'kode_api' => $this->input->post('kode_api'),
+        'indikator_id' => $this->input->post('indikator_id'),  // ← TAMBAHKAN INI
+        'url_api' => $this->input->post('url_api'),
+        'api_key' => $this->input->post('api_key'),
+        'metode' => $this->input->post('metode'),
+        'indikator_field' => $this->input->post('indikator_field'),
+        'produsen_field' => $this->input->post('produsen_field'),
+        'urusan_field' => $this->input->post('urusan_field'),
+        'satuan_field' => $this->input->post('satuan_field'),
+        'data_field' => $this->input->post('data_field'),
+        'tahun_field' => $this->input->post('tahun_field'),
+        'nilai_field' => $this->input->post('nilai_field'),
+        'updated_at' => date('Y-m-d H:i:s')
+    ];
+    
+    $this->db->where('id_api', $id_api);
+    $this->db->update('smb_api_config', $data);
+    
+    echo json_encode(['status' => 'success', 'message' => 'API Config berhasil diupdate']);
+}
+// Hapus konfigurasi API
+public function delete_api_config() {
+    header('Content-Type: application/json');
+    
+    $id_api = $this->input->post('id_api');
+    if (!$id_api) {
+        echo json_encode(['status' => 'error', 'message' => 'ID API required']);
+        return;
+    }
+    
+    $this->db->where('id_api', $id_api);
+    $this->db->delete('smb_api_config');
+    
+    echo json_encode(['status' => 'success', 'message' => 'API Config berhasil dihapus']);
+}
+
+// Load data dari API - VERSI DENGAN cURL LENGKAP
+public function load_data_from_api() {
+    header('Content-Type: application/json');
+    
+    $kode = $this->input->get('kode');
+    if (!$kode) {
+        echo json_encode(['status' => 'error', 'message' => 'Kode API required']);
+        return;
+    }
+    
+    $config = $this->db->get_where('smb_api_config', ['kode_api' => $kode])->row_array();
+    
+    if (!$config) {
+        echo json_encode(['status' => 'error', 'message' => 'Konfigurasi API tidak ditemukan']);
+        return;
+    }
+    
+    $indikatorId = $config['indikator_id'];
+    if (!$indikatorId) {
+        echo json_encode(['status' => 'error', 'message' => 'ID Indikator belum diisi']);
+        return;
+    }
+    
+    $url = 'https://satudata.banyuwangikab.go.id/api/indikator?id=' . $indikatorId . '&api-key=data_bwi2023';
+    
+    // ========== cURL DENGAN PENGATURAN LENGKAP ==========
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
+    
+    // User-Agent seperti browser
+    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+    
+    // Header tambahan
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Accept: application/json',
+        'Accept-Language: id-ID,id;q=0.9',
+        'Cache-Control: no-cache',
+        'Connection: keep-alive'
+    ]);
+    
+    // Jika perlu menggunakan proxy (tanyakan ke hosting untuk proxy)
+    // curl_setopt($ch, CURLOPT_PROXY, 'proxy.example.com:8080');
+    // curl_setopt($ch, CURLOPT_PROXYUSERPWD, 'user:pass');
+    
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
+    curl_close($ch);
+    
+    if ($curlError) {
+        echo json_encode([
+            'status' => 'error', 
+            'message' => 'CURL Error: ' . $curlError
+        ]);
+        return;
+    }
+    
+    if ($httpCode !== 200) {
+        echo json_encode([
+            'status' => 'error', 
+            'message' => 'HTTP Error: ' . $httpCode,
+            'url' => $url
+        ]);
+        return;
+    }
+    
+    $result = json_decode($response, true);
+    
+    if (!$result || !isset($result['result'])) {
+        echo json_encode([
+            'status' => 'error', 
+            'message' => 'Response tidak valid'
+        ]);
+        return;
+    }
+    
+    $dataResult = $result['result'];
+    
+    $series = [];
+    if (isset($dataResult['data']) && isset($dataResult['data'][0])) {
+        foreach ($dataResult['data'][0] as $tahun => $nilai) {
+            if ($nilai !== '' && $nilai !== null) {
+                $series[] = [
+                    'tahun' => $tahun,
+                    'nilai' => floatval($nilai)
+                ];
+            }
+        }
+        usort($series, function($a, $b) {
+            return $a['tahun'] - $b['tahun'];
+        });
+    }
+    
+    echo json_encode([
+        'status' => 'success',
+        'data' => [
+            'indikator' => $dataResult['Indikator'] ?? $config['nama_data'],
+            'produsen' => $dataResult['Produsen Data'] ?? '-',
+            'urusan' => $dataResult['Urusan'] ?? '-',
+            'satuan' => $dataResult['Satuan'] ?? '-',
+            'series' => $series
+        ]
+    ]);
+}
+// ==================== MANAJEMEN ANALISIS DATA ====================
+
+// Get riwayat analisis by indikator
+public function get_riwayat_analisis_by_indikator() {
+    header('Content-Type: application/json');
+    
+    $indikator = $this->input->post('indikator');
+    if (!$indikator) {
+        echo json_encode(['status' => 'success', 'data' => []]);
+        return;
+    }
+    
+    $this->db->where('indikator', $indikator);
+    $this->db->order_by('created_at', 'DESC');
+    $analisis = $this->db->get('smb_analisis_data')->result_array();
+    
+    // Format tanggal untuk ditampilkan
+    foreach ($analisis as &$a) {
+        if (!empty($a['created_at'])) {
+            $date = new DateTime($a['created_at']);
+            $a['tanggal'] = $date->format('d/m/Y H:i');
+        } else {
+            $a['tanggal'] = '-';
+        }
+    }
+    
+    echo json_encode(['status' => 'success', 'data' => $analisis]);
+}
+
+// Get detail analisis
+public function get_analisis_detail() {
+    header('Content-Type: application/json');
+    
+    $id = $this->input->post('id_analisis');
+    if (!$id) {
+        echo json_encode(['status' => 'error', 'message' => 'ID analisis required']);
+        return;
+    }
+    
+    $analisis = $this->db->get_where('smb_analisis_data', ['id_analisis' => $id])->row_array();
+    
+    if ($analisis) {
+        if (!empty($analisis['created_at'])) {
+            $date = new DateTime($analisis['created_at']);
+            $analisis['tanggal'] = $date->format('d/m/Y H:i');
+        }
+        echo json_encode(['status' => 'success', 'data' => $analisis]);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Data tidak ditemukan']);
+    }
+}
+
+// Simpan analisis data
+public function simpan_analisis_data() {
+    header('Content-Type: application/json');
+    
+    $judul = $this->input->post('judul');
+    $indikator = $this->input->post('indikator');
+    
+    if (empty($judul)) {
+        echo json_encode(['status' => 'error', 'message' => 'Judul analisis harus diisi']);
+        return;
+    }
+    
+    if (empty($indikator)) {
+        echo json_encode(['status' => 'error', 'message' => 'Indikator harus diisi']);
+        return;
+    }
+    
+    $data = [
+        'judul' => $judul,
+        'indikator' => $indikator,
+        'data_aktual' => $this->input->post('data_aktual'),
+        'kesimpulan' => $this->input->post('kesimpulan'),
+        'rekomendasi' => $this->input->post('rekomendasi'),
+        'created_by' => $this->session->userdata('username') ?: $this->session->userdata('user_id'),
+        'created_at' => date('Y-m-d H:i:s')
+    ];
+    
+    $this->db->insert('smb_analisis_data', $data);
+    
+    if ($this->db->affected_rows() > 0) {
+        echo json_encode(['status' => 'success', 'message' => 'Analisis berhasil disimpan']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Gagal menyimpan analisis']);
+    }
+}
+
+// Delete analisis
+public function delete_analisis_data() {
+    header('Content-Type: application/json');
+    
+    $id = $this->input->post('id_analisis');
+    if (!$id) {
+        echo json_encode(['status' => 'error', 'message' => 'ID analisis required']);
+        return;
+    }
+    
+    $this->db->where('id_analisis', $id);
+    $this->db->delete('smb_analisis_data');
+    
+    if ($this->db->affected_rows() > 0) {
+        echo json_encode(['status' => 'success', 'message' => 'Analisis berhasil dihapus']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Gagal menghapus analisis']);
+    }
+}
+
+// Get latest analisis (untuk export PDF)
+public function get_latest_analisis() {
+    header('Content-Type: application/json');
+    
     $this->db->order_by('created_at', 'DESC');
     $this->db->limit(1);
     $query = $this->db->get('smb_analisis_data');

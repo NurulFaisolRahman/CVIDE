@@ -2938,42 +2938,57 @@ a { text-decoration: none; color: inherit; }
         </div>
     </section>
 
-   <!-- ==================== DATA INDIKATOR PANEL ==================== -->
+  <!-- ==================== DATA INDIKATOR PANEL ==================== -->
 <section id="panel-data" class="panel">
     <div class="page-hdr">
-    <div class="page-hdr-left">
-        <div class="page-hdr-icon">
-            <svg viewBox="0 0 20 20" fill="currentColor">
-                <path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h7a1 1 0 100-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3zM15 8a1 1 0 10-2 0v5.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L15 13.586V8z"/>
-            </svg>
+        <div class="page-hdr-left">
+            <div class="page-hdr-icon">
+                <svg viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h7a1 1 0 100-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3zM15 8a1 1 0 10-2 0v5.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L15 13.586V8z"/>
+                </svg>
+            </div>
+            <div>
+                <div class="page-hdr-title">Portal Satu Data</div>
+                <div class="page-hdr-sub">Manajemen Data Indikator Banyuwangi</div>
+            </div>
         </div>
-        <div>
-            <div class="page-hdr-title" id="data-title">Data Indikator</div>
-            <div class="page-hdr-sub" id="data-subtitle">Portal Satu Data Banyuwangi</div>
+        <div style="display: flex; gap: 10px;">
+            <!-- Tombol Tambah Data -->
+            <button class="btn btn-primary" onclick="openApiModal()">
+                <i class="fas fa-plus"></i> Tambah Data API
+            </button>
+            <button class="btn btn-sm" onclick="loadAllDataCards()">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
         </div>
     </div>
-    
-    <div style="display: flex; gap: 10px;">
-        <!-- Tombol Export Laporan PDF -->
-        <button class="btn btn-primary" onclick="exportDataReportToPDF()" style="background: #dc2626; border-color: #dc2626;">
-            <i class="fas fa-file-pdf"></i> Export Laporan PDF
-        </button>
-        <button class="btn btn-sm" onclick="loadDataFromAPI()">
-            <i class="fas fa-sync-alt"></i> Refresh
-        </button>
-    </div>
-</div>
 
+    <!-- Grid Card Data (Daftar API) -->
+    <div class="row g-4" id="data-cards-container" style="margin-bottom: 24px;">
+        <!-- Card akan di-generate oleh JavaScript -->
+        <div class="col-12 text-center py-5">
+            <div class="modern-spinner"></div>
+            <p>Memuat daftar data...</p>
+        </div>
+    </div>
+
+   <!-- Detail Data yang Dipilih (akan tampil saat card diklik) -->
+<div id="selected-data-container" style="display: none;">
     <!-- Informasi Sumber Data -->
-    <div class="card mb-4">
+    <div class="card mb-4" id="data-source-card">
         <div class="card-body" style="background: linear-gradient(135deg, #e8f0fe 0%, #d4e2fc 100%);">
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <div class="d-flex align-items-center gap-3">
                         <div>
-                            <h5 class="mb-1" id="data-indikator-name">Hibah</h5>
-                            <p class="mb-0 text-muted small">Sumber: <span id="produsen-data">Badan Pendapatan Daerah</span> | Urusan: <span id="urusan-data">Pendapatan Daerah</span><span id="urusan-data"> ( satudata.banyuwangikab.go.id )</span></p>
-                            <p class="mb-0 text-muted small">Satuan: <span id="satuan-data">Rp Milyar</span></p>
+                            <h5 class="mb-1" id="selected-indikator">-</h5>
+                            <p class="mb-0 text-muted small">
+                                <i class="fas fa-database"></i> Sumber: <span id="selected-produsen">-</span> 
+                                | <i class="fas fa-folder"></i> Urusan: <span id="selected-urusan">-</span>
+                            </p>
+                            <p class="mb-0 text-muted small">
+                                <i class="fas fa-ruler"></i> Satuan: <span id="selected-satuan">-</span>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -2987,42 +3002,10 @@ a { text-decoration: none; color: inherit; }
     </div>
 
     <!-- Statistik Ringkas -->
-    <div class="stat-grid mb-4">
-        <div class="stat-card">
-            <div class="stat-label">Total Data</div>
-            <div class="stat-row">
-                <div class="stat-val" id="stat-total-data">0</div>
-                <div class="stat-icon" style="background:#eff4ff;"><svg viewBox="0 0 20 20" fill="#2f52c4"><path d="M3 3h14v14H3z"/></svg></div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-trend">Tahun tersedia</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">Nilai Tertinggi</div>
-            <div class="stat-row">
-                <div class="stat-val" id="stat-nilai-tertinggi">0</div>
-                <div class="stat-icon" style="background:#fffbeb;"><svg viewBox="0 0 20 20" fill="#d97706"><path d="M10 2l3 5 5 1-4 4 1 5-5-2-5 2 1-5-4-4 5-1 3-5z"/></svg></div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-trend trend-up" id="stat-tahun-tertinggi">-</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">Nilai Terendah</div>
-            <div class="stat-row">
-                <div class="stat-val" id="stat-nilai-terendah">0</div>
-                <div class="stat-icon" style="background:#dcfce7;"><svg viewBox="0 0 20 20" fill="#16a34a"><path d="M10 2l3 5 5 1-4 4 1 5-5-2-5 2 1-5-4-4 5-1 3-5z"/></svg></div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-trend trend-down" id="stat-tahun-terendah">-</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">Rata-rata</div>
-            <div class="stat-row">
-                <div class="stat-val" id="stat-rata-rata">0</div>
-                <div class="stat-icon" style="background:#dbeafe;"><svg viewBox="0 0 20 20" fill="#2f52c4"><path d="M10 2v16M4 6l6-4 6 4M4 14l6 4 6-4"/></svg></div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-trend">periode 2019-2024</div>
+    <div class="stat-grid mb-4" id="selected-stats">
+        <!-- Statistik akan diisi oleh JavaScript -->
+        <div class="col-12 text-center py-4">
+            <p class="text-muted">Pilih data indikator terlebih dahulu</p>
         </div>
     </div>
 
@@ -3033,36 +3016,58 @@ a { text-decoration: none; color: inherit; }
             <div class="table-toolbar-right">
                 <div class="mini-search">
                     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor"><circle cx="5.5" cy="5.5" r="4"/><path d="M9 9l2.5 2.5"/></svg>
-                    <input type="text" id="data-search" placeholder="Cari tahun..." oninput="filterDataTable()" style="width:130px;">
+                    <input type="text" id="selected-search" placeholder="Cari tahun..." style="width:130px;">
                 </div>
-                <button class="btn btn-sm" onclick="exportDataToExcel()"><i class="fas fa-file-excel"></i> Excel</button>
+                <button class="btn btn-sm" onclick="exportSelectedDataToExcel()"><i class="fas fa-file-excel"></i> Excel</button>
+                <button class="btn btn-sm" onclick="exportSelectedDataToPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
             </div>
         </div>
         <div class="table-responsive">
             <table class="tbl">
-                <thead><tr><th>Tahun</th><th>Nilai (Rp Milyar)</th><th>Trend</th><th>Aksi</th></tr></thead>
-                <tbody id="data-tbody"><tr><td colspan="4"><div class="modern-spinner"></div><p>Memuat data...</p></td></tr></tbody>
+                <thead>
+                    <tr>
+                        <th style="width:20%">Tahun</th>
+                        <th style="width:40%">Nilai</th>
+                        <th style="width:40%">Trend</th>
+                    </tr>
+                </thead>
+                <tbody id="selected-data-tbody">
+                    <tr>
+                        <td colspan="3" class="text-center py-5">
+                            <div class="modern-spinner"></div>
+                            <p>Pilih data dari card di atas</p>
+                         </div>
+                    </tr>
+                </tbody>
             </table>
+        </div>
+        <!-- Pagination untuk tabel -->
+        <div class="pagination-container" style="border-top: 1px solid var(--border);">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-2 mb-md-0">
+                    <div class="pagination-info">
+                        <span id="selected-data-info">Menampilkan 0 dari 0 data</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Grafik -->
-<div class="card mb-4 chart-card">
-    <div class="card-head">
-        <div class="card-title">
-            <i class="fas fa-chart-line"></i> Grafik Tren Data
+    <div class="card mb-4 chart-card">
+        <div class="card-head">
+            <div class="card-title"><i class="fas fa-chart-line"></i> Grafik Tren Data</div>
+            <select id="selected-chart-type" class="sel-filter" onchange="renderSelectedChart()" style="width:120px;">
+                <option value="line">Line Chart</option>
+                <option value="bar">Bar Chart</option>
+            </select>
         </div>
-        <select id="chart-type" class="sel-filter" onchange="renderChart()" style="width:120px;">
-            <option value="line">Line Chart</option>
-            <option value="bar">Bar Chart</option>
-        </select>
-    </div>
-    <div class="card-body">
-        <div class="chart-container">
-            <canvas id="data-chart"></canvas>
+        <div class="card-body">
+            <div class="chart-container" style="position: relative; height: 400px; width: 100%;">
+                <canvas id="selected-data-chart" style="max-height: 400px; width: 100%;"></canvas>
+            </div>
         </div>
     </div>
-</div>
 
     <!-- Analisis Manual -->
     <div class="card">
@@ -3072,7 +3077,7 @@ a { text-decoration: none; color: inherit; }
         <div class="card-body">
             <div class="form-group">
                 <label class="form-label">Judul Analisis</label>
-                <input type="text" id="analisis-judul-input" class="form-control" placeholder="Contoh: Analisis Hibah 2025-2030">
+                <input type="text" id="analisis-judul-input" class="form-control" placeholder="Contoh: Analisis Data...">
             </div>
             <div class="form-group mt-3">
                 <label class="form-label">Analisis / Kesimpulan</label>
@@ -3097,11 +3102,115 @@ a { text-decoration: none; color: inherit; }
             <span class="card-action" onclick="loadRiwayatAnalisis()">Refresh</span>
         </div>
         <div id="riwayat-analisis-list" style="padding:15px;">
-            <div class="empty-state"><p>Belum ada analisis tersimpan</p></div>
+            <div class="empty-state">
+                <i class="fas fa-archive"></i>
+                <p>Belum ada analisis tersimpan</p>
+                <p style="font-size:12px;">Klik tombol "Simpan Analisis" untuk menyimpan analisis Anda</p>
+            </div>
         </div>
     </div>
+</div>
 </section>
-    
+
+<!-- Modal Tambah/Edit API -->
+<div id="modalApiConfig" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1002; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:20px; width:700px; max-width:90%; max-height:85vh; overflow:auto; padding:24px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+            <h3 id="modalApiTitle" style="font-size:18px;">Tambah Konfigurasi API</h3>
+            <span onclick="closeApiModal()" style="cursor:pointer; font-size:24px;">&times;</span>
+        </div>
+        <form id="formApiConfig">
+            <input type="hidden" name="id_api" id="api_id">
+<!-- Di dalam modalApiConfig, setelah Kode API, tambahkan: -->
+<div class="form-group" style="margin-bottom:15px;">
+    <label class="form-label">ID Indikator <span style="color:red;">*</span></label>
+    <input type="text" name="indikator_id" id="indikator_id" class="form-control" required placeholder="Contoh: 1062, 1, 2, 5, 47">
+    <small class="text-muted">ID indikator dari Portal Satu Data (contoh: Hibah=1062, PDRB=1, Inflasi=2, Kemiskinan=5, Indeks Keparahan Kemiskinan=47)</small>
+</div>
+            <div class="form-group" style="margin-bottom:15px;">
+                <label class="form-label">Nama Data <span style="color:red;">*</span></label>
+                <input type="text" name="nama_data" id="nama_data" class="form-control" required placeholder="Contoh: Hibah, PDRB, Inflasi">
+            </div>
+            
+            <div class="form-group" style="margin-bottom:15px;">
+                <label class="form-label">Kode API <span style="color:red;">*</span></label>
+                <input type="text" name="kode_api" id="kode_api" class="form-control" required placeholder="Contoh: hibah, pdrb, inflasi">
+                <small class="text-muted">Kode unik untuk mengidentifikasi API ini</small>
+            </div>
+            
+            <div class="form-group" style="margin-bottom:15px;">
+                <label class="form-label">URL API <span style="color:red;">*</span></label>
+                <input type="url" name="url_api" id="url_api" class="form-control" required placeholder="https://satudata.banyuwangikab.go.id/api/indikator?id=...">
+            </div>
+            
+            <div class="form-group" style="margin-bottom:15px;">
+                <label class="form-label">API Key (Opsional)</label>
+                <input type="text" name="api_key" id="api_key" class="form-control" placeholder="data_bwi2023">
+            </div>
+            
+            <div class="form-group" style="margin-bottom:15px;">
+                <label class="form-label">Metode</label>
+                <select name="metode" id="metode" class="form-control">
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                </select>
+            </div>
+            
+            <hr>
+            <h5 style="font-size:14px; margin:15px 0;">Mapping Field JSON</h5>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group" style="margin-bottom:15px;">
+                        <label class="form-label">Indikator Field</label>
+                        <input type="text" name="indikator_field" id="indikator_field" class="form-control" value="result.Indikator">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" style="margin-bottom:15px;">
+                        <label class="form-label">Produsen Field</label>
+                        <input type="text" name="produsen_field" id="produsen_field" class="form-control" value="result.Produsen Data">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" style="margin-bottom:15px;">
+                        <label class="form-label">Urusan Field</label>
+                        <input type="text" name="urusan_field" id="urusan_field" class="form-control" value="result.Urusan">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" style="margin-bottom:15px;">
+                        <label class="form-label">Satuan Field</label>
+                        <input type="text" name="satuan_field" id="satuan_field" class="form-control" value="result.Satuan">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" style="margin-bottom:15px;">
+                        <label class="form-label">Data Field</label>
+                        <input type="text" name="data_field" id="data_field" class="form-control" value="result.data">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" style="margin-bottom:15px;">
+                        <label class="form-label">Tahun Field</label>
+                        <input type="text" name="tahun_field" id="tahun_field" class="form-control" value="tahun">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" style="margin-bottom:15px;">
+                        <label class="form-label">Nilai Field</label>
+                        <input type="text" name="nilai_field" id="nilai_field" class="form-control" value="nilai">
+                    </div>
+                </div>
+            </div>
+            
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button type="submit" class="btn btn-primary">Simpan Konfigurasi</button>
+                <button type="button" class="btn" onclick="closeApiModal()">Batal</button>
+            </div>
+        </form>
+    </div>
+</div>    
 
       <!-- ======== DASHBOARD PANEL ======== -->
       <section id="panel-dashboard" class="panel active">
@@ -4067,6 +4176,7 @@ a { text-decoration: none; color: inherit; }
 <!-- Bootstrap 5 JS Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    
 // ================= LOGOUT FUNCTION =================
 // ================= LOGOUT FUNCTION (PERBAIKAN) =================
 function handleLogout() {
@@ -7693,100 +7803,429 @@ $('#log-bidang-pilih').on('change', function() {
     loadTotalKertasTerpakai($(this).val());
 });
 
-// ==================== DATA INDIKATOR PANEL ====================
-let dataIndikator = null;
-let dataSeries = [];
-let chartInstance = null;
-const baseUrl = '<?= base_url() ?>';
+// ==================== DATA INDIKATOR PANEL (FINAL - GENERATE OTOMATIS) ====================
 
-// Navigasi ke panel data
+// Definisikan baseUrl
+const baseUrlData = '<?= base_url() ?>';
+
+// Variabel global
+let allApiConfigs = [];
+let currentSelectedKode = null;
+let currentDataSeries = [];
+let currentDataIndikator = null;
+let selectedChartInstance = null;
+
+// ==================== HELPERS ====================
+function formatNumberRibuan(num) {
+    if (num === undefined || num === null || isNaN(num)) return '0';
+    return parseFloat(num).toLocaleString('id-ID');
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// ==================== LOAD ALL DATA CARDS ====================
+function loadAllDataCards() {
+    console.log('Refresh data cards...');
+    loadApiConfigs();
+}
+
 function navigateToData() {
     showPanel('data');
-    loadDataFromAPI();
-    loadRiwayatAnalisis();
+    loadApiConfigs();
     
-    // Update active state di sidebar
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.querySelectorAll('.sub-item').forEach(s => s.classList.remove('active'));
     const dataMenuItem = document.querySelector('.sub-item[onclick*="navigateToData"]');
     if (dataMenuItem) dataMenuItem.classList.add('active');
 }
 
-// Load data dari API Satu Data (menggunakan fetch langsung)
-async function loadDataFromAPI() {
-    $('#data-tbody').html(`<tr><td colspan="4" style="text-align:center;padding:40px;">
-        <div class="modern-spinner"></div>
-        <p>Memuat data dari Portal Satu Data...</p>
-    </div></td></tr>`);
+// ==================== LOAD KONFIGURASI API DARI DATABASE ====================
+function loadApiConfigs() {
+    console.log('Loading API configs from database...');
     
+    $('#data-cards-container').html(`
+        <div class="col-12 text-center py-5">
+            <div class="modern-spinner"></div>
+            <p>Memuat konfigurasi API...</p>
+        </div>
+    `);
+    
+    $.ajax({
+        url: baseUrlData + 'IDE/get_api_configs',
+        type: 'GET',
+        dataType: 'json',
+        timeout: 10000,
+        success: function(response) {
+            if (response.status === 'success') {
+                allApiConfigs = response.data;
+                renderDataCards();
+                console.log('API configs loaded:', allApiConfigs.length);
+            } else {
+                $('#data-cards-container').html(`
+                    <div class="col-12 text-center py-5">
+                        <div style="font-size:48px;">⚠️</div>
+                        <p>Gagal memuat konfigurasi API: ${response.message || 'Unknown error'}</p>
+                        <button class="btn btn-primary mt-3" onclick="loadApiConfigs()">
+                            <i class="fas fa-sync-alt"></i> Coba Lagi
+                        </button>
+                    </div>
+                `);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading API configs:', error);
+            $('#data-cards-container').html(`
+                <div class="col-12 text-center py-5">
+                    <div style="font-size:48px;">❌</div>
+                    <p>Gagal menghubungi server: ${error}</p>
+                    <button class="btn btn-primary mt-3" onclick="loadApiConfigs()">
+                        <i class="fas fa-sync-alt"></i> Coba Lagi
+                    </button>
+                </div>
+            `);
+        }
+    });
+}
+
+// ==================== RENDER CARD DATA ====================
+function renderDataCards() {
+    if (!allApiConfigs || allApiConfigs.length === 0) {
+        $('#data-cards-container').html(`
+            <div class="col-12 text-center py-5">
+                <div style="font-size:64px; margin-bottom:20px;">📊</div>
+                <h5>Belum Ada Data Indikator</h5>
+                <p class="text-muted">Klik tombol "Tambah Data API" untuk menambahkan konfigurasi API</p>
+                <button class="btn btn-primary mt-3" onclick="openApiModal()">
+                    <i class="fas fa-plus"></i> Tambah Data API
+                </button>
+            </div>
+        `);
+        return;
+    }
+    
+    let html = '<div class="row g-4">';
+    allApiConfigs.forEach(config => {
+        html += `
+            <div class="col-md-4 col-lg-3">
+                <div class="card data-card" data-kode="${config.kode_api}" style="cursor:pointer; transition:all 0.2s; height:100%;">
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <div class="bg-primary bg-opacity-10 rounded-circle p-3 d-inline-block">
+                                <i class="fas fa-chart-line fa-2x text-primary"></i>
+                            </div>
+                        </div>
+                        <h5 class="card-title text-center">${escapeHtml(config.nama_data)}</h5>
+                        <p class="card-text text-center text-muted small">ID: ${escapeHtml(config.indikator_id || '-')}</p>
+                        <div class="d-flex justify-content-end gap-2 mt-3 border-top pt-2">
+                            <button class="btn btn-sm btn-outline-primary" onclick="event.stopPropagation(); editApiConfig(${config.id_api})">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="event.stopPropagation(); deleteApiConfig(${config.id_api}, '${escapeHtml(config.nama_data)}')">
+                                <i class="fas fa-trash"></i> Hapus
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    html += '</div>';
+    $('#data-cards-container').html(html);
+    
+    // Pasang event listener untuk card
+    $('.data-card').off('click').on('click', function() {
+        const kode = $(this).data('kode');
+        if (kode) selectDataByKode(kode);
+    });
+}
+
+// ==================== FETCH DATA LANGSUNG DARI API SATU DATA ====================
+async function fetchDataFromSatuDataAPI(kode) {
     try {
-        // Gunakan fetch langsung ke API (tanpa proxy)
-        const response = await fetch('https://satudata.banyuwangikab.go.id/api/indikator?id=63&api-key=data_bwi2023');
+        // Cari konfigurasi dari database
+        const config = allApiConfigs.find(c => c.kode_api === kode);
+        
+        if (!config) {
+            throw new Error(`Konfigurasi untuk kode "${kode}" tidak ditemukan`);
+        }
+        
+        // Ambil indikator_id dari database
+        const indikatorId = config.indikator_id;
+        
+        if (!indikatorId) {
+            throw new Error(`ID Indikator untuk "${config.nama_data}" belum diisi`);
+        }
+        
+        // ========== UBANI URL INI MENJADI ==========
+        // Gunakan CORS proxy untuk menghindari blokiran
+        const originalUrl = `https://satudata.banyuwangikab.go.id/api/indikator?id=${indikatorId}&api-key=data_bwi2023`;
+        const url = `https://cors-anywhere.herokuapp.com/${originalUrl}`;
+        // ========== SAMPAI SINI ==========
+        
+        console.log(`Fetching ${config.nama_data} (ID: ${indikatorId}) via CORS proxy:`, url);
+        
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: { 
+                'Accept': 'application/json',
+                'Origin': window.location.origin
+            }
+        });
         
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
         
-        const result = await response.json();
+        const data = await response.json();
         
-        if (result.result && result.result.status === 200) {
-            dataIndikator = result.result;
-            
-            // Update header info
-            $('#data-indikator-name').text(dataIndikator.Indikator || 'Hibah');
-            $('#produsen-data').text(dataIndikator['Produsen Data'] || 'Badan Pendapatan Daerah');
-            $('#urusan-data').text(dataIndikator.Urusan || 'Pendapatan Daerah');
-            $('#satuan-data').text(dataIndikator.Satuan || 'Rp Milyar');
-            $('#data-subtitle').text(`${dataIndikator.Indikator} - ${dataIndikator.Satuan}`);
-            
-            // Proses data series
-            const rawData = dataIndikator.data[0] || {};
-            dataSeries = [];
-            
-            for (const [tahun, nilai] of Object.entries(rawData)) {
-                if (nilai !== '' && nilai !== null && nilai !== undefined) {
-                    dataSeries.push({
-                        tahun: parseInt(tahun),
+        if (!data?.result || data.result.status !== 200) {
+            throw new Error('Struktur response API tidak valid');
+        }
+        
+        // Parse series data
+        const series = [];
+        if (data.result.data && data.result.data[0]) {
+            for (const [tahun, nilai] of Object.entries(data.result.data[0])) {
+                if (nilai !== '' && nilai !== null && !isNaN(parseFloat(nilai))) {
+                    series.push({
+                        tahun: tahun,
                         nilai: parseFloat(nilai)
                     });
                 }
             }
-            
-            dataSeries.sort((a, b) => a.tahun - b.tahun);
-            
-            renderDataTable();
-            updateDataStats();
-            renderChart();
-            
-            console.log('Data loaded:', dataSeries);
-        } else {
-            throw new Error('Invalid response from API');
+            series.sort((a, b) => parseInt(a.tahun) - parseInt(b.tahun));
         }
+        
+        if (series.length === 0) {
+            throw new Error('Tidak ada data series yang ditemukan');
+        }
+        
+        return {
+            status: 'success',
+            data: {
+                indikator: data.result.Indikator || config.nama_data,
+                produsen: data.result['Produsen Data'] || '-',
+                urusan: data.result.Urusan || '-',
+                satuan: data.result.Satuan || '-',
+                series: series,
+                indikator_id: indikatorId
+            }
+        };
+        
     } catch (error) {
-        console.error('Error loading data:', error);
-        $('#data-tbody').html(`<tr><td colspan="4" style="text-align:center;padding:40px;color:red;">
-            <div style="font-size:48px;">⚠️</div>
-            <p>Gagal memuat data dari Portal Satu Data</p>
-            <p style="font-size:12px; margin-top:10px;">Error: ${error.message}</p>
-            <button class="btn btn-sm mt-3" onclick="loadDataFromAPI()">Coba Lagi</button>
-        </div></tr>`);
+        console.error(`Error fetching ${kode}:`, error);
+        return {
+            status: 'error',
+            message: error.message
+        };
     }
 }
 
-// Render tabel data
-function renderDataTable() {
-    const tbody = document.getElementById('data-tbody');
+// ==================== FUNGSI SELECT DATA (VIA BACKEND) ====================
+async function selectDataByKode(kode) {
+    console.log('Selecting data by kode:', kode);
+    currentSelectedKode = kode;
     
-    if (!dataSeries || dataSeries.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:40px;">Tidak ada数据</div><tr>`;
+    // Validasi elemen penting
+    const container = document.getElementById('selected-data-container');
+    const indikatorEl = document.getElementById('selected-indikator');
+    const produsenEl = document.getElementById('selected-produsen');
+    const urusanEl = document.getElementById('selected-urusan');
+    const satuanEl = document.getElementById('selected-satuan');
+    const tbodyEl = document.getElementById('selected-data-tbody');
+    
+    if (!container || !indikatorEl || !produsenEl || !urusanEl || !satuanEl || !tbodyEl) {
+        console.error('Element penting tidak ditemukan!');
+        Swal.fire('Error', 'Elemen halaman tidak lengkap, refresh halaman', 'error');
         return;
     }
     
-    tbody.innerHTML = dataSeries.map((item, index) => {
+    // Tampilkan container detail
+    container.style.display = 'block';
+    
+    // Tampilkan loading
+    indikatorEl.textContent = 'Memuat dari server...';
+    produsenEl.textContent = '-';
+    urusanEl.textContent = '-';
+    satuanEl.textContent = '-';
+    tbodyEl.innerHTML = `
+        <tr>
+            <td colspan="3" class="text-center py-5">
+                <div class="modern-spinner"></div>
+                <p>Mengambil data dari Portal Satu Data...</p>
+             </div>
+        </tr>
+    `;
+    
+    // Panggil API via backend
+    $.ajax({
+        url: baseUrlData + 'IDE/load_data_from_api',
+        type: 'GET',
+        data: { kode: kode },
+        dataType: 'json',
+        timeout: 30000,
+        success: function(response) {
+            console.log('API Response:', response);
+            
+            if (response.status === 'success' && response.data && response.data.series && response.data.series.length > 0) {
+                currentDataIndikator = response.data;
+                currentDataSeries = response.data.series;
+                
+                // Update header
+                $('#selected-indikator').text(currentDataIndikator.indikator || '-');
+                $('#selected-produsen').text(currentDataIndikator.produsen || '-');
+                $('#selected-urusan').text(currentDataIndikator.urusan || '-');
+                $('#selected-satuan').text(currentDataIndikator.satuan || '-');
+                
+                // Update statistik
+                updateSelectedStats();
+                
+                // Render tabel
+                renderSelectedDataTable();
+                
+                // Render chart
+                renderSelectedChart();
+                
+                // Load riwayat analisis
+                if (currentDataIndikator.indikator) {
+                    loadRiwayatAnalisisByIndikator(currentDataIndikator.indikator);
+                }
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Data Berhasil Dimuat',
+                    text: `${currentDataSeries.length} tahun data - Satuan: ${currentDataIndikator.satuan || '-'}`,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                
+                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+            } else {
+                tbodyEl.innerHTML = `
+                    <tr>
+                        <td colspan="3" class="text-center py-5" style="color:red;">
+                            <div style="font-size:48px; margin-bottom:15px;">⚠️</div>
+                            <p>❌ ${response.message || 'Gagal memuat data dari API'}</p>
+                            <div class="mt-3">
+                                <button class="btn btn-primary btn-sm" onclick="selectDataByKode('${kode}')">
+                                    <i class="fas fa-sync-alt"></i> Coba Lagi
+                                </button>
+                            </div>
+                         </div>
+                    </table>
+                `;
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Memuat Data',
+                    text: response.message || 'Tidak dapat mengambil data dari API'
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', error);
+            tbodyEl.innerHTML = `
+                <tr>
+                    <td colspan="3" class="text-center py-5" style="color:red;">
+                        <p>❌ Error: ${error}</p>
+                        <button class="btn btn-sm mt-2" onclick="selectDataByKode('${kode}')">
+                            <i class="fas fa-sync-alt"></i> Coba Lagi
+                        </button>
+                     </div>
+                </tr>
+            `;
+        }
+    });
+}
+
+function updateSelectedStats() {
+    const statsContainer = document.getElementById('selected-stats');
+    if (!statsContainer) {
+        console.error('Element selected-stats tidak ditemukan');
+        return;
+    }
+    
+    if (!currentDataSeries || currentDataSeries.length === 0) {
+        statsContainer.innerHTML = `
+            <div class="col-12 text-center py-4">
+                <p class="text-muted">Tidak ada data untuk ditampilkan</p>
+            </div>
+        `;
+        return;
+    }
+    
+    const values = currentDataSeries.map(d => parseFloat(d.nilai) || 0);
+    const maxValue = Math.max(...values);
+    const minValue = Math.min(...values);
+    const avgValue = values.reduce((a, b) => a + b, 0) / values.length;
+    const maxYear = currentDataSeries.find(d => parseFloat(d.nilai) === maxValue)?.tahun || '-';
+    const minYear = currentDataSeries.find(d => parseFloat(d.nilai) === minValue)?.tahun || '-';
+    const satuan = currentDataIndikator?.satuan || '';
+    
+    statsContainer.innerHTML = `
+        <div class="stat-card">
+            <div class="stat-label">Total Data</div>
+            <div class="stat-row">
+                <div class="stat-val">${currentDataSeries.length}</div>
+                <div class="stat-icon" style="background:#eff4ff;"><svg viewBox="0 0 20 20" fill="#2f52c4"><path d="M3 3h14v14H3z"/></svg></div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-trend">Tahun tersedia</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Nilai Tertinggi</div>
+            <div class="stat-row">
+                <div class="stat-val">${formatNumberRibuan(maxValue)}</div>
+                <div class="stat-icon" style="background:#fffbeb;"><svg viewBox="0 0 20 20" fill="#d97706"><path d="M10 2l3 5 5 1-4 4 1 5-5-2-5 2 1-5-4-4 5-1 3-5z"/></svg></div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-trend trend-up">Tahun ${maxYear}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Nilai Terendah</div>
+            <div class="stat-row">
+                <div class="stat-val">${formatNumberRibuan(minValue)}</div>
+                <div class="stat-icon" style="background:#dcfce7;"><svg viewBox="0 0 20 20" fill="#16a34a"><path d="M10 2l3 5 5 1-4 4 1 5-5-2-5 2 1-5-4-4 5-1 3-5z"/></svg></div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-trend trend-down">Tahun ${minYear}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Rata-rata</div>
+            <div class="stat-row">
+                <div class="stat-val">${formatNumberRibuan(avgValue)}</div>
+                <div class="stat-icon" style="background:#dbeafe;"><svg viewBox="0 0 20 20" fill="#2f52c4"><path d="M10 2v16M4 6l6-4 6 4M4 14l6 4 6-4"/></svg></div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-trend">${satuan}</div>
+        </div>
+    `;
+}
+
+function renderSelectedDataTable() {
+    const tbody = document.getElementById('selected-data-tbody');
+    if (!tbody) {
+        console.error('Element selected-data-tbody tidak ditemukan');
+        return;
+    }
+    
+    if (!currentDataSeries || currentDataSeries.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" class="text-center py-5">Tidak ada数据</div></td>`;
+        return;
+    }
+    
+    tbody.innerHTML = currentDataSeries.map((item, index) => {
         let trendHtml = '';
         if (index > 0) {
-            const prevValue = dataSeries[index - 1].nilai;
-            const diff = item.nilai - prevValue;
+            const prevValue = parseFloat(currentDataSeries[index - 1].nilai) || 0;
+            const currValue = parseFloat(item.nilai) || 0;
+            const diff = currValue - prevValue;
             const percent = prevValue !== 0 ? (diff / prevValue * 100).toFixed(1) : 0;
             if (diff > 0) {
                 trendHtml = `<span style="color: var(--green);">↑ +${diff.toFixed(2)} (${percent}%)</span>`;
@@ -7801,194 +8240,36 @@ function renderDataTable() {
         
         return `
             <tr>
-                <td><strong>${item.tahun}</strong></div></td>
-                <td>${formatNumber(item.nilai)}</div></td>
-                <td>${trendHtml}</div></td>
-                <td>
-                    <button class="btn btn-sm" onclick="editDataTahun(${item.tahun}, ${item.nilai})">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                 </div></td>
+                <td><strong>${item.tahun}</strong></td>
+                <td>${formatNumberRibuan(item.nilai)} ${currentDataIndikator?.satuan || ''}</td>
+                <td>${trendHtml}</td>
             </tr>
         `;
     }).join('');
-    
-    $('#stat-total-data').text(dataSeries.length);
 }
 
-function updateDataStats() {
-    if (!dataSeries || dataSeries.length === 0) return;
+// ==================== RENDER CHART ====================
+function renderSelectedChart() {
+    if (!currentDataSeries || currentDataSeries.length === 0) return;
     
-    const values = dataSeries.map(d => d.nilai);
-    const maxValue = Math.max(...values);
-    const minValue = Math.min(...values);
-    const avgValue = values.reduce((a, b) => a + b, 0) / values.length;
-    const maxYear = dataSeries.find(d => d.nilai === maxValue)?.tahun || '-';
-    const minYear = dataSeries.find(d => d.nilai === minValue)?.tahun || '-';
-    
-    $('#stat-nilai-tertinggi').text(formatNumber(maxValue));
-    $('#stat-tahun-tertinggi').text(maxYear);
-    $('#stat-nilai-terendah').text(formatNumber(minValue));
-    $('#stat-tahun-terendah').text(minYear);
-    $('#stat-rata-rata').text(formatNumber(avgValue));
-}
-
-function renderChart() {
-    if (!dataSeries || dataSeries.length === 0) return;
-    
-    const ctx = document.getElementById('data-chart').getContext('2d');
-    const chartType = $('#chart-type').val();
-    
-    if (chartInstance) chartInstance.destroy();
-    
-    // Pengaturan warna berdasarkan jenis chart
-    let backgroundColor, borderColor;
-    
-    if (chartType === 'line') {
-        backgroundColor = 'rgba(47, 82, 196, 0.1)';
-        borderColor = '#2f52c4';
-    } else { // bar chart
-        backgroundColor = 'rgba(47, 82, 196, 0.7)';
-        borderColor = '#2f52c4';
+    const canvas = document.getElementById('selected-data-chart');
+    if (!canvas) {
+        console.error('Canvas element not found');
+        return;
     }
     
-    chartInstance = new Chart(ctx, {
+    const ctx = canvas.getContext('2d');
+    const chartType = $('#selected-chart-type').val();
+    
+    if (selectedChartInstance) selectedChartInstance.destroy();
+    
+    selectedChartInstance = new Chart(ctx, {
         type: chartType,
         data: {
-            labels: dataSeries.map(d => d.tahun.toString()),
+            labels: currentDataSeries.map(d => d.tahun.toString()),
             datasets: [{
-                label: dataIndikator?.Indikator || 'Hibah',
-                data: dataSeries.map(d => d.nilai),
-                backgroundColor: backgroundColor,
-                borderColor: borderColor,
-                borderWidth: chartType === 'line' ? 2 : 1,
-                fill: chartType === 'line',
-                tension: chartType === 'line' ? 0.3 : undefined,
-                pointBackgroundColor: chartType === 'line' ? '#2f52c4' : undefined,
-                pointBorderColor: chartType === 'line' ? '#fff' : undefined,
-                pointRadius: chartType === 'line' ? 3 : undefined,
-                pointHoverRadius: chartType === 'line' ? 5 : undefined,
-                pointBorderWidth: chartType === 'line' ? 1 : undefined,
-                // Untuk bar chart
-                barPercentage: 0.7,
-                categoryPercentage: 0.8,
-                borderRadius: 4
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
-                        font: { size: 11, weight: '500' },
-                        boxWidth: 10,
-                        padding: 8
-                    }
-                },
-                tooltip: {
-                    bodyFont: { size: 11 },
-                    titleFont: { size: 11 },
-                    callbacks: {
-                        label: (ctx) => {
-                            let label = ctx.dataset.label || '';
-                            let value = formatNumber(ctx.raw);
-                            return `${label}: ${value} ${dataIndikator?.Satuan || 'Rp Milyar'}`;
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: dataIndikator?.Satuan || 'Rp Milyar',
-                        font: { size: 10, weight: '500' }
-                    },
-                    ticks: {
-                        font: { size: 10 },
-                        stepSize: chartType === 'bar' ? undefined : undefined,
-                        callback: function(value) {
-                            return formatNumber(value);
-                        }
-                    },
-                    grid: {
-                        drawBorder: true,
-                        color: '#e2e8f0'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Tahun',
-                        font: { size: 10, weight: '500' }
-                    },
-                    ticks: {
-                        font: { size: 10 }
-                    },
-                    grid: {
-                        display: false
-                    }
-                }
-            },
-            layout: {
-                padding: {
-                    top: 10,
-                    bottom: 5,
-                    left: 5,
-                    right: 5
-                }
-            },
-            // Untuk bar chart
-            elements: {
-                bar: {
-                    backgroundColor: 'rgba(47, 82, 196, 0.8)',
-                    hoverBackgroundColor: '#2f52c4'
-                }
-            }
-        }
-    });
-}
-function formatNumber(num) {
-    if (num === undefined || num === null) return '0';
-    return num.toLocaleString('id-ID');
-}
-// Update statistik ringkas
-function updateDataStats() {
-    if (!dataSeries || dataSeries.length === 0) return;
-    
-    const values = dataSeries.map(d => d.nilai);
-    const maxValue = Math.max(...values);
-    const minValue = Math.min(...values);
-    const avgValue = values.reduce((a, b) => a + b, 0) / values.length;
-    const maxYear = dataSeries.find(d => d.nilai === maxValue)?.tahun || '-';
-    const minYear = dataSeries.find(d => d.nilai === minValue)?.tahun || '-';
-    
-    $('#stat-nilai-tertinggi').text(formatNumber(maxValue));
-    $('#stat-tahun-tertinggi').text(maxYear);
-    $('#stat-nilai-terendah').text(formatNumber(minValue));
-    $('#stat-tahun-terendah').text(minYear);
-    $('#stat-rata-rata').text(formatNumber(avgValue));
-}
-
-// Render chart
-function renderChart() {
-    if (!dataSeries || dataSeries.length === 0) return;
-    
-    const ctx = document.getElementById('data-chart').getContext('2d');
-    const chartType = $('#chart-type').val();
-    
-    if (chartInstance) chartInstance.destroy();
-    
-    chartInstance = new Chart(ctx, {
-        type: chartType,
-        data: {
-            labels: dataSeries.map(d => d.tahun.toString()),
-            datasets: [{
-                label: dataIndikator?.Indikator || 'Hibah',
-                data: dataSeries.map(d => d.nilai),
+                label: currentDataIndikator?.indikator || 'Data Indikator',
+                data: currentDataSeries.map(d => parseFloat(d.nilai) || 0),
                 backgroundColor: chartType === 'line' ? 'rgba(47,82,196,0.1)' : 'rgba(47,82,196,0.7)',
                 borderColor: '#2f52c4',
                 borderWidth: 2,
@@ -8005,14 +8286,14 @@ function renderChart() {
             plugins: {
                 tooltip: {
                     callbacks: {
-                        label: (ctx) => `${ctx.dataset.label}: ${formatNumber(ctx.raw)} ${dataIndikator?.Satuan || 'Rp Milyar'}`
+                        label: (ctx) => `${ctx.dataset.label}: ${formatNumberRibuan(ctx.raw)} ${currentDataIndikator?.satuan || ''}`
                     }
                 }
             },
             scales: {
                 y: {
                     beginAtZero: true,
-                    title: { display: true, text: dataIndikator?.Satuan || 'Rp Milyar' }
+                    title: { display: true, text: currentDataIndikator?.satuan || 'Nilai' }
                 },
                 x: { title: { display: true, text: 'Tahun' } }
             }
@@ -8020,119 +8301,67 @@ function renderChart() {
     });
 }
 
-// Filter data table
-function filterDataTable() {
-    const search = $('#data-search').val().toLowerCase();
-    if (!search) { renderDataTable(); return; }
-    
-    const filtered = dataSeries.filter(d => d.tahun.toString().includes(search));
-    if (filtered.length === 0) {
-        $('#data-tbody').html('<tr><td colspan="4">Tidak ditemukan</div></td>');
-    } else {
-        $('#data-tbody').html(filtered.map((item, i) => {
-            let trend = '-';
-            if (i > 0) {
-                const diff = item.nilai - filtered[i-1].nilai;
-                trend = diff > 0 ? `↑ +${diff.toFixed(2)}` : diff < 0 ? `↓ ${diff.toFixed(2)}` : '→ 0';
-            }
-            return `<tr><td>${item.tahun}</div><td>${formatNumber(item.nilai)}</div><td>${trend}</div><td><button class="btn btn-sm" onclick="editDataTahun(${item.tahun}, ${item.nilai})"><i class="fas fa-edit"></i></button></div></tr>`;
-        }).join(''));
-    }
-}
-
-// Edit data tahun
-function editDataTahun(tahun, nilai) {
-    Swal.fire({
-        title: `Edit Data ${tahun}`,
-        html: `<input type="number" id="edit-nilai" class="form-control" value="${nilai}" step="0.01">`,
-        showCancelButton: true,
-        confirmButtonText: 'Simpan',
-        preConfirm: () => {
-            const newVal = parseFloat(document.getElementById('edit-nilai').value);
-            if (isNaN(newVal)) Swal.showValidationMessage('Masukkan angka valid');
-            return { tahun, nilai: newVal };
-        }
-    }).then(result => {
-        if (result.isConfirmed) {
-            const idx = dataSeries.findIndex(d => d.tahun === result.value.tahun);
-            if (idx !== -1) {
-                dataSeries[idx].nilai = result.value.nilai;
-                renderDataTable();
-                updateDataStats();
-                renderChart();
-                Swal.fire('Berhasil!', 'Data diperbarui', 'success');
-            }
-        }
-    });
-}
-
-// Simpan analisis manual
-function simpanAnalisisManual() {
-    const judul = $('#analisis-judul-input').val().trim();
-    const kesimpulan = $('#analisis-kesimpulan-input').val().trim();
-    const rekomendasi = $('#analisis-rekomendasi-input').val().trim();
-    
-    if (!judul) {
-        Swal.fire('Error', 'Judul analisis harus diisi', 'error');
+function filterSelectedDataTable() {
+    const search = $('#selected-search').val().toLowerCase();
+    if (!search || !currentDataSeries) {
+        renderSelectedDataTable();
         return;
     }
     
-    Swal.fire({
-        title: 'Menyimpan...',
-        text: 'Mohon tunggu',
-        allowOutsideClick: false,
-        didOpen: () => Swal.showLoading()
-    });
+    const filtered = currentDataSeries.filter(d => d.tahun.toString().includes(search));
+    const tbody = document.getElementById('selected-data-tbody');
     
-    $.ajax({
-        url: baseUrl + 'IDE/simpan_analisis_data',
-        type: 'POST',
-        data: {
-            judul: judul,
-            indikator: dataIndikator?.Indikator || 'Hibah',
-            data_aktual: JSON.stringify(dataSeries),
-            kesimpulan: kesimpulan,
-            rekomendasi: rekomendasi
-        },
-        dataType: 'json',
-        success: function(response) {
-            Swal.close();
-            if (response.status === 'success') {
-                $('#analisis-judul-input').val('');
-                $('#analisis-kesimpulan-input').val('');
-                $('#analisis-rekomendasi-input').val('');
-                
-                Swal.fire('Berhasil!', 'Analisis tersimpan', 'success');
-                loadRiwayatAnalisis();
-            } else {
-                Swal.fire('Error', response.message || 'Gagal menyimpan', 'error');
+    if (filtered.length === 0) {
+        tbody.innerHTML = `<table><td colspan="3" class="text-center py-5">Tidak ditemukan</div></tr>`;
+        $('#selected-data-info').text(`Menampilkan 0 dari 0 data`);
+    } else {
+        tbody.innerHTML = filtered.map((item, index) => {
+            let trend = '-';
+            if (index > 0) {
+                const diff = parseFloat(item.nilai) - parseFloat(filtered[index-1].nilai);
+                trend = diff > 0 ? `↑ +${diff.toFixed(2)}` : diff < 0 ? `↓ ${diff.toFixed(2)}` : '→ 0';
             }
-        },
-        error: function() {
-            Swal.close();
-            Swal.fire('Error', 'Gagal menyimpan analisis', 'error');
-        }
-    });
+            return `<tr><td style="font-weight:bold">${item.tahun}</td><td>${formatNumberRibuan(item.nilai)}</div></td><td>${trend}</div><tr>`;
+        }).join('');
+        $('#selected-data-info').text(`Menampilkan ${filtered.length} dari ${filtered.length} data`);
+    }
 }
 
-// Load riwayat analisis
-function loadRiwayatAnalisis() {
-    $('#riwayat-analisis-list').html('<div class="modern-spinner"></div><p>Memuat...</p>');
+function loadRiwayatAnalisisByIndikator(indikator) {
+    if (!indikator) {
+        $('#riwayat-analisis-list').html(`
+            <div class="empty-state">
+                <i class="fas fa-archive"></i>
+                <p>Belum ada analisis tersimpan</p>
+            </div>
+        `);
+        return;
+    }
+    
+    $('#riwayat-analisis-list').html(`
+        <div class="text-center py-5">
+            <div class="modern-spinner"></div>
+            <p>Memuat riwayat analisis...</p>
+        </div>
+    `);
     
     $.ajax({
-        url: baseUrl + 'IDE/get_riwayat_analisis',
-        type: 'GET',
+        url: baseUrlData + 'IDE/get_riwayat_analisis_by_indikator',
+        type: 'POST',
+        data: { indikator: indikator },
         dataType: 'json',
         success: function(response) {
-            if (response.status === 'success' && response.data.length > 0) {
+            if (response.status === 'success' && response.data && response.data.length > 0) {
                 let html = '<div style="max-height:300px;overflow-y:auto;">';
                 response.data.forEach(a => {
+                    // Format tanggal jika ada
+                    let tanggal = a.created_at ? new Date(a.created_at).toLocaleDateString('id-ID') : '-';
                     html += `
                         <div style="padding:12px;border-bottom:1px solid var(--border);cursor:pointer;" onclick="viewAnalisisDetail(${a.id_analisis})">
                             <div style="display:flex;justify-content:space-between;align-items:center;">
                                 <div>
-                                    <strong> ${escapeHtml(a.judul)}</strong>
-                                    <br><small style="color:var(--text-3);">${escapeHtml(a.indikator)} | ${a.tanggal}</small>
+                                    <strong>${escapeHtml(a.judul)}</strong>
+                                    <br><small style="color:var(--text-3);">${escapeHtml(a.indikator)} | ${tanggal}</small>
                                 </div>
                                 <button class="btn btn-sm" onclick="event.stopPropagation();deleteAnalisis(${a.id_analisis})" style="color:var(--red);">
                                     <i class="fas fa-trash"></i>
@@ -8148,23 +8377,83 @@ function loadRiwayatAnalisis() {
                 $('#riwayat-analisis-list').html(html);
             } else {
                 $('#riwayat-analisis-list').html(`
-                    <div class="empty-state" style="padding:30px;">
-                        <p>Belum ada analisis tersimpan</p>
+                    <div class="empty-state">
+                        <i class="fas fa-archive"></i>
+                        <p>Belum ada analisis tersimpan untuk indikator ini</p>
                         <p style="font-size:12px;">Klik tombol "Simpan Analisis" untuk menyimpan analisis Anda</p>
                     </div>
                 `);
             }
         },
         error: function() {
-            $('#riwayat-analisis-list').html('<div class="empty-state"><p>Gagal memuat riwayat</p></div>');
+            $('#riwayat-analisis-list').html(`
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Gagal memuat riwayat analisis</p>
+                </div>
+            `);
         }
     });
 }
 
-// View detail analisis
+// ==================== SIMPAN ANALISIS ====================
+function simpanAnalisisManual() {
+    const judul = $('#analisis-judul-input').val().trim();
+    const kesimpulan = $('#analisis-kesimpulan-input').val().trim();
+    const rekomendasi = $('#analisis-rekomendasi-input').val().trim();
+    
+    if (!judul) {
+        Swal.fire('Error', 'Judul analisis harus diisi', 'error');
+        return;
+    }
+    
+    if (!currentDataIndikator) {
+        Swal.fire('Error', 'Pilih data indikator terlebih dahulu', 'error');
+        return;
+    }
+    
+    Swal.fire({
+        title: 'Menyimpan...',
+        text: 'Mohon tunggu',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+    
+    $.ajax({
+        url: baseUrlData + 'IDE/simpan_analisis_data',
+        type: 'POST',
+        data: {
+            judul: judul,
+            indikator: currentDataIndikator.indikator,
+            data_aktual: JSON.stringify(currentDataSeries),
+            kesimpulan: kesimpulan,
+            rekomendasi: rekomendasi
+        },
+        dataType: 'json',
+        success: function(response) {
+            Swal.close();
+            if (response.status === 'success') {
+                $('#analisis-judul-input').val('');
+                $('#analisis-kesimpulan-input').val('');
+                $('#analisis-rekomendasi-input').val('');
+                
+                Swal.fire('Berhasil!', 'Analisis tersimpan', 'success');
+                loadRiwayatAnalisisByIndikator(currentDataIndikator.indikator);
+            } else {
+                Swal.fire('Error', response.message || 'Gagal menyimpan', 'error');
+            }
+        },
+        error: function() {
+            Swal.close();
+            Swal.fire('Error', 'Gagal menyimpan analisis', 'error');
+        }
+    });
+}
+
+// ==================== VIEW DETAIL ANALISIS ====================
 function viewAnalisisDetail(id) {
     $.ajax({
-        url: baseUrl + 'IDE/get_analisis_detail',
+        url: baseUrlData + 'IDE/get_analisis_detail',
         type: 'POST',
         data: { id_analisis: id },
         dataType: 'json',
@@ -8175,10 +8464,10 @@ function viewAnalisisDetail(id) {
                     title: d.judul,
                     html: `
                         <div style="text-align:left;">
-                            <p><strong> Indikator:</strong> ${escapeHtml(d.indikator)}</p>
-                            <p><strong> Tanggal:</strong> ${d.tanggal}</p>
-                            <div class="mt-3"><strong> Analisis/Kesimpulan:</strong><p class="mt-2">${escapeHtml(d.kesimpulan || '-')}</p></div>
-                            ${d.rekomendasi ? `<div class="mt-3"><strong> Rekomendasi:</strong><p class="mt-2">${escapeHtml(d.rekomendasi)}</p></div>` : ''}
+                            <p><strong>Indikator:</strong> ${escapeHtml(d.indikator)}</p>
+                            <p><strong>Tanggal:</strong> ${d.tanggal}</p>
+                            <div class="mt-3"><strong>Analisis/Kesimpulan:</strong><p class="mt-2">${escapeHtml(d.kesimpulan || '-')}</p></div>
+                            ${d.rekomendasi ? `<div class="mt-3"><strong>Rekomendasi:</strong><p class="mt-2">${escapeHtml(d.rekomendasi)}</p></div>` : ''}
                         </div>
                     `,
                     width: '650px'
@@ -8188,7 +8477,7 @@ function viewAnalisisDetail(id) {
     });
 }
 
-// Delete analisis
+// ==================== DELETE ANALISIS ====================
 function deleteAnalisis(id) {
     Swal.fire({
         title: 'Hapus analisis?',
@@ -8200,14 +8489,16 @@ function deleteAnalisis(id) {
     }).then(result => {
         if (result.isConfirmed) {
             $.ajax({
-                url: baseUrl + 'IDE/delete_analisis_data',
+                url: baseUrlData + 'IDE/delete_analisis_data',
                 type: 'POST',
                 data: { id_analisis: id },
                 dataType: 'json',
                 success: function(response) {
                     if (response.status === 'success') {
                         Swal.fire('Terhapus!', '', 'success');
-                        loadRiwayatAnalisis();
+                        if (currentDataIndikator) {
+                            loadRiwayatAnalisisByIndikator(currentDataIndikator.indikator);
+                        }
                     }
                 }
             });
@@ -8215,669 +8506,276 @@ function deleteAnalisis(id) {
     });
 }
 
-// Export data to Excel
-function exportDataToExcel() {
-    const wsData = [['Tahun', 'Nilai (Rp Milyar)', 'Keterangan']];
-    dataSeries.forEach(d => wsData.push([d.tahun, d.nilai, 'Data Aktual']));
+// ==================== EXPORT KE EXCEL ====================
+function exportSelectedDataToExcel() {
+    if (!currentDataSeries || currentDataSeries.length === 0) {
+        Swal.fire('Info', 'Tidak ada data untuk diexport', 'info');
+        return;
+    }
+    
+    const wsData = [['Tahun', `Nilai (${currentDataIndikator?.satuan || ''})`, 'Keterangan']];
+    currentDataSeries.forEach(d => wsData.push([d.tahun, d.nilai, 'Data Aktual']));
     
     const ws = XLSX.utils.aoa_to_sheet(wsData);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Data Indikator');
-    XLSX.writeFile(wb, `Data_Indikator_${new Date().toISOString().slice(0,10)}.xlsx`);
-}
-
-// Format number
-function formatNumber(num) {
-    if (num === undefined || num === null) return '0';
-    return num.toLocaleString('id-ID');
-}
-
-// ==================== EXPORT LAPORAN PDF PROFESIONAL (TANPA SIMBOL) ====================
-async function exportDataReportToPDF() {
-    Swal.fire({
-        title: 'Membuat Laporan PDF...',
-        text: 'Mohon tunggu, sedang memproses data',
-        allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
-    });
+    XLSX.utils.book_append_sheet(wb, ws, currentDataIndikator?.indikator || 'Data');
+    XLSX.writeFile(wb, `${currentDataIndikator?.indikator || 'Data'}_${new Date().toISOString().slice(0,10)}.xlsx`);
     
-    try {
-        // Ambil data analisis dari input
-        const judulAnalisis = $('#analisis-judul-input').val().trim() || 'Analisis Data Indikator';
-        const kesimpulanAnalisis = $('#analisis-kesimpulan-input').val().trim() || 'Belum ada analisis yang ditambahkan';
-        const rekomendasiAnalisis = $('#analisis-rekomendasi-input').val().trim() || '';
-        
-        // Hitung statistik
-        const values = dataSeries.map(d => d.nilai);
-        const totalData = dataSeries.length;
-        const nilaiTertinggi = Math.max(...values);
-        const nilaiTerendah = Math.min(...values);
-        const rataRata = values.reduce((a, b) => a + b, 0) / values.length;
-        const tahunTertinggi = dataSeries.find(d => d.nilai === nilaiTertinggi)?.tahun || '-';
-        const tahunTerendah = dataSeries.find(d => d.nilai === nilaiTerendah)?.tahun || '-';
-        
-        // Siapkan data tren (tanpa simbol)
-        let trendText = '';
-        for (let i = 1; i < dataSeries.length; i++) {
-            const diff = dataSeries[i].nilai - dataSeries[i-1].nilai;
-            const percent = dataSeries[i-1].nilai !== 0 ? (diff / dataSeries[i-1].nilai * 100).toFixed(1) : 0;
-            const arah = diff > 0 ? 'meningkat' : (diff < 0 ? 'menurun' : 'stabil');
-            const arahText = diff > 0 ? 'naik' : (diff < 0 ? 'turun' : 'tetap');
-            trendText += `<div class="report-trend-item">Tahun ${dataSeries[i].tahun}: Nilai ${arahText} sebesar ${Math.abs(diff).toFixed(2)} (${percent > 0 ? '+' : ''}${percent}%) dari tahun sebelumnya</div>`;
-        }
-        
-        // Logo URL
-        const logoUrl = '<?= base_url('assets/img/bappeda.png') ?>';
-        const now = new Date();
-        const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-        const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-        const dateStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
-        const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
-        
-        // Format angka tanpa simbol
-        const formatNumberRibuan = (num) => {
-            return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        };
-        
-        // Buat HTML Laporan (tanpa simbol)
-        const htmlContent = `
-            <div class="report-export-wrapper" id="report-export-content">
-                <!-- HEADER -->
-                <div class="report-header">
-                    <div class="report-logo">
-                        <img src="${logoUrl}" alt="Logo Bappeda" class="report-logo-img">
-                        <div>
-                            <div class="report-title">Smart Office Management</div>
-                            <div class="report-subtitle">Bappeda Kabupaten Banyuwangi</div>
-                        </div>
-                    </div>
-                    <div class="report-meta">
-                        <span>Tanggal Export: ${dateStr} | ${timeStr} WIB</span>
-                        <span>User: <?= $display_name ?> (<?= $role_name ?>)</span>
-                        <span>ID Laporan: SMB-${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}-${now.getTime().toString().slice(-6)}</span>
-                    </div>
-                </div>
-                
-                <!-- INFORMASI INDIKATOR -->
-                <div class="report-section">
-                    <div class="report-section-title">INFORMASI INDIKATOR</div>
-                    <div class="report-source-card">
-                        <div class="report-source-item">
-                            <span class="report-source-label">Indikator:</span>
-                            <span class="report-source-value"> ${escapeHtml(dataIndikator?.Indikator || 'Hibah')}</span>
-                        </div>
-                        <div class="report-source-item">
-                            <span class="report-source-label">Produsen Data:</span>
-                            <span class="report-source-value"> ${escapeHtml(dataIndikator?.['Produsen Data'] || 'Badan Pendapatan Daerah')}</span>
-                        </div>
-                        <div class="report-source-item">
-                            <span class="report-source-label">Urusan:</span>
-                            <span class="report-source-value"> ${escapeHtml(dataIndikator?.Urusan || 'Pendapatan Daerah')}</span>
-                        </div>
-                        <div class="report-source-item">
-                            <span class="report-source-label">Satuan:</span>
-                            <span class="report-source-value"> ${escapeHtml(dataIndikator?.Satuan || 'Rp Milyar')}</span>
-                        </div>
-                        <div class="report-source-item">
-                            <span class="report-source-label">Sumber Data:</span>
-                            <span class="report-source-value"> Portal Satu Data Banyuwangi</span>
-                        </div>
-                        <div class="report-source-item">
-                            <span class="report-source-label">Periode Data:</span>
-                            <span class="report-source-value"> ${dataSeries[0]?.tahun || '-'} - ${dataSeries[dataSeries.length-1]?.tahun || '-'}</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- STATISTIK RINGKAS -->
-                <div class="report-section">
-                    <div class="report-section-title">STATISTIK RINGKAS</div>
-                    <div class="report-info-grid">
-                        <div class="report-info-card">
-                            <div class="report-info-label">TOTAL DATA</div>
-                            <div class="report-info-value">${totalData}</div>
-                            <div class="report-info-unit">tahun tersedia</div>
-                        </div>
-                        <div class="report-info-card">
-                            <div class="report-info-label">NILAI TERTINGGI</div>
-                            <div class="report-info-value">${formatNumber(nilaiTertinggi)}</div>
-                            <div class="report-info-unit">tahun ${tahunTertinggi}</div>
-                        </div>
-                        <div class="report-info-card">
-                            <div class="report-info-label">NILAI TERENDAH</div>
-                            <div class="report-info-value">${formatNumber(nilaiTerendah)}</div>
-                            <div class="report-info-unit">tahun ${tahunTerendah}</div>
-                        </div>
-                        <div class="report-info-card">
-                            <div class="report-info-label">RATA-RATA</div>
-                            <div class="report-info-value">${formatNumber(rataRata)}</div>
-                            <div class="report-info-unit">per tahun</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- DATA PER TAHUN -->
-                <div class="report-section">
-                    <div class="report-section-title">DATA PER TAHUN</div>
-                    <table class="report-table">
-                        <thead>
-                            <tr>
-                                <th style="width:20%">TAHUN</th>
-                                <th style="width:30%">NILAI (${escapeHtml(dataIndikator?.Satuan || 'Rp Milyar')})</th>
-                                <th style="width:25%">PERUBAHAN</th>
-                                <th style="width:25%">PERSENTASE</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${dataSeries.map((item, index) => {
-                                let perubahanHtml = '-';
-                                let persenHtml = '-';
-                                let trendClass = '';
-                                
-                                if (index > 0) {
-                                    const prevValue = dataSeries[index - 1].nilai;
-                                    const diff = item.nilai - prevValue;
-                                    const percent = prevValue !== 0 ? (diff / prevValue * 100).toFixed(1) : 0;
-                                    trendClass = diff > 0 ? 'report-trend-up' : (diff < 0 ? 'report-trend-down' : 'report-trend-neutral');
-                                    const arahText = diff > 0 ? 'naik' : (diff < 0 ? 'turun' : 'tetap');
-                                    perubahanHtml = `${arahText} ${Math.abs(diff).toFixed(2)}`;
-                                    persenHtml = `<span class="${trendClass}">${percent > 0 ? '+' : ''}${percent}%</span>`;
-                                }
-                                
-                                return `
-                                    <tr>
-                                        <td style="font-weight:bold">${item.tahun}</td>
-                                        <td style="text-align:right">${formatNumber(item.nilai)}</td>
-                                        <td style="text-align:center">${perubahanHtml}</td>
-                                        <td style="text-align:center">${persenHtml}</td>
-                                    </tr>
-                                `;
-                            }).join('')}
-                        </tbody>
-                    </table>
-                </div>
-                
-                <!-- TREND ANALISIS -->
-                ${trendText ? `
-                <div class="report-section">
-                    <div class="report-section-title">TREND ANALISIS</div>
-                    <div class="report-trend-container">
-                        ${trendText}
-                    </div>
-                </div>
-                ` : ''}
-                
-                <!-- KESIMPULAN DAN ANALISIS -->
-                <div class="report-analysis">
-                    <div class="report-analysis-title">KESIMPULAN DAN ANALISIS</div>
-                    <div class="report-analysis-content">
-                        <strong>Judul Analisis:</strong> ${escapeHtml(judulAnalisis)}<br><br>
-                        <strong>Hasil Analisis:</strong><br>
-                        ${escapeHtml(kesimpulanAnalisis).replace(/\n/g, '<br>')}
-                    </div>
-                </div>
-                
-                <!-- REKOMENDASI -->
-                ${rekomendasiAnalisis ? `
-                <div class="report-recommendation">
-                    <div class="report-recommendation-title">REKOMENDASI</div>
-                    <div class="report-analysis-content">
-                        ${escapeHtml(rekomendasiAnalisis).replace(/\n/g, '<br>')}
-                    </div>
-                </div>
-                ` : ''}
-                
-                <!-- FOOTER -->
-                <div class="report-footer">
-                    <div>Dokumen ini dibuat secara otomatis oleh Smart Office Management Bappeda Kabupaten Banyuwangi</div>
-                    <div>Laporan ini merupakan dokumen resmi yang sah sebagai bukti analisis data indikator</div>
-                    <div>Sistem informasi terintegrasi untuk mendukung perencanaan pembangunan daerah</div>
-                </div>
-            </div>
-        `;
-        
-        // Buat element sementara
-        const element = document.createElement('div');
-        element.innerHTML = htmlContent;
-        document.body.appendChild(element);
-        
-        // Konfigurasi PDF
-        const opt = {
-            margin: [0.7, 0.7, 0.7, 0.7],
-            filename: `Laporan_Analisis_Data_${dataIndikator?.Indikator || 'Hibah'}_${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}-${now.getDate().toString().padStart(2,'0')}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { 
-                scale: 2, 
-                letterRendering: true, 
-                useCORS: true,
-                logging: false
-            },
-            jsPDF: { 
-                unit: 'in', 
-                format: 'a4', 
-                orientation: 'portrait' 
-            }
-        };
-        
-        // Generate PDF
-        await html2pdf().set(opt).from(element).save();
-        
-        // Hapus element sementara
-        document.body.removeChild(element);
-        
-        // Tampilkan notifikasi sukses
-        Swal.fire({
-            icon: 'success',
-            title: 'Laporan Berhasil Diexport',
-            html: `File PDF laporan analisis data telah tersimpan.<br><strong>${dataIndikator?.Indikator || 'Hibah'}</strong> - ${dateStr}`,
-            timer: 3000,
-            showConfirmButton: false
-        });
-        
-    } catch (error) {
-        console.error('Export PDF error:', error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Gagal Export PDF',
-            text: 'Terjadi kesalahan: ' + error.message
-        });
-    }
+    Swal.fire('Berhasil!', 'File Excel telah di-download', 'success');
 }
 
-// ================= RECORD PRINT LOG DARI PREVIEW =================
-function recordPrintFromPreview() {
-    const idDokumen = document.getElementById('preview-dokumen-id').value;
-    const namaDokumen = document.getElementById('preview-dokumen-nama').value;
-    const jumlahLembar = document.getElementById('print-jumlah-lembar').value || 1;
-    const rangeHalaman = document.getElementById('print-range-halaman').value || 'Semua';
-    
-    if (!idDokumen) {
-        console.error('ID Dokumen tidak ditemukan!');
-        // Coba ambil dari URL atau sumber lain
-        Swal.fire('Error', 'ID Dokumen tidak ditemukan, print log tidak tersimpan', 'warning');
-        return false;
+// ==================== EXPORT KE PDF ====================
+async function exportSelectedDataToPDF() {
+    if (!currentDataSeries || currentDataSeries.length === 0) {
+        Swal.fire('Info', 'Tidak ada data untuk diexport', 'info');
+        return;
     }
     
-    console.log('Recording print log - ID:', idDokumen, 'Lembar:', jumlahLembar);
-    
-    // Kirim AJAX sync (biar pasti tercatat sebelum print)
-    let success = false;
-    
-    $.ajax({
-        url: '<?= base_url('IDE/log_print_from_preview') ?>',
-        type: 'POST',
-        data: {
-            id_dokumen: idDokumen,
-            nama_dokumen: namaDokumen,
-            jumlah_kertas: parseInt(jumlahLembar),
-            range_halaman: rangeHalaman,
-            source: 'preview_print_button'
-        },
-        dataType: 'json',
-        async: false,  // IMPORTANT: biar proses print menunggu sampai log tercatat
-        success: function(response) {
-            console.log('Print log recorded:', response);
-            if (response.status === 'success') {
-                success = true;
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Print Log Tercatat',
-                    text: response.message || 'Print activity telah dicatat',
-                    timer: 1500,
-                    showConfirmButton: false
-                });
-            } else {
-                console.error('Failed to record:', response.message);
-                Swal.fire('Error', response.message || 'Gagal mencatat log print', 'error');
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('AJAX Error:', error);
-            Swal.fire('Error', 'Gagal menghubungi server: ' + error, 'error');
-        }
-    });
-    
-    return success;
-}
-
-// ================= HANDLE PRINT DARI PREVIEW =================
-function handlePrintFromPreview() {
-    // Tampilkan loading
     Swal.fire({
-        title: 'Memproses...',
-        text: 'Mencatat aktivitas print',
+        title: 'Membuat PDF...',
+        text: 'Mohon tunggu',
         allowOutsideClick: false,
         didOpen: () => Swal.showLoading()
     });
     
-    // Catat log dulu
-    $.ajax({
-        url: '<?= base_url('IDE/log_print_from_preview') ?>',
-        type: 'POST',
-        data: {
-            id_dokumen: document.getElementById('preview-dokumen-id').value,
-            nama_dokumen: document.getElementById('preview-dokumen-nama').value,
-            jumlah_kertas: parseInt(document.getElementById('print-jumlah-lembar').value || 1),
-            range_halaman: document.getElementById('print-range-halaman').value || 'Semua',
-            source: 'preview_print_button'
-        },
-        dataType: 'json',
-        success: function(response) {
-            Swal.close();
-            if (response.status === 'success') {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Print Log Tercatat',
-                    text: response.message,
-                    timer: 1500,
-                    showConfirmButton: false
-                }).then(() => {
-                    // Setelah log tercatat, jalankan print
-                    window.print();
-                });
-            } else {
-                Swal.fire('Error', response.message || 'Gagal mencatat log print', 'error');
-            }
-        },
-        error: function(xhr, status, error) {
-            Swal.close();
-            console.error('Error recording print log:', error);
-            // TETAP LANJUTKAN PRINT meskipun log gagal
-            Swal.fire({
-                title: 'Peringatan',
-                text: 'Gagal mencatat log print, tetapi print akan dilanjutkan',
-                icon: 'warning',
-                timer: 1500,
-                showConfirmButton: false
-            }).then(() => {
-                window.print();
-            });
-        }
-    });
-}
-
-// ================= PASANG EVENT LISTENER SAAT MODAL DIBUKA =================
-function setupPrintButtonListener() {
-    const printBtn = document.getElementById('btn-print-preview');
-    if (printBtn) {
-        // Hapus listener lama jika ada
-        const newBtn = printBtn.cloneNode(true);
-        printBtn.parentNode.replaceChild(newBtn, printBtn);
+    try {
+        const logoUrl = baseUrlData + 'assets/img/bappeda.png';
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('id-ID');
         
-        // Pasang listener baru
-        newBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            handlePrintFromPreview();
-        });
+        const htmlContent = `
+            <div class="pdf-export-wrapper">
+                <div class="pdf-header">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                        <img src="${logoUrl}" alt="Logo" style="height: 50px;">
+                        <div>
+                            <h2>Smart Office Management</h2>
+                            <h3>BAPPEDA KABUPATEN BANYUWANGI</h3>
+                        </div>
+                    </div>
+                    <p>Laporan Data ${escapeHtml(currentDataIndikator?.indikator || 'Indikator')}</p>
+                </div>
+                <div class="pdf-date">
+                    <strong>Tanggal Export:</strong> ${dateStr}<br>
+                    <strong>Sumber:</strong> ${escapeHtml(currentDataIndikator?.produsen || '-')}<br>
+                    <strong>Satuan:</strong> ${escapeHtml(currentDataIndikator?.satuan || '-')}
+                </div>
+                <table class="pdf-table">
+                    <thead>
+                        <tr><th>Tahun</th><th>Nilai</th></tr>
+                    </thead>
+                    <tbody>
+                        ${currentDataSeries.map(d => `<tr><td style="text-align:center">${d.tahun}</td><td style="text-align:right">${formatNumberRibuan(d.nilai)}</div></td>`).join('')}
+                    </tbody>
+                </table>
+                <div class="pdf-footer">
+                    <p>Dokumen ini dibuat secara otomatis oleh sistem Smart Office Management Bappeda</p>
+                </div>
+            </div>
+        `;
+        
+        const element = document.createElement('div');
+        element.innerHTML = htmlContent;
+        document.body.appendChild(element);
+        
+        const opt = {
+            margin: [0.5, 0.5, 0.5, 0.5],
+            filename: `${currentDataIndikator?.indikator || 'Data'}_${dateStr.replace(/\//g, '-')}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+        };
+        
+        await html2pdf().set(opt).from(element).save();
+        document.body.removeChild(element);
+        
+        Swal.fire('Berhasil!', 'File PDF telah di-download', 'success');
+    } catch (error) {
+        console.error('PDF Error:', error);
+        Swal.fire('Error!', 'Gagal membuat PDF', 'error');
     }
 }
 
-// Observer untuk modal preview (pasang listener setiap modal terbuka)
-const previewModalObserver = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-        if (mutation.attributeName === 'style') {
-            const modal = document.getElementById('modalPreview');
-            if (modal && modal.style.display === 'flex') {
-                setupPrintButtonListener();
-            }
+function openApiModal(id = null) {
+    if (id) {
+        const config = allApiConfigs.find(c => c.id_api == id);
+        if (config) {
+            $('#modalApiTitle').text('Edit Konfigurasi API');
+            $('#api_id').val(config.id_api);
+            $('#nama_data').val(config.nama_data);
+            $('#kode_api').val(config.kode_api);
+            $('#indikator_id').val(config.indikator_id);  // ← TAMBAHKAN INI
+            $('#url_api').val(config.url_api);
+            $('#api_key').val(config.api_key || '');
+            $('#metode').val(config.metode || 'GET');
+            $('#indikator_field').val(config.indikator_field || 'result.Indikator');
+            $('#produsen_field').val(config.produsen_field || 'result.Produsen Data');
+            $('#urusan_field').val(config.urusan_field || 'result.Urusan');
+            $('#satuan_field').val(config.satuan_field || 'result.Satuan');
+            $('#data_field').val(config.data_field || 'result.data');
+            $('#tahun_field').val(config.tahun_field || 'tahun');
+            $('#nilai_field').val(config.nilai_field || 'nilai');
         }
+    } else {
+        $('#modalApiTitle').text('Tambah Konfigurasi API');
+        $('#formApiConfig')[0].reset();
+        $('#api_id').val('');
+        $('#indikator_id').val('');  // ← TAMBAHKAN INI
+        $('#indikator_field').val('result.Indikator');
+        $('#produsen_field').val('result.Produsen Data');
+        $('#urusan_field').val('result.Urusan');
+        $('#satuan_field').val('result.Satuan');
+        $('#data_field').val('result.data');
+        $('#tahun_field').val('tahun');
+        $('#nilai_field').val('nilai');
+    }
+    
+    $('#modalApiConfig').css('display', 'flex');
+}
+
+function closeApiModal() {
+    $('#modalApiConfig').css('display', 'none');
+}
+
+// Submit form API config
+$(document).ready(function() {
+    $('#formApiConfig').off('submit').on('submit', function(e) {
+        e.preventDefault();
+        
+        const id_api = $('#api_id').val();
+        const url = id_api ? baseUrlData + 'IDE/update_api_config' : baseUrlData + 'IDE/save_api_config';
+        
+        // Validasi ID Indikator
+        const indikatorId = $('#indikator_id').val().trim();
+        if (!indikatorId) {
+            Swal.fire('Error!', 'ID Indikator wajib diisi', 'error');
+            return;
+        }
+        
+        Swal.fire({
+            title: 'Menyimpan...',
+            text: 'Mohon tunggu',
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading()
+        });
+        
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(response) {
+                Swal.close();
+                if (response.status === 'success') {
+                    Swal.fire('Berhasil!', response.message, 'success');
+                    closeApiModal();
+                    loadApiConfigs(); // Refresh daftar
+                } else {
+                    Swal.fire('Error!', response.message, 'error');
+                }
+            },
+            error: function(xhr) {
+                Swal.close();
+                let msg = 'Gagal menyimpan konfigurasi';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    msg = xhr.responseJSON.message;
+                }
+                Swal.fire('Error!', msg, 'error');
+            }
+        });
     });
 });
 
-const modalPreview = document.getElementById('modalPreview');
-if (modalPreview) {
-    previewModalObserver.observe(modalPreview, { attributes: true });
+function editApiConfig(id) {
+    openApiModal(id);
 }
 
-async function exportDataReportToPDF() {
+function deleteApiConfig(id, nama) {
     Swal.fire({
-        title: 'Membuat Laporan PDF...',
-        text: 'Mohon tunggu, sedang memproses data',
-        allowOutsideClick: false,
-        didOpen: () => Swal.showLoading()
-    });
-    
-    try {
-        // ========== UBAH: Ambil data analisis dari DATABASE, bukan dari input form ==========
-        let judulAnalisis = 'Analisis Data Indikator';
-        let kesimpulanAnalisis = 'Belum ada analisis yang ditambahkan';
-        let rekomendasiAnalisis = '';
-        
-        // Ambil analisis TERBARU dari database
-        try {
-            const response = await $.ajax({
-                url: '<?= base_url('IDE/get_latest_analisis') ?>',
-                type: 'GET',
+        title: 'Hapus Konfigurasi?',
+        text: `Anda yakin ingin menghapus "${nama}"?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: baseUrlData + 'IDE/delete_api_config',
+                type: 'POST',
+                data: { id_api: id },
                 dataType: 'json',
-                async: false
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire('Terhapus!', response.message, 'success');
+                        loadApiConfigs();
+                        if (currentSelectedKode) {
+                            const deleted = allApiConfigs.find(c => c.id_api == id);
+                            if (deleted && deleted.kode_api === currentSelectedKode) {
+                                $('#selected-data-container').hide();
+                                currentSelectedKode = null;
+                            }
+                        }
+                    } else {
+                        Swal.fire('Error!', response.message, 'error');
+                    }
+                },
+                error: function() {
+                    Swal.fire('Error!', 'Gagal menghapus konfigurasi', 'error');
+                }
             });
-            
-            if (response.status === 'success' && response.data) {
-                judulAnalisis = response.data.judul || judulAnalisis;
-                kesimpulanAnalisis = response.data.kesimpulan || kesimpulanAnalisis;
-                rekomendasiAnalisis = response.data.rekomendasi || '';
-                console.log('Menggunakan analisis dari database:', judulAnalisis);
-            } else {
-                console.log('Tidak ada analisis di database, menggunakan default');
-            }
-        } catch(e) {
-            console.error('Gagal mengambil analisis dari database:', e);
         }
-        
-        // ========== SISANYA SAMA PERSIS SEPERTI SEBELUMNYA ==========
-        // Hitung statistik
-        const values = dataSeries.map(d => d.nilai);
-        const totalData = dataSeries.length;
-        const nilaiTertinggi = Math.max(...values);
-        const nilaiTerendah = Math.min(...values);
-        const rataRata = values.reduce((a, b) => a + b, 0) / values.length;
-        const tahunTertinggi = dataSeries.find(d => d.nilai === nilaiTertinggi)?.tahun || '-';
-        const tahunTerendah = dataSeries.find(d => d.nilai === nilaiTerendah)?.tahun || '-';
-        
-        // Siapkan data tren
-        let trendText = '';
-        for (let i = 1; i < dataSeries.length; i++) {
-            const diff = dataSeries[i].nilai - dataSeries[i-1].nilai;
-            const percent = dataSeries[i-1].nilai !== 0 ? (diff / dataSeries[i-1].nilai * 100).toFixed(1) : 0;
-            const arahText = diff > 0 ? 'naik' : (diff < 0 ? 'turun' : 'tetap');
-            trendText += `<div class="report-trend-item">Tahun ${dataSeries[i].tahun}: Nilai ${arahText} sebesar ${Math.abs(diff).toFixed(2)} (${percent > 0 ? '+' : ''}${percent}%) dari tahun sebelumnya</div>`;
-        }
-        
-        const logoUrl = '<?= base_url('assets/img/bappeda.png') ?>';
-        const now = new Date();
-        const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-        const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-        const dateStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
-        const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
-        
-        const formatNumberRibuan = (num) => num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        
-        // Buat HTML Laporan (SAMA PERSIS SEPERTI SEBELUMNYA)
-        const htmlContent = `
-            <div class="report-export-wrapper" id="report-export-content">
-                <div class="report-header">
-                    <div class="report-logo">
-                        <img src="${logoUrl}" alt="Logo Bappeda" class="report-logo-img">
-                        <div>
-                            <div class="report-title">Smart Office Management</div>
-                            <div class="report-subtitle">Bappeda Kabupaten Banyuwangi</div>
-                        </div>
-                    </div>
-                    <div class="report-meta">
-                        <span>Tanggal Export: ${dateStr} | ${timeStr} WIB</span>
-                        <span>User: <?= $display_name ?> (<?= $role_name ?>)</span>
-                        <span>ID Laporan: SMB-${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}-${now.getTime().toString().slice(-6)}</span>
-                    </div>
-                </div>
-                
-                <div class="report-section">
-                    <div class="report-section-title">INFORMASI INDIKATOR</div>
-                    <div class="report-source-card">
-                        <div class="report-source-item">
-                            <span class="report-source-label">Indikator:</span>
-                            <span class="report-source-value"> ${escapeHtml(dataIndikator?.Indikator || 'Hibah')}</span>
-                        </div>
-                        <div class="report-source-item">
-                            <span class="report-source-label">Produsen Data:</span>
-                            <span class="report-source-value"> ${escapeHtml(dataIndikator?.['Produsen Data'] || 'Badan Pendapatan Daerah')}</span>
-                        </div>
-                        <div class="report-source-item">
-                            <span class="report-source-label">Urusan:</span>
-                            <span class="report-source-value"> ${escapeHtml(dataIndikator?.Urusan || 'Pendapatan Daerah')}</span>
-                        </div>
-                        <div class="report-source-item">
-                            <span class="report-source-label">Satuan:</span>
-                            <span class="report-source-value"> ${escapeHtml(dataIndikator?.Satuan || 'Rp Milyar')}</span>
-                        </div>
-                        <div class="report-source-item">
-                            <span class="report-source-label">Sumber Data:</span>
-                            <span class="report-source-value"> Portal Satu Data Banyuwangi</span>
-                        </div>
-                        <div class="report-source-item">
-                            <span class="report-source-label">Periode Data:</span>
-                            <span class="report-source-value"> ${dataSeries[0]?.tahun || '-'} - ${dataSeries[dataSeries.length-1]?.tahun || '-'}</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="report-section">
-                    <div class="report-section-title">STATISTIK RINGKAS</div>
-                    <div class="report-info-grid">
-                        <div class="report-info-card">
-                            <div class="report-info-label">TOTAL DATA</div>
-                            <div class="report-info-value">${totalData}</div>
-                            <div class="report-info-unit">tahun tersedia</div>
-                        </div>
-                        <div class="report-info-card">
-                            <div class="report-info-label">NILAI TERTINGGI</div>
-                            <div class="report-info-value">${formatNumber(nilaiTertinggi)}</div>
-                            <div class="report-info-unit">tahun ${tahunTertinggi}</div>
-                        </div>
-                        <div class="report-info-card">
-                            <div class="report-info-label">NILAI TERENDAH</div>
-                            <div class="report-info-value">${formatNumber(nilaiTerendah)}</div>
-                            <div class="report-info-unit">tahun ${tahunTerendah}</div>
-                        </div>
-                        <div class="report-info-card">
-                            <div class="report-info-label">RATA-RATA</div>
-                            <div class="report-info-value">${formatNumber(rataRata)}</div>
-                            <div class="report-info-unit">per tahun</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="report-section">
-                    <div class="report-section-title">DATA PER TAHUN</div>
-                    <table class="report-table">
-                        <thead>
-                            <tr>
-                                <th style="width:20%">TAHUN</th>
-                                <th style="width:30%">NILAI (${escapeHtml(dataIndikator?.Satuan || 'Rp Milyar')})</th>
-                                <th style="width:25%">PERUBAHAN</th>
-                                <th style="width:25%">PERSENTASE</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${dataSeries.map((item, index) => {
-                                let perubahanHtml = '-';
-                                let persenHtml = '-';
-                                let trendClass = '';
-                                
-                                if (index > 0) {
-                                    const prevValue = dataSeries[index - 1].nilai;
-                                    const diff = item.nilai - prevValue;
-                                    const percent = prevValue !== 0 ? (diff / prevValue * 100).toFixed(1) : 0;
-                                    trendClass = diff > 0 ? 'report-trend-up' : (diff < 0 ? 'report-trend-down' : 'report-trend-neutral');
-                                    const arahText = diff > 0 ? 'naik' : (diff < 0 ? 'turun' : 'tetap');
-                                    perubahanHtml = `${arahText} ${Math.abs(diff).toFixed(2)}`;
-                                    persenHtml = `<span class="${trendClass}">${percent > 0 ? '+' : ''}${percent}%</span>`;
-                                }
-                                
-                                return `
-                                    <tr>
-                                        <td style="font-weight:bold">${item.tahun}</td>
-                                        <td style="text-align:right">${formatNumber(item.nilai)}</td>
-                                        <td style="text-align:center">${perubahanHtml}</td>
-                                        <td style="text-align:center">${persenHtml}</td>
-                                    </tr>
-                                `;
-                            }).join('')}
-                        </tbody>
-                    </table>
-                </div>
-                
-                ${trendText ? `
-                <div class="report-section">
-                    <div class="report-section-title">TREND ANALISIS</div>
-                    <div class="report-trend-container">
-                        ${trendText}
-                    </div>
-                </div>
-                ` : ''}
-                
-                <!-- KESIMPULAN DAN ANALISIS - Menggunakan data dari DATABASE -->
-                <div class="report-analysis">
-                    <div class="report-analysis-title">KESIMPULAN DAN ANALISIS</div>
-                    <div class="report-analysis-content">
-                        <strong>Judul Analisis:</strong> ${escapeHtml(judulAnalisis)}<br><br>
-                        <strong>Hasil Analisis:</strong><br>
-                        ${escapeHtml(kesimpulanAnalisis).replace(/\n/g, '<br>')}
-                    </div>
-                </div>
-                
-                ${rekomendasiAnalisis ? `
-                <div class="report-recommendation">
-                    <div class="report-recommendation-title">REKOMENDASI</div>
-                    <div class="report-analysis-content">
-                        ${escapeHtml(rekomendasiAnalisis).replace(/\n/g, '<br>')}
-                    </div>
-                </div>
-                ` : ''}
-                
-                <div class="report-footer">
-                    <div>Dokumen ini dibuat secara otomatis oleh Smart Office Management Bappeda Kabupaten Banyuwangi</div>
-                    <div>Laporan ini merupakan dokumen resmi yang sah sebagai bukti analisis data indikator</div>
-                    <div>Sistem informasi terintegrasi untuk mendukung perencanaan pembangunan daerah</div>
-                </div>
-            </div>
-        `;
-        
-        const element = document.createElement('div');
-        element.innerHTML = htmlContent;
-        document.body.appendChild(element);
-        
-        const opt = {
-            margin: [0.7, 0.7, 0.7, 0.7],
-            filename: `Laporan_Analisis_Data_${dataIndikator?.Indikator || 'Hibah'}_${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}-${now.getDate().toString().padStart(2,'0')}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, letterRendering: true, useCORS: true },
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-        };
-        
-        await html2pdf().set(opt).from(element).save();
-        document.body.removeChild(element);
-        
-        Swal.fire({
-            icon: 'success',
-            title: 'Laporan Berhasil Diexport',
-            html: `File PDF laporan analisis data telah tersimpan.<br><strong>${dataIndikator?.Indikator || 'Hibah'}</strong> - ${dateStr}`,
-            timer: 3000,
-            showConfirmButton: false
-        });
-        
-    } catch (error) {
-        console.error('Export PDF error:', error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Gagal Export PDF',
-            text: 'Terjadi kesalahan: ' + error.message
-        });
-    }
+    });
 }
 
+// ==================== INISIALISASI PANEL DATA ====================
+// Hentikan observer lama jika ada
+if (window.dataPanelObserver) {
+    window.dataPanelObserver.disconnect();
+}
+
+// Buat observer baru
+window.dataPanelObserver = new MutationObserver(function() {
+    const activePanel = document.querySelector('.panel.active');
+    if (activePanel && activePanel.id === 'panel-data') {
+        console.log('Panel data aktif, memuat konfigurasi API...');
+        if (allApiConfigs.length === 0) {
+            loadApiConfigs();
+        } else {
+            renderDataCards();
+        }
+    }
+});
+
+window.dataPanelObserver.observe(document.body, {
+    attributes: true,
+    attributeFilter: ['class'],
+    subtree: true
+});
+
+// Jika panel data sudah aktif saat halaman dimuat
+if (document.querySelector('#panel-data.active')) {
+    loadApiConfigs();
+}
+
+console.log('Data panel API manager initialized - FINAL VERSION');
+
+// Load riwayat analisis untuk indikator yang dipilih
+function loadRiwayatAnalisis() {
+    if (!currentDataIndikator || !currentDataIndikator.indikator) {
+        $('#riwayat-analisis-list').html(`
+            <div class="empty-state">
+                <i class="fas fa-archive"></i>
+                <p>Belum ada analisis tersimpan</p>
+                <p style="font-size:12px;">Pilih data indikator terlebih dahulu</p>
+            </div>
+        `);
+        return;
+    }
+    
+    loadRiwayatAnalisisByIndikator(currentDataIndikator.indikator);
+}
 
 </script>
 
