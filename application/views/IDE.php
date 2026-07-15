@@ -1169,35 +1169,6 @@
       background: #0056CC;
     }
 
-    .whatsapp-float {
-      position: fixed;
-      width: 60px;
-      height: 60px;
-      bottom: 30px;
-      right: 30px;
-      background-color: #25D366;
-      color: #fff;
-      border-radius: 50%;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .whatsapp-float:hover {
-      transform: scale(1.1) translateY(-5px);
-      background-color: #128C7E;
-      color: #fff;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-    }
-
-    .whatsapp-float i {
-      font-size: 32px;
-      line-height: 0;
-    }
 
     /* =============================================
        NAV MENU – DESKTOP STYLE (TIDAK DIUBAH)
@@ -1442,17 +1413,6 @@
         padding: 24px;
       }
       
-      /* WhatsApp mobile */
-      .whatsapp-float {
-        width: 50px;
-        height: 50px;
-        bottom: 20px;
-        right: 20px;
-      }
-      
-      .whatsapp-float i {
-        font-size: 28px;
-      }
     }
 
     @media (max-width: 576px) {
@@ -2192,13 +2152,6 @@
     </div>
   </div>
 
-  <a href="https://wa.me/6282227666283?text=Halo%20Admin%20IDE%20Consultant,%20saya%20ingin%20bertanya..." 
-     class="whatsapp-float" 
-     target="_blank" 
-     rel="noopener noreferrer"
-     aria-label="Chat via WhatsApp">
-    <i class="fa-brands fa-whatsapp"></i>
-  </a>
 
   <!-- External Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
