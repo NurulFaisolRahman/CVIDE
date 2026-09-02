@@ -178,36 +178,45 @@
     }
 
     .dropdown-content.mega-dropdown {
-      display: none;
       position: absolute;
       top: 100%;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translateX(-50%) translateY(8px);
       background: #ffffff;
       min-width: 320px;
       max-width: 500px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.18);
       border-radius: 20px;
-      margin-top: 15px;
+      margin-top: 12px;
       z-index: 1000;
       padding: 24px;
       border-top: 4px solid var(--lugx-red);
+      
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+      transition-delay: 0.15s;
     }
 
-    .dropdown:hover .dropdown-content.mega-dropdown {
-      display: block;
-      animation: fadeInDown 0.3s ease forwards;
+    /* Invisible Hover Bridge to prevent menu from closing during cursor movement */
+    .dropdown-content.mega-dropdown::before {
+      content: '';
+      position: absolute;
+      top: -18px;
+      left: 0;
+      width: 100%;
+      height: 18px;
+      background: transparent;
     }
 
-    @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translate(-50%, 10px);
-      }
-      to {
-        opacity: 1;
-        transform: translate(-50%, 0);
-      }
+    .dropdown:hover .dropdown-content.mega-dropdown,
+    .dropdown-content.mega-dropdown:hover {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+      transition-delay: 0s;
     }
 
     .mega-grid {
@@ -2859,7 +2868,7 @@
       var targetModal = document.getElementById(modalId);
       if (targetModal) {
         targetModal.classList.add('active');
-        if (modalId === 'signInModal') updateAdminGree  ting();
+        if (modalId === 'signInModal') updateAdminGreeting();
       }
     }
 
@@ -2969,30 +2978,50 @@
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == '13') {
           event.preventDefault();
-          document.getElementById("Masuk").click();  
+          $("#Masuk").click();  
         }
       });
       
-      $("#Masuk").click(function() {
+      $("#Masuk").click(function(e) {
+        e.preventDefault();
+        
+        var username = $.trim($("#Username").val());
+        var password = $.trim($("#Password").val());
+        
+        if (!username || !password) {
+          alert("Harap masukkan Username dan Password Anda!");
+          return;
+        }
+
         var Akun = { 
-          Username: $("#Username").val(),
-          Password: $("#Password").val() 
+          Username: username,
+          Password: password 
         };
+
+        var $btn = $(this);
+        var originalText = $btn.html();
+        
+        $btn.prop("disabled", true).html('<i class="fa-solid fa-spinner fa-spin mr-1"></i> Memproses...');
         
         $.post(BaseURL + "IDE/SignIn", Akun).done(function(Respon) {
-          if (Respon == '1') {
+          var trimmedRespon = $.trim(Respon);
+          if (trimmedRespon == '1') {
             window.location = BaseURL + "SuperAdmin";
-          } else if (Respon == '2') {
+          } else if (trimmedRespon == '2') {
             window.location = BaseURL + "Admin";
-          } else if (Respon == '3') {
+          } else if (trimmedRespon == '3') {
             window.location = BaseURL + "Staf";
-          } else if (Respon == '4') {
+          } else if (trimmedRespon == '4') {
+            window.location = BaseURL + "Surveiyor";
+          } else if (trimmedRespon == '0') {
             window.location = BaseURL + "Econk";
           } else {
-            alert(Respon);
+            alert(trimmedRespon || 'Login gagal. Periksa Username dan Password Anda!');
+            $btn.prop("disabled", false).html(originalText);
           }
         }).fail(function() {
-          alert('Login failed. Please try again.');
+          alert('Terjadi kesalahan koneksi. Silakan coba lagi.');
+          $btn.prop("disabled", false).html(originalText);
         });                         
       });
     
