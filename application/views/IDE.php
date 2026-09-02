@@ -2846,7 +2846,7 @@
       var targetModal = document.getElementById(modalId);
       if (targetModal) {
         targetModal.classList.add('active');
-        if (modalId === 'signInModal') updateAdminGreeting();
+        if (modalId === 'signInModal') updateAdminGree  ting();
       }
     }
 

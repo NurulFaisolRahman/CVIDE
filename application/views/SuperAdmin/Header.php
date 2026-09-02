@@ -43,11 +43,38 @@
         color: #334155;
       }
 
-      /* Sidebar Left Column Styling */
+      /* Full Height Responsive Layout System */
+      .container.body {
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+      }
+
+      .main_container {
+        background-color: var(--ide-bg) !important;
+        min-height: 100vh !important;
+        position: relative !important;
+      }
+
+      /* Sidebar Left Column Styling (Full Height Extension) */
       .col-md-3.left_col,
       .left_col {
         background: linear-gradient(180deg, var(--ide-navy) 0%, var(--ide-navy-dark) 100%) !important;
         box-shadow: 4px 0 25px rgba(0, 0, 0, 0.15);
+        position: absolute !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        height: 100% !important;
+        min-height: 100% !important;
+        z-index: 100 !important;
+      }
+
+      .left_col.scroll-view {
+        width: 100% !important;
+        min-height: 100% !important;
+        height: 100% !important;
       }
 
       /* Sidebar Brand Header */
@@ -265,26 +292,561 @@
       /* Main Right Content Area */
       .right_col {
         background-color: var(--ide-bg) !important;
-        padding: 30px !important;
+        padding: 20px 20px 25px 20px !important;
         min-height: calc(100vh - 70px) !important;
       }
 
-      /* DataTables Wrapper Custom Styling */
-      .dataTables_wrapper .dataTables_length select,
+      /* Smooth Transitions for Sidebar Toggle (Hide/Show Animation) */
+      .col-md-3.left_col,
+      .left_col,
+      .top_nav,
+      .right_col,
+      .sidebar-brand-header,
+      .sidebar-brand-text,
+      .profile,
+      .profile_info,
+      .profile_pic,
+      .nav.side-menu > li > a,
+      .sidebar-menu-title {
+        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      }
+
+      /* Collapsed State Smooth Adjustments (Show Only Logo Icon & Menu Icons) */
+      body.nav-sm .col-md-3.left_col,
+      body.nav-sm .left_col {
+        width: 75px !important;
+        min-width: 75px !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        overflow: visible !important;
+      }
+
+      body.nav-sm .top_nav {
+        margin-left: 75px !important;
+      }
+
+      body.nav-sm .right_col {
+        margin-left: 75px !important;
+      }
+
+      /* Keep IDE Logo Image visible in collapsed mode */
+      body.nav-sm .sidebar-brand-header {
+        justify-content: center;
+        padding: 15px 5px;
+      }
+
+      body.nav-sm .sidebar-brand-header img {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        max-height: 34px !important;
+        width: auto !important;
+        margin: 0 auto;
+      }
+
+      /* Hide text labels */
+      body.nav-sm .sidebar-brand-text,
+      body.nav-sm .profile_info,
+      body.nav-sm .sidebar-menu-title,
+      body.nav-sm .nav.side-menu > li > a b,
+      body.nav-sm .nav.side-menu > li > a span {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+      }
+
+      /* Profile picture in collapsed mode */
+      body.nav-sm .profile {
+        padding: 10px 5px;
+        margin: 10px 5px;
+        justify-content: center;
+      }
+
+      body.nav-sm .profile_pic {
+        display: flex !important;
+        justify-content: center;
+        width: 100%;
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+
+      body.nav-sm .profile_pic img {
+        width: 38px !important;
+        height: 38px !important;
+      }
+
+      /* Keep Menu Icons visible & centered */
+      body.nav-sm .nav.side-menu > li > a {
+        text-align: center;
+        padding: 15px 5px;
+        justify-content: center;
+      }
+
+      body.nav-sm .nav.side-menu > li > a i {
+        display: inline-block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        font-size: 18px !important;
+        margin: 0 auto;
+        width: auto !important;
+      }
+
+      /* ==========================================================================
+         ENTERPRISE DATATABLES DESIGN SYSTEM (Clean & Modern Theme)
+         ========================================================================== */
+      /* Outer Container Cards */
+      .card, 
+      .x_panel {
+        background: #ffffff !important;
+        border-radius: 16px !important;
+        box-shadow: 0 8px 24px rgba(4, 49, 104, 0.05) !important;
+        border: 1px solid #e2e8f0 !important;
+        padding: 16px 20px !important;
+        margin-bottom: 16px !important;
+      }
+
+      /* DataTables Wrapper (Seamless Inside Card - No Card in Card) */
+      .dataTables_wrapper {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin-bottom: 0 !important;
+      }
+
+      /* Remove inner box/card borders inside any parent card */
+      .card .card,
+      .x_panel .card,
+      .card .x_panel,
+      .card .well,
+      .card .box,
+      .dataTables_wrapper .card {
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .x_title {
+        border-bottom: 2px solid #f1f5f9 !important;
+        padding-bottom: 10px !important;
+        margin-bottom: 12px !important;
+      }
+
+      .x_title h2 {
+        font-size: 16px !important;
+        font-weight: 800 !important;
+        color: var(--ide-dark) !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        margin: 0 !important;
+      }
+
+      /* DataTables Search & Filter Controls */
+      .dataTables_wrapper .dataTables_length {
+        float: left;
+        margin-bottom: 10px !important;
+        font-size: 13px;
+        font-weight: 600;
+        color: #475569;
+      }
+
+      .dataTables_wrapper .dataTables_length select {
+        border-radius: 20px !important;
+        border: 2px solid #e2e8f0 !important;
+        padding: 4px 14px !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        outline: none !important;
+        background-color: #f8fafc !important;
+        color: var(--ide-dark) !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer;
+        margin: 0 6px;
+      }
+
+      .dataTables_wrapper .dataTables_length select:focus {
+        border-color: var(--ide-navy) !important;
+        background-color: #ffffff !important;
+        box-shadow: 0 0 0 3px rgba(4, 49, 104, 0.1) !important;
+      }
+
+      .dataTables_wrapper .dataTables_filter {
+        float: right;
+        margin-bottom: 10px !important;
+        font-size: 13px;
+        font-weight: 600;
+        color: #475569;
+      }
+
+      .dataTables_wrapper .dataTables_filter label {
+        font-weight: 700;
+        color: var(--ide-dark);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
       .dataTables_wrapper .dataTables_filter input {
-        border-radius: 20px;
-        border: 2px solid var(--ide-border);
-        padding: 5px 15px;
-        outline: none;
+        border-radius: 22px !important;
+        border: 2px solid #e2e8f0 !important;
+        padding: 6px 16px !important;
+        font-size: 13px !important;
+        outline: none !important;
+        background-color: #f8fafc !important;
+        color: var(--ide-dark) !important;
+        transition: all 0.3s ease !important;
+        width: 220px !important;
       }
 
       .dataTables_wrapper .dataTables_filter input:focus {
-        border-color: var(--ide-navy);
+        border-color: var(--ide-navy) !important;
+        background-color: #ffffff !important;
+        box-shadow: 0 0 0 4px rgba(4, 49, 104, 0.1) !important;
+        width: 250px !important;
       }
 
+      /* Clean DataTables Grid Structure */
+      table.dataTable, 
+      table.table {
+        width: 100% !important;
+        border-collapse: separate !important;
+        border-spacing: 0 !important;
+        margin-top: 8px !important;
+        margin-bottom: 10px !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 14px !important;
+        overflow: hidden !important;
+      }
+
+      /* Header Table Styling (Clean Navy Gradient) */
+      table.dataTable thead th, 
+      table.table thead th {
+        background: linear-gradient(135deg, #043168 0%, #0a3d7c 100%) !important;
+        color: #ffffff !important;
+        font-size: 12.5px !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        padding: 10px 14px !important;
+        border: none !important;
+        vertical-align: middle !important;
+      }
+
+      /* Body Table Cells & Hover */
+      table.dataTable tbody td, 
+      table.table tbody td {
+        padding: 8px 14px !important;
+        font-size: 13px !important;
+        color: #334155 !important;
+        vertical-align: middle !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        border-top: none !important;
+        transition: background-color 0.2s ease !important;
+      }
+
+      table.dataTable tbody tr:last-child td,
+      table.table tbody tr:last-child td {
+        border-bottom: none !important;
+      }
+
+      table.dataTable tbody tr {
+        background-color: #ffffff !important;
+        transition: all 0.2s ease !important;
+      }
+
+      table.dataTable tbody tr:nth-child(even) {
+        background-color: #f8fafc !important;
+      }
+
+      table.dataTable tbody tr:hover {
+        background-color: #eff6ff !important;
+      }
+
+      /* Buttons & Actions inside Tables */
+      .btn-xs, .btn-sm {
+        border-radius: 12px !important;
+        font-weight: 600 !important;
+        font-size: 12px !important;
+        padding: 6px 14px !important;
+        transition: all 0.25s ease !important;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08) !important;
+      }
+
+      .btn-primary {
+        background-color: var(--ide-navy) !important;
+        border-color: var(--ide-navy) !important;
+      }
+
+      .btn-primary:hover {
+        background-color: #03244d !important;
+        transform: translateY(-2px) !important;
+      }
+
+      .btn-danger {
+        background-color: var(--ide-red) !important;
+        border-color: var(--ide-red) !important;
+      }
+
+      .btn-danger:hover {
+        background-color: #d10916 !important;
+        transform: translateY(-2px) !important;
+      }
+
+      .btn-warning {
+        background-color: #f59e0b !important;
+        border-color: #f59e0b !important;
+        color: #ffffff !important;
+      }
+
+      .btn-warning:hover {
+        background-color: #d97706 !important;
+        color: #ffffff !important;
+        transform: translateY(-2px) !important;
+      }
+
+      .btn-success {
+        background-color: #10b981 !important;
+        border-color: #10b981 !important;
+      }
+
+      .btn-success:hover {
+        background-color: #059669 !important;
+        transform: translateY(-2px) !important;
+      }
+
+      /* DataTables Footer Info & Pagination (Card-less & Clean Style) */
+      .dataTables_wrapper .dataTables_info {
+        float: left;
+        padding-top: 14px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #64748b;
+        background: transparent !important;
+        border: none !important;
+      }
+
+      .dataTables_wrapper .dataTables_paginate {
+        float: right;
+        padding-top: 10px;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+
+      .dataTables_wrapper .dataTables_paginate .paginate_button {
+        border-radius: 8px !important;
+        border: none !important;
+        background: transparent !important;
+        color: #64748b !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        margin: 0 1px !important;
+        padding: 3px 8px !important;
+        transition: all 0.2s ease !important;
+        box-shadow: none !important;
+        cursor: pointer !important;
+      }
+
+      .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background: rgba(4, 49, 104, 0.08) !important;
+        color: var(--ide-navy) !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+
+      .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+      .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
       .page-item.active .page-link {
-        background-color: var(--ide-navy);
-        border-color: var(--ide-navy);
+        background: var(--ide-navy) !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 12px rgba(4, 49, 104, 0.25) !important;
+      }
+
+      .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+      .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+        opacity: 0.4 !important;
+        background: transparent !important;
+        color: #cbd5e1 !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+
+      /* ==========================================================================
+         ENTERPRISE UNIFIED MODAL & FORM DESIGN SYSTEM
+         ========================================================================== */
+      .modal-dialog {
+        margin-top: 50px !important;
+      }
+
+      .modal-content {
+        border-radius: 24px !important;
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: 0 25px 60px rgba(4, 49, 104, 0.35) !important;
+        overflow: hidden !important;
+        background: #ffffff !important;
+      }
+
+      /* Modal Header */
+      .modal-header {
+        background: linear-gradient(135deg, #043168 0%, #0a3d7c 100%) !important;
+        color: #ffffff !important;
+        padding: 20px 28px !important;
+        border-bottom: none !important;
+        align-items: center !important;
+      }
+
+      .modal-header .modal-title,
+      .modal-header h4, 
+      .modal-header h5 {
+        color: #ffffff !important;
+        font-size: 17px !important;
+        font-weight: 800 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+      }
+
+      .modal-header .close {
+        color: #ffffff !important;
+        opacity: 0.8 !important;
+        font-size: 24px !important;
+        font-weight: 300 !important;
+        transition: all 0.25s ease !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+        border-radius: 50% !important;
+        width: 32px !important;
+        height: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 !important;
+        margin: -5px -5px -5px auto !important;
+        text-shadow: none !important;
+      }
+
+      .modal-header .close:hover {
+        opacity: 1 !important;
+        background: var(--ide-red) !important;
+        transform: rotate(90deg) !important;
+      }
+
+      /* Modal Body & Forms */
+      .modal-body {
+        padding: 30px 28px !important;
+        background-color: #ffffff !important;
+      }
+
+      .modal-body label,
+      .form-group label {
+        font-size: 12.5px !important;
+        font-weight: 700 !important;
+        color: #1e293b !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.4px !important;
+        margin-bottom: 8px !important;
+        display: block !important;
+      }
+
+      .modal-body .form-control,
+      .modal-body select,
+      .modal-body input[type="text"],
+      .modal-body input[type="number"],
+      .modal-body input[type="date"],
+      .modal-body input[type="password"],
+      .modal-body textarea,
+      .form-group .form-control {
+        border-radius: 20px !important;
+        border: 2px solid #e2e8f0 !important;
+        padding: 10px 18px !important;
+        font-size: 13.5px !important;
+        outline: none !important;
+        background-color: #f8fafc !important;
+        color: var(--ide-dark) !important;
+        transition: all 0.3s ease !important;
+        height: auto !important;
+      }
+
+      .modal-body select.form-control {
+        padding-right: 35px !important;
+        cursor: pointer;
+      }
+
+      .modal-body .form-control:focus,
+      .form-group .form-control:focus {
+        border-color: var(--ide-navy) !important;
+        background-color: #ffffff !important;
+        box-shadow: 0 0 0 4px rgba(4, 49, 104, 0.1) !important;
+      }
+
+      /* Input Group Append / Prepend */
+      .modal-body .input-group-text {
+        border-radius: 18px !important;
+        border: 2px solid #e2e8f0 !important;
+        background-color: #f1f5f9 !important;
+        color: #475569 !important;
+        font-weight: 700 !important;
+        font-size: 13px !important;
+        padding: 8px 16px !important;
+      }
+
+      /* Modal Footer & Action Buttons */
+      .modal-footer {
+        padding: 18px 28px 24px 28px !important;
+        border-top: 1px solid #f1f5f9 !important;
+        background-color: #f8fafc !important;
+        gap: 12px !important;
+        border-bottom-left-radius: 24px !important;
+        border-bottom-right-radius: 24px !important;
+      }
+
+      .modal-footer .btn,
+      .modal-body .btn-submit {
+        border-radius: 22px !important;
+        padding: 10px 26px !important;
+        font-size: 13.5px !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1) !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+      }
+
+      .modal-footer .btn-primary,
+      .modal-footer .btn-success {
+        background-color: var(--ide-red) !important;
+        border: none !important;
+        color: #ffffff !important;
+        box-shadow: 0 8px 20px rgba(180, 8, 20, 0.35) !important;
+      }
+
+      .modal-footer .btn-primary:hover,
+      .modal-footer .btn-success:hover {
+        background-color: #d10916 !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 12px 25px rgba(180, 8, 20, 0.5) !important;
+      }
+
+      .modal-footer .btn-secondary,
+      .modal-footer .btn-default {
+        background-color: #e2e8f0 !important;
+        border: none !important;
+        color: #475569 !important;
+      }
+
+      .modal-footer .btn-secondary:hover,
+      .modal-footer .btn-default:hover {
+        background-color: #cbd5e1 !important;
+        color: #1e293b !important;
       }
     </style>
   </head>
@@ -297,25 +859,11 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             
-            <!-- Sidebar Brand Header -->
-            <div class="sidebar-brand-header">
+            <!-- Sidebar Brand Header (Logo IDE Saja) -->
+            <div class="sidebar-brand-header text-center" style="padding: 20px 15px 10px 15px; display: flex; justify-content: center; align-items: center;">
               <a href="<?=base_url('SuperAdmin')?>">
-                <img src="<?=base_url('assets/img/LOGO IDE.webp')?>" alt="IDE Logo">
+                <img src="<?=base_url('assets/img/LOGO IDE.webp')?>" alt="IDE Logo" style="max-height: 48px; width: auto; object-fit: contain;">
               </a>
-              <div class="sidebar-brand-text">
-                Inti Desain Ekonomi <span>Consultant</span>
-              </div>
-            </div>
-
-            <!-- Profile Quick Info -->
-            <div class="profile clearfix">
-              <div class="profile_pic">
-                <img src="<?=base_url('assets/img/Profil.jpg')?>" alt="Super Admin Profile" class="img-circle profile_img">
-              </div>
-              <div class="profile_info">
-                <span>Super Administrator</span>
-                <h2><?=ucfirst($this->session->userdata('Username'))?></h2>
-              </div>
             </div>
 
             <!-- Sidebar Menu Items -->
@@ -371,13 +919,12 @@
           <div class="nav_menu">
             <div class="top-nav-left">
               <a id="menu_toggle" title="Toggle Sidebar"><i class="fa-solid fa-bars"></i></a>
-              <span class="top-page-badge"><i class="fa-solid fa-crown"></i> SuperAdmin Enterprise Portal</span>
             </div>
 
             <div class="top-nav-right">
               <div class="admin-top-greeting" id="topAdminGreeting">
-                <i class="fa-solid fa-circle-user" style="color: var(--ide-red-coral); font-size: 16px;"></i>
-                <span>Halo, <strong><?=ucfirst($this->session->userdata('Username'))?></strong></span>
+                <i class="fa-solid fa-circle-user" style="color: var(--ide-navy); font-size: 16px;"></i>
+                <span>Halo, <strong><?=$this->session->userdata('Username') ? $this->session->userdata('Username') : 'Super Admin'?></strong></span>
               </div>
               <a href="<?=base_url('IDE/SignOut')?>" class="btn-header-logout">
                 <i class="fa-solid fa-right-from-bracket"></i> Keluar
@@ -385,6 +932,80 @@
             </div>
           </div>
         </div>
+
+        <!-- Global Enterprise Delete Confirmation Modal -->
+        <div class="modal fade" id="modalEnterpriseDelete" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 1060;">
+          <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 440px;">
+            <div class="modal-content" style="border-radius: 24px; border: none; box-shadow: 0 25px 60px rgba(0,0,0,0.35); overflow: hidden;">
+              <div class="modal-header" style="background: linear-gradient(135deg, #b40814 0%, #ee626b 100%); color: #ffffff; padding: 18px 24px; border: none;">
+                <h5 class="modal-title" style="font-weight: 800; font-size: 16px; letter-spacing: 0.5px; text-transform: uppercase;">
+                  <i class="fa-solid fa-triangle-exclamation mr-2"></i> Konfirmasi Hapus Data
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.9; outline: none;">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body text-center p-4">
+                <div class="mb-3 d-inline-flex align-items-center justify-content-center rounded-circle" style="width: 72px; height: 72px; background: rgba(180, 8, 20, 0.1); color: var(--ide-red); margin: 0 auto;">
+                  <i class="fa-solid fa-trash-can" style="font-size: 32px;"></i>
+                </div>
+                <h4 style="font-weight: 800; color: #1e293b; font-size: 18px; margin-bottom: 8px;">Yakin Ingin Menghapus?</h4>
+                <p style="font-size: 13.5px; color: #64748b; margin: 0; line-height: 1.5;" id="deleteConfirmMessageText">
+                  Data yang telah dihapus tidak dapat dikembalikan lagi.
+                </p>
+              </div>
+              <div class="modal-footer justify-content-center p-3" style="background-color: #f8fafc; border-top: 1px solid #f1f5f9; gap: 10px;">
+                <button type="button" class="btn btn-secondary px-4 py-2" data-dismiss="modal" style="border-radius: 20px; font-weight: 700; background: #e2e8f0; color: #475569; border: none;">
+                  Batal
+                </button>
+                <button type="button" class="btn btn-danger px-4 py-2" id="btnExecuteEnterpriseDelete" style="border-radius: 20px; font-weight: 700; background: var(--ide-red); border: none; box-shadow: 0 6px 18px rgba(180, 8, 20, 0.35);">
+                  <i class="fa-solid fa-trash-can mr-1"></i> Ya, Hapus Data
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <script src="<?=base_url("vendors/jquery/dist/jquery.min.js")?>"></script>
+        <script>
+          $(document).ready(function() {
+            var pendingDeleteTarget = null;
+
+            $(document).on('click', '.Hapus, .hapus, [Hapus], .btn-delete, .btn-hapus, .btn-delete-kegiatan', function(e) {
+              if ($(this).data('confirmed')) {
+                return true;
+              }
+
+              e.preventDefault();
+              e.stopPropagation();
+              e.stopImmediatePropagation();
+
+              pendingDeleteTarget = this;
+              var customMsg = $(this).attr('data-msg') || 'Apakah Anda yakin ingin menghapus data ini? Data yang dihapus tidak dapat dikembalikan.';
+              $('#deleteConfirmMessageText').text(customMsg);
+              $('#modalEnterpriseDelete').modal('show');
+              return false;
+            });
+
+            $('#btnExecuteEnterpriseDelete').on('click', function() {
+              if (pendingDeleteTarget) {
+                var $el = $(pendingDeleteTarget);
+                $('#modalEnterpriseDelete').modal('hide');
+
+                $el.data('confirmed', true);
+                
+                // Dispatch click event
+                var elObj = pendingDeleteTarget;
+                pendingDeleteTarget = null;
+                
+                setTimeout(function() {
+                  elObj.click();
+                  $(elObj).data('confirmed', false);
+                }, 200);
+              }
+            });
+          });
+        </script>
 
         <!-- Page Main Content Area -->
         <div class="right_col" role="main">

@@ -1,89 +1,18 @@
 <!-- Enterprise Dashboard CSS Styling -->
 <style>
-  .admin-dashboard-hero {
-    background: linear-gradient(135deg, rgba(4, 49, 104, 0.92) 0%, rgba(10, 61, 124, 0.88) 60%, rgba(180, 8, 20, 0.85) 100%), url('<?= base_url("assets/img/background/IDE 2.0.webp") ?>') right center / cover no-repeat;
-    border-radius: 24px;
-    padding: 40px 45px;
-    color: #ffffff;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 20px 50px rgba(4, 49, 104, 0.25);
-    margin-bottom: 35px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-  }
-
-  /* Floating Vector Doodle Icons in Hero */
-  .hero-doodle {
-    position: absolute;
-    color: rgba(255, 255, 255, 0.18);
-    pointer-events: none;
-    z-index: 1;
-    animation: floatDashboardDoodle 5s ease-in-out infinite alternate;
-  }
-
-  .hero-doodle.d-1 { top: 20px; right: 40px; font-size: 42px; animation-delay: 0s; }
-  .hero-doodle.d-2 { bottom: 25px; right: 180px; font-size: 38px; animation-delay: 1.5s; }
-  .hero-doodle.d-3 { top: 35px; right: 280px; font-size: 32px; animation-delay: 2.5s; }
-  .hero-doodle.d-4 { bottom: 30px; right: 400px; font-size: 35px; animation-delay: 1s; }
-
-  @keyframes floatDashboardDoodle {
-    0% { transform: translateY(0px) rotate(0deg) scale(1); opacity: 0.15; }
-    50% { transform: translateY(-10px) rotate(8deg) scale(1.08); opacity: 0.28; }
-    100% { transform: translateY(-16px) rotate(-6deg) scale(1.15); opacity: 0.38; }
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    max-width: 700px;
-  }
-
-  .hero-greeting-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: #ffffff;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    padding: 6px 18px;
-    border-radius: 20px;
-    margin-bottom: 20px;
-    letter-spacing: 0.5px;
-  }
-
-  .hero-title {
-    font-size: 32px;
-    font-weight: 800;
-    color: #ffffff;
-    line-height: 1.25;
-    margin-bottom: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .hero-desc {
-    font-size: 15px;
-    color: rgba(255, 255, 255, 0.88);
-    line-height: 1.7;
-    margin-bottom: 0;
-  }
-
-  /* Metric KPI Cards */
+  /* Metric KPI Cards (Proportional & Equal Height) */
   .kpi-card {
     background: #ffffff;
     border-radius: 20px;
-    padding: 25px 22px;
+    padding: 22px 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     border: 1px solid var(--ide-border);
     transition: all 0.3s ease;
-    height: 100%;
+    width: 100%;
+    min-height: 110px;
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 16px;
   }
 
   .kpi-card:hover {
@@ -93,13 +22,13 @@
   }
 
   .kpi-icon-box {
-    width: 58px;
-    height: 58px;
-    border-radius: 16px;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 22px;
     flex-shrink: 0;
   }
 
@@ -133,7 +62,7 @@
   }
 
   .kpi-value {
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 800;
     color: var(--ide-dark);
     line-height: 1.2;
@@ -146,16 +75,20 @@
     margin-top: 3px;
   }
 
-  /* Shortcut Quick Action Cards */
+  /* Shortcut Quick Action Cards (Equal Size & Proportional Height) */
   .shortcut-card {
     background: #ffffff;
     border-radius: 20px;
-    padding: 28px;
+    padding: 26px 24px;
     border: 1px solid var(--ide-border);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
     transition: all 0.3s ease;
     text-decoration: none !important;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 170px;
     color: inherit;
   }
 
@@ -307,27 +240,9 @@
   }
 </style>
 
-<!-- Hero Banner Section -->
-<div class="admin-dashboard-hero">
-  <i class="fa-solid fa-chart-line hero-doodle d-1"></i>
-  <i class="fa-solid fa-file-signature hero-doodle d-2"></i>
-  <i class="fa-solid fa-chess hero-doodle d-3"></i>
-  <i class="fa-solid fa-building-columns hero-doodle d-4"></i>
-
-  <div class="hero-content">
-    <span class="hero-greeting-pill" id="dashboardGreetingPill">
-      <i class="fa-solid fa-crown"></i> Selamat Datang, SuperAdmin IDE
-    </span>
-    <h1 class="hero-title">Enterprise Control Center</h1>
-    <p class="hero-desc">
-      Selamat bekerja kembali di Portal SuperAdministrator CV Inti Desain Ekonomi Consultant. Kelola laporan transaksi, pengeluaran proyek, dan jurnal keuangan perusahaan secara terpusat dan aman.
-    </p>
-  </div>
-</div>
-
 <!-- Enterprise Metric / KPI Section -->
-<div class="row mb-4">
-  <div class="col-xl-3 col-md-6 mb-3">
+<div class="row mb-4 align-items-stretch" style="margin-top: 15px;">
+  <div class="col-xl-3 col-md-6 mb-3 d-flex">
     <div class="kpi-card">
       <div class="kpi-icon-box kpi-icon-navy">
         <i class="fa-solid fa-crown"></i>
@@ -340,7 +255,7 @@
     </div>
   </div>
 
-  <div class="col-xl-3 col-md-6 mb-3">
+  <div class="col-xl-3 col-md-6 mb-3 d-flex">
     <div class="kpi-card">
       <div class="kpi-icon-box kpi-icon-blue">
         <i class="fa-solid fa-server"></i>
@@ -353,7 +268,7 @@
     </div>
   </div>
 
-  <div class="col-xl-3 col-md-6 mb-3">
+  <div class="col-xl-3 col-md-6 mb-3 d-flex">
     <div class="kpi-card">
       <div class="kpi-icon-box kpi-icon-green">
         <i class="fa-solid fa-shield-halved"></i>
@@ -366,7 +281,7 @@
     </div>
   </div>
 
-  <div class="col-xl-3 col-md-6 mb-3">
+  <div class="col-xl-3 col-md-6 mb-3 d-flex">
     <div class="kpi-card">
       <div class="kpi-icon-box kpi-icon-red">
         <i class="fa-solid fa-database"></i>
@@ -384,26 +299,32 @@
 <h4 class="font-weight-bold text-dark mb-3" style="font-size: 18px; text-transform: uppercase; letter-spacing: 0.5px;">
   <i class="fa-solid fa-rocket mr-2" style="color: var(--ide-red);"></i> Pintasan Modul Utama
 </h4>
-<div class="row mb-5">
-  <div class="col-md-4 mb-3">
+<div class="row mb-5 align-items-stretch">
+  <div class="col-md-4 mb-3 d-flex">
     <a href="<?=base_url('SuperAdmin/PendapatanKas')?>" class="shortcut-card">
       <i class="fa-solid fa-wallet shortcut-icon"></i>
-      <div class="shortcut-title">Kas In (Pendapatan)</div>
-      <div class="shortcut-desc">Kelola pemasukan kas umum perusahaan dan penerimaan dana secara real-time.</div>
+      <div>
+        <div class="shortcut-title">Kas In (Pendapatan)</div>
+        <div class="shortcut-desc">Kelola pemasukan kas umum perusahaan dan penerimaan dana secara real-time.</div>
+      </div>
     </a>
   </div>
-  <div class="col-md-4 mb-3">
+  <div class="col-md-4 mb-3 d-flex">
     <a href="<?=base_url('SuperAdmin/PengeluaranKegiatan')?>" class="shortcut-card">
       <i class="fa-solid fa-receipt shortcut-icon"></i>
-      <div class="shortcut-title">Pengeluaran Kegiatan</div>
-      <div class="shortcut-desc">Pencatatan rincian biaya proyek riset & operasional lapangan kegiatan.</div>
+      <div>
+        <div class="shortcut-title">Pengeluaran Kegiatan</div>
+        <div class="shortcut-desc">Pencatatan rincian biaya proyek riset & operasional lapangan kegiatan.</div>
+      </div>
     </a>
   </div>
-  <div class="col-md-4 mb-3">
+  <div class="col-md-4 mb-3 d-flex">
     <a href="<?=base_url('SuperAdmin/JurnalTotal')?>" class="shortcut-card">
       <i class="fa-solid fa-book-bookmark shortcut-icon"></i>
-      <div class="shortcut-title">Laporan Jurnal Total</div>
-      <div class="shortcut-desc">Lihat rekapitulasi jurnal neraca saldo akhir kas & pengeluaran perusahaan.</div>
+      <div>
+        <div class="shortcut-title">Laporan Jurnal Total</div>
+        <div class="shortcut-desc">Lihat rekapitulasi jurnal neraca saldo akhir kas & pengeluaran perusahaan.</div>
+      </div>
     </a>
   </div>
 </div>
@@ -448,34 +369,6 @@
 <script>
   $(document).ready(function(){
     var BaseURL = '<?=base_url()?>';
-    
-    // Dynamic Time Greeting for SuperAdmin Dashboard
-    function updateDashboardGreeting() {
-      var greetingPill = document.getElementById('dashboardGreetingPill');
-      if (!greetingPill) return;
-
-      var hour = new Date().getHours();
-      var greetingText = '';
-      var iconClass = '';
-
-      if (hour >= 4 && hour < 11) {
-        greetingText = 'Selamat Pagi, SuperAdmin IDE';
-        iconClass = 'fa-solid fa-sun';
-      } else if (hour >= 11 && hour < 15) {
-        greetingText = 'Selamat Siang, SuperAdmin IDE';
-        iconClass = 'fa-solid fa-sun-plant-wilt';
-      } else if (hour >= 15 && hour < 18.5) {
-        greetingText = 'Selamat Sore, SuperAdmin IDE';
-        iconClass = 'fa-solid fa-cloud-sun';
-      } else {
-        greetingText = 'Selamat Malam, SuperAdmin IDE';
-        iconClass = 'fa-solid fa-moon';
-      }
-
-      greetingPill.innerHTML = '<i class="' + iconClass + '"></i> ' + greetingText;
-    }
-
-    updateDashboardGreeting();
 
     // Toggle visibility password
     $('.password-toggle').click(function() {
