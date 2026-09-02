@@ -52,7 +52,8 @@
     <style>
 
     /* ============================================================
-    PAGINATION STYLES
+    /* ============================================================
+    PAGINATION STYLES (Modern, Sleek, Berdepetan)
     ============================================================ */
     .pagination-container {
         padding: 16px 20px;
@@ -63,37 +64,70 @@
 
     .pagination {
         margin: 0;
-        gap: 5px;
+        gap: 2px;
+        display: inline-flex;
+        align-items: center;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 4px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        list-style: none;
+    }
+
+    .pagination .page-item {
+        margin: 0;
     }
 
     .pagination .page-item .page-link {
-        color: var(--text-1);
-        background: #ffffff;
-        border: 1px solid var(--border);
+        color: #475569;
+        background: transparent;
+        border: none;
         border-radius: 8px;
-        padding: 6px 12px;
-        font-size: 12px;
-        font-weight: 500;
-        transition: var(--transition);
+        min-width: 32px;
+        height: 32px;
+        padding: 0 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12.5px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        line-height: 1;
     }
 
-    .pagination .page-item .page-link:hover {
-        background: var(--blue-50);
-        border-color: var(--blue-400);
-        color: var(--blue-600);
+    .pagination .page-item:not(.disabled):not(.active) .page-link:hover {
+        background: rgba(4, 49, 104, 0.08);
+        color: #043168;
+        transform: translateY(-1px);
     }
 
     .pagination .page-item.active .page-link {
-        background: var(--blue-600);
-        border-color: var(--blue-600);
+        background: linear-gradient(135deg, #043168 0%, #0b3977 100%);
         color: #ffffff;
+        font-weight: 700;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(4, 49, 104, 0.3);
     }
 
     .pagination .page-item.disabled .page-link {
-        color: var(--text-3);
-        background: var(--page-bg);
+        color: #94a3b8;
+        background: transparent;
         cursor: not-allowed;
-        opacity: 0.6;
+        opacity: 0.35;
+        box-shadow: none;
+        transform: none;
+    }
+
+    /* Ellipsis (...) Styling: Clear and Black/Dark like the numbers */
+    .pagination .page-item.disabled span.page-link,
+    .pagination .page-item.disabled:not(:first-child):not(:last-child) .page-link {
+        color: #1e293b !important;
+        opacity: 1 !important;
+        font-weight: 700 !important;
+        letter-spacing: 1px !important;
+        cursor: default !important;
     }
 
     .pagination-info {
@@ -124,7 +158,9 @@
     /* Responsive pagination */
     @media (max-width: 768px) {
         .pagination .page-item .page-link {
-            padding: 4px 8px;
+            padding: 0 6px;
+            min-width: 28px;
+            height: 28px;
             font-size: 11px;
         }
         
