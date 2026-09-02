@@ -109,11 +109,11 @@
       color: #ffffff;
       letter-spacing: 0.5px;
       text-transform: uppercase;
-      line-height: 40px;
-      height: 40px;
+      line-height: 1;
       display: inline-flex;
       align-items: center;
       margin: 0;
+      transform: translateY(3px);
     }
 
     .logo-text span {
@@ -1728,12 +1728,21 @@
       object-fit: contain;
     }
 
-    .login-brand span {
+    .login-brand-text {
       font-size: 16px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       color: #ffffff;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      transform: translateY(3px);
+    }
+
+    .login-brand-text span {
+      color: var(--lugx-red);
+      margin-left: 4px;
     }
 
     .login-pill {
@@ -1779,18 +1788,16 @@
     /* Right Side Form */
     .login-form-side {
       background: #ffffff;
-      padding: 45px 40px;
+      padding: 40px 40px 35px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       position: relative;
     }
 
     .login-form-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-bottom: 28px;
+      margin-bottom: 26px;
+      padding-right: 35px;
     }
 
     .login-form-header h3 {
@@ -1807,7 +1814,14 @@
       margin: 0;
     }
 
+    .login-form-body {
+      margin-top: 14px;
+    }
+
     .modal-close-dark {
+      position: absolute;
+      top: 20px;
+      right: 20px;
       background: #f1f5f9;
       border: none;
       color: var(--lugx-dark);
@@ -1821,6 +1835,7 @@
       justify-content: center;
       transition: all 0.2s ease;
       line-height: 1;
+      z-index: 10;
     }
 
     .modal-close-dark:hover {
@@ -1829,7 +1844,7 @@
     }
 
     .form-group-custom {
-      margin-bottom: 22px;
+      margin-bottom: 24px;
     }
 
     .form-label-custom {
@@ -2757,7 +2772,7 @@
           <div class="login-banner-top" style="position: relative; z-index: 2;">
             <div class="login-brand">
               <img src="<?= base_url('assets/img/LOGO IDE.webp') ?>" alt="IDE Consultant Logo">
-              <span>Inti Desain Ekonomi</span>
+              <div class="login-brand-text">Inti Desain Ekonomi <span>Consultant</span></div>
             </div>
           </div>
           <div class="login-banner-center" style="position: relative; z-index: 2;">
@@ -2769,12 +2784,10 @@
 
         <!-- Right Side: Login Form -->
         <div class="login-form-side">
+          <button class="modal-close-dark" onclick="closeModal('signInModal')" title="Tutup">&times;</button>
           <div class="login-form-header">
-            <div>
-              <h3>Masuk </h3>
-              <p class="login-subtext">Masukkan kredensial akun Anda untuk mengakses portal.</p>
-            </div>
-            <button class="modal-close-dark" onclick="closeModal('signInModal')">&times;</button>
+            <h3>Masuk</h3>
+            <p class="login-subtext">Masukkan kredensial akun Anda untuk mengakses portal.</p>
           </div>
 
           <div class="login-form-body">
