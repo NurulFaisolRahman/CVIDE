@@ -314,6 +314,73 @@
       .content-section { padding: 20px; }
       .section-header { flex-direction: column; align-items: flex-start; }
     }
+
+    /* Modern Connected Pagination */
+    .pagination {
+      display: inline-flex !important;
+      align-items: center !important;
+      background: #f8fafc !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 12px !important;
+      padding: 4px !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+      gap: 2px !important;
+      list-style: none !important;
+      margin: 0 !important;
+    }
+
+    .pagination .page-item {
+      margin: 0 !important;
+    }
+
+    .pagination .page-item .page-link {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      min-width: 32px !important;
+      height: 32px !important;
+      padding: 0 10px !important;
+      border-radius: 8px !important;
+      border: none !important;
+      background: transparent !important;
+      color: #475569 !important;
+      font-size: 12.5px !important;
+      font-weight: 600 !important;
+      text-decoration: none !important;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      line-height: 1 !important;
+    }
+
+    .pagination .page-item:not(.disabled):not(.active) .page-link:hover {
+      background: rgba(0, 122, 255, 0.08) !important;
+      color: var(--apple-blue, #007AFF) !important;
+      transform: translateY(-1px) !important;
+    }
+
+    .pagination .page-item.active .page-link {
+      background: linear-gradient(135deg, #001428 0%, #003366 100%) !important;
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      border-radius: 8px !important;
+      box-shadow: 0 4px 12px rgba(0, 20, 40, 0.3) !important;
+    }
+
+    .pagination .page-item.disabled .page-link {
+      opacity: 0.35 !important;
+      background: transparent !important;
+      color: #94a3b8 !important;
+      cursor: not-allowed !important;
+    }
+
+    /* Ellipsis (...) Styling: Clear and Black/Dark like the numbers */
+    .pagination .page-item.disabled span.page-link,
+    .pagination .page-item.disabled:not(:first-child):not(:last-child) .page-link {
+      color: #1e293b !important;
+      opacity: 1 !important;
+      font-weight: 700 !important;
+      letter-spacing: 1px !important;
+      cursor: default !important;
+    }
     </style>
 </head>
 <body>
