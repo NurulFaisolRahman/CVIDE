@@ -24,8 +24,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 // $config['base_url'] = 'http://192.168.100.225/CVIDE';
-// $config['base_url'] = 'https://localhost/CVIDE';
-$config['base_url'] = 'https://intidesainekonomi.id/';
+$config['base_url'] = 'https://localhost/CVIDE';
+// $config['base_url'] = 'https://intidesainekonomi.id/';
 
 
 /*
@@ -118,7 +118,7 @@ $config['enable_hooks'] = FALSE;
 |
 */
 $config['subclass_prefix'] = 'MY_';
-
+$config['composer_autoload'] = FCPATH . 'vendor/autoload.php';
 /*
 |--------------------------------------------------------------------------
 | Composer auto-loading

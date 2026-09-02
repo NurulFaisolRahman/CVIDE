@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+require_once FCPATH . 'vendor/autoload.php';
 class IDE extends CI_Controller {
 
 	public function index(){
@@ -2836,82 +2836,154 @@ public function SmbLogout()
 /**
  * Upload Dokumen ke Database (tabel smb_dokumen)
  */
+/**
+ * Upload Dokumen ke Database (tabel smb_dokumen)
+ */
 public function upload_dokumen() {
-    // Cek session login
+    header('Content-Type: application/json');
+    
     if (!$this->session->userdata('smb_logged_in')) {
-        echo json_encode(['status' => 'error', 'message' => 'Session expired, silakan login kembali']);
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
         return;
     }
     
-    // Konfigurasi upload file
-    $config['upload_path'] = FCPATH . 'uploads/dokumen/';
-    $config['allowed_types'] = 'pdf|doc|docx|xls|xlsx|jpg|jpeg|png|gif|zip|rar';
-    $config['max_size'] = 10240; // 10MB
-    $config['encrypt_name'] = TRUE;
+    // DEBUG: Log semua POST data
+    log_message('debug', 'POST data: ' . print_r($this->input->post(), true));
     
-    // Buat folder jika belum ada
-    if (!is_dir($config['upload_path'])) {
-        mkdir($config['upload_path'], 0777, true);
-    }
-    
-    $this->load->library('upload', $config);
-    
-    // Proses upload file
-    if (!$this->upload->do_upload('file_dokumen')) {
-        echo json_encode(['status' => 'error', 'message' => $this->upload->display_errors('', '')]);
-        return;
-    }
-    
-    $upload_data = $this->upload->data();
-    
-    // Ambil data dari form
     $id_bidang = $this->input->post('id_bidang');
     $nama_dokumen = $this->input->post('nama_dokumen');
     $kategori = $this->input->post('kategori');
     $status = $this->input->post('status');
-    $username = $this->session->userdata('username');
+    $method = $this->input->post('upload_method');
     
-    // Data untuk disimpan ke tabel smb_dokumen
-    $data = array(
-        'id_bidang' => $id_bidang,
-        'nama_dokumen' => $nama_dokumen,
-        'kategori' => $kategori,
-        'file_name' => $upload_data['file_name'],
-        'file_path' => 'uploads/dokumen/' . $upload_data['file_name'],
-        'file_type' => $upload_data['file_type'],
-        'file_size' => $upload_data['file_size'],
-        'uploaded_by' => $username,
-        'upload_date' => date('Y-m-d H:i:s'),
-        'status' => $status
-    );
+    $uploaded_by = $this->session->userdata('username');
     
-    // Generate thumbnail untuk gambar
-    if (in_array($upload_data['file_type'], ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'])) {
-        $thumbnail = $this->_generate_thumbnail($upload_data['full_path'], $upload_data['file_name']);
-        if ($thumbnail) {
-            $data['thumbnail'] = $thumbnail;
-        }
+    // Validasi dasar
+    if (empty($id_bidang) || empty($nama_dokumen)) {
+        echo json_encode(['status' => 'error', 'message' => 'Nama dokumen dan bidang harus diisi']);
+        return;
     }
     
-    // Simpan ke database
-    if ($this->db->insert('smb_dokumen', $data)) {
-        // Log aktivitas
-        $bidang_map = [
-            'kepala' => 'Kepala Badan', 'sekretariat' => 'Sekretariat',
-            'perencanaan' => 'Perencanaan', 'ekonomi' => 'Ekonomi',
-            'sarpras' => 'Sarpras', 'kesra' => 'Kesra',
-            'litbang' => 'Litbang', 'fungsional' => 'Fungsional'
+    // ========== CEK METODE ==========
+    // Cek method dari POST atau dari file_type (fallback)
+    if ($method === 'link' || ($this->input->post('google_docs_link') && empty($_FILES['file_dokumen']['name']))) {
+        
+        // ========== PROSES LINK GOOGLE DOCS ==========
+        $google_docs_link = $this->input->post('google_docs_link');
+        
+        if (empty($google_docs_link)) {
+            echo json_encode(['status' => 'error', 'message' => 'Link Google Docs tidak boleh kosong']);
+            return;
+        }
+        
+        // Validasi format link
+        if (!preg_match('/docs\.google\.com\/document\/d\/([a-zA-Z0-9_-]+)/', $google_docs_link, $matches)) {
+            // Coba format alternatif
+            if (!preg_match('/\/d\/([a-zA-Z0-9_-]+)/', $google_docs_link, $matches)) {
+                echo json_encode(['status' => 'error', 'message' => 'Link Google Docs tidak valid']);
+                return;
+            }
+        }
+        
+        $data = [
+            'id_bidang' => $id_bidang,
+            'nama_dokumen' => $nama_dokumen,
+            'kategori' => $kategori,
+            'status' => $status,
+            'google_docs_link' => $google_docs_link,
+            'uploaded_by' => $uploaded_by,
+            'upload_date' => date('Y-m-d H:i:s'),
+            'last_edit_date' => date('Y-m-d H:i:s'),
+            'last_edited_by' => $uploaded_by,
+            'file_name' => '',
+            'file_path' => '',
+            'file_type' => 'application/vnd.google-apps.document',
+            'file_size' => 0,
+            'version' => 1
         ];
-        $nama_bidang = $bidang_map[$id_bidang] ?? 'Unknown';
         
-        $this->_log_aktivitas($username, 'Upload', $nama_bidang, "Upload dokumen: $nama_dokumen");
+        // Insert ke database
+        $insert = $this->db->insert('smb_dokumen', $data);
         
-        echo json_encode([
-            'status' => 'success', 
-            'message' => 'Dokumen berhasil diupload'
-        ]);
+        if ($insert) {
+            $id_dokumen = $this->db->insert_id();
+            
+            // Log aktivitas
+            if (method_exists($this, '_log_aktivitas')) {
+                $this->_log_aktivitas($uploaded_by, 'Upload', $id_bidang, "Upload dokumen via Google Docs: $nama_dokumen");
+            }
+            
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Dokumen berhasil ditambahkan',
+                'id_dokumen' => $id_dokumen
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Gagal menyimpan ke database: ' . $this->db->error()['message']
+            ]);
+        }
+        
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'Gagal menyimpan ke database']);
+        // ========== PROSES UPLOAD FILE ==========
+        // Pastikan folder uploads/dokumen ada
+        if (!is_dir('./uploads/dokumen/')) {
+            mkdir('./uploads/dokumen/', 0777, true);
+        }
+        
+        $config['upload_path'] = './uploads/dokumen/';
+        $config['allowed_types'] = 'docx|pdf|jpg|png|jpeg';
+        $config['max_size'] = 10240;
+        
+        $this->load->library('upload', $config);
+        
+        // Cek apakah ada file yang diupload
+        if (empty($_FILES['file_dokumen']['name'])) {
+            echo json_encode(['status' => 'error', 'message' => 'Pilih file terlebih dahulu']);
+            return;
+        }
+        
+        if (!$this->upload->do_upload('file_dokumen')) {
+            echo json_encode(['status' => 'error', 'message' => $this->upload->display_errors()]);
+            return;
+        }
+        
+        $upload_data = $this->upload->data();
+        
+        $data = [
+            'id_bidang' => $id_bidang,
+            'nama_dokumen' => $nama_dokumen,
+            'kategori' => $kategori,
+            'status' => $status,
+            'file_name' => $upload_data['file_name'],
+            'file_path' => 'uploads/dokumen/' . $upload_data['file_name'],
+            'file_type' => $upload_data['file_type'],
+            'file_size' => $upload_data['file_size'],
+            'uploaded_by' => $uploaded_by,
+            'upload_date' => date('Y-m-d H:i:s'),
+            'last_edit_date' => date('Y-m-d H:i:s'),
+            'last_edited_by' => $uploaded_by,
+            'version' => 1
+        ];
+        
+        $insert = $this->db->insert('smb_dokumen', $data);
+        
+        if ($insert) {
+            if (method_exists($this, '_log_aktivitas')) {
+                $this->_log_aktivitas($uploaded_by, 'Upload', $id_bidang, "Upload dokumen: $nama_dokumen");
+            }
+            
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Dokumen berhasil diupload'
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Gagal menyimpan ke database: ' . $this->db->error()['message']
+            ]);
+        }
     }
 }
 
@@ -4485,124 +4557,424 @@ public function log_print_from_preview() {
         ]);
     }
 }
-/**
- * ==================== MANAJEMEN API DINAMIS ====================
- */
+// ==================== METHOD UNTUK MENGAMBIL DATA DARI API (BACKEND) ====================
 
-// Get semua konfigurasi API
+// Get semua konfigurasi API dari database
 public function get_api_configs() {
     header('Content-Type: application/json');
     
-    try {
-        $configs = $this->db->get('smb_api_config')->result_array();
-        
-        echo json_encode([
-            'status' => 'success',
-            'data' => $configs
-        ]);
-    } catch (Exception $e) {
-        echo json_encode([
-            'status' => 'error',
-            'message' => $e->getMessage()
-        ]);
-    }
+    $configs = $this->db->get('smb_api_config')->result_array();
+    
+    echo json_encode([
+        'status' => 'success',
+        'data' => $configs
+    ]);
 }
 
-// Get konfigurasi API by kode
-public function get_api_config_by_kode() {
+public function load_data_from_api() {
+    // Set header JSON
     header('Content-Type: application/json');
     
-    $kode = $this->input->get('kode');
-    if (!$kode) {
-        echo json_encode(['status' => 'error', 'message' => 'Kode API required']);
+    // Cek login
+    if (!$this->session->userdata('smb_logged_in')) {
+        echo json_encode(['status' => 'error', 'message' => 'Session expired']);
         return;
     }
     
+    // Ambil parameter kode
+    $kode = $this->input->get('kode');
+    if (empty($kode)) {
+        echo json_encode(['status' => 'error', 'message' => 'Kode API tidak ditemukan']);
+        return;
+    }
+    
+    // Ambil konfigurasi dari database
     $config = $this->db->get_where('smb_api_config', ['kode_api' => $kode])->row_array();
     
-    if ($config) {
-        echo json_encode(['status' => 'success', 'data' => $config]);
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'Config not found']);
+    if (!$config) {
+        echo json_encode(['status' => 'error', 'message' => 'Konfigurasi API tidak ditemukan']);
+        return;
     }
+    
+    // Ambil URL API dari database
+    $url = $config['url_api'];
+    
+    // Jika URL kosong
+    if (empty($url)) {
+        echo json_encode(['status' => 'error', 'message' => 'URL API tidak ditemukan dalam konfigurasi']);
+        return;
+    }
+    
+    // Hapus parameter api-key dari URL
+    $url = preg_replace('/[&?]api-key=[^&]*/', '', $url);
+    
+    // Pastikan URL memiliki parameter id
+    if (strpos($url, 'id=') === false) {
+        echo json_encode(['status' => 'error', 'message' => 'URL API harus mengandung parameter id (contoh: ?id=1062)']);
+        return;
+    }
+    
+    error_log("Calling API URL: " . $url);
+    
+    // ========== METODE 1: CURL DENGAN ENCODING DINONAKTIFKAN ==========
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+    
+    // IMPORTANT: Nonaktifkan encoding untuk menghindari error
+    curl_setopt($ch, CURLOPT_ENCODING, ''); // Biarkan kosong agar curl tidak meminta encoding
+    
+    // User Agent
+    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+    
+    // Header tanpa Accept-Encoding
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Accept: application/json',
+        'Accept-Language: id-ID,id;q=0.9,en;q=0.8',
+        'Connection: keep-alive',
+        'Referer: https://satudata.banyuwangikab.go.id/'
+    ]);
+    
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
+    curl_close($ch);
+    
+    // Jika CURL gagal karena encoding, coba metode alternatif
+    if ($curlError && strpos($curlError, 'encoding') !== false) {
+        error_log("CURL encoding error, trying file_get_contents...");
+        
+        // ========== METODE 2: FILE_GET_CONTENTS ==========
+        $context = stream_context_create([
+            'http' => [
+                'method' => 'GET',
+                'header' => "Accept: application/json\r\n" .
+                           "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\r\n" .
+                           "Referer: https://satudata.banyuwangikab.go.id/\r\n"
+            ],
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false
+            ]
+        ]);
+        
+        $response = @file_get_contents($url, false, $context);
+        if ($response !== false) {
+            $httpCode = 200;
+            $curlError = '';
+            error_log("file_get_contents succeeded!");
+        } else {
+            $curlError = error_get_last()['message'] ?? 'Unknown error';
+        }
+    }
+    
+    // Jika masih gagal, coba dengan fsockopen
+    if ($curlError && $response === false) {
+        error_log("Trying fsockopen method...");
+        
+        $parsed = parse_url($url);
+        $host = $parsed['host'];
+        $path = $parsed['path'] . '?' . ($parsed['query'] ?? '');
+        
+        $fp = @fsockopen("ssl://" . $host, 443, $errno, $errstr, 10);
+        if ($fp) {
+            $request = "GET $path HTTP/1.1\r\n";
+            $request .= "Host: $host\r\n";
+            $request .= "User-Agent: Mozilla/5.0\r\n";
+            $request .= "Accept: application/json\r\n";
+            $request .= "Connection: close\r\n\r\n";
+            
+            fwrite($fp, $request);
+            $response = '';
+            while (!feof($fp)) {
+                $response .= fgets($fp, 1024);
+            }
+            fclose($fp);
+            
+            // Pisahkan header dan body
+            $parts = explode("\r\n\r\n", $response, 2);
+            if (isset($parts[1])) {
+                $response = $parts[1];
+                $httpCode = 200;
+                $curlError = '';
+                error_log("fsockopen succeeded!");
+            } else {
+                $curlError = "fsockopen failed to get response";
+            }
+        } else {
+            $curlError = "fsockopen failed: $errstr";
+        }
+    }
+    
+    // Cek error
+    if ($curlError && $response === false) {
+        error_log("Final Error: " . $curlError);
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Gagal terhubung ke API: ' . $curlError
+        ]);
+        return;
+    }
+    
+    // Cek HTTP status code
+    if ($httpCode !== 200) {
+        error_log("HTTP Error: " . $httpCode);
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'API merespon dengan kode: ' . $httpCode
+        ]);
+        return;
+    }
+    
+    // Parse JSON response
+    $result = json_decode($response, true);
+    
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        error_log("JSON Parse Error: " . json_last_error_msg());
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Respons API tidak valid: ' . json_last_error_msg()
+        ]);
+        return;
+    }
+    
+    // Ambil data result (tanpa wrapper 'result')
+    $dataResult = $result;
+    if (isset($result['result'])) {
+        $dataResult = $result['result'];
+    }
+    
+    // Ambil data menggunakan mapping dari database
+    $indikator = $this->getNestedValue($dataResult, $config['mapping_indikator'] ?? 'Indikator');
+    $produsen = $this->getNestedValue($dataResult, $config['mapping_produsen'] ?? 'Produsen Data');
+    $urusan = $this->getNestedValue($dataResult, $config['mapping_urusan'] ?? 'Urusan');
+    $satuan = $this->getNestedValue($dataResult, $config['mapping_satuan'] ?? 'Satuan');
+    $dataRaw = $this->getNestedValue($dataResult, $config['mapping_data'] ?? 'data');
+    
+    // Parse series data
+    $series = [];
+    if (is_array($dataRaw)) {
+        // Format: data[0] berisi object tahun => nilai
+        if (isset($dataRaw[0]) && is_array($dataRaw[0])) {
+            foreach ($dataRaw[0] as $tahun => $nilai) {
+                if ($nilai !== '' && $nilai !== null) {
+                    $series[] = [
+                        'tahun' => $tahun,
+                        'nilai' => is_numeric($nilai) ? floatval($nilai) : $nilai
+                    ];
+                }
+            }
+        } 
+        // Format: array of objects
+        else {
+            foreach ($dataRaw as $item) {
+                if (is_array($item)) {
+                    $tahun = $this->getNestedValue($item, $config['mapping_tahun'] ?? 'tahun');
+                    $nilai = $this->getNestedValue($item, $config['mapping_nilai'] ?? 'nilai');
+                    if ($tahun && $nilai !== null) {
+                        $series[] = [
+                            'tahun' => $tahun,
+                            'nilai' => is_numeric($nilai) ? floatval($nilai) : $nilai
+                        ];
+                    }
+                }
+            }
+        }
+        
+        // Urutkan berdasarkan tahun
+        usort($series, function($a, $b) {
+            return $a['tahun'] - $b['tahun'];
+        });
+    }
+    
+    // Kirim response
+    echo json_encode([
+        'status' => 'success',
+        'data' => [
+            'indikator' => $indikator ?: $config['nama_data'],
+            'produsen' => $produsen ?: '-',
+            'urusan' => $urusan ?: '-',
+            'satuan' => $satuan ?: '-',
+            'series' => $series
+        ]
+    ]);
 }
-// Save API Config
+
+private function getNestedValue($data, $path) {
+    if (empty($path) || $data === null) return null;
+    
+    $parts = explode('.', $path);
+    $current = $data;
+    
+    foreach ($parts as $part) {
+        if (is_array($current) && isset($current[$part])) {
+            $current = $current[$part];
+        } elseif (is_object($current) && isset($current->$part)) {
+            $current = $current->$part;
+        } else {
+            return null;
+        }
+    }
+    
+    return $current;
+}
+// Simpan konfigurasi API baru
 public function save_api_config() {
     header('Content-Type: application/json');
     
-    $indikator_id = $this->input->post('indikator_id');
-    if (empty($indikator_id)) {
-        echo json_encode(['status' => 'error', 'message' => 'ID Indikator wajib diisi']);
+    // 1. VALIDASI INPUT WAJIB
+    $kode_api = trim($this->input->post('kode_api'));
+    $nama_data = trim($this->input->post('nama_data'));
+    $url_api = trim($this->input->post('url_api'));
+    
+    if (empty($kode_api)) {
+        echo json_encode(['status' => 'error', 'message' => 'Kode API wajib diisi']);
         return;
     }
     
+    if (empty($nama_data)) {
+        echo json_encode(['status' => 'error', 'message' => 'Nama Data wajib diisi']);
+        return;
+    }
+    
+    if (empty($url_api)) {
+        echo json_encode(['status' => 'error', 'message' => 'URL API wajib diisi']);
+        return;
+    }
+    
+    // 2. VALIDASI FORMAT URL (opsional tapi disarankan)
+    if (!filter_var($url_api, FILTER_VALIDATE_URL)) {
+        echo json_encode(['status' => 'error', 'message' => 'Format URL API tidak valid']);
+        return;
+    }
+    
+    // 3. CEK DUPLIKAT KODE API
+    $exists = $this->db->get_where('smb_api_config', ['kode_api' => $kode_api])->row();
+    if ($exists) {
+        echo json_encode(['status' => 'error', 'message' => 'Kode API sudah digunakan, gunakan kode yang lain']);
+        return;
+    }
+    
+    // 4. CEK DUPLIKAT NAMA DATA (opsional)
+    $existsName = $this->db->get_where('smb_api_config', ['nama_data' => $nama_data])->row();
+    if ($existsName) {
+        echo json_encode(['status' => 'error', 'message' => 'Nama Data sudah digunakan, gunakan nama yang lain']);
+        return;
+    }
+    
+    // 5. Siapkan data untuk insert
     $data = [
-        'nama_data' => $this->input->post('nama_data'),
-        'kode_api' => $this->input->post('kode_api'),
-        'indikator_id' => $indikator_id,  // ← TAMBAHKAN INI
-        'url_api' => $this->input->post('url_api'),
-        'api_key' => $this->input->post('api_key'),
-        'metode' => $this->input->post('metode'),
-        'indikator_field' => $this->input->post('indikator_field'),
-        'produsen_field' => $this->input->post('produsen_field'),
-        'urusan_field' => $this->input->post('urusan_field'),
-        'satuan_field' => $this->input->post('satuan_field'),
-        'data_field' => $this->input->post('data_field'),
-        'tahun_field' => $this->input->post('tahun_field'),
-        'nilai_field' => $this->input->post('nilai_field'),
+        'kode_api' => $kode_api,
+        'nama_data' => $nama_data,
+        'url_api' => $url_api,
+        'api_key' => $this->input->post('api_key') ?: null, // Jika kosong, set null
+        'metode' => $this->input->post('metode') ?: 'GET',
+        'mapping_indikator' => $this->input->post('indikator_field') ?: 'result.Indikator',
+        'mapping_produsen' => $this->input->post('produsen_field') ?: 'result.Produsen Data',
+        'mapping_urusan' => $this->input->post('urusan_field') ?: 'result.Urusan',
+        'mapping_satuan' => $this->input->post('satuan_field') ?: 'result.Satuan',
+        'mapping_data' => $this->input->post('data_field') ?: 'result.data',
+        'mapping_tahun' => $this->input->post('tahun_field') ?: 'tahun',
+        'mapping_nilai' => $this->input->post('nilai_field') ?: 'nilai',
         'created_by' => $this->session->userdata('user_id'),
         'created_at' => date('Y-m-d H:i:s')
     ];
     
-    // Cek apakah kode sudah ada
-    $exists = $this->db->get_where('smb_api_config', ['kode_api' => $data['kode_api']])->row();
-    
-    if ($exists) {
-        echo json_encode(['status' => 'error', 'message' => 'Kode API sudah digunakan']);
-        return;
-    }
-    
+    // 6. EKSEKUSI INSERT
     $this->db->insert('smb_api_config', $data);
     
     if ($this->db->affected_rows() > 0) {
-        echo json_encode(['status' => 'success', 'message' => 'API Config berhasil ditambahkan']);
+        // Log aktivitas (opsional)
+        $this->log_aktivitas('Tambah Konfigurasi API', 'Menambahkan konfigurasi API: ' . $nama_data);
+        
+        echo json_encode([
+            'status' => 'success', 
+            'message' => 'Konfigurasi API berhasil ditambahkan',
+            'id_api' => $this->db->insert_id()
+        ]);
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'Gagal menyimpan']);
+        echo json_encode([
+            'status' => 'error', 
+            'message' => 'Gagal menyimpan konfigurasi API. Silakan coba lagi.'
+        ]);
     }
 }
 
-// Update API Config
+// Tambahkan helper method untuk log aktivitas (opsional)
+private function log_aktivitas($aksi, $detail) {
+    $log_data = [
+        'username' => $this->session->userdata('username'),
+        'bidang' => $this->session->userdata('bidang'),
+        'aksi' => $aksi,
+        'modul' => 'Portal Satu Data',
+        'detail' => $detail,
+        'ip_address' => $this->input->ip_address(),
+        'waktu' => date('Y-m-d H:i:s')
+    ];
+    $this->db->insert('smb_log_aktivitas', $log_data);
+}
+
 public function update_api_config() {
     header('Content-Type: application/json');
     
     $id_api = $this->input->post('id_api');
     if (!$id_api) {
-        echo json_encode(['status' => 'error', 'message' => 'ID API required']);
+        echo json_encode(['status' => 'error', 'message' => 'ID API tidak ditemukan']);
+        return;
+    }
+    
+    // Validasi input
+    $kode_api = trim($this->input->post('kode_api'));
+    $nama_data = trim($this->input->post('nama_data'));
+    $url_api = trim($this->input->post('url_api'));
+    
+    if (empty($kode_api) || empty($nama_data) || empty($url_api)) {
+        echo json_encode(['status' => 'error', 'message' => 'Semua field wajib diisi']);
+        return;
+    }
+    
+    // Cek duplikat kode_api (kecuali untuk dirinya sendiri)
+    $exists = $this->db->where('kode_api', $kode_api)
+                       ->where('id_api !=', $id_api)
+                       ->get('smb_api_config')
+                       ->row();
+    if ($exists) {
+        echo json_encode(['status' => 'error', 'message' => 'Kode API sudah digunakan oleh konfigurasi lain']);
         return;
     }
     
     $data = [
-        'nama_data' => $this->input->post('nama_data'),
-        'kode_api' => $this->input->post('kode_api'),
-        'indikator_id' => $this->input->post('indikator_id'),  // ← TAMBAHKAN INI
-        'url_api' => $this->input->post('url_api'),
-        'api_key' => $this->input->post('api_key'),
-        'metode' => $this->input->post('metode'),
-        'indikator_field' => $this->input->post('indikator_field'),
-        'produsen_field' => $this->input->post('produsen_field'),
-        'urusan_field' => $this->input->post('urusan_field'),
-        'satuan_field' => $this->input->post('satuan_field'),
-        'data_field' => $this->input->post('data_field'),
-        'tahun_field' => $this->input->post('tahun_field'),
-        'nilai_field' => $this->input->post('nilai_field'),
+        'kode_api' => $kode_api,
+        'nama_data' => $nama_data,
+        'url_api' => $url_api,
+        'api_key' => $this->input->post('api_key') ?: null,
+        'metode' => $this->input->post('metode') ?: 'GET',
+        'mapping_indikator' => $this->input->post('indikator_field') ?: 'result.Indikator',
+        'mapping_produsen' => $this->input->post('produsen_field') ?: 'result.Produsen Data',
+        'mapping_urusan' => $this->input->post('urusan_field') ?: 'result.Urusan',
+        'mapping_satuan' => $this->input->post('satuan_field') ?: 'result.Satuan',
+        'mapping_data' => $this->input->post('data_field') ?: 'result.data',
+        'mapping_tahun' => $this->input->post('tahun_field') ?: 'tahun',
+        'mapping_nilai' => $this->input->post('nilai_field') ?: 'nilai',
         'updated_at' => date('Y-m-d H:i:s')
     ];
     
     $this->db->where('id_api', $id_api);
     $this->db->update('smb_api_config', $data);
     
-    echo json_encode(['status' => 'success', 'message' => 'API Config berhasil diupdate']);
+    if ($this->db->affected_rows() >= 0) {
+        $this->log_aktivitas('Update Konfigurasi API', 'Mengupdate konfigurasi API: ' . $nama_data);
+        echo json_encode(['status' => 'success', 'message' => 'Konfigurasi API berhasil diupdate']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Tidak ada perubahan atau gagal update']);
+    }
 }
+
 // Hapus konfigurasi API
 public function delete_api_config() {
     header('Content-Type: application/json');
@@ -4617,117 +4989,6 @@ public function delete_api_config() {
     $this->db->delete('smb_api_config');
     
     echo json_encode(['status' => 'success', 'message' => 'API Config berhasil dihapus']);
-}
-
-// Load data dari API - VERSI DENGAN cURL LENGKAP
-public function load_data_from_api() {
-    header('Content-Type: application/json');
-    
-    $kode = $this->input->get('kode');
-    if (!$kode) {
-        echo json_encode(['status' => 'error', 'message' => 'Kode API required']);
-        return;
-    }
-    
-    $config = $this->db->get_where('smb_api_config', ['kode_api' => $kode])->row_array();
-    
-    if (!$config) {
-        echo json_encode(['status' => 'error', 'message' => 'Konfigurasi API tidak ditemukan']);
-        return;
-    }
-    
-    $indikatorId = $config['indikator_id'];
-    if (!$indikatorId) {
-        echo json_encode(['status' => 'error', 'message' => 'ID Indikator belum diisi']);
-        return;
-    }
-    
-    $url = 'https://satudata.banyuwangikab.go.id/api/indikator?id=' . $indikatorId . '&api-key=data_bwi2023';
-    
-    // ========== cURL DENGAN PENGATURAN LENGKAP ==========
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
-    
-    // User-Agent seperti browser
-    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
-    
-    // Header tambahan
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Accept: application/json',
-        'Accept-Language: id-ID,id;q=0.9',
-        'Cache-Control: no-cache',
-        'Connection: keep-alive'
-    ]);
-    
-    // Jika perlu menggunakan proxy (tanyakan ke hosting untuk proxy)
-    // curl_setopt($ch, CURLOPT_PROXY, 'proxy.example.com:8080');
-    // curl_setopt($ch, CURLOPT_PROXYUSERPWD, 'user:pass');
-    
-    $response = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $curlError = curl_error($ch);
-    curl_close($ch);
-    
-    if ($curlError) {
-        echo json_encode([
-            'status' => 'error', 
-            'message' => 'CURL Error: ' . $curlError
-        ]);
-        return;
-    }
-    
-    if ($httpCode !== 200) {
-        echo json_encode([
-            'status' => 'error', 
-            'message' => 'HTTP Error: ' . $httpCode,
-            'url' => $url
-        ]);
-        return;
-    }
-    
-    $result = json_decode($response, true);
-    
-    if (!$result || !isset($result['result'])) {
-        echo json_encode([
-            'status' => 'error', 
-            'message' => 'Response tidak valid'
-        ]);
-        return;
-    }
-    
-    $dataResult = $result['result'];
-    
-    $series = [];
-    if (isset($dataResult['data']) && isset($dataResult['data'][0])) {
-        foreach ($dataResult['data'][0] as $tahun => $nilai) {
-            if ($nilai !== '' && $nilai !== null) {
-                $series[] = [
-                    'tahun' => $tahun,
-                    'nilai' => floatval($nilai)
-                ];
-            }
-        }
-        usort($series, function($a, $b) {
-            return $a['tahun'] - $b['tahun'];
-        });
-    }
-    
-    echo json_encode([
-        'status' => 'success',
-        'data' => [
-            'indikator' => $dataResult['Indikator'] ?? $config['nama_data'],
-            'produsen' => $dataResult['Produsen Data'] ?? '-',
-            'urusan' => $dataResult['Urusan'] ?? '-',
-            'satuan' => $dataResult['Satuan'] ?? '-',
-            'series' => $series
-        ]
-    ]);
 }
 // ==================== MANAJEMEN ANALISIS DATA ====================
 
@@ -4863,5 +5124,574 @@ public function get_latest_analisis() {
         ]);
     }
 }
+
+// Get manual data by kode
+public function get_manual_data_by_kode() {
+    header('Content-Type: application/json');
+    
+    $kode = $this->input->get('kode');
+    if (empty($kode)) {
+        echo json_encode(['status' => 'error', 'message' => 'Kode API tidak ditemukan']);
+        return;
+    }
+    
+    $data = $this->db->get_where('smb_data_manual', ['kode_api' => $kode])->row_array();
+    
+    if ($data) {
+        $series = json_decode($data['data_series'], true);
+        
+        // Urutkan berdasarkan tahun
+        if ($series) {
+            usort($series, function($a, $b) {
+                return $a['tahun'] - $b['tahun'];
+            });
+        }
+        
+        echo json_encode([
+            'status' => 'success',
+            'data' => [
+                'id' => $data['id'],
+                'kode_api' => $data['kode_api'],
+                'indikator' => $data['indikator'],
+                'satuan' => $data['satuan'],
+                'series' => $series ?: []
+            ]
+        ]);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Data tidak ditemukan untuk kode: ' . $kode]);
+    }
+}
+
+// Get all manual data
+public function get_all_manual_data() {
+    header('Content-Type: application/json');
+    
+    $data = $this->db->get('smb_data_manual')->result_array();
+    
+    foreach ($data as &$item) {
+        $series = json_decode($item['data_series'], true);
+        $item['jumlah_data'] = is_array($series) ? count($series) : 0;
+        $item['created_at_formatted'] = date('d/m/Y H:i', strtotime($item['created_at']));
+        $item['updated_at_formatted'] = !empty($item['updated_at']) ? date('d/m/Y H:i', strtotime($item['updated_at'])) : '-';
+    }
+    
+    echo json_encode(['status' => 'success', 'data' => $data]);
+}
+
+// Save manual data
+public function save_manual_data() {
+    // Set header dan error reporting untuk debugging
+    header('Content-Type: application/json');
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    
+    // Log untuk debugging
+    error_log("=== save_manual_data called ===");
+    
+    // Ambil data dari POST
+    $kode_api = $this->input->post('kode_api');
+    $nama_data = $this->input->post('nama_data');
+    $satuan = $this->input->post('satuan');
+    $data_series = $this->input->post('data_series');
+    $id_manual = $this->input->post('id_manual');
+    
+    // Log data yang diterima
+    error_log("kode_api: " . $kode_api);
+    error_log("nama_data: " . $nama_data);
+    error_log("satuan: " . $satuan);
+    error_log("data_series: " . $data_series);
+    error_log("id_manual: " . $id_manual);
+    
+    // Validasi
+    if (empty($kode_api)) {
+        echo json_encode(['status' => 'error', 'message' => 'Kode API tidak boleh kosong']);
+        return;
+    }
+    
+    if (empty($nama_data)) {
+        echo json_encode(['status' => 'error', 'message' => 'Nama Data tidak boleh kosong']);
+        return;
+    }
+    
+    if (empty($data_series)) {
+        echo json_encode(['status' => 'error', 'message' => 'Data series tidak boleh kosong']);
+        return;
+    }
+    
+    // Parse data series
+    $series = json_decode($data_series, true);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        echo json_encode(['status' => 'error', 'message' => 'Format data series tidak valid: ' . json_last_error_msg()]);
+        return;
+    }
+    
+    if (empty($series)) {
+        echo json_encode(['status' => 'error', 'message' => 'Minimal 1 data tahun harus diisi']);
+        return;
+    }
+    
+    // Siapkan data untuk insert/update
+    $data = [
+        'kode_api' => $kode_api,
+        'indikator' => $nama_data,
+        'satuan' => $satuan,
+        'data_series' => $data_series,
+        'updated_at' => date('Y-m-d H:i:s')
+    ];
+    
+    // Cek apakah data sudah ada
+    $existing = $this->db->get_where('smb_data_manual', ['kode_api' => $kode_api])->row();
+    
+    if ($existing) {
+        // Update
+        $this->db->where('kode_api', $kode_api);
+        $result = $this->db->update('smb_data_manual', $data);
+        
+        if ($result) {
+            echo json_encode(['status' => 'success', 'message' => 'Data manual berhasil diupdate']);
+        } else {
+            $error = $this->db->error();
+            error_log("DB Error: " . print_r($error, true));
+            echo json_encode(['status' => 'error', 'message' => 'Gagal update data: ' . $error['message']]);
+        }
+    } else {
+        // Insert
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $result = $this->db->insert('smb_data_manual', $data);
+        
+        if ($result) {
+            echo json_encode(['status' => 'success', 'message' => 'Data manual berhasil disimpan']);
+        } else {
+            $error = $this->db->error();
+            error_log("DB Error: " . print_r($error, true));
+            echo json_encode(['status' => 'error', 'message' => 'Gagal simpan data: ' . $error['message']]);
+        }
+    }
+}
+
+// Delete manual data
+public function delete_manual_data() {
+    header('Content-Type: application/json');
+    
+    $kode_api = $this->input->post('kode_api');
+    if (empty($kode_api)) {
+        echo json_encode(['status' => 'error', 'message' => 'Kode API tidak ditemukan']);
+        return;
+    }
+    
+    $this->db->where('kode_api', $kode_api);
+    $result = $this->db->delete('smb_data_manual');
+    
+    if ($result) {
+        echo json_encode(['status' => 'success', 'message' => 'Data manual berhasil dihapus']);
+    } else {
+        $error = $this->db->error();
+        echo json_encode(['status' => 'error', 'message' => 'Gagal hapus data: ' . $error['message']]);
+    }
+}
+
+
+public function edit_dokumen($id_dokumen) {
+    // ========== 1. CEK SESSION LOGIN ==========
+    if (!$this->session->userdata('smb_logged_in')) {
+        $this->session->set_flashdata('error', 'Silakan login terlebih dahulu');
+        redirect('IDE/SmbLoginPage');
+    }
+    
+    // ========== 2. AMBIL DATA DOKUMEN ==========
+    $dokumen = $this->db->get_where('smb_dokumen', ['id_dokumen' => $id_dokumen])->row_array();
+    
+    if (!$dokumen) {
+        show_404('Dokumen tidak ditemukan');
+    }
+    
+    // ========== 3. CEK PERMISSION AKSES ==========
+    $username = $this->session->userdata('username');
+    $level = $this->session->userdata('level');
+    
+    // Yang boleh edit: uploader sendiri, Super Admin (level 1), atau Kepala Bappeda (level 2)
+    $can_edit = ($dokumen['uploaded_by'] == $username) || in_array($level, [1, 2]);
+    
+    if (!$can_edit) {
+        show_error('Anda tidak memiliki akses untuk mengedit dokumen ini', 403);
+    }
+    
+    // ========== 4. CEK JENIS DOKUMEN (Google Docs atau File Upload) ==========
+    $is_google_docs = !empty($dokumen['google_docs_link']);
+    
+    // ========== 5. JIKA GOOGLE DOCS, REDIRECT KE LINK ==========
+    if ($is_google_docs) {
+        // Catat riwayat edit
+        $this->db->insert('smb_dokumen_edit_log', [
+            'id_dokumen' => $id_dokumen,
+            'username' => $username,
+            'click_time' => date('Y-m-d H:i:s'),
+            'ip_address' => $_SERVER['REMOTE_ADDR']
+        ]);
+        
+        // Update versi
+        $new_version = $dokumen['version'] + 1;
+        $this->db->where('id_dokumen', $id_dokumen);
+        $this->db->update('smb_dokumen', [
+            'version' => $new_version,
+            'last_edited_by' => $username,
+            'last_edit_date' => date('Y-m-d H:i:s')
+        ]);
+        
+        // Log aktivitas
+        if (method_exists($this, '_log_aktivitas')) {
+            $bidang_map = [
+                'a' => 'Litbang', 'b' => 'Perencanaan', 'c' => 'Ekonomi',
+                'd' => 'Kesra', 'e' => 'Sarpras', 'f' => 'Sekretariat'
+            ];
+            $nama_bidang_short = $bidang_map[$dokumen['id_bidang']] ?? 'Unknown';
+            
+            $this->_log_aktivitas(
+                $username,
+                'Edit Dokumen (Google Docs)',
+                $nama_bidang_short,
+                "Mengedit dokumen via Google Docs: {$dokumen['nama_dokumen']} (versi {$dokumen['version']} → {$new_version})"
+            );
+        }
+        
+        // Redirect ke Google Docs
+        redirect($dokumen['google_docs_link']);
+    }
+    
+    // ========== 6. JIKA FILE UPLOAD (DOCX), LANJUTKAN PROSES ==========
+    // Validasi tipe file
+    $allowed_types = [
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+        'application/msword', // .doc (legacy)
+    ];
+    
+    if (!in_array($dokumen['file_type'], $allowed_types)) {
+        show_error('Hanya file .docx yang dapat diedit. File saat ini: ' . htmlspecialchars($dokumen['file_type']), 400);
+    }
+    
+    // ========== 7. LOAD HELPER ==========
+    $this->load->helper('doc');
+    
+    // ========== 8. CEK FILE FISIK ==========
+    $full_path = FCPATH . $dokumen['file_path'];
+    
+    if (!file_exists($full_path)) {
+        show_error('File dokumen tidak ditemukan di server. Silakan hubungi administrator.', 404);
+    }
+    
+    // ========== 9. AMBIL ATAU KONVERSI HTML CONTENT ==========
+    $html_content = $dokumen['dokumen_html'];
+    
+    // Jika belum ada HTML content, konversi dari file DOCX
+    if (empty($html_content)) {
+        try {
+            $html_content = docx_to_html($full_path);
+            
+            if ($html_content && $html_content !== '<p><em>File tidak ditemukan</em></p>') {
+                // Simpan hasil konversi ke database untuk下次 akses lebih cepat
+                $this->db->where('id_dokumen', $id_dokumen);
+                $this->db->update('smb_dokumen', [
+                    'dokumen_html' => $html_content,
+                    'last_edit_date' => date('Y-m-d H:i:s')
+                ]);
+            } else {
+                $html_content = '<p><em>Gagal mengkonversi dokumen. File mungkin korup atau tidak didukung.</em></p>';
+            }
+        } catch (Exception $e) {
+            log_message('error', 'Konversi dokumen gagal: ' . $e->getMessage());
+            $html_content = '<p><em>Terjadi kesalahan saat membaca dokumen: ' . htmlspecialchars($e->getMessage()) . '</em></p>';
+        }
+    }
+    
+    // Pastikan html_content tidak kosong
+    if (empty($html_content) || trim($html_content) == '') {
+        $html_content = '<p><em>Konten dokumen kosong atau tidak dapat dibaca.</em></p>';
+    }
+    
+    // ========== 10. PERSIAPAN DATA UNTUK VIEW ==========
+    // Format tanggal untuk ditampilkan
+    $upload_date_formatted = date('d/m/Y H:i', strtotime($dokumen['upload_date']));
+    $last_edit_formatted = !empty($dokumen['last_edit_date']) 
+        ? date('d/m/Y H:i', strtotime($dokumen['last_edit_date'])) 
+        : 'Belum pernah diedit';
+    
+    // Dapatkan nama user yang terakhir mengedit
+    $last_editor = $dokumen['last_edited_by'] ?? '-';
+    if ($last_editor != '-' && $last_editor != $dokumen['uploaded_by']) {
+        $editor_info = $this->db->get_where('akun', ['Username' => $last_editor])->row_array();
+        $last_editor = $editor_info['Username'] ?? $last_editor;
+    }
+    
+    // Mapping nama bidang untuk ditampilkan
+    $bidang_map = [
+        'a' => 'Bidang Penelitian, Pengembangan dan Pengendalian Evaluasi',
+        'b' => 'Bidang Perencanaan Pembangunan',
+        'c' => 'Bidang Ekonomi',
+        'd' => 'Bidang Kesejahteraan Rakyat dan Pemerintahan',
+        'e' => 'Bidang Sarana Prasarana Wilayah dan Lingkungan',
+        'f' => 'Bidang Sekretariat'
+    ];
+    $nama_bidang = $bidang_map[$dokumen['id_bidang']] ?? 'Bidang Tidak Dikenal';
+    
+    // ========== 11. KIRIM DATA KE VIEW ==========
+    $data = [
+        'title' => 'Edit Dokumen - ' . $dokumen['nama_dokumen'],
+        'dokumen' => $dokumen,
+        'html_content' => $html_content,
+        'upload_date_formatted' => $upload_date_formatted,
+        'last_edit_formatted' => $last_edit_formatted,
+        'last_editor' => $last_editor,
+        'nama_bidang' => $nama_bidang,
+        'username' => $username,
+        'user_level' => $level,
+        'is_admin' => in_array($level, [1, 2]),
+        'is_owner' => ($dokumen['uploaded_by'] == $username),
+        'is_google_docs' => $is_google_docs,
+        'csrf_token' => $this->security->get_csrf_hash()
+    ];
+    
+    $this->load->view('Smb/edit_dokumen', $data);
+}
+
+/**
+ * Proses Save Hasil Edit Dokumen
+ */
+/**
+ * Proses Save Hasil Edit Dokumen
+ * Overwrite file DOCX dan generate ulang PDF
+ */
+public function save_dokumen_edit() {
+    // ========== 1. ENABLE ERROR LOGGING ==========
+    error_reporting(E_ALL);
+    ini_set('display_errors', 0); // Jangan tampilkan ke browser
+    ini_set('log_errors', 1);
+    
+    // ========== 2. CLEAN OUTPUT BUFFER ==========
+    while (ob_get_level()) {
+        ob_end_clean();
+    }
+    ob_start(); // Start clean buffer
+    
+    // ========== 3. SET HEADER UNTUK JSON RESPONSE ==========
+    header('Content-Type: application/json');
+    header('Cache-Control: no-cache, must-revalidate');
+    
+    // ========== 4. FUNCTION UNTUK RESPONSE ==========
+    $sendResponse = function($status, $message, $code = null, $extra = []) {
+        $response = ['status' => $status, 'message' => $message];
+        if ($code) $response['code'] = $code;
+        foreach ($extra as $key => $value) {
+            $response[$key] = $value;
+        }
+        
+        // Bersihkan buffer dan kirim response
+        ob_clean();
+        echo json_encode($response);
+        exit;
+    };
+    
+    try {
+        // ========== 5. CEK SESSION LOGIN ==========
+        if (!$this->session->userdata('smb_logged_in')) {
+            $sendResponse('error', 'Session expired, silakan login kembali', 'SESSION_EXPIRED');
+        }
+        
+        // ========== 6. LOAD HELPER ==========
+        // Cek apakah file helper ada
+        if (!file_exists(APPPATH . 'helpers/doc_helper.php')) {
+            $sendResponse('error', 'File helper tidak ditemukan', 'HELPER_NOT_FOUND');
+        }
+        
+        $this->load->helper('doc');
+        
+        // Cek fungsi helper setelah load
+        if (!function_exists('html_to_docx')) {
+            $sendResponse('error', 'Fungsi konversi HTML tidak ditemukan. Periksa file doc_helper.php', 'HELPER_FUNCTION_MISSING');
+        }
+        
+        // ========== 7. AMBIL DATA DARI POST ==========
+        $id_dokumen = $this->input->post('id_dokumen');
+        $edited_html = $this->input->post('dokumen_html');
+        $status = $this->input->post('status');
+        $kategori = $this->input->post('kategori');
+        $nama_dokumen = trim($this->input->post('nama_dokumen'));
+        
+        // Log untuk debugging
+        log_message('debug', "save_dokumen_edit called - ID: $id_dokumen");
+        
+        // ========== 8. VALIDASI INPUT ==========
+        if (empty($id_dokumen)) {
+            $sendResponse('error', 'ID dokumen tidak valid', 'INVALID_ID');
+        }
+        
+        if (empty($edited_html)) {
+            $sendResponse('error', 'Konten dokumen tidak boleh kosong', 'EMPTY_CONTENT');
+        }
+        
+        // Cek apakah konten hanya berisi tag kosong
+        $cleaned_content = trim(strip_tags($edited_html));
+        if (empty($cleaned_content)) {
+            $sendResponse('error', 'Konten dokumen tidak boleh kosong', 'EMPTY_CONTENT');
+        }
+        
+        // ========== 9. AMBIL DATA DOKUMEN ==========
+        $dokumen = $this->db->get_where('smb_dokumen', ['id_dokumen' => $id_dokumen])->row_array();
+        
+        if (!$dokumen) {
+            $sendResponse('error', 'Dokumen tidak ditemukan', 'DOCUMENT_NOT_FOUND');
+        }
+        
+        // ========== 10. CEK PERMISSION ==========
+        $username = $this->session->userdata('username');
+        $level = $this->session->userdata('level');
+        
+        $can_edit = ($dokumen['uploaded_by'] == $username) || in_array($level, [1, 2]);
+        
+        if (!$can_edit) {
+            $sendResponse('error', 'Anda tidak memiliki akses untuk mengedit dokumen ini', 'ACCESS_DENIED');
+        }
+        
+        // ========== 11. VALIDASI TIPE FILE ==========
+        $file_ext = strtolower(pathinfo($dokumen['file_name'], PATHINFO_EXTENSION));
+        
+        if ($file_ext != 'docx') {
+            $sendResponse('error', 'Hanya file .docx yang dapat diedit. File saat ini berformat .' . $file_ext, 'INVALID_FILE_TYPE');
+        }
+        
+        // ========== 12. PERSIAPAN PATH FILE ==========
+        $docx_path = FCPATH . $dokumen['file_path'];
+        $backup_path = FCPATH . 'uploads/dokumen/backup/';
+        $temp_path = FCPATH . 'uploads/temp/';
+        
+        // Buat folder dengan error handling yang lebih baik
+        if (!is_dir($backup_path)) {
+            if (!@mkdir($backup_path, 0777, true)) {
+                $sendResponse('error', 'Tidak dapat membuat folder backup. Periksa permission folder uploads.', 'FOLDER_CREATE_FAILED');
+            }
+        }
+        
+        if (!is_dir($temp_path)) {
+            if (!@mkdir($temp_path, 0777, true)) {
+                $sendResponse('error', 'Tidak dapat membuat folder temporary. Periksa permission folder uploads.', 'FOLDER_CREATE_FAILED');
+            }
+        }
+        
+        // ========== 13. CEK FILE FISIK ==========
+        if (!file_exists($docx_path)) {
+            $sendResponse('error', 'File dokumen tidak ditemukan di server', 'FILE_NOT_FOUND');
+        }
+        
+        // ========== 14. PROSES EDIT DOKUMEN ==========
+        $warnings = [];
+        $backup_name = 'backup_' . $dokumen['id_dokumen'] . '_v' . $dokumen['version'] . '_' . date('Ymd_His') . '.docx';
+        
+        // 14a. Backup file lama (opsional, lanjutkan walau gagal)
+        if (!@copy($docx_path, $backup_path . $backup_name)) {
+            $warnings[] = 'Gagal membuat backup file (tidak kritis)';
+        }
+        
+        // 14b. Simpan HTML sementara (optional)
+        $html_backup = $temp_path . 'edit_' . $id_dokumen . '_' . date('Ymd_His') . '.html';
+        @file_put_contents($html_backup, $edited_html);
+        
+        // 14c. Konversi HTML ke DOCX
+        try {
+            $html_to_docx_result = html_to_docx($edited_html, $docx_path);
+            
+            if (!$html_to_docx_result) {
+                // Restore dari backup jika gagal
+                if (file_exists($backup_path . $backup_name)) {
+                    @copy($backup_path . $backup_name, $docx_path);
+                }
+                $sendResponse('error', 'Gagal mengkonversi HTML ke DOCX. Pastikan konten valid.', 'CONVERSION_FAILED', ['warnings' => $warnings]);
+            }
+        } catch (Exception $e) {
+            log_message('error', 'html_to_docx exception: ' . $e->getMessage());
+            $sendResponse('error', 'Terjadi error saat konversi dokumen: ' . $e->getMessage(), 'CONVERSION_EXCEPTION');
+        }
+        
+        // 14d. Generate PDF (opsional, tidak mengganggu jika gagal)
+        $pdf_generated = false;
+        if (function_exists('html_to_pdf')) {
+            try {
+                $pdf_filename = pathinfo($dokumen['file_name'], PATHINFO_FILENAME) . '.pdf';
+                $pdf_path = FCPATH . 'uploads/dokumen/' . $pdf_filename;
+                
+                if (html_to_pdf($edited_html, $pdf_path)) {
+                    $pdf_generated = true;
+                } else {
+                    $warnings[] = 'File PDF gagal di-generate ulang. Dokumen DOCX tetap tersimpan.';
+                }
+            } catch (Exception $e) {
+                $warnings[] = 'Error saat generate PDF: ' . $e->getMessage();
+                log_message('error', 'PDF generation error: ' . $e->getMessage());
+            }
+        }
+        
+        // ========== 15. UPDATE DATABASE ==========
+        $update_data = [
+            'nama_dokumen' => !empty($nama_dokumen) ? htmlspecialchars($nama_dokumen, ENT_QUOTES, 'UTF-8') : $dokumen['nama_dokumen'],
+            'kategori' => !empty($kategori) ? htmlspecialchars($kategori, ENT_QUOTES, 'UTF-8') : $dokumen['kategori'],
+            'status' => !empty($status) ? htmlspecialchars($status, ENT_QUOTES, 'UTF-8') : $dokumen['status'],
+            'dokumen_html' => $edited_html,
+            'last_edited_by' => $username,
+            'last_edit_date' => date('Y-m-d H:i:s'),
+            'version' => $dokumen['version'] + 1
+        ];
+        
+        $this->db->where('id_dokumen', $id_dokumen);
+        $db_update = $this->db->update('smb_dokumen', $update_data);
+        
+        if (!$db_update) {
+            $sendResponse('error', 'Gagal update database: ' . $this->db->error()['message'], 'DB_ERROR');
+        }
+        
+        // ========== 16. LOG AKTIVITAS ==========
+        if (method_exists($this, '_log_aktivitas')) {
+            $bidang_map = [
+                'a' => 'Litbang', 'b' => 'Perencanaan', 'c' => 'Ekonomi', 
+                'd' => 'Kesra', 'e' => 'Sarpras', 'f' => 'Sekretariat'
+            ];
+            $nama_bidang = $bidang_map[$dokumen['id_bidang']] ?? 'Unknown';
+            
+            $this->_log_aktivitas(
+                $username,
+                'Edit Dokumen',
+                $nama_bidang,
+                "Mengedit dokumen: {$dokumen['nama_dokumen']} (versi " . ($dokumen['version'] + 1) . ")"
+            );
+        }
+        
+        // ========== 17. HAPUS FILE TEMPORARY ==========
+        if (isset($html_backup) && file_exists($html_backup)) {
+            @unlink($html_backup);
+        }
+        
+        // ========== 18. KIRIM RESPONSE SUKSES ==========
+        $response = [
+            'status' => 'success',
+            'message' => 'Dokumen berhasil disimpan',
+            'redirect' => base_url('IDE/SmbDashboard?tab=bidang&bidang=' . $dokumen['id_bidang']),
+            'new_version' => $dokumen['version'] + 1
+        ];
+        
+        if (!empty($warnings)) {
+            $response['warnings'] = $warnings;
+        }
+        
+        if (!$pdf_generated) {
+            $response['warning_pdf'] = 'File PDF gagal di-generate, silakan generate manual nanti.';
+        }
+        
+        $sendResponse('success', 'Dokumen berhasil disimpan', null, $response);
+        
+    } catch (Exception $e) {
+        log_message('error', 'save_dokumen_edit unexpected error: ' . $e->getMessage());
+        log_message('error', 'Stack trace: ' . $e->getTraceAsString());
+        
+        $sendResponse('error', 'Terjadi kesalahan sistem: ' . $e->getMessage(), 'SYSTEM_ERROR');
+    }
+}
+
 
 }
