@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+Allow: /assets/
+Allow: /assets/img/
+Allow: /favicon.ico
+Allow: /site.webmanifest
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+# Sitemap
+Sitemap: https://intidesainekonomi.id/sitemap.xml

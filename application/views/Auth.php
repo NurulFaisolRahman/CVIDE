@@ -11,8 +11,10 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="../assets/img/favicon.ico" rel="icon">
-    <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="192x192" href="<?= base_url('assets/img/android-chrome-192x192.png') ?>">
+    <link rel="icon" type="image/png" sizes="48x48" href="<?= base_url('assets/img/favicon-48x48.png') ?>">
+    <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>">
+    <link href="<?= base_url('assets/vendor/bootstrap/css/bootstrap.min.css') ?>" rel="stylesheet">
     <style type="text/css">
       html,
       body,
