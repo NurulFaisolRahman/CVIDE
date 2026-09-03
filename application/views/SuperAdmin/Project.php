@@ -8,18 +8,41 @@
 													<th scope="col" style="width: 4%;" class="text-center align-middle">No</th>
 													<th scope="col" class="align-middle">PJ Project</th>
 													<th scope="col" class="align-middle">Nama Project</th>
-													<th scope="col" style="width: 15%;" class="text-center align-middle">Deadline Project</th>
-													<th scope="col" style="width: 35%;" class="align-middle">Catatan</th>
-													<th scope="col" style="width: 12%;" class="text-center align-middle">File</th>
+													<th scope="col" style="width: 14%;" class="text-center align-middle">Kategori</th>
+													<th scope="col" style="width: 15%;" class="text-center align-middle">Tahun Project</th>
+													<th scope="col" style="width: 30%;" class="align-middle">Catatan</th>
+													<th scope="col" style="width: 10%;" class="text-center align-middle">File</th>
 												</tr>
 											</thead>
 											<tbody id="RekapSurvei">
-												<?php $No = 1; foreach ($Project as $key) { $Deadline = explode("|",$key['Deadline']); $From = explode("-",$Deadline[0]); $To = explode("-",$Deadline[1]); $PisahPJ = explode("|",$key['PJ']); $Pj = ""; for ($i=0; $i < count($PisahPJ); $i++) { $Pj .= (ucfirst($PisahPJ[$i]).' '); } ?>
+												<?php 
+												$No = 1; 
+												foreach ($Project as $key) { 
+													$dl = !empty($key['Deadline']) ? $key['Deadline'] : '-';
+													if (strpos($dl, '|') !== false) {
+														$parts = explode('|', $dl);
+														$f = explode('-', $parts[0] ?? '');
+														$t = explode('-', $parts[1] ?? '');
+														$yF = $f[0] ?? '';
+														$yT = $t[0] ?? '';
+														if (!empty($yF) && !empty($yT) && $yF === $yT) {
+															$dl = $yF;
+														} else if (!empty($yF) && !empty($yT)) {
+															$dl = $yF . ' - ' . $yT;
+														}
+													}
+													$PisahPJ = explode("|", $key['PJ']); 
+													$Pj = ""; 
+													for ($i=0; $i < count($PisahPJ); $i++) { 
+														$Pj .= (ucfirst($PisahPJ[$i]).' '); 
+													} 
+												?>
 													<tr>
 														<th scope="row" class="text-center align-middle"><?=$No++?></th>
 														<th scope="row" class="align-middle"><?=$key['PJ']?></th>
 														<th scope="row" class="align-middle"><?=$key['NamaProject']?></th>
-														<th scope="row" class="text-center align-middle"><?=$From[2].'-'.$From[1].'-'.$From[0].' => '.$To[2].'-'.$To[1].'-'.$To[0]?></th>
+														<th scope="row" class="text-center align-middle"><?=!empty($key['Kategori']) ? htmlspecialchars($key['Kategori']) : '-'?></th>
+														<th scope="row" class="text-center align-middle"><?=htmlspecialchars($dl)?></th>
 														<th scope="row" class="align-middle"><?=$key['Catatan']?></th>
 														<th scope="row" class="text-center align-middle">
 															<?php if (!empty($key['File'])) { ?>

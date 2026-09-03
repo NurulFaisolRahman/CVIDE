@@ -642,6 +642,7 @@ class IDE extends CI_Controller {
         $Session = array(
             'user_id'      => $userId,      // Menggunakan Username
             'username'     => $Akun['Username'],
+            'Username'     => $Akun['Username'],
             'nama_lengkap' => $namaLengkap, // Menggunakan Username
             'level'        => $level,
             'logged_in'    => true
