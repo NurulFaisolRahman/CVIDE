@@ -579,7 +579,9 @@
         transform: translateY(-2px) !important;
       }
 
-      /* Connected & Segmented Pagination */
+      /* ==========================================================================
+         ENTERPRISE CONNECTED & SEGMENTED PAGINATION (No Inner Borders, Clean Outer Pill)
+         ========================================================================== */
       .dataTables_wrapper .dataTables_info {
         float: left;
         padding-top: 14px;
@@ -603,7 +605,35 @@
         gap: 2px !important;
       }
 
-      .dataTables_wrapper .dataTables_paginate .paginate_button {
+      /* Hapus garis/border dalam dari ul pagination Bootstrap */
+      .dataTables_wrapper .dataTables_paginate ul.pagination,
+      .dataTables_wrapper .dataTables_paginate .pagination,
+      .pagination {
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 2px !important;
+        list-style: none !important;
+      }
+
+      .pagination .page-item,
+      .dataTables_wrapper .dataTables_paginate .page-item {
+        margin: 0 !important;
+        border: none !important;
+        background: transparent !important;
+      }
+
+      /* Hapus garis border kotak dalam pada tombol previous/next dan angka */
+      .dataTables_wrapper .dataTables_paginate .paginate_button,
+      .dataTables_wrapper .dataTables_paginate .page-link,
+      .dataTables_wrapper .dataTables_paginate .page-item .page-link,
+      .pagination .page-item .page-link,
+      .page-link {
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -613,6 +643,7 @@
         margin: 0 !important;
         border-radius: 8px !important;
         border: none !important;
+        border-color: transparent !important;
         background: transparent !important;
         color: #475569 !important;
         font-size: 12.5px !important;
@@ -622,9 +653,11 @@
         box-shadow: none !important;
         cursor: pointer !important;
         line-height: 1 !important;
+        outline: none !important;
       }
 
-      .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+      .dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+      .pagination .page-item:not(.disabled):not(.active) .page-link:hover {
         background: rgba(4, 49, 104, 0.08) !important;
         color: var(--ide-navy) !important;
         border: none !important;
@@ -634,7 +667,8 @@
 
       .dataTables_wrapper .dataTables_paginate .paginate_button.current,
       .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
-      .page-item.active .page-link {
+      .dataTables_wrapper .dataTables_paginate .page-item.active .page-link,
+      .pagination .page-item.active .page-link {
         background: linear-gradient(135deg, var(--ide-navy) 0%, #0b3977 100%) !important;
         color: #ffffff !important;
         border: none !important;
@@ -645,14 +679,30 @@
       }
 
       .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
-      .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+      .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover,
+      .dataTables_wrapper .dataTables_paginate .page-item.disabled .page-link,
+      .pagination .page-item.disabled .page-link {
         opacity: 0.35 !important;
         background: transparent !important;
         color: #94a3b8 !important;
         border: none !important;
+        border-color: transparent !important;
         box-shadow: none !important;
         transform: none !important;
         cursor: not-allowed !important;
+      }
+
+      .dataTables_wrapper .dataTables_paginate .ellipsis,
+      .dataTables_wrapper .dataTables_paginate span.ellipsis,
+      .pagination .page-item.disabled span.page-link {
+        opacity: 1 !important;
+        color: #1e293b !important;
+        font-weight: 700 !important;
+        background: transparent !important;
+        border: none !important;
+        cursor: default !important;
+        box-shadow: none !important;
+        transform: none !important;
       }
 
       /* Unified Modal & Form Design System */

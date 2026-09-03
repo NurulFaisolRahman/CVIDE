@@ -1,14 +1,31 @@
-<div class="row align-items-center justify-content-between mb-3" style="margin-top: 10px;">
-  <div class="col-auto">
-    <h4 class="font-weight-bold text-dark mb-1" style="font-size: 18px; text-transform: uppercase; letter-spacing: 0.5px;">
-      <i class="fa-solid fa-diagram-project mr-2" style="color: var(--ide-red);"></i> Manajemen Project
-    </h4>
-    <p class="text-muted mb-0" style="font-size: 12.5px;">Kelola data berkas kegiatan, kategori, tahun pelaksanaan, serta catatan proyek IDE Consultant.</p>
-  </div>
-  <div class="col-auto">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalInput" style="border-radius: 20px; font-weight: 700; padding: 9px 20px; font-size: 13px; background: var(--ide-red); border: none; box-shadow: 0 4px 12px rgba(180, 8, 20, 0.35);">
-      <i class="fa-solid fa-plus mr-1"></i> Tambah Project Baru
-    </button>
+<!-- Enterprise Page Header Card -->
+<div class="row mb-4" style="margin-top: 22px;">
+  <div class="col-12">
+    <div class="card border-0" style="background: #ffffff; border-radius: 20px; border: 1px solid var(--ide-border) !important; box-shadow: 0 8px 24px rgba(4, 49, 104, 0.05); padding: 20px 24px;">
+      <div class="d-flex flex-wrap align-items-center justify-content-between" style="gap: 15px;">
+        <div class="d-flex align-items-center" style="gap: 16px;">
+          <div style="width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg, rgba(4, 49, 104, 0.1) 0%, rgba(180, 8, 20, 0.1) 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fa-solid fa-diagram-project" style="color: var(--ide-red); font-size: 24px;"></i>
+          </div>
+          <div>
+            <div class="d-flex align-items-center" style="gap: 10px;">
+              <h4 class="font-weight-bold text-dark mb-0" style="font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
+                Manajemen Project
+              </h4>
+              <span class="badge badge-primary px-2 py-1" style="background: var(--ide-navy); font-size: 11px; font-weight: 600; border-radius: 6px;">Staf Portal</span>
+            </div>
+            <p class="text-muted mb-0 mt-1" style="font-size: 12.5px;">
+              Kelola data berkas kegiatan, kategori, tahun pelaksanaan, serta catatan proyek IDE Consultant.
+            </p>
+          </div>
+        </div>
+        <div>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalInput" style="border-radius: 22px; font-weight: 700; padding: 11px 24px; font-size: 13.5px; background: var(--ide-red); border: none; box-shadow: 0 6px 18px rgba(180, 8, 20, 0.35); transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-plus"></i> Tambah Project Baru
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
