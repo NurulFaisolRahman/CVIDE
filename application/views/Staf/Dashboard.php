@@ -2,241 +2,287 @@
 <style>
   /* Metric KPI Cards (Proportional & Equal Height) */
   .kpi-card {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 22px 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--ide-border);
-    transition: all 0.3s ease;
-    width: 100%;
-    min-height: 110px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
+    background: #ffffff !important;
+    border-radius: 20px !important;
+    padding: 22px 20px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid var(--ide-border) !important;
+    transition: all 0.3s ease !important;
+    width: 100% !important;
+    min-height: 110px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    position: relative !important;
   }
 
   .kpi-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(4, 49, 104, 0.12);
-    border-color: var(--ide-navy);
+    transform: translateY(-5px) !important;
+    box-shadow: 0 15px 35px rgba(4, 49, 104, 0.12) !important;
+    border-color: var(--ide-navy) !important;
   }
 
   .kpi-icon-box {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    flex-shrink: 0;
+    width: 52px !important;
+    height: 52px !important;
+    border-radius: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 22px !important;
+    flex-shrink: 0 !important;
+    position: static !important;
+  }
+
+  .kpi-icon-box i {
+    position: static !important;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
   }
 
   .kpi-icon-navy {
-    background: rgba(4, 49, 104, 0.1);
-    color: var(--ide-navy);
+    background: rgba(4, 49, 104, 0.1) !important;
+    color: var(--ide-navy) !important;
   }
 
   .kpi-icon-red {
-    background: rgba(180, 8, 20, 0.1);
-    color: var(--ide-red);
+    background: rgba(180, 8, 20, 0.1) !important;
+    color: var(--ide-red) !important;
   }
 
   .kpi-icon-blue {
-    background: rgba(10, 61, 124, 0.1);
-    color: var(--ide-navy-light);
+    background: rgba(10, 61, 124, 0.1) !important;
+    color: var(--ide-navy-light) !important;
   }
 
   .kpi-icon-green {
-    background: rgba(16, 185, 129, 0.1);
-    color: #10b981;
+    background: rgba(16, 185, 129, 0.1) !important;
+    color: #10b981 !important;
   }
 
   .kpi-label {
-    font-size: 12px;
-    font-weight: 700;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #64748b !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    margin-bottom: 4px !important;
   }
 
   .kpi-value {
-    font-size: 19px;
-    font-weight: 800;
-    color: var(--ide-dark);
-    line-height: 1.2;
-    margin: 0;
+    font-size: 19px !important;
+    font-weight: 800 !important;
+    color: var(--ide-dark) !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
   }
 
   .kpi-subtext {
-    font-size: 11px;
-    color: #94a3b8;
-    margin-top: 3px;
+    font-size: 11px !important;
+    color: #94a3b8 !important;
+    margin-top: 3px !important;
   }
 
   /* Shortcut Quick Action Cards (Equal Size & Proportional Height) */
   .shortcut-card {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 26px 24px;
-    border: 1px solid var(--ide-border);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-    transition: all 0.3s ease;
+    background: #ffffff !important;
+    border-radius: 20px !important;
+    padding: 24px !important;
+    border: 1px solid var(--ide-border) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
+    transition: all 0.3s ease !important;
     text-decoration: none !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    width: 100%;
-    min-height: 170px;
-    color: inherit;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    min-height: 160px !important;
+    color: inherit !important;
+    position: relative !important;
+    overflow: hidden !important;
   }
 
   .shortcut-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--ide-red-coral);
-    box-shadow: 0 18px 40px rgba(180, 8, 20, 0.12);
+    transform: translateY(-5px) !important;
+    border-color: var(--ide-red-coral) !important;
+    box-shadow: 0 18px 40px rgba(180, 8, 20, 0.12) !important;
+    text-decoration: none !important;
   }
 
-  .shortcut-icon {
-    font-size: 28px;
-    color: var(--ide-navy);
-    margin-bottom: 15px;
-    transition: transform 0.3s ease;
+  .shortcut-icon-box {
+    width: 52px !important;
+    height: 52px !important;
+    border-radius: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 22px !important;
+    margin-bottom: 16px !important;
+    flex-shrink: 0 !important;
+    position: static !important;
+    transition: all 0.3s ease !important;
   }
 
-  .shortcut-card:hover .shortcut-icon {
-    color: var(--ide-red);
-    transform: scale(1.15);
+  .shortcut-icon-box i {
+    position: static !important;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    display: inline-block !important;
+  }
+
+  .shortcut-icon-blue {
+    background: rgba(4, 49, 104, 0.1) !important;
+    color: var(--ide-navy) !important;
+  }
+
+  .shortcut-icon-red {
+    background: rgba(180, 8, 20, 0.1) !important;
+    color: var(--ide-red) !important;
+  }
+
+  .shortcut-icon-green {
+    background: rgba(16, 185, 129, 0.1) !important;
+    color: #10b981 !important;
+  }
+
+  .shortcut-card:hover .shortcut-icon-box {
+    transform: scale(1.1) !important;
   }
 
   .shortcut-title {
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--ide-dark);
-    margin-bottom: 6px;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: var(--ide-dark) !important;
+    margin-bottom: 6px !important;
   }
 
   .shortcut-desc {
-    font-size: 13px;
-    color: #64748b;
-    margin: 0;
-    line-height: 1.5;
+    font-size: 13px !important;
+    color: #64748b !important;
+    margin: 0 !important;
+    line-height: 1.5 !important;
   }
 
   /* Password Card Styling */
   .password-card {
-    background: #ffffff;
-    border-radius: 24px;
-    border: 1px solid var(--ide-border);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.06);
-    overflow: hidden;
+    background: #ffffff !important;
+    border-radius: 24px !important;
+    border: 1px solid var(--ide-border) !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.06) !important;
+    overflow: hidden !important;
   }
 
   .password-card-header {
-    background: linear-gradient(135deg, var(--ide-navy) 0%, var(--ide-navy-light) 100%);
-    color: #ffffff;
-    padding: 22px 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    background: linear-gradient(135deg, var(--ide-navy) 0%, var(--ide-navy-light) 100%) !important;
+    color: #ffffff !important;
+    padding: 22px 30px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
   }
 
   .password-card-header h5 {
-    font-size: 18px;
-    font-weight: 700;
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    color: #ffffff !important;
   }
 
   .password-card-body {
-    padding: 35px 30px;
+    padding: 35px 30px !important;
   }
 
   .form-label-enterprise {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--ide-dark);
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    margin-bottom: 10px;
-    display: block;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: var(--ide-dark) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.4px !important;
+    margin-bottom: 10px !important;
+    display: block !important;
   }
 
   .password-input-group {
-    position: relative;
-    display: flex;
-    align-items: center;
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
   }
 
   .password-input-icon {
-    position: absolute;
-    left: 18px;
-    color: #94a3b8;
-    font-size: 16px;
-    z-index: 5;
+    position: absolute !important;
+    left: 18px !important;
+    color: #94a3b8 !important;
+    font-size: 16px !important;
+    z-index: 5 !important;
+    float: none !important;
+    margin: 0 !important;
   }
 
   .form-control-enterprise {
-    width: 100%;
-    height: 52px;
-    border-radius: 26px;
-    border: 2px solid var(--ide-border);
-    padding: 0 50px 0 48px;
-    font-size: 14px;
-    font-family: inherit;
-    outline: none;
-    transition: all 0.3s ease;
-    background-color: #f8fafc;
+    width: 100% !important;
+    height: 52px !important;
+    border-radius: 26px !important;
+    border: 2px solid var(--ide-border) !important;
+    padding: 0 50px 0 48px !important;
+    font-size: 14px !important;
+    font-family: inherit !important;
+    outline: none !important;
+    transition: all 0.3s ease !important;
+    background-color: #f8fafc !important;
   }
 
   .form-control-enterprise:focus {
-    border-color: var(--ide-navy);
-    background-color: #ffffff;
-    box-shadow: 0 0 0 4px rgba(4, 49, 104, 0.1);
+    border-color: var(--ide-navy) !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 4px rgba(4, 49, 104, 0.1) !important;
   }
 
   .password-toggle-btn {
-    position: absolute;
-    right: 15px;
-    background: none;
-    border: none;
-    color: #94a3b8;
-    font-size: 16px;
-    cursor: pointer;
-    padding: 8px;
-    transition: color 0.2s ease;
+    position: absolute !important;
+    right: 15px !important;
+    background: none !important;
+    border: none !important;
+    color: #94a3b8 !important;
+    font-size: 16px !important;
+    cursor: pointer !important;
+    padding: 8px !important;
+    transition: color 0.2s ease !important;
   }
 
   .password-toggle-btn:hover {
-    color: var(--ide-navy);
+    color: var(--ide-navy) !important;
   }
 
   .btn-submit-enterprise {
-    background-color: var(--ide-red);
-    color: #ffffff;
-    font-size: 15px;
-    font-weight: 700;
-    text-transform: uppercase;
-    padding: 13px 35px;
-    border-radius: 26px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 10px 25px rgba(180, 8, 20, 0.35);
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
+    background-color: var(--ide-red) !important;
+    color: #ffffff !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    padding: 13px 35px !important;
+    border-radius: 26px !important;
+    border: none !important;
+    cursor: pointer !important;
+    box-shadow: 0 10px 25px rgba(180, 8, 20, 0.35) !important;
+    transition: all 0.3s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
   }
 
   .btn-submit-enterprise:hover {
-    background-color: #d10916;
-    transform: translateY(-2px);
-    box-shadow: 0 15px 30px rgba(180, 8, 20, 0.5);
+    background-color: #d10916 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 15px 30px rgba(180, 8, 20, 0.5) !important;
   }
 </style>
 
@@ -302,26 +348,30 @@
 <div class="row mb-5 align-items-stretch">
   <div class="col-md-6 mb-3 d-flex">
     <a href="<?=base_url('Staf/Project')?>" class="shortcut-card">
-      <i class="fa-solid fa-diagram-project shortcut-icon"></i>
+      <div class="shortcut-icon-box shortcut-icon-blue">
+        <i class="fa-solid fa-diagram-project"></i>
+      </div>
       <div>
         <div class="shortcut-title">Manajemen Project</div>
-        <div class="shortcut-desc">Kelola daftar dokumen kegiatan, laporan PDF, jadwal deadline proyek, dan rincian catatan kerja.</div>
+        <div class="shortcut-desc">Kelola daftar dokumen kegiatan, laporan PDF, jadwal tahun proyek, kategori, dan catatan kerja.</div>
       </div>
     </a>
   </div>
   <div class="col-md-6 mb-3 d-flex">
-    <a href="<?=base_url('IDE/SignOut')?>" class="shortcut-card">
-      <i class="fa-solid fa-right-from-bracket shortcut-icon"></i>
+    <a href="#cardUbahPassword" class="shortcut-card">
+      <div class="shortcut-icon-box shortcut-icon-red">
+        <i class="fa-solid fa-key"></i>
+      </div>
       <div>
-        <div class="shortcut-title">Keluar Sistem (Sign Out)</div>
-        <div class="shortcut-desc">Akhiri sesi login operasional Staf dengan aman dari portal enterprise IDE Consultant.</div>
+        <div class="shortcut-title">Keamanan & Ubah Password</div>
+        <div class="shortcut-desc">Perbarui kata sandi akun Staf Anda secara berkala demi menjaga keamanan akses sistem.</div>
       </div>
     </a>
   </div>
 </div>
 
 <!-- Password Change Card Section -->
-<div class="row justify-content-center">
+<div class="row justify-content-center" id="cardUbahPassword">
   <div class="col-lg-8">
     <div class="password-card">
       <div class="password-card-header">
