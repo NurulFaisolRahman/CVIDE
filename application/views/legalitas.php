@@ -8,6 +8,12 @@
   <meta content="Dokumentasi resmi perizinan dan legalitas usaha CV Inti Desain Ekonomi Consultant" name="description">
   <meta content="legalitas, sertifikasi, akta notaris, NIB, KADIN, INKINDO, kemenkumham, ide consultant" name="keywords">
   
+  <!-- Favicons (Logo IDE) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/img/favicon-32x32.png') ?>">
+  <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/img/favicon-16x16.png') ?>">
+  <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/img/apple-touch-icon.png') ?>">
+  <link rel="shortcut icon" href="<?= base_url('assets/img/favicon.ico') ?>">
+
   <!-- Google Fonts: Poppins (Lugx Gaming signature font) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

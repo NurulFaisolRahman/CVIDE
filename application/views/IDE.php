@@ -7,6 +7,12 @@
   <meta content="Professional Research & Consulting Services - CV Inti Desain Ekonomi" name="description">
   <meta content="consulting, research, economic development, banyuwangi, malang, lugx, ide consultant" name="keywords">
   
+  <!-- Favicons (Logo IDE) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/img/favicon-32x32.png') ?>">
+  <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/img/favicon-16x16.png') ?>">
+  <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/img/apple-touch-icon.png') ?>">
+  <link rel="shortcut icon" href="<?= base_url('assets/img/favicon.ico') ?>">
+
   <!-- Google Fonts: Poppins (TemplateMo Lugx Gaming signature font) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

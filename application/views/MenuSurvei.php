@@ -8,6 +8,12 @@
   <meta content="Layanan survei indeks kepuasan masyarakat (IKM) profesional oleh CV Inti Desain Ekonomi Consultant" name="description">
   <meta content="survei, ikm, kepuasan masyarakat, pelayanan publik, riset kebijakan, ide consultant" name="keywords">
   
+  <!-- Favicons (Logo IDE) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/img/favicon-32x32.png') ?>">
+  <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/img/favicon-16x16.png') ?>">
+  <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/img/apple-touch-icon.png') ?>">
+  <link rel="shortcut icon" href="<?= base_url('assets/img/favicon.ico') ?>">
+
   <!-- Google Fonts: Poppins (Lugx signature font) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
