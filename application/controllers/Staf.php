@@ -34,7 +34,7 @@ class Staf extends CI_Controller {
   }
 
   /**
-   * Helper untuk mengunggah berkas tunggal / ganda (PDF, Word, Excel)
+   * Helper untuk mengunggah berkas tunggal / ganda (PDF, Word, Excel) dengan mempertahankan nama asli file
    */
   private function handleFileUploads($fileInputName = 'Files') {
     $uploadedFiles = array();
@@ -58,22 +58,52 @@ class Staf extends CI_Controller {
       $count = count($fileData['name']);
       for ($i = 0; $i < $count; $i++) {
         if (!empty($fileData['tmp_name'][$i]) && is_uploaded_file($fileData['tmp_name'][$i])) {
-          $tipe = strtolower(pathinfo($fileData['name'][$i], PATHINFO_EXTENSION));
-          $namaFile = date('YmdHis') . '_' . substr(md5(uniqid(rand(), true)), 0, 8);
-          $fullFileName = $namaFile . '.' . $tipe;
-          if (move_uploaded_file($fileData['tmp_name'][$i], "Project/" . $fullFileName)) {
-            $uploadedFiles[] = $fullFileName;
+          $originalName = $fileData['name'][$i];
+          $fileNameOnly = pathinfo($originalName, PATHINFO_FILENAME);
+          $tipe = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+
+          // Bersihkan karakter terlarang dari nama file tanpa merusak nama asli
+          $cleanName = preg_replace('/[\\\\\/:\*\?"<>\|]/', '_', $fileNameOnly);
+          $cleanName = trim($cleanName);
+          if (empty($cleanName)) {
+            $cleanName = 'Dokumen_' . date('YmdHis');
+          }
+
+          // Cek jika nama file sudah ada, tambahkan penomoran (1), (2), dst
+          $targetFileName = $cleanName . '.' . $tipe;
+          $counter = 1;
+          while (file_exists('Project/' . $targetFileName)) {
+            $targetFileName = $cleanName . ' (' . $counter . ').' . $tipe;
+            $counter++;
+          }
+
+          if (move_uploaded_file($fileData['tmp_name'][$i], "Project/" . $targetFileName)) {
+            $uploadedFiles[] = $targetFileName;
           }
         }
       }
     } else {
       // Jika single file
       if (!empty($fileData['tmp_name']) && is_uploaded_file($fileData['tmp_name'])) {
-        $tipe = strtolower(pathinfo($fileData['name'], PATHINFO_EXTENSION));
-        $namaFile = date('YmdHis') . '_' . substr(md5(uniqid(rand(), true)), 0, 8);
-        $fullFileName = $namaFile . '.' . $tipe;
-        if (move_uploaded_file($fileData['tmp_name'], "Project/" . $fullFileName)) {
-          $uploadedFiles[] = $fullFileName;
+        $originalName = $fileData['name'];
+        $fileNameOnly = pathinfo($originalName, PATHINFO_FILENAME);
+        $tipe = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+
+        $cleanName = preg_replace('/[\\\\\/:\*\?"<>\|]/', '_', $fileNameOnly);
+        $cleanName = trim($cleanName);
+        if (empty($cleanName)) {
+          $cleanName = 'Dokumen_' . date('YmdHis');
+        }
+
+        $targetFileName = $cleanName . '.' . $tipe;
+        $counter = 1;
+        while (file_exists('Project/' . $targetFileName)) {
+          $targetFileName = $cleanName . ' (' . $counter . ').' . $tipe;
+          $counter++;
+        }
+
+        if (move_uploaded_file($fileData['tmp_name'], "Project/" . $targetFileName)) {
+          $uploadedFiles[] = $targetFileName;
         }
       }
     }

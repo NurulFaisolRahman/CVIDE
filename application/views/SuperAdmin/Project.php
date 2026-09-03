@@ -561,9 +561,11 @@ rsort($listTahun);
           iconHtml = '<i class="fa fa-file-excel-o mr-1 text-success"></i>';
         }
 
+        var displayName = f.length > 32 ? f.substring(0, 29) + '...' : f;
+
         tabsHtml += 
-          '<button type="button" class="doc-slide-tab ' + (i === 0 ? 'active' : '') + '" data-index="' + i + '">' +
-            iconHtml + '<span>Berkas ' + (i + 1) + ' (' + ext.toUpperCase() + ')</span>' +
+          '<button type="button" class="doc-slide-tab ' + (i === 0 ? 'active' : '') + '" data-index="' + i + '" title="' + f + '">' +
+            iconHtml + '<span>' + displayName + '</span>' +
           '</button>';
       });
       $('#DocSlideTabsList').html(tabsHtml);
