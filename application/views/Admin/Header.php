@@ -1024,7 +1024,7 @@
             <!-- Sidebar Brand Header (Logo IDE Saja) -->
             <div class="sidebar-brand-header text-center" style="padding: 20px 15px 10px 15px; display: flex; justify-content: center; align-items: center;">
               <a href="<?=base_url('Admin')?>">
-                <img src="<?=base_url('assets/img/LOGO IDE.webp')?>" alt="IDE Logo" style="max-height: 48px; width: auto; object-fit: contain;">
+                <img src="<?=base_url('assets/img/logo-white-solid.webp')?>" alt="IDE Logo" style="max-height: 48px; width: auto; object-fit: contain;">
               </a>
             </div>
 

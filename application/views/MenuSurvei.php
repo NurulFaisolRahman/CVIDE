@@ -120,7 +120,7 @@
       display: inline-flex;
       align-items: center;
       margin: 0;
-      transform: translateY(3px);
+      transform: translateY(5px);
     }
 
     .logo-text span {
@@ -1216,7 +1216,7 @@
       line-height: 1;
       display: inline-flex;
       align-items: center;
-      transform: translateY(3px);
+      transform: translateY(4px);
     }
 
     .login-brand-text span {
@@ -1491,7 +1491,7 @@ $userName = isset($userName) ? $userName : 'User';
   <header class="header-area">
     <nav class="main-nav">
       <a href="<?= base_url() ?>" class="logo">
-        <img src="<?= base_url('assets/img/LOGO IDE.webp') ?>" alt="IDE Consultant Logo">
+        <img src="<?= base_url('assets/img/logo-white-solid.webp') ?>" alt="IDE Consultant Logo">
         <div class="logo-text">Inti Desain Ekonomi <span> Consultant</span></div>
       </a>
 
@@ -1778,7 +1778,7 @@ $userName = isset($userName) ? $userName : 'User';
 
           <div class="login-banner-top" style="position: relative; z-index: 2;">
             <div class="login-brand">
-              <img src="<?= base_url('assets/img/LOGO IDE.webp') ?>" alt="IDE Consultant Logo">
+              <img src="<?= base_url('assets/img/logo-white-solid.webp') ?>" alt="IDE Consultant Logo">
               <div class="login-brand-text">Inti Desain Ekonomi <span>Consultant</span></div>
             </div>
           </div>
