@@ -352,7 +352,7 @@ public function EditPendapatanKegiatan(){
     $Data['Kegiatan'] = $this->db->query("SELECT * FROM `pendapatan` ORDER BY Mulai DESC,InputAt DESC")->result_array();
     if (!empty($tahunFilter) && is_numeric($tahunFilter)) {
         $Data['Biaya'] = $this->db->query("SELECT * FROM `pengeluaran` WHERE DeleteAt IS NULL AND YEAR(Tanggal) = '".$tahunFilter."' ORDER BY Tanggal DESC,InputAt DESC")->result_array();
-        $Data['Kegiatan'] = $this->db->query("SELECT * FROM `pendapatan` WHERE YEAR(Mulai) = '".$tahunFilter."' ORDER BY Mulai DESC,InputAt DESC")->result_array();
+        $Data['Kegiatan'] = $this->db->query("SELECT * FROM `pendapatan` ORDER BY Mulai DESC,InputAt DESC")->result_array();
     }
     $this->load->view('Admin/Header',$Data);
 		$this->load->view('Admin/JurnalKegiatan',$Data);

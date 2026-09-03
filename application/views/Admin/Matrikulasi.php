@@ -77,178 +77,174 @@
         <!-- /page content -->
       </div>
 		</div>
+				<!-- Modal Input -->
 		<div class="modal fade" id="ModalInput">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-warning">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"><i class="fa fa-plus mr-2"></i>Input Project Baru</h5>
+            <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+          </div>
           <div class="modal-body">
-            <div class="container">
+            <div class="container-fluid">
 							<div class="row">
-								<div class="col-sm-12">
-                  <div class="input-group input-group-sm mb-1">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-primary text-white"><b>Nama Project</b></span>
-                    </div>
-                    <input type="text" class="form-control" id="Nama"> 
+								<div class="col-12">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Nama Project</label>
+                    <input type="text" class="form-control" id="Nama" placeholder="Masukkan nama project..."> 
                   </div>
 								</div>
-								<div class="col-sm-12">
-									<div class="input-group input-group-sm mb-1">
-										<div class="input-group-prepend">
-											<label class="input-group-text bg-primary text-white"><b>PIC Project</b></label>
+								<div class="col-12">
+									<div class="form-group">
+										<label class="font-weight-bold">PIC Project</label>
+										<div class="d-flex flex-wrap align-items-center" style="gap: 15px; padding: 8px 12px; background: #f8fafc; border-radius: 16px; border: 1px solid #e2e8f0;">
+											<?php $PIC = array('Rizka','Rifta','Noven','Linda'); ?>
+											<?php for ($j=0; $j < count($PIC); $j++) { ?>
+												<div class="custom-control custom-checkbox custom-control-inline">
+													<input type="checkbox" class="custom-control-input" value="<?=$PIC[$j]?>" name="PIC" id="<?=$PIC[$j]?>">
+													<label class="custom-control-label font-weight-bold text-dark" for="<?=$PIC[$j]?>" style="cursor: pointer;"><?=$PIC[$j]?></label>
+												</div>
+											<?php } ?>
 										</div>
-										<?php $PIC = array('Rizka','Rifta','Noven','Linda'); ?>
-										<?php for ($j=0; $j < count($PIC); $j++) { ?>
-											<div class="form-check ml-2 mt-1">
-												<input class="form-check-input" type="checkbox" value="<?=$PIC[$j]?>" name="PIC" id="<?=$PIC[$j]?>">
-												<label class="form-check-label" for="<?=$PIC[$j]?>"><b><?=$PIC[$j]?></b></label>
-											</div>
-										<?php } ?>
 									</div>
 								</div> 
-								<div class="col-sm-12">
-                  <div class="input-group input-group-sm mb-1">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-primary text-white"><b>Bulan Project</b></span>
-                    </div>
-                    <input type="text" class="form-control" id="Bulan"> 
+								<div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Bulan Project</label>
+                    <input type="text" class="form-control" id="Bulan" placeholder="Contoh: Januari 2026"> 
                   </div>
 								</div>
-								<div class="col-sm-12">
-                  <div class="input-group input-group-sm mb-1">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-primary text-white"><b>Harus Dibayarkan</b></span>
-                    </div>
-                    <input type="text" class="form-control" id="Nilai"> 
+								<div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Beban Project</label>
+                    <input type="text" class="form-control" id="Beban" placeholder="Beban biaya project..."> 
                   </div>
 								</div>
-								<div class="col-sm-12">
-                  <div class="input-group input-group-sm mb-1">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-primary text-white"><b>Telah Dibayarkan</b></span>
-                    </div>
-                    <input type="text" class="form-control" id="Bayar"> 
+								<div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Harus Dibayarkan (Rp)</label>
+                    <input type="text" class="form-control" id="Nilai" placeholder="Hanya angka"> 
                   </div>
 								</div>
-								<div class="col-sm-12">
-                  <div class="input-group input-group-sm mb-1">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-primary text-white"><b>Dibayarkan Bulan</b></span>
-                    </div>
-                    <input type="text" class="form-control" id="Keterangan"> 
+								<div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Telah Dibayarkan (Rp)</label>
+                    <input type="text" class="form-control" id="Bayar" placeholder="Hanya angka"> 
                   </div>
 								</div>
-								<div class="col-sm-12">
-                  <div class="input-group input-group-sm mb-1">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-primary text-white"><b>Beban Project</b></span>
-                    </div>
-                    <input type="text" class="form-control" id="Beban"> 
+								<div class="col-12">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Dibayarkan Bulan / Keterangan</label>
+                    <input type="text" class="form-control" id="Keterangan" placeholder="Keterangan bulan pembayaran..."> 
                   </div>
 								</div>
               </div>
             </div>
           </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-danger" data-dismiss="modal"><b>Tutup</b></button>
-            <button type="submit" class="btn btn-primary" id="Input"><b>Simpan</b></button>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"><b>Tutup</b></button>
+            <button type="submit" class="btn btn-primary" id="Input"><b>Simpan Data</b></button>
           </div>
         </div>
       </div>
 		</div>
+
+		<!-- Modal Edit -->
 		<div class="modal fade" id="ModalEdit">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-warning">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"><i class="fa fa-edit mr-2"></i>Edit Data Project</h5>
+            <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+          </div>
           <div class="modal-body">
-            <div class="container">
+            <div class="container-fluid">
 							<div class="row">
-								<div class="col-sm-12">
-                  <div class="input-group input-group-sm mb-1">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-primary text-white"><b>Nama Project</b></span>
-                    </div>
+								<div class="col-12">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Nama Project</label>
                     <input type="hidden" class="form-control" id="Id"> 
-                    <input type="text" class="form-control" id="_Nama"> 
+                    <input type="text" class="form-control" id="_Nama" placeholder="Masukkan nama project..."> 
                   </div>
 								</div>
-								<div class="col-sm-12">
-									<div class="input-group input-group-sm mb-1">
-										<div class="input-group-prepend">
-											<label class="input-group-text bg-primary text-white"><b>PIC Project</b></label>
+								<div class="col-12">
+									<div class="form-group">
+										<label class="font-weight-bold">PIC Project</label>
+										<div class="d-flex flex-wrap align-items-center" style="gap: 15px; padding: 8px 12px; background: #f8fafc; border-radius: 16px; border: 1px solid #e2e8f0;">
+											<?php $PIC = array('Rizka','Rifta','Noven','Linda'); ?>
+											<?php for ($j=0; $j < count($PIC); $j++) { ?>
+												<div class="custom-control custom-checkbox custom-control-inline">
+													<input type="checkbox" class="custom-control-input" value="<?=$PIC[$j]?>" name="_PIC" id="_<?=$PIC[$j]?>">
+													<label class="custom-control-label font-weight-bold text-dark" for="_<?=$PIC[$j]?>" style="cursor: pointer;"><?=$PIC[$j]?></label>
+												</div>
+											<?php } ?>
 										</div>
-										<?php $PIC = array('Rizka','Rifta','Noven','Linda'); ?>
-										<?php for ($j=0; $j < count($PIC); $j++) { ?>
-											<div class="form-check ml-2 mt-1">
-												<input class="form-check-input" type="checkbox" value="<?=$PIC[$j]?>" name="_PIC" id="_<?=$PIC[$j]?>">
-												<label class="form-check-label" for="_<?=$PIC[$j]?>"><b><?=$PIC[$j]?></b></label>
-											</div>
-										<?php } ?>
 									</div>
 								</div> 
-								<div class="col-sm-12">
-                  <div class="input-group input-group-sm mb-1">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-primary text-white"><b>Bulan Project</b></span>
-                    </div>
-                    <input type="text" class="form-control" id="_Bulan"> 
+								<div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Bulan Project</label>
+                    <input type="text" class="form-control" id="_Bulan" placeholder="Contoh: Januari 2026"> 
                   </div>
 								</div>
-								<div class="col-sm-12">
-                  <div class="input-group input-group-sm mb-1">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-primary text-white"><b>Harus Dibayarkan</b></span>
-                    </div>
-                    <input type="text" class="form-control" id="_Nilai"> 
+								<div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Beban Project</label>
+                    <input type="text" class="form-control" id="_Beban" placeholder="Beban biaya project..."> 
                   </div>
 								</div>
-								<div class="col-sm-12">
-                  <div class="input-group input-group-sm mb-1">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-primary text-white"><b>Telah Dibayarkan</b></span>
-                    </div>
-                    <input type="text" class="form-control" id="_Bayar"> 
+								<div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Harus Dibayarkan (Rp)</label>
+                    <input type="text" class="form-control" id="_Nilai" placeholder="Hanya angka"> 
                   </div>
 								</div>
-								<div class="col-sm-12">
-                  <div class="input-group input-group-sm mb-1">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-primary text-white"><b>Dibayarkan Bulan</b></span>
-                    </div>
-                    <input type="text" class="form-control" id="_Keterangan"> 
+								<div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Telah Dibayarkan (Rp)</label>
+                    <input type="text" class="form-control" id="_Bayar" placeholder="Hanya angka"> 
                   </div>
 								</div>
-								<div class="col-sm-12">
-                  <div class="input-group input-group-sm mb-1">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-primary text-white"><b>Beban Project</b></span>
-                    </div>
-                    <input type="text" class="form-control" id="_Beban"> 
+								<div class="col-12">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Dibayarkan Bulan / Keterangan</label>
+                    <input type="text" class="form-control" id="_Keterangan" placeholder="Keterangan bulan pembayaran..."> 
                   </div>
 								</div>
               </div>
             </div>
           </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-danger" data-dismiss="modal"><b>Tutup</b></button>
-            <button type="submit" class="btn btn-primary" id="Edit"><b>Simpan</b></button>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"><b>Tutup</b></button>
+            <button type="submit" class="btn btn-primary" id="Edit"><b>Simpan Perubahan</b></button>
           </div>
         </div>
       </div>
 		</div>
+
+		<!-- Modal PIC -->
 		<div class="modal fade" id="ModalPIC">
       <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content bg-light">
-          <div class="modal-body bg-success">
-            <div class="container">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"><i class="fa fa-users mr-2"></i>Daftar Project Berdasarkan PIC</h5>
+            <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body p-4">
+            <div class="container-fluid">
 							<div class="row">
-								<div class="col-sm-12">
+								<div class="col-12">
 									<div class="table-responsive">
-										<table id="TabelPIC" class="table tab-bordered text-white">
+										<table id="TabelPIC" class="table table-bordered table-striped">
 											
-										</div>
+										</table>
 									</div>
 								</div>
               </div>
             </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"><b>Tutup</b></button>
           </div>
         </div>
       </div>

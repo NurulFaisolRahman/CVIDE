@@ -790,6 +790,31 @@
          ========================================================================== */
       .modal-dialog {
         margin-top: 50px !important;
+        width: 94% !important;
+        max-width: 760px !important;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+      }
+
+      /* Harmonized modal sizing (prevent any cramped 300px dialogs) */
+      .modal-dialog.modal-sm {
+        max-width: 680px !important;
+      }
+
+      .modal-dialog.modal-md {
+        max-width: 760px !important;
+      }
+
+      .modal-dialog.modal-lg {
+        max-width: 880px !important;
+      }
+
+      .modal-dialog.modal-xl {
+        max-width: 1100px !important;
+      }
+
+      /* Compact confirmation dialogs only */
+      #modalEnterpriseDelete .modal-dialog {
+        max-width: 440px !important;
       }
 
       .modal-content {

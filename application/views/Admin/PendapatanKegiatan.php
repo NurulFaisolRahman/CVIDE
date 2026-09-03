@@ -68,63 +68,63 @@
 <!-- Input Modal -->
 <div class="modal fade" id="ModalInput">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content" style="border: 2px solid #2196F3;">
-            <div class="modal-header" style="background: linear-gradient(135deg, #2196F3, #0D47A1); color: white;">
+        <div class="modal-content">
+            <div class="modal-header">
                 <h5 class="modal-title"><i class="fa fa-plus mr-2"></i>Input Kegiatan Baru</h5>
                 <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="container">
+                <div class="container-fluid">
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Nama Kegiatan</label>
-                                <input type="text" class="form-control form-control-sm" id="NamaKegiatan" style="border: 1px solid #bbdefb;">
+                                <label class="font-weight-bold">Nama Kegiatan</label>
+                                <input type="text" class="form-control" id="NamaKegiatan" placeholder="Masukkan nama kegiatan proyek...">
                             </div>
                         </div>
-                        <div class="col-sm-12 col-xl-6">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Sumber Kegiatan</label>
-                                <select class="form-control form-control-sm" id="SumberKegiatan" style="border: 1px solid #bbdefb;">  
+                                <label class="font-weight-bold">Sumber Kegiatan</label>
+                                <select class="form-control" id="SumberKegiatan">  
                                     <?php for ($i=1; $i < count($SumberKegiatan); $i++) { ?>
                                         <option value="<?=$i?>"><?=$SumberKegiatan[$i]?></option>
                                     <?php } ?>                  
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-xl-6">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Nominal Kegiatan</label>
-                                <input type="text" class="form-control form-control-sm" id="NominalKegiatan" placeholder="Input Hanya Angka" style="border: 1px solid #bbdefb;">
+                                <label class="font-weight-bold">Nominal Kegiatan (Rp)</label>
+                                <input type="text" class="form-control" id="NominalKegiatan" placeholder="Input Hanya Angka">
                             </div>
                         </div>
-                        <div class="col-sm-12 col-xl-6">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Tanggal Mulai</label>
-                                <input type="date" class="form-control form-control-sm" id="Mulai" value="<?=date('Y-m-d')?>" style="border: 1px solid #bbdefb;">
+                                <label class="font-weight-bold">Tanggal Mulai</label>
+                                <input type="date" class="form-control" id="Mulai" value="<?=date('Y-m-d')?>">
                             </div>
                         </div>
-                        <div class="col-sm-12 col-xl-6">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Tanggal Selesai</label>
-                                <input type="date" class="form-control form-control-sm" id="Selesai" value="<?=date('Y-m-d')?>" style="border: 1px solid #bbdefb;">
+                                <label class="font-weight-bold">Tanggal Selesai</label>
+                                <input type="date" class="form-control" id="Selesai" value="<?=date('Y-m-d')?>">
                             </div>
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Deskripsi Kegiatan</label>
-                                <textarea class="form-control form-control-sm" id="DeskripsiKegiatan" rows="4" placeholder="Deskripsi serta durasi tanggal pengerjaan kegiatan" style="border: 1px solid #bbdefb;"></textarea>
+                                <label class="font-weight-bold">Deskripsi Kegiatan</label>
+                                <textarea class="form-control" id="DeskripsiKegiatan" rows="4" placeholder="Deskripsi serta durasi pengerjaan kegiatan..."></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer" style="background-color: #e3f2fd;">
-                <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" style="background-color: #e53935; border-color: #fff;">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
                     <b>Tutup</b>
                 </button>
-                <button type="button" class="btn btn-sm btn-primary" id="Input" style="background: linear-gradient(135deg, #2196F3, #0D47A1); border-color: #fff;">
-                    <b>Simpan&nbsp;<div id="LoadingInput" class="spinner-border spinner-border-sm text-white" role="status" style="display: none;"></div></b>
+                <button type="button" class="btn btn-primary" id="Input">
+                    <b>Simpan Data&nbsp;<div id="LoadingInput" class="spinner-border spinner-border-sm text-white" role="status" style="display: none;"></div></b>
                 </button>
             </div>
         </div>
@@ -134,64 +134,64 @@
 <!-- Edit Modal -->
 <div class="modal fade" id="ModalEdit">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content" style="border: 2px solid #2196F3;">
-            <div class="modal-header" style="background: linear-gradient(135deg, #2196F3, #0D47A1); color: white;">
+        <div class="modal-content">
+            <div class="modal-header">
                 <h5 class="modal-title"><i class="fa fa-edit mr-2"></i>Edit Data Kegiatan</h5>
                 <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="container">
+                <div class="container-fluid">
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Nama Kegiatan</label>
-                                <input type="hidden" class="form-control form-control-sm" id="Id">
-                                <input type="text" class="form-control form-control-sm" id="_NamaKegiatan" style="border: 1px solid #bbdefb;">
+                                <label class="font-weight-bold">Nama Kegiatan</label>
+                                <input type="hidden" class="form-control" id="Id">
+                                <input type="text" class="form-control" id="_NamaKegiatan" placeholder="Masukkan nama kegiatan proyek...">
                             </div>
                         </div>
-                        <div class="col-sm-12 col-xl-6">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Sumber Kegiatan</label>
-                                <select class="form-control form-control-sm" id="_SumberKegiatan" style="border: 1px solid #bbdefb;">  
+                                <label class="font-weight-bold">Sumber Kegiatan</label>
+                                <select class="form-control" id="_SumberKegiatan">  
                                     <?php for ($i=1; $i < count($SumberKegiatan); $i++) { ?>
                                         <option value="<?=$i?>"><?=$SumberKegiatan[$i]?></option>
                                     <?php } ?>                  
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-xl-6">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Nominal Kegiatan</label>
-                                <input type="text" class="form-control form-control-sm" id="_NominalKegiatan" placeholder="Input Hanya Angka" style="border: 1px solid #bbdefb;">
+                                <label class="font-weight-bold">Nominal Kegiatan (Rp)</label>
+                                <input type="text" class="form-control" id="_NominalKegiatan" placeholder="Input Hanya Angka">
                             </div>
                         </div>
-                        <div class="col-sm-12 col-xl-6">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Tanggal Mulai</label>
-                                <input type="date" class="form-control form-control-sm" id="_Mulai" style="border: 1px solid #bbdefb;">
+                                <label class="font-weight-bold">Tanggal Mulai</label>
+                                <input type="date" class="form-control" id="_Mulai">
                             </div>
                         </div>
-                        <div class="col-sm-12 col-xl-6">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Tanggal Selesai</label>
-                                <input type="date" class="form-control form-control-sm" id="_Selesai" style="border: 1px solid #bbdefb;">
+                                <label class="font-weight-bold">Tanggal Selesai</label>
+                                <input type="date" class="form-control" id="_Selesai">
                             </div>
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Deskripsi Kegiatan</label>
-                                <textarea class="form-control form-control-sm" id="_DeskripsiKegiatan" rows="4" placeholder="Deskripsi serta durasi tanggal pengerjaan kegiatan" style="border: 1px solid #bbdefb;"></textarea>
+                                <label class="font-weight-bold">Deskripsi Kegiatan</label>
+                                <textarea class="form-control" id="_DeskripsiKegiatan" rows="4" placeholder="Deskripsi serta durasi pengerjaan kegiatan..."></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer" style="background-color: #e3f2fd;">
-                <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" style="background-color: #e53935; border-color: #fff;">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
                     <b>Tutup</b>
                 </button>
-                <button type="button" class="btn btn-sm btn-primary" id="Edit" style="background: linear-gradient(135deg, #2196F3, #0D47A1); border-color: #fff;">
-                    <b>Simpan&nbsp;<div id="LoadingEdit" class="spinner-border spinner-border-sm text-white" role="status" style="display: none;"></div></b>
+                <button type="button" class="btn btn-primary" id="Edit">
+                    <b>Simpan Perubahan&nbsp;<div id="LoadingEdit" class="spinner-border spinner-border-sm text-white" role="status" style="display: none;"></div></b>
                 </button>
             </div>
         </div>

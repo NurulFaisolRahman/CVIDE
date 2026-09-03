@@ -155,8 +155,8 @@ $warningAktif = $persentase > 50;
 <!-- Modal Input Pengeluaran -->
 <div class="modal fade" id="ModalInput">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content" style="border: 2px solid #2196F3; border-radius: 8px;">
-            <div class="modal-header" style="background: linear-gradient(135deg, #2196F3, #0D47A1); color: white;">
+        <div class="modal-content">
+            <div class="modal-header">
                 <h5 class="modal-title"><i class="fa fa-plus mr-2"></i>Input Pengeluaran Baru</h5>
                 <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
             </div>
@@ -164,20 +164,20 @@ $warningAktif = $persentase > 50;
                 <input type="hidden" id="IdKegiatan" value="<?=$this->session->userdata('Kegiatan')?>">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12 col-xl-6">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Jenis Pengeluaran</label>
-                                <select class="form-control form-control-sm" id="JenisPengeluaran" style="border: 1px solid #bbdefb;">
+                                <label class="font-weight-bold">Jenis Pengeluaran</label>
+                                <select class="form-control" id="JenisPengeluaran">
                                     <?php for ($i=1; $i < count($JenisPengeluaran); $i++) { ?>
                                         <option value="<?=$i?>"><?=$JenisPengeluaran[$i]?></option>
                                     <?php } ?>
                                 </select>
                             </div>
                         </div>
-                        <div class="col-12 col-xl-6">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Sub Pengeluaran</label>
-                                <select class="form-control form-control-sm" id="SubPengeluaran" style="border: 1px solid #bbdefb;">
+                                <label class="font-weight-bold">Sub Pengeluaran</label>
+                                <select class="form-control" id="SubPengeluaran">
                                     <option value="1">PIC Kegiatan</option>
                                     <option value="2">TA Kegiatan</option>
                                     <option value="3">General Manager</option>
@@ -185,33 +185,33 @@ $warningAktif = $persentase > 50;
                                 </select>
                             </div>
                         </div>
-                        <div class="col-12 col-xl-6">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Nominal Pengeluaran</label>
-                                <input type="text" class="form-control form-control-sm" id="NominalPengeluaran" placeholder="Input Hanya Angka" style="border: 1px solid #bbdefb;">
+                                <label class="font-weight-bold">Nominal Pengeluaran (Rp)</label>
+                                <input type="text" class="form-control" id="NominalPengeluaran" placeholder="Input Hanya Angka">
                             </div>
                         </div>
-                        <div class="col-12 col-xl-6">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Tanggal Pengeluaran</label>
-                                <input type="date" class="form-control form-control-sm" id="Tanggal" value="<?=date('Y-m-d')?>" style="border: 1px solid #bbdefb;">
+                                <label class="font-weight-bold">Tanggal Pengeluaran</label>
+                                <input type="date" class="form-control" id="Tanggal" value="<?=date('Y-m-d')?>">
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Deskripsi Pengeluaran</label>
-                                <textarea class="form-control form-control-sm" id="Deskripsi" rows="4" placeholder="Jelaskan detail pengeluaran ini..." style="border: 1px solid #bbdefb;"></textarea>
+                                <label class="font-weight-bold">Deskripsi Pengeluaran</label>
+                                <textarea class="form-control" id="Deskripsi" rows="4" placeholder="Jelaskan detail rincian pengeluaran ini..."></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer" style="background-color: #e3f2fd;">
-                <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" style="background-color: #e53935; border-color: #fff;">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
                     <b>Tutup</b>
                 </button>
-                <button type="button" class="btn btn-sm btn-primary" id="Input" style="background: linear-gradient(135deg, #2196F3, #0D47A1); border-color: #fff;">
-                    <b>Simpan&nbsp;<div id="LoadingInput" class="spinner-border spinner-border-sm text-white" role="status" style="display: none;"></div></b>
+                <button type="button" class="btn btn-primary" id="Input">
+                    <b>Simpan Data&nbsp;<div id="LoadingInput" class="spinner-border spinner-border-sm text-white" role="status" style="display: none;"></div></b>
                 </button>
             </div>
         </div>
@@ -221,8 +221,8 @@ $warningAktif = $persentase > 50;
 <!-- Modal Edit Pengeluaran -->
 <div class="modal fade" id="ModalEdit">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content" style="border: 2px solid #2196F3; border-radius: 8px;">
-            <div class="modal-header" style="background: linear-gradient(135deg, #2196F3, #0D47A1); color: white;">
+        <div class="modal-content">
+            <div class="modal-header">
                 <h5 class="modal-title"><i class="fa fa-edit mr-2"></i>Edit Pengeluaran</h5>
                 <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
             </div>
@@ -230,49 +230,49 @@ $warningAktif = $persentase > 50;
                 <input type="hidden" id="Id">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12 col-xl-6">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Jenis Pengeluaran</label>
-                                <select class="form-control form-control-sm" id="_JenisPengeluaran" style="border: 1px solid #bbdefb;">
+                                <label class="font-weight-bold">Jenis Pengeluaran</label>
+                                <select class="form-control" id="_JenisPengeluaran">
                                     <?php for ($i=1; $i < count($JenisPengeluaran); $i++) { ?>
                                         <option value="<?=$i?>"><?=$JenisPengeluaran[$i]?></option>
                                     <?php } ?>
                                 </select>
                             </div>
                         </div>
-                        <div class="col-12 col-xl-6">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Sub Pengeluaran</label>
-                                <select class="form-control form-control-sm" id="_SubPengeluaran" style="border: 1px solid #bbdefb;"></select>
+                                <label class="font-weight-bold">Sub Pengeluaran</label>
+                                <select class="form-control" id="_SubPengeluaran"></select>
                             </div>
                         </div>
-                        <div class="col-12 col-xl-6">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Nominal Pengeluaran</label>
-                                <input type="text" class="form-control form-control-sm" id="_NominalPengeluaran" placeholder="Input Hanya Angka" style="border: 1px solid #bbdefb;">
+                                <label class="font-weight-bold">Nominal Pengeluaran (Rp)</label>
+                                <input type="text" class="form-control" id="_NominalPengeluaran" placeholder="Input Hanya Angka">
                             </div>
                         </div>
-                        <div class="col-12 col-xl-6">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Tanggal Pengeluaran</label>
-                                <input type="date" class="form-control form-control-sm" id="_Tanggal" style="border: 1px solid #bbdefb;">
+                                <label class="font-weight-bold">Tanggal Pengeluaran</label>
+                                <input type="date" class="form-control" id="_Tanggal">
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label class="text-primary font-weight-bold">Deskripsi Pengeluaran</label>
-                                <textarea class="form-control form-control-sm" id="_Deskripsi" rows="4" placeholder="Jelaskan detail pengeluaran ini..." style="border: 1px solid #bbdefb;"></textarea>
+                                <label class="font-weight-bold">Deskripsi Pengeluaran</label>
+                                <textarea class="form-control" id="_Deskripsi" rows="4" placeholder="Jelaskan detail rincian pengeluaran ini..."></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer" style="background-color: #e3f2fd;">
-                <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" style="background-color: #e53935; border-color: #fff;">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
                     <b>Tutup</b>
                 </button>
-                <button type="button" class="btn btn-sm btn-primary" id="Edit" style="background: linear-gradient(135deg, #2196F3, #0D47A1); border-color: #fff;">
-                    <b>Simpan&nbsp;<div id="LoadingEdit" class="spinner-border spinner-border-sm text-white" role="status" style="display: none;"></div></b>
+                <button type="button" class="btn btn-primary" id="Edit">
+                    <b>Simpan Perubahan&nbsp;<div id="LoadingEdit" class="spinner-border spinner-border-sm text-white" role="status" style="display: none;"></div></b>
                 </button>
             </div>
         </div>

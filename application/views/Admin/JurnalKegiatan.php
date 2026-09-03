@@ -38,20 +38,39 @@
                         array('','Cetak Laporan Kegiatan','Pembelian ATK','Jasa Pengiriman Dokumen Kegiatan','Lainnya')
                     ); 
                     $NamaKegiatan = array();
-                    foreach ($Kegiatan as $key) {
-                        $NamaKegiatan[$key['Id']] = $key['NamaKegiatan'];
+                    if (!empty($Kegiatan)) {
+                        foreach ($Kegiatan as $k) {
+                            if (isset($k['Id'], $k['NamaKegiatan'])) {
+                                $NamaKegiatan[$k['Id']] = $k['NamaKegiatan'];
+                            }
+                        }
                     }
                     $No = 1; foreach ($Biaya as $key) { 
-                        $Tanggal = explode("-",$key['Tanggal']);
+                        $TanggalFormat = '-';
+                        if (!empty($key['Tanggal'])) {
+                            $TanggalParts = explode("-", $key['Tanggal']);
+                            if (count($TanggalParts) === 3) {
+                                $TanggalFormat = $TanggalParts[2].'-'.$TanggalParts[1].'-'.$TanggalParts[0];
+                            }
+                        }
+                        $kegiatanText = (isset($key['IdKegiatan']) && isset($NamaKegiatan[$key['IdKegiatan']])) 
+                            ? $NamaKegiatan[$key['IdKegiatan']] 
+                            : (!empty($key['IdKegiatan']) ? 'Kegiatan (ID: '.$key['IdKegiatan'].')' : '-');
+                        $jenisText = (isset($key['JenisPengeluaran']) && isset($JenisPengeluaran[$key['JenisPengeluaran']])) 
+                            ? $JenisPengeluaran[$key['JenisPengeluaran']] 
+                            : '-';
+                        $subText = (isset($key['JenisPengeluaran'], $key['SubPengeluaran']) && isset($SubPengeluaran[$key['JenisPengeluaran']][$key['SubPengeluaran']])) 
+                            ? $SubPengeluaran[$key['JenisPengeluaran']][$key['SubPengeluaran']] 
+                            : '-';
                     ?>
                         <tr style="border-bottom: 1px solid #e3f2fd;">
                             <th scope="row" class="text-center align-middle"><?=$No++?></th>
                             <td class="align-middle"><?=$key['Deskripsi']?></td>
-                            <td class="align-middle"><?=$NamaKegiatan[$key['IdKegiatan']]?></td>
-                            <td class="align-middle"><?=$JenisPengeluaran[$key['JenisPengeluaran']]?></td>
-                            <td class="align-middle"><?=$SubPengeluaran[$key['JenisPengeluaran']][$key['SubPengeluaran']]?></td>
+                            <td class="align-middle"><?=$kegiatanText?></td>
+                            <td class="align-middle"><?=$jenisText?></td>
+                            <td class="align-middle"><?=$subText?></td>
                             <td class="align-middle font-weight-bold" style="color: #e53935;"><?="Rp ".number_format($key['NominalPengeluaran'],0,',','.')?></td>
-                            <td class="align-middle"><?=$Tanggal[2].'-'.$Tanggal[1].'-'.$Tanggal[0]?></td>
+                            <td class="align-middle"><?=$TanggalFormat?></td>
                         </tr>
                     <?php } ?>  
                 </tbody>

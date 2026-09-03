@@ -2,1005 +2,1558 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?></title>
-
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" name="viewport">
+  <title><?= $title ?? 'Portofolio Proyek | IDE Consultant' ?></title>
+  <meta content="Daftar portofolio proyek penelitian dan konsultasi ekonomi oleh CV Inti Desain Ekonomi Consultant" name="description">
+  <meta content="portofolio, proyek pemda, banyuwangi, mojokerto, riset ekonomi, ide consultant" name="keywords">
   
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts: Poppins (Lugx signature font) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-    <style>
+  <style>
+    /* ==========================================================================
+       LUGX GAMING DESIGN SYSTEM TEMPLATE (Adapted for IDE Consultant)
+       Page: Portofolio Proyek
+       ========================================================================== */
     :root {
-      --apple-blue: #007AFF;
-      --apple-gray: #F2F2F7;
-      --apple-dark: #1D1D1F;
-      --apple-text: #1D1D1F;
-      --apple-secondary: rgba(61, 61, 196, 1);
-      --apple-white: #FFFFFF;
-      --apple-light-gray: #F5F5F7;
-      --apple-border: #D2D2D7;
+      --lugx-blue: #043168ff;
+      --lugx-blue-dark: #0b3977ff;
+      --lugx-red: #b40814ff;
+      --lugx-red-hover: #b00a15ff;
+      --lugx-dark: #1e1e1e;
+      --lugx-dark-card: #27292a;
+      --lugx-gray: #7a7a7a;
+      --lugx-light-gray: #f7f7f7;
+      --lugx-border: #e7e7e7;
+      --lugx-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
+      --lugx-radius: 25px;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
       line-height: 1.6;
-      color: var(--apple-text);
-      background: var(--apple-white);
+      color: #1e1e1e;
+      background: #ffffff;
       overflow-x: hidden;
     }
 
-    .header {
-      position: fixed; top: 0; width: 100%;
-      background: rgba(255,255,255,0.8);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--apple-border);
-      z-index: 1000; transition: all 0.3s ease;
+    a {
+      text-decoration: none;
+      transition: all 0.3s ease;
     }
-    .header-content {
-      max-width: 1200px; margin: 0 auto; padding: 0 24px;
-      display: flex; align-items: center; justify-content: space-between; height: 64px;
+
+    /* ==========================================================================
+       HEADER & NAVIGATION (Lugx Curved Top Bar & Sticky Nav)
+       ========================================================================== */
+    .header-area {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background-color: var(--lugx-blue);
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+      transition: all 0.3s ease-in-out;
     }
-    .logo { display: flex; align-items: center; gap: 12px; }
-    .logo img { width: 36px; height: 36px; border-radius: 8px; }
-    .logo-text { font-size: 20px; font-weight: 600; color: var(--apple-text); }
-    .nav-menu { display: flex; list-style: none; gap: 32px; margin-left: auto; }
-    .nav-menu a {
-      text-decoration: none; color: var(--apple-text);
-      font-weight: 400; font-size: 15px; transition: color 0.3s ease; position: relative;
-    }
-    .nav-menu a:hover { color: #001F3F; }
-    .nav-menu a::after {
-      content: ''; position: absolute; bottom: -4px; left: 0;
-      width: 0; height: 2px; background: #001F3F; transition: width 0.3s ease;
-    }
-    .nav-menu a:hover::after { width: 100%; }
-/* ── Dropdown – Lebar fleksibel menyesuaikan isi ────────────────────── */
-.dropdown {
-  position: relative;
-}
 
-.dropdown-content.mega-dropdown {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #fff;
-  width: max-content;                /* Lebar otomatis menyesuaikan konten */
-  min-width: 320px;                   /* Batas minimum agar tidak terlalu sempit */
-  max-width: 90vw;                    /* Batas maksimum agar tidak keluar layar */
-  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
-  border-radius: 10px;
-  margin-top: 4px;
-  z-index: 999;
-  padding: 24px 28px;                 /* Padding sedikit lebih kecil & simetris */
-}
-
-.dropdown:hover .dropdown-content.mega-dropdown {
-  display: block;
-}
-
-.mega-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Kolom otomatis menyesuaikan */
-  gap: 32px;                          /* Jarak antar kolom lebih fleksibel */
-}
-
-.mega-heading {
-  font-size: 1.05rem;
-  font-weight: 700;
-  margin: 0 0 10px 0;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #eee;
-  white-space: nowrap;                /* Hindari wrap pada heading panjang */
-}
-
-.mega-column a {
-  display: block;
-  padding: 8px 0;
-  transition: all 0.2s;
-  white-space: nowrap;                /* Teks link tidak wrap */
-}
-
-.mega-column a:hover {
-  color: #0a58ca;
-  padding-left: 6px;
-}
-
-.mega-desc {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: #666;
-  margin: 4px 0 20px 0;
-  line-height: 1.45;
-  max-width: 320px;                   /* Batasi lebar deskripsi agar rapi */
-}
-
-/* Responsif mobile */
-@media (max-width: 992px) {
-  .dropdown-content.mega-dropdown {
-    left: 0;
-    transform: none;
-    width: 90vw;
-    max-width: 420px;
-    padding: 20px;
-  }
-
-  .mega-grid {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-}
-
-    .portfolio-hero {
-      position: relative;
-      background: #001428;
-      padding: 160px 0 100px;
-      overflow: hidden;
-    }
-    .portfolio-hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0,122,255,0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,122,255,0.06) 1px, transparent 1px);
-      background-size: 60px 60px;
-    }
-    .portfolio-hero::after {
-      content: '';
-      position: absolute;
-      top: -200px; left: 50%; transform: translateX(-50%);
-      width: 900px; height: 600px;
-      background: radial-gradient(ellipse, rgba(0,122,255,0.15) 0%, transparent 65%);
-      pointer-events: none;
-    }
-    .hero-inner {
-      position: relative;
-      z-index: 2;
-      max-width: 900px;
+    .main-nav {
+      max-width: 100%;
       margin: 0 auto;
-      padding: 0 24px;
-      text-align: center;
+      padding: 15px 45px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 90px;
     }
-    .hero-badge {
+
+    .logo {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(0,122,255,0.12);
-      border: 1px solid rgba(0,122,255,0.3);
-      color: #60A5FA;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      padding: 6px 16px;
-      border-radius: 4px;
-      margin-bottom: 32px;
+      gap: 12px;
+      text-decoration: none;
+      height: 40px;
     }
-    .hero-badge::before {
-      content: '';
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #60A5FA;
-      box-shadow: 0 0 8px #60A5FA;
-      animation: blink 2s infinite;
-    }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-    .hero-inner h1 {
-      font-size: clamp(2.4rem, 5vw, 3.8rem);
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      margin-bottom: 20px;
-    }
-    .hero-inner h1 span {
-      background: linear-gradient(135deg, #60A5FA, #007AFF);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .hero-inner .lead {
-      font-size: 1.05rem;
-      color: rgba(255,255,255,0.6);
-      max-width: 580px;
-      margin: 0 auto 48px;
-      line-height: 1.7;
-      font-weight: 400;
-    }
-    .hero-stats {
-      display: flex;
-      justify-content: center;
-      gap: 0;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 12px;
-      overflow: hidden;
-      background: rgba(255,255,255,0.03);
-      backdrop-filter: blur(12px);
-      max-width: 640px;
-      margin: 0 auto;
-    }
-    .hero-stat {
-      flex: 1;
-      padding: 20px 24px;
-      text-align: center;
-      border-right: 1px solid rgba(255,255,255,0.08);
-    }
-    .hero-stat:last-child { border-right: none; }
-    .hero-stat .val {
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: #fff;
+    .logo img {
+      height: 40px;
+      width: auto;
+      max-height: 40px;
+      object-fit: contain;
+      box-shadow: none;
+      border: none;
+      padding: 0;
       display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .logo img:hover {
+      transform: scale(1.04);
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
       line-height: 1;
-      margin-bottom: 4px;
-    }
-    .hero-stat .lbl {
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.4);
-    }
-
-    .portfolio-content {
-      background: #F7F8FA;
-      padding: 80px 24px;
-    }
-    .portfolio-content-inner {
-      max-width: 960px;
-      margin: 0 auto;
-    }
-    .section-eyebrow {
-      text-align: center;
-      margin-bottom: 56px;
-    }
-    .section-eyebrow .tag {
-      display: inline-block;
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: #007AFF;
-      background: rgba(0,122,255,0.08);
-      border: 1px solid rgba(0,122,255,0.2);
-      padding: 5px 14px;
-      border-radius: 4px;
-      margin-bottom: 16px;
-    }
-    .section-eyebrow h2 {
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
-      font-weight: 700;
-      color: #001428;
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
-    }
-    .section-eyebrow p {
-      font-size: 0.95rem;
-      color: #6B7280;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    /* Filter Container - Versi lebih presisi & enterprise */
-.filter-container {
-  display: flex;
-  justify-content: flex-start;           /* rata kiri */
-  align-items: center;
-  margin: 0 auto 48px auto;
-  max-width: 960px;                      /* selaras dengan konten utama */
-  padding: 0 24px;
-}
-
-.filter-select {
-  min-width: 160px;
-  max-width: 220px;
-  padding: 8px 32px 8px 12px;            /* ruang untuk arrow custom */
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  border: 1px solid #CBD5E1;
-  border-radius: 6px;
-  background: #FFFFFF;
-  color: #1E293B;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M2 4l4 4 4-4H2z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-}
-
-.filter-select:focus {
-  outline: none;
-  border-color: #3B82F6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-  background-color: #F8FAFC;
-}
-
-/* Responsive */
-@media (max-width: 640px) {
-  .filter-container {
-    padding: 0 16px;
-    justify-content: center;
-  }
-  .filter-select {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-    .portfolio-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-    .portfolio-card {
-      background: #fff;
-      border: 1px solid #E5E7EB;
-      border-radius: 12px;
-      padding: 36px 32px;
-      position: relative;
-      overflow: hidden;
-      transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
-    }
-    .portfolio-card:hover {
-      box-shadow: 0 20px 50px rgba(0,20,50,0.1);
-      transform: translateY(-4px);
-      border-color: rgba(0,122,255,0.2);
-    }
-    .portfolio-card::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 24px; bottom: 24px;
-      width: 3px;
-      background: linear-gradient(180deg, #007AFF, #001F3F);
-      border-radius: 0 2px 2px 0;
-      opacity: 0;
-      transition: opacity 0.25s ease;
-    }
-    .portfolio-card:hover::before { opacity: 1; }
-
-    .card-header-row {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-    .card-icon {
-      width: 44px; height: 44px;
-      background: linear-gradient(135deg, #001F3F 0%, #0056b3 100%);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .card-icon svg { width: 22px; height: 22px; color: white; }
-
-    .card-status {
       display: inline-flex;
+      align-items: center;
+      margin: 0;
+      transform: translateY(3px);
+    }
+
+    .logo-text span {
+      color: var(--lugx-red);
+      margin-left: 4px;
+    }
+
+    /* Navigation Links */
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      gap: 30px;
+      margin-left: auto;
+    }
+
+    .nav-menu li {
+      position: relative;
+    }
+
+    .nav-menu a.nav-item-link {
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 500;
+      padding: 10px 15px;
+      border-radius: 20px;
+      display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.6rem;
+    }
+
+    .nav-menu a.nav-item-link:hover,
+    .nav-menu a.nav-item-link.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+    }
+
+    /* Red Action Button for Sign In (Lugx Signature) */
+    .main-button a {
+      display: inline-block;
+      background-color: var(--lugx-red);
+      color: #ffffff !important;
+      font-size: 14px;
       font-weight: 600;
-      letter-spacing: 0.15em;
       text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: 3px;
+      padding: 12px 30px !important;
+      border-radius: 25px;
+      letter-spacing: 0.5px;
+      box-shadow: 0px 5px 15px rgba(238, 98, 107, 0.4);
+      transition: all 0.3s ease;
     }
-    .status-completed {
-      color: #059669;
-      background: rgba(5,150,105,0.08);
-      border: 1px solid rgba(5,150,105,0.2);
+
+    .main-button a:hover {
+      background-color: var(--lugx-red-hover) !important;
+      transform: translateY(-2px);
+      box-shadow: 0px 8px 20px rgba(238, 98, 107, 0.6);
     }
-    .status-completed::before {
+
+    /* Mega Dropdown */
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content.mega-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      background: #ffffff;
+      min-width: 340px;
+      max-width: 500px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.18);
+      border-radius: 20px;
+      margin-top: 12px;
+      z-index: 1000;
+      padding: 24px;
+      border-top: 4px solid var(--lugx-red);
+      
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+      transition-delay: 0.15s;
+    }
+
+    .dropdown-content.mega-dropdown::before {
       content: '';
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: #059669;
+      position: absolute;
+      top: -18px;
+      left: 0;
+      width: 100%;
+      height: 18px;
+      background: transparent;
     }
 
-    .portfolio-card h2 {
-      font-size: 1.05rem;
+    .dropdown:hover .dropdown-content.mega-dropdown,
+    .dropdown-content.mega-dropdown:hover {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+      transition-delay: 0s;
+    }
+
+    .mega-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .mega-heading {
+      font-size: 16px;
       font-weight: 700;
-      color: #001428;
-      margin-bottom: 12px;
-      line-height: 1.3;
-    }
-    .portfolio-card p {
-      font-size: 0.875rem;
-      color: #6B7280;
-      line-height: 1.75;
+      color: var(--lugx-blue);
+      margin-bottom: 8px;
+      border-bottom: 2px solid var(--lugx-light-gray);
+      padding-bottom: 6px;
     }
 
-    .card-meta {
+    .mega-column a {
+      display: block;
+      color: var(--lugx-dark);
+      font-weight: 600;
+      font-size: 14px;
+      padding: 6px 0;
+      transition: color 0.2s ease;
+    }
+
+    .mega-column a:hover {
+      color: var(--lugx-red);
+      padding-left: 5px;
+    }
+
+    .mega-desc {
+      font-size: 12px;
+      color: var(--lugx-gray);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    /* Mobile Toggle */
+    .menu-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border: none;
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-size: 22px;
+      cursor: pointer;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Mobile Nav Overlay */
+    .mobile-nav-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1001;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .mobile-nav-overlay.active {
+      display: block;
+      opacity: 1;
+    }
+
+    .mobile-nav {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 85%;
+      max-width: 360px;
+      height: 100vh;
+      background: #ffffff;
+      z-index: 1002;
+      padding: 80px 24px 30px;
+      overflow-y: auto;
+      transition: right 0.3s ease;
+      box-shadow: -5px 0 25px rgba(0,0,0,0.2);
+    }
+
+    .mobile-nav.active {
+      right: 0;
+    }
+
+    .mobile-nav .dropbtn {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--lugx-dark);
+      padding: 12px 0;
       display: flex;
-      gap: 20px;
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid #F3F4F6;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      border-bottom: 1px solid var(--lugx-border);
     }
-    .meta-item { display: flex; flex-direction: column; gap: 2px; }
-    .meta-key {
-      font-size: 0.6rem;
+
+    .mobile-nav .dropdown-content {
+      display: none;
+      background: var(--lugx-light-gray);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 8px;
+    }
+
+    .mobile-nav .dropdown-content.show-dropdown {
+      display: block;
+    }
+
+    .mobile-nav .dropdown-content a {
+      display: block;
+      color: var(--lugx-dark);
       font-weight: 600;
-      letter-spacing: 0.18em;
+      font-size: 14px;
+      padding: 8px 0;
+    }
+
+    .mobile-nav .dropdown-content a:hover {
+      color: var(--lugx-red);
+      padding-left: 5px;
+    }
+
+    /* ==========================================================================
+       SUBPAGE HERO BANNER (Lugx Curved Red-Navy Gradient & Animated Doodles)
+       ========================================================================== */
+    .subpage-banner {
+      background: linear-gradient(135deg, rgba(180, 8, 20, 0.95) 0%, rgba(4, 49, 104, 0.96) 50%, rgba(8, 35, 75, 0.98) 100%);
+      border-bottom-right-radius: 150px;
+      border-bottom-left-radius: 150px;
+      padding: 175px 0 115px 0;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(4, 49, 104, 0.35);
+      text-align: center;
+    }
+
+    .subpage-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      background: url('<?= base_url("assets/img/background/IDE 2.0.webp") ?>') no-repeat center center/cover;
+      opacity: 0.14;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .subpage-banner::after {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: -10%;
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, rgba(238, 98, 107, 0.45) 0%, rgba(180, 8, 20, 0.25) 45%, transparent 75%);
+      filter: blur(50px);
+      animation: pulseRedGlow 6s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes pulseRedGlow {
+      0% { transform: scale(1) translate(0, 0); opacity: 0.7; }
+      100% { transform: scale(1.15) translate(25px, 20px); opacity: 1; }
+    }
+
+    .cta-doodle {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.16);
+      pointer-events: none;
+      z-index: 1;
+      animation: floatDoodleIcon 5s ease-in-out infinite alternate;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.25));
+    }
+
+    .cta-doodle.doodle-1 { top: 50px; left: 60px; font-size: 44px; animation-delay: 0s; }
+    .cta-doodle.doodle-2 { bottom: 40px; left: 100px; font-size: 38px; animation-delay: 1.2s; }
+    .cta-doodle.doodle-3 { top: 60px; right: 80px; font-size: 42px; animation-delay: 2.4s; }
+    .cta-doodle.doodle-4 { bottom: 45px; right: 90px; font-size: 46px; animation-delay: 0.8s; }
+    .cta-doodle.doodle-5 { top: 140px; left: 200px; font-size: 32px; animation-delay: 2s; }
+    .cta-doodle.doodle-6 { top: 150px; right: 210px; font-size: 34px; animation-delay: 1.5s; }
+
+    @keyframes floatDoodleIcon {
+      0% { transform: translateY(0px) rotate(0deg) scale(1); opacity: 0.15; }
+      50% { transform: translateY(-12px) rotate(8deg) scale(1.08); opacity: 0.28; }
+      100% { transform: translateY(-20px) rotate(-6deg) scale(1.15); opacity: 0.38; }
+    }
+
+    .banner-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 30px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .subpage-banner h1 {
+      font-size: 46px;
+      font-weight: 800;
+      color: #ffffff;
       text-transform: uppercase;
-      color: #9CA3AF;
+      line-height: 1.25;
+      margin-bottom: 16px;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
-    .meta-val {
-      font-size: 0.78rem;
+
+    .subpage-banner h1 span {
+      color: #ff6b75;
+      text-shadow: 0 0 25px rgba(255, 107, 117, 0.6);
+    }
+
+    .subpage-banner p.lead-text {
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 16px;
+      max-width: 760px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    /* Stats strip */
+    .hero-stats-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .hero-stat-box {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 20px;
+      padding: 18px 14px;
+      transition: all 0.3s ease;
+    }
+
+    .hero-stat-box:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .hero-stat-val {
+      font-size: 26px;
+      font-weight: 800;
+      color: #ffffff;
+      display: block;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+
+    .hero-stat-lbl {
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.85);
       font-weight: 600;
-      color: #374151;
+    }
+
+    /* ==========================================================================
+       SECTION HEADINGS (Lugx Subtitle Tag + Big Title)
+       ========================================================================== */
+    .section-heading {
+      text-align: center;
+      margin-bottom: 45px;
+    }
+
+    .section-heading .subtitle {
+      color: var(--lugx-red);
+      font-size: 15px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .section-heading h2 {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--lugx-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .section-heading p {
+      color: var(--lugx-gray);
+      font-size: 15px;
+      max-width: 680px;
+      margin: 12px auto 0;
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       PORTFOLIO CONTENT & FILTER SECTION
+       ========================================================================== */
+    .portfolio-content {
+      padding: 90px 0 60px 0;
+      background-color: #ffffff;
+    }
+
+    .portfolio-content-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 30px;
+    }
+
+    /* Modern Lugx Filter Bar */
+    .filter-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 50px;
+    }
+
+    .filter-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--lugx-light-gray);
+      border: 1px solid #e2e8f0;
+      padding: 10px 24px;
+      border-radius: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    }
+
+    .filter-label {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--lugx-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-select-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .filter-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-color: #ffffff;
+      border: 2px solid #cbd5e1;
+      border-radius: 20px;
+      padding: 8px 36px 8px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--lugx-dark);
+      font-family: inherit;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.3s ease;
+      min-width: 160px;
+    }
+
+    .filter-select:focus {
+      border-color: var(--lugx-blue);
+      box-shadow: 0 0 0 3px rgba(4, 49, 104, 0.15);
+    }
+
+    .select-icon {
+      position: absolute;
+      right: 14px;
+      color: var(--lugx-blue);
+      font-size: 12px;
+      pointer-events: none;
     }
 
     .no-results {
-      text-align: center;
-      font-size: 1.2rem;
-      color: #6B7280;
-      padding: 60px 20px;
       display: none;
+      text-align: center;
+      padding: 50px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--lugx-gray);
+      background: var(--lugx-light-gray);
+      border-radius: var(--lugx-radius);
+      margin-bottom: 40px;
     }
 
-    .portfolio-footer-strip {
-      background: #001428;
-      padding: 64px 24px;
-      text-align: center;
+    /* Portfolio Cards Grid */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 30px;
+    }
+
+    .portfolio-card {
+      background-color: #ffffff;
+      border-radius: var(--lugx-radius);
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 10px 30px rgba(4, 49, 104, 0.08);
+      padding: 34px 28px;
+      display: flex;
+      flex-direction: column;
       position: relative;
       overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
     }
-    .portfolio-footer-strip::before {
+
+    .portfolio-card::before {
       content: '';
       position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0,122,255,0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,122,255,0.05) 1px, transparent 1px);
-      background-size: 48px 48px;
-    }
-    .footer-strip-inner {
-      position: relative;
+      top: 0;
+      left: -120%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(4, 49, 104, 0.05), transparent);
+      transform: skewX(-25deg);
+      transition: all 0.75s ease;
       z-index: 1;
-      max-width: 560px;
-      margin: 0 auto;
-    }
-    .footer-strip-inner h3 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 12px;
-    }
-    .footer-strip-inner p {
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.55);
-      margin-bottom: 32px;
-      line-height: 1.7;
-    }
-    .btn-enterprise {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 32px;
-      background: #007AFF;
-      color: #fff;
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-decoration: none;
-      border-radius: 8px;
-      transition: all 0.25s ease;
-    }
-    .btn-enterprise:hover {
-      background: #0056CC;
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(0,122,255,0.35);
-      color: #fff;
+      pointer-events: none;
     }
 
-    .ide-contact {
-      background: #001F3F;
-      padding: 80px 24px;
-      position: relative;
-      overflow: hidden;
-      color: white;
+    .portfolio-card:hover::before {
+      left: 160%;
     }
-    .contact-container {
-      max-width: 1200px;
-      margin: 0 auto;
+
+    .portfolio-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--lugx-red);
+      box-shadow: 0 20px 45px rgba(4, 49, 104, 0.16);
+    }
+
+    .card-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
       position: relative;
       z-index: 2;
     }
-    .contact-header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-    .contact-header h2 {
-      font-size: 1.8rem;
-      margin-bottom: 12px;
-      color: white;
-    }
-    .contact-header p {
-      color: rgba(255, 255, 255, 0.85);
-      max-width: 600px;
-      margin: 0 auto;
-      font-size: 15px;
-    }
-    .contact-content {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 32px;
-      margin-top: 24px;
-    }
-    .contact-info {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-    .office-info h3,
-    .services h3,
-    .links-column h3 {
-      font-size: 1rem;
-      color: white;
-      margin-bottom: 12px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid #007AFF;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-    .office-info p {
-      color: rgba(255, 255, 255, 0.85);
-      line-height: 1.7;
-      margin-bottom: 12px;
+
+    .card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--lugx-blue) 0%, #0d4f9b 100%);
+      color: #ffffff;
       display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      font-size: 14px;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 6px 16px rgba(4, 49, 104, 0.25);
+      transition: all 0.35s ease;
     }
-    .services ul,
-    .links-column ul {
-      list-style: none;
-      padding: 0;
+
+    .card-icon svg {
+      width: 24px;
+      height: 24px;
+      color: #ffffff;
+      stroke-width: 2;
     }
-    .services li,
-    .links-column li {
-      color: rgba(255, 255, 255, 0.85);
-      margin-bottom: 8px;
-      padding-left: 1rem;
-      position: relative;
+
+    .portfolio-card:hover .card-icon {
+      background: var(--lugx-red);
+      transform: scale(1.08) rotate(4deg);
+      box-shadow: 0 8px 20px rgba(180, 8, 20, 0.35);
+    }
+
+    .card-status.status-completed {
+      background-color: rgba(4, 49, 104, 0.08);
+      color: var(--lugx-blue);
+      border: 1px solid rgba(4, 49, 104, 0.18);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       transition: all 0.3s ease;
-      font-size: 14px;
     }
-    .services li::before,
-    .links-column li::before {
-      content: "•";
-      color: #007AFF;
-      position: absolute;
-      left: 0;
-      font-weight: bold;
+
+    .portfolio-card:hover .card-status.status-completed {
+      background-color: var(--lugx-red);
+      color: #ffffff;
+      border-color: transparent;
+      box-shadow: 0 4px 12px rgba(180, 8, 20, 0.3);
     }
-    .services li:hover,
-    .links-column li:hover {
-      color: white;
-      transform: translateX(5px);
+
+    .portfolio-card h2 {
+      font-size: 17.5px;
+      font-weight: 800;
+      color: var(--lugx-dark);
+      margin-bottom: 22px;
+      line-height: 1.4;
+      text-transform: uppercase;
+      transition: color 0.3s ease;
+      position: relative;
+      z-index: 2;
     }
-    .company-links {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
+
+    .portfolio-card:hover h2 {
+      color: var(--lugx-red);
     }
-    .copyright {
-      text-align: center;
-      margin-top: 32px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 13px;
-    }
-    #current-year {
-      font-weight: 500;
-    }
-    .social-links {
-      margin-top: 24px;
-    }
-    .social-links h3 {
-      font-size: 1rem;
-      color: white;
-      margin-bottom: 12px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid var(--apple-blue);
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-    .social-links-container {
+
+    .card-meta {
+      background: var(--lugx-light-gray);
+      border: 1px solid #edf2f7;
+      border-radius: 18px;
+      padding: 16px 20px;
       display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .meta-key {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--lugx-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 2px;
+    }
+
+    .meta-val {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--lugx-dark);
+      word-break: break-word;
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       CTA BANNER SECTION
+       ========================================================================== */
+    .legal-cta-section {
+      padding: 40px 0 90px 0;
+      background-color: #ffffff;
+    }
+
+    .cta-banner-wrapper {
+      background: linear-gradient(135deg, #043168 0%, #0b3d7a 60%, #b40814 100%);
+      border-radius: 35px;
+      padding: 60px 45px;
+      color: #ffffff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 45px rgba(4, 49, 104, 0.35);
+      text-align: center;
+    }
+
+    .cta-banner-wrapper::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(238, 98, 107, 0.4) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .cta-banner-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .cta-banner-inner h3 {
+      font-size: 32px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      color: #ffffff;
+      line-height: 1.3;
+    }
+
+    .cta-banner-inner p {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+
+    .cta-buttons {
+      display: flex;
+      align-items: center;
       justify-content: center;
       gap: 16px;
       flex-wrap: wrap;
     }
-    .social-link {
-      display: inline-block;
-      transition: transform 0.3s ease;
-    }
-    .social-link img {
-      width: 32px;
-      height: 32px;
-      object-fit: contain;
-      filter: brightness(100%);
-      transition: filter 0.3s ease;
-    }
-    .social-link:hover {
-      transform: translateY(-3px);
-    }
-    .social-link:hover img {
-      filter: brightness(120%);
+
+    .btn-cta-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background-color: var(--lugx-red);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      border-radius: 25px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 6px 18px rgba(180, 8, 20, 0.4);
+      transition: all 0.3s ease;
     }
 
+    .btn-cta-primary:hover {
+      background-color: var(--lugx-red-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(180, 8, 20, 0.6);
+      color: #ffffff;
+    }
+
+    .btn-cta-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      padding: 14px 28px;
+      border-radius: 25px;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-cta-ghost:hover {
+      background: #ffffff;
+      color: var(--lugx-blue);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+
+    /* ==========================================================================
+       FOOTER & CONTACT SECTION (Lugx Navy Gradient Footer)
+       ========================================================================== */
+    .footer-area {
+      background: linear-gradient(135deg, #043168 0%, #0a3d7c 50%, #082852 100%);
+      color: #ffffff;
+      padding: 90px 0 30px 0;
+      border-top-left-radius: 120px;
+      border-top-right-radius: 120px;
+      position: relative;
+      box-shadow: 0 -10px 30px rgba(4, 49, 104, 0.3);
+    }
+
+    .footer-container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 30px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 50px;
+      margin-bottom: 60px;
+    }
+
+    .footer-about h3,
+    .footer-col h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+      text-transform: uppercase;
+      margin-bottom: 25px;
+      position: relative;
+    }
+
+    .footer-about h3::after,
+    .footer-col h3::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background-color: var(--lugx-red);
+    }
+
+    .footer-about p {
+      color: #ffffff;
+      font-size: 14px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      opacity: 0.95;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social-icon-btn {
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255,255,255,0.15);
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .social-icon-btn:hover {
+      background-color: var(--lugx-red);
+      transform: translateY(-3px);
+      color: #ffffff;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      color: #ffffff;
+      font-size: 14px;
+      opacity: 0.95;
+      transition: all 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: #ff6b75;
+      opacity: 1;
+      padding-left: 5px;
+    }
+
+    .copyright {
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding-top: 30px;
+      text-align: center;
+      font-size: 14px;
+      color: #ffffff;
+      opacity: 0.9;
+    }
+
+    /* Floating WhatsApp Button */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background-color: #25d366;
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+      z-index: 999;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-decoration: none;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1) translateY(-4px);
+      box-shadow: 0 15px 30px rgba(37, 211, 102, 0.6);
+      color: #ffffff;
+      background-color: #128c7e;
+    }
+
+    /* ==========================================================================
+       SIGN IN MODAL (Lugx 2-Column Split Modal)
+       ========================================================================== */
     .modal {
       display: none;
       position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(10px);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
       z-index: 2000;
       align-items: center;
       justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
-    .modal.active { display: flex; }
-    .modal-content {
-      background: white;
-      border-radius: 16px;
-      width: 90%;
-      max-width: 420px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-    }
-    .modal-header {
-      padding: 20px 24px;
+
+    .modal.active {
       display: flex;
+      opacity: 1;
+    }
+
+    .modal-content-split {
+      background-color: #ffffff;
+      max-width: 940px !important;
+      width: 100%;
+      border-radius: 28px !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      box-shadow: 0 35px 80px rgba(4, 49, 104, 0.5) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .modal.active .modal-content-split {
+      transform: scale(1);
+    }
+
+    .login-modal-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      min-height: 520px;
+    }
+
+    .login-banner-side {
+      background: linear-gradient(135deg, rgba(4, 49, 104, 0.90) 0%, rgba(10, 61, 124, 0.85) 60%, rgba(180, 8, 20, 0.82) 100%), url('<?= base_url("assets/img/background/IDE 2.0.webp") ?>') right center / cover no-repeat;
+      padding: 45px 35px;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
       justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-banner-side::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -20%;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(238, 98, 107, 0.45) 0%, transparent 70%);
+      filter: blur(35px);
+      pointer-events: none;
+    }
+
+    .login-doodle {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.18);
+      pointer-events: none;
+      z-index: 1;
+      animation: floatLoginDoodle 5s ease-in-out infinite alternate;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.25));
+    }
+
+    .login-doodle.doodle-1 { top: 25px; left: 35px; font-size: 38px; animation-delay: 0s; }
+    .login-doodle.doodle-2 { bottom: 30px; left: 45px; font-size: 34px; animation-delay: 1.2s; }
+    .login-doodle.doodle-3 { top: 30px; right: 40px; font-size: 36px; animation-delay: 2.4s; }
+    .login-doodle.doodle-4 { bottom: 25px; right: 35px; font-size: 40px; animation-delay: 0.8s; }
+    .login-doodle.doodle-5 { top: 120px; left: 160px; font-size: 28px; animation-delay: 2s; }
+    .login-doodle.doodle-6 { bottom: 90px; right: 150px; font-size: 30px; animation-delay: 3.2s; }
+
+    @keyframes floatLoginDoodle {
+      0% { transform: translateY(0px) rotate(0deg) scale(1); opacity: 0.15; }
+      50% { transform: translateY(-10px) rotate(8deg) scale(1.08); opacity: 0.28; }
+      100% { transform: translateY(-18px) rotate(-6deg) scale(1.15); opacity: 0.38; }
+    }
+
+    .login-brand {
+      display: flex;
       align-items: center;
-      border-bottom: 1px solid #e5e7eb;
+      gap: 12px;
     }
-    .modal-title { font-size: 1.4rem; font-weight: 600; }
-    .modal-close {
-      background: none;
+
+    .login-brand img {
+      height: 42px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .login-brand-text {
+      font-size: 16px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      transform: translateY(3px);
+    }
+
+    .login-brand-text span {
+      color: var(--lugx-red);
+      margin-left: 4px;
+    }
+
+    .login-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 15px;
+      margin-bottom: 18px;
+    }
+
+    .login-banner-center h2 {
+      font-size: 28px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.3;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+
+    .login-banner-center p {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.88);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .login-form-side {
+      background: #ffffff;
+      padding: 40px 40px 35px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      position: relative;
+    }
+
+    .modal-close-dark {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #f1f5f9;
       border: none;
-      font-size: 1.8rem;
+      color: var(--lugx-dark);
+      font-size: 22px;
       cursor: pointer;
-      color: #6b7280;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      line-height: 1;
+      z-index: 10;
     }
-    .modal-body { padding: 24px; }
-    .form-group { margin-bottom: 20px; }
-    .form-label { display: block; margin-bottom: 6px; font-weight: 500; }
-    .form-input {
+
+    .modal-close-dark:hover {
+      background-color: var(--lugx-red);
+      color: #ffffff;
+    }
+
+    .login-form-header {
+      margin-bottom: 24px;
+      padding-right: 35px;
+    }
+
+    .login-form-header h3 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--lugx-dark);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .login-subtext {
+      font-size: 13px;
+      color: var(--lugx-gray);
+      margin: 0;
+    }
+
+    .form-group-custom {
+      margin-bottom: 22px;
+    }
+
+    .form-label-custom {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--lugx-dark);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .input-icon-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 18px;
+      color: #94a3b8;
+      font-size: 15px;
+      transition: color 0.3s ease;
+    }
+
+    .form-input-custom {
       width: 100%;
-      padding: 10px 14px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: all 0.2s;
-    }
-    .form-input:focus {
+      height: 50px;
+      border-radius: 25px;
+      border: 2px solid #e2e8f0;
+      padding: 0 20px 0 48px;
+      font-size: 14px;
+      font-family: inherit;
       outline: none;
-      border-color: #007AFF;
-      box-shadow: 0 0 0 3px rgba(0,122,255,0.1);
+      transition: all 0.3s ease;
+      background-color: #f8fafc;
     }
-    .btn-primary {
+
+    .form-input-custom:focus {
+      border-color: var(--lugx-blue);
+      background-color: #ffffff;
+      box-shadow: 0 0 0 4px rgba(4, 49, 104, 0.1);
+    }
+
+    .input-icon-wrapper:focus-within .input-icon {
+      color: var(--lugx-blue);
+    }
+
+    .btn-login-large {
       width: 100%;
-      padding: 12px;
-      background: #001428;
-      color: white;
+      height: 52px;
+      border-radius: 26px;
+      background-color: var(--lugx-red);
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 700;
+      text-transform: uppercase;
       border: none;
-      border-radius: 10px;
-      font-weight: 600;
       cursor: pointer;
-      transition: background 0.3s;
+      box-shadow: 0 10px 25px rgba(180, 8, 20, 0.35);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
     }
-    .btn-primary:hover { background: #003366; }
 
+    .btn-login-large:hover {
+      background-color: var(--lugx-red-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(180, 8, 20, 0.5);
+    }
+
+    /* ==========================================================================
+       RESPONSIVE BREAKPOINTS
+       ========================================================================== */
     @media (max-width: 992px) {
-      .mega-dropdown { min-width: 320px; padding: 20px; left: 0; transform: none; }
-      .mega-grid { grid-template-columns: 1fr; gap: 28px; }
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .subpage-banner h1 {
+        font-size: 36px;
+      }
+      .hero-stats-strip {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
+
     @media (max-width: 768px) {
-      .portfolio-grid { grid-template-columns: 1fr; }
-      .hero-stats { flex-direction: column; }
-      .hero-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
-      .hero-stat:last-child { border-bottom: none; }
-      .nav-menu { display: none; }
-      .contact-content { grid-template-columns: 1fr; }
-      .contact-info { grid-template-columns: 1fr; }
-    }
-
-    .whatsapp-float {
-    position: fixed;
-    width: 60px;
-    height: 60px;
-    bottom: 30px;
-    right: 30px;
-    background-color: #25D366;
-    color: #fff;
-    border-radius: 50%;
-    z-index: 1000;
-    
-    /* Memastikan konten di tengah sempurna */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    /* Efek visual */
-    text-decoration: none; /* Penting agar tidak ada garis bawah link */
-    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3); /* Shadow mengikuti warna hijau agar soft */
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Transisi agak membal (bouncy) */
-}
-
-.whatsapp-float:hover {
-    transform: scale(1.1) translateY(-5px); /* Sedikit bergeser ke atas saat hover */
-    background-color: #128C7E; /* Hijau WhatsApp yang lebih gelap untuk kontras hover */
-    color: #fff;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-}
-
-.whatsapp-float i {
-    font-size: 32px; /* Ukuran disesuaikan agar proporsional di dalam lingkaran 60px */
-    line-height: 0; /* Menghilangkan gap ekstra dari font-awesome */
-}
-
-/* Responsif untuk mobile */
-@media (max-width: 768px) {
-    .whatsapp-float {
+      .main-nav {
+        padding: 15px 25px;
+      }
+      .nav-menu {
+        display: none;
+      }
+      .menu-toggle {
+        display: flex;
+      }
+      .portfolio-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-stats-strip {
+        grid-template-columns: 1fr 1fr;
+      }
+      .subpage-banner {
+        border-bottom-right-radius: 80px;
+        border-bottom-left-radius: 80px;
+        padding: 140px 0 90px 0;
+      }
+      .subpage-banner h1 {
+        font-size: 28px;
+      }
+      .login-modal-grid {
+        grid-template-columns: 1fr;
+      }
+      .login-banner-side {
+        display: none;
+      }
+      .login-form-side {
+        padding: 30px 20px;
+      }
+      .footer-area {
+        border-top-left-radius: 60px;
+        border-top-right-radius: 60px;
+      }
+      .cta-banner-wrapper {
+        padding: 40px 24px;
+      }
+      .cta-banner-inner h3 {
+        font-size: 24px;
+      }
+      .whatsapp-float {
         width: 50px;
         height: 50px;
         bottom: 20px;
         right: 20px;
+        font-size: 26px;
+      }
     }
-    
-    .whatsapp-float i {
-        font-size: 28px;
-    }
-}
-
-/* Modern Connected Pagination */
-.pagination {
-  display: inline-flex !important;
-  align-items: center !important;
-  background: #f8fafc !important;
-  border: 1px solid #e2e8f0 !important;
-  border-radius: 12px !important;
-  padding: 4px !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
-  gap: 2px !important;
-  list-style: none !important;
-  margin: 0 !important;
-}
-
-.pagination .page-item {
-  margin: 0 !important;
-}
-
-.pagination .page-item .page-link {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-width: 32px !important;
-  height: 32px !important;
-  padding: 0 10px !important;
-  border-radius: 8px !important;
-  border: none !important;
-  background: transparent !important;
-  color: #475569 !important;
-  font-size: 12.5px !important;
-  font-weight: 600 !important;
-  text-decoration: none !important;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  line-height: 1 !important;
-}
-
-.pagination .page-item:not(.disabled):not(.active) .page-link:hover {
-  background: rgba(0, 122, 255, 0.08) !important;
-  color: var(--apple-blue, #007AFF) !important;
-  transform: translateY(-1px) !important;
-}
-
-.pagination .page-item.active .page-link {
-  background: linear-gradient(135deg, #001428 0%, #003366 100%) !important;
-  color: #ffffff !important;
-  font-weight: 700 !important;
-  border-radius: 8px !important;
-  box-shadow: 0 4px 12px rgba(0, 20, 40, 0.3) !important;
-}
-
-.pagination .page-item.disabled .page-link {
-  opacity: 0.35 !important;
-  background: transparent !important;
-  color: #94a3b8 !important;
-  cursor: not-allowed !important;
-}
-
-/* Ellipsis (...) Styling: Clear and Black/Dark like the numbers */
-.pagination .page-item.disabled span.page-link,
-.pagination .page-item.disabled:not(:first-child):not(:last-child) .page-link {
-  color: #1e293b !important;
-  opacity: 1 !important;
-  font-weight: 700 !important;
-  letter-spacing: 1px !important;
-  cursor: default !important;
-}
-    </style>
+  </style>
 </head>
+
 <body>
 
-<!-- Sign In Modal -->
-<div id="signInModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3 class="modal-title">Masuk</h3>
-      <button class="modal-close" onclick="closeModal('signInModal')">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group">
-        <label class="form-label">Username</label>
-        <input type="text" class="form-input" id="Username" placeholder="Enter your username">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input type="password" class="form-input" id="Password" placeholder="Enter your password">
-      </div>
-      <button class="btn-primary" id="Masuk">Masuk</button>
-    </div>
-  </div>
-</div>
+  <!-- HEADER & NAVIGATION -->
+  <header class="header-area">
+    <nav class="main-nav">
+      <a href="<?= base_url() ?>" class="logo">
+        <img src="<?= base_url('assets/img/LOGO IDE.webp') ?>" alt="IDE Consultant Logo">
+        <div class="logo-text">Inti Desain Ekonomi <span> Consultant</span></div>
+      </a>
 
-<a href="https://wa.me/6282227666283?text=Halo%20Admin%20IDE%20Consultant,%20saya%20ingin%20bertanya..." 
-   class="whatsapp-float" 
-   target="_blank" 
-   rel="noopener noreferrer"
-   aria-label="Chat via WhatsApp">
-    <i class="fa-brands fa-whatsapp"></i>
-</a>
+      <!-- Desktop Navigation Menu -->
+      <ul class="nav-menu">
+        <li class="dropdown">
+          <a href="<?= base_url('#about') ?>" class="nav-item-link">Tentang <i class="fa-solid fa-chevron-down" style="font-size: 11px;"></i></a>
+          <div class="dropdown-content mega-dropdown">
+            <div class="mega-grid">
+              <div class="mega-column">
+                <h4 class="mega-heading">Profil Perusahaan</h4>
+                <a href="<?= base_url('#about') ?>">Sejarah & Visi Misi</a>
+                <p class="mega-desc">Inti Desain Ekonomi Consultant berdiri sejak 2015 dengan fokus pada solusi ekonomi berkelanjutan.</p>
+                <h4 class="mega-heading">Legal & Sertifikasi</h4>
+                <a href="<?= base_url('legalitas') ?>">Sertifikasi & Izin Usaha</a>
+                <p class="mega-desc">Terdaftar resmi dan bekerja sama dengan lembaga terkemuka di Indonesia.</p>
+              </div>
+              <div class="mega-column">
+                <h4 class="mega-heading">Lokasi & Kontak</h4>
+                <a href="https://www.google.com/maps/search/?api=1&query=-7.929581,112.640292" target="_blank">Kantor Malang</a>
+                <p class="mega-desc">Berbasis di Malang, siap melayani seluruh Indonesia.</p>
+              </div>
+            </div>
+          </div>
+        </li>
 
-<!-- Header & Navbar -->
-<!-- Header -->
-  <header class="header">
-    <div class="header-content">
-      <div class="logo">
-        <img src="<?= base_url('assets/img/logo.png') ?>" alt="LogoIDE">
-        <span class="logo-text">Inti Desain Ekonomi Consultant</span>
-      </div>
-      <nav class="nav-menu">
-  <!-- Tentang -->
-  <div class="dropdown">
-    <a href="#about" class="dropbtn">
-      Tentang <span class="arrow-down"></span>
-    </a>
-    <div class="dropdown-content mega-dropdown">
-      <div class="mega-grid">
-        <div class="mega-column">
-          <h4 class="mega-heading">Profil Perusahaan</h4>
-          <a href="#sejarah">Sejarah & Visi Misi</a>
-          <p class="mega-desc">Inti Desain Ekonomi Consultant berdiri sejak 2019 dengan fokus pada solusi ekonomi berkelanjutan.</p>
-          <h4 class="mega-heading">Legal & Sertifikasi</h4>
-          <a href="<?= base_url('legalitas') ?>">Sertifikasi & Izin Usaha</a>
-          <p class="mega-desc">Terdaftar resmi dan bekerja sama dengan lembaga terkemuka di Indonesia.</p>
-        </div>
-        <div class="mega-column">
-          <h4 class="mega-heading">Lokasi & Kontak</h4>
-          <a href="https://www.google.com/maps/search/?api=1&query=-7.929581,112.640292">Kantor Malang</a>
-          <p class="mega-desc">Berbasis di Malang, siap melayani seluruh Indonesia dan regional.</p>
-        </div>
-      </div>
-    </div>
-  </div>
+        <li class="dropdown">
+          <a href="<?= base_url('#services') ?>" class="nav-item-link">Layanan <i class="fa-solid fa-chevron-down" style="font-size: 11px;"></i></a>
+          <div class="dropdown-content mega-dropdown">
+            <div class="mega-grid">
+              <div class="mega-column">
+                <h4 class="mega-heading">Konsultasi</h4>
+                <a href="<?= base_url('#services') ?>">Konsultasi Ekonomi</a>
+                <p class="mega-desc">Pendampingan strategis berbasis data ekonomi.</p>
+                <h4 class="mega-heading">Survei & Penelitian</h4>
+                <a href="<?= base_url('MenuSurvei') ?>">Survei Kepuasan Masyarakat</a>
+                <p class="mega-desc">Metode ilmiah dengan analisis mendalam.</p>
+                <h4 class="mega-heading">MasterData</h4>
+                <a href="<?= base_url('MasterData') ?>">Repositori Data</a>
+              </div>
+            </div>
+          </div>
+        </li>
 
-  <!-- Layanan – sudah dihapus Penyusunan Dokumen & Pelatihan -->
-  <div class="dropdown">
-    <a href="#services" class="dropbtn">
-      Layanan <span class="arrow-down"></span>
-    </a>
-    <div class="dropdown-content mega-dropdown">
-      <div class="mega-grid">
-        <div class="mega-column">
-          <h4 class="mega-heading">Konsultasi</h4>
-          <a href="#konsultasi-ekonomi">Konsultasi Ekonomi</a>
-          <p class="mega-desc">Pendampingan strategis berbasis data ekonomi.</p>
-          <h4 class="mega-heading">Survei & Penelitian</h4>
-          <a href="MenuSurvei">Survei Kepuasan Masyarakat</a>
-          <p class="mega-desc">Metode ilmiah dengan analisis mendalam.</p>
-        </div>
-      </div>
-    </div>
-  </div>
+        <li class="dropdown">
+          <a href="<?= base_url('#portfolio') ?>" class="nav-item-link active">Portfolio <i class="fa-solid fa-chevron-down" style="font-size: 11px;"></i></a>
+          <div class="dropdown-content mega-dropdown">
+            <div class="mega-grid">
+              <div class="mega-column">
+                <h4 class="mega-heading">Proyek Pemerintahan</h4>
+                <a href="<?= base_url('MenuPortofolio') ?>" style="color: var(--lugx-red); font-weight: 700;">Portofolio Proyek Selesai (Aktif)</a>
+                <p class="mega-desc">Kerjasama dengan berbagai Pemda di Jawa Timur & luar pulau.</p>
+              </div>
+            </div>
+          </div>
+        </li>
 
-  <!-- Portfolio – sudah dihapus Proyek Swasta -->
-  <div class="dropdown">
-    <a href="#portfolio" class="dropbtn">
-      Portfolio <span class="arrow-down"></span>
-    </a>
-    <div class="dropdown-content mega-dropdown">
-      <div class="mega-grid">
-        <div class="mega-column">
-          <h4 class="mega-heading">Proyek Pemerintahan</h4>
-          <a href="MenuPortofolio">Portofolio Proyek Selesai</a>
-          <p class="mega-desc">Kerjasama dengan berbagai Pemerintah daerah di berbagai wilayah</p>
-        </div>
-      </div>
-    </div>
-  </div>
+        <li class="dropdown">
+          <a href="<?= base_url('#team') ?>" class="nav-item-link">Tim <i class="fa-solid fa-chevron-down" style="font-size: 11px;"></i></a>
+          <div class="dropdown-content mega-dropdown">
+            <div class="mega-grid">
+              <div class="mega-column">
+                <h4 class="mega-heading">Tim Riset</h4>
+                <a href="<?= base_url('#team') ?>">Profil Riset & Analis</a>
+                <h4 class="mega-heading">Tim Ahli</h4>
+                <a href="<?= base_url('#team') ?>">Peneliti & Advisor</a>
+              </div>
+            </div>
+          </div>
+        </li>
 
-  <!-- Tim -->
-  <div class="dropdown">
-    <a href="#team" class="dropbtn">
-      Tim <span class="arrow-down"></span>
-    </a>
-    <div class="dropdown-content mega-dropdown">
-      <div class="mega-grid">
-        <div class="mega-column">
-          <h4 class="mega-heading">Pendiri & Direktur</h4>
-          <a href="#direktur">Profil Direktur Utama</a>
-          <p class="mega-desc">Ahli ekonomi dengan pengalaman 15+ tahun.</p>
-          <h4 class="mega-heading">Tim Ahli</h4>
-          <a href="#peneliti">Peneliti & Analis</a>
-          <a href="#konsultan">Konsultan Senior</a>
-        </div>
-        <div class="mega-column">
-          <h4 class="mega-heading">Struktur Organisasi</h4>
-          <a href="#divisi">Divisi & Departemen</a>
-          <p class="mega-desc">Tim multidisiplin: ekonomi, statistik, manajemen, & informatika.</p>
-        </div>
-      </div>
-    </div>
-  </div>
+        <!-- Lugx Red Action Button -->
+        <li class="main-button">
+          <a href="#" onclick="openModal('signInModal'); return false;"><i class="fa-solid fa-right-to-bracket"></i> Masuk</a>
+        </li>
+      </ul>
 
-  <!-- Masuk -->
-  <div class="dropdown">
-    <a href="#" class="dropbtn" onclick="openModal('signInModal')">
-      Masuk <span class="arrow-down"></span>
-    </a>
-  </div>
-</nav>
+      <!-- Mobile Menu Toggle -->
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+    </nav>
   </header>
-<!-- Hero -->
-<section class="portfolio-hero">
-  <div class="hero-inner">
-    <div class="hero-badge">PORTFOLIO</div>
-    <h1>Portofolio <span>Proyek</span></h1>
-    <p class="lead">
-      Lebih dari 38 proyek nyata telah kami selesaikan bersama pemerintah daerah dan Instansi terkait
-      menghasilkan kebijakan berbasis bukti dan dampak ekonomi yang terukur.
-    </p>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <span class="val">7+ Tahun </span>
-        <span class="lbl">Berpengalaman Sejak 2019</span>
-      </div>
-      <div class="hero-stat">
-        <span class="val">38+</span>
-        <span class="lbl">Proyek Selesai</span>
-      </div>
+
+  <!-- Mobile Offcanvas Nav -->
+  <div class="mobile-nav" id="mobileNav">
+    <div class="dropbtn" onclick="toggleMobileDropdown(this)">Tentang <i class="fa-solid fa-chevron-down"></i></div>
+    <div class="dropdown-content">
+      <a href="<?= base_url('#about') ?>" onclick="closeMobileMenu()">Sejarah & Visi Misi</a>
+      <a href="<?= base_url('legalitas') ?>">Legalitas & Sertifikasi</a>
+    </div>
+
+    <div class="dropbtn" onclick="toggleMobileDropdown(this)">Layanan <i class="fa-solid fa-chevron-down"></i></div>
+    <div class="dropdown-content">
+      <a href="<?= base_url('#services') ?>" onclick="closeMobileMenu()">Konsultasi Ekonomi</a>
+      <a href="<?= base_url('MenuSurvei') ?>">Survei Kepuasan SKM</a>
+      <a href="<?= base_url('MasterData') ?>">Repositori MasterData</a>
+    </div>
+
+    <div class="dropbtn" onclick="toggleMobileDropdown(this)">Portfolio <i class="fa-solid fa-chevron-down"></i></div>
+    <div class="dropdown-content">
+      <a href="<?= base_url('MenuPortofolio') ?>" style="color: var(--lugx-red); font-weight: 700;">Proyek Selesai</a>
+    </div>
+
+    <div class="dropbtn" onclick="toggleMobileDropdown(this)">Tim <i class="fa-solid fa-chevron-down"></i></div>
+    <div class="dropdown-content">
+      <a href="<?= base_url('#team') ?>" onclick="closeMobileMenu()">Tim Riset & Ahli</a>
+    </div>
+
+    <div style="margin-top: 25px;" class="main-button">
+      <a href="#" onclick="openModal('signInModal'); closeMobileMenu(); return false;"><i class="fa-solid fa-right-to-bracket"></i> Masuk</a>
     </div>
   </div>
-</section>
+  <div class="mobile-nav-overlay" id="menuOverlay" onclick="closeMobileMenu()"></div>
 
-<!-- Portfolio Content dengan Filter -->
-<section class="portfolio-content">
-  <div class="portfolio-content-inner">
-   <div class="section-eyebrow">
-  <h2>Portofolio Proyek </h2>
-  <p>Daftar proyek yang telah berhasil kami laksanakan hingga tuntas bersama entitas pemerintah — menciptakan fondasi kebijakan yang kokoh, optimalisasi sumber daya, serta kontribusi terukur terhadap pertumbuhan ekonomi berkelanjutan.</p>
-</div>
+  <!-- SUBPAGE HERO BANNER -->
+  <section class="subpage-banner">
+    <!-- Floating Vector Doodle Accents -->
+    <i class="fa-solid fa-briefcase cta-doodle doodle-1"></i>
+    <i class="fa-solid fa-chart-pie cta-doodle doodle-2"></i>
+    <i class="fa-solid fa-landmark cta-doodle doodle-3"></i>
+    <i class="fa-solid fa-folder-open cta-doodle doodle-4"></i>
+    <i class="fa-solid fa-file-contract cta-doodle doodle-5"></i>
+    <i class="fa-solid fa-magnifying-glass-chart cta-doodle doodle-6"></i>
 
-    <div class="filter-container">
-  <select id="yearFilter" class="filter-select">
-    <option value="all">Semua Tahun</option>
-  </select>
-</div>
+    <div class="banner-container">
+      <h1>Portofolio <span>Proyek</span></h1>
+      <p class="lead-text">
+        Lebih dari 38 proyek nyata telah kami laksanakan dan selesaikan bersama pemerintah daerah serta instansi terkait — menghasilkan rekomendasi kebijakan berbasis bukti dan dampak ekonomi yang terukur.
+      </p>
 
-    <div id="noResults" class="no-results">Tidak ada proyek untuk tahun yang dipilih.</div>
+      <!-- Stats Summary Strip -->
+      <div class="hero-stats-strip">
+        <div class="hero-stat-box">
+          <span class="hero-stat-val">7+</span>
+          <span class="hero-stat-lbl">Tahun Pengalaman</span>
+        </div>
+        <div class="hero-stat-box">
+          <span class="hero-stat-val">38+</span>
+          <span class="hero-stat-lbl">Proyek Tuntas</span>
+        </div>
+        <div class="hero-stat-box">
+          <span class="hero-stat-val">100%</span>
+          <span class="hero-stat-lbl">Tuntas &amp; Terverifikasi</span>
+        </div>
+        <div class="hero-stat-box">
+          <span class="hero-stat-val">Pemda</span>
+          <span class="hero-stat-lbl">Kemitraan Terpercaya</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <div class="portfolio-grid" id="portfolioGrid">
+  <!-- PORTFOLIO CONTENT & FILTER -->
+  <section class="portfolio-content">
+    <div class="portfolio-content-inner">
+
+      <div class="section-heading">
+        <span class="subtitle">Rekam Jejak &amp; Portofolio</span>
+        <h2>Portofolio Proyek Selesai</h2>
+        <p>Daftar proyek yang telah berhasil kami laksanakan hingga tuntas bersama entitas pemerintah — menciptakan fondasi kebijakan yang kokoh, optimalisasi sumber daya, serta kontribusi terukur terhadap pertumbuhan ekonomi berkelanjutan.</p>
+      </div>
+
+      <!-- Filter Section -->
+      <div class="filter-wrapper">
+        <div class="filter-box">
+          <label for="yearFilter" class="filter-label"><i class="fa-solid fa-filter"></i> Filter Tahun:</label>
+          <div class="filter-select-wrapper">
+            <select id="yearFilter" class="filter-select">
+              <option value="all">Semua Tahun</option>
+            </select>
+            <i class="fa-solid fa-chevron-down select-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <div id="noResults" class="no-results">Tidak ada proyek untuk tahun yang dipilih.</div>
+
+      <div class="portfolio-grid" id="portfolioGrid">
 
       <!-- Proyek 1 -->
       <div class="portfolio-card" data-year="2019">
@@ -2360,235 +2913,361 @@ Timur
   </div>
 </section>
 
-<!-- CTA Strip -->
-<section class="portfolio-footer-strip">
-  <div class="footer-strip-inner">
-    <h3>Mari Wujudkan Pembangunan Berbasis Data Bersama</h3>
-    <p>Kami siap menjadi mitra strategis Anda dalam menyusun kebijakan, melakukan penelitian, atau melaksanakan survei yang akurat dan berdampak nyata.</p>
-    <a href="#contact" class="btn-enterprise">Hubungi Tim Kami</a>
-  </div>
-</section>
-
-<!-- Contact Section -->
-<section id="contact" class="ide-contact">
-  <div class="contact-container">
-    <div class="contact-header">
-      <h2>Hubungi Kami</h2>
-      <p>CV Inti Desain Ekonomi (IDE) Consultant siap membantu Anda dengan solusi penelitian dan konsultasi kebijakan ekonomi profesional.</p>
-      <br>
-      <div class="social-links">
-        <h3>Ikuti Sosial Media Kami</h3>
-        <div class="social-links-container">
-          <a href="https://www.tiktok.com/@intidesainekonomi" class="social-link" target="_blank">
-            <img src="<?= base_url('assets/img/TT.png') ?>" alt="TikTok">
-          </a>
-          <a href="https://www.instagram.com/intidesainekonomi" class="social-link" target="_blank">
-            <img src="<?= base_url('assets/img/instagram.png') ?>" alt="Instagram">
-          </a>
+<!-- CTA BANNER SECTION -->
+  <section class="legal-cta-section">
+    <div class="legal-container">
+      <div class="cta-banner-wrapper">
+        <div class="cta-banner-inner">
+          <h3>Mari Wujudkan Pembangunan Berbasis Data Bersama</h3>
+          <p>
+            Kami siap menjadi mitra strategis instansi Anda dalam menyusun kebijakan, melakukan riset ekonomi, atau melaksanakan survei yang akurat dan berdampak nyata.
+          </p>
+          <div class="cta-buttons">
+            <a href="https://wa.me/6282227666283?text=Halo%20Admin%20IDE%20Consultant,%20saya%20ingin%20berkonsultasi%20mengenai%20kebutuhan%20proyek/kajian..." 
+               class="btn-cta-primary" target="_blank" rel="noopener noreferrer">
+              <i class="fa-brands fa-whatsapp"></i> Konsultasi via WhatsApp
+            </a>
+            <a href="mailto:cvideconsultan@gmail.com?subject=Permohonan%20Kerjasama%20Proyek%20IDE%20Consultant" 
+               class="btn-cta-ghost">
+              <i class="fa-solid fa-envelope"></i> Kirim Permintaan Resmi
+            </a>
+          </div>
         </div>
       </div>
     </div>
+  </section>
 
-    <div class="contact-content">
-      <div class="contact-info">
-        <div class="office-info">
+  <!-- FOOTER & CONTACT SECTION -->
+  <footer id="contact" class="footer-area">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-about">
           <h3>Kantor IDE Consultant</h3>
-          <p><i class="icon">📍</i> Perum Nila Residence B6<br>Kecamatan Blimbing<br>Kota Malang</p>
-          <p><i class="icon">✉️</i> cvideconsultan@gmail.com</p>
+          <p><i class="fa-solid fa-location-dot" style="color: var(--lugx-red); margin-right: 8px;"></i> Perum Nila Residence B6, Kecamatan Blimbing, Kota Malang</p>
+          <p><i class="fa-solid fa-envelope" style="color: var(--lugx-red); margin-right: 8px;"></i> cvideconsultan@gmail.com</p>
+          
+          <div class="social-icons" style="margin-top: 20px;">
+            <a href="https://www.tiktok.com/@intidesainekonomi?_t=ZS-8yox13fLDlf&_r=1" class="social-icon-btn" target="_blank" aria-label="TikTok">
+              <i class="fa-brands fa-tiktok"></i>
+            </a>
+            <a href="https://www.instagram.com/intidesainekonomi?igsh=Zmx2bjk2NjNnNmllt" class="social-icon-btn" target="_blank" aria-label="Instagram">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+          </div>
         </div>
-        
-        <div class="services">
+
+        <div class="footer-col">
           <h3>Layanan Kami</h3>
-          <ul>
-            <li>Economic Development</li>
-            <li>Fiscal & Public Policy</li>
-            <li>Regional Planning</li>
-            <li>Manajemen Kebijakan</li>
-            <li>Penelitian Ekonomi</li>
-            <li>Konsultasi Kebijakan</li>
+          <ul class="footer-links">
+            <li><a href="<?= base_url('#services') ?>">Ekonomi Pembangunan</a></li>
+            <li><a href="<?= base_url('#services') ?>">Fiskal &amp; Kebijakan Publik</a></li>
+            <li><a href="<?= base_url('#services') ?>">Perencanaan Regional</a></li>
+            <li><a href="<?= base_url('#services') ?>">Manajemen</a></li>
+            <li><a href="<?= base_url('#services') ?>">Pembuatan Website &amp; Aplikasi</a></li>
+            <li><a href="<?= base_url('MenuSurvei') ?>">Survei Kepuasan SKM</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>Tautan Cepat</h3>
+          <ul class="footer-links">
+            <li><a href="<?= base_url('#about') ?>">Visi &amp; Misi</a></li>
+            <li><a href="<?= base_url('#team') ?>">Tim Ahli</a></li>
+            <li><a href="<?= base_url('MenuPortofolio') ?>">Portofolio Proyek</a></li>
+            <li><a href="<?= base_url('legalitas') ?>">Legalitas Usaha</a></li>
+            <li><a href="<?= base_url('MasterData') ?>">Repositori Data</a></li>
           </ul>
         </div>
       </div>
-      
-      <div class="company-links">
-        <div class="links-column">
-          <h3>Tentang Kami</h3>
-          <ul>
-            <li>Visi & Misi</li>
-            <li>Tim Ahli</li>
-            <li>Portofolio</li>
-          </ul>
-        </div>
-        
-        <div class="links-column">
-          <h3>Informasi</h3>
-          <ul>
-            <li>Kerjasama</li>
-            <li>Lowongan</li>
-            <li>Artikel</li>
-          </ul>
-        </div>
+
+      <div class="copyright">
+        <p>Copyright © <span id="current-year"></span> CV Inti Desain Ekonomi Consultant. All Rights Reserved.</p>
       </div>
     </div>
-    
-    <div class="copyright">
-      <p>Copyright © <span id="current-year"></span> CV Inti Desain Ekonomi Consultant. All Rights Reserved.</p>
+  </footer>
+
+  <!-- Floating WhatsApp Button -->
+  <a href="https://wa.me/6282227666283?text=Halo%20Admin%20IDE%20Consultant,%20saya%20ingin%20bertanya..." 
+     class="whatsapp-float" 
+     target="_blank" 
+     rel="noopener noreferrer"
+     aria-label="Chat via WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+  <!-- SIGN IN MODAL (Enlarged 2-Column Split Modal Matching IDE.php) -->
+  <div id="signInModal" class="modal">
+    <div class="modal-content modal-content-split">
+      <div class="login-modal-grid">
+        <!-- Left Side: Animated Doodle Vector Banner -->
+        <div class="login-banner-side">
+          <i class="fa-solid fa-chart-line login-doodle doodle-1"></i>
+          <i class="fa-solid fa-briefcase login-doodle doodle-2"></i>
+          <i class="fa-solid fa-file-signature login-doodle doodle-3"></i>
+          <i class="fa-solid fa-scale-balanced login-doodle doodle-4"></i>
+          <i class="fa-solid fa-chess login-doodle doodle-5"></i>
+          <i class="fa-solid fa-building-columns login-doodle doodle-6"></i>
+
+          <div class="login-banner-top" style="position: relative; z-index: 2;">
+            <div class="login-brand">
+              <img src="<?= base_url('assets/img/LOGO IDE.webp') ?>" alt="IDE Consultant Logo">
+              <div class="login-brand-text">Inti Desain Ekonomi <span>Consultant</span></div>
+            </div>
+          </div>
+          <div class="login-banner-center" style="position: relative; z-index: 2;">
+            <span class="login-pill" id="adminGreetingPill"><i class="fa-solid fa-sun"></i> Selamat Datang, Admin IDE</span>
+            <h2>Professional Research &amp; Consulting Portal</h2>
+            <p>Solusi riset &amp; konsultasi kebijakan ekonomi berbasis data tepercaya dan terintegrasi.</p>
+          </div>
+        </div>
+
+        <!-- Right Side: Login Form -->
+        <div class="login-form-side">
+          <button class="modal-close-dark" onclick="closeModal('signInModal')" title="Tutup">&times;</button>
+          <div class="login-form-header">
+            <h3>Masuk</h3>
+            <p class="login-subtext">Masukkan kredensial akun Anda untuk mengakses portal.</p>
+          </div>
+
+          <div class="login-form-body">
+            <div class="form-group-custom">
+              <label class="form-label-custom">Username / ID Akun</label>
+              <div class="input-icon-wrapper">
+                <i class="fa-solid fa-user input-icon"></i>
+                <input type="text" class="form-input-custom" id="Username" placeholder="Masukkan username Anda">
+              </div>
+            </div>
+
+            <div class="form-group-custom">
+              <label class="form-label-custom">Kata Sandi / Password</label>
+              <div class="input-icon-wrapper">
+                <i class="fa-solid fa-lock input-icon"></i>
+                <input type="password" class="form-input-custom" id="Password" placeholder="Masukkan password Anda">
+              </div>
+            </div>
+
+            <button class="btn-login-large" id="Masuk">
+              <i class="fa-solid fa-right-to-bracket"></i> Masuk Sekarang
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</section>
 
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script>
-  var BaseURL = '<?= base_url() ?>';
+  <!-- JQUERY & SCRIPTS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    var BaseURL = '<?= base_url() ?>';
 
-  // Modal functions
-  function openModal(modalId) {
-    document.getElementById(modalId).classList.add('active');
-  }
-  function closeModal(modalId) {
-    document.getElementById(modalId).classList.remove('active');
-  }
-  window.onclick = function(event) {
-    if (event.target.classList.contains('modal')) {
-      closeModal(event.target.id);
+    // Dynamic Admin Time Greeting
+    function updateAdminGreeting() {
+      var greetingPill = document.getElementById('adminGreetingPill');
+      if (!greetingPill) return;
+
+      var hour = new Date().getHours();
+      var greetingText = '';
+      var iconClass = '';
+
+      if (hour >= 4 && hour < 11) {
+        greetingText = 'Selamat Pagi, Admin IDE';
+        iconClass = 'fa-solid fa-sun';
+      } else if (hour >= 11 && hour < 15) {
+        greetingText = 'Selamat Siang, Admin IDE';
+        iconClass = 'fa-solid fa-sun-plant-wilt';
+      } else if (hour >= 15 && hour < 18.5) {
+        greetingText = 'Selamat Sore, Admin IDE';
+        iconClass = 'fa-solid fa-cloud-sun';
+      } else {
+        greetingText = 'Selamat Malam, Admin IDE';
+        iconClass = 'fa-solid fa-moon';
+      }
+
+      greetingPill.innerHTML = '<i class="' + iconClass + '"></i> ' + greetingText;
     }
-  };
 
-  // Login handler
-  jQuery(document).ready(function($) {
-    "use strict";
+    // Set dynamic current year & greeting
+    document.addEventListener('DOMContentLoaded', function() {
+      var yearElem = document.getElementById('current-year');
+      if (yearElem) yearElem.textContent = new Date().getFullYear();
+      updateAdminGreeting();
+    });
 
-    $('#Username, #Password').on('keypress', function(e) {
-      if (e.which === 13) {
-        e.preventDefault();
-        $('#Masuk').click();
+    // Modal Helpers
+    function openModal(modalId) {
+      var targetModal = document.getElementById(modalId);
+      if (targetModal) {
+        targetModal.classList.add('active');
+        if (modalId === 'signInModal') updateAdminGreeting();
       }
-    });
+    }
 
-    $("#Masuk").click(function() {
-      const username = $("#Username").val().trim();
-      const password = $("#Password").val().trim();
+    function closeModal(modalId) {
+      var targetModal = document.getElementById(modalId);
+      if (targetModal) targetModal.classList.remove('active');
+    }
 
-      if (!username || !password) {
-        alert("Mohon isi username/email dan password dengan lengkap.");
-        return;
+    window.onclick = function(event) {
+      if (event.target.classList.contains('modal')) {
+        event.target.classList.remove('active');
       }
+    };
 
-      const data = { Username: username, Password: password };
+    // Mobile Navigation Toggle
+    var menuToggle = document.getElementById('menuToggle');
+    var mobileNav = document.getElementById('mobileNav');
+    var menuOverlay = document.getElementById('menuOverlay');
 
-      $("#Masuk").prop("disabled", true).text("Memproses...");
+    function openMobileMenu() {
+      if (mobileNav && menuOverlay) {
+        mobileNav.classList.add('active');
+        menuOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
 
-      $.post(BaseURL + "IDE/SignIn", data)
-        .done(function(response) {
-          $("#Masuk").prop("disabled", false).text("Masuk");
+    function closeMobileMenu() {
+      if (mobileNav && menuOverlay) {
+        mobileNav.classList.remove('active');
+        menuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
 
-          if (response === '1') {
-            window.location = BaseURL + "SuperAdmin";
-          } else if (response === '2') {
-            window.location = BaseURL + "Admin";
-          } else if (response === '3') {
-            window.location = BaseURL + "Staf";
-          } else if (response === '0') {
-            window.location = BaseURL + "Econk";
-          } else {
-            alert(response || "Username atau password salah. Silakan coba lagi.");
-          }
-        })
-        .fail(function() {
-          $("#Masuk").prop("disabled", false).text("Masuk");
-          alert("Gagal terhubung ke server. Periksa koneksi Anda.");
-        });
-    });
-  });
-
-  // Filter & Sorting Portofolio (versi diperbaiki & otomatis apply)
-  document.addEventListener('DOMContentLoaded', function() {
-    const grid = document.getElementById('portfolioGrid');
-    const yearFilter = document.getElementById('yearFilter');
-    const noResults = document.getElementById('noResults');
-
-    if (!grid || !yearFilter) return; // hindari error jika elemen tidak ada
-
-    const cards = Array.from(grid.querySelectorAll('.portfolio-card'));
-
-    // Kumpulkan tahun unik dan urutkan terbaru ke terlama
-    const years = [...new Set(
-      cards
-        .map(card => card.dataset.year)
-        .filter(y => y && !isNaN(parseInt(y)))
-    )].sort((a, b) => parseInt(b) - parseInt(a));
-
-    // Isi dropdown dengan tahun yang tersedia
-    years.forEach(year => {
-      const option = document.createElement('option');
-      option.value = year;
-      option.textContent = year;
-      yearFilter.appendChild(option);
-    });
-
-    // Fungsi untuk filter kartu berdasarkan tahun yang dipilih
-    function filterCards(selectedYear) {
-      let visibleCount = 0;
-
-      cards.forEach(card => {
-        const cardYear = card.dataset.year;
-        if (selectedYear === 'all' || cardYear === selectedYear) {
-          card.style.display = '';
-          visibleCount++;
+    if (menuToggle) {
+      menuToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (mobileNav.classList.contains('active')) {
+          closeMobileMenu();
         } else {
-          card.style.display = 'none';
+          openMobileMenu();
         }
       });
-
-      // Tampilkan pesan jika tidak ada hasil
-      noResults.style.display = visibleCount === 0 ? 'block' : 'none';
     }
 
-    // Fungsi sorting kartu dari tahun terbaru ke terlama
-    function sortCards() {
-      const sortedCards = cards.sort((a, b) => {
-        const yearA = parseInt(a.dataset.year) || 0;
-        const yearB = parseInt(b.dataset.year) || 0;
-        return yearB - yearA;
+    window.toggleMobileDropdown = function(btn) {
+      var content = btn.nextElementSibling;
+      if (content) {
+        content.classList.toggle('show-dropdown');
+      }
+    };
+
+    // Login Form Handler (Preserved CodeIgniter AJAX Handlers)
+    jQuery(document).ready(function($) {
+      "use strict"; 
+
+      $('#Username, #Password').keypress(function(event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+          event.preventDefault();
+          $("#Masuk").click();  
+        }
+      });
+      
+      $("#Masuk").click(function(e) {
+        e.preventDefault();
+        
+        var username = $.trim($("#Username").val());
+        var password = $.trim($("#Password").val());
+        
+        if (!username || !password) {
+          alert("Harap masukkan Username dan Password Anda!");
+          return;
+        }
+
+        var Akun = { 
+          Username: username,
+          Password: password 
+        };
+
+        var $btn = $(this);
+        var originalText = $btn.html();
+        
+        $btn.prop("disabled", true).html('<i class="fa-solid fa-spinner fa-spin mr-1"></i> Memproses...');
+        
+        $.post(BaseURL + "IDE/SignIn", Akun).done(function(Respon) {
+          var trimmedRespon = $.trim(Respon);
+          if (trimmedRespon == '1') {
+            window.location = BaseURL + "SuperAdmin";
+          } else if (trimmedRespon == '2') {
+            window.location = BaseURL + "Admin";
+          } else if (trimmedRespon == '3') {
+            window.location = BaseURL + "Staf";
+          } else if (trimmedRespon == '4') {
+            window.location = BaseURL + "Surveiyor";
+          } else if (trimmedRespon == '0') {
+            window.location = BaseURL + "Econk";
+          } else {
+            alert(trimmedRespon || 'Login gagal. Periksa Username dan Password Anda!');
+            $btn.prop("disabled", false).html(originalText);
+          }
+        }).fail(function() {
+          alert('Terjadi kesalahan koneksi. Silakan coba lagi.');
+          $btn.prop("disabled", false).html(originalText);
+        });                         
+      });
+    });
+
+    // Filter & Sorting Portofolio (Auto-apply)
+    document.addEventListener('DOMContentLoaded', function() {
+      var grid = document.getElementById('portfolioGrid');
+      var yearFilter = document.getElementById('yearFilter');
+      var noResults = document.getElementById('noResults');
+
+      if (!grid || !yearFilter) return;
+
+      var cards = Array.from(grid.querySelectorAll('.portfolio-card'));
+
+      // Kumpulkan tahun unik dan urutkan terbaru ke terlama
+      var years = [...new Set(
+        cards
+          .map(function(card) { return card.dataset.year; })
+          .filter(function(y) { return y && !isNaN(parseInt(y)); })
+      )].sort(function(a, b) { return parseInt(b) - parseInt(a); });
+
+      // Isi dropdown dengan tahun yang tersedia
+      years.forEach(function(year) {
+        var option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearFilter.appendChild(option);
       });
 
-      // Susun ulang DOM sesuai urutan terbaru
-      sortedCards.forEach(card => grid.appendChild(card));
-    }
+      // Filter kartu
+      function filterCards(selectedYear) {
+        var visibleCount = 0;
 
-    // Jalankan sorting dan tampilkan semua kartu saat halaman dimuat
-    sortCards();
-    filterCards('all'); // default: semua tahun
+        cards.forEach(function(card) {
+          var cardYear = card.dataset.year;
+          if (selectedYear === 'all' || cardYear === selectedYear) {
+            card.style.display = '';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
 
-    // AUTO-APPLY filter saat dropdown berubah (tanpa tombol)
-    yearFilter.addEventListener('change', function() {
-      filterCards(this.value);
+        noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+
+      // Sorting kartu tahun terbaru ke terlama
+      function sortCards() {
+        var sortedCards = cards.sort(function(a, b) {
+          var yearA = parseInt(a.dataset.year) || 0;
+          var yearB = parseInt(b.dataset.year) || 0;
+          return yearB - yearA;
+        });
+
+        sortedCards.forEach(function(card) { grid.appendChild(card); });
+      }
+
+      sortCards();
+      filterCards('all');
+
+      yearFilter.addEventListener('change', function() {
+        filterCards(this.value);
+      });
     });
-  });
-
-  // Tahun copyright
-  document.getElementById("current-year").textContent = new Date().getFullYear();
-
-  // Header scroll effect
-  window.addEventListener('scroll', function() {
-    const header = document.querySelector('.header');
-    if (window.scrollY > 100) {
-      header.style.background = 'rgba(255, 255, 255, 0.95)';
-    } else {
-      header.style.background = 'rgba(255, 255, 255, 0.8)';
-    }
-  });
-
-  // Smooth scroll untuk anchor link
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  });
-</script>
+  </script>
 </body>
 </html>

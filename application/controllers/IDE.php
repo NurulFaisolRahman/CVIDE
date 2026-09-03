@@ -1956,9 +1956,15 @@ public function RoadmapHilirisasiBanyuwangi2026() {
     $this->load->view('RoadmapHilirisasiBanyuwangi2026'); 
 }
     public function MasterData() {
-    $data['title'] = 'Master Data Proyek | IDE Consultant';
-    $this->load->view('MasterData', $data);
-}
+        $data['title'] = 'Master Data Proyek | IDE Consultant';
+        $data['isLoggedIn'] = $this->session->userdata('logged_in') ? true : false;
+        $data['userLevel'] = $this->session->userdata('level') ? (int)$this->session->userdata('level') : 0;
+        $data['userName'] = $this->session->userdata('nama_lengkap') ? $this->session->userdata('nama_lengkap') : $this->session->userdata('username');
+        if (empty($data['userName'])) {
+            $data['userName'] = 'User';
+        }
+        $this->load->view('MasterData', $data);
+    }
 
     public function debug_session() {
     echo '<pre>';
