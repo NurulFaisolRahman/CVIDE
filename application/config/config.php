@@ -22,10 +22,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | If you need to allow multiple domains, remember that this file is still
 | a PHP script and you can easily do that on your own.
 |
+/*
+|--------------------------------------------------------------------------
+| Base Site URL (Otomatis Dinamis untuk Localhost & Hosting)
+|--------------------------------------------------------------------------
 */
-// $config['base_url'] = 'http://192.168.100.225/CVIDE';
-$config['base_url'] = 'https://localhost/CVIDE';
-// $config['base_url'] = 'https://intidesainekonomi.id/';
+$is_local = (isset($_SERVER['SERVER_NAME']) && in_array($_SERVER['SERVER_NAME'], ['localhost', '127.0.0.1']))
+    || (isset($_SERVER['HTTP_HOST']) && (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false || strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false || strpos($_SERVER['HTTP_HOST'], '192.168.') !== false));
+
+if ($is_local) {
+    // Lingkungan Lokal (Localhost / XAMPP)
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+    $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost';
+    $config['base_url'] = $protocol . $host . '/CVIDE/';
+} else {
+    // Lingkungan Server Hosting / Production
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' 
+        || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') 
+        || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)) ? 'https://' : 'http://';
+    $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'www.intidesainekonomi.id';
+    $config['base_url'] = $protocol . $host . '/';
+}
 
 
 /*
