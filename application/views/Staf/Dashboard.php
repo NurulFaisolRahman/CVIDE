@@ -346,24 +346,35 @@
   <i class="fa-solid fa-rocket mr-2" style="color: var(--ide-red);"></i> Pintasan Modul Utama
 </h4>
 <div class="row mb-5 align-items-stretch">
-  <div class="col-md-6 mb-3 d-flex">
+  <div class="col-md-4 mb-3 d-flex">
     <a href="<?=base_url('Staf/Project')?>" class="shortcut-card">
       <div class="shortcut-icon-box shortcut-icon-blue">
         <i class="fa-solid fa-diagram-project"></i>
       </div>
       <div>
         <div class="shortcut-title">Manajemen Project</div>
-        <div class="shortcut-desc">Kelola daftar dokumen kegiatan, laporan PDF, jadwal tahun proyek, kategori, dan catatan kerja.</div>
+        <div class="shortcut-desc">Kelola berkas kegiatan, timeline project, kategori, tag/label, dan dokumen multi-format.</div>
       </div>
     </a>
   </div>
-  <div class="col-md-6 mb-3 d-flex">
+  <div class="col-md-4 mb-3 d-flex">
+    <a href="<?=base_url('Staf/BankData')?>" class="shortcut-card">
+      <div class="shortcut-icon-box" style="background: rgba(4, 49, 104, 0.1); color: var(--ide-navy);">
+        <i class="fa-solid fa-database"></i>
+      </div>
+      <div>
+        <div class="shortcut-title">Bank Data</div>
+        <div class="shortcut-desc">Kumpulan dokumen master, template, regulasi, dataset acuan, dan berkas arsip pendukung.</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-4 mb-3 d-flex">
     <a href="#cardUbahPassword" class="shortcut-card">
       <div class="shortcut-icon-box shortcut-icon-red">
         <i class="fa-solid fa-key"></i>
       </div>
       <div>
-        <div class="shortcut-title">Keamanan & Ubah Password</div>
+        <div class="shortcut-title">Ubah Password</div>
         <div class="shortcut-desc">Perbarui kata sandi akun Staf Anda secara berkala demi menjaga keamanan akses sistem.</div>
       </div>
     </a>

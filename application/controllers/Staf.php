@@ -121,6 +121,7 @@ class Staf extends CI_Controller {
       'PJ'          => $pj,
       'NamaProject' => $this->input->post('NamaProject'),
       'Kategori'    => $this->input->post('Kategori'),
+      'Tag'         => $this->input->post('Tag'),
       'Deadline'    => $this->input->post('Deadline'),
       'Catatan'     => $this->input->post('Catatan'),
       'File'        => $fileVal
@@ -179,6 +180,7 @@ class Staf extends CI_Controller {
     $updateData = array(
       'NamaProject' => $this->input->post('NamaProject'),
       'Kategori'    => $this->input->post('Kategori'),
+      'Tag'         => $this->input->post('Tag'),
       'Deadline'    => $this->input->post('Deadline'),
       'Catatan'     => $this->input->post('Catatan'),
       'File'        => $fileVal
@@ -223,6 +225,106 @@ class Staf extends CI_Controller {
       echo '1';
     } else {
       echo 'Gagal Menghapus Data!';
+    }
+  }
+
+  /**
+   * =========================================================================
+   * MODUL BANK DATA (NAMA DOKUMEN & MULTI LINK GOOGLE DRIVE BERJUDUL)
+   * =========================================================================
+   */
+  public function BankData(){
+    $Data['BankData'] = $this->db->order_by('Id', 'DESC')->get('bank_data')->result_array();
+    $this->load->view('Staf/Header', $Data);
+    $this->load->view('Staf/BankData', $Data);
+  }
+
+  public function InputBankData(){
+    $pj = $this->session->userdata('Username') ?: ($this->session->userdata('username') ?: 'Staf');
+    $namaDokumen = trim($this->input->post('NamaDokumen'));
+    $linksRaw = $this->input->post('LinkGDrive');
+
+    $linksArray = array();
+    if (!empty($linksRaw)) {
+      $decoded = json_decode($linksRaw, true);
+      if (is_array($decoded)) {
+        foreach ($decoded as $item) {
+          $judul = isset($item['judul']) ? trim($item['judul']) : '';
+          $url = isset($item['url']) ? trim($item['url']) : '';
+          if (!empty($url)) {
+            $linksArray[] = array(
+              'judul' => !empty($judul) ? $judul : 'Link Google Drive',
+              'url'   => $url
+            );
+          }
+        }
+      }
+    }
+
+    $insertData = array(
+      'PJ'          => $pj,
+      'NamaDokumen' => $namaDokumen,
+      'LinkGDrive'  => !empty($linksArray) ? json_encode($linksArray) : null
+    );
+
+    $this->db->insert('bank_data', $insertData);
+    if ($this->db->affected_rows() > 0 || $this->db->insert_id() > 0){
+      echo '1';
+    } else {
+      $error = $this->db->error();
+      echo !empty($error['message']) ? 'Gagal Input Bank Data: ' . $error['message'] : 'Gagal Input Bank Data!';
+    }
+  }
+
+  public function EditBankData(){
+    $id = $this->input->post('Id');
+    if (empty($id)) {
+      echo 'ID Bank Data tidak ditemukan!';
+      return;
+    }
+
+    $namaDokumen = trim($this->input->post('NamaDokumen'));
+    $linksRaw = $this->input->post('LinkGDrive');
+
+    $linksArray = array();
+    if (!empty($linksRaw)) {
+      $decoded = json_decode($linksRaw, true);
+      if (is_array($decoded)) {
+        foreach ($decoded as $item) {
+          $judul = isset($item['judul']) ? trim($item['judul']) : '';
+          $url = isset($item['url']) ? trim($item['url']) : '';
+          if (!empty($url)) {
+            $linksArray[] = array(
+              'judul' => !empty($judul) ? $judul : 'Link Google Drive',
+              'url'   => $url
+            );
+          }
+        }
+      }
+    }
+
+    $updateData = array(
+      'NamaDokumen' => $namaDokumen,
+      'LinkGDrive'  => !empty($linksArray) ? json_encode($linksArray) : null
+    );
+
+    $this->db->where('Id', $id);
+    $result = $this->db->update('bank_data', $updateData);
+    if ($result) {
+      echo '1';
+    } else {
+      $error = $this->db->error();
+      echo !empty($error['message']) ? 'Gagal Update Bank Data: ' . $error['message'] : 'Gagal Update Bank Data!';
+    }
+  }
+
+  public function HapusBankData(){
+    $id = $this->input->post('Id');
+    $this->db->delete('bank_data', array('Id' => $id));
+    if ($this->db->affected_rows() > 0){
+      echo '1';
+    } else {
+      echo 'Gagal Menghapus Bank Data!';
     }
   }
 }

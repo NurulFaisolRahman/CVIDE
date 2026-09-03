@@ -13,6 +13,103 @@ function getProjectFileList($fileField) {
   return array($fileField);
 }
 
+// Helper untuk format tanggal Indonesia
+function formatIndoDate($dateStr) {
+  if (empty($dateStr)) return '';
+  $months = array(
+    '01' => 'Jan', '02' => 'Feb', '03' => 'Mar', '04' => 'Apr',
+    '05' => 'Mei', '06' => 'Jun', '07' => 'Jul', '08' => 'Agu',
+    '09' => 'Sep', '10' => 'Okt', '11' => 'Nov', '12' => 'Des'
+  );
+  $parts = explode('-', trim($dateStr));
+  if (count($parts) === 3) {
+    $y = $parts[0];
+    $m = $months[$parts[1]] ?? $parts[1];
+    $d = $parts[2];
+    return $d . ' ' . $m . ' ' . $y;
+  }
+  return $dateStr;
+}
+
+// Helper render sel Timeline Project
+function renderTimelineCell($deadline) {
+  if (empty($deadline) || $deadline === '-') {
+    return '<span class="text-muted" style="font-size: 12px;">-</span>';
+  }
+
+  // Jika mengandung pemisah pipe (|)
+  if (strpos($deadline, '|') !== false) {
+    $parts = explode('|', $deadline);
+    $start = trim($parts[0] ?? '');
+    $end = trim($parts[1] ?? '');
+
+    $startFmt = formatIndoDate($start);
+    $endFmt = formatIndoDate($end);
+
+    return '
+      <div class="timeline-pill-wrapper">
+        <div class="timeline-node" title="Mulai: ' . htmlspecialchars($startFmt) . '">
+          <span class="timeline-marker start"></span>
+          <span class="timeline-text">' . htmlspecialchars($startFmt) . '</span>
+        </div>
+        <div class="timeline-line">
+          <i class="fa-solid fa-arrow-right text-muted" style="font-size: 9.5px;"></i>
+        </div>
+        <div class="timeline-node" title="Selesai: ' . htmlspecialchars($endFmt) . '">
+          <span class="timeline-marker end"></span>
+          <span class="timeline-text">' . htmlspecialchars($endFmt) . '</span>
+        </div>
+      </div>';
+  }
+
+  // Jika rentang tahun dengan dash (2025 - 2026)
+  if (strpos($deadline, ' - ') !== false) {
+    $parts = explode(' - ', $deadline);
+    return '
+      <div class="timeline-pill-wrapper">
+        <div class="timeline-node">
+          <span class="timeline-marker start"></span>
+          <span class="timeline-text">' . htmlspecialchars(trim($parts[0])) . '</span>
+        </div>
+        <div class="timeline-line">
+          <i class="fa-solid fa-arrow-right text-muted" style="font-size: 9.5px;"></i>
+        </div>
+        <div class="timeline-node">
+          <span class="timeline-marker end"></span>
+          <span class="timeline-text">' . htmlspecialchars(trim($parts[1])) . '</span>
+        </div>
+      </div>';
+  }
+
+  // Single date / single year
+  $fmt = formatIndoDate($deadline);
+  return '
+    <div class="timeline-pill-wrapper single" title="Pelaksanaan: ' . htmlspecialchars($fmt) . '">
+      <div class="timeline-node">
+        <span class="timeline-marker single"></span>
+        <span class="timeline-text">' . htmlspecialchars($fmt) . '</span>
+      </div>
+    </div>';
+}
+
+// Helper render multiple Tags badges
+function renderTagBadges($tagsStr) {
+  if (empty($tagsStr)) return '<span class="text-muted" style="font-size: 12px;">-</span>';
+  $tags = array_map('trim', explode(',', $tagsStr));
+  $tags = array_filter($tags);
+  if (empty($tags)) return '<span class="text-muted" style="font-size: 12px;">-</span>';
+  
+  $html = '<div class="d-flex flex-wrap align-items-center justify-content-center" style="gap: 4px;">';
+  foreach ($tags as $t) {
+    $cleanTag = ltrim($t, '#');
+    $html .= '<span class="badge px-2 py-1" style="background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 11px; font-weight: 600;">' .
+      '<i class="fa-solid fa-hashtag text-primary mr-1" style="font-size: 10px;"></i>' . htmlspecialchars($cleanTag) . 
+    '</span>';
+  }
+  $html .= '</div>';
+  return $html;
+}
+
 // Ekstrak daftar tahun unik dari seluruh data project yang telah diinput
 $listTahun = array();
 foreach ($Project as $p) {
@@ -39,8 +136,86 @@ $listTahun = array_values(array_unique(array_filter($listTahun)));
 rsort($listTahun);
 ?>
 
-<!-- Extra Styling for In-Browser Document Viewer (Word, Excel, PDF & Slide Tabs) -->
+<!-- Extra Styling for Timeline & In-Browser Document Viewer -->
 <style>
+  /* ==========================================================================
+     TIMELINE DESIGN SYSTEM (Table & Form)
+     ========================================================================== */
+  .timeline-pill-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 5px 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    transition: all 0.25s ease;
+  }
+  .timeline-pill-wrapper:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 12px rgba(4, 49, 104, 0.08);
+    transform: translateY(-1px);
+  }
+  .timeline-pill-wrapper.single {
+    padding: 5px 14px;
+  }
+  .timeline-node {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .timeline-marker {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .timeline-marker.start {
+    background-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  }
+  .timeline-marker.end {
+    background-color: var(--ide-red);
+    box-shadow: 0 0 0 3px rgba(180, 8, 20, 0.2);
+  }
+  .timeline-marker.single {
+    background-color: var(--ide-navy);
+    box-shadow: 0 0 0 3px rgba(4, 49, 104, 0.2);
+  }
+  .timeline-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1e293b;
+    white-space: nowrap;
+  }
+  .timeline-line {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 2px;
+  }
+
+  /* Modal Timeline Input Container */
+  .timeline-input-card {
+    background: #f8fafc;
+    border: 1.5px dashed #cbd5e1;
+    border-radius: 16px;
+    padding: 16px 18px;
+  }
+  .timeline-input-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #043168;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* In-Browser Document Viewer Paper Styles */
   .word-document-paper {
     background: #ffffff;
     border-radius: 12px;
@@ -187,7 +362,7 @@ rsort($listTahun);
               <span class="badge badge-primary px-2 py-1" style="background: var(--ide-navy); font-size: 11px; font-weight: 600; border-radius: 6px;">Staf Portal</span>
             </div>
             <p class="text-muted mb-0 mt-1" style="font-size: 12.5px;">
-              Kelola data berkas kegiatan, kategori, tahun pelaksanaan, serta dokumen project (PDF, Word, Excel, ZIP, RAR).
+              Kelola data berkas kegiatan, kategori, tag/label, timeline pelaksanaan, serta dokumen project (PDF, Word, Excel, ZIP, RAR).
             </p>
           </div>
         </div>
@@ -210,30 +385,19 @@ rsort($listTahun);
             <thead>
               <tr style="background: linear-gradient(135deg, #043168 0%, #0a3d7c 100%); color: #ffffff;">
                 <th style="width: 4%;" class="text-center align-middle">No</th>
-                <th style="width: 25%;" class="align-middle">Nama Project</th>
-                <th style="width: 14%;" class="text-center align-middle">Kategori</th>
-                <th style="width: 12%;" class="text-center align-middle">Tahun Project</th>
-                <th style="width: 25%;" class="align-middle">Catatan</th>
-                <th style="width: 20%;" class="text-center align-middle">Dokumen & Aksi</th>
+                <th style="width: 22%;" class="align-middle">Nama Project</th>
+                <th style="width: 12%;" class="text-center align-middle">Kategori</th>
+                <th style="width: 14%;" class="text-center align-middle">Tag / Label</th>
+                <th style="width: 16%;" class="text-center align-middle">Timeline Project</th>
+                <th style="width: 16%;" class="align-middle">Catatan</th>
+                <th style="width: 16%;" class="text-center align-middle">Dokumen & Aksi</th>
               </tr>
             </thead>
             <tbody id="RekapSurvei">
               <?php 
               $No = 1; 
               foreach ($Project as $key) { 
-                $dl = !empty($key['Deadline']) ? $key['Deadline'] : '-';
-                if (strpos($dl, '|') !== false) {
-                  $parts = explode('|', $dl);
-                  $f = explode('-', $parts[0] ?? '');
-                  $t = explode('-', $parts[1] ?? '');
-                  $yF = $f[0] ?? '';
-                  $yT = $t[0] ?? '';
-                  if (!empty($yF) && !empty($yT) && $yF === $yT) {
-                    $dl = $yF;
-                  } else if (!empty($yF) && !empty($yT)) {
-                    $dl = $yF . ' - ' . $yT;
-                  }
-                }
+                $rawDl = !empty($key['Deadline']) ? $key['Deadline'] : '-';
                 $fileList = getProjectFileList($key['File'] ?? '');
                 $fileJsonAttr = htmlspecialchars(json_encode($fileList), ENT_QUOTES, 'UTF-8');
                 $totalDocs = count($fileList);
@@ -246,16 +410,19 @@ rsort($listTahun);
                   <td class="text-center align-middle">
                     <?php if (!empty($key['Kategori'])) { ?>
                       <span class="badge px-2 py-1" style="background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; border-radius: 8px; font-size: 11.5px; font-weight: 600;">
-                        <i class="fa-solid fa-tag mr-1"></i> <?=htmlspecialchars($key['Kategori'])?>
+                        <i class="fa-solid fa-folder mr-1"></i> <?=htmlspecialchars($key['Kategori'])?>
                       </span>
                     <?php } else { ?>
                       <span class="text-muted" style="font-size: 12px;">-</span>
                     <?php } ?>
                   </td>
+                  <!-- Tag / Label Column (Multiple tags support) -->
                   <td class="text-center align-middle">
-                    <span class="badge badge-light px-2 py-1" style="border: 1px solid #cbd5e1; border-radius: 8px; font-size: 12px; font-weight: 600; color: #334155;">
-                      <i class="fa-regular fa-calendar mr-1 text-danger"></i> <?=htmlspecialchars($dl)?>
-                    </span>
+                    <?=renderTagBadges($key['Tag'] ?? '')?>
+                  </td>
+                  <!-- Timeline Garis Waktu Project -->
+                  <td class="text-center align-middle">
+                    <?=renderTimelineCell($rawDl)?>
                   </td>
                   <td class="align-middle text-muted" style="font-size: 13px;">
                     <?=!empty($key['Catatan']) ? nl2br($key['Catatan']) : '-'?>
@@ -284,6 +451,7 @@ rsort($listTahun);
                       data-id="<?=$key['Id']?>"
                       data-nama="<?=htmlspecialchars($key['NamaProject'], ENT_QUOTES)?>"
                       data-kategori="<?=htmlspecialchars($key['Kategori'] ?? '', ENT_QUOTES)?>"
+                      data-tag="<?=htmlspecialchars($key['Tag'] ?? '', ENT_QUOTES)?>"
                       data-deadline="<?=htmlspecialchars($key['Deadline'] ?? '', ENT_QUOTES)?>"
                       data-catatan="<?=htmlspecialchars($key['Catatan'] ?? '', ENT_QUOTES)?>"
                       data-files="<?=$fileJsonAttr?>"
@@ -336,15 +504,43 @@ rsort($listTahun);
           <input type="text" class="form-control" id="NamaProject" placeholder="Masukkan nama project...">
         </div>
 
-        <div class="form-group mb-3">
-          <label for="Kategori">Kategori Project (Isi Manual)</label>
-          <input type="text" class="form-control" id="Kategori" placeholder="Contoh: Riset, IT & Software, Pelatihan, Konsultansi, dll...">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="Kategori">Kategori Project</label>
+            <input type="text" class="form-control" id="Kategori" placeholder="Contoh: Riset, IT & Software, Konsultansi...">
+            <small class="form-text text-muted mt-1">Klasifikasi utama project.</small>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="Tag">Tag / Label Dokumen (Bisa Beberapa)</label>
+            <input type="text" class="form-control" id="Tag" placeholder="Contoh: RAB, Laporan, Keuangan, Bappeda">
+            <small class="form-text text-muted mt-1">Pisahkan beberapa tag dengan tanda koma <strong>(,)</strong>.</small>
+          </div>
         </div>
 
+        <!-- Timeline Date Range Input -->
         <div class="form-group mb-3">
-          <label for="Deadline">Tahun Project / Deadline <span class="text-danger">*</span></label>
-          <input type="text" class="form-control" id="Deadline" placeholder="Contoh: 2026 atau 2025 - 2026" value="<?=date('Y')?>">
-          <small class="form-text text-muted mt-1">Masukkan tahun pelaksanaan project (isi manual).</small>
+          <div class="timeline-input-card">
+            <div class="timeline-input-header">
+              <i class="fa-solid fa-timeline text-danger"></i> Timeline / Rentang Waktu Project <span class="text-danger">*</span>
+            </div>
+            <div class="row" style="gap: 0;">
+              <div class="col-md-6 mb-2 mb-md-0">
+                <label for="TimelineMulai" class="text-muted" style="font-size: 11.5px; font-weight: 600; text-transform: uppercase;">
+                  <i class="fa-solid fa-circle-dot text-success mr-1"></i> Tanggal / Tahun Mulai
+                </label>
+                <input type="date" class="form-control" id="TimelineMulai" value="<?=date('Y-m-01')?>" style="border-radius: 10px; font-weight: 600; font-size: 13px;">
+              </div>
+              <div class="col-md-6">
+                <label for="TimelineSelesai" class="text-muted" style="font-size: 11.5px; font-weight: 600; text-transform: uppercase;">
+                  <i class="fa-solid fa-circle-dot text-danger mr-1"></i> Tanggal / Tahun Selesai
+                </label>
+                <input type="date" class="form-control" id="TimelineSelesai" value="<?=date('Y-m-t')?>" style="border-radius: 10px; font-weight: 600; font-size: 13px;">
+              </div>
+            </div>
+            <small class="form-text text-muted mt-2">
+              <i class="fa-solid fa-circle-info mr-1"></i> Tentukan garis waktu pelaksanaan kegiatan project (Mulai hingga Selesai).
+            </small>
+          </div>
         </div>
 
         <div class="form-group mb-3">
@@ -400,15 +596,43 @@ rsort($listTahun);
           <input type="text" class="form-control" id="EditNamaProject" placeholder="Masukkan nama project...">
         </div>
 
-        <div class="form-group mb-3">
-          <label for="EditKategori">Kategori Project (Isi Manual)</label>
-          <input type="text" class="form-control" id="EditKategori" placeholder="Contoh: Riset, IT & Software, Pelatihan, Konsultansi, dll...">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="EditKategori">Kategori Project</label>
+            <input type="text" class="form-control" id="EditKategori" placeholder="Contoh: Riset, IT & Software, Konsultansi...">
+            <small class="form-text text-muted mt-1">Klasifikasi utama project.</small>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="EditTag">Tag / Label Dokumen (Bisa Beberapa)</label>
+            <input type="text" class="form-control" id="EditTag" placeholder="Contoh: RAB, Laporan, Keuangan, Bappeda">
+            <small class="form-text text-muted mt-1">Pisahkan beberapa tag dengan tanda koma <strong>(,)</strong>.</small>
+          </div>
         </div>
 
+        <!-- Timeline Edit Form Container -->
         <div class="form-group mb-3">
-          <label for="EditDeadline">Tahun Project / Deadline <span class="text-danger">*</span></label>
-          <input type="text" class="form-control" id="EditDeadline" placeholder="Contoh: 2026 atau 2025 - 2026">
-          <small class="form-text text-muted mt-1">Masukkan tahun pelaksanaan project (isi manual).</small>
+          <div class="timeline-input-card">
+            <div class="timeline-input-header">
+              <i class="fa-solid fa-timeline text-danger"></i> Timeline / Rentang Waktu Project <span class="text-danger">*</span>
+            </div>
+            <div class="row" style="gap: 0;">
+              <div class="col-md-6 mb-2 mb-md-0">
+                <label for="EditTimelineMulai" class="text-muted" style="font-size: 11.5px; font-weight: 600; text-transform: uppercase;">
+                  <i class="fa-solid fa-circle-dot text-success mr-1"></i> Tanggal / Tahun Mulai
+                </label>
+                <input type="date" class="form-control" id="EditTimelineMulai" style="border-radius: 10px; font-weight: 600; font-size: 13px;">
+              </div>
+              <div class="col-md-6">
+                <label for="EditTimelineSelesai" class="text-muted" style="font-size: 11.5px; font-weight: 600; text-transform: uppercase;">
+                  <i class="fa-solid fa-circle-dot text-danger mr-1"></i> Tanggal / Tahun Selesai
+                </label>
+                <input type="date" class="form-control" id="EditTimelineSelesai" style="border-radius: 10px; font-weight: 600; font-size: 13px;">
+              </div>
+            </div>
+            <small class="form-text text-muted mt-2">
+              <i class="fa-solid fa-circle-info mr-1"></i> Ubah garis waktu pelaksanaan kegiatan project jika diperlukan.
+            </small>
+          </div>
         </div>
 
         <div class="form-group mb-3">
@@ -586,10 +810,10 @@ rsort($listTahun);
     // Sisipkan sebelum kolom input pencarian di container .dataTables_filter
     $('#TabelProject_wrapper .dataTables_filter').prepend(filterTahunHtml);
 
-    // Event listener untuk memfilter tabel berdasarkan Tahun (Kolom index 3)
+    // Event listener untuk memfilter tabel berdasarkan Tahun (Kolom index 4 - Timeline Project)
     $('#SelectFilterTahun').on('change', function() {
       var selectedYear = $(this).val();
-      table.column(3).search(selectedYear ? selectedYear : '', true, false).draw();
+      table.column(4).search(selectedYear ? selectedYear : '', true, false).draw();
     });
 
     // =========================================================================
@@ -871,9 +1095,18 @@ rsort($listTahun);
         alert("Nama Project tidak boleh kosong!");
         return;
       }
-      if ($("#Deadline").val().trim() === "") {
-        alert("Tahun Project tidak boleh kosong!");
+      
+      var tMulai = $("#TimelineMulai").val().trim();
+      var tSelesai = $("#TimelineSelesai").val().trim();
+
+      if (tMulai === "" && tSelesai === "") {
+        alert("Timeline Project (Tanggal Mulai / Selesai) tidak boleh kosong!");
         return;
+      }
+
+      var deadlineVal = tMulai;
+      if (tSelesai !== "") {
+        deadlineVal = tMulai !== "" ? tMulai + "|" + tSelesai : tSelesai;
       }
 
       var fd = new FormData();
@@ -886,7 +1119,8 @@ rsort($listTahun);
 
       fd.append('NamaProject', $("#NamaProject").val());
       fd.append('Kategori', $("#Kategori").val());
-      fd.append('Deadline', $("#Deadline").val());
+      fd.append('Tag', $("#Tag").val());
+      fd.append('Deadline', deadlineVal);
       fd.append('Catatan', $("#Catatan").val());
 
       $.ajax({
@@ -969,6 +1203,7 @@ rsort($listTahun);
       var id = $(this).data('id');
       var nama = $(this).data('nama');
       var kategori = $(this).data('kategori');
+      var tag = $(this).data('tag');
       var deadline = $(this).data('deadline');
       var catatan = $(this).data('catatan');
       var filesAttr = $(this).data('files');
@@ -995,22 +1230,31 @@ rsort($listTahun);
         }
       }
 
-      // Format deadline tahun
-      if (deadline && typeof deadline === 'string' && deadline.indexOf('|') !== -1) {
-        var parts = deadline.split('|');
-        var yF = (parts[0] || '').split('-')[0] || '';
-        var yT = (parts[1] || '').split('-')[0] || '';
-        if (yF && yT && yF === yT) {
-          deadline = yF;
-        } else if (yF && yT) {
-          deadline = yF + ' - ' + yT;
+      // Format & Populate Timeline Form in Edit Modal
+      var startVal = '';
+      var endVal = '';
+
+      if (deadline && typeof deadline === 'string') {
+        if (deadline.indexOf('|') !== -1) {
+          var parts = deadline.split('|');
+          startVal = parts[0] || '';
+          endVal = parts[1] || '';
+        } else if (deadline.indexOf(' - ') !== -1) {
+          var parts = deadline.split(' - ');
+          startVal = parts[0] || '';
+          endVal = parts[1] || '';
+        } else {
+          startVal = deadline;
+          endVal = deadline;
         }
       }
 
       $("#Id").val(id || '');
       $("#EditNamaProject").val(nama || '');
       $("#EditKategori").val(kategori || '');
-      $("#EditDeadline").val(deadline || '');
+      $("#EditTag").val(tag || '');
+      $("#EditTimelineMulai").val(startVal);
+      $("#EditTimelineSelesai").val(endVal);
       $("#EditCatatan").val(catatan || '');
 
       // Reset file input row di edit modal
@@ -1033,16 +1277,26 @@ rsort($listTahun);
         alert("Nama Project tidak boleh kosong!");
         return;
       }
-      if ($("#EditDeadline").val().trim() === "") {
-        alert("Tahun Project tidak boleh kosong!");
+      
+      var tMulai = $("#EditTimelineMulai").val().trim();
+      var tSelesai = $("#EditTimelineSelesai").val().trim();
+
+      if (tMulai === "" && tSelesai === "") {
+        alert("Timeline Project (Tanggal Mulai / Selesai) tidak boleh kosong!");
         return;
+      }
+
+      var deadlineVal = tMulai;
+      if (tSelesai !== "") {
+        deadlineVal = tMulai !== "" ? tMulai + "|" + tSelesai : tSelesai;
       }
 
       var fd = new FormData();
       fd.append('Id', $("#Id").val());
       fd.append('NamaProject', $("#EditNamaProject").val());
       fd.append('Kategori', $("#EditKategori").val());
-      fd.append('Deadline', $("#EditDeadline").val());
+      fd.append('Tag', $("#EditTag").val());
+      fd.append('Deadline', deadlineVal);
       fd.append('Catatan', $("#EditCatatan").val());
       fd.append('FileLama', JSON.stringify(editExistingFiles));
       fd.append('FileHapus', JSON.stringify(editDeletedFiles));

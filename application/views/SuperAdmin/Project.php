@@ -12,6 +12,103 @@ function getSuperProjectFileList($fileField) {
   return array($fileField);
 }
 
+// Helper untuk format tanggal Indonesia
+function formatIndoDateSuper($dateStr) {
+  if (empty($dateStr)) return '';
+  $months = array(
+    '01' => 'Jan', '02' => 'Feb', '03' => 'Mar', '04' => 'Apr',
+    '05' => 'Mei', '06' => 'Jun', '07' => 'Jul', '08' => 'Agu',
+    '09' => 'Sep', '10' => 'Okt', '11' => 'Nov', '12' => 'Des'
+  );
+  $parts = explode('-', trim($dateStr));
+  if (count($parts) === 3) {
+    $y = $parts[0];
+    $m = $months[$parts[1]] ?? $parts[1];
+    $d = $parts[2];
+    return $d . ' ' . $m . ' ' . $y;
+  }
+  return $dateStr;
+}
+
+// Helper render sel Timeline Project
+function renderSuperTimelineCell($deadline) {
+  if (empty($deadline) || $deadline === '-') {
+    return '<span class="text-muted" style="font-size: 12px;">-</span>';
+  }
+
+  // Jika mengandung pemisah pipe (|)
+  if (strpos($deadline, '|') !== false) {
+    $parts = explode('|', $deadline);
+    $start = trim($parts[0] ?? '');
+    $end = trim($parts[1] ?? '');
+
+    $startFmt = formatIndoDateSuper($start);
+    $endFmt = formatIndoDateSuper($end);
+
+    return '
+      <div class="timeline-pill-wrapper">
+        <div class="timeline-node" title="Mulai: ' . htmlspecialchars($startFmt) . '">
+          <span class="timeline-marker start"></span>
+          <span class="timeline-text">' . htmlspecialchars($startFmt) . '</span>
+        </div>
+        <div class="timeline-line">
+          <i class="fa fa-arrow-right text-muted" style="font-size: 9.5px;"></i>
+        </div>
+        <div class="timeline-node" title="Selesai: ' . htmlspecialchars($endFmt) . '">
+          <span class="timeline-marker end"></span>
+          <span class="timeline-text">' . htmlspecialchars($endFmt) . '</span>
+        </div>
+      </div>';
+  }
+
+  // Jika rentang tahun dengan dash (2025 - 2026)
+  if (strpos($deadline, ' - ') !== false) {
+    $parts = explode(' - ', $deadline);
+    return '
+      <div class="timeline-pill-wrapper">
+        <div class="timeline-node">
+          <span class="timeline-marker start"></span>
+          <span class="timeline-text">' . htmlspecialchars(trim($parts[0])) . '</span>
+        </div>
+        <div class="timeline-line">
+          <i class="fa fa-arrow-right text-muted" style="font-size: 9.5px;"></i>
+        </div>
+        <div class="timeline-node">
+          <span class="timeline-marker end"></span>
+          <span class="timeline-text">' . htmlspecialchars(trim($parts[1])) . '</span>
+        </div>
+      </div>';
+  }
+
+  // Single date / single year
+  $fmt = formatIndoDateSuper($deadline);
+  return '
+    <div class="timeline-pill-wrapper single" title="Pelaksanaan: ' . htmlspecialchars($fmt) . '">
+      <div class="timeline-node">
+        <span class="timeline-marker single"></span>
+        <span class="timeline-text">' . htmlspecialchars($fmt) . '</span>
+      </div>
+    </div>';
+}
+
+// Helper render multiple Tags badges
+function renderSuperTagBadges($tagsStr) {
+  if (empty($tagsStr)) return '<span class="text-muted" style="font-size: 12px;">-</span>';
+  $tags = array_map('trim', explode(',', $tagsStr));
+  $tags = array_filter($tags);
+  if (empty($tags)) return '<span class="text-muted" style="font-size: 12px;">-</span>';
+  
+  $html = '<div class="d-flex flex-wrap align-items-center justify-content-center" style="gap: 4px;">';
+  foreach ($tags as $t) {
+    $cleanTag = ltrim($t, '#');
+    $html .= '<span class="badge px-2 py-1" style="background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 11px; font-weight: 600;">' .
+      '<i class="fa fa-hashtag text-primary mr-1" style="font-size: 10px;"></i>' . htmlspecialchars($cleanTag) . 
+    '</span>';
+  }
+  $html .= '</div>';
+  return $html;
+}
+
 // Ekstrak daftar tahun unik dari seluruh data project yang telah diinput
 $listTahun = array();
 foreach ($Project as $p) {
@@ -38,8 +135,58 @@ $listTahun = array_values(array_unique(array_filter($listTahun)));
 rsort($listTahun);
 ?>
 
-<!-- Extra Styling for In-Browser Document Viewer (Word, Excel, PDF & Slide Tabs) -->
+<!-- Extra Styling for In-Browser Document Viewer & Timeline -->
 <style>
+  /* Timeline Badge in Project Table */
+  .timeline-pill-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 5px 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  }
+  .timeline-pill-wrapper.single {
+    padding: 5px 14px;
+  }
+  .timeline-node {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .timeline-marker {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .timeline-marker.start {
+    background-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  }
+  .timeline-marker.end {
+    background-color: #b40814;
+    box-shadow: 0 0 0 3px rgba(180, 8, 20, 0.2);
+  }
+  .timeline-marker.single {
+    background-color: #043168;
+    box-shadow: 0 0 0 3px rgba(4, 49, 104, 0.2);
+  }
+  .timeline-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1e293b;
+    white-space: nowrap;
+  }
+  .timeline-line {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 2px;
+  }
+
   .word-document-paper {
     background: #ffffff;
     border-radius: 12px;
@@ -203,29 +350,18 @@ rsort($listTahun);
 						<th scope="col" style="width: 4%;" class="text-center align-middle">No</th>
 						<th scope="col" class="align-middle">PJ Project</th>
 						<th scope="col" class="align-middle">Nama Project</th>
-						<th scope="col" style="width: 14%;" class="text-center align-middle">Kategori</th>
-						<th scope="col" style="width: 14%;" class="text-center align-middle">Tahun Project</th>
-						<th scope="col" style="width: 28%;" class="align-middle">Catatan</th>
-						<th scope="col" style="width: 15%;" class="text-center align-middle">Dokumen</th>
+						<th scope="col" style="width: 12%;" class="text-center align-middle">Kategori</th>
+						<th scope="col" style="width: 14%;" class="text-center align-middle">Tag / Label</th>
+						<th scope="col" style="width: 16%;" class="text-center align-middle">Timeline Project</th>
+						<th scope="col" style="width: 20%;" class="align-middle">Catatan</th>
+						<th scope="col" style="width: 14%;" class="text-center align-middle">Dokumen</th>
 					</tr>
 				</thead>
 				<tbody id="RekapSurvei">
 					<?php 
 					$No = 1; 
 					foreach ($Project as $key) { 
-						$dl = !empty($key['Deadline']) ? $key['Deadline'] : '-';
-						if (strpos($dl, '|') !== false) {
-							$parts = explode('|', $dl);
-							$f = explode('-', $parts[0] ?? '');
-							$t = explode('-', $parts[1] ?? '');
-							$yF = $f[0] ?? '';
-							$yT = $t[0] ?? '';
-							if (!empty($yF) && !empty($yT) && $yF === $yT) {
-								$dl = $yF;
-							} else if (!empty($yF) && !empty($yT)) {
-								$dl = $yF . ' - ' . $yT;
-							}
-						}
+						$rawDl = !empty($key['Deadline']) ? $key['Deadline'] : '-';
 						$PisahPJ = explode("|", $key['PJ']); 
 						$Pj = ""; 
 						for ($i=0; $i < count($PisahPJ); $i++) { 
@@ -240,7 +376,14 @@ rsort($listTahun);
 							<th scope="row" class="align-middle"><?=$key['PJ']?></th>
 							<th scope="row" class="align-middle"><?=$key['NamaProject']?></th>
 							<th scope="row" class="text-center align-middle"><?=!empty($key['Kategori']) ? htmlspecialchars($key['Kategori']) : '-'?></th>
-							<th scope="row" class="text-center align-middle"><?=htmlspecialchars($dl)?></th>
+							<!-- Tag / Label Column in SuperAdmin -->
+							<th scope="row" class="text-center align-middle">
+								<?=renderSuperTagBadges($key['Tag'] ?? '')?>
+							</th>
+							<!-- Timeline Garis Waktu Project SuperAdmin -->
+							<th scope="row" class="text-center align-middle">
+								<?=renderSuperTimelineCell($rawDl)?>
+							</th>
 							<th scope="row" class="align-middle"><?=$key['Catatan']?></th>
 							<th scope="row" class="text-center align-middle text-nowrap">
 								<?php if ($totalDocs > 0) { ?>
@@ -270,7 +413,7 @@ rsort($listTahun);
 </div>
 </div>
 
-<!-- Universal In-Browser Multi-Document Slide Viewer Modal (PDF, Word, Excel) -->
+<!-- Universal In-Browser Multi-Document Slide Viewer Modal (PDF, Word, Excel, ZIP, RAR) -->
 <div class="modal fade" id="ModalProject" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
     <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
@@ -279,7 +422,7 @@ rsort($listTahun);
       <div class="modal-header d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #043168 0%, #0a3d7c 100%); color: #ffffff; padding: 14px 22px;">
         <div class="d-flex align-items-center" style="gap: 12px;">
           <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center;">
-            <i class="fa fa-folder-open text-white" style="font-size: 18px;"></i>
+            <i class="fa-solid fa-folder-open text-white" style="font-size: 18px;"></i>
           </div>
           <div>
             <h5 class="modal-title font-weight-bold mb-0 text-white" style="font-size: 16px;" id="ModalViewerProjectName">
@@ -290,7 +433,7 @@ rsort($listTahun);
         </div>
         <div class="d-flex align-items-center" style="gap: 12px;">
           <a href="#" id="BtnDownloadDoc" target="_blank" download class="btn btn-sm btn-light font-weight-bold px-3 py-1" style="border-radius: 14px; font-size: 12px; color: #043168;">
-            <i class="fa fa-download mr-1 text-primary"></i> Unduh File Aktif
+            <i class="fa-solid fa-download mr-1 text-primary"></i> Unduh File Aktif
           </a>
           <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="margin: 0; padding: 0; opacity: 0.9;">
             <span aria-hidden="true">&times;</span>
@@ -336,7 +479,9 @@ rsort($listTahun);
         <div id="ExcelViewerContainer" style="display: none;">
           <div class="excel-table-wrapper" id="ExcelTableContainer"></div>
           <div class="sheet-tabs-container" id="ExcelSheetTabs"></div>
-        </di        <!-- Fallback Download Card Container (ZIP, RAR & Other Files) -->
+        </div>
+
+        <!-- Fallback Download Card Container (ZIP, RAR & Other Files) -->
         <div id="FallbackViewerContainer" class="text-center py-5" style="display: none;">
           <div class="mb-3 d-inline-flex align-items-center justify-content-center rounded-circle" id="FallbackIconWrapper" style="width: 76px; height: 76px; background: rgba(4, 49, 104, 0.1); color: #043168; margin: 0 auto;">
             <i class="fa-solid fa-file-zipper" id="FallbackIcon" style="font-size: 34px;"></i>
@@ -344,7 +489,7 @@ rsort($listTahun);
           <h5 class="font-weight-bold text-dark mb-2" id="FallbackFileName">Dokumen Project</h5>
           <p class="text-muted" style="font-size: 13.5px;" id="FallbackFileDesc">Berkas arsip (ZIP / RAR) dapat diunduh dan diekstrak langsung pada komputer Anda.</p>
           <a href="#" id="BtnFallbackDownload" target="_blank" download class="btn btn-primary px-4 py-2" style="border-radius: 20px; font-weight: 700;">
-            <i class="fa fa-download mr-1"></i> Buka / Unduh Berkas
+            <i class="fa-solid fa-download mr-1"></i> Buka / Unduh Berkas
           </a>
         </div>
 
@@ -384,8 +529,8 @@ rsort($listTahun);
 				"infoEmpty": "Data tidak tersedia",
 				"zeroRecords": "Tidak ada data yang sesuai",
 				"paginate": {
-					'previous': '<i class="fa fa-chevron-left"></i>',
-					'next': '<i class="fa fa-chevron-right"></i>'
+					'previous': '<i class="fa-solid fa-chevron-left"></i>',
+					'next': '<i class="fa-solid fa-chevron-right"></i>'
 				}
 			}
 		});
@@ -406,7 +551,7 @@ rsort($listTahun);
 
     $('#SelectFilterTahun').on('change', function() {
       var selectedYear = $(this).val();
-      table.column(4).search(selectedYear ? selectedYear : '', true, false).draw();
+      table.column(5).search(selectedYear ? selectedYear : '', true, false).draw();
     });
 
     // =========================================================================
@@ -517,7 +662,7 @@ rsort($listTahun);
         $('#FallbackIcon').attr('class', 'fa-solid fa-file-zipper');
         $('#FallbackIconWrapper').css({ 'background': 'rgba(234, 88, 12, 0.1)', 'color': '#ea580c' });
         $('#FallbackFileDesc').text('Berkas arsip terkompresi (' + ext.toUpperCase() + ') dapat diunduh langsung untuk diekstrak pada komputer Anda.');
-        $('#BtnFallbackDownload').html('<i class="fa fa-download mr-1"></i> Unduh Berkas ' + ext.toUpperCase());
+        $('#BtnFallbackDownload').html('<i class="fa-solid fa-download mr-1"></i> Unduh Berkas ' + ext.toUpperCase());
         $('#FallbackViewerContainer').show();
       }
       else {
@@ -525,7 +670,7 @@ rsort($listTahun);
         $('#FallbackIcon').attr('class', 'fa fa-download');
         $('#FallbackIconWrapper').css({ 'background': 'rgba(4, 49, 104, 0.1)', 'color': '#043168' });
         $('#FallbackFileDesc').text('Format berkas ini dapat dibuka langsung melalui aplikasi atau diunduh ke perangkat Anda.');
-        $('#BtnFallbackDownload').html('<i class="fa fa-download mr-1"></i> Buka / Unduh Berkas');
+        $('#BtnFallbackDownload').html('<i class="fa-solid fa-download mr-1"></i> Buka / Unduh Berkas');
         $('#FallbackViewerContainer').show();
       }
     }
