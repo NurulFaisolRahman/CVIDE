@@ -264,7 +264,8 @@ class Staf extends CI_Controller {
     $insertData = array(
       'PJ'          => $pj,
       'NamaDokumen' => $namaDokumen,
-      'LinkGDrive'  => !empty($linksArray) ? json_encode($linksArray) : null
+      'LinkGDrive'  => !empty($linksArray) ? json_encode($linksArray) : null,
+      'Indikator'   => $this->input->post('Indikator')
     );
 
     $this->db->insert('bank_data', $insertData);
@@ -305,7 +306,8 @@ class Staf extends CI_Controller {
 
     $updateData = array(
       'NamaDokumen' => $namaDokumen,
-      'LinkGDrive'  => !empty($linksArray) ? json_encode($linksArray) : null
+      'LinkGDrive'  => !empty($linksArray) ? json_encode($linksArray) : null,
+      'Indikator'   => $this->input->post('Indikator')
     );
 
     $this->db->where('Id', $id);

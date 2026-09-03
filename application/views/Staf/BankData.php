@@ -8,6 +8,17 @@ function getBankDataLinks($linkField) {
   }
   return array();
 }
+
+// Helper untuk menampilkan lencana Indikator
+function renderBankIndikator($indikator) {
+  if (empty($indikator)) {
+    return '<span class="text-muted" style="font-size: 12px;">-</span>';
+  }
+  return '
+    <span class="badge px-3 py-2" style="background-color: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; border-radius: 8px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+      <i class="fa-solid fa-circle-check text-success" style="font-size: 11px;"></i> ' . htmlspecialchars($indikator) . '
+    </span>';
+}
 ?>
 
 <!-- Extra Styling for Bank Data GDrive Link Hub -->
@@ -70,7 +81,7 @@ function getBankDataLinks($linkField) {
               <span class="badge badge-primary px-2 py-1" style="background: var(--ide-navy); font-size: 11px; font-weight: 600; border-radius: 6px;">Staf Portal</span>
             </div>
             <p class="text-muted mb-0 mt-1" style="font-size: 12.5px;">
-              Kelola daftar data dokumen dan tautan Google Drive berlabel untuk akses data cepat dan terorganisir.
+              Kelola daftar data dokumen, tautan Google Drive berlabel, dan indikator status untuk keteraturan arsip.
             </p>
           </div>
         </div>
@@ -93,9 +104,10 @@ function getBankDataLinks($linkField) {
             <thead>
               <tr style="background: linear-gradient(135deg, #043168 0%, #0a3d7c 100%); color: #ffffff;">
                 <th style="width: 5%;" class="text-center align-middle">No</th>
-                <th style="width: 35%;" class="align-middle">Nama Dokumen / Data</th>
-                <th style="width: 45%;" class="align-middle">Tautan Link Google Drive</th>
-                <th style="width: 15%;" class="text-center align-middle">Aksi</th>
+                <th style="width: 32%;" class="align-middle">Nama Dokumen / Data</th>
+                <th style="width: 36%;" class="align-middle">Tautan Link Google Drive</th>
+                <th style="width: 15%;" class="text-center align-middle">Indikator</th>
+                <th style="width: 12%;" class="text-center align-middle">Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -128,21 +140,26 @@ function getBankDataLinks($linkField) {
                       <span class="text-muted" style="font-size: 12.5px;">Tidak ada link terlampir.</span>
                     <?php } ?>
                   </td>
+                  <!-- Kolom Indikator Sebelum Aksi -->
+                  <td class="text-center align-middle">
+                    <?=renderBankIndikator($key['Indikator'] ?? '')?>
+                  </td>
                   <td class="text-center align-middle text-nowrap">
                     <button type="button" 
                       class="btn btn-sm btn-warning text-white EditBankData" 
                       title="Edit Data" 
                       data-id="<?=$key['Id']?>"
                       data-nama="<?=htmlspecialchars($key['NamaDokumen'], ENT_QUOTES)?>"
+                      data-indikator="<?=htmlspecialchars($key['Indikator'] ?? '', ENT_QUOTES)?>"
                       data-links="<?=$linksJsonAttr?>"
-                      style="border-radius: 8px; padding: 6px 12px; font-weight: 600;">
+                      style="border-radius: 8px; padding: 6px 10px; font-weight: 600;">
                       <i class="fa-solid fa-pen-to-square mr-1"></i> Edit
                     </button>
                     <button type="button" 
                       data-id="<?=$key['Id']?>"
                       class="btn btn-sm btn-danger HapusBankData" 
                       title="Hapus Data" 
-                      style="border-radius: 8px; padding: 6px 12px; font-weight: 600;">
+                      style="border-radius: 8px; padding: 6px 10px; font-weight: 600;">
                       <i class="fa-solid fa-trash-can mr-1"></i> Hapus
                     </button>
                   </td>
@@ -176,9 +193,17 @@ function getBankDataLinks($linkField) {
         </button>
       </div>
       <div class="modal-body">
-        <div class="form-group mb-4">
+        <div class="form-group mb-3">
           <label for="NamaDokumen">Nama Dokumen / Data <span class="text-danger">*</span></label>
           <input type="text" class="form-control" id="NamaDokumen" placeholder="Contoh: Master Kuesioner IKM & Laporan Survei 2026...">
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="Indikator">Indikator Dokumen</label>
+          <input type="text" class="form-control" id="Indikator" placeholder="Contoh: Dokumen Acuan, Data Valid, Update Rutin, Selesai...">
+          <small class="form-text text-muted mt-1">
+            <i class="fa-solid fa-circle-info mr-1"></i> Label atau status indikator untuk dokumen data ini.
+          </small>
         </div>
 
         <!-- Dynamic Multi-Link GDrive Container -->
@@ -242,9 +267,17 @@ function getBankDataLinks($linkField) {
       <div class="modal-body">
         <input type="hidden" id="EditBankId">
 
-        <div class="form-group mb-4">
+        <div class="form-group mb-3">
           <label for="EditNamaDokumen">Nama Dokumen / Data <span class="text-danger">*</span></label>
           <input type="text" class="form-control" id="EditNamaDokumen" placeholder="Contoh: Master Kuesioner IKM & Laporan Survei 2026...">
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="EditIndikator">Indikator Dokumen</label>
+          <input type="text" class="form-control" id="EditIndikator" placeholder="Contoh: Dokumen Acuan, Data Valid, Update Rutin, Selesai...">
+          <small class="form-text text-muted mt-1">
+            <i class="fa-solid fa-circle-info mr-1"></i> Label atau status indikator untuk dokumen data ini.
+          </small>
         </div>
 
         <!-- Dynamic Multi-Link GDrive Container in Edit -->
@@ -354,6 +387,7 @@ function getBankDataLinks($linkField) {
     // Reset baris saat Modal Input dibuka
     $('#ModalInputBankData').on('show.bs.modal', function() {
       $('#NamaDokumen').val('');
+      $('#Indikator').val('');
       $('#InputGDriveLinksContainer').html(createGDriveRowHtml('', ''));
     });
 
@@ -388,6 +422,7 @@ function getBankDataLinks($linkField) {
         type: 'post',
         data: {
           NamaDokumen: namaDokumen,
+          Indikator: $("#Indikator").val().trim(),
           LinkGDrive: JSON.stringify(links)
         },
         beforeSend: function(){
@@ -415,6 +450,7 @@ function getBankDataLinks($linkField) {
     $(document).on("click", ".EditBankData", function(){
       var id = $(this).data('id');
       var nama = $(this).data('nama');
+      var indikator = $(this).data('indikator');
       var linksData = $(this).data('links');
 
       var links = [];
@@ -429,6 +465,7 @@ function getBankDataLinks($linkField) {
 
       $("#EditBankId").val(id || '');
       $("#EditNamaDokumen").val(nama || '');
+      $("#EditIndikator").val(indikator || '');
 
       var $editContainer = $('#EditGDriveLinksContainer');
       $editContainer.empty();
@@ -460,6 +497,7 @@ function getBankDataLinks($linkField) {
         data: {
           Id: $("#EditBankId").val(),
           NamaDokumen: namaDokumen,
+          Indikator: $("#EditIndikator").val().trim(),
           LinkGDrive: JSON.stringify(links)
         },
         beforeSend: function(){
