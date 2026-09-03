@@ -7,11 +7,34 @@
   <meta content="Professional Research & Consulting Services - CV Inti Desain Ekonomi" name="description">
   <meta content="consulting, research, economic development, banyuwangi, malang, lugx, ide consultant" name="keywords">
   
-  <!-- Favicons (Logo IDE) -->
+  <!-- Favicons (Logo IDE - Google Search & Multi-Device Compliant) -->
+  <link rel="icon" type="image/png" sizes="192x192" href="<?= base_url('assets/img/android-chrome-192x192.png') ?>">
+  <link rel="icon" type="image/png" sizes="96x96" href="<?= base_url('assets/img/favicon-96x96.png') ?>">
+  <link rel="icon" type="image/png" sizes="48x48" href="<?= base_url('assets/img/favicon-48x48.png') ?>">
   <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/img/favicon-32x32.png') ?>">
   <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/img/favicon-16x16.png') ?>">
   <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/img/apple-touch-icon.png') ?>">
-  <link rel="shortcut icon" href="<?= base_url('assets/img/favicon.ico') ?>">
+  <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>">
+  <link rel="manifest" href="<?= base_url('site.webmanifest') ?>">
+
+  <!-- Open Graph & Search Engine Brand Recognition -->
+  <meta property="og:title" content="IDE Consultant - Professional Research &amp; Consulting">
+  <meta property="og:description" content="Portal Riset &amp; Konsultasi Kebijakan Ekonomi Terintegrasi - CV Inti Desain Ekonomi">
+  <meta property="og:image" content="<?= base_url('assets/img/android-chrome-512x512.png') ?>">
+  <meta property="og:url" content="<?= base_url() ?>">
+  <meta property="og:site_name" content="IDE Consultant">
+  <meta property="og:type" content="website">
+
+  <!-- Schema.org Organization for Google Favicon & Brand Recognition -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "IDE Consultant",
+    "url": "<?= base_url() ?>",
+    "logo": "<?= base_url('assets/img/android-chrome-512x512.png') ?>"
+  }
+  </script>
 
   <!-- Google Fonts: Poppins (TemplateMo Lugx Gaming signature font) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
