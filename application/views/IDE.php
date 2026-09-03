@@ -636,22 +636,28 @@
       gap: 30px;
     }
 
+    /* Service Card with Image Styling */
     .trending-card {
-      background-color: var(--lugx-light-gray);
-      border-radius: var(--lugx-radius);
+      background-color: #ffffff;
+      border-radius: 20px;
       overflow: hidden;
-      transition: all 0.3s ease;
-      position: relative;
+      box-shadow: 0 10px 30px rgba(4, 49, 104, 0.08);
+      border: 1px solid #e2e8f0;
+      transition: all 0.35s ease;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
 
     .trending-card:hover {
-      box-shadow: var(--lugx-shadow);
-      transform: translateY(-5px);
+      box-shadow: 0 20px 45px rgba(4, 49, 104, 0.16);
+      transform: translateY(-8px);
+      border-color: var(--lugx-red);
     }
 
     .trending-thumb {
       position: relative;
-      height: 200px;
+      height: 210px;
       overflow: hidden;
     }
 
@@ -663,92 +669,109 @@
     }
 
     .trending-card:hover .trending-thumb img {
-      transform: scale(1.1);
+      transform: scale(1.12);
     }
 
-    /* Animated Vector Icon Header for Service Cards */
-    .service-icon-box {
-      height: 190px;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.4s ease;
-    }
-
-    .service-icon-wrapper {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      border: 2px solid rgba(255, 255, 255, 0.35);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ffffff;
-      font-size: 34px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-      animation: floatServiceIcon 4s ease-in-out infinite alternate;
-      z-index: 2;
-      transition: transform 0.4s ease;
-    }
-
-    .trending-card:hover .service-icon-wrapper {
-      transform: scale(1.15) rotate(6deg);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
-    }
-
-    @keyframes floatServiceIcon {
-      0% { transform: translateY(0px) rotate(0deg); }
-      100% { transform: translateY(-10px) rotate(4deg); }
-    }
-
-    /* Ambient Pulsating Glow Behind Icon */
-    .service-icon-glow {
+    .trending-thumb-overlay {
       position: absolute;
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, transparent 70%);
-      animation: pulseIconGlow 3s ease-in-out infinite alternate;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(4, 49, 104, 0.15) 0%, rgba(4, 49, 104, 0.75) 100%);
       z-index: 1;
     }
 
-    @keyframes pulseIconGlow {
-      0% { transform: scale(0.9); opacity: 0.5; }
-      100% { transform: scale(1.3); opacity: 0.9; }
-    }
-
-    /* Tailored Navy, Red & White Gradient Color Schemes for Each Service */
-    .box-survei { background: linear-gradient(135deg, #043168 0%, #0a3d7c 55%, #b40814 100%); }
-    .box-kebijakan { background: linear-gradient(135deg, #b40814 0%, #ee626b 45%, #043168 100%); }
-    .box-teknologi { background: linear-gradient(135deg, #043168 0%, #0d4f9b 65%, #ee626b 100%); }
-    .box-ekonomi { background: linear-gradient(135deg, #0a3d7c 0%, #043168 55%, #b40814 100%); }
-    .box-fiskal { background: linear-gradient(135deg, #b40814 0%, #043168 70%, #0a3d7c 100%); }
-    .box-regional { background: linear-gradient(135deg, #043168 0%, #0f4b93 60%, #b40814 100%); }
-    .box-manajemen { background: linear-gradient(135deg, #083772 0%, #b40814 50%, #043168 100%); }
-
-    .category-badge {
+    .service-image-icon {
       position: absolute;
       top: 15px;
       right: 15px;
-      background-color: var(--lugx-blue);
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
       color: #ffffff;
-      font-size: 12px;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+      z-index: 2;
+      transition: all 0.3s ease;
+    }
+
+    .trending-card:hover .service-image-icon {
+      background: var(--lugx-red);
+      color: #ffffff;
+      transform: scale(1.1);
+    }
+
+    .category-badge {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      background: var(--lugx-red);
+      color: #ffffff;
+      font-size: 11px;
       font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 20px;
       text-transform: uppercase;
-      padding: 4px 15px;
-      border-radius: 15px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 12px rgba(180, 8, 20, 0.4);
+      z-index: 2;
     }
 
     .trending-card-body {
-      padding: 25px;
+      padding: 22px;
       display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .trending-info span {
+      color: var(--lugx-red);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .trending-info h4 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--lugx-dark);
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+
+    .service-card-desc {
+      font-size: 13px;
+      color: var(--lugx-gray);
+      line-height: 1.5;
+      margin-bottom: 16px;
+      flex-grow: 1;
+    }
+
+    .service-card-link {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--lugx-blue);
+      text-decoration: none !important;
+      display: inline-flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 6px;
+      transition: all 0.3s ease;
+      margin-top: auto;
+    }
+
+    .service-card-link:hover {
+      color: var(--lugx-red);
+      gap: 10px;
     }
 
     .trending-info h4 {
@@ -786,9 +809,34 @@
        ABOUT & VISION MISSION SECTION (Overlapping Section Cards)
        ========================================================================== */
     .about-section {
-      padding: 100px 0 140px 0;
-      background-color: var(--lugx-light-gray);
+      padding: 95px 0 100px 0;
+      background-color: #f8fafc;
+      background-image: 
+        radial-gradient(circle at 12% 18%, rgba(4, 49, 104, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 88% 82%, rgba(180, 8, 20, 0.08) 0%, transparent 45%),
+        radial-gradient(#cbd5e1 1.2px, transparent 1.2px);
+      background-size: 100% 100%, 100% 100%, 28px 28px;
       position: relative;
+    }
+
+    /* Ambient Glowing Blue & Red Gradient Overlay Revealed on Hover */
+    .about-section::before {
+      content: '';
+      position: absolute;
+      top: -10%;
+      left: -10%;
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(circle at 20% 30%, rgba(4, 49, 104, 0.12) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 70%, rgba(180, 8, 20, 0.12) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .about-section:hover::before {
+      opacity: 1;
     }
 
     .about-container {
@@ -796,37 +844,140 @@
       margin: 0 auto;
       padding: 0 30px;
       position: relative;
+      z-index: 2;
     }
 
-    .about-grid {
+    /* Centered Prominent YouTube Video Frame */
+    .about-video-centered {
+      max-width: 1000px;
+      margin: 0 auto 50px auto;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(4, 49, 104, 0.28);
+      border: 4px solid #ffffff;
+      background: #043168;
+      position: relative;
+      transition: all 0.4s ease;
+    }
+
+    .about-video-centered:hover {
+      box-shadow: 0 30px 70px rgba(4, 49, 104, 0.38), 0 0 35px rgba(238, 98, 107, 0.25);
+      transform: translateY(-6px);
+    }
+
+    .video-header-bar {
+      background: linear-gradient(135deg, #043168 0%, #0d4f9b 100%);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .video-header-bar span {
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .video-header-bar span i {
+      color: #ff0000;
+      font-size: 18px;
+    }
+
+    .video-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .video-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .video-dot.red { background: #ff5f56; }
+    .video-dot.yellow { background: #ffbd2e; }
+    .video-dot.green { background: #27c93f; }
+
+    .video-iframe-wrapper {
+      position: relative;
+      width: 100%;
+      padding-top: 54%; /* Aspect Ratio */
+    }
+
+    .video-iframe-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* Balanced 2-Column Company Description Cards */
+    .about-desc-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 50px;
-      align-items: center;
-      margin-bottom: 70px;
+      gap: 30px;
+      margin-bottom: 60px;
     }
 
-    .about-text p {
+    .about-desc-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 32px 28px;
+      box-shadow: 0 10px 30px rgba(4, 49, 104, 0.08);
+      border: 1px solid #e2e8f0;
+      transition: all 0.35s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .about-desc-card:hover {
+      box-shadow: 0 18px 40px rgba(4, 49, 104, 0.15);
+      transform: translateY(-6px);
+      border-color: var(--lugx-blue);
+    }
+
+    .about-desc-card h4 {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--lugx-dark);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .about-desc-card h4 i {
+      color: var(--lugx-red);
+      font-size: 20px;
+    }
+
+    .about-desc-card p {
+      font-size: 14.5px;
       color: var(--lugx-gray);
-      font-size: 15px;
       line-height: 1.8;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
       text-align: justify;
     }
 
-    .about-video {
-      height: 340px;
-      border-radius: var(--lugx-radius);
-      overflow: hidden;
-      box-shadow: var(--lugx-shadow);
+    .about-desc-card p:last-child {
+      margin-bottom: 0;
     }
 
-    /* Floating Overlapping Visi Misi Cards (Memotong Section) */
+    /* Visi Misi Cards */
     .vm-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 35px;
-      margin-bottom: -140px;
+      margin-bottom: 0;
       position: relative;
       z-index: 10;
     }
@@ -1025,35 +1176,57 @@
       padding: 15px 0;
     }
 
+    .partners-section {
+      padding: 90px 0;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f6fa 50%, #ffffff 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .partners-slider-wrapper {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      padding: 25px 0;
+    }
+
     .partners-slider-wrapper::before,
     .partners-slider-wrapper::after {
       content: '';
       position: absolute;
       top: 0;
-      width: 60px;
+      width: 100px;
       height: 100%;
-      z-index: 2;
+      z-index: 5;
       pointer-events: none;
     }
 
     .partners-slider-wrapper::before {
       left: 0;
-      background: linear-gradient(to right, #ffffff, transparent);
+      background: linear-gradient(to right, #f4f6fa 0%, transparent 100%);
     }
 
     .partners-slider-wrapper::after {
       right: 0;
-      background: linear-gradient(to left, #ffffff, transparent);
+      background: linear-gradient(to left, #f4f6fa 0%, transparent 100%);
     }
 
     .partners-track {
       display: flex;
-      gap: 25px;
+      gap: 28px;
       width: max-content;
-      animation: marqueeScroll 25s linear infinite;
+      animation: marqueeScroll 28s linear infinite;
     }
 
-    .partners-slider-wrapper:hover .partners-track {
+    .partners-track-reverse {
+      display: flex;
+      gap: 28px;
+      width: max-content;
+      animation: marqueeScrollReverse 28s linear infinite;
+    }
+
+    .partners-slider-wrapper:hover .partners-track,
+    .partners-slider-wrapper:hover .partners-track-reverse {
       animation-play-state: paused;
     }
 
@@ -1062,50 +1235,117 @@
         transform: translateX(0);
       }
       100% {
-        transform: translateX(calc(-50% - 12.5px));
+        transform: translateX(calc(-50% - 14px));
       }
     }
 
+    @keyframes marqueeScrollReverse {
+      0% {
+        transform: translateX(calc(-50% - 14px));
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    /* Unique Animated Gradient Partner Card (Compact Size) */
     .partner-card {
-      flex: 0 0 180px;
-      background: linear-gradient(135deg, #043168 0%, #0d4f9b 100%);
+      flex: 0 0 155px;
+      width: 155px;
+      background: linear-gradient(135deg, #043168 0%, #0a3d7c 50%, #0d4f9b 100%);
       border-radius: 20px;
-      padding: 20px;
+      padding: 16px 12px 14px 12px;
       text-align: center;
-      transition: all 0.4s ease;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       user-select: none;
-      box-shadow: 0 8px 20px rgba(4, 49, 104, 0.25);
+      box-shadow: 0 8px 22px rgba(4, 49, 104, 0.2);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
+    /* Shimmer Sweep Animation Overlay */
+    .partner-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.25), transparent);
+      transform: skewX(-25deg);
+      transition: all 0.75s ease;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .partner-card:hover::before {
+      left: 160%;
+    }
+
+    /* Floating Aura Glow & Gradient Switch on Hover */
     .partner-card:hover {
-      background: linear-gradient(135deg, #0b3977 0%, #125cb6 100%);
-      box-shadow: 0 12px 25px rgba(4, 49, 104, 0.4);
-      transform: translateY(-5px);
+      transform: translateY(-8px) scale(1.04);
+      background: linear-gradient(135deg, #b40814 0%, #043168 60%, #0a3d7c 100%);
+      box-shadow: 0 16px 32px rgba(180, 8, 20, 0.35), 0 0 25px rgba(238, 98, 107, 0.4);
+      border-color: rgba(238, 98, 107, 0.5);
     }
 
+    /* Pemda Logo Circle Wrapper */
     .partner-logo {
-      width: 70px;
-      height: 70px;
-      margin: 0 auto 12px auto;
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 10px auto;
       border-radius: 50%;
       background: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      padding: 9px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+      position: relative;
+      z-index: 2;
+      transition: all 0.4s ease;
+      border: 2px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .partner-card:hover .partner-logo {
+      transform: scale(1.12) rotate(4deg);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.3);
+      border-color: #ffffff;
     }
 
     .partner-logo img {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
+      transition: transform 0.4s ease;
     }
 
+    .partner-card:hover .partner-logo img {
+      transform: scale(1.08);
+    }
+
+    /* Partner Name Title */
     .partner-card h3 {
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 12.5px;
+      font-weight: 800;
       color: #ffffff;
+      margin: 0;
+      line-height: 1.25;
+      letter-spacing: 0.2px;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+
+    .partner-card:hover h3 {
+      color: #ffffff;
+      text-shadow: 0 2px 10px rgba(255, 255, 255, 0.4);
     }
 
     /* ==========================================================================
@@ -2255,13 +2495,13 @@
       </div>
 
       <div class="trending-grid">
+        <!-- 1. Survei Kepuasan SKM -->
         <div class="trending-card">
           <div class="trending-thumb">
-            <div class="service-icon-box box-survei">
-              <div class="service-icon-glow"></div>
-              <div class="service-icon-wrapper">
-                <i class="fa-solid fa-square-poll-vertical"></i>
-              </div>
+            <img src="<?= base_url('assets/img/background/1.webp') ?>" alt="Survei Kepuasan SKM">
+            <div class="trending-thumb-overlay"></div>
+            <div class="service-image-icon">
+              <i class="fa-solid fa-square-poll-vertical"></i>
             </div>
             <span class="category-badge">Survei</span>
           </div>
@@ -2270,16 +2510,18 @@
               <span>Riset Publik</span>
               <h4>Survei Kepuasan SKM</h4>
             </div>
+            <p class="service-card-desc">Pengukuran Indeks Kepuasan Masyarakat (IKM) terintegrasi berbasis standar instansi pemerintah.</p>
+            <a href="<?= base_url('MenuSurvei') ?>" class="service-card-link">Selengkapnya <i class="fa-solid fa-arrow-right"></i></a>
           </div>
         </div>
 
+        <!-- 2. Desain Kebijakan Ekonomi -->
         <div class="trending-card">
           <div class="trending-thumb">
-            <div class="service-icon-box box-kebijakan">
-              <div class="service-icon-glow"></div>
-              <div class="service-icon-wrapper">
-                <i class="fa-solid fa-file-signature"></i>
-              </div>
+            <img src="<?= base_url('assets/img/background/2.webp') ?>" alt="Desain Kebijakan Ekonomi">
+            <div class="trending-thumb-overlay"></div>
+            <div class="service-image-icon">
+              <i class="fa-solid fa-file-signature"></i>
             </div>
             <span class="category-badge">Konsultasi</span>
           </div>
@@ -2288,16 +2530,18 @@
               <span>Kebijakan Publik</span>
               <h4>Desain Kebijakan Ekonomi</h4>
             </div>
+            <p class="service-card-desc">Perancangan naskah akademik, dokumen kebijakan fiskal, dan formulasi rancangan peraturan daerah.</p>
+            <a href="#contact" class="service-card-link">Konsultasikan <i class="fa-solid fa-arrow-right"></i></a>
           </div>
         </div>
 
+        <!-- 3. Pembuatan Website & Aplikasi -->
         <div class="trending-card">
           <div class="trending-thumb">
-            <div class="service-icon-box box-teknologi">
-              <div class="service-icon-glow"></div>
-              <div class="service-icon-wrapper">
-                <i class="fa-solid fa-laptop-code"></i>
-              </div>
+            <img src="<?= base_url('assets/img/background/3.webp') ?>" alt="Pembuatan Website & Aplikasi">
+            <div class="trending-thumb-overlay"></div>
+            <div class="service-image-icon">
+              <i class="fa-solid fa-laptop-code"></i>
             </div>
             <span class="category-badge">Teknologi</span>
           </div>
@@ -2306,16 +2550,18 @@
               <span>Solusi Digital</span>
               <h4>Pembuatan Website & Aplikasi</h4>
             </div>
+            <p class="service-card-desc">Pengembangan portal web interaktif, aplikasi sistem informasi, dan dashboard data terpadu.</p>
+            <a href="#contact" class="service-card-link">Pelajari Lebih Lanjut <i class="fa-solid fa-arrow-right"></i></a>
           </div>
         </div>
 
+        <!-- 4. Ekonomi Pembangunan -->
         <div class="trending-card">
           <div class="trending-thumb">
-            <div class="service-icon-box box-ekonomi">
-              <div class="service-icon-glow"></div>
-              <div class="service-icon-wrapper">
-                <i class="fa-solid fa-chart-line"></i>
-              </div>
+            <img src="<?= base_url('assets/img/background/4.webp') ?>" alt="Ekonomi Pembangunan">
+            <div class="trending-thumb-overlay"></div>
+            <div class="service-image-icon">
+              <i class="fa-solid fa-chart-line"></i>
             </div>
             <span class="category-badge">Ekonomi</span>
           </div>
@@ -2324,34 +2570,38 @@
               <span>Pembangunan Daerah</span>
               <h4>Ekonomi Pembangunan</h4>
             </div>
+            <p class="service-card-desc">Kajian perencanaan pembangunan ekonomi daerah, pertumbuhan makro, dan indikator kesejahteraan.</p>
+            <a href="#contact" class="service-card-link">Lihat Detail <i class="fa-solid fa-arrow-right"></i></a>
           </div>
         </div>
 
+        <!-- 5. Fiskal & Kebijakan Publik -->
         <div class="trending-card">
           <div class="trending-thumb">
-            <div class="service-icon-box box-fiskal">
-              <div class="service-icon-glow"></div>
-              <div class="service-icon-wrapper">
-                <i class="fa-solid fa-landmark"></i>
-              </div>
+            <img src="<?= base_url('assets/img/background/5.webp') ?>" alt="Fiskal & Kebijakan Publik">
+            <div class="trending-thumb-overlay"></div>
+            <div class="service-image-icon">
+              <i class="fa-solid fa-landmark"></i>
             </div>
             <span class="category-badge">Fiskal</span>
           </div>
           <div class="trending-card-body">
             <div class="trending-info">
-              <span>Kebijakan Publik</span>
+              <span>Keuangan Daerah</span>
               <h4>Fiskal & Kebijakan Publik</h4>
             </div>
+            <p class="service-card-desc">Pendampingan strategi pengelolaan pendapatan asli daerah (PAD) dan efisiensi penganggaran publik.</p>
+            <a href="#contact" class="service-card-link">Lihat Detail <i class="fa-solid fa-arrow-right"></i></a>
           </div>
         </div>
 
+        <!-- 6. Perencanaan Regional -->
         <div class="trending-card">
           <div class="trending-thumb">
-            <div class="service-icon-box box-regional">
-              <div class="service-icon-glow"></div>
-              <div class="service-icon-wrapper">
-                <i class="fa-solid fa-map-location-dot"></i>
-              </div>
+            <img src="<?= base_url('assets/img/background/6.webp') ?>" alt="Perencanaan Regional">
+            <div class="trending-thumb-overlay"></div>
+            <div class="service-image-icon">
+              <i class="fa-solid fa-map-location-dot"></i>
             </div>
             <span class="category-badge">Regional</span>
           </div>
@@ -2360,54 +2610,74 @@
               <span>Perencanaan Wilayah</span>
               <h4>Perencanaan Regional</h4>
             </div>
+            <p class="service-card-desc">Penyusunan dokumen induk pengembangan infrastruktur wilayah dan zonasi kawasan strategis.</p>
+            <a href="#contact" class="service-card-link">Lihat Detail <i class="fa-solid fa-arrow-right"></i></a>
           </div>
         </div>
 
+        <!-- 7. Manajemen & Tata Kelola -->
         <div class="trending-card">
           <div class="trending-thumb">
-            <div class="service-icon-box box-manajemen">
-              <div class="service-icon-glow"></div>
-              <div class="service-icon-wrapper">
-                <i class="fa-solid fa-sitemap"></i>
-              </div>
+            <img src="<?= base_url('assets/img/background/7.webp') ?>" alt="Manajemen & Tata Kelola">
+            <div class="trending-thumb-overlay"></div>
+            <div class="service-image-icon">
+              <i class="fa-solid fa-sitemap"></i>
             </div>
             <span class="category-badge">Manajemen</span>
           </div>
           <div class="trending-card-body">
             <div class="trending-info">
               <span>Tata Kelola</span>
-              <h4>Manajemen</h4>
+              <h4>Manajemen & Tata Kelola</h4>
             </div>
+            <p class="service-card-desc">Restrukturisasi kelembagaan, evaluasi kinerja organisasi instansi, dan optimasi pelayanan.</p>
+            <a href="#contact" class="service-card-link">Lihat Detail <i class="fa-solid fa-arrow-right"></i></a>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ABOUT & VISION MISSION SECTION -->
+  <!-- ABOUT & VISION MISSION SECTION (Featured Centered Video & Modern Geometric Pattern) -->
   <section id="about" class="about-section">
     <div class="about-container">
-      <div class="section-heading">
+      <div class="section-heading text-center" style="text-align: center; max-width: 800px; margin: 0 auto 40px auto;">
         <span class="subtitle">Tentang Perusahaan</span>
         <h2>Inti Desain Ekonomi Consultant</h2>
       </div>
 
-      <div class="about-grid">
-        <div class="about-text">
-          <p>CV Inti Desain Ekonomi (IDE) Consultant adalah perusahaan yang berkomitmen untuk menjadi mitra terpercaya dalam bidang riset dan konsultasi kebijakan ekonomi. Dengan semangat <strong>Be A Professional Researcher And Consultant</strong>, kami hadir untuk memberikan solusi yang inovatif dan berbasis data.</p>
-          <p>Berlokasi di Jalan Simpang Ikan Nila II, Perum Nila Residence B6, Kecamatan Blimbing, Kota Malang, kami melayani berbagai kebutuhan penelitian dan konsultasi profesional, baik untuk sektor publik maupun swasta.</p>
-          <p>Tim kami terdiri dari para profesional berpengalaman yang berdedikasi untuk menghadirkan hasil riset berkualitas tinggi serta solusi yang mendorong pembangunan ekonomi yang berkelanjutan.</p>
+      <!-- 1. Featured Large Centered YouTube Video Frame -->
+      <div class="about-video-centered">
+        <div class="video-header-bar">
+          <span><i class="fa-brands fa-youtube"></i> Video Profil Resmi CV IDE Consultant</span>
+          <div class="video-dots">
+            <div class="video-dot red"></div>
+            <div class="video-dot yellow"></div>
+            <div class="video-dot green"></div>
+          </div>
         </div>
-
-        <div class="about-video">
-          <iframe width="100%" height="100%" 
-                  src="https://www.youtube.com/embed/SKajwW-IaW0"
-                  title="Company Video" frameborder="0" 
+        <div class="video-iframe-wrapper">
+          <iframe src="https://www.youtube.com/embed/SKajwW-IaW0"
+                  title="Company Video Profil IDE Consultant" 
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                   allowfullscreen></iframe>
         </div>
       </div>
 
+      <!-- 2. Balanced 2-Column Company Description Cards -->
+      <div class="about-desc-grid">
+        <div class="about-desc-card">
+          <h4><i class="fa-solid fa-award"></i> Mitra Riset & Konsultasi Terpercaya</h4>
+          <p>CV Inti Desain Ekonomi (IDE) Consultant adalah perusahaan terkemuka yang berkomitmen menjadi mitra terpercaya dalam riset dan konsultasi kebijakan ekonomi. Berlandaskan semangat <strong>"Be A Professional Researcher And Consultant"</strong>, kami menghadirkan solusi komprehensif, terukur, dan berbasis bukti data ilmiah <em>(data-driven decisions)</em>.</p>
+        </div>
+
+        <div class="about-desc-card">
+          <h4><i class="fa-solid fa-location-dot"></i> Kantor Pusat & Jangkauan Layanan</h4>
+          <p>Berpusat di Malang (Jl. Simpang Ikan Nila II, Perum Nila Residence B6, Blimbing, Kota Malang), tim kami melayani berbagai kebutuhan penelitian strategis dan pendampingan konsultasi profesional untuk instansi pemerintah (publik) maupun lembaga swasta di seluruh wilayah Indonesia.</p>
+        </div>
+      </div>
+
+      <!-- 3. Overlapping Visi & Misi Cards -->
       <div class="vm-grid">
         <div class="vm-card">
           <h3><i class="fa-solid fa-bullseye"></i> Visi Kami</h3>
@@ -2456,6 +2726,7 @@
         <h2>Jejaring Kemitraan Kami</h2>
       </div>
 
+      <!-- Slider 1 (Direction: Right to Left) -->
       <div class="partners-slider-wrapper">
         <div class="partners-track">
           <!-- Set 1 -->
@@ -2556,6 +2827,111 @@
               <img src="<?= base_url('assets/img/partner/kab.banyuwangi.jpg') ?>" alt="Kab. Banyuwangi">
             </div>
             <h3>Kab. Banyuwangi</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slider 2 (Direction: Left to Right - Opposite Slide) -->
+      <div class="partners-slider-wrapper" style="margin-top: 20px;">
+        <div class="partners-track-reverse">
+          <!-- Set 1 (Reversed Partner Order) -->
+          <div class="partner-card">
+            <div class="partner-logo">
+              <img src="<?= base_url('assets/img/partner/kab.banyuwangi.jpg') ?>" alt="Kab. Banyuwangi">
+            </div>
+            <h3>Kab. Banyuwangi</h3>
+          </div>
+
+          <div class="partner-card">
+            <div class="partner-logo">
+              <img src="<?= base_url('assets/img/partner/kab.situbondo.jpg') ?>" alt="Kab. Situbondo">
+            </div>
+            <h3>Kab. Situbondo</h3>
+          </div>
+
+          <div class="partner-card">
+            <div class="partner-logo">
+              <img src="<?= base_url('assets/img/partner/kotamojokerto.jpg') ?>" alt="Kota Mojokerto">
+            </div>
+            <h3>Kota Mojokerto</h3>
+          </div>
+
+          <div class="partner-card">
+            <div class="partner-logo">
+              <img src="<?= base_url('assets/img/partner/kotablitar.jpg') ?>" alt="Kota Blitar">
+            </div>
+            <h3>Kota Blitar</h3>
+          </div>
+
+          <div class="partner-card">
+            <div class="partner-logo">
+              <img src="<?= base_url('assets/img/partner/kab.mojokerto.jpg') ?>" alt="Kab. Mojokerto">
+            </div>
+            <h3>Kab. Mojokerto</h3>
+          </div>
+
+          <div class="partner-card">
+            <div class="partner-logo">
+              <img src="<?= base_url('assets/img/partner/kab.ponorogo.png') ?>" alt="Kab. Ponorogo">
+            </div>
+            <h3>Kab. Ponorogo</h3>
+          </div>
+
+          <div class="partner-card">
+            <div class="partner-logo">
+              <img src="<?= base_url('assets/img/partner/jawatimur.jpg') ?>" alt="Jawa Timur">
+            </div>
+            <h3>Jawa Timur</h3>
+          </div>
+
+          <!-- Set 2 (Duplicate for Seamless Loop) -->
+          <div class="partner-card">
+            <div class="partner-logo">
+              <img src="<?= base_url('assets/img/partner/kab.banyuwangi.jpg') ?>" alt="Kab. Banyuwangi">
+            </div>
+            <h3>Kab. Banyuwangi</h3>
+          </div>
+
+          <div class="partner-card">
+            <div class="partner-logo">
+              <img src="<?= base_url('assets/img/partner/kab.situbondo.jpg') ?>" alt="Kab. Situbondo">
+            </div>
+            <h3>Kab. Situbondo</h3>
+          </div>
+
+          <div class="partner-card">
+            <div class="partner-logo">
+              <img src="<?= base_url('assets/img/partner/kotamojokerto.jpg') ?>" alt="Kota Mojokerto">
+            </div>
+            <h3>Kota Mojokerto</h3>
+          </div>
+
+          <div class="partner-card">
+            <div class="partner-logo">
+              <img src="<?= base_url('assets/img/partner/kotablitar.jpg') ?>" alt="Kota Blitar">
+            </div>
+            <h3>Kota Blitar</h3>
+          </div>
+
+          <div class="partner-card">
+            <div class="partner-logo">
+              <img src="<?= base_url('assets/img/partner/kab.mojokerto.jpg') ?>" alt="Kab. Mojokerto">
+            </div>
+            <h3>Kab. Mojokerto</h3>
+          </div>
+
+          <div class="partner-card">
+            <div class="partner-logo">
+              <img src="<?= base_url('assets/img/partner/kab.ponorogo.png') ?>" alt="Kab. Ponorogo">
+            </div>
+            <h3>Kab. Ponorogo</h3>
+          </div>
+
+          <div class="partner-card">
+            <div class="partner-logo">
+              <img src="<?= base_url('assets/img/partner/jawatimur.jpg') ?>" alt="Jawa Timur">
+            </div>
+            <h3>Jawa Timur</h3>
           </div>
         </div>
       </div>
