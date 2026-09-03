@@ -187,7 +187,7 @@ rsort($listTahun);
               <span class="badge badge-primary px-2 py-1" style="background: var(--ide-navy); font-size: 11px; font-weight: 600; border-radius: 6px;">Staf Portal</span>
             </div>
             <p class="text-muted mb-0 mt-1" style="font-size: 12.5px;">
-              Kelola data berkas kegiatan, kategori, tahun pelaksanaan, serta dokumen project (PDF, Word, Excel).
+              Kelola data berkas kegiatan, kategori, tahun pelaksanaan, serta dokumen project (PDF, Word, Excel, ZIP, RAR).
             </p>
           </div>
         </div>
@@ -354,17 +354,17 @@ rsort($listTahun);
 
         <!-- Dynamic File Upload Container with [+] and Delete Button -->
         <div class="form-group mb-2">
-          <label>Unggah Berkas Dokumen (PDF, Word, Excel)</label>
+          <label>Unggah Berkas Dokumen (PDF, Word, Excel, ZIP, RAR)</label>
           <div id="InputFilesContainer">
             <div class="input-file-row d-flex align-items-center mb-2" style="gap: 8px;">
-              <input class="form-control file-input-item" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv">
+              <input class="form-control file-input-item" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.zip,.rar,.7z">
               <button type="button" class="btn btn-success btn-add-file-row" style="border-radius: 12px; padding: 9px 15px; flex-shrink: 0;" title="Tambah Baris Berkas Baru">
                 <i class="fa-solid fa-plus"></i>
               </button>
             </div>
           </div>
           <small class="form-text text-muted mt-1">
-            <i class="fa-solid fa-circle-info mr-1"></i> Mendukung format <strong>PDF, Word (.doc, .docx), Excel (.xls, .xlsx, .csv)</strong>. Klik tombol <strong class="text-success"><i class="fa-solid fa-plus"></i></strong> di samping untuk menambah berkas lainnya.
+            <i class="fa-solid fa-circle-info mr-1"></i> Mendukung format <strong>PDF, Word (.doc, .docx), Excel (.xls, .xlsx, .csv), ZIP, dan RAR</strong>. Klik tombol <strong class="text-success"><i class="fa-solid fa-plus"></i></strong> di samping untuk menambah berkas lainnya.
           </small>
         </div>
       </div>
@@ -424,17 +424,17 @@ rsort($listTahun);
 
         <!-- Dynamic New File Upload Container in Edit Modal -->
         <div class="form-group mb-2">
-          <label>Tambah Berkas Baru (PDF, Word, Excel)</label>
+          <label>Tambah Berkas Baru (PDF, Word, Excel, ZIP, RAR)</label>
           <div id="EditFilesContainer">
             <div class="input-file-row d-flex align-items-center mb-2" style="gap: 8px;">
-              <input class="form-control file-input-item" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv">
+              <input class="form-control file-input-item" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.zip,.rar,.7z">
               <button type="button" class="btn btn-success btn-add-edit-file-row" style="border-radius: 12px; padding: 9px 15px; flex-shrink: 0;" title="Tambah Baris Berkas Baru">
                 <i class="fa-solid fa-plus"></i>
               </button>
             </div>
           </div>
           <small class="form-text text-muted mt-1">
-            <i class="fa-solid fa-circle-info mr-1"></i> Mendukung <strong>PDF, Word (.doc, .docx), Excel (.xls, .xlsx, .csv)</strong>. Klik tombol <strong class="text-success"><i class="fa-solid fa-plus"></i></strong> di samping untuk menambah baris berkas lainnya.
+            <i class="fa-solid fa-circle-info mr-1"></i> Mendukung <strong>PDF, Word (.doc, .docx), Excel (.xls, .xlsx, .csv), ZIP, dan RAR</strong>. Klik tombol <strong class="text-success"><i class="fa-solid fa-plus"></i></strong> di samping untuk menambah baris berkas lainnya.
           </small>
         </div>
       </div>
@@ -449,7 +449,7 @@ rsort($listTahun);
   </div>
 </div>
 
-<!-- Universal In-Browser Multi-Document Slide Viewer Modal (PDF, Word, Excel) -->
+<!-- Universal In-Browser Multi-Document Slide Viewer Modal (PDF, Word, Excel, ZIP, RAR) -->
 <div class="modal fade" id="ModalProject" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
     <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
@@ -517,15 +517,15 @@ rsort($listTahun);
           <div class="sheet-tabs-container" id="ExcelSheetTabs"></div>
         </div>
 
-        <!-- Fallback Download Card Container -->
+        <!-- Fallback Download Card Container (ZIP, RAR & Other Files) -->
         <div id="FallbackViewerContainer" class="text-center py-5" style="display: none;">
-          <div class="mb-3 d-inline-flex align-items-center justify-content-center rounded-circle" style="width: 70px; height: 70px; background: rgba(4, 49, 104, 0.1); color: var(--ide-navy);">
-            <i class="fa-solid fa-file-arrow-down" style="font-size: 30px;"></i>
+          <div class="mb-3 d-inline-flex align-items-center justify-content-center rounded-circle" id="FallbackIconWrapper" style="width: 76px; height: 76px; background: rgba(4, 49, 104, 0.1); color: var(--ide-navy); margin: 0 auto;">
+            <i class="fa-solid fa-file-zipper" id="FallbackIcon" style="font-size: 34px;"></i>
           </div>
           <h5 class="font-weight-bold text-dark mb-2" id="FallbackFileName">Dokumen Project</h5>
-          <p class="text-muted" style="font-size: 13px;">Format berkas ini dapat dibuka langsung melalui aplikasi atau diunduh ke perangkat Anda.</p>
-          <a href="#" id="BtnFallbackDownload" target="_blank" download class="btn btn-primary px-4 py-2" style="border-radius: 20px; font-weight: 700;">
-            <i class="fa-solid fa-download mr-1"></i> Buka / Unduh Berkas
+          <p class="text-muted" style="font-size: 13.5px;" id="FallbackFileDesc">Berkas arsip (ZIP / RAR) dapat diunduh dan diekstrak langsung pada komputer Anda.</p>
+          <a href="#" id="BtnFallbackDownload" target="_blank" download class="btn btn-primary px-4 py-2" style="border-radius: 20px; font-weight: 700; background: var(--ide-red); border: none; box-shadow: 0 4px 14px rgba(180, 8, 20, 0.35);">
+            <i class="fa-solid fa-download mr-1"></i> Unduh Berkas Arsip
           </a>
         </div>
 
@@ -593,7 +593,7 @@ rsort($listTahun);
     });
 
     // =========================================================================
-    // IN-BROWSER MULTI-DOCUMENT SLIDE VIEWER (PDF, WORD, EXCEL)
+    // IN-BROWSER MULTI-DOCUMENT SLIDE VIEWER (PDF, WORD, EXCEL, ZIP, RAR)
     // =========================================================================
     var activeProjectFiles = [];
     var activeDocIndex = 0;
@@ -701,9 +701,22 @@ rsort($listTahun);
             $('#FallbackViewerContainer').show();
           });
       }
-      // 4. Other formats fallback
+      // 4. ZIP / RAR / 7Z Archive Handler
+      else if (ext === 'zip' || ext === 'rar' || ext === '7z') {
+        $('#ViewerLoadingSpinner').hide();
+        $('#FallbackIcon').attr('class', 'fa-solid fa-file-zipper');
+        $('#FallbackIconWrapper').css({ 'background': 'rgba(234, 88, 12, 0.1)', 'color': '#ea580c' });
+        $('#FallbackFileDesc').text('Berkas arsip terkompresi (' + ext.toUpperCase() + ') dapat diunduh langsung untuk diekstrak pada komputer Anda.');
+        $('#BtnFallbackDownload').html('<i class="fa-solid fa-download mr-1"></i> Unduh Berkas ' + ext.toUpperCase());
+        $('#FallbackViewerContainer').show();
+      }
+      // 5. Other formats fallback
       else {
         $('#ViewerLoadingSpinner').hide();
+        $('#FallbackIcon').attr('class', 'fa-solid fa-file-arrow-down');
+        $('#FallbackIconWrapper').css({ 'background': 'rgba(4, 49, 104, 0.1)', 'color': 'var(--ide-navy)' });
+        $('#FallbackFileDesc').text('Format berkas ini dapat dibuka langsung melalui aplikasi atau diunduh ke perangkat Anda.');
+        $('#BtnFallbackDownload').html('<i class="fa-solid fa-download mr-1"></i> Buka / Unduh Berkas');
         $('#FallbackViewerContainer').show();
       }
     }
@@ -748,6 +761,8 @@ rsort($listTahun);
           iconHtml = '<i class="fa-solid fa-file-word mr-1 text-primary"></i>';
         } else if (ext === 'xls' || ext === 'xlsx' || ext === 'csv') {
           iconHtml = '<i class="fa-solid fa-file-excel mr-1 text-success"></i>';
+        } else if (ext === 'zip' || ext === 'rar' || ext === '7z') {
+          iconHtml = '<i class="fa-solid fa-file-zipper mr-1" style="color: #ea580c;"></i>';
         }
 
         var displayName = f.length > 32 ? f.substring(0, 29) + '...' : f;
@@ -805,7 +820,7 @@ rsort($listTahun);
       e.preventDefault();
       var rowHtml = 
         '<div class="input-file-row d-flex align-items-center mb-2" style="gap: 8px;">' +
-          '<input class="form-control file-input-item" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv">' +
+          '<input class="form-control file-input-item" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.zip,.rar,.7z">' +
           '<button type="button" class="btn btn-danger btn-remove-file-row" style="border-radius: 12px; padding: 9px 15px; flex-shrink: 0;" title="Hapus Baris Ini">' +
             '<i class="fa-solid fa-trash-can"></i>' +
           '</button>' +
@@ -824,7 +839,7 @@ rsort($listTahun);
       e.preventDefault();
       var rowHtml = 
         '<div class="input-file-row d-flex align-items-center mb-2" style="gap: 8px;">' +
-          '<input class="form-control file-input-item" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv">' +
+          '<input class="form-control file-input-item" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.zip,.rar,.7z">' +
           '<button type="button" class="btn btn-danger btn-remove-edit-file-row" style="border-radius: 12px; padding: 9px 15px; flex-shrink: 0;" title="Hapus Baris Ini">' +
             '<i class="fa-solid fa-trash-can"></i>' +
           '</button>' +
@@ -842,7 +857,7 @@ rsort($listTahun);
     $('#ModalInput').on('show.bs.modal', function() {
       $('#InputFilesContainer').html(
         '<div class="input-file-row d-flex align-items-center mb-2" style="gap: 8px;">' +
-          '<input class="form-control file-input-item" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv">' +
+          '<input class="form-control file-input-item" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.zip,.rar,.7z">' +
           '<button type="button" class="btn btn-success btn-add-file-row" style="border-radius: 12px; padding: 9px 15px; flex-shrink: 0;" title="Tambah Baris Berkas Baru">' +
             '<i class="fa-solid fa-plus"></i>' +
           '</button>' +
@@ -923,6 +938,8 @@ rsort($listTahun);
           iconHtml = '<i class="fa-solid fa-file-word mr-1 text-primary"></i>';
         } else if (ext === 'xls' || ext === 'xlsx' || ext === 'csv') {
           iconHtml = '<i class="fa-solid fa-file-excel mr-1 text-success"></i>';
+        } else if (ext === 'zip' || ext === 'rar' || ext === '7z') {
+          iconHtml = '<i class="fa-solid fa-file-zipper mr-1" style="color: #ea580c;"></i>';
         }
 
         var $badge = $(
@@ -999,7 +1016,7 @@ rsort($listTahun);
       // Reset file input row di edit modal
       $('#EditFilesContainer').html(
         '<div class="input-file-row d-flex align-items-center mb-2" style="gap: 8px;">' +
-          '<input class="form-control file-input-item" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv">' +
+          '<input class="form-control file-input-item" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.zip,.rar,.7z">' +
           '<button type="button" class="btn btn-success btn-add-edit-file-row" style="border-radius: 12px; padding: 9px 15px; flex-shrink: 0;" title="Tambah Baris Berkas Baru">' +
             '<i class="fa-solid fa-plus"></i>' +
           '</button>' +

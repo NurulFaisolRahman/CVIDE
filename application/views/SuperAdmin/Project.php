@@ -336,15 +336,13 @@ rsort($listTahun);
         <div id="ExcelViewerContainer" style="display: none;">
           <div class="excel-table-wrapper" id="ExcelTableContainer"></div>
           <div class="sheet-tabs-container" id="ExcelSheetTabs"></div>
-        </div>
-
-        <!-- Fallback Download Card Container -->
+        </di        <!-- Fallback Download Card Container (ZIP, RAR & Other Files) -->
         <div id="FallbackViewerContainer" class="text-center py-5" style="display: none;">
-          <div class="mb-3 d-inline-flex align-items-center justify-content-center rounded-circle" style="width: 70px; height: 70px; background: rgba(4, 49, 104, 0.1); color: #043168; margin: 0 auto;">
-            <i class="fa fa-download" style="font-size: 30px;"></i>
+          <div class="mb-3 d-inline-flex align-items-center justify-content-center rounded-circle" id="FallbackIconWrapper" style="width: 76px; height: 76px; background: rgba(4, 49, 104, 0.1); color: #043168; margin: 0 auto;">
+            <i class="fa-solid fa-file-zipper" id="FallbackIcon" style="font-size: 34px;"></i>
           </div>
           <h5 class="font-weight-bold text-dark mb-2" id="FallbackFileName">Dokumen Project</h5>
-          <p class="text-muted" style="font-size: 13px;">Format berkas ini dapat dibuka langsung melalui aplikasi atau diunduh ke perangkat Anda.</p>
+          <p class="text-muted" style="font-size: 13.5px;" id="FallbackFileDesc">Berkas arsip (ZIP / RAR) dapat diunduh dan diekstrak langsung pada komputer Anda.</p>
           <a href="#" id="BtnFallbackDownload" target="_blank" download class="btn btn-primary px-4 py-2" style="border-radius: 20px; font-weight: 700;">
             <i class="fa fa-download mr-1"></i> Buka / Unduh Berkas
           </a>
@@ -412,7 +410,7 @@ rsort($listTahun);
     });
 
     // =========================================================================
-    // IN-BROWSER MULTI-DOCUMENT SLIDE VIEWER (PDF, WORD, EXCEL)
+    // IN-BROWSER MULTI-DOCUMENT SLIDE VIEWER (PDF, WORD, EXCEL, ZIP, RAR)
     // =========================================================================
     var activeProjectFiles = [];
     var activeDocIndex = 0;
@@ -514,8 +512,20 @@ rsort($listTahun);
             $('#FallbackViewerContainer').show();
           });
       }
+      else if (ext === 'zip' || ext === 'rar' || ext === '7z') {
+        $('#ViewerLoadingSpinner').hide();
+        $('#FallbackIcon').attr('class', 'fa-solid fa-file-zipper');
+        $('#FallbackIconWrapper').css({ 'background': 'rgba(234, 88, 12, 0.1)', 'color': '#ea580c' });
+        $('#FallbackFileDesc').text('Berkas arsip terkompresi (' + ext.toUpperCase() + ') dapat diunduh langsung untuk diekstrak pada komputer Anda.');
+        $('#BtnFallbackDownload').html('<i class="fa fa-download mr-1"></i> Unduh Berkas ' + ext.toUpperCase());
+        $('#FallbackViewerContainer').show();
+      }
       else {
         $('#ViewerLoadingSpinner').hide();
+        $('#FallbackIcon').attr('class', 'fa fa-download');
+        $('#FallbackIconWrapper').css({ 'background': 'rgba(4, 49, 104, 0.1)', 'color': '#043168' });
+        $('#FallbackFileDesc').text('Format berkas ini dapat dibuka langsung melalui aplikasi atau diunduh ke perangkat Anda.');
+        $('#BtnFallbackDownload').html('<i class="fa fa-download mr-1"></i> Buka / Unduh Berkas');
         $('#FallbackViewerContainer').show();
       }
     }
@@ -556,9 +566,11 @@ rsort($listTahun);
         if (ext === 'pdf') {
           iconHtml = '<i class="fa-file-pdf-o mr-1 text-danger"></i>';
         } else if (ext === 'doc' || ext === 'docx') {
-          iconHtml = '<i class="fa fa-file-word-o mr-1 text-primary"></i>';
+          iconHtml = '<i class="fa-file-word-o mr-1 text-primary"></i>';
         } else if (ext === 'xls' || ext === 'xlsx' || ext === 'csv') {
-          iconHtml = '<i class="fa fa-file-excel-o mr-1 text-success"></i>';
+          iconHtml = '<i class="fa-file-excel-o mr-1 text-success"></i>';
+        } else if (ext === 'zip' || ext === 'rar' || ext === '7z') {
+          iconHtml = '<i class="fa-solid fa-file-zipper mr-1" style="color: #ea580c;"></i>';
         }
 
         var displayName = f.length > 32 ? f.substring(0, 29) + '...' : f;
