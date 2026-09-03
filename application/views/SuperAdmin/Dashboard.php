@@ -77,37 +77,70 @@
 
   /* Shortcut Quick Action Cards (Equal Size & Proportional Height) */
   .shortcut-card {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 26px 24px;
-    border: 1px solid var(--ide-border);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-    transition: all 0.3s ease;
+    background: #ffffff !important;
+    border-radius: 20px !important;
+    padding: 24px !important;
+    border: 1px solid var(--ide-border) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
+    transition: all 0.3s ease !important;
     text-decoration: none !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    width: 100%;
-    min-height: 170px;
-    color: inherit;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    min-height: 160px !important;
+    color: inherit !important;
+    position: relative !important;
+    overflow: hidden !important;
   }
 
   .shortcut-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--ide-red-coral);
-    box-shadow: 0 18px 40px rgba(180, 8, 20, 0.12);
+    transform: translateY(-5px) !important;
+    border-color: var(--ide-red-coral) !important;
+    box-shadow: 0 18px 40px rgba(180, 8, 20, 0.12) !important;
+    text-decoration: none !important;
   }
 
-  .shortcut-icon {
-    font-size: 28px;
-    color: var(--ide-navy);
-    margin-bottom: 15px;
-    transition: transform 0.3s ease;
+  .shortcut-icon-box {
+    width: 52px !important;
+    height: 52px !important;
+    border-radius: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 22px !important;
+    margin-bottom: 16px !important;
+    flex-shrink: 0 !important;
+    position: static !important;
+    transition: all 0.3s ease !important;
   }
 
-  .shortcut-card:hover .shortcut-icon {
-    color: var(--ide-red);
-    transform: scale(1.15);
+  .shortcut-icon-box i {
+    position: static !important;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    display: inline-block !important;
+  }
+
+  .shortcut-icon-blue {
+    background: rgba(4, 49, 104, 0.1) !important;
+    color: var(--ide-navy) !important;
+  }
+
+  .shortcut-icon-red {
+    background: rgba(180, 8, 20, 0.1) !important;
+    color: var(--ide-red) !important;
+  }
+
+  .shortcut-icon-green {
+    background: rgba(16, 185, 129, 0.1) !important;
+    color: #10b981 !important;
+  }
+
+  .shortcut-card:hover .shortcut-icon-box {
+    transform: scale(1.1) !important;
   }
 
   .shortcut-title {
@@ -302,7 +335,9 @@
 <div class="row mb-5 align-items-stretch">
   <div class="col-md-4 mb-3 d-flex">
     <a href="<?=base_url('SuperAdmin/PendapatanKas')?>" class="shortcut-card">
-      <i class="fa-solid fa-wallet shortcut-icon"></i>
+      <div class="shortcut-icon-box shortcut-icon-blue">
+        <i class="fa-solid fa-wallet"></i>
+      </div>
       <div>
         <div class="shortcut-title">Kas In (Pendapatan)</div>
         <div class="shortcut-desc">Kelola pemasukan kas umum perusahaan dan penerimaan dana secara real-time.</div>
@@ -311,7 +346,9 @@
   </div>
   <div class="col-md-4 mb-3 d-flex">
     <a href="<?=base_url('SuperAdmin/PengeluaranKegiatan')?>" class="shortcut-card">
-      <i class="fa-solid fa-receipt shortcut-icon"></i>
+      <div class="shortcut-icon-box shortcut-icon-red">
+        <i class="fa-solid fa-receipt"></i>
+      </div>
       <div>
         <div class="shortcut-title">Pengeluaran Kegiatan</div>
         <div class="shortcut-desc">Pencatatan rincian biaya proyek riset & operasional lapangan kegiatan.</div>
@@ -320,7 +357,9 @@
   </div>
   <div class="col-md-4 mb-3 d-flex">
     <a href="<?=base_url('SuperAdmin/JurnalTotal')?>" class="shortcut-card">
-      <i class="fa-solid fa-book-bookmark shortcut-icon"></i>
+      <div class="shortcut-icon-box shortcut-icon-green">
+        <i class="fa-solid fa-book-bookmark"></i>
+      </div>
       <div>
         <div class="shortcut-title">Laporan Jurnal Total</div>
         <div class="shortcut-desc">Lihat rekapitulasi jurnal neraca saldo akhir kas & pengeluaran perusahaan.</div>
