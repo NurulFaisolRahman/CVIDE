@@ -537,6 +537,30 @@
         vertical-align: middle !important;
       }
 
+      /* Hapus/Sembunyikan Ikon Panah Sorting (↑↓) pada Header Tabel */
+      table.dataTable thead .sorting:before,
+      table.dataTable thead .sorting:after,
+      table.dataTable thead .sorting_asc:before,
+      table.dataTable thead .sorting_asc:after,
+      table.dataTable thead .sorting_desc:before,
+      table.dataTable thead .sorting_desc:after,
+      table.dataTable thead > tr > th.sorting:before,
+      table.dataTable thead > tr > th.sorting:after,
+      table.dataTable thead > tr > th.sorting_asc:before,
+      table.dataTable thead > tr > th.sorting_asc:after,
+      table.dataTable thead > tr > th.sorting_desc:before,
+      table.dataTable thead > tr > th.sorting_desc:after,
+      table.dataTable thead > tr > td.sorting:before,
+      table.dataTable thead > tr > td.sorting:after,
+      table.dataTable thead > tr > td.sorting_asc:before,
+      table.dataTable thead > tr > td.sorting_asc:after,
+      table.dataTable thead > tr > td.sorting_desc:before,
+      table.dataTable thead > tr > td.sorting_desc:after {
+        display: none !important;
+        content: "" !important;
+        opacity: 0 !important;
+      }
+
       /* Body Table Cells & Hover */
       table.dataTable tbody td, 
       table.table tbody td {

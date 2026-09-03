@@ -500,8 +500,10 @@
         overflow: hidden !important;
       }
 
-      table.dataTable thead th {
+      table.dataTable thead th,
+      table.dataTable thead td {
         background: linear-gradient(135deg, #043168 0%, #0a3d7c 100%) !important;
+        background-image: none !important;
         color: #ffffff !important;
         font-size: 12px !important;
         font-weight: 700 !important;
@@ -510,6 +512,30 @@
         padding: 10px 14px !important;
         border: none !important;
         vertical-align: middle !important;
+      }
+
+      /* Hapus/Sembunyikan Ikon Panah Sorting (↑↓) pada Header Tabel */
+      table.dataTable thead .sorting:before,
+      table.dataTable thead .sorting:after,
+      table.dataTable thead .sorting_asc:before,
+      table.dataTable thead .sorting_asc:after,
+      table.dataTable thead .sorting_desc:before,
+      table.dataTable thead .sorting_desc:after,
+      table.dataTable thead > tr > th.sorting:before,
+      table.dataTable thead > tr > th.sorting:after,
+      table.dataTable thead > tr > th.sorting_asc:before,
+      table.dataTable thead > tr > th.sorting_asc:after,
+      table.dataTable thead > tr > th.sorting_desc:before,
+      table.dataTable thead > tr > th.sorting_desc:after,
+      table.dataTable thead > tr > td.sorting:before,
+      table.dataTable thead > tr > td.sorting:after,
+      table.dataTable thead > tr > td.sorting_asc:before,
+      table.dataTable thead > tr > td.sorting_asc:after,
+      table.dataTable thead > tr > td.sorting_desc:before,
+      table.dataTable thead > tr > td.sorting_desc:after {
+        display: none !important;
+        content: "" !important;
+        opacity: 0 !important;
       }
 
       table.dataTable tbody td {
