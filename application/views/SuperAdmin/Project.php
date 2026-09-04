@@ -534,7 +534,14 @@ rsort($listTahun);
 
 						// Jenis Pengadaan fallback
 						$jenisPengadaan = !empty($key['JenisPengadaan']) ? $key['JenisPengadaan'] : (!empty($key['Kategori']) ? $key['Kategori'] : '-');
-						$statusVal = !empty($key['Status']) ? $key['Status'] : 'Sedang Berjalan';
+						$rawStatus = !empty($key['Status']) ? trim($key['Status']) : 'Belum Mulai';
+						if (in_array(strtolower($rawStatus), ['sedang berjalan', 'berjalan', 'proses', 'sedang dikerjakan', 'sedang proses'])) {
+							$normStatus = 'Sedang Proses';
+						} else if (strtolower($rawStatus) === 'selesai') {
+							$normStatus = 'Selesai';
+						} else {
+							$normStatus = 'Belum Mulai';
+						}
 					?>
 						<tr>
 							<th scope="row" class="text-center align-middle font-weight-bold"><?=$No++?></th>
@@ -583,9 +590,9 @@ rsort($listTahun);
 								<?=renderSuperTimelineCell($rawDl)?>
 							</td>
 
-							<!-- Kolom 4: Status (Single Clean Pill Card) -->
-							<td class="text-center align-middle text-nowrap">
-								<?=renderSuperStatusBadge($key['Id'], $statusVal)?>
+							<!-- Kolom 4: Status (Single Clean Pill Card with DataTables data-filter/search) -->
+							<td class="text-center align-middle text-nowrap" data-filter="<?=$normStatus?>" data-search="<?=$normStatus?>">
+								<?=renderSuperStatusBadge($key['Id'], $normStatus)?>
 							</td>
 
 							<!-- Kolom 5: Dokumen Admin -->
@@ -743,6 +750,7 @@ rsort($listTahun);
 
 		var table = $('#TabelProject').DataTable({
 			"ordering": true,
+			"order": [], // Mempertahankan urutan prioritas server (Tahun terbaru & Status aktif di atas)
 			"pageLength": 10,
 			"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Semua"]],
 			"language": {
@@ -758,23 +766,67 @@ rsort($listTahun);
 			}
 		});
 
-    // Pasang Dropdown Filter Tahun tepat di sebelah 'Cari Project:'
-    var filterTahunHtml = 
-      '<div class="d-inline-flex align-items-center mr-2" id="WrapperFilterTahun" style="gap: 6px;">' +
-        '<label class="mb-0 text-dark font-weight-bold" style="font-size: 13px; white-space: nowrap;"><i class="fa fa-calendar mr-1 text-danger"></i> Filter Tahun:</label>' +
-        '<select class="form-control form-control-sm" id="SelectFilterTahun" style="border-radius: 8px; border: 1px solid #cbd5e1; height: 35px; min-width: 135px; font-weight: 600; font-size: 13px; color: #043168; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">' +
+    // Pasang 1 Grup Filter Terpadu (Tahun & Status) tepat di sebelah 'Cari Project:'
+    var unifiedFilterHtml = 
+      '<div class="d-inline-flex align-items-center mr-2 p-1" id="WrapperUnifiedFilter" style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; gap: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">' +
+        '<div class="d-flex align-items-center pl-1 pr-1" style="gap: 5px; color: #043168; font-weight: 700; font-size: 12.5px; white-space: nowrap;">' +
+          '<i class="fa fa-filter text-danger"></i>' +
+          '<span>Filter:</span>' +
+        '</div>' +
+        '<select class="form-control form-control-sm" id="SelectFilterTahun" style="border-radius: 8px; border: 1px solid #cbd5e1; height: 32px; min-width: 125px; font-weight: 600; font-size: 12px; color: #043168; background: #ffffff;">' +
           '<option value="">Semua Tahun</option>' +
           <?php foreach ($listTahun as $th) { ?>
-            '<option value="<?=htmlspecialchars($th, ENT_QUOTES)?>"><?=htmlspecialchars($th, ENT_QUOTES)?></option>' +
+            '<option value="<?=htmlspecialchars($th, ENT_QUOTES)?>">Tahun <?=htmlspecialchars($th, ENT_QUOTES)?></option>' +
           <?php } ?>
         '</select>' +
+        '<select class="form-control form-control-sm" id="SelectFilterStatus" style="border-radius: 8px; border: 1px solid #cbd5e1; height: 32px; min-width: 140px; font-weight: 600; font-size: 12px; color: #043168; background: #ffffff;">' +
+          '<option value="">Semua Status</option>' +
+          '<option value="Belum Mulai">Belum Mulai</option>' +
+          '<option value="Sedang Proses">Sedang Dikerjakan / Proses</option>' +
+          '<option value="Selesai">Selesai</option>' +
+        '</select>' +
+        '<button type="button" class="btn btn-sm btn-outline-secondary" id="BtnResetFilters" title="Reset Semua Filter" style="border-radius: 7px; height: 32px; padding: 0 9px; font-size: 11.5px; display: none; font-weight: 600;">' +
+          '<i class="fa fa-refresh mr-1"></i> Reset' +
+        '</button>' +
       '</div>';
 
-    $('#TabelProject_wrapper .dataTables_filter').prepend(filterTahunHtml);
+    $('#TabelProject_wrapper .dataTables_filter').prepend(unifiedFilterHtml);
+
+    function checkFilterResetBtn() {
+      var y = $('#SelectFilterTahun').val();
+      var s = $('#SelectFilterStatus').val();
+      if (y !== '' || s !== '') {
+        $('#BtnResetFilters').show();
+      } else {
+        $('#BtnResetFilters').hide();
+      }
+    }
 
     $('#SelectFilterTahun').on('change', function() {
       var selectedYear = $(this).val();
       table.column(3).search(selectedYear ? selectedYear : '', true, false).draw();
+      checkFilterResetBtn();
+    });
+
+    $('#SelectFilterStatus').on('change', function() {
+      var selectedStatus = $(this).val();
+      if (selectedStatus === 'Belum Mulai') {
+        table.column(4).search('^Belum Mulai$', true, false).draw();
+      } else if (selectedStatus === 'Sedang Proses') {
+        table.column(4).search('^Sedang Proses$', true, false).draw();
+      } else if (selectedStatus === 'Selesai') {
+        table.column(4).search('^Selesai$', true, false).draw();
+      } else {
+        table.column(4).search('', true, false).draw();
+      }
+      checkFilterResetBtn();
+    });
+
+    $(document).on('click', '#BtnResetFilters', function() {
+      $('#SelectFilterTahun').val('');
+      $('#SelectFilterStatus').val('');
+      table.column(3).search('').column(4).search('').draw();
+      $(this).hide();
     });
 
     // =========================================================================

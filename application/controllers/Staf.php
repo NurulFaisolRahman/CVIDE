@@ -28,7 +28,53 @@ class Staf extends CI_Controller {
   }
 
   public function Project(){
-    $Data['Project'] = $this->db->get('project')->result_array();
+    $projects = $this->db->get('project')->result_array();
+    
+    // Sort dengan prioritas:
+    // 1. Tahun / Timeline terbaru di atas (DESC)
+    // 2. Status diutamakan: Sedang Dikerjakan/Proses (1) -> Belum Mulai (2) -> Selesai (3) -> Lainnya (4)
+    // 3. ID Project terbaru (DESC)
+    usort($projects, function($a, $b) {
+      $getYear = function($item) {
+        $dl = $item['Deadline'] ?? '';
+        if (preg_match_all('/\b\d{4}\b/', $dl, $m)) {
+          return max(array_map('intval', $m[0]));
+        }
+        return 0;
+      };
+
+      $getStatusPriority = function($item) {
+        $st = strtolower(trim($item['Status'] ?? ''));
+        if ($st === 'belum mulai' || empty($st)) {
+          return 1; // Prioritas 1: Belum Mulai
+        } else if ($st === 'sedang proses' || $st === 'sedang dikerjakan' || $st === 'sedang berjalan' || $st === 'proses') {
+          return 2; // Prioritas 2: Sedang Dikerjakan / Sedang Proses
+        } else if ($st === 'selesai') {
+          return 3; // Prioritas 3: Selesai
+        }
+        return 4;
+      };
+
+      $yearA = $getYear($a);
+      $yearB = $getYear($b);
+
+      // Urutan 1: Tahun terbaru
+      if ($yearA !== $yearB) {
+        return $yearB <=> $yearA;
+      }
+
+      // Urutan 2: Status yang diutamakan (Sedang Proses -> Belum Mulai -> Selesai)
+      $statA = $getStatusPriority($a);
+      $statB = $getStatusPriority($b);
+      if ($statA !== $statB) {
+        return $statA <=> $statB;
+      }
+
+      // Urutan 3: ID Project
+      return ($b['Id'] ?? 0) <=> ($a['Id'] ?? 0);
+    });
+
+    $Data['Project'] = $projects;
     $this->load->view('Staf/Header',$Data);
     $this->load->view('Staf/Project',$Data);
   }
