@@ -528,6 +528,58 @@ rsort($listTahun);
     font-size: 13px !important;
     box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
   }
+  #WrapperUnifiedFilter {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    padding: 3px 6px !important;
+    height: 38px !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03) !important;
+  }
+  #WrapperUnifiedFilter .filter-label {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    color: #043168 !important;
+    font-weight: 700 !important;
+    font-size: 12.5px !important;
+    white-space: nowrap !important;
+    margin: 0 !important;
+    padding: 0 4px !important;
+  }
+  #WrapperUnifiedFilter select {
+    height: 30px !important;
+    border-radius: 6px !important;
+    border: 1px solid #cbd5e1 !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    color: #043168 !important;
+    background: #ffffff !important;
+    padding: 2px 8px !important;
+    margin: 0 !important;
+    vertical-align: middle !important;
+  }
+  #BtnResetFilters {
+    height: 30px !important;
+    width: 30px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    border-radius: 6px !important;
+    padding: 0 !important;
+    font-size: 12px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    border: 1px solid #fca5a5 !important;
+    background: #fff5f5 !important;
+    color: #dc2626 !important;
+    line-height: 1 !important;
+  }
 </style>
 
 <!-- Enterprise Page Header Card -->
@@ -725,6 +777,7 @@ rsort($listTahun);
                       data-instansi="<?=htmlspecialchars($key['Instansi'] ?? '', ENT_QUOTES)?>"
                       data-jenispengadaan="<?=htmlspecialchars($key['JenisPengadaan'] ?? ($key['Kategori'] ?? ''), ENT_QUOTES)?>"
                       data-nominal="<?=htmlspecialchars($key['Nominal'] ?? '', ENT_QUOTES)?>"
+                      data-status="<?=htmlspecialchars($normStatus, ENT_QUOTES)?>"
                       data-pic="<?=htmlspecialchars($key['PJ'] ?? '', ENT_QUOTES)?>"
                       data-deadline="<?=htmlspecialchars($key['Deadline'] ?? '', ENT_QUOTES)?>"
                       data-outputkegiatan="<?=htmlspecialchars($key['OutputKegiatan'] ?? '', ENT_QUOTES)?>"
@@ -762,7 +815,7 @@ rsort($listTahun);
 </div>
 
 <!-- =========================================================================
-     MODAL INPUT PROJECT (Form Input Tanpa Field Status - Otomatis Belum Mulai)
+     MODAL INPUT PROJECT
      ========================================================================= -->
 <div class="modal fade" id="ModalInput" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
@@ -811,19 +864,29 @@ rsort($listTahun);
           </div>
         </div>
 
-        <!-- Row 3: Jenis Pengadaan & Nominal -->
+        <!-- Row 3: Jenis Pengadaan, Nominal & Status -->
         <div class="row">
-          <div class="col-md-6 mb-3">
+          <div class="col-md-4 mb-3">
             <label for="JenisPengadaan" class="font-weight-bold text-dark" style="font-size: 13px;">
               Jenis Pengadaan
             </label>
             <input type="text" class="form-control" id="JenisPengadaan" placeholder="Contoh: Pengadaan Langsung, Tender, Swakelola..." style="border-radius: 8px;">
           </div>
-          <div class="col-md-6 mb-3">
+          <div class="col-md-4 mb-3">
             <label for="Nominal" class="font-weight-bold text-dark" style="font-size: 13px;">
               Nominal Project / Kegiatan (Rp)
             </label>
             <input type="text" class="form-control input-currency" id="Nominal" placeholder="Contoh: Rp. 50.000.000" style="border-radius: 8px;">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="Status" class="font-weight-bold text-dark" style="font-size: 13px;">
+              Status Project <span class="text-danger">*</span>
+            </label>
+            <select class="form-control" id="Status" style="border-radius: 8px; font-weight: 600; font-size: 13px;">
+              <option value="Belum Mulai" selected>Belum Mulai</option>
+              <option value="Sedang Proses">Sedang Proses</option>
+              <option value="Selesai">Selesai</option>
+            </select>
           </div>
         </div>
 
@@ -880,7 +943,7 @@ rsort($listTahun);
 </div>
 
 <!-- =========================================================================
-     MODAL EDIT PROJECT (Form Edit Tanpa Field Status)
+     MODAL EDIT PROJECT
      ========================================================================= -->
 <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
@@ -930,19 +993,29 @@ rsort($listTahun);
           </div>
         </div>
 
-        <!-- Row 3: Jenis Pengadaan & Nominal -->
+        <!-- Row 3: Jenis Pengadaan, Nominal & Status -->
         <div class="row">
-          <div class="col-md-6 mb-3">
+          <div class="col-md-4 mb-3">
             <label for="EditJenisPengadaan" class="font-weight-bold text-dark" style="font-size: 13px;">
               Jenis Pengadaan
             </label>
             <input type="text" class="form-control" id="EditJenisPengadaan" placeholder="Contoh: Pengadaan Langsung, Tender, Swakelola..." style="border-radius: 8px;">
           </div>
-          <div class="col-md-6 mb-3">
+          <div class="col-md-4 mb-3">
             <label for="EditNominal" class="font-weight-bold text-dark" style="font-size: 13px;">
               Nominal Project / Kegiatan (Rp)
             </label>
             <input type="text" class="form-control input-currency" id="EditNominal" placeholder="Contoh: Rp. 50.000.000" style="border-radius: 8px;">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="EditStatus" class="font-weight-bold text-dark" style="font-size: 13px;">
+              Status Project <span class="text-danger">*</span>
+            </label>
+            <select class="form-control" id="EditStatus" style="border-radius: 8px; font-weight: 600; font-size: 13px;">
+              <option value="Belum Mulai">Belum Mulai</option>
+              <option value="Sedang Proses">Sedang Proses</option>
+              <option value="Selesai">Selesai</option>
+            </select>
           </div>
         </div>
 
@@ -1300,25 +1373,25 @@ rsort($listTahun);
 
     // Pasang 1 Grup Filter Terpadu (Tahun & Status) tepat di sebelah 'Cari Project:'
     var unifiedFilterHtml = 
-      '<div class="d-inline-flex align-items-center mr-2 p-1" id="WrapperUnifiedFilter" style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; gap: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">' +
-        '<div class="d-flex align-items-center pl-1 pr-1" style="gap: 5px; color: #043168; font-weight: 700; font-size: 12.5px; white-space: nowrap;">' +
+      '<div id="WrapperUnifiedFilter">' +
+        '<div class="filter-label">' +
           '<i class="fa-solid fa-filter text-danger"></i>' +
           '<span>Filter:</span>' +
         '</div>' +
-        '<select class="form-control form-control-sm" id="SelectFilterTahun" style="border-radius: 8px; border: 1px solid #cbd5e1; height: 32px; min-width: 125px; font-weight: 600; font-size: 12px; color: #043168; background: #ffffff;">' +
+        '<select class="form-control form-control-sm" id="SelectFilterTahun" style="min-width: 120px;">' +
           '<option value="">Semua Tahun</option>' +
           <?php foreach ($listTahun as $th) { ?>
             '<option value="<?=htmlspecialchars($th, ENT_QUOTES)?>">Tahun <?=htmlspecialchars($th, ENT_QUOTES)?></option>' +
           <?php } ?>
         '</select>' +
-        '<select class="form-control form-control-sm" id="SelectFilterStatus" style="border-radius: 8px; border: 1px solid #cbd5e1; height: 32px; min-width: 140px; font-weight: 600; font-size: 12px; color: #043168; background: #ffffff;">' +
+        '<select class="form-control form-control-sm" id="SelectFilterStatus" style="min-width: 140px;">' +
           '<option value="">Semua Status</option>' +
           '<option value="Belum Mulai">Belum Mulai</option>' +
           '<option value="Sedang Proses">Sedang Dikerjakan / Proses</option>' +
           '<option value="Selesai">Selesai</option>' +
         '</select>' +
-        '<button type="button" class="btn btn-sm btn-outline-secondary" id="BtnResetFilters" title="Reset Semua Filter" style="border-radius: 7px; height: 32px; padding: 0 9px; font-size: 11.5px; display: none; font-weight: 600;">' +
-          '<i class="fa-solid fa-rotate-left mr-1"></i> Reset' +
+        '<button type="button" class="btn btn-sm" id="BtnResetFilters" title="Reset Semua Filter" style="display: none;">' +
+          '<i class="fa-solid fa-rotate-left"></i>' +
         '</button>' +
       '</div>';
 
@@ -1329,7 +1402,7 @@ rsort($listTahun);
       var y = $('#SelectFilterTahun').val();
       var s = $('#SelectFilterStatus').val();
       if (y !== '' || s !== '') {
-        $('#BtnResetFilters').show();
+        $('#BtnResetFilters').css('display', 'inline-flex');
       } else {
         $('#BtnResetFilters').hide();
       }
@@ -1680,16 +1753,16 @@ rsort($listTahun);
               '</div>' +
             '</div>' +
             '<div class="d-flex align-items-center" style="gap: 6px; flex-shrink: 0;">' +
-              '<button type="button" class="btn btn-sm btn-outline-primary btn-preview-single-doc" data-index="' + i + '" title="Pratinjau Dokumen" style="border-radius: 6px; padding: 4px 9px; font-size: 11.5px;">' +
+              '<button type="button" class="btn btn-sm btn-outline-primary btn-preview-single-doc" data-index="' + i + '" title="Pratinjau Dokumen" style="border-radius: 6px; height: 28px; padding: 0 9px; font-size: 11.5px; display: inline-flex; align-items: center; justify-content: center;">' +
                 '<i class="fa-solid fa-eye mr-1"></i> Lihat' +
               '</button>' +
-              '<button type="button" class="btn btn-sm btn-outline-warning text-dark btn-edit-doc-item" data-file="' + encodeURIComponent(f) + '" title="Edit Berkas (Ubah Nama / Ganti File)" style="border-radius: 6px; padding: 4px 9px; font-size: 11.5px; font-weight: 600;">' +
-                '<i class="fa-solid fa-pen-to-square mr-1 text-warning"></i> Edit' +
+              '<button type="button" class="btn btn-sm btn-outline-warning btn-edit-doc-item" data-file="' + encodeURIComponent(f) + '" title="Edit Berkas (Ubah Nama / Ganti File)" style="border-radius: 6px; width: 28px; height: 28px; padding: 0; font-size: 12px; display: inline-flex; align-items: center; justify-content: center;">' +
+                '<i class="fa-solid fa-pen-to-square text-warning"></i>' +
               '</button>' +
-              '<a href="' + fileUrl + '" download target="_blank" class="btn btn-sm btn-outline-secondary" title="Unduh Berkas" style="border-radius: 6px; padding: 4px 9px; font-size: 11.5px;">' +
+              '<a href="' + fileUrl + '" download target="_blank" class="btn btn-sm btn-outline-secondary" title="Unduh Berkas" style="border-radius: 6px; width: 28px; height: 28px; padding: 0; font-size: 12px; display: inline-flex; align-items: center; justify-content: center;">' +
                 '<i class="fa-solid fa-download"></i>' +
               '</a>' +
-              '<button type="button" class="btn btn-sm btn-outline-danger btn-delete-doc-file" data-file="' + encodeURIComponent(f) + '" title="Hapus Berkas Ini" style="border-radius: 6px; padding: 4px 9px; font-size: 11.5px;">' +
+              '<button type="button" class="btn btn-sm btn-outline-danger btn-delete-doc-file" data-file="' + encodeURIComponent(f) + '" title="Hapus Berkas Ini" style="border-radius: 6px; width: 28px; height: 28px; padding: 0; font-size: 12px; display: inline-flex; align-items: center; justify-content: center;">' +
                 '<i class="fa-solid fa-trash-can"></i>' +
               '</button>' +
             '</div>' +
@@ -2064,6 +2137,7 @@ rsort($listTahun);
       $('#Instansi').val('');
       $('#JenisPengadaan').val('');
       $('#Nominal').val('');
+      $('#Status').val('Belum Mulai');
       $('#OutputKegiatan').val('');
       $('#LoadingInput').hide();
       $('#Input').prop('disabled', false);
@@ -2097,6 +2171,7 @@ rsort($listTahun);
         Instansi: $("#Instansi").val(),
         JenisPengadaan: $("#JenisPengadaan").val(),
         Nominal: $("#Nominal").val(),
+        Status: $("#Status").val() || 'Belum Mulai',
         PIC: $("#PIC").val(),
         Deadline: deadlineVal,
         OutputKegiatan: $("#OutputKegiatan").val()
@@ -2137,6 +2212,7 @@ rsort($listTahun);
       var instansi = $(this).data('instansi');
       var jenispengadaan = $(this).data('jenispengadaan');
       var nominal = $(this).data('nominal');
+      var status = $(this).data('status');
       var pic = $(this).data('pic');
       var deadline = $(this).data('deadline');
       var outputkegiatan = $(this).data('outputkegiatan');
@@ -2166,6 +2242,7 @@ rsort($listTahun);
       $("#EditInstansi").val(instansi || '');
       $("#EditJenisPengadaan").val(jenispengadaan || '');
       $("#EditNominal").val(nominal || '');
+      $("#EditStatus").val(status || 'Belum Mulai');
       $("#EditPIC").val(pic || '');
       $("#EditTimelineMulai").val(startVal);
       $("#EditTimelineSelesai").val(endVal);
@@ -2203,6 +2280,7 @@ rsort($listTahun);
         Instansi: $("#EditInstansi").val(),
         JenisPengadaan: $("#EditJenisPengadaan").val(),
         Nominal: $("#EditNominal").val(),
+        Status: $("#EditStatus").val() || 'Belum Mulai',
         PIC: $("#EditPIC").val(),
         Deadline: deadlineVal,
         OutputKegiatan: $("#EditOutputKegiatan").val()

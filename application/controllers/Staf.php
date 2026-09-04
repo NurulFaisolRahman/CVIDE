@@ -173,6 +173,8 @@ class Staf extends CI_Controller {
   public function Input(){
     $picInput = $this->input->post('PIC');
     $pic = !empty(trim($picInput ?? '')) ? trim($picInput) : '';
+    $statusInput = $this->input->post('Status');
+    $status = !empty(trim($statusInput ?? '')) ? trim($statusInput) : 'Belum Mulai';
 
     $insertData = array(
       'PJ'             => $pic,
@@ -182,7 +184,7 @@ class Staf extends CI_Controller {
       'JenisPengadaan' => $this->input->post('JenisPengadaan'),
       'Nominal'        => $this->input->post('Nominal'),
       'Deadline'       => $this->input->post('Deadline'),
-      'Status'         => 'Belum Mulai', // Status otomatis 'Belum Mulai' saat input awal
+      'Status'         => $status,
       'OutputKegiatan' => $this->input->post('OutputKegiatan'),
       'Catatan'        => $this->input->post('Catatan') ?: '',
       'DokumenAdmin'   => null,
@@ -208,6 +210,7 @@ class Staf extends CI_Controller {
 
     $picInput = $this->input->post('PIC');
     $pic = !empty(trim($picInput ?? '')) ? trim($picInput) : '';
+    $statusInput = $this->input->post('Status');
 
     $updateData = array(
       'PJ'             => $pic,
@@ -220,6 +223,10 @@ class Staf extends CI_Controller {
       'OutputKegiatan' => $this->input->post('OutputKegiatan'),
       'Catatan'        => $this->input->post('Catatan') ?: ''
     );
+
+    if (!empty($statusInput)) {
+      $updateData['Status'] = trim($statusInput);
+    }
 
     $this->db->where('Id', $id);
     $result = $this->db->update('project', $updateData);

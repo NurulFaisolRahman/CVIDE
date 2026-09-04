@@ -493,6 +493,58 @@ rsort($listTahun);
     font-size: 13px !important;
     box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
   }
+  #WrapperUnifiedFilter {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    padding: 3px 6px !important;
+    height: 38px !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03) !important;
+  }
+  #WrapperUnifiedFilter .filter-label {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    color: #043168 !important;
+    font-weight: 700 !important;
+    font-size: 12.5px !important;
+    white-space: nowrap !important;
+    margin: 0 !important;
+    padding: 0 4px !important;
+  }
+  #WrapperUnifiedFilter select {
+    height: 30px !important;
+    border-radius: 6px !important;
+    border: 1px solid #cbd5e1 !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    color: #043168 !important;
+    background: #ffffff !important;
+    padding: 2px 8px !important;
+    margin: 0 !important;
+    vertical-align: middle !important;
+  }
+  #BtnResetFilters {
+    height: 30px !important;
+    width: 30px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    border-radius: 6px !important;
+    padding: 0 !important;
+    font-size: 12px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    border: 1px solid #fca5a5 !important;
+    background: #fff5f5 !important;
+    color: #dc2626 !important;
+    line-height: 1 !important;
+  }
 </style>
 
 <br>
@@ -768,25 +820,25 @@ rsort($listTahun);
 
     // Pasang 1 Grup Filter Terpadu (Tahun & Status) tepat di sebelah 'Cari Project:'
     var unifiedFilterHtml = 
-      '<div class="d-inline-flex align-items-center mr-2 p-1" id="WrapperUnifiedFilter" style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; gap: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">' +
-        '<div class="d-flex align-items-center pl-1 pr-1" style="gap: 5px; color: #043168; font-weight: 700; font-size: 12.5px; white-space: nowrap;">' +
+      '<div id="WrapperUnifiedFilter">' +
+        '<div class="filter-label">' +
           '<i class="fa fa-filter text-danger"></i>' +
           '<span>Filter:</span>' +
         '</div>' +
-        '<select class="form-control form-control-sm" id="SelectFilterTahun" style="border-radius: 8px; border: 1px solid #cbd5e1; height: 32px; min-width: 125px; font-weight: 600; font-size: 12px; color: #043168; background: #ffffff;">' +
+        '<select class="form-control form-control-sm" id="SelectFilterTahun" style="min-width: 120px;">' +
           '<option value="">Semua Tahun</option>' +
           <?php foreach ($listTahun as $th) { ?>
             '<option value="<?=htmlspecialchars($th, ENT_QUOTES)?>">Tahun <?=htmlspecialchars($th, ENT_QUOTES)?></option>' +
           <?php } ?>
         '</select>' +
-        '<select class="form-control form-control-sm" id="SelectFilterStatus" style="border-radius: 8px; border: 1px solid #cbd5e1; height: 32px; min-width: 140px; font-weight: 600; font-size: 12px; color: #043168; background: #ffffff;">' +
+        '<select class="form-control form-control-sm" id="SelectFilterStatus" style="min-width: 140px;">' +
           '<option value="">Semua Status</option>' +
           '<option value="Belum Mulai">Belum Mulai</option>' +
           '<option value="Sedang Proses">Sedang Dikerjakan / Proses</option>' +
           '<option value="Selesai">Selesai</option>' +
         '</select>' +
-        '<button type="button" class="btn btn-sm btn-outline-secondary" id="BtnResetFilters" title="Reset Semua Filter" style="border-radius: 7px; height: 32px; padding: 0 9px; font-size: 11.5px; display: none; font-weight: 600;">' +
-          '<i class="fa fa-refresh mr-1"></i> Reset' +
+        '<button type="button" class="btn btn-sm" id="BtnResetFilters" title="Reset Semua Filter" style="display: none;">' +
+          '<i class="fa fa-refresh"></i>' +
         '</button>' +
       '</div>';
 
@@ -796,7 +848,7 @@ rsort($listTahun);
       var y = $('#SelectFilterTahun').val();
       var s = $('#SelectFilterStatus').val();
       if (y !== '' || s !== '') {
-        $('#BtnResetFilters').show();
+        $('#BtnResetFilters').css('display', 'inline-flex');
       } else {
         $('#BtnResetFilters').hide();
       }
