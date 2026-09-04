@@ -19,6 +19,9 @@ function renderBankIndikator($indikator) {
       <i class="fa-solid fa-circle-check text-success" style="font-size: 11px;"></i> ' . htmlspecialchars($indikator) . '
     </span>';
 }
+
+$userLevel = (int)($this->session->userdata('level') ?? 3);
+$isRole4 = ($userLevel === 4);
 ?>
 
 <!-- Extra Styling for Bank Data GDrive Link Hub -->
@@ -86,9 +89,11 @@ function renderBankIndikator($indikator) {
           </div>
         </div>
         <div>
+          <?php if (!$isRole4) { ?>
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalInputBankData" style="border-radius: 22px; font-weight: 700; padding: 11px 24px; font-size: 13.5px; background: var(--ide-navy); border: none; box-shadow: 0 6px 18px rgba(4, 49, 104, 0.35); transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;">
             <i class="fa-solid fa-plus"></i> Tambah Bank Data Baru
           </button>
+          <?php } ?>
         </div>
       </div>
     </div>
@@ -145,6 +150,7 @@ function renderBankIndikator($indikator) {
                     <?=renderBankIndikator($key['Indikator'] ?? '')?>
                   </td>
                   <td class="text-center align-middle text-nowrap">
+                    <?php if (!$isRole4) { ?>
                     <button type="button" 
                       class="btn btn-sm btn-warning text-white EditBankData" 
                       title="Edit Data" 
@@ -162,6 +168,11 @@ function renderBankIndikator($indikator) {
                       style="border-radius: 8px; padding: 6px 10px; font-weight: 600;">
                       <i class="fa-solid fa-trash-can mr-1"></i> Hapus
                     </button>
+                    <?php } else { ?>
+                    <span class="badge badge-light px-2 py-1 text-muted" style="border: 1px solid #e2e8f0; font-size: 11px; font-weight: 600;">
+                      <i class="fa-solid fa-lock mr-1"></i> View Only
+                    </span>
+                    <?php } ?>
                   </td>
                 </tr>
               <?php } ?>  

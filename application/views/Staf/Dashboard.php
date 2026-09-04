@@ -287,6 +287,10 @@
 </style>
 
 <!-- Enterprise Metric / KPI Section -->
+<?php
+$dashUserLevel = (int)($this->session->userdata('level') ?? 3);
+$dashIsRole4 = ($dashUserLevel === 4);
+?>
 <div class="row mb-4 align-items-stretch" style="margin-top: 15px;">
   <div class="col-xl-3 col-md-6 mb-3 d-flex">
     <div class="kpi-card">
@@ -295,8 +299,8 @@
       </div>
       <div>
         <div class="kpi-label">Level Akses</div>
-        <div class="kpi-value">Level 3 (Staf)</div>
-        <div class="kpi-subtext">Hak akses modul operasional & project</div>
+        <div class="kpi-value"><?=$dashIsRole4 ? 'Level 4 (Asisten)' : 'Level 3 (Staf)'?></div>
+        <div class="kpi-subtext"><?=$dashIsRole4 ? 'Hak akses Tag kegiatan & Dokumen Project' : 'Hak akses modul operasional & project'?></div>
       </div>
     </div>
   </div>

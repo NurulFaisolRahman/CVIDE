@@ -3201,10 +3201,8 @@ Timur
             window.location = BaseURL + "SuperAdmin";
           } else if (trimmedRespon == '2') {
             window.location = BaseURL + "Admin";
-          } else if (trimmedRespon == '3') {
+          } else if (trimmedRespon == '3' || trimmedRespon == '4') {
             window.location = BaseURL + "Staf";
-          } else if (trimmedRespon == '4') {
-            window.location = BaseURL + "Surveiyor";
           } else if (trimmedRespon == '0') {
             window.location = BaseURL + "Econk";
           } else {

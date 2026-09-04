@@ -659,6 +659,7 @@ class IDE extends CI_Controller {
             $Session['Staf'] = true;
         } else if ($level == 4) {
             $Session['Surveiyor'] = true;
+            $Session['Staf'] = true;
         } else if ($level == 0) {
             $Session['Econk'] = true;
         }

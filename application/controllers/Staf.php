@@ -5,7 +5,7 @@ class Staf extends CI_Controller {
 
   function __construct(){
     parent::__construct();
-    if(!$this->session->userdata('Staf')){
+    if(!$this->session->userdata('Staf') && !$this->session->userdata('Surveiyor')){
       redirect(base_url()); 
     }
     date_default_timezone_set("Asia/Jakarta");
@@ -174,10 +174,32 @@ class Staf extends CI_Controller {
   }
 
   public function Input(){
+    $userLevel = (int)($this->session->userdata('level') ?? 3);
+    if ($userLevel === 4) {
+      echo 'Akses ditolak: Role 4 tidak memiliki izin menambah project baru!';
+      return;
+    }
+
     $picInput = $this->input->post('PIC');
     $pic = !empty(trim($picInput ?? '')) ? trim($picInput) : '';
     $statusInput = $this->input->post('Status');
     $status = !empty(trim($statusInput ?? '')) ? trim($statusInput) : 'Belum Mulai';
+
+    $outputInput = $this->input->post('OutputKegiatan');
+    $outputData = '';
+    if (is_array($outputInput)) {
+      $filtered = array_values(array_filter(array_map('trim', $outputInput)));
+      $outputData = !empty($filtered) ? json_encode($filtered) : '';
+    } else if (is_string($outputInput)) {
+      $trimmed = trim($outputInput);
+      $decoded = json_decode($trimmed, true);
+      if (is_array($decoded)) {
+        $filtered = array_values(array_filter(array_map('trim', $decoded)));
+        $outputData = !empty($filtered) ? json_encode($filtered) : '';
+      } else {
+        $outputData = $trimmed;
+      }
+    }
 
     $insertData = array(
       'PJ'             => $pic,
@@ -188,7 +210,7 @@ class Staf extends CI_Controller {
       'Nominal'        => $this->input->post('Nominal'),
       'Deadline'       => $this->input->post('Deadline'),
       'Status'         => $status,
-      'OutputKegiatan' => $this->input->post('OutputKegiatan'),
+      'OutputKegiatan' => $outputData,
       'Catatan'        => $this->input->post('Catatan') ?: '',
       'DokumenAdmin'   => null,
       'DokumenProject' => null,
@@ -211,9 +233,38 @@ class Staf extends CI_Controller {
       return;
     }
 
+    $userLevel = (int)($this->session->userdata('level') ?? 3);
+    if ($userLevel === 4) {
+      $this->db->where('Id', $id);
+      $result = $this->db->update('project', array('Tag' => $this->input->post('Tag')));
+      if ($result) {
+        echo '1';
+      } else {
+        $error = $this->db->error();
+        echo !empty($error['message']) ? 'Gagal Update Tag: ' . $error['message'] : 'Gagal Update Tag!';
+      }
+      return;
+    }
+
     $picInput = $this->input->post('PIC');
     $pic = !empty(trim($picInput ?? '')) ? trim($picInput) : '';
     $statusInput = $this->input->post('Status');
+
+    $outputInput = $this->input->post('OutputKegiatan');
+    $outputData = '';
+    if (is_array($outputInput)) {
+      $filtered = array_values(array_filter(array_map('trim', $outputInput)));
+      $outputData = !empty($filtered) ? json_encode($filtered) : '';
+    } else if (is_string($outputInput)) {
+      $trimmed = trim($outputInput);
+      $decoded = json_decode($trimmed, true);
+      if (is_array($decoded)) {
+        $filtered = array_values(array_filter(array_map('trim', $decoded)));
+        $outputData = !empty($filtered) ? json_encode($filtered) : '';
+      } else {
+        $outputData = $trimmed;
+      }
+    }
 
     $updateData = array(
       'PJ'             => $pic,
@@ -223,7 +274,7 @@ class Staf extends CI_Controller {
       'JenisPengadaan' => $this->input->post('JenisPengadaan'),
       'Nominal'        => $this->input->post('Nominal'),
       'Deadline'       => $this->input->post('Deadline'),
-      'OutputKegiatan' => $this->input->post('OutputKegiatan'),
+      'OutputKegiatan' => $outputData,
       'Catatan'        => $this->input->post('Catatan') ?: ''
     );
 
@@ -287,6 +338,12 @@ class Staf extends CI_Controller {
     $customNames = $this->input->post('CustomNames') ?: array();
     $driveLinks = $this->input->post('DriveLinks') ?: array();
     $driveNames = $this->input->post('DriveNames') ?: array();
+
+    $userLevel = (int)($this->session->userdata('level') ?? 3);
+    if ($userLevel === 4 && $type === 'Admin') {
+      echo json_encode(array('status' => 'error', 'message' => 'Akses ditolak: Role 4 hanya memiliki izin mengelola Dokumen Project!'));
+      return;
+    }
 
     $project = $this->db->get_where('project', array('Id' => $id))->row_array();
     if (!$project) {
@@ -360,6 +417,12 @@ class Staf extends CI_Controller {
     $type = $this->input->post('Type'); // 'Admin' atau 'Project'
     $fileName = $this->input->post('FileName');
 
+    $userLevel = (int)($this->session->userdata('level') ?? 3);
+    if ($userLevel === 4 && $type === 'Admin') {
+      echo json_encode(array('status' => 'error', 'message' => 'Akses ditolak: Role 4 hanya memiliki izin mengelola Dokumen Project!'));
+      return;
+    }
+
     $project = $this->db->get_where('project', array('Id' => $id))->row_array();
     if (!$project) {
       echo json_encode(array('status' => 'error', 'message' => 'Project tidak ditemukan!'));
@@ -416,6 +479,12 @@ class Staf extends CI_Controller {
     $oldFileName = trim($this->input->post('OldFileName') ?? '');
     $newCustomName = trim($this->input->post('NewFileName') ?? '');
     $newDriveUrl = trim($this->input->post('NewDriveUrl') ?? '');
+
+    $userLevel = (int)($this->session->userdata('level') ?? 3);
+    if ($userLevel === 4 && $type === 'Admin') {
+      echo json_encode(array('status' => 'error', 'message' => 'Akses ditolak: Role 4 hanya memiliki izin mengelola Dokumen Project!'));
+      return;
+    }
 
     $project = $this->db->get_where('project', array('Id' => $id))->row_array();
     if (!$project) {
@@ -549,6 +618,12 @@ class Staf extends CI_Controller {
    * (Pilihan: Belum Mulai, Sedang Proses, Selesai)
    */
   public function UpdateStatus(){
+    $userLevel = (int)($this->session->userdata('level') ?? 3);
+    if ($userLevel === 4) {
+      echo 'Akses ditolak: Role 4 tidak memiliki izin mengubah status project!';
+      return;
+    }
+
     $id = $this->input->post('Id');
     $status = $this->input->post('Status');
 
@@ -564,6 +639,12 @@ class Staf extends CI_Controller {
   }
 
   public function Hapus(){
+    $userLevel = (int)($this->session->userdata('level') ?? 3);
+    if ($userLevel === 4) {
+      echo 'Akses ditolak: Role 4 tidak memiliki izin menghapus project!';
+      return;
+    }
+
     $id = $this->input->post('Id');
     if (empty($id)) {
       echo 'ID Project tidak ditemukan!';
@@ -601,6 +682,12 @@ class Staf extends CI_Controller {
   }
 
   public function InputBankData(){
+    $userLevel = (int)($this->session->userdata('level') ?? 3);
+    if ($userLevel === 4) {
+      echo 'Akses ditolak: Role 4 hanya memiliki izin melihat data!';
+      return;
+    }
+
     $pj = $this->session->userdata('Username') ?: ($this->session->userdata('username') ?: 'Staf');
     $namaDokumen = trim($this->input->post('NamaDokumen'));
     $linksRaw = $this->input->post('LinkGDrive');
@@ -639,6 +726,12 @@ class Staf extends CI_Controller {
   }
 
   public function EditBankData(){
+    $userLevel = (int)($this->session->userdata('level') ?? 3);
+    if ($userLevel === 4) {
+      echo 'Akses ditolak: Role 4 hanya memiliki izin melihat data!';
+      return;
+    }
+
     $id = $this->input->post('Id');
     if (empty($id)) {
       echo 'ID Bank Data tidak ditemukan!';
@@ -682,6 +775,12 @@ class Staf extends CI_Controller {
   }
 
   public function HapusBankData(){
+    $userLevel = (int)($this->session->userdata('level') ?? 3);
+    if ($userLevel === 4) {
+      echo 'Akses ditolak: Role 4 hanya memiliki izin melihat data!';
+      return;
+    }
+
     $id = $this->input->post('Id');
     $this->db->delete('bank_data', array('Id' => $id));
     if ($this->db->affected_rows() > 0){

@@ -960,8 +960,12 @@
 
             <div class="top-nav-right">
               <div class="admin-top-greeting" id="topAdminGreeting">
+                <?php 
+                $headerUserLevel = (int)($this->session->userdata('level') ?? 3);
+                $headerRoleText = ($headerUserLevel === 4) ? 'PIC' : 'Admin';
+                ?>
                 <i class="fa-solid fa-circle-user" style="color: #ffffff; font-size: 16px;"></i>
-                <span>Halo, <strong><?=$this->session->userdata('Username') ? ucfirst($this->session->userdata('Username')) : 'Staf'?></strong></span>
+                <span>Halo, <strong><?=$this->session->userdata('Username') ? ucfirst($this->session->userdata('Username')) : 'User'?> (<?=$headerRoleText?>)</strong></span>
               </div>
               <a href="<?=base_url('IDE/SignOut')?>" class="btn-header-logout">
                 <i class="fa-solid fa-right-from-bracket"></i> Keluar

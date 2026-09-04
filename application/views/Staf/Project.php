@@ -93,10 +93,10 @@ function renderTimelineCell($deadline) {
 }
 
 // Helper render Status Pill Button Dropdown (Single clean card)
-function renderStatusBadge($id, $status) {
+function renderStatusBadge($id, $status, $isRole4 = false) {
   $status = trim($status ?? '');
   if (empty($status) || !in_array($status, ['Belum Mulai', 'Sedang Proses', 'Selesai'])) {
-    if (in_array(strtolower($status), ['sedang berjalan', 'berjalan', 'proses'])) {
+    if (in_array(strtolower($status), ['sedang berjalan', 'berjalan', 'proses', 'sedang dikerjakan', 'sedang proses'])) {
       $status = 'Sedang Proses';
     } else if (strtolower($status) === 'selesai') {
       $status = 'Selesai';
@@ -113,6 +113,14 @@ function renderStatusBadge($id, $status) {
   } else if ($status === 'Sedang Proses') {
     $cls = 'status-sedang-proses';
     $icon = '<i class="fa-solid fa-arrows-rotate fa-spin" style="font-size: 11px;"></i>';
+  }
+
+  if ($isRole4) {
+    return '
+      <span class="status-pill-btn ' . $cls . '" style="cursor: default;" title="Status: ' . htmlspecialchars($status) . '">
+        ' . $icon . '
+        <span>' . htmlspecialchars($status) . '</span>
+      </span>';
   }
 
   return '
@@ -162,6 +170,10 @@ function getProjectEndYear($deadline) {
   }
   return '';
 }
+
+// Level pengguna saat ini
+$userLevel = (int)($this->session->userdata('level') ?? 3);
+$isRole4 = ($userLevel === 4);
 
 // Ekstrak daftar tahun unik dari seluruh data project yang telah diinput
 $listTahun = array();
@@ -326,6 +338,99 @@ rsort($listTahun);
     color: #043168;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+  }
+
+  /* Modal Output Kegiatan Input Container */
+  .output-input-card {
+    background: #f8fafc;
+    border: 1.5px dashed #cbd5e1;
+    border-radius: 14px;
+    padding: 14px 16px;
+  }
+  .output-input-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #043168;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .output-kegiatan-row {
+    display: flex !important;
+    align-items: center !important;
+    margin-bottom: 8px;
+    gap: 7px;
+  }
+  .output-kegiatan-box {
+    display: flex !important;
+    align-items: center !important;
+    background-color: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 20px;
+    height: 33px !important;
+    min-height: 33px !important;
+    max-height: 33px !important;
+    padding: 0 12px;
+    transition: all 0.2s ease;
+    flex-grow: 1;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .output-kegiatan-box:focus-within {
+    border-color: #0284c7;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
+  }
+  .output-kegiatan-box .output-kegiatan-icon {
+    color: #0284c7;
+    font-size: 13px;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+  .output-kegiatan-box input.output-kegiatan-input {
+    border: none !important;
+    outline: none !important;
+    background: transparent !important;
+    width: 100% !important;
+    font-size: 11.5px !important;
+    color: #1e293b !important;
+    height: 100% !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    line-height: normal !important;
+  }
+  .output-kegiatan-row .btn-remove-input-output-row,
+  .output-kegiatan-row .btn-remove-edit-output-row {
+    height: 33px !important;
+    width: 33px !important;
+    min-width: 33px !important;
+    max-height: 33px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 50% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 11.5px !important;
+    line-height: 1 !important;
+    border: 1.5px solid #fca5a5 !important;
+    color: #ef4444 !important;
+    background-color: #ffffff !important;
+    transition: all 0.2s ease;
+    flex-shrink: 0 !important;
+    align-self: center !important;
+    box-sizing: border-box !important;
+    vertical-align: middle !important;
+  }
+  .output-kegiatan-row .btn-remove-input-output-row:hover,
+  .output-kegiatan-row .btn-remove-edit-output-row:hover {
+    background-color: #fef2f2 !important;
+    border-color: #ef4444 !important;
+    color: #dc2626 !important;
+    transform: scale(1.05);
   }
 
   /* Tag label badge style under project title */
@@ -689,10 +794,10 @@ rsort($listTahun);
             <h4 class="font-weight-bold text-dark mb-0" style="font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
               Manajemen Project / Kegiatan
             </h4>
-            <span class="badge badge-primary px-2 py-1" style="background: var(--ide-navy); font-size: 11px; font-weight: 600; border-radius: 6px;">Staf Portal</span>
+            <span class="badge badge-primary px-2 py-1" style="background: var(--ide-navy); font-size: 11px; font-weight: 600; border-radius: 6px;"><?=$isRole4 ? 'Role 4 - Asisten Portal' : 'Staf Portal'?></span>
           </div>
           <p class="text-muted mb-0 mt-1" style="font-size: 12.5px;">
-            Kelola data nama project, tag/kegiatan, instansi, jenis pengadaan, nominal, PIC, timeline, output, serta berkas Dokumen Admin & Dokumen Project.
+            <?=$isRole4 ? 'Sebagai Role 4 (Asisten / Surveyor), Anda memiliki izin mengelola <strong>Tag / Kegiatan</strong> dan <strong>Dokumen Project</strong>. Informasi lainnya dalam mode hanya-lihat (view-only).' : 'Kelola data nama project, tag/kegiatan, instansi, jenis pengadaan, nominal, PIC, timeline, output, serta berkas Dokumen Admin & Dokumen Project.'?>
           </p>
         </div>
       </div>
@@ -705,12 +810,14 @@ rsort($listTahun);
     <div class="card shadow-sm border-0" style="border-radius: 16px;">
       <div class="card-body p-3">
         
-        <!-- Tombol Tambah Project di Atas 'Tampilkan [10] data' -->
+        <?php if (!$isRole4) { ?>
+        <!-- Tombol Tambah Project di Atas 'Tampilkan [10] data' (Khusus Staf / Admin) -->
         <div class="mb-3">
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalInput" style="border-radius: 10px; font-weight: 700; padding: 9px 20px; font-size: 13px; background: var(--ide-red); border: none; box-shadow: 0 4px 14px rgba(180, 8, 20, 0.3); transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;">
             <i class="fa-solid fa-plus"></i> Tambah Project Baru
           </button>
         </div>
+        <?php } ?>
 
         <div class="table-responsive">
           <table id="TabelProject" class="table table-hover table-striped w-100" style="border-radius: 12px; overflow: hidden;">
@@ -761,29 +868,25 @@ rsort($listTahun);
                 <tr>
                   <td class="text-center align-middle font-weight-bold"><?=$No++?></td>
                   
-                  <!-- Kolom 1: Nama project/Kegiatan dengan PIC, Tahun Selesai & Tag Label di Bawahnya -->
+                  <!-- Kolom 1: Nama project/Kegiatan dengan Tahun Selesai & Tag Label di Bawahnya -->
                   <td class="align-middle">
                     <div class="font-weight-bold text-dark" style="font-size: 12px; line-height: 1.35;">
                       <?=htmlspecialchars($key['NamaProject'])?>
                     </div>
 
-                    <div class="mt-1 d-flex flex-wrap align-items-center" style="gap: 5px;">
-                      <?php if (!empty($key['PJ'])) { ?>
-                        <span class="badge" style="background-color: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; border-radius: 4px; font-size: 10px; font-weight: 600; padding: 2px 6px;">
-                          <i class="fa-solid fa-user-tie text-success mr-1"></i> PIC: <?=htmlspecialchars($key['PJ'])?>
-                        </span>
-                      <?php } ?>
-
-                      <?php 
-                      $endYear = getProjectEndYear($rawDl);
-                      if (!empty($endYear)) { 
-                      ?>
+                    <?php 
+                    $endYear = getProjectEndYear($rawDl);
+                    if (!empty($endYear)) { 
+                    ?>
+                      <div class="mt-1">
                         <span class="badge" style="background-color: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; border-radius: 4px; font-size: 10px; font-weight: 600; padding: 2px 6px;">
                           <i class="fa-regular fa-calendar-check mr-1 text-danger"></i> Tahun <?=$endYear?>
                         </span>
-                      <?php } ?>
+                      </div>
+                    <?php } ?>
 
-                      <?php if (!empty($tags)) { ?>
+                    <?php if (!empty($tags)) { ?>
+                      <div class="mt-1 d-flex flex-wrap align-items-center" style="gap: 4px;">
                         <?php foreach ($tags as $t) { 
                           $cleanTag = ltrim($t, '#');
                         ?>
@@ -791,8 +894,8 @@ rsort($listTahun);
                             <i class="fa-solid fa-hashtag text-primary mr-1" style="font-size: 8.5px;"></i><?=htmlspecialchars($cleanTag)?>
                           </span>
                         <?php } ?>
-                      <?php } ?>
-                    </div>
+                      </div>
+                    <?php } ?>
                   </td>
 
                   <!-- Kolom 2: Jenis Pengadaan -->
@@ -813,10 +916,10 @@ rsort($listTahun);
 
                   <!-- Kolom 4: Status (Single Clean Pill Card with DataTables data-filter/search) -->
                   <td class="text-center align-middle text-nowrap" data-filter="<?=$normStatus?>" data-search="<?=$normStatus?>">
-                    <?=renderStatusBadge($key['Id'], $normStatus)?>
+                    <?=renderStatusBadge($key['Id'], $normStatus, $isRole4)?>
                   </td>
 
-                  <!-- Kolom 5: Dokumen Admin (CRUD Terpisah Per Kolom) -->
+                  <!-- Kolom 5: Dokumen Admin (CRUD Terpisah Per Kolom / View Only untuk Role 4) -->
                   <td class="text-center align-middle text-nowrap" id="CellDocAdmin-<?=$key['Id']?>">
                     <?php if ($totalAdminDocs > 0) { ?>
                       <button type="button" 
@@ -824,24 +927,28 @@ rsort($listTahun);
                         data-type="Admin"
                         data-id="<?=$key['Id']?>"
                         data-project="<?=htmlspecialchars($key['NamaProject'], ENT_QUOTES)?>"
-                        title="Kelola <?=$totalAdminDocs?> Dokumen Admin" 
+                        title="<?=$isRole4 ? 'Lihat ' . $totalAdminDocs . ' Dokumen Admin' : 'Kelola ' . $totalAdminDocs . ' Dokumen Admin'?>" 
                         style="border-radius: 8px; padding: 4px 10px; font-weight: 600; font-size: 11.5px; background: #0284c7; border: none; box-shadow: 0 2px 6px rgba(2, 132, 199, 0.2);">
-                        <i class="fa-solid fa-folder-open mr-1"></i> <span class="doc-label"><?=$totalAdminDocs?> Berkas</span>
+                        <i class="fa-solid <?=$isRole4 ? 'fa-eye' : 'fa-folder-open'?> mr-1"></i> <span class="doc-label"><?=$totalAdminDocs?> Berkas</span>
                       </button>
                     <?php } else { ?>
-                      <button type="button" 
-                        class="btn btn-sm btn-outline-primary btn-manage-project-docs" 
-                        data-type="Admin"
-                        data-id="<?=$key['Id']?>"
-                        data-project="<?=htmlspecialchars($key['NamaProject'], ENT_QUOTES)?>"
-                        title="Unggah Dokumen Admin" 
-                        style="border-radius: 8px; font-size: 11px; padding: 3px 9px; font-weight: 600;">
-                        <i class="fa-solid fa-plus mr-1"></i> Upload
-                      </button>
+                      <?php if (!$isRole4) { ?>
+                        <button type="button" 
+                          class="btn btn-sm btn-outline-primary btn-manage-project-docs" 
+                          data-type="Admin"
+                          data-id="<?=$key['Id']?>"
+                          data-project="<?=htmlspecialchars($key['NamaProject'], ENT_QUOTES)?>"
+                          title="Unggah Dokumen Admin" 
+                          style="border-radius: 8px; font-size: 11px; padding: 3px 9px; font-weight: 600;">
+                          <i class="fa-solid fa-plus mr-1"></i> Upload
+                        </button>
+                      <?php } else { ?>
+                        <span class="text-muted" style="font-size: 12px;">-</span>
+                      <?php } ?>
                     <?php } ?>
                   </td>
 
-                  <!-- Kolom 6: Dokumen Project (CRUD Terpisah Per Kolom) -->
+                  <!-- Kolom 6: Dokumen Project (CRUD Penuh untuk Staf & Role 4) -->
                   <td class="text-center align-middle text-nowrap" id="CellDocProject-<?=$key['Id']?>">
                     <?php if ($totalProjectDocs > 0) { ?>
                       <button type="button" 
@@ -870,7 +977,7 @@ rsort($listTahun);
                   <td class="text-center align-middle text-nowrap">
                     <button type="button" 
                       class="btn btn-sm btn-warning text-white Edit" 
-                      title="Edit Data Project" 
+                      title="<?=$isRole4 ? 'Edit Tag Kegiatan' : 'Edit Data Project'?>" 
                       data-id="<?=$key['Id']?>"
                       data-nama="<?=htmlspecialchars($key['NamaProject'], ENT_QUOTES)?>"
                       data-tag="<?=htmlspecialchars($key['Tag'] ?? '', ENT_QUOTES)?>"
@@ -885,8 +992,9 @@ rsort($listTahun);
                       data-filesadmin="<?=$fileAdminJsonAttr?>"
                       data-filesproject="<?=$fileProjectJsonAttr?>"
                       style="border-radius: 8px; padding: 4px 8px;">
-                      <i class="fa-solid fa-pen-to-square"></i>
+                      <i class="fa-solid <?=$isRole4 ? 'fa-tags' : 'fa-pen-to-square'?>"></i>
                     </button>
+                    <?php if (!$isRole4) { ?>
                     <button type="button" 
                       data-id="<?=$key['Id']?>"
                       data-fileadmin="<?=$fileAdminJsonAttr?>"
@@ -896,6 +1004,7 @@ rsort($listTahun);
                       style="border-radius: 8px; padding: 4px 8px;">
                       <i class="fa-solid fa-trash-can"></i>
                     </button>
+                    <?php } ?>
                   </td>
                 </tr>
               <?php } ?>  
@@ -1016,13 +1125,25 @@ rsort($listTahun);
           </div>
         </div>
 
-        <!-- Row 5: Output Kegiatan (Full width) -->
+        <!-- Row 5: Output Kegiatan Card Input -->
         <div class="row">
-          <div class="col-12 mb-2">
-            <label for="OutputKegiatan" class="font-weight-bold text-dark" style="font-size: 13px;">
-              Output Kegiatan
-            </label>
-            <input type="text" class="form-control" id="OutputKegiatan" placeholder="Contoh: Dokumen Laporan Akhir & Executive Summary" style="border-radius: 8px;">
+          <div class="col-12 mb-3">
+            <div class="output-input-card">
+              <div class="output-input-header">
+                <div>
+                  <i class="fa-solid fa-list-check text-primary mr-1"></i> Target Luaran & Output Kegiatan
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-primary" id="BtnAddInputOutputRow" style="border-radius: 6px; font-size: 11px; padding: 2px 8px; font-weight: 600;">
+                  <i class="fa-solid fa-plus mr-1"></i> Tambah Output
+                </button>
+              </div>
+              <div id="InputOutputKegiatanContainer">
+                <!-- Dynamic output rows generated by JS -->
+              </div>
+              <small class="form-text text-muted mt-2">
+                <i class="fa-solid fa-circle-info mr-1"></i> Masukkan target luaran/output kegiatan project (bisa lebih dari satu).
+              </small>
+            </div>
           </div>
         </div>
 
@@ -1043,16 +1164,26 @@ rsort($listTahun);
 </div>
 
 <!-- =========================================================================
-     MODAL EDIT PROJECT
+     MODAL EDIT DATA PROJECT
      ========================================================================= -->
 <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
       
-      <div class="modal-header" style="background: linear-gradient(135deg, #043168 0%, #0a3d7c 100%); color: #ffffff; padding: 14px 22px;">
-        <h5 class="modal-title font-weight-bold mb-0 text-white" style="font-size: 16px;">
-          <i class="fa-solid fa-pen-to-square mr-2 text-warning"></i> Edit Data Project / Kegiatan
-        </h5>
+      <div class="modal-header d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #043168 0%, #0a3d7c 100%); color: #ffffff; padding: 14px 22px;">
+        <div class="d-flex align-items-center" style="gap: 10px;">
+          <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid <?=$isRole4 ? 'fa-tags' : 'fa-pen-to-square'?> text-white" style="font-size: 18px;"></i>
+          </div>
+          <div>
+            <h5 class="modal-title font-weight-bold mb-0 text-white" style="font-size: 16px;">
+              <?=$isRole4 ? 'Edit Tag / Kegiatan Project' : 'Edit Data Project'?>
+            </h5>
+            <p class="text-white-50 mb-0 mt-0" style="font-size: 11.5px;">
+              <?=$isRole4 ? 'Sebagai Role 4 (Asisten / Surveyor), Anda dapat memperbarui tag dan label kegiatan project ini' : 'Sesuaikan rincian project, penanggung jawab, kategori & nominal'?>
+            </p>
+          </div>
+        </div>
         <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.9;">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -1061,94 +1192,134 @@ rsort($listTahun);
       <div class="modal-body p-4" style="background-color: #f8fafc;">
         <input type="hidden" id="Id">
 
-        <!-- Row 1: Nama Project & PIC -->
+        <?php if ($isRole4) { ?>
+          <div class="alert alert-info py-2 px-3 mb-3 d-flex align-items-center" style="border-radius: 10px; font-size: 12px; gap: 8px; border-left: 4px solid #0284c7;">
+            <i class="fa-solid fa-circle-info text-primary" style="font-size: 16px;"></i>
+            <span>Anda memiliki hak akses untuk mengubah <strong>Tag / Kegiatan</strong>. Kolom data lainnya dalam mode hanya-lihat (view-only).</span>
+          </div>
+        <?php } ?>
+
+        <!-- Row 1: Nama Project / Kegiatan & Tagar Label -->
         <div class="row">
-          <div class="col-md-8 mb-3">
+          <div class="col-md-7 mb-3">
             <label for="EditNamaProject" class="font-weight-bold text-dark" style="font-size: 13px;">
               Nama Project / Kegiatan <span class="text-danger">*</span>
             </label>
-            <input type="text" class="form-control" id="EditNamaProject" placeholder="Masukkan nama project..." style="border-radius: 8px;">
+            <input type="text" class="form-control" id="EditNamaProject" placeholder="Masukkan nama project / pekerjaan..." <?=$isRole4 ? 'readonly disabled style="border-radius: 8px; background-color: #f1f5f9; cursor: not-allowed;"' : 'style="border-radius: 8px;"'?>>
           </div>
-          <div class="col-md-4 mb-3">
-            <label for="EditPIC" class="font-weight-bold text-dark" style="font-size: 13px;">
-              PIC / Penanggung Jawab
+          <div class="col-md-5 mb-3">
+            <label for="EditTag" class="font-weight-bold text-dark" style="font-size: 13px;">
+              <i class="fa-solid fa-tags text-primary mr-1"></i> Tag / Label Kegiatan
             </label>
-            <input type="text" class="form-control" id="EditPIC" placeholder="Nama PIC..." style="border-radius: 8px;">
+            <input type="text" class="form-control" id="EditTag" placeholder="Contoh: #Banyuwangi #Dinsos" style="border-radius: 8px; <?=$isRole4 ? 'border: 2px solid #0284c7; background-color: #ffffff; box-shadow: 0 0 0 3px rgba(2,132,199,0.1);' : ''?>">
+            <small class="text-muted" style="font-size: 10.5px;">Gunakan tanda pagar (#) untuk label.</small>
           </div>
         </div>
 
-        <!-- Row 2: Tag & Instansi -->
+        <!-- Row 2: Instansi & Jenis Pengadaan -->
         <div class="row">
-          <div class="col-md-6 mb-3">
-            <label for="EditTag" class="font-weight-bold text-dark" style="font-size: 13px;">
-              Tag / Kegiatan <small class="text-muted font-weight-normal">(Pisahkan dengan koma ",")</small>
-            </label>
-            <input type="text" class="form-control" id="EditTag" placeholder="Contoh: Riset, IT, Survei" style="border-radius: 8px;">
-          </div>
           <div class="col-md-6 mb-3">
             <label for="EditInstansi" class="font-weight-bold text-dark" style="font-size: 13px;">
               Instansi / Klien
             </label>
-            <input type="text" class="form-control" id="EditInstansi" placeholder="Contoh: Bappeda, Dinas Kominfo" style="border-radius: 8px;">
+            <input type="text" class="form-control" id="EditInstansi" placeholder="Contoh: Bappeda, Dinas Sosial, dll." <?=$isRole4 ? 'readonly disabled style="border-radius: 8px; background-color: #f1f5f9; cursor: not-allowed;"' : 'style="border-radius: 8px;"'?>>
           </div>
-        </div>
-
-        <!-- Row 3: Jenis Pengadaan, Nominal & Status -->
-        <div class="row">
-          <div class="col-md-4 mb-3">
+          <div class="col-md-6 mb-3">
             <label for="EditJenisPengadaan" class="font-weight-bold text-dark" style="font-size: 13px;">
               Jenis Pengadaan
             </label>
-            <input type="text" class="form-control" id="EditJenisPengadaan" placeholder="Contoh: Pengadaan Langsung, Tender, Swakelola..." style="border-radius: 8px;">
-          </div>
-          <div class="col-md-4 mb-3">
-            <label for="EditNominal" class="font-weight-bold text-dark" style="font-size: 13px;">
-              Nominal Project / Kegiatan (Rp)
-            </label>
-            <input type="text" class="form-control input-currency" id="EditNominal" placeholder="Contoh: Rp. 50.000.000" style="border-radius: 8px;">
-          </div>
-          <div class="col-md-4 mb-3">
-            <label for="EditStatus" class="font-weight-bold text-dark" style="font-size: 13px;">
-              Status Project <span class="text-danger">*</span>
-            </label>
-            <select class="form-control" id="EditStatus" style="border-radius: 8px; font-weight: 600; font-size: 13px;">
-              <option value="Belum Mulai">Belum Mulai</option>
-              <option value="Sedang Proses">Sedang Proses</option>
-              <option value="Selesai">Selesai</option>
+            <select class="form-control" id="EditJenisPengadaan" <?=$isRole4 ? 'disabled style="border-radius: 8px; background-color: #f1f5f9; cursor: not-allowed;"' : 'style="border-radius: 8px;"'?>>
+              <option value="">-- Pilih Jenis Pengadaan --</option>
+              <option value="Non Tender">Non Tender (Pengadaan Langsung)</option>
+              <option value="Tender">Tender (Seleksi Terbuka)</option>
+              <option value="E-Katalog">E-Katalog</option>
+              <option value="Swakelola">Swakelola</option>
             </select>
           </div>
         </div>
 
-        <!-- Row 4: Timeline Card Input -->
-        <div class="form-group mb-3">
-          <div class="timeline-input-card">
-            <div class="timeline-input-header">
-              <i class="fa-solid fa-timeline text-danger"></i> Timeline / Garis Waktu Pelaksanaan Kegiatan <span class="text-danger">*</span>
-            </div>
-            <div class="row" style="gap: 0;">
-              <div class="col-md-6 mb-2 mb-md-0">
-                <label for="EditTimelineMulai" class="text-muted" style="font-size: 11.5px; font-weight: 600; text-transform: uppercase;">
-                  <i class="fa-solid fa-circle-dot text-success mr-1"></i> Tanggal Mulai
-                </label>
-                <input type="date" class="form-control" id="EditTimelineMulai" style="border-radius: 8px; font-weight: 600; font-size: 13px;">
+        <!-- Row 3: Nominal Kontrak & Status Project -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="EditNominal" class="font-weight-bold text-dark" style="font-size: 13px;">
+              Nominal Kontrak (Rp)
+            </label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text font-weight-bold" style="border-radius: 8px 0 0 8px; font-size: 13px;">Rp</span>
               </div>
-              <div class="col-md-6">
-                <label for="EditTimelineSelesai" class="text-muted" style="font-size: 11.5px; font-weight: 600; text-transform: uppercase;">
-                  <i class="fa-solid fa-circle-dot text-danger mr-1"></i> Tanggal Selesai
-                </label>
-                <input type="date" class="form-control" id="EditTimelineSelesai" style="border-radius: 8px; font-weight: 600; font-size: 13px;">
+              <input type="text" class="form-control" id="EditNominal" placeholder="Contoh: 150000000" <?=$isRole4 ? 'readonly disabled style="border-radius: 0 8px 8px 0; background-color: #f1f5f9; cursor: not-allowed;"' : 'style="border-radius: 0 8px 8px 0;"'?>>
+            </div>
+            <small class="text-muted" style="font-size: 10.5px;">Hanya input angka tanpa titik/koma.</small>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="EditStatus" class="font-weight-bold text-dark" style="font-size: 13px;">
+              Status Project
+            </label>
+            <select class="form-control" id="EditStatus" <?=$isRole4 ? 'disabled style="border-radius: 8px; font-weight: 600; background-color: #f1f5f9; cursor: not-allowed;"' : 'style="border-radius: 8px; font-weight: 600;"'?>>
+              <option value="Belum Mulai">⏳ Belum Mulai</option>
+              <option value="Sedang Proses">🔄 Sedang Proses</option>
+              <option value="Selesai">✅ Selesai</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Row 3b: Penanggung Jawab (PIC) -->
+        <div class="row">
+          <div class="col-12 mb-3">
+            <label for="EditPIC" class="font-weight-bold text-dark" style="font-size: 13px;">
+              <i class="fa-solid fa-user-tie text-success mr-1"></i> Penanggung Jawab / PIC
+            </label>
+            <input type="text" class="form-control" id="EditPIC" placeholder="Nama Penanggung Jawab (PIC) Kegiatan..." <?=$isRole4 ? 'readonly disabled style="border-radius: 8px; background-color: #f1f5f9; cursor: not-allowed;"' : 'style="border-radius: 8px;"'?>>
+          </div>
+        </div>
+
+        <!-- Row 4: Timeline Pelaksanaan Kegiatan (Mulai & Selesai) -->
+        <div class="row">
+          <div class="col-12 mb-3">
+            <div class="timeline-input-card">
+              <div class="timeline-input-header">
+                <i class="fa-regular fa-calendar-days text-primary"></i> Timeline Pelaksanaan Project
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-2 mb-md-0">
+                  <label for="EditTimelineMulai" class="text-muted" style="font-size: 11.5px; font-weight: 600; text-transform: uppercase;">
+                    <i class="fa-solid fa-circle-dot text-success mr-1"></i> Tanggal Mulai
+                  </label>
+                  <input type="date" class="form-control" id="EditTimelineMulai" <?=$isRole4 ? 'readonly disabled style="border-radius: 8px; font-weight: 600; font-size: 13px; background-color: #f1f5f9; cursor: not-allowed;"' : 'style="border-radius: 8px; font-weight: 600; font-size: 13px;"'?>>
+                </div>
+                <div class="col-md-6">
+                  <label for="EditTimelineSelesai" class="text-muted" style="font-size: 11.5px; font-weight: 600; text-transform: uppercase;">
+                    <i class="fa-solid fa-circle-dot text-danger mr-1"></i> Tanggal Selesai
+                  </label>
+                  <input type="date" class="form-control" id="EditTimelineSelesai" <?=$isRole4 ? 'readonly disabled style="border-radius: 8px; font-weight: 600; font-size: 13px; background-color: #f1f5f9; cursor: not-allowed;"' : 'style="border-radius: 8px; font-weight: 600; font-size: 13px;"'?>>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Row 5: Output Kegiatan (Full width) -->
+        <!-- Row 5: Output Kegiatan Card Input -->
         <div class="row">
-          <div class="col-12 mb-2">
-            <label for="EditOutputKegiatan" class="font-weight-bold text-dark" style="font-size: 13px;">
-              Output Kegiatan
-            </label>
-            <input type="text" class="form-control" id="EditOutputKegiatan" placeholder="Uraian output target kegiatan..." style="border-radius: 8px;">
+          <div class="col-12 mb-3">
+            <div class="output-input-card">
+              <div class="output-input-header">
+                <div>
+                  <i class="fa-solid fa-list-check text-primary mr-1"></i> Target Luaran & Output Kegiatan
+                </div>
+                <?php if (!$isRole4) { ?>
+                <button type="button" class="btn btn-sm btn-outline-primary" id="BtnAddEditOutputRow" style="border-radius: 6px; font-size: 11px; padding: 2px 8px; font-weight: 600;">
+                  <i class="fa-solid fa-plus mr-1"></i> Tambah Output
+                </button>
+                <?php } ?>
+              </div>
+              <div id="EditOutputKegiatanContainer">
+                <!-- Dynamic output rows generated by JS -->
+              </div>
+              <small class="form-text text-muted mt-2">
+                <i class="fa-solid fa-circle-info mr-1"></i> <?=$isRole4 ? 'Daftar target luaran/output kegiatan project (view-only).' : 'Sesuaikan atau tambahkan target luaran/output kegiatan project.'?>
+              </small>
+            </div>
           </div>
         </div>
 
@@ -1158,7 +1329,7 @@ rsort($listTahun);
         <button type="button" class="btn btn-secondary px-4" data-dismiss="modal" style="border-radius: 8px;">Batal</button>
         <div class="d-flex align-items-center">
           <button type="button" class="btn btn-primary px-4 font-weight-bold" id="Edit" style="border-radius: 8px; background: var(--ide-navy); border: none;">
-            <i class="fa-solid fa-floppy-disk mr-1"></i> Update Data Project
+            <i class="fa-solid fa-floppy-disk mr-1"></i> <?=$isRole4 ? 'Simpan Tag Kegiatan' : 'Update Data Project'?>
           </button>
           <div id="LoadingEdit" class="spinner-border text-danger ml-2" role="status" style="display: none; width: 1.5rem; height: 1.5rem;"></div>
         </div>
@@ -1204,7 +1375,7 @@ rsort($listTahun);
         <input type="hidden" id="ManageDocType">
 
         <!-- Area 1: Upload Dokumen Baru / Link Google Drive -->
-        <div class="card p-3 mb-3 border" style="border-radius: 10px; background: #ffffff; border-color: #cbd5e1 !important; box-shadow: 0 1px 4px rgba(0,0,0,0.03);">
+        <div class="card p-3 mb-3 border" id="CardUploadDokumenArea" style="border-radius: 10px; background: #ffffff; border-color: #cbd5e1 !important; box-shadow: 0 1px 4px rgba(0,0,0,0.03);">
           <div class="d-flex flex-wrap align-items-center justify-content-between mb-2" style="gap: 6px;">
             <span class="font-weight-bold text-dark" style="font-size: 12px;">
               <i class="fa-solid fa-cloud-arrow-up text-primary mr-1"></i> Unggah Berkas Dokumen atau Tautan Google Drive
@@ -1867,6 +2038,7 @@ rsort($listTahun);
     // =========================================================================
     // MODAL KELOLA DOKUMEN (CRUD PER KOLOM DOKUMEN ADMIN / PROJECT)
     // =========================================================================
+    var isRole4 = <?=($isRole4 ? 'true' : 'false')?>;
     var activeManageProjectId = null;
     var activeManageDocType = 'Admin';
     var activeManageProjectName = '';
@@ -1905,7 +2077,7 @@ rsort($listTahun);
           '<div class="text-center p-3 bg-white border rounded" style="border-radius: 8px; border-color: #cbd5e1 !important;">' +
             '<i class="fa-regular fa-folder-open text-muted mb-1" style="font-size: 24px;"></i>' +
             '<p class="text-muted mb-0 font-weight-bold" style="font-size: 11.5px;">Belum ada dokumen ' + (activeManageDocType === 'Admin' ? 'Admin' : 'Project') + ' terlampir.</p>' +
-            '<small class="text-muted" style="font-size: 10.5px;">Gunakan form di atas untuk menambahkan berkas atau tautan Google Drive.</small>' +
+            '<small class="text-muted" style="font-size: 10.5px;">' + (activeManageDocType === 'Admin' && isRole4 ? 'Dokumen Admin belum diunggah.' : 'Gunakan form di atas untuk menambahkan berkas atau tautan Google Drive.') + '</small>' +
           '</div>'
         );
         $('#BtnPreviewAllDocs').hide();
@@ -1913,6 +2085,7 @@ rsort($listTahun);
       }
 
       $('#BtnPreviewAllDocs').show();
+      var canEditDelete = !(activeManageDocType === 'Admin' && isRole4);
       var listHtml = '<div class="list-group shadow-sm" style="border-radius: 8px; overflow: hidden;">';
 
       $.each(activeManageFiles, function(i, f) {
@@ -1942,15 +2115,17 @@ rsort($listTahun);
               '<button type="button" class="btn btn-sm btn-outline-primary btn-preview-single-doc" data-index="' + i + '" title="Pratinjau Dokumen" style="border-radius: 5px; height: 25px; padding: 0 7px; font-size: 10.5px; display: inline-flex; align-items: center; justify-content: center;">' +
                 '<i class="fa-solid fa-eye mr-1"></i> Lihat' +
               '</button>' +
+              (canEditDelete ? 
               '<button type="button" class="btn btn-sm btn-outline-warning btn-edit-doc-item" data-raw="' + encodeURIComponent(f) + '" title="Edit Dokumen / Tautan" style="border-radius: 5px; width: 25px; height: 25px; padding: 0; font-size: 10.5px; display: inline-flex; align-items: center; justify-content: center;">' +
                 '<i class="fa-solid fa-pen-to-square text-warning"></i>' +
-              '</button>' +
+              '</button>' : '') +
               '<a href="' + doc.url + '" ' + (doc.isLink ? 'target="_blank"' : 'download target="_blank"') + ' class="btn btn-sm btn-outline-secondary" title="' + (doc.isLink ? 'Buka Tautan' : 'Unduh Berkas') + '" style="border-radius: 5px; width: 25px; height: 25px; padding: 0; font-size: 10.5px; display: inline-flex; align-items: center; justify-content: center;">' +
                 '<i class="fa-solid ' + (doc.isLink ? 'fa-arrow-up-right-from-square' : 'fa-download') + '"></i>' +
               '</a>' +
+              (canEditDelete ?
               '<button type="button" class="btn btn-sm btn-outline-danger btn-delete-doc-file" data-raw="' + encodeURIComponent(f) + '" title="Hapus Dokumen Ini" style="border-radius: 5px; width: 25px; height: 25px; padding: 0; font-size: 10.5px; display: inline-flex; align-items: center; justify-content: center;">' +
                 '<i class="fa-solid fa-trash-can"></i>' +
-              '</button>' +
+              '</button>' : '') +
             '</div>' +
           '</div>';
       });
@@ -1967,31 +2142,36 @@ rsort($listTahun);
 
       if (total > 0) {
         var bgClass = docType === 'Admin' ? '#0284c7' : '#059669';
-        var iconClass = docType === 'Admin' ? 'fa-folder-open' : 'fa-folder-tree';
+        var iconClass = docType === 'Admin' ? (isRole4 ? 'fa-eye' : 'fa-folder-open') : 'fa-folder-tree';
         var shadowClass = docType === 'Admin' ? 'rgba(2, 132, 199, 0.2)' : 'rgba(5, 150, 105, 0.2)';
+        var btnTitle = (docType === 'Admin' && isRole4) ? 'Lihat ' + total + ' Dokumen Admin' : 'Kelola ' + total + ' Dokumen ' + docType;
 
         $cell.html(
           '<button type="button" class="btn btn-sm text-white btn-manage-project-docs" ' +
             'data-type="' + docType + '" ' +
             'data-id="' + projectId + '" ' +
             'data-project="' + activeManageProjectName.replace(/"/g, '&quot;') + '" ' +
-            'title="Kelola ' + total + ' Dokumen ' + docType + '" ' +
+            'title="' + btnTitle + '" ' +
             'style="border-radius: 8px; padding: 4px 10px; font-weight: 600; font-size: 11.5px; background: ' + bgClass + '; border: none; box-shadow: 0 2px 6px ' + shadowClass + ';">' +
-            '<i class="fa-solid ' + iconClass + ' mr-1"></i> <span class="doc-label">' + total + ' Dokumen</span>' +
+            '<i class="fa-solid ' + iconClass + ' mr-1"></i> <span class="doc-label">' + total + ' Berkas</span>' +
           '</button>'
         );
       } else {
-        var btnOutline = docType === 'Admin' ? 'btn-outline-primary' : 'btn-outline-success';
-        $cell.html(
-          '<button type="button" class="btn btn-sm ' + btnOutline + ' btn-manage-project-docs" ' +
-            'data-type="' + docType + '" ' +
-            'data-id="' + projectId + '" ' +
-            'data-project="' + activeManageProjectName.replace(/"/g, '&quot;') + '" ' +
-            'title="Unggah Dokumen ' + docType + '" ' +
-            'style="border-radius: 8px; font-size: 11px; padding: 3px 9px; font-weight: 600;">' +
-            '<i class="fa-solid fa-plus mr-1"></i> Upload' +
-          '</button>'
-        );
+        if (docType === 'Admin' && isRole4) {
+          $cell.html('<span class="text-muted" style="font-size: 12px;">-</span>');
+        } else {
+          var btnOutline = docType === 'Admin' ? 'btn-outline-primary' : 'btn-outline-success';
+          $cell.html(
+            '<button type="button" class="btn btn-sm ' + btnOutline + ' btn-manage-project-docs" ' +
+              'data-type="' + docType + '" ' +
+              'data-id="' + projectId + '" ' +
+              'data-project="' + activeManageProjectName.replace(/"/g, '&quot;') + '" ' +
+              'title="Unggah Dokumen ' + docType + '" ' +
+              'style="border-radius: 8px; font-size: 11px; padding: 3px 9px; font-weight: 600;">' +
+              '<i class="fa-solid fa-plus mr-1"></i> Upload' +
+            '</button>'
+          );
+        }
       }
     }
 
@@ -2103,9 +2283,18 @@ rsort($listTahun);
 
       if (type === 'Admin') {
         $('#ModalKelolaDocHeader').css('background', 'linear-gradient(135deg, #043168 0%, #0284c7 100%)');
-        $('#ModalKelolaDocHeaderIcon').html('<i class="fa-solid fa-folder-open text-white" style="font-size: 18px;"></i>');
+        $('#ModalKelolaDocHeaderIcon').html('<i class="fa-solid ' + (isRole4 ? 'fa-eye' : 'fa-folder-open') + ' text-white" style="font-size: 18px;"></i>');
         $('#BtnSubmitUploadDoc').removeClass('btn-success').addClass('btn-primary');
+        if (isRole4) {
+          $('#CardUploadDokumenArea').hide();
+          $('#ModalKelolaDocTitle').text('Dokumen Admin (Lihat Berkas)');
+        } else {
+          $('#CardUploadDokumenArea').show();
+          $('#ModalKelolaDocTitle').text('Kelola Dokumen Admin');
+        }
       } else {
+        $('#CardUploadDokumenArea').show();
+        $('#ModalKelolaDocTitle').text('Kelola Dokumen Project');
         $('#ModalKelolaDocHeader').css('background', 'linear-gradient(135deg, #064e3b 0%, #059669 100%)');
         $('#ModalKelolaDocHeaderIcon').html('<i class="fa-solid fa-folder-tree text-white" style="font-size: 18px;"></i>');
         $('#BtnSubmitUploadDoc').removeClass('btn-primary').addClass('btn-success');
@@ -2373,6 +2562,58 @@ rsort($listTahun);
       loadDocumentAtIndex(startIdx);
     }
      
+    // =========================================================================
+    // DYNAMIC MULTI-INPUT OUTPUT KEGIATAN (INPUT & EDIT)
+    // =========================================================================
+    function createOutputKegiatanRow(value, isEdit) {
+      var val = value || '';
+      var cls = isEdit ? 'edit-output-kegiatan-item' : 'output-kegiatan-item';
+      var btnCls = isEdit ? 'btn-remove-edit-output-row' : 'btn-remove-input-output-row';
+      var isReadOnly = (isEdit && isRole4);
+      return $(
+        '<div class="output-kegiatan-row d-flex align-items-center" style="gap: 7px;">' +
+          '<div class="output-kegiatan-box"' + (isReadOnly ? ' style="background-color: #f1f5f9;"' : '') + '>' +
+            '<i class="fa-solid fa-file-circle-check output-kegiatan-icon"></i>' +
+            '<input type="text" class="output-kegiatan-input ' + cls + '" value="' + val.replace(/"/g, '&quot;') + '" placeholder="Contoh: Dokumen Laporan Akhir, Executive Summary, Buku Profil..."' + (isReadOnly ? ' readonly disabled style="background-color: #f1f5f9; cursor: not-allowed;"' : '') + '>' +
+          '</div>' +
+          (!isReadOnly ? 
+          '<button type="button" class="btn btn-outline-danger ' + btnCls + '" title="Hapus Baris">' +
+            '<i class="fa-solid fa-trash-can"></i>' +
+          '</button>' : '') +
+        '</div>'
+      );
+    }
+
+    // Tambah baris Output di Modal Input
+    $('#BtnAddInputOutputRow').click(function() {
+      $('#InputOutputKegiatanContainer').append(createOutputKegiatanRow('', false));
+    });
+
+    // Tambah baris Output di Modal Edit
+    $('#BtnAddEditOutputRow').click(function() {
+      $('#EditOutputKegiatanContainer').append(createOutputKegiatanRow('', true));
+    });
+
+    // Hapus baris Output di Modal Input
+    $(document).on('click', '.btn-remove-input-output-row', function(e) {
+      e.preventDefault();
+      if ($('.output-kegiatan-item').length > 1) {
+        $(this).closest('.output-kegiatan-row').remove();
+      } else {
+        $(this).closest('.output-kegiatan-row').find('.output-kegiatan-item').val('');
+      }
+    });
+
+    // Hapus baris Output di Modal Edit
+    $(document).on('click', '.btn-remove-edit-output-row', function(e) {
+      e.preventDefault();
+      if ($('.edit-output-kegiatan-item').length > 1) {
+        $(this).closest('.output-kegiatan-row').remove();
+      } else {
+        $(this).closest('.output-kegiatan-row').find('.edit-output-kegiatan-item').val('');
+      }
+    });
+     
     // Reset Modal Input saat dibuka agar PIC dan field lainnya bersih
     $('#ModalInput').on('show.bs.modal', function() {
       $('#NamaProject').val('');
@@ -2382,7 +2623,7 @@ rsort($listTahun);
       $('#JenisPengadaan').val('');
       $('#Nominal').val('');
       $('#Status').val('Belum Mulai');
-      $('#OutputKegiatan').val('');
+      $('#InputOutputKegiatanContainer').empty().append(createOutputKegiatanRow('', false));
       $('#LoadingInput').hide();
       $('#Input').prop('disabled', false);
     });
@@ -2409,6 +2650,12 @@ rsort($listTahun);
         deadlineVal = tMulai !== "" ? tMulai + "|" + tSelesai : tSelesai;
       }
 
+      var outputArr = [];
+      $('.output-kegiatan-item').each(function() {
+        var v = $(this).val().trim();
+        if (v !== '') outputArr.push(v);
+      });
+
       var dataInput = {
         NamaProject: $("#NamaProject").val(),
         Tag: $("#Tag").val(),
@@ -2418,7 +2665,7 @@ rsort($listTahun);
         Status: $("#Status").val() || 'Belum Mulai',
         PIC: $("#PIC").val(),
         Deadline: deadlineVal,
-        OutputKegiatan: $("#OutputKegiatan").val()
+        OutputKegiatan: outputArr.length > 0 ? JSON.stringify(outputArr) : ''
       };
 
       $.ajax({
@@ -2490,7 +2737,39 @@ rsort($listTahun);
       $("#EditPIC").val(pic || '');
       $("#EditTimelineMulai").val(startVal);
       $("#EditTimelineSelesai").val(endVal);
-      $("#EditOutputKegiatan").val(outputkegiatan || '');
+
+      // Parse & Populate Multi Output Kegiatan in Edit Modal
+      var outputList = [];
+      if (outputkegiatan) {
+        try {
+          var parsed = typeof outputkegiatan === 'string' ? JSON.parse(outputkegiatan) : outputkegiatan;
+          if (Array.isArray(parsed)) {
+            outputList = parsed;
+          } else if (typeof parsed === 'string' && parsed.trim() !== '') {
+            outputList = [parsed.trim()];
+          }
+        } catch(e) {
+          var strOut = String(outputkegiatan).trim();
+          if (strOut.indexOf('|') !== -1) {
+            outputList = strOut.split('|');
+          } else if (strOut !== '') {
+            outputList = [strOut];
+          }
+        }
+      }
+
+      $('#EditOutputKegiatanContainer').empty();
+      if (outputList && outputList.length > 0) {
+        $.each(outputList, function(idx, item) {
+          var trimmed = $.trim(item);
+          if (trimmed !== '') {
+            $('#EditOutputKegiatanContainer').append(createOutputKegiatanRow(trimmed, true));
+          }
+        });
+      }
+      if ($('#EditOutputKegiatanContainer').children().length === 0) {
+        $('#EditOutputKegiatanContainer').append(createOutputKegiatanRow('', true));
+      }
 
       $('#ModalEdit').modal("show");
     });
@@ -2499,36 +2778,45 @@ rsort($listTahun);
     // SUBMIT EDIT AJAX (Hanya Data Pokok Project, Tanpa Berkas)
     // =========================================================================
     $("#Edit").click(function() {
-      if ($("#EditNamaProject").val().trim() === "") {
-        alert("Nama Project / Kegiatan tidak boleh kosong!");
-        return;
-      }
-      
-      var tMulai = $("#EditTimelineMulai").val().trim();
-      var tSelesai = $("#EditTimelineSelesai").val().trim();
-
-      if (tMulai === "" && tSelesai === "") {
-        alert("Timeline Project (Tanggal Mulai / Selesai) tidak boleh kosong!");
-        return;
-      }
-
-      var deadlineVal = tMulai;
-      if (tSelesai !== "") {
-        deadlineVal = tMulai !== "" ? tMulai + "|" + tSelesai : tSelesai;
-      }
-
       var dataEdit = {
         Id: $("#Id").val(),
-        NamaProject: $("#EditNamaProject").val(),
-        Tag: $("#EditTag").val(),
-        Instansi: $("#EditInstansi").val(),
-        JenisPengadaan: $("#EditJenisPengadaan").val(),
-        Nominal: $("#EditNominal").val(),
-        Status: $("#EditStatus").val() || 'Belum Mulai',
-        PIC: $("#EditPIC").val(),
-        Deadline: deadlineVal,
-        OutputKegiatan: $("#EditOutputKegiatan").val()
+        Tag: $("#EditTag").val()
       };
+
+      if (!isRole4) {
+        if ($("#EditNamaProject").val().trim() === "") {
+          alert("Nama Project / Kegiatan tidak boleh kosong!");
+          return;
+        }
+        
+        var tMulai = $("#EditTimelineMulai").val().trim();
+        var tSelesai = $("#EditTimelineSelesai").val().trim();
+
+        if (tMulai === "" && tSelesai === "") {
+          alert("Timeline Project (Tanggal Mulai / Selesai) tidak boleh kosong!");
+          return;
+        }
+
+        var deadlineVal = tMulai;
+        if (tSelesai !== "") {
+          deadlineVal = tMulai !== "" ? tMulai + "|" + tSelesai : tSelesai;
+        }
+
+        var editOutputArr = [];
+        $('.edit-output-kegiatan-item').each(function() {
+          var v = $(this).val().trim();
+          if (v !== '') editOutputArr.push(v);
+        });
+
+        dataEdit.NamaProject = $("#EditNamaProject").val();
+        dataEdit.Instansi = $("#EditInstansi").val();
+        dataEdit.JenisPengadaan = $("#EditJenisPengadaan").val();
+        dataEdit.Nominal = $("#EditNominal").val();
+        dataEdit.Status = $("#EditStatus").val() || 'Belum Mulai';
+        dataEdit.PIC = $("#EditPIC").val();
+        dataEdit.Deadline = deadlineVal;
+        dataEdit.OutputKegiatan = editOutputArr.length > 0 ? JSON.stringify(editOutputArr) : '';
+      }
 
       $.ajax({
         url: BaseURL + 'Staf/Edit',
