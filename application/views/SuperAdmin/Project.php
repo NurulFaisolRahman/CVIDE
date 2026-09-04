@@ -906,23 +906,62 @@ rsort($listTahun);
       $('#ExcelSheetTabs .sheet-tab-btn[data-sheet="' + sheetName + '"]').addClass('active');
     }
 
+    // Helper untuk membedah data dokumen (berkas lokal vs tautan Google Drive/Web)
+    function parseSuperDocItem(raw) {
+      if (!raw) return { isLink: false, isDrive: false, url: '', name: '', raw: '' };
+      if (typeof raw === 'object' && raw !== null) {
+        var u = raw.url || '';
+        var n = raw.name || u;
+        var d = /drive\.google\.com|docs\.google\.com/i.test(u);
+        return { isLink: true, isDrive: d, url: u, name: n, raw: JSON.stringify(raw) };
+      }
+
+      var str = String(raw).trim();
+      if (str.startsWith('http://') || str.startsWith('https://')) {
+        var parts = str.split('::');
+        var u = parts[0].trim();
+        var n = parts.length > 1 ? parts.slice(1).join('::').trim() : '';
+        var d = /drive\.google\.com|docs\.google\.com/i.test(u);
+        if (!n) {
+          n = d ? 'Google Drive Document' : 'Tautan Dokumen Eksternal';
+        }
+        return { isLink: true, isDrive: d, url: u, name: n, raw: str };
+      }
+
+      return { isLink: false, isDrive: false, url: BaseURL + 'Project/' + encodeURIComponent(str), name: str, raw: str };
+    }
+
+    function getSuperFileExtensionIcon(raw) {
+      var doc = parseSuperDocItem(raw);
+      if (doc.isLink) {
+        if (doc.isDrive) {
+          return '<i class="fa fa-google text-success mr-1"></i>';
+        }
+        return '<i class="fa fa-external-link text-primary mr-1"></i>';
+      }
+      var ext = doc.name.split('.').pop().toLowerCase();
+      if (ext === 'pdf') {
+        return '<i class="fa fa-file-pdf-o mr-1 text-danger"></i>';
+      } else if (ext === 'doc' || ext === 'docx') {
+        return '<i class="fa fa-file-word-o mr-1 text-primary"></i>';
+      } else if (ext === 'xls' || ext === 'xlsx' || ext === 'csv') {
+        return '<i class="fa fa-file-excel-o mr-1 text-success"></i>';
+      } else if (ext === 'zip' || ext === 'rar' || ext === '7z') {
+        return '<i class="fa fa-file-archive-o mr-1" style="color: #ea580c;"></i>';
+      }
+      return '<i class="fa fa-file-text-o mr-1"></i>';
+    }
+
     function loadDocumentAtIndex(index) {
       if (!activeProjectFiles || activeProjectFiles.length === 0 || index < 0 || index >= activeProjectFiles.length) {
         return;
       }
       activeDocIndex = index;
-      var fileName = activeProjectFiles[index];
-      var fileUrl = BaseURL + 'Project/' + fileName;
-      var ext = fileName.split('.').pop().toLowerCase();
+      var rawItem = activeProjectFiles[index];
+      var doc = parseSuperDocItem(rawItem);
 
       $('.doc-slide-tab').removeClass('active');
       $('.doc-slide-tab[data-index="' + index + '"]').addClass('active');
-
-      $('#ModalViewerDocCounter').text('Dokumen ' + (index + 1) + ' dari ' + activeProjectFiles.length + ' (' + fileName + ')');
-      $('#ModalViewerFooterInfo').html('<i class="fa fa-file-text-o mr-1"></i> ' + fileName + ' &bull; Dokumen ' + (index + 1) + ' / ' + activeProjectFiles.length);
-      $('#BtnDownloadDoc').attr('href', fileUrl);
-      $('#BtnFallbackDownload').attr('href', fileUrl);
-      $('#FallbackFileName').text(fileName);
 
       $('#ViewerLoadingSpinner').show();
       $('#PdfViewerContainer').hide();
@@ -930,8 +969,66 @@ rsort($listTahun);
       $('#ExcelViewerContainer').hide();
       $('#FallbackViewerContainer').hide();
 
+      // ==========================================
+      // KASUS 1: TAUTAN GOOGLE DRIVE / LINK WEB
+      // ==========================================
+      if (doc.isLink) {
+        var previewEmbedUrl = '';
+
+        if (doc.isDrive) {
+          var fileMatch = doc.url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/i) || doc.url.match(/[?&]id=([a-zA-Z0-9_-]+)/i);
+          var docMatch = doc.url.match(/\/document\/d\/([a-zA-Z0-9_-]+)/i);
+          var sheetMatch = doc.url.match(/\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/i);
+          var slideMatch = doc.url.match(/\/presentation\/d\/([a-zA-Z0-9_-]+)/i);
+          var folderMatch = doc.url.match(/\/drive\/folders\/([a-zA-Z0-9_-]+)/i);
+
+          if (fileMatch) {
+            previewEmbedUrl = 'https://drive.google.com/file/d/' + fileMatch[1] + '/preview';
+          } else if (docMatch) {
+            previewEmbedUrl = 'https://docs.google.com/document/d/' + docMatch[1] + '/preview';
+          } else if (sheetMatch) {
+            previewEmbedUrl = 'https://docs.google.com/spreadsheets/d/' + sheetMatch[1] + '/preview';
+          } else if (slideMatch) {
+            previewEmbedUrl = 'https://docs.google.com/presentation/d/' + slideMatch[1] + '/preview';
+          } else if (folderMatch) {
+            previewEmbedUrl = 'https://drive.google.com/embeddedfolderview?id=' + folderMatch[1] + '#list';
+          }
+        }
+
+        $('#ModalViewerDocCounter').text('Dokumen ' + (index + 1) + ' dari ' + activeProjectFiles.length + ' (' + doc.name + ')');
+        $('#ModalViewerFooterInfo').html('<i class="fa fa-google text-success mr-1"></i> ' + doc.name + ' &bull; Tautan Google Drive');
+        $('#BtnDownloadDoc').attr('href', doc.url).attr('target', '_blank').removeAttr('download').html('<i class="fa fa-external-link mr-1"></i> Buka di Google Drive');
+
+        $('#ViewerLoadingSpinner').hide();
+
+        if (previewEmbedUrl) {
+          $('#PdfViewerContainer').html('<iframe src="' + previewEmbedUrl + '" width="100%" height="600" style="border: none; border-radius: 8px;" allow="autoplay"></iframe>').show();
+        } else {
+          $('#FallbackIcon').attr('class', 'fa fa-google');
+          $('#FallbackIconWrapper').css({ 'background': 'rgba(15, 157, 88, 0.1)', 'color': '#0f9d58' });
+          $('#FallbackFileName').text(doc.name);
+          $('#FallbackFileDesc').html('Tautan dokumen tersimpan di Google Drive:<br><a href="' + doc.url + '" target="_blank" class="text-primary font-weight-bold" style="word-break: break-all;">' + doc.url + '</a>');
+          $('#BtnFallbackDownload').attr('href', doc.url).attr('target', '_blank').removeAttr('download').html('<i class="fa fa-external-link mr-1"></i> Buka Tautan Google Drive');
+          $('#FallbackViewerContainer').show();
+        }
+        return;
+      }
+
+      // ==========================================
+      // KASUS 2: BERKAS FISIK LOKAL
+      // ==========================================
+      var fileName = doc.name;
+      var fileUrl = doc.url;
+      var ext = fileName.split('.').pop().toLowerCase();
+
+      $('#ModalViewerDocCounter').text('Dokumen ' + (index + 1) + ' dari ' + activeProjectFiles.length + ' (' + fileName + ')');
+      $('#ModalViewerFooterInfo').html('<i class="fa fa-file-text-o mr-1"></i> ' + fileName + ' &bull; Dokumen ' + (index + 1) + ' / ' + activeProjectFiles.length);
+      $('#BtnDownloadDoc').attr('href', fileUrl).attr('target', '_blank').attr('download', fileName).html('<i class="fa fa-download mr-1 text-primary"></i> Unduh File Aktif');
+      $('#BtnFallbackDownload').attr('href', fileUrl).attr('target', '_blank').attr('download', fileName);
+      $('#FallbackFileName').text(fileName);
+
       if (ext === 'pdf') {
-        $('#PathProject').attr('src', fileUrl);
+        $('#PdfViewerContainer').html('<embed id="PathProject" src="' + fileUrl + '" type="application/pdf" width="100%" height="600" style="border: none; border-radius: 8px;"/>');
         $('#ViewerLoadingSpinner').hide();
         $('#PdfViewerContainer').show();
       } 
@@ -1042,23 +1139,12 @@ rsort($listTahun);
 
       var tabsHtml = '';
       $.each(activeProjectFiles, function(i, f) {
-        var ext = f.split('.').pop().toLowerCase();
-        var iconHtml = '<i class="fa fa-file-text-o mr-1"></i>';
-
-        if (ext === 'pdf') {
-          iconHtml = '<i class="fa fa-file-pdf-o mr-1 text-danger"></i>';
-        } else if (ext === 'doc' || ext === 'docx') {
-          iconHtml = '<i class="fa fa-file-word-o mr-1 text-primary"></i>';
-        } else if (ext === 'xls' || ext === 'xlsx' || ext === 'csv') {
-          iconHtml = '<i class="fa fa-file-excel-o mr-1 text-success"></i>';
-        } else if (ext === 'zip' || ext === 'rar' || ext === '7z') {
-          iconHtml = '<i class="fa fa-file-archive-o mr-1" style="color: #ea580c;"></i>';
-        }
-
-        var displayName = f.length > 32 ? f.substring(0, 29) + '...' : f;
+        var doc = parseSuperDocItem(f);
+        var iconHtml = getSuperFileExtensionIcon(f);
+        var displayName = doc.name.length > 32 ? doc.name.substring(0, 29) + '...' : doc.name;
 
         tabsHtml += 
-          '<button type="button" class="doc-slide-tab ' + (i === 0 ? 'active' : '') + '" data-index="' + i + '" title="' + f + '">' +
+          '<button type="button" class="doc-slide-tab ' + (i === 0 ? 'active' : '') + '" data-index="' + i + '" title="' + doc.name + '">' +
             iconHtml + '<span>' + displayName + '</span>' +
           '</button>';
       });

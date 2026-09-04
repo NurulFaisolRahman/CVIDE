@@ -279,12 +279,14 @@ class Staf extends CI_Controller {
   }
 
   /**
-   * Mengunggah berkas baru langsung ke dokumen spesifik (Admin / Project)
+   * Mengunggah berkas baru atau menambahkan tautan Google Drive langsung ke dokumen spesifik (Admin / Project)
    */
   public function UploadDokumen(){
     $id = $this->input->post('Id');
     $type = $this->input->post('Type'); // 'Admin' atau 'Project'
     $customNames = $this->input->post('CustomNames') ?: array();
+    $driveLinks = $this->input->post('DriveLinks') ?: array();
+    $driveNames = $this->input->post('DriveNames') ?: array();
 
     $project = $this->db->get_where('project', array('Id' => $id))->row_array();
     if (!$project) {
@@ -293,8 +295,24 @@ class Staf extends CI_Controller {
     }
 
     $newFiles = $this->handleFileUploads('Files', $customNames);
+
+    // Proses Tautan Google Drive jika ada
+    if (!empty($driveLinks) && is_array($driveLinks)) {
+      foreach ($driveLinks as $idx => $link) {
+        $link = trim($link ?? '');
+        if (!empty($link)) {
+          $dName = isset($driveNames[$idx]) ? trim($driveNames[$idx] ?? '') : '';
+          if (!empty($dName)) {
+            $newFiles[] = $link . '::' . $dName;
+          } else {
+            $newFiles[] = $link;
+          }
+        }
+      }
+    }
+
     if (empty($newFiles)) {
-      echo json_encode(array('status' => 'error', 'message' => 'Silakan pilih berkas yang akan diunggah!'));
+      echo json_encode(array('status' => 'error', 'message' => 'Silakan pilih berkas atau masukkan tautan Google Drive yang akan disimpan!'));
       return;
     }
 
@@ -330,12 +348,12 @@ class Staf extends CI_Controller {
       'projectName' => $project['NamaProject'],
       'files'       => $merged,
       'total'       => count($merged),
-      'message'     => count($newFiles) . ' berkas berhasil diunggah!'
+      'message'     => count($newFiles) . ' dokumen/tautan berhasil disimpan!'
     ));
   }
 
   /**
-   * Menghapus 1 berkas spesifik dari dokumen project
+   * Menghapus 1 berkas atau tautan spesifik dari dokumen project
    */
   public function HapusDokumenItem(){
     $id = $this->input->post('Id');
@@ -373,7 +391,8 @@ class Staf extends CI_Controller {
     $this->db->where('Id', $id);
     $this->db->update('project', $updateData);
 
-    if (!empty($fileName) && file_exists('Project/' . $fileName)) {
+    // Hapus fisik berkas hanya jika merupakan file lokal (bukan URL tautan)
+    if (!empty($fileName) && !preg_match('/^https?:\/\//i', $fileName) && file_exists('Project/' . $fileName)) {
       @unlink('Project/' . $fileName);
     }
 
@@ -384,18 +403,19 @@ class Staf extends CI_Controller {
       'projectName' => $project['NamaProject'],
       'files'       => $remainingFiles,
       'total'       => count($remainingFiles),
-      'message'     => 'Berkas berhasil dihapus!'
+      'message'     => 'Dokumen berhasil dihapus!'
     ));
   }
 
   /**
-   * Mengedit nama berkas atau mengganti file dokumen yang sudah terlampir
+   * Mengedit nama berkas, tautan Google Drive, atau mengganti file dokumen yang sudah terlampir
    */
   public function EditDokumenItem(){
     $id = $this->input->post('Id');
     $type = $this->input->post('Type'); // 'Admin' atau 'Project'
     $oldFileName = trim($this->input->post('OldFileName') ?? '');
     $newCustomName = trim($this->input->post('NewFileName') ?? '');
+    $newDriveUrl = trim($this->input->post('NewDriveUrl') ?? '');
 
     $project = $this->db->get_where('project', array('Id' => $id))->row_array();
     if (!$project) {
@@ -419,71 +439,84 @@ class Staf extends CI_Controller {
 
     $fileIndex = array_search($oldFileName, $existingFiles);
     if ($fileIndex === false) {
-      echo json_encode(array('status' => 'error', 'message' => 'Berkas lama tidak ditemukan dalam daftar!'));
+      echo json_encode(array('status' => 'error', 'message' => 'Item dokumen lama tidak ditemukan dalam daftar!'));
       return;
     }
 
-    $hasNewUploadedFile = isset($_FILES['ReplaceFile']) && !empty($_FILES['ReplaceFile']['tmp_name']) && is_uploaded_file($_FILES['ReplaceFile']['tmp_name']);
+    $isOldDriveLink = preg_match('/^https?:\/\//i', $oldFileName);
 
-    if (!is_dir('Project')) {
-      mkdir('Project', 0777, true);
-    }
-
-    $finalFileName = $oldFileName;
-
-    if ($hasNewUploadedFile) {
-      // Ada file baru yang diunggah untuk menggantikan
-      $originalNewName = $_FILES['ReplaceFile']['name'];
-      $tipe = strtolower(pathinfo($originalNewName, PATHINFO_EXTENSION));
-
+    if ($isOldDriveLink || !empty($newDriveUrl)) {
+      // Kasus item Google Drive Link
+      $targetUrl = !empty($newDriveUrl) ? $newDriveUrl : explode('::', $oldFileName)[0];
       if (!empty($newCustomName)) {
-        $cleanName = preg_replace('/[\\\\\/:\*\?"<>\|]/', '_', pathinfo($newCustomName, PATHINFO_FILENAME));
+        $finalFileName = $targetUrl . '::' . $newCustomName;
       } else {
-        $cleanName = preg_replace('/[\\\\\/:\*\?"<>\|]/', '_', pathinfo($originalNewName, PATHINFO_FILENAME));
-      }
-      $cleanName = trim($cleanName);
-      if (empty($cleanName)) {
-        $cleanName = 'Dokumen_' . date('YmdHis');
-      }
-
-      $targetFileName = $cleanName . '.' . $tipe;
-      $counter = 1;
-      while (file_exists('Project/' . $targetFileName) && $targetFileName !== $oldFileName) {
-        $targetFileName = $cleanName . ' (' . $counter . ').' . $tipe;
-        $counter++;
-      }
-
-      if (move_uploaded_file($_FILES['ReplaceFile']['tmp_name'], "Project/" . $targetFileName)) {
-        if ($oldFileName !== $targetFileName && file_exists('Project/' . $oldFileName)) {
-          @unlink('Project/' . $oldFileName);
-        }
-        $finalFileName = $targetFileName;
-      } else {
-        echo json_encode(array('status' => 'error', 'message' => 'Gagal mengunggah berkas pengganti!'));
-        return;
+        $finalFileName = $targetUrl;
       }
     } else {
-      // Hanya ganti nama dokumen
-      if (!empty($newCustomName)) {
-        $oldExt = strtolower(pathinfo($oldFileName, PATHINFO_EXTENSION));
-        $cleanName = preg_replace('/[\\\\\/:\*\?"<>\|]/', '_', pathinfo($newCustomName, PATHINFO_FILENAME));
+      // Kasus file fisik lokal
+      $hasNewUploadedFile = isset($_FILES['ReplaceFile']) && !empty($_FILES['ReplaceFile']['tmp_name']) && is_uploaded_file($_FILES['ReplaceFile']['tmp_name']);
+
+      if (!is_dir('Project')) {
+        mkdir('Project', 0777, true);
+      }
+
+      $finalFileName = $oldFileName;
+
+      if ($hasNewUploadedFile) {
+        // Ada file baru yang diunggah untuk menggantikan
+        $originalNewName = $_FILES['ReplaceFile']['name'];
+        $tipe = strtolower(pathinfo($originalNewName, PATHINFO_EXTENSION));
+
+        if (!empty($newCustomName)) {
+          $cleanName = preg_replace('/[\\\\\/:\*\?"<>\|]/', '_', pathinfo($newCustomName, PATHINFO_FILENAME));
+        } else {
+          $cleanName = preg_replace('/[\\\\\/:\*\?"<>\|]/', '_', pathinfo($originalNewName, PATHINFO_FILENAME));
+        }
         $cleanName = trim($cleanName);
         if (empty($cleanName)) {
-          $cleanName = pathinfo($oldFileName, PATHINFO_FILENAME);
+          $cleanName = 'Dokumen_' . date('YmdHis');
         }
-        $targetFileName = $cleanName . '.' . $oldExt;
 
-        if ($targetFileName !== $oldFileName) {
-          $counter = 1;
-          while (file_exists('Project/' . $targetFileName)) {
-            $targetFileName = $cleanName . ' (' . $counter . ').' . $oldExt;
-            $counter++;
-          }
+        $targetFileName = $cleanName . '.' . $tipe;
+        $counter = 1;
+        while (file_exists('Project/' . $targetFileName) && $targetFileName !== $oldFileName) {
+          $targetFileName = $cleanName . ' (' . $counter . ').' . $tipe;
+          $counter++;
+        }
 
-          if (file_exists('Project/' . $oldFileName)) {
-            @rename('Project/' . $oldFileName, 'Project/' . $targetFileName);
+        if (move_uploaded_file($_FILES['ReplaceFile']['tmp_name'], "Project/" . $targetFileName)) {
+          if ($oldFileName !== $targetFileName && file_exists('Project/' . $oldFileName)) {
+            @unlink('Project/' . $oldFileName);
           }
           $finalFileName = $targetFileName;
+        } else {
+          echo json_encode(array('status' => 'error', 'message' => 'Gagal mengunggah berkas pengganti!'));
+          return;
+        }
+      } else {
+        // Hanya ganti nama dokumen
+        if (!empty($newCustomName)) {
+          $oldExt = strtolower(pathinfo($oldFileName, PATHINFO_EXTENSION));
+          $cleanName = preg_replace('/[\\\\\/:\*\?"<>\|]/', '_', pathinfo($newCustomName, PATHINFO_FILENAME));
+          $cleanName = trim($cleanName);
+          if (empty($cleanName)) {
+            $cleanName = pathinfo($oldFileName, PATHINFO_FILENAME);
+          }
+          $targetFileName = $cleanName . '.' . $oldExt;
+
+          if ($targetFileName !== $oldFileName) {
+            $counter = 1;
+            while (file_exists('Project/' . $targetFileName)) {
+              $targetFileName = $cleanName . ' (' . $counter . ').' . $oldExt;
+              $counter++;
+            }
+
+            if (file_exists('Project/' . $oldFileName)) {
+              @rename('Project/' . $oldFileName, 'Project/' . $targetFileName);
+            }
+            $finalFileName = $targetFileName;
+          }
         }
       }
     }
@@ -507,7 +540,7 @@ class Staf extends CI_Controller {
       'files'       => $existingFiles,
       'total'       => count($existingFiles),
       'updatedFile' => $finalFileName,
-      'message'     => 'Berkas dokumen berhasil diperbarui!'
+      'message'     => 'Dokumen berhasil diperbarui!'
     ));
   }
 

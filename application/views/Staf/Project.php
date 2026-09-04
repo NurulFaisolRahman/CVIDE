@@ -347,6 +347,100 @@ rsort($listTahun);
     color: #0f172a;
   }
 
+  /* Harmonized Compact Style for Modal Upload Entry Form */
+  .upload-file-entry-row {
+    background: #ffffff;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+  }
+  .upload-file-entry-row label {
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    color: #334155 !important;
+    margin-bottom: 3px !important;
+    letter-spacing: 0.3px;
+    display: block;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+  .upload-file-entry-row select.form-control,
+  .upload-file-entry-row input[type="text"].form-control,
+  .upload-file-entry-row input[type="url"].form-control,
+  .upload-file-entry-row input[type="file"].form-control {
+    height: 33px !important;
+    min-height: 33px !important;
+    font-size: 11.5px !important;
+    border-radius: 20px !important;
+    border: 1.5px solid #cbd5e1 !important;
+    background-color: #ffffff !important;
+    box-shadow: none !important;
+    line-height: 1.4 !important;
+    color: #1e293b !important;
+    box-sizing: border-box !important;
+  }
+  .upload-file-entry-row select.form-control {
+    padding: 3px 10px !important;
+    font-weight: 600;
+  }
+  .upload-file-entry-row input[type="text"].form-control,
+  .upload-file-entry-row input[type="url"].form-control {
+    padding: 4px 12px !important;
+  }
+  .upload-file-entry-row input[type="file"].form-control {
+    padding: 0 8px !important;
+    font-size: 11px !important;
+    display: flex !important;
+    align-items: center !important;
+    height: 33px !important;
+    line-height: 31px !important;
+  }
+  .upload-file-entry-row input[type="file"]::file-selector-button,
+  .upload-file-entry-row input[type="file"]::-webkit-file-upload-button {
+    font-size: 9.5px !important;
+    padding: 1px 9px !important;
+    height: 22px !important;
+    line-height: 20px !important;
+    border-radius: 12px !important;
+    border: 1px solid #cbd5e1 !important;
+    background-color: #f1f5f9 !important;
+    color: #334155 !important;
+    font-weight: 600 !important;
+    margin-right: 8px !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    cursor: pointer !important;
+    vertical-align: middle !important;
+    align-self: center !important;
+    transition: all 0.2s ease;
+  }
+  .upload-file-entry-row input[type="file"]::file-selector-button:hover,
+  .upload-file-entry-row input[type="file"]::-webkit-file-upload-button:hover {
+    background-color: #e2e8f0 !important;
+    color: #0f172a !important;
+  }
+  .upload-file-entry-row .btn-remove-upload-entry-row {
+    height: 31px !important;
+    width: 31px !important;
+    min-width: 31px !important;
+    padding: 0 !important;
+    border-radius: 8px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    font-size: 11px !important;
+    border-color: #fca5a5 !important;
+    color: #ef4444 !important;
+    transition: all 0.2s ease;
+  }
+  .upload-file-entry-row .btn-remove-upload-entry-row:hover {
+    background-color: #fef2f2 !important;
+    border-color: #ef4444 !important;
+    color: #dc2626 !important;
+  }
+
   /* In-Browser Document Viewer Paper Styles */
   .word-document-paper {
     background: #ffffff;
@@ -1082,41 +1176,41 @@ rsort($listTahun);
     <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
       
       <!-- Modal Header -->
-      <div class="modal-header d-flex align-items-center justify-content-between" id="ModalKelolaDocHeader" style="background: linear-gradient(135deg, #043168 0%, #0a3d7c 100%); color: #ffffff; padding: 14px 22px;">
-        <div class="d-flex align-items-center" style="gap: 12px;">
-          <div id="ModalKelolaDocHeaderIcon" style="width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center;">
-            <i class="fa-solid fa-folder-open text-white" style="font-size: 18px;"></i>
+      <div class="modal-header d-flex align-items-center justify-content-between" id="ModalKelolaDocHeader" style="background: linear-gradient(135deg, #043168 0%, #0a3d7c 100%); color: #ffffff; padding: 10px 18px;">
+        <div class="d-flex align-items-center" style="gap: 10px;">
+          <div id="ModalKelolaDocHeaderIcon" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-folder-open text-white" style="font-size: 15px;"></i>
           </div>
           <div>
-            <div class="d-flex align-items-center" style="gap: 8px;">
-              <h5 class="modal-title font-weight-bold mb-0 text-white" style="font-size: 16px;" id="ModalKelolaDocTitle">
+            <div class="d-flex align-items-center" style="gap: 6px;">
+              <h5 class="modal-title font-weight-bold mb-0 text-white" style="font-size: 14.5px;" id="ModalKelolaDocTitle">
                 Kelola Dokumen
               </h5>
-              <span class="badge badge-light" id="ModalKelolaDocTypeBadge" style="font-size: 11px; font-weight: 700;">Admin</span>
+              <span class="badge badge-light" id="ModalKelolaDocTypeBadge" style="font-size: 10px; font-weight: 700; padding: 2px 6px;">Admin</span>
             </div>
-            <p class="text-white-50 mb-0 mt-1" style="font-size: 12px;" id="ModalKelolaDocProjectName">
+            <p class="text-white-50 mb-0 mt-0" style="font-size: 11px;" id="ModalKelolaDocProjectName">
               Project: -
             </p>
           </div>
         </div>
-        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.9;">
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.9; font-size: 20px;">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
 
       <!-- Modal Body -->
-      <div class="modal-body p-4" style="background-color: #f8fafc;">
+      <div class="modal-body p-3" style="background-color: #f8fafc;">
         <input type="hidden" id="ManageDocProjectId">
         <input type="hidden" id="ManageDocType">
 
-        <!-- Area 1: Upload Dokumen Baru dengan Penamaan Manual Per Berkas -->
-        <div class="card p-3 mb-4 border" style="border-radius: 12px; background: #ffffff; border-color: #cbd5e1 !important; box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
-          <div class="d-flex align-items-center justify-content-between mb-2">
-            <span class="font-weight-bold text-dark" style="font-size: 13px;">
-              <i class="fa-solid fa-cloud-arrow-up text-primary mr-1"></i> Unggah Berkas Dokumen (Bisa Lebih Dari 1 & Dinamai Manual)
+        <!-- Area 1: Upload Dokumen Baru / Link Google Drive -->
+        <div class="card p-3 mb-3 border" style="border-radius: 10px; background: #ffffff; border-color: #cbd5e1 !important; box-shadow: 0 1px 4px rgba(0,0,0,0.03);">
+          <div class="d-flex flex-wrap align-items-center justify-content-between mb-2" style="gap: 6px;">
+            <span class="font-weight-bold text-dark" style="font-size: 12px;">
+              <i class="fa-solid fa-cloud-arrow-up text-primary mr-1"></i> Unggah Berkas Dokumen atau Tautan Google Drive
             </span>
-            <button type="button" class="btn btn-sm btn-outline-primary font-weight-bold" id="BtnAddUploadRow" style="border-radius: 8px; font-size: 11.5px; padding: 4px 10px;">
-              <i class="fa-solid fa-plus mr-1"></i> Tambah Baris Berkas
+            <button type="button" class="btn btn-sm btn-outline-primary font-weight-bold" id="BtnAddUploadRow" style="border-radius: 6px; font-size: 11px; padding: 3px 9px;">
+              <i class="fa-solid fa-plus mr-1"></i> Tambah Dokumen
             </button>
           </div>
 
@@ -1125,32 +1219,32 @@ rsort($listTahun);
             <!-- Dynamic upload rows generated by JS -->
           </div>
 
-          <div class="d-flex flex-wrap align-items-center justify-content-between mt-2 pt-2 border-top" style="gap: 10px;">
-            <small class="text-muted">
-              <i class="fa-solid fa-circle-info mr-1"></i> Format: <strong>PDF, Word, Excel, ZIP, RAR</strong>. Jika nama dokumen dikosongkan, nama asli file akan otomatis digunakan.
+          <div class="d-flex flex-wrap align-items-center justify-content-between mt-2 pt-2 border-top" style="gap: 8px;">
+            <small class="text-muted" style="font-size: 10.5px;">
+              <i class="fa-solid fa-circle-info mr-1"></i> Format: <strong>PDF, Word, Excel, ZIP, RAR, atau Tautan Google Drive</strong>.
             </small>
-            <button type="button" class="btn btn-primary font-weight-bold px-4" id="BtnSubmitUploadDoc" style="border-radius: 8px; height: 36px; display: inline-flex; align-items: center; gap: 6px;">
-              <i class="fa-solid fa-upload"></i> Unggah Semua Berkas
+            <button type="button" class="btn btn-primary font-weight-bold px-3" id="BtnSubmitUploadDoc" style="border-radius: 6px; height: 32px; font-size: 11.5px; display: inline-flex; align-items: center; gap: 5px;">
+              <i class="fa-solid fa-floppy-disk"></i> Simpan Semua Dokumen
             </button>
           </div>
 
-          <div id="UploadDocProgress" class="mt-2 text-primary font-weight-bold" style="display: none; font-size: 12px;">
-            <i class="fa-solid fa-spinner fa-spin mr-1"></i> Mengunggah berkas... Mohon tunggu...
+          <div id="UploadDocProgress" class="mt-2 text-primary font-weight-bold" style="display: none; font-size: 11.5px;">
+            <i class="fa-solid fa-spinner fa-spin mr-1"></i> Menyimpan dokumen... Mohon tunggu...
           </div>
         </div>
 
         <!-- Area 2: Daftar Dokumen Terlampir -->
         <div>
           <div class="d-flex align-items-center justify-content-between mb-2">
-            <h6 class="font-weight-bold text-dark mb-0" style="font-size: 13.5px;">
+            <h6 class="font-weight-bold text-dark mb-0" style="font-size: 12px;">
               <i class="fa-solid fa-list-check text-secondary mr-1"></i> Berkas Dokumen Terlampir (<span id="ManageDocCount">0</span>)
             </h6>
-            <button type="button" class="btn btn-sm btn-outline-secondary" id="BtnPreviewAllDocs" style="border-radius: 8px; font-size: 11.5px; padding: 3px 10px;">
+            <button type="button" class="btn btn-sm btn-outline-secondary" id="BtnPreviewAllDocs" style="border-radius: 6px; font-size: 10.5px; padding: 2px 8px;">
               <i class="fa-solid fa-desktop mr-1 text-primary"></i> Buka In-Browser Viewer
             </button>
           </div>
 
-          <div id="ManageDocListContainer" style="min-height: 120px;">
+          <div id="ManageDocListContainer" style="min-height: 100px;">
             <!-- Rendered list of files -->
           </div>
         </div>
@@ -1158,7 +1252,7 @@ rsort($listTahun);
       </div>
 
       <div class="modal-footer bg-white py-2">
-        <button type="button" class="btn btn-secondary px-4" data-dismiss="modal" style="border-radius: 8px;">Tutup</button>
+        <button type="button" class="btn btn-sm btn-secondary px-3" data-dismiss="modal" style="border-radius: 6px; font-size: 11.5px;">Tutup</button>
       </div>
 
     </div>
@@ -1166,62 +1260,71 @@ rsort($listTahun);
 </div>
 
 <!-- =========================================================================
-     MODAL EDIT BERKAS DOKUMEN (UBAH NAMA & GANTI FILE)
+     MODAL EDIT BERKAS DOKUMEN / TAUTAN GOOGLE DRIVE
      ========================================================================= -->
 <div class="modal fade" id="ModalEditDokumenItem" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 1060;">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
       
-      <div class="modal-header d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #043168 0%, #0a3d7c 100%); color: #ffffff; padding: 14px 20px;">
-        <div class="d-flex align-items-center" style="gap: 10px;">
-          <i class="fa-solid fa-file-pen text-warning" style="font-size: 18px;"></i>
-          <h5 class="modal-title font-weight-bold mb-0 text-white" style="font-size: 15px;">
-            Edit Berkas Dokumen
+      <div class="modal-header d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #043168 0%, #0a3d7c 100%); color: #ffffff; padding: 10px 18px;">
+        <div class="d-flex align-items-center" style="gap: 8px;">
+          <i class="fa-solid fa-file-pen text-warning" style="font-size: 15px;"></i>
+          <h5 class="modal-title font-weight-bold mb-0 text-white" style="font-size: 14px;">
+            Edit Dokumen / Tautan
           </h5>
         </div>
-        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.9;">
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.9; font-size: 20px;">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
 
-      <div class="modal-body p-4" style="background: #f8fafc;">
+      <div class="modal-body p-3" style="background: #f8fafc;">
         <input type="hidden" id="EditDocOldFileName">
+        <input type="hidden" id="EditDocIsDrive">
 
         <!-- Info Berkas Saat Ini -->
-        <div class="mb-3 p-3 border rounded bg-white" style="border-color: #e2e8f0 !important;">
-          <small class="text-muted d-block font-weight-bold" style="font-size: 11px;">Berkas Saat Ini:</small>
-          <div class="d-flex align-items-center mt-1" style="gap: 8px;">
+        <div class="mb-2 p-2 border rounded bg-white" style="border-color: #e2e8f0 !important;">
+          <small class="text-muted d-block font-weight-bold" style="font-size: 10px;">Dokumen / Tautan Saat Ini:</small>
+          <div class="d-flex align-items-center mt-1" style="gap: 6px;">
             <span id="EditDocCurrentIcon"></span>
-            <span id="EditDocCurrentName" class="font-weight-bold text-dark text-truncate" style="font-size: 13px;"></span>
+            <span id="EditDocCurrentName" class="font-weight-bold text-dark text-truncate" style="font-size: 12px;"></span>
           </div>
         </div>
 
         <!-- Input Ubah Nama / Judul Dokumen -->
-        <div class="form-group mb-3">
-          <label for="EditDocNewNameInput" class="font-weight-bold text-dark" style="font-size: 12.5px;">
-            <i class="fa-solid fa-signature text-primary mr-1"></i> Nama / Judul Dokumen Baru
+        <div class="form-group mb-2">
+          <label for="EditDocNewNameInput" class="font-weight-bold text-dark mb-1" style="font-size: 11px;">
+            <i class="fa-solid fa-signature text-primary mr-1"></i> Nama / Judul Dokumen
           </label>
-          <input type="text" class="form-control" id="EditDocNewNameInput" placeholder="Masukkan nama/judul dokumen baru..." style="border-radius: 8px; font-size: 13px;">
-          <small class="text-muted"><i class="fa-solid fa-circle-info mr-1"></i> Ekstensi file otomatis dipertahankan oleh sistem.</small>
+          <input type="text" class="form-control" id="EditDocNewNameInput" placeholder="Masukkan nama/judul dokumen..." style="border-radius: 6px; font-size: 11.5px; height: 32px;">
+          <small class="text-muted" style="font-size: 10px;"><i class="fa-solid fa-circle-info mr-1"></i> Judul tampilan dokumen pada tabel dan viewer.</small>
         </div>
 
-        <!-- Ganti File / Replace File (Opsional) -->
-        <div class="form-group mb-2">
-          <label for="EditDocReplaceFileInput" class="font-weight-bold text-dark" style="font-size: 12.5px;">
+        <!-- Input URL Google Drive (Khusus Tautan GDrive) -->
+        <div class="form-group mb-2" id="EditDocDriveUrlContainer" style="display: none;">
+          <label for="EditDocDriveUrlInput" class="font-weight-bold text-dark mb-1" style="font-size: 11px;">
+            <i class="fa-brands fa-google-drive text-success mr-1"></i> Tautan / Link Google Drive
+          </label>
+          <input type="url" class="form-control" id="EditDocDriveUrlInput" placeholder="https://drive.google.com/..." style="border-radius: 6px; font-size: 11.5px; height: 32px;">
+        </div>
+
+        <!-- Ganti File / Replace File (Khusus Berkas Lokal) -->
+        <div class="form-group mb-2" id="EditDocReplaceFileContainer">
+          <label for="EditDocReplaceFileInput" class="font-weight-bold text-dark mb-1" style="font-size: 11px;">
             <i class="fa-solid fa-arrow-right-arrow-left text-success mr-1"></i> Ganti Berkas File (Opsional)
           </label>
-          <input type="file" class="form-control" id="EditDocReplaceFileInput" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.zip,.rar,.7z" style="border-radius: 8px; padding: 5px; font-size: 12px;">
-          <small class="text-muted"><i class="fa-solid fa-circle-info mr-1"></i> Kosongkan jika hanya ingin mengganti nama/judul dokumen saja.</small>
+          <input type="file" class="form-control" id="EditDocReplaceFileInput" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.zip,.rar,.7z" style="border-radius: 6px; padding: 3px 6px; font-size: 11px; height: 32px;">
+          <small class="text-muted" style="font-size: 10px;"><i class="fa-solid fa-circle-info mr-1"></i> Kosongkan jika hanya ingin mengganti nama/judul dokumen saja.</small>
         </div>
 
-        <div id="EditDocProgress" class="mt-2 text-primary font-weight-bold" style="display: none; font-size: 12px;">
+        <div id="EditDocProgress" class="mt-2 text-primary font-weight-bold" style="display: none; font-size: 11px;">
           <i class="fa-solid fa-spinner fa-spin mr-1"></i> Menyimpan perubahan dokumen...
         </div>
       </div>
 
       <div class="modal-footer bg-white py-2 justify-content-between">
-        <button type="button" class="btn btn-secondary px-3" data-dismiss="modal" style="border-radius: 8px;">Batal</button>
-        <button type="button" class="btn btn-primary px-4 font-weight-bold" id="BtnSaveEditDocItem" style="border-radius: 8px; background: #043168; border: none;">
+        <button type="button" class="btn btn-sm btn-secondary px-3" data-dismiss="modal" style="border-radius: 6px; font-size: 11.5px;">Batal</button>
+        <button type="button" class="btn btn-sm btn-primary px-3 font-weight-bold" id="BtnSaveEditDocItem" style="border-radius: 6px; background: #043168; border: none; font-size: 11.5px;">
           <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Perubahan
         </button>
       </div>
@@ -1463,25 +1566,42 @@ rsort($listTahun);
       $('#ExcelSheetTabs .sheet-tab-btn[data-sheet="' + sheetName + '"]').addClass('active');
     }
 
+    // Helper untuk membedah data dokumen (berkas lokal vs tautan Google Drive/Web)
+    function parseDocItem(raw) {
+      if (!raw) return { isLink: false, isDrive: false, url: '', name: '', raw: '' };
+      if (typeof raw === 'object' && raw !== null) {
+        var u = raw.url || '';
+        var n = raw.name || u;
+        var d = /drive\.google\.com|docs\.google\.com/i.test(u);
+        return { isLink: true, isDrive: d, url: u, name: n, raw: JSON.stringify(raw) };
+      }
+
+      var str = String(raw).trim();
+      if (str.startsWith('http://') || str.startsWith('https://')) {
+        var parts = str.split('::');
+        var u = parts[0].trim();
+        var n = parts.length > 1 ? parts.slice(1).join('::').trim() : '';
+        var d = /drive\.google\.com|docs\.google\.com/i.test(u);
+        if (!n) {
+          n = d ? 'Google Drive Document' : 'Tautan Dokumen Eksternal';
+        }
+        return { isLink: true, isDrive: d, url: u, name: n, raw: str };
+      }
+
+      return { isLink: false, isDrive: false, url: BaseURL + 'Project/' + encodeURIComponent(str), name: str, raw: str };
+    }
+
     function loadDocumentAtIndex(index) {
       if (!activeProjectFiles || activeProjectFiles.length === 0 || index < 0 || index >= activeProjectFiles.length) {
         return;
       }
       activeDocIndex = index;
-      var fileName = activeProjectFiles[index];
-      var fileUrl = BaseURL + 'Project/' + fileName;
-      var ext = fileName.split('.').pop().toLowerCase();
+      var rawItem = activeProjectFiles[index];
+      var doc = parseDocItem(rawItem);
 
       // Update Tabs styling
       $('.doc-slide-tab').removeClass('active');
       $('.doc-slide-tab[data-index="' + index + '"]').addClass('active');
-
-      // Update counters & headers
-      $('#ModalViewerDocCounter').text('Dokumen ' + (index + 1) + ' dari ' + activeProjectFiles.length + ' (' + fileName + ')');
-      $('#ModalViewerFooterInfo').html('<i class="fa-solid fa-file mr-1"></i> ' + fileName + ' &bull; Dokumen ' + (index + 1) + ' / ' + activeProjectFiles.length);
-      $('#BtnDownloadDoc').attr('href', fileUrl);
-      $('#BtnFallbackDownload').attr('href', fileUrl);
-      $('#FallbackFileName').text(fileName);
 
       // Reset viewer containers
       $('#ViewerLoadingSpinner').show();
@@ -1490,9 +1610,68 @@ rsort($listTahun);
       $('#ExcelViewerContainer').hide();
       $('#FallbackViewerContainer').hide();
 
+      // ==========================================
+      // KASUS 1: TAUTAN GOOGLE DRIVE / LINK WEB
+      // ==========================================
+      if (doc.isLink) {
+        var previewEmbedUrl = '';
+
+        if (doc.isDrive) {
+          var fileMatch = doc.url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/i) || doc.url.match(/[?&]id=([a-zA-Z0-9_-]+)/i);
+          var docMatch = doc.url.match(/\/document\/d\/([a-zA-Z0-9_-]+)/i);
+          var sheetMatch = doc.url.match(/\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/i);
+          var slideMatch = doc.url.match(/\/presentation\/d\/([a-zA-Z0-9_-]+)/i);
+          var folderMatch = doc.url.match(/\/drive\/folders\/([a-zA-Z0-9_-]+)/i);
+
+          if (fileMatch) {
+            previewEmbedUrl = 'https://drive.google.com/file/d/' + fileMatch[1] + '/preview';
+          } else if (docMatch) {
+            previewEmbedUrl = 'https://docs.google.com/document/d/' + docMatch[1] + '/preview';
+          } else if (sheetMatch) {
+            previewEmbedUrl = 'https://docs.google.com/spreadsheets/d/' + sheetMatch[1] + '/preview';
+          } else if (slideMatch) {
+            previewEmbedUrl = 'https://docs.google.com/presentation/d/' + slideMatch[1] + '/preview';
+          } else if (folderMatch) {
+            previewEmbedUrl = 'https://drive.google.com/embeddedfolderview?id=' + folderMatch[1] + '#list';
+          }
+        }
+
+        $('#ModalViewerDocCounter').text('Dokumen ' + (index + 1) + ' dari ' + activeProjectFiles.length + ' (' + doc.name + ')');
+        $('#ModalViewerFooterInfo').html('<i class="fa-brands fa-google-drive text-success mr-1"></i> ' + doc.name + ' &bull; Tautan Google Drive');
+        $('#BtnDownloadDoc').attr('href', doc.url).attr('target', '_blank').removeAttr('download').html('<i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Buka di Google Drive');
+
+        $('#ViewerLoadingSpinner').hide();
+
+        if (previewEmbedUrl) {
+          $('#PdfViewerContainer').html('<iframe src="' + previewEmbedUrl + '" width="100%" height="600" style="border: none; border-radius: 8px;" allow="autoplay"></iframe>').show();
+        } else {
+          $('#FallbackIcon').attr('class', 'fa-brands fa-google-drive');
+          $('#FallbackIconWrapper').css({ 'background': 'rgba(15, 157, 88, 0.1)', 'color': '#0f9d58' });
+          $('#FallbackFileName').text(doc.name);
+          $('#FallbackFileDesc').html('Tautan dokumen tersimpan di Google Drive:<br><a href="' + doc.url + '" target="_blank" class="text-primary font-weight-bold" style="word-break: break-all;">' + doc.url + '</a>');
+          $('#BtnFallbackDownload').attr('href', doc.url).attr('target', '_blank').removeAttr('download').html('<i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Buka Tautan Google Drive');
+          $('#FallbackViewerContainer').show();
+        }
+        return;
+      }
+
+      // ==========================================
+      // KASUS 2: BERKAS FISIK LOKAL
+      // ==========================================
+      var fileName = doc.name;
+      var fileUrl = doc.url;
+      var ext = fileName.split('.').pop().toLowerCase();
+
+      // Update counters & headers
+      $('#ModalViewerDocCounter').text('Dokumen ' + (index + 1) + ' dari ' + activeProjectFiles.length + ' (' + fileName + ')');
+      $('#ModalViewerFooterInfo').html('<i class="fa-solid fa-file mr-1"></i> ' + fileName + ' &bull; Dokumen ' + (index + 1) + ' / ' + activeProjectFiles.length);
+      $('#BtnDownloadDoc').attr('href', fileUrl).attr('target', '_blank').attr('download', fileName).html('<i class="fa-solid fa-download mr-1"></i> Unduh File Aktif');
+      $('#BtnFallbackDownload').attr('href', fileUrl).attr('target', '_blank').attr('download', fileName);
+      $('#FallbackFileName').text(fileName);
+
       // 1. PDF
       if (ext === 'pdf') {
-        $('#PathProject').attr('src', fileUrl);
+        $('#PdfViewerContainer').html('<embed id="PathProject" src="' + fileUrl + '" type="application/pdf" width="100%" height="600" style="border: none; border-radius: 8px;"/>');
         $('#ViewerLoadingSpinner').hide();
         $('#PdfViewerContainer').show();
       } 
@@ -1608,23 +1787,12 @@ rsort($listTahun);
       // Build Slide Tabs
       var tabsHtml = '';
       $.each(activeProjectFiles, function(i, f) {
-        var ext = f.split('.').pop().toLowerCase();
-        var iconHtml = '<i class="fa-solid fa-file mr-1"></i>';
-
-        if (ext === 'pdf') {
-          iconHtml = '<i class="fa-solid fa-file-pdf mr-1 text-danger"></i>';
-        } else if (ext === 'doc' || ext === 'docx') {
-          iconHtml = '<i class="fa-solid fa-file-word mr-1 text-primary"></i>';
-        } else if (ext === 'xls' || ext === 'xlsx' || ext === 'csv') {
-          iconHtml = '<i class="fa-solid fa-file-excel mr-1 text-success"></i>';
-        } else if (ext === 'zip' || ext === 'rar' || ext === '7z') {
-          iconHtml = '<i class="fa-solid fa-file-zipper mr-1" style="color: #ea580c;"></i>';
-        }
-
-        var displayName = f.length > 32 ? f.substring(0, 29) + '...' : f;
+        var doc = parseDocItem(f);
+        var iconHtml = getFileExtensionIcon(f);
+        var displayName = doc.name.length > 32 ? doc.name.substring(0, 29) + '...' : doc.name;
 
         tabsHtml += 
-          '<button type="button" class="doc-slide-tab ' + (i === 0 ? 'active' : '') + '" data-index="' + i + '" title="' + f + '">' +
+          '<button type="button" class="doc-slide-tab ' + (i === 0 ? 'active' : '') + '" data-index="' + i + '" title="' + doc.name + '">' +
             iconHtml + '<span>' + displayName + '</span>' +
           '</button>';
       });
@@ -1704,9 +1872,16 @@ rsort($listTahun);
     var activeManageProjectName = '';
     var activeManageFiles = [];
 
-    // Helper render icon berdasarkan ekstensi
-    function getFileExtensionIcon(fileName) {
-      var ext = fileName.split('.').pop().toLowerCase();
+    // Helper render icon berdasarkan ekstensi atau tautan Google Drive
+    function getFileExtensionIcon(raw) {
+      var doc = parseDocItem(raw);
+      if (doc.isLink) {
+        if (doc.isDrive) {
+          return '<i class="fa-brands fa-google-drive" style="color: #0f9d58; font-size: 16px;"></i>';
+        }
+        return '<i class="fa-solid fa-arrow-up-right-from-square text-primary" style="font-size: 15px;"></i>';
+      }
+      var ext = doc.name.split('.').pop().toLowerCase();
       if (ext === 'pdf') {
         return '<i class="fa-solid fa-file-pdf text-danger" style="font-size: 16px;"></i>';
       } else if (ext === 'doc' || ext === 'docx') {
@@ -1727,10 +1902,10 @@ rsort($listTahun);
 
       if (activeManageFiles.length === 0) {
         $container.html(
-          '<div class="text-center p-4 bg-white border rounded" style="border-radius: 12px; border-color: #cbd5e1 !important;">' +
-            '<i class="fa-regular fa-folder-open text-muted mb-2" style="font-size: 32px;"></i>' +
-            '<p class="text-muted mb-0 font-weight-bold" style="font-size: 13px;">Belum ada dokumen ' + (activeManageDocType === 'Admin' ? 'Admin' : 'Project') + ' terlampir.</p>' +
-            '<small class="text-muted">Gunakan form di atas untuk mengunggah berkas baru.</small>' +
+          '<div class="text-center p-3 bg-white border rounded" style="border-radius: 8px; border-color: #cbd5e1 !important;">' +
+            '<i class="fa-regular fa-folder-open text-muted mb-1" style="font-size: 24px;"></i>' +
+            '<p class="text-muted mb-0 font-weight-bold" style="font-size: 11.5px;">Belum ada dokumen ' + (activeManageDocType === 'Admin' ? 'Admin' : 'Project') + ' terlampir.</p>' +
+            '<small class="text-muted" style="font-size: 10.5px;">Gunakan form di atas untuk menambahkan berkas atau tautan Google Drive.</small>' +
           '</div>'
         );
         $('#BtnPreviewAllDocs').hide();
@@ -1738,37 +1913,42 @@ rsort($listTahun);
       }
 
       $('#BtnPreviewAllDocs').show();
-      var listHtml = '<div class="list-group shadow-sm" style="border-radius: 12px; overflow: hidden;">';
+      var listHtml = '<div class="list-group shadow-sm" style="border-radius: 8px; overflow: hidden;">';
 
       $.each(activeManageFiles, function(i, f) {
+        var doc = parseDocItem(f);
         var iconHtml = getFileExtensionIcon(f);
-        var fileUrl = BaseURL + 'Project/' + encodeURIComponent(f);
-        var displayName = f.length > 40 ? f.substring(0, 37) + '...' : f;
+        var displayName = doc.name.length > 40 ? doc.name.substring(0, 37) + '...' : doc.name;
+        var subText = doc.isLink 
+          ? (doc.isDrive 
+              ? '<span class="badge" style="background-color: #dcfce7; color: #15803d; border: 1px solid #86efac; border-radius: 6px; font-size: 10.5px; font-weight: 600; padding: 3px 10px; display: inline-flex; align-items: center; gap: 5px; line-height: 1.4;"><i class="fa-brands fa-google-drive" style="font-size: 11px; color: #0f9d58;"></i> Google Drive</span>' 
+              : '<span class="badge" style="background-color: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; border-radius: 6px; font-size: 10.5px; font-weight: 600; padding: 3px 10px; display: inline-flex; align-items: center; gap: 5px; line-height: 1.4;"><i class="fa-solid fa-link" style="font-size: 10.5px;"></i> Tautan Web</span>') 
+          : '<small class="text-muted" style="font-size: 10.5px;">Berkas ' + (i + 1) + ' dari ' + activeManageFiles.length + '</small>';
 
         listHtml += 
-          '<div class="list-group-item d-flex align-items-center justify-content-between p-3" style="border-color: #e2e8f0; gap: 12px;">' +
-            '<div class="d-flex align-items-center" style="gap: 12px; min-width: 0;">' +
-              '<div style="width: 36px; height: 36px; border-radius: 8px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">' +
+          '<div class="list-group-item d-flex align-items-center justify-content-between p-2" style="border-color: #e2e8f0; gap: 8px;">' +
+            '<div class="d-flex align-items-center" style="gap: 8px; min-width: 0;">' +
+              '<div style="width: 28px; height: 28px; border-radius: 6px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">' +
                 iconHtml +
               '</div>' +
               '<div style="min-width: 0;">' +
-                '<a href="' + fileUrl + '" target="_blank" class="font-weight-bold text-dark text-truncate d-block mb-0" style="font-size: 13px; text-decoration: none;" title="' + f + '">' +
+                '<a href="' + doc.url + '" target="_blank" class="font-weight-bold text-dark text-truncate d-block mb-1" style="font-size: 12px; text-decoration: none;" title="' + doc.name + '">' +
                   displayName +
                 '</a>' +
-                '<small class="text-muted">Berkas ' + (i + 1) + ' dari ' + activeManageFiles.length + '</small>' +
+                subText +
               '</div>' +
             '</div>' +
-            '<div class="d-flex align-items-center" style="gap: 6px; flex-shrink: 0;">' +
-              '<button type="button" class="btn btn-sm btn-outline-primary btn-preview-single-doc" data-index="' + i + '" title="Pratinjau Dokumen" style="border-radius: 6px; height: 28px; padding: 0 9px; font-size: 11.5px; display: inline-flex; align-items: center; justify-content: center;">' +
+            '<div class="d-flex align-items-center" style="gap: 4px; flex-shrink: 0;">' +
+              '<button type="button" class="btn btn-sm btn-outline-primary btn-preview-single-doc" data-index="' + i + '" title="Pratinjau Dokumen" style="border-radius: 5px; height: 25px; padding: 0 7px; font-size: 10.5px; display: inline-flex; align-items: center; justify-content: center;">' +
                 '<i class="fa-solid fa-eye mr-1"></i> Lihat' +
               '</button>' +
-              '<button type="button" class="btn btn-sm btn-outline-warning btn-edit-doc-item" data-file="' + encodeURIComponent(f) + '" title="Edit Berkas (Ubah Nama / Ganti File)" style="border-radius: 6px; width: 28px; height: 28px; padding: 0; font-size: 12px; display: inline-flex; align-items: center; justify-content: center;">' +
+              '<button type="button" class="btn btn-sm btn-outline-warning btn-edit-doc-item" data-raw="' + encodeURIComponent(f) + '" title="Edit Dokumen / Tautan" style="border-radius: 5px; width: 25px; height: 25px; padding: 0; font-size: 10.5px; display: inline-flex; align-items: center; justify-content: center;">' +
                 '<i class="fa-solid fa-pen-to-square text-warning"></i>' +
               '</button>' +
-              '<a href="' + fileUrl + '" download target="_blank" class="btn btn-sm btn-outline-secondary" title="Unduh Berkas" style="border-radius: 6px; width: 28px; height: 28px; padding: 0; font-size: 12px; display: inline-flex; align-items: center; justify-content: center;">' +
-                '<i class="fa-solid fa-download"></i>' +
+              '<a href="' + doc.url + '" ' + (doc.isLink ? 'target="_blank"' : 'download target="_blank"') + ' class="btn btn-sm btn-outline-secondary" title="' + (doc.isLink ? 'Buka Tautan' : 'Unduh Berkas') + '" style="border-radius: 5px; width: 25px; height: 25px; padding: 0; font-size: 10.5px; display: inline-flex; align-items: center; justify-content: center;">' +
+                '<i class="fa-solid ' + (doc.isLink ? 'fa-arrow-up-right-from-square' : 'fa-download') + '"></i>' +
               '</a>' +
-              '<button type="button" class="btn btn-sm btn-outline-danger btn-delete-doc-file" data-file="' + encodeURIComponent(f) + '" title="Hapus Berkas Ini" style="border-radius: 6px; width: 28px; height: 28px; padding: 0; font-size: 12px; display: inline-flex; align-items: center; justify-content: center;">' +
+              '<button type="button" class="btn btn-sm btn-outline-danger btn-delete-doc-file" data-raw="' + encodeURIComponent(f) + '" title="Hapus Dokumen Ini" style="border-radius: 5px; width: 25px; height: 25px; padding: 0; font-size: 10.5px; display: inline-flex; align-items: center; justify-content: center;">' +
                 '<i class="fa-solid fa-trash-can"></i>' +
               '</button>' +
             '</div>' +
@@ -1797,7 +1977,7 @@ rsort($listTahun);
             'data-project="' + activeManageProjectName.replace(/"/g, '&quot;') + '" ' +
             'title="Kelola ' + total + ' Dokumen ' + docType + '" ' +
             'style="border-radius: 8px; padding: 4px 10px; font-weight: 600; font-size: 11.5px; background: ' + bgClass + '; border: none; box-shadow: 0 2px 6px ' + shadowClass + ';">' +
-            '<i class="fa-solid ' + iconClass + ' mr-1"></i> <span class="doc-label">' + total + ' Berkas</span>' +
+            '<i class="fa-solid ' + iconClass + ' mr-1"></i> <span class="doc-label">' + total + ' Dokumen</span>' +
           '</button>'
         );
       } else {
@@ -1815,21 +1995,34 @@ rsort($listTahun);
       }
     }
 
-    // Helper buat baris baru upload berkas
-    function createUploadEntryRow() {
+    // Helper buat baris baru upload berkas / link Google Drive (Urutan: Tipe Sumber -> Nama Dokumen -> Pilih Berkas / Link GDrive)
+    function createUploadEntryRow(typeDefault) {
+      var isDrive = (typeDefault === 'drive');
       return $(
-        '<div class="upload-file-entry-row mb-2 p-2 border rounded" style="background: #f8fafc; border-color: #e2e8f0 !important; border-radius: 8px;">' +
-          '<div class="row align-items-center" style="gap: 6px 0;">' +
-            '<div class="col-md-5">' +
-              '<label class="text-muted font-weight-bold mb-1" style="font-size: 11px;"><i class="fa-solid fa-paperclip mr-1"></i> Pilih Berkas:</label>' +
-              '<input type="file" class="form-control file-entry-input" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.zip,.rar,.7z" style="border-radius: 6px; padding: 4px 6px; font-size: 11.5px;">' +
+        '<div class="upload-file-entry-row mb-2">' +
+          '<div class="row align-items-center" style="margin-left: -4px; margin-right: -4px;">' +
+            '<div class="col-md-3" style="padding-left: 4px; padding-right: 4px;">' +
+              '<label><i class="fa-solid fa-layer-group mr-1 text-primary"></i> Tipe Sumber:</label>' +
+              '<select class="form-control file-entry-type-select font-weight-bold">' +
+                '<option value="file"' + (!isDrive ? ' selected' : '') + '>📁 File Berkas</option>' +
+                '<option value="drive"' + (isDrive ? ' selected' : '') + '>🔗 Link GDrive</option>' +
+              '</select>' +
             '</div>' +
-            '<div class="col-md-6">' +
-              '<label class="text-muted font-weight-bold mb-1" style="font-size: 11px;"><i class="fa-solid fa-pen-nib mr-1"></i> Nama Dokumen (Manual / Bebas):</label>' +
-              '<input type="text" class="form-control file-entry-custom-name" placeholder="Ketik judul/nama dokumen..." style="border-radius: 6px; font-size: 12px; height: 33px;">' +
+            '<div class="col-md-4" style="padding-left: 4px; padding-right: 4px;">' +
+              '<label><i class="fa-solid fa-pen-nib mr-1 text-primary"></i> Nama / Judul Dokumen:</label>' +
+              '<input type="text" class="form-control file-entry-custom-name" placeholder="' + (isDrive ? 'Judul Dokumen...' : 'Ketik judul/nama...') + '">' +
             '</div>' +
-            '<div class="col-md-1 d-flex align-items-end justify-content-center">' +
-              '<button type="button" class="btn btn-sm btn-outline-danger btn-remove-upload-entry-row" style="border-radius: 6px; padding: 5px 9px; margin-top: 20px;" title="Hapus Baris Ini">' +
+            '<div class="col-md-4 file-input-col" style="padding-left: 4px; padding-right: 4px;' + (isDrive ? ' display:none;' : '') + '">' +
+              '<label><i class="fa-solid fa-paperclip mr-1 text-primary"></i> Pilih Berkas:</label>' +
+              '<input type="file" class="form-control file-entry-input" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.zip,.rar,.7z">' +
+            '</div>' +
+            '<div class="col-md-4 drive-input-col" style="padding-left: 4px; padding-right: 4px;' + (!isDrive ? ' display:none;' : '') + '">' +
+              '<label><i class="fa-brands fa-google-drive text-success mr-1"></i> Link Google Drive:</label>' +
+              '<input type="url" class="form-control file-entry-drive-url" placeholder="https://drive.google.com/...">' +
+            '</div>' +
+            '<div class="col-md-1 d-flex flex-column align-items-center justify-content-end" style="padding-left: 4px; padding-right: 4px;">' +
+              '<label class="d-none d-md-block" style="visibility: hidden; font-size: 10px; margin-bottom: 3px; user-select: none;">&nbsp;</label>' +
+              '<button type="button" class="btn btn-outline-danger btn-remove-upload-entry-row" title="Hapus Baris Ini">' +
                 '<i class="fa-solid fa-trash-can"></i>' +
               '</button>' +
             '</div>' +
@@ -1838,9 +2031,24 @@ rsort($listTahun);
       );
     }
 
-    // Tambah baris berkas baru
+    // Toggle dropdown Tipe Sumber pada baris upload
+    $(document).on('change', '.file-entry-type-select', function() {
+      var val = $(this).val();
+      var $row = $(this).closest('.upload-file-entry-row');
+      if (val === 'drive') {
+        $row.find('.file-input-col').hide();
+        $row.find('.drive-input-col').show();
+        $row.find('.file-entry-custom-name').attr('placeholder', 'Judul Dokumen...');
+      } else {
+        $row.find('.drive-input-col').hide();
+        $row.find('.file-input-col').show();
+        $row.find('.file-entry-custom-name').attr('placeholder', 'Ketik judul/nama...');
+      }
+    });
+
+    // Tambah baris dokumen baru (1 tombol)
     $('#BtnAddUploadRow').click(function() {
-      $('#UploadRowsContainer').append(createUploadEntryRow());
+      $('#UploadRowsContainer').append(createUploadEntryRow('file'));
     });
 
     // Hapus baris berkas
@@ -1849,9 +2057,9 @@ rsort($listTahun);
       if ($('.upload-file-entry-row').length > 1) {
         $(this).closest('.upload-file-entry-row').remove();
       } else {
-        // Jika baris terakhir, cukup kosongkan nilainya
         var $row = $(this).closest('.upload-file-entry-row');
         $row.find('.file-entry-input').val('');
+        $row.find('.file-entry-drive-url').val('');
         $row.find('.file-entry-custom-name').val('');
       }
     });
@@ -1886,7 +2094,7 @@ rsort($listTahun);
       $('#UploadDocProgress').hide();
 
       // Reset form upload dengan 1 baris bersih
-      $('#UploadRowsContainer').empty().append(createUploadEntryRow());
+      $('#UploadRowsContainer').empty().append(createUploadEntryRow('file'));
 
       // Set Header
       $('#ModalKelolaDocTitle').text('Kelola Dokumen ' + (type === 'Admin' ? 'Admin' : 'Project'));
@@ -1897,12 +2105,10 @@ rsort($listTahun);
         $('#ModalKelolaDocHeader').css('background', 'linear-gradient(135deg, #043168 0%, #0284c7 100%)');
         $('#ModalKelolaDocHeaderIcon').html('<i class="fa-solid fa-folder-open text-white" style="font-size: 18px;"></i>');
         $('#BtnSubmitUploadDoc').removeClass('btn-success').addClass('btn-primary');
-        $('#BtnAddUploadRow').removeClass('btn-outline-success').addClass('btn-outline-primary');
       } else {
         $('#ModalKelolaDocHeader').css('background', 'linear-gradient(135deg, #064e3b 0%, #059669 100%)');
         $('#ModalKelolaDocHeaderIcon').html('<i class="fa-solid fa-folder-tree text-white" style="font-size: 18px;"></i>');
         $('#BtnSubmitUploadDoc').removeClass('btn-primary').addClass('btn-success');
-        $('#BtnAddUploadRow').removeClass('btn-outline-primary').addClass('btn-outline-success');
       }
 
       $('#ManageDocListContainer').html(
@@ -1927,27 +2133,37 @@ rsort($listTahun);
       });
     });
 
-    // Upload berkas baru (bisa multi-row & nama manual per berkas)
+    // Upload berkas baru / Tautan Google Drive
     $('#BtnSubmitUploadDoc').click(function() {
       var fd = new FormData();
       fd.append('Id', activeManageProjectId);
       fd.append('Type', activeManageDocType);
 
-      var validFileCount = 0;
+      var validCount = 0;
 
       $('.upload-file-entry-row').each(function() {
-        var fileInput = $(this).find('.file-entry-input')[0];
+        var sourceType = $(this).find('.file-entry-type-select').val();
         var customName = $(this).find('.file-entry-custom-name').val().trim();
 
-        if (fileInput && fileInput.files && fileInput.files.length > 0) {
-          fd.append('Files[]', fileInput.files[0]);
-          fd.append('CustomNames[]', customName);
-          validFileCount++;
+        if (sourceType === 'drive') {
+          var driveUrl = $(this).find('.file-entry-drive-url').val().trim();
+          if (driveUrl !== '') {
+            fd.append('DriveLinks[]', driveUrl);
+            fd.append('DriveNames[]', customName);
+            validCount++;
+          }
+        } else {
+          var fileInput = $(this).find('.file-entry-input')[0];
+          if (fileInput && fileInput.files && fileInput.files.length > 0) {
+            fd.append('Files[]', fileInput.files[0]);
+            fd.append('CustomNames[]', customName);
+            validCount++;
+          }
         }
       });
 
-      if (validFileCount === 0) {
-        alert('Silakan pilih minimal 1 berkas dokumen yang akan diunggah!');
+      if (validCount === 0) {
+        alert('Silakan pilih minimal 1 berkas file atau tempel tautan Google Drive!');
         return;
       }
 
@@ -1963,7 +2179,7 @@ rsort($listTahun);
         success: function(res) {
           $('#BtnSubmitUploadDoc').prop('disabled', false);
           $('#UploadDocProgress').hide();
-          $('#UploadRowsContainer').empty().append(createUploadEntryRow());
+          $('#UploadRowsContainer').empty().append(createUploadEntryRow('file'));
 
           try {
             var data = typeof res === 'object' ? res : JSON.parse(res);
@@ -1972,7 +2188,7 @@ rsort($listTahun);
               renderManageDocList();
               updateTableCellButton(activeManageProjectId, activeManageDocType, activeManageFiles.length);
             } else {
-              alert(data.message || 'Gagal mengunggah dokumen!');
+              alert(data.message || 'Gagal menyimpan dokumen!');
             }
           } catch(e) {
             alert('Respon server tidak valid');
@@ -1981,7 +2197,7 @@ rsort($listTahun);
         error: function() {
           $('#BtnSubmitUploadDoc').prop('disabled', false);
           $('#UploadDocProgress').hide();
-          alert('Terjadi kesalahan sistem saat mengunggah berkas!');
+          alert('Terjadi kesalahan sistem saat mengunggah dokumen!');
         }
       });
     });
@@ -1989,8 +2205,9 @@ rsort($listTahun);
     // Hapus berkas dari dalam Modal Kelola Dokumen
     $(document).on('click', '.btn-delete-doc-file', function(e) {
       e.preventDefault();
-      var fileName = decodeURIComponent($(this).data('file'));
-      if (!confirm('Apakah Anda yakin ingin menghapus berkas "' + fileName + '"?')) {
+      var rawItem = decodeURIComponent($(this).data('raw'));
+      var doc = parseDocItem(rawItem);
+      if (!confirm('Apakah Anda yakin ingin menghapus dokumen "' + doc.name + '"?')) {
         return;
       }
 
@@ -2000,7 +2217,7 @@ rsort($listTahun);
       $.post(BaseURL + 'Staf/HapusDokumenItem', {
         Id: activeManageProjectId,
         Type: activeManageDocType,
-        FileName: fileName
+        FileName: rawItem
       }, function(res) {
         try {
           var data = typeof res === 'object' ? res : JSON.parse(res);
@@ -2009,42 +2226,60 @@ rsort($listTahun);
             renderManageDocList();
             updateTableCellButton(activeManageProjectId, activeManageDocType, activeManageFiles.length);
           } else {
-            alert(data.message || 'Gagal menghapus berkas!');
+            alert(data.message || 'Gagal menghapus dokumen!');
             $btn.prop('disabled', false).html('<i class="fa-solid fa-trash-can"></i>');
           }
         } catch(e) {
-          alert('Terjadi kesalahan saat menghapus berkas');
+          alert('Terjadi kesalahan saat menghapus dokumen');
           $btn.prop('disabled', false).html('<i class="fa-solid fa-trash-can"></i>');
         }
       });
     });
 
-    // Klik tombol Edit pada item berkas (Buka Modal Edit Berkas)
+    // Klik tombol Edit pada item berkas / tautan Google Drive
     $(document).on('click', '.btn-edit-doc-item', function(e) {
       e.preventDefault();
-      var fileName = decodeURIComponent($(this).data('file'));
-      var nameWithoutExt = fileName.replace(/\.[^/.]+$/, "");
-      var iconHtml = getFileExtensionIcon(fileName);
+      var rawItem = decodeURIComponent($(this).data('raw'));
+      var doc = parseDocItem(rawItem);
+      var iconHtml = getFileExtensionIcon(rawItem);
 
-      $('#EditDocOldFileName').val(fileName);
-      $('#EditDocCurrentName').text(fileName).attr('title', fileName);
+      $('#EditDocOldFileName').val(rawItem);
+      $('#EditDocIsDrive').val(doc.isLink ? '1' : '0');
+      $('#EditDocCurrentName').text(doc.name).attr('title', doc.name);
       $('#EditDocCurrentIcon').html(iconHtml);
-      $('#EditDocNewNameInput').val(nameWithoutExt);
-      $('#EditDocReplaceFileInput').val('');
+      $('#EditDocNewNameInput').val(doc.name);
+
+      if (doc.isLink) {
+        $('#EditDocDriveUrlContainer').show();
+        $('#EditDocDriveUrlInput').val(doc.url);
+        $('#EditDocReplaceFileContainer').hide();
+      } else {
+        $('#EditDocDriveUrlContainer').hide();
+        $('#EditDocReplaceFileContainer').show();
+        $('#EditDocReplaceFileInput').val('');
+      }
+
       $('#EditDocProgress').hide();
       $('#BtnSaveEditDocItem').prop('disabled', false);
 
       $('#ModalEditDokumenItem').modal('show');
     });
 
-    // Submit simpan edit berkas
+    // Submit simpan edit berkas / tautan
     $('#BtnSaveEditDocItem').click(function() {
-      var oldFileName = $('#EditDocOldFileName').val();
+      var oldRawItem = $('#EditDocOldFileName').val();
+      var isDrive = $('#EditDocIsDrive').val() === '1';
       var newName = $('#EditDocNewNameInput').val().trim();
+      var newDriveUrl = $('#EditDocDriveUrlInput').val().trim();
       var replaceFileInput = document.getElementById('EditDocReplaceFileInput');
       var hasReplaceFile = replaceFileInput && replaceFileInput.files && replaceFileInput.files.length > 0;
 
-      if (newName === '' && !hasReplaceFile) {
+      if (isDrive && newDriveUrl === '') {
+        alert('Silakan masukkan link Google Drive yang valid!');
+        return;
+      }
+
+      if (!isDrive && newName === '' && !hasReplaceFile) {
         alert('Silakan masukkan nama dokumen baru atau pilih file pengganti!');
         return;
       }
@@ -2052,10 +2287,12 @@ rsort($listTahun);
       var fd = new FormData();
       fd.append('Id', activeManageProjectId);
       fd.append('Type', activeManageDocType);
-      fd.append('OldFileName', oldFileName);
+      fd.append('OldFileName', oldRawItem);
       fd.append('NewFileName', newName);
 
-      if (hasReplaceFile) {
+      if (isDrive) {
+        fd.append('NewDriveUrl', newDriveUrl);
+      } else if (hasReplaceFile) {
         fd.append('ReplaceFile', replaceFileInput.files[0]);
       }
 
@@ -2080,7 +2317,7 @@ rsort($listTahun);
               renderManageDocList();
               updateTableCellButton(activeManageProjectId, activeManageDocType, activeManageFiles.length);
             } else {
-              alert(data.message || 'Gagal memperbarui berkas!');
+              alert(data.message || 'Gagal memperbarui dokumen!');
             }
           } catch(e) {
             alert('Respon server tidak valid');
@@ -2089,7 +2326,7 @@ rsort($listTahun);
         error: function() {
           $('#BtnSaveEditDocItem').prop('disabled', false);
           $('#EditDocProgress').hide();
-          alert('Terjadi kesalahan sistem saat menyimpan perubahan berkas!');
+          alert('Terjadi kesalahan sistem saat menyimpan perubahan dokumen!');
         }
       });
     });
@@ -2115,11 +2352,12 @@ rsort($listTahun);
 
       var tabsHtml = '';
       $.each(activeProjectFiles, function(i, f) {
+        var doc = parseDocItem(f);
         var iconHtml = getFileExtensionIcon(f);
-        var displayName = f.length > 32 ? f.substring(0, 29) + '...' : f;
+        var displayName = doc.name.length > 32 ? doc.name.substring(0, 29) + '...' : doc.name;
 
         tabsHtml += 
-          '<button type="button" class="doc-slide-tab ' + (i === startIdx ? 'active' : '') + '" data-index="' + i + '" title="' + f + '">' +
+          '<button type="button" class="doc-slide-tab ' + (i === startIdx ? 'active' : '') + '" data-index="' + i + '" title="' + doc.name + '">' +
             iconHtml + '<span>' + displayName + '</span>' +
           '</button>';
       });
