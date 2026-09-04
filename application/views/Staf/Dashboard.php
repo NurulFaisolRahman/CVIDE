@@ -299,8 +299,8 @@ $dashIsRole4 = ($dashUserLevel === 4);
       </div>
       <div>
         <div class="kpi-label">Level Akses</div>
-        <div class="kpi-value"><?=$dashIsRole4 ? 'Level 4 (Asisten)' : 'Level 3 (Staf)'?></div>
-        <div class="kpi-subtext"><?=$dashIsRole4 ? 'Hak akses Tag kegiatan & Dokumen Project' : 'Hak akses modul operasional & project'?></div>
+        <div class="kpi-value"><?=$dashIsRole4 ? 'PIC (Level 4)' : 'Admin (Level 3)'?></div>
+        <div class="kpi-subtext"><?=$dashIsRole4 ? 'Hak akses Tag, Dokumen Project & Bank Data' : 'Hak akses modul operasional & project'?></div>
       </div>
     </div>
   </div>

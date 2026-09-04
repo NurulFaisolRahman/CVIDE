@@ -65,35 +65,83 @@ $isRole4 = ($userLevel === 4);
     border-color: #cbd5e1;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   }
+
+  /* Perfect Horizontal Alignment for Bank Data DataTable */
+  #TabelBankData_wrapper > .row:first-child {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 14px !important;
+    flex-wrap: wrap !important;
+    gap: 10px 0 !important;
+  }
+  #TabelBankData_wrapper .dataTables_length {
+    margin-bottom: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+  #TabelBankData_wrapper .dataTables_length label {
+    margin-bottom: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #334155 !important;
+  }
+  #TabelBankData_wrapper .dataTables_length select {
+    height: 35px !important;
+    border-radius: 8px !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 3px 8px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #043168 !important;
+    background-color: #ffffff !important;
+  }
+  #TabelBankData_wrapper .dataTables_filter {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    margin-bottom: 0 !important;
+  }
+  #TabelBankData_wrapper .dataTables_filter label {
+    margin-bottom: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #334155 !important;
+  }
+  #TabelBankData_wrapper .dataTables_filter input {
+    height: 35px !important;
+    border-radius: 8px !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 4px 12px !important;
+    font-size: 13px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
+  }
 </style>
 
 <!-- Enterprise Page Header Card -->
-<div class="row mb-4" style="margin-top: 22px;">
+<div class="row mb-3" style="margin-top: 22px;">
   <div class="col-12">
-    <div class="card border-0" style="background: #ffffff; border-radius: 20px; border: 1px solid var(--ide-border) !important; box-shadow: 0 8px 24px rgba(4, 49, 104, 0.05); padding: 20px 24px;">
-      <div class="d-flex flex-wrap align-items-center justify-content-between" style="gap: 15px;">
-        <div class="d-flex align-items-center" style="gap: 16px;">
-          <div style="width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg, rgba(4, 49, 104, 0.1) 0%, rgba(180, 8, 20, 0.1) 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-            <i class="fa-solid fa-database" style="color: var(--ide-navy); font-size: 24px;"></i>
-          </div>
-          <div>
-            <div class="d-flex align-items-center" style="gap: 10px;">
-              <h4 class="font-weight-bold text-dark mb-0" style="font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
-                Bank Data & Dokumen Google Drive
-              </h4>
-              <span class="badge badge-primary px-2 py-1" style="background: var(--ide-navy); font-size: 11px; font-weight: 600; border-radius: 6px;">Staf Portal</span>
-            </div>
-            <p class="text-muted mb-0 mt-1" style="font-size: 12.5px;">
-              Kelola daftar data dokumen, tautan Google Drive berlabel, dan indikator status untuk keteraturan arsip.
-            </p>
-          </div>
+    <div class="card border-0" style="background: #ffffff; border-radius: 20px; border: 1px solid var(--ide-border) !important; box-shadow: 0 8px 24px rgba(4, 49, 104, 0.05); padding: 18px 24px;">
+      <div class="d-flex align-items-center" style="gap: 16px;">
+        <div style="width: 50px; height: 50px; border-radius: 14px; background: linear-gradient(135deg, rgba(4, 49, 104, 0.1) 0%, rgba(180, 8, 20, 0.1) 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <i class="fa-solid fa-database" style="color: var(--ide-navy); font-size: 24px;"></i>
         </div>
         <div>
-          <?php if (!$isRole4) { ?>
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalInputBankData" style="border-radius: 22px; font-weight: 700; padding: 11px 24px; font-size: 13.5px; background: var(--ide-navy); border: none; box-shadow: 0 6px 18px rgba(4, 49, 104, 0.35); transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;">
-            <i class="fa-solid fa-plus"></i> Tambah Bank Data Baru
-          </button>
-          <?php } ?>
+          <div class="d-flex align-items-center" style="gap: 10px;">
+            <h4 class="font-weight-bold text-dark mb-0" style="font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
+              Bank Data & Dokumen Google Drive
+            </h4>
+            <span class="badge badge-primary px-2 py-1" style="background: var(--ide-navy); font-size: 11px; font-weight: 600; border-radius: 6px;">Portal Bank Data</span>
+          </div>
+          <p class="text-muted mb-0 mt-1" style="font-size: 12.5px;">
+            Kelola daftar data dokumen, tautan Google Drive berlabel, dan indikator status untuk keteraturan arsip.
+          </p>
         </div>
       </div>
     </div>
@@ -104,6 +152,12 @@ $isRole4 = ($userLevel === 4);
   <div class="col-12">
     <div class="card shadow-sm border-0" style="border-radius: 16px;">
       <div class="card-body p-3">
+        <!-- Tombol Tambah Bank Data di Atas 'Tampilkan [10] data' -->
+        <div class="mb-3">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalInputBankData" style="border-radius: 10px; font-weight: 700; padding: 9px 20px; font-size: 13px; background: var(--ide-navy); border: none; box-shadow: 0 4px 14px rgba(4, 49, 104, 0.3); transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-plus"></i> Tambah Bank Data Baru
+          </button>
+        </div>
         <div class="table-responsive">
           <table id="TabelBankData" class="table table-hover table-striped w-100" style="border-radius: 12px; overflow: hidden;">
             <thead>
@@ -150,7 +204,6 @@ $isRole4 = ($userLevel === 4);
                     <?=renderBankIndikator($key['Indikator'] ?? '')?>
                   </td>
                   <td class="text-center align-middle text-nowrap">
-                    <?php if (!$isRole4) { ?>
                     <button type="button" 
                       class="btn btn-sm btn-warning text-white EditBankData" 
                       title="Edit Data" 
@@ -168,11 +221,6 @@ $isRole4 = ($userLevel === 4);
                       style="border-radius: 8px; padding: 6px 10px; font-weight: 600;">
                       <i class="fa-solid fa-trash-can mr-1"></i> Hapus
                     </button>
-                    <?php } else { ?>
-                    <span class="badge badge-light px-2 py-1 text-muted" style="border: 1px solid #e2e8f0; font-size: 11px; font-weight: 600;">
-                      <i class="fa-solid fa-lock mr-1"></i> View Only
-                    </span>
-                    <?php } ?>
                   </td>
                 </tr>
               <?php } ?>  

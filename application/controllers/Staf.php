@@ -682,12 +682,6 @@ class Staf extends CI_Controller {
   }
 
   public function InputBankData(){
-    $userLevel = (int)($this->session->userdata('level') ?? 3);
-    if ($userLevel === 4) {
-      echo 'Akses ditolak: Role 4 hanya memiliki izin melihat data!';
-      return;
-    }
-
     $pj = $this->session->userdata('Username') ?: ($this->session->userdata('username') ?: 'Staf');
     $namaDokumen = trim($this->input->post('NamaDokumen'));
     $linksRaw = $this->input->post('LinkGDrive');
@@ -726,12 +720,6 @@ class Staf extends CI_Controller {
   }
 
   public function EditBankData(){
-    $userLevel = (int)($this->session->userdata('level') ?? 3);
-    if ($userLevel === 4) {
-      echo 'Akses ditolak: Role 4 hanya memiliki izin melihat data!';
-      return;
-    }
-
     $id = $this->input->post('Id');
     if (empty($id)) {
       echo 'ID Bank Data tidak ditemukan!';
@@ -775,12 +763,6 @@ class Staf extends CI_Controller {
   }
 
   public function HapusBankData(){
-    $userLevel = (int)($this->session->userdata('level') ?? 3);
-    if ($userLevel === 4) {
-      echo 'Akses ditolak: Role 4 hanya memiliki izin melihat data!';
-      return;
-    }
-
     $id = $this->input->post('Id');
     $this->db->delete('bank_data', array('Id' => $id));
     if ($this->db->affected_rows() > 0){
