@@ -125,9 +125,8 @@ class Staf extends CI_Controller {
   }
 
   public function Input(){
-    $sessionUser = $this->session->userdata('Username') ?: ($this->session->userdata('username') ?: 'Staf');
     $picInput = $this->input->post('PIC');
-    $pic = !empty(trim($picInput ?? '')) ? trim($picInput) : $sessionUser;
+    $pic = !empty(trim($picInput ?? '')) ? trim($picInput) : '';
 
     $insertData = array(
       'PJ'             => $pic,
@@ -161,10 +160,11 @@ class Staf extends CI_Controller {
       return;
     }
 
-    $pic = $this->input->post('PIC');
+    $picInput = $this->input->post('PIC');
+    $pic = !empty(trim($picInput ?? '')) ? trim($picInput) : '';
 
     $updateData = array(
-      'PJ'             => !empty($pic) ? $pic : ($this->session->userdata('Username') ?: 'Staf'),
+      'PJ'             => $pic,
       'NamaProject'    => $this->input->post('NamaProject'),
       'Tag'            => $this->input->post('Tag'),
       'Instansi'       => $this->input->post('Instansi'),

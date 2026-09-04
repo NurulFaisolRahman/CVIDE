@@ -784,7 +784,7 @@ rsort($listTahun);
             <label for="PIC" class="font-weight-bold text-dark" style="font-size: 13px;">
               PIC / Penanggung Jawab
             </label>
-            <input type="text" class="form-control" id="PIC" value="<?=$this->session->userdata('Username') ?: ($this->session->userdata('username') ?: '')?>" placeholder="Nama PIC..." style="border-radius: 8px;">
+            <input type="text" class="form-control" id="PIC" placeholder="Nama PIC..." style="border-radius: 8px;">
           </div>
         </div>
 
@@ -901,7 +901,7 @@ rsort($listTahun);
           </div>
           <div class="col-md-4 mb-3">
             <label for="EditPIC" class="font-weight-bold text-dark" style="font-size: 13px;">
-              PIC (Person in Charge) / Penanggung Jawab
+              PIC / Penanggung Jawab
             </label>
             <input type="text" class="form-control" id="EditPIC" placeholder="Nama PIC..." style="border-radius: 8px;">
           </div>
@@ -2002,6 +2002,19 @@ rsort($listTahun);
       loadDocumentAtIndex(startIdx);
     }
      
+    // Reset Modal Input saat dibuka agar PIC dan field lainnya bersih
+    $('#ModalInput').on('show.bs.modal', function() {
+      $('#NamaProject').val('');
+      $('#PIC').val('');
+      $('#Tag').val('');
+      $('#Instansi').val('');
+      $('#JenisPengadaan').val('');
+      $('#Nominal').val('');
+      $('#OutputKegiatan').val('');
+      $('#LoadingInput').hide();
+      $('#Input').prop('disabled', false);
+    });
+
     // =========================================================================
     // INPUT DATA SUBMIT AJAX (Hanya Data Pokok Project, Tanpa Berkas)
     // =========================================================================
