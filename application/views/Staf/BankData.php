@@ -212,14 +212,14 @@ $isRole4 = ($userLevel === 4);
                       data-indikator="<?=htmlspecialchars($key['Indikator'] ?? '', ENT_QUOTES)?>"
                       data-links="<?=$linksJsonAttr?>"
                       style="border-radius: 8px; padding: 6px 10px; font-weight: 600;">
-                      <i class="fa-solid fa-pen-to-square mr-1"></i> Edit
+                      <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     <button type="button" 
                       data-id="<?=$key['Id']?>"
                       class="btn btn-sm btn-danger HapusBankData" 
                       title="Hapus Data" 
                       style="border-radius: 8px; padding: 6px 10px; font-weight: 600;">
-                      <i class="fa-solid fa-trash-can mr-1"></i> Hapus
+                      <i class="fa-solid fa-trash-can"></i> 
                     </button>
                   </td>
                 </tr>
