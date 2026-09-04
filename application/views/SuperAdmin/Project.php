@@ -52,7 +52,7 @@ function renderSuperTimelineCell($deadline) {
           <span class="timeline-text">' . htmlspecialchars($startFmt) . '</span>
         </div>
         <div class="timeline-line">
-          <i class="fa fa-arrow-right text-muted" style="font-size: 9.5px;"></i>
+          <i class="fa fa-arrow-right text-muted" style="font-size: 9px;"></i>
         </div>
         <div class="timeline-node" title="Selesai: ' . htmlspecialchars($endFmt) . '">
           <span class="timeline-marker end"></span>
@@ -71,7 +71,7 @@ function renderSuperTimelineCell($deadline) {
           <span class="timeline-text">' . htmlspecialchars(trim($parts[0])) . '</span>
         </div>
         <div class="timeline-line">
-          <i class="fa fa-arrow-right text-muted" style="font-size: 9.5px;"></i>
+          <i class="fa fa-arrow-right text-muted" style="font-size: 9px;"></i>
         </div>
         <div class="timeline-node">
           <span class="timeline-marker end"></span>
@@ -91,22 +91,75 @@ function renderSuperTimelineCell($deadline) {
     </div>';
 }
 
-// Helper render multiple Tags badges
-function renderSuperTagBadges($tagsStr) {
-  if (empty($tagsStr)) return '<span class="text-muted" style="font-size: 12px;">-</span>';
-  $tags = array_map('trim', explode(',', $tagsStr));
-  $tags = array_filter($tags);
-  if (empty($tags)) return '<span class="text-muted" style="font-size: 12px;">-</span>';
-  
-  $html = '<div class="d-flex flex-wrap align-items-center justify-content-center" style="gap: 4px;">';
-  foreach ($tags as $t) {
-    $cleanTag = ltrim($t, '#');
-    $html .= '<span class="badge px-2 py-1" style="background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 11px; font-weight: 600;">' .
-      '<i class="fa fa-hashtag text-primary mr-1" style="font-size: 10px;"></i>' . htmlspecialchars($cleanTag) . 
-    '</span>';
+// Helper render Status Pill Button Dropdown (Single clean card)
+function renderSuperStatusBadge($id, $status) {
+  $status = trim($status ?? '');
+  if (empty($status) || !in_array($status, ['Belum Mulai', 'Sedang Proses', 'Selesai'])) {
+    if (in_array(strtolower($status), ['sedang berjalan', 'berjalan', 'proses'])) {
+      $status = 'Sedang Proses';
+    } else if (strtolower($status) === 'selesai') {
+      $status = 'Selesai';
+    } else {
+      $status = 'Belum Mulai';
+    }
   }
-  $html .= '</div>';
-  return $html;
+
+  $cls = 'status-belum-mulai';
+  $icon = '<i class="fa fa-hourglass-start" style="font-size: 11px;"></i>';
+  if ($status === 'Selesai') {
+    $cls = 'status-selesai';
+    $icon = '<i class="fa fa-check-circle" style="font-size: 11.5px;"></i>';
+  } else if ($status === 'Sedang Proses') {
+    $cls = 'status-sedang-proses';
+    $icon = '<i class="fa fa-refresh fa-spin" style="font-size: 11px;"></i>';
+  }
+
+  return '
+    <div class="dropdown d-inline-block position-relative">
+      <button type="button" class="status-pill-btn ' . $cls . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Klik untuk mengubah status project">
+        ' . $icon . '
+        <span>' . htmlspecialchars($status) . '</span>
+        <i class="fa fa-chevron-down status-chevron"></i>
+      </button>
+      <div class="dropdown-menu dropdown-menu-right shadow-lg border-0" style="border-radius: 12px; font-size: 12px; min-width: 165px; padding: 6px; margin-top: 4px;">
+        <h6 class="dropdown-header text-muted font-weight-bold" style="font-size: 9.5px; padding: 4px 10px; text-transform: uppercase; letter-spacing: 0.5px;">Ubah Status Project</h6>
+        <a class="dropdown-item d-flex align-items-center btn-change-status ' . ($status == 'Belum Mulai' ? 'active font-weight-bold' : '') . '" href="javascript:void(0)" data-id="' . $id . '" data-status="Belum Mulai" style="gap: 8px; border-radius: 6px; padding: 7px 10px;">
+          <i class="fa fa-hourglass-start text-secondary" style="width: 14px;"></i> Belum Mulai
+        </a>
+        <a class="dropdown-item d-flex align-items-center btn-change-status ' . ($status == 'Sedang Proses' ? 'active font-weight-bold' : '') . '" href="javascript:void(0)" data-id="' . $id . '" data-status="Sedang Proses" style="gap: 8px; border-radius: 6px; padding: 7px 10px;">
+          <i class="fa fa-refresh text-primary" style="width: 14px;"></i> Sedang Proses
+        </a>
+        <a class="dropdown-item d-flex align-items-center btn-change-status ' . ($status == 'Selesai' ? 'active font-weight-bold' : '') . '" href="javascript:void(0)" data-id="' . $id . '" data-status="Selesai" style="gap: 8px; border-radius: 6px; padding: 7px 10px;">
+          <i class="fa fa-check-circle text-success" style="width: 14px;"></i> Selesai
+        </a>
+      </div>
+    </div>';
+}
+
+// Helper untuk mendapatkan tahun selesai project
+function getSuperProjectEndYear($deadline) {
+  if (empty($deadline) || $deadline === '-') return '';
+  if (strpos($deadline, '|') !== false) {
+    $parts = explode('|', $deadline);
+    $end = trim($parts[1] ?? ($parts[0] ?? ''));
+    if (!empty($end)) {
+      $dateParts = explode('-', $end);
+      if (count($dateParts) >= 1 && is_numeric($dateParts[0])) {
+        return $dateParts[0];
+      }
+    }
+  }
+  if (strpos($deadline, ' - ') !== false) {
+    $parts = explode(' - ', $deadline);
+    $end = trim($parts[1] ?? ($parts[0] ?? ''));
+    if (preg_match('/\b\d{4}\b/', $end, $m)) {
+      return $m[0];
+    }
+  }
+  if (preg_match('/\b\d{4}\b/', $deadline, $m)) {
+    return $m[0];
+  }
+  return '';
 }
 
 // Ekstrak daftar tahun unik dari seluruh data project yang telah diinput
@@ -137,46 +190,106 @@ rsort($listTahun);
 
 <!-- Extra Styling for In-Browser Document Viewer & Timeline -->
 <style>
+  /* Single Clean Status Pill Button */
+  .status-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    text-decoration: none !important;
+    outline: none !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    line-height: 1.3;
+  }
+  .status-pill-btn::after {
+    display: none !important;
+  }
+  .status-pill-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  }
+  .status-pill-btn .status-chevron {
+    font-size: 8.5px;
+    opacity: 0.65;
+    margin-left: 2px;
+    transition: transform 0.2s ease;
+  }
+  .dropdown.show .status-pill-btn .status-chevron {
+    transform: rotate(180deg);
+  }
+  .status-pill-btn.status-belum-mulai {
+    background-color: #f1f5f9;
+    color: #475569;
+    border-color: #cbd5e1;
+  }
+  .status-pill-btn.status-belum-mulai:hover {
+    background-color: #e2e8f0;
+    color: #334155;
+  }
+  .status-pill-btn.status-sedang-proses {
+    background-color: #e0f2fe;
+    color: #0369a1;
+    border-color: #bae6fd;
+  }
+  .status-pill-btn.status-sedang-proses:hover {
+    background-color: #bae6fd;
+    color: #0284c7;
+  }
+  .status-pill-btn.status-selesai {
+    background-color: #dcfce7;
+    color: #15803d;
+    border-color: #bbf7d0;
+  }
+  .status-pill-btn.status-selesai:hover {
+    background-color: #bbf7d0;
+    color: #16a34a;
+  }
   /* Timeline Badge in Project Table */
   .timeline-pill-wrapper {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 20px;
-    padding: 5px 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    border-radius: 16px;
+    padding: 4px 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
   }
   .timeline-pill-wrapper.single {
-    padding: 5px 14px;
+    padding: 4px 12px;
   }
   .timeline-node {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
   }
   .timeline-marker {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     display: inline-block;
     flex-shrink: 0;
   }
   .timeline-marker.start {
     background-color: #10b981;
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
   }
   .timeline-marker.end {
     background-color: #b40814;
-    box-shadow: 0 0 0 3px rgba(180, 8, 20, 0.2);
+    box-shadow: 0 0 0 2px rgba(180, 8, 20, 0.2);
   }
   .timeline-marker.single {
     background-color: #043168;
-    box-shadow: 0 0 0 3px rgba(4, 49, 104, 0.2);
+    box-shadow: 0 0 0 2px rgba(4, 49, 104, 0.2);
   }
   .timeline-text {
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 600;
     color: #1e293b;
     white-space: nowrap;
@@ -184,7 +297,20 @@ rsort($listTahun);
   .timeline-line {
     display: inline-flex;
     align-items: center;
-    padding: 0 2px;
+    padding: 0 1px;
+  }
+
+  .tag-label-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    border-radius: 5px;
+    padding: 2px 7px;
+    font-size: 10.5px;
+    font-weight: 600;
+    line-height: 1.2;
   }
 
   .word-document-paper {
@@ -300,43 +426,72 @@ rsort($listTahun);
     box-shadow: 0 2px 8px rgba(4, 49, 104, 0.25);
   }
 
-  /* Style Year Filter Dropdown next to dataTables_filter */
-  .dataTables_wrapper .dataTables_filter {
+  /* Perfect Horizontal Alignment: Tampilkan Data, Filter Tahun, dan Cari Project */
+  #TabelProject_wrapper > .row:first-child {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 14px !important;
+    flex-wrap: wrap !important;
+    gap: 10px 0 !important;
+  }
+  #TabelProject_wrapper > .row:first-child > div:first-child {
+    display: flex !important;
+    align-items: center !important;
+  }
+  #TabelProject_wrapper > .row:first-child > div:last-child {
     display: flex !important;
     align-items: center !important;
     justify-content: flex-end !important;
-    flex-wrap: wrap !important;
-    gap: 12px !important;
   }
-  .dataTables_wrapper .dataTables_filter label {
+  #TabelProject_wrapper .dataTables_length {
+    margin-bottom: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+  #TabelProject_wrapper .dataTables_length label {
     margin-bottom: 0 !important;
     display: inline-flex !important;
     align-items: center !important;
     gap: 6px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #334155 !important;
   }
-
-  /* Hapus/Sembunyikan Ikon Panah Sorting (↑↓) pada Header Tabel */
-  table.dataTable thead .sorting:before,
-  table.dataTable thead .sorting:after,
-  table.dataTable thead .sorting_asc:before,
-  table.dataTable thead .sorting_asc:after,
-  table.dataTable thead .sorting_desc:before,
-  table.dataTable thead .sorting_desc:after,
-  table.dataTable thead > tr > th.sorting:before,
-  table.dataTable thead > tr > th.sorting:after,
-  table.dataTable thead > tr > th.sorting_asc:before,
-  table.dataTable thead > tr > th.sorting_asc:after,
-  table.dataTable thead > tr > th.sorting_desc:before,
-  table.dataTable thead > tr > th.sorting_desc:after,
-  table.dataTable thead > tr > td.sorting:before,
-  table.dataTable thead > tr > td.sorting:after,
-  table.dataTable thead > tr > td.sorting_asc:before,
-  table.dataTable thead > tr > td.sorting_asc:after,
-  table.dataTable thead > tr > td.sorting_desc:before,
-  table.dataTable thead > tr > td.sorting_desc:after {
-    display: none !important;
-    content: "" !important;
-    opacity: 0 !important;
+  #TabelProject_wrapper .dataTables_length select {
+    height: 35px !important;
+    border-radius: 8px !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 3px 8px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #043168 !important;
+    background-color: #ffffff !important;
+  }
+  #TabelProject_wrapper .dataTables_filter {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    flex-wrap: nowrap !important;
+    gap: 12px !important;
+    margin-bottom: 0 !important;
+  }
+  #TabelProject_wrapper .dataTables_filter label {
+    margin-bottom: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #334155 !important;
+  }
+  #TabelProject_wrapper .dataTables_filter input {
+    height: 35px !important;
+    border-radius: 8px !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 4px 12px !important;
+    font-size: 13px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
   }
 </style>
 
@@ -348,13 +503,12 @@ rsort($listTahun);
 				<thead>
 					<tr style="background: linear-gradient(135deg, #2196F3, #0D47A1); color: white;">
 						<th scope="col" style="width: 4%;" class="text-center align-middle">No</th>
-						<th scope="col" class="align-middle">PJ Project</th>
-						<th scope="col" class="align-middle">Nama Project</th>
-						<th scope="col" style="width: 12%;" class="text-center align-middle">Kategori</th>
-						<th scope="col" style="width: 14%;" class="text-center align-middle">Tag / Label</th>
-						<th scope="col" style="width: 16%;" class="text-center align-middle">Timeline Project</th>
-						<th scope="col" style="width: 20%;" class="align-middle">Catatan</th>
-						<th scope="col" style="width: 14%;" class="text-center align-middle">Dokumen</th>
+						<th scope="col" style="width: 32%;" class="align-middle">Nama project/Kegiatan</th>
+						<th scope="col" style="width: 16%;" class="text-center align-middle">Jenis Pengadaan</th>
+						<th scope="col" style="width: 18%;" class="text-center align-middle">Timeline</th>
+						<th scope="col" style="width: 12%;" class="text-center align-middle">Status</th>
+						<th scope="col" style="width: 9%;" class="text-center align-middle">Dokumen Admin</th>
+						<th scope="col" style="width: 9%;" class="text-center align-middle">Dokumen Project</th>
 					</tr>
 				</thead>
 				<tbody id="RekapSurvei">
@@ -362,43 +516,112 @@ rsort($listTahun);
 					$No = 1; 
 					foreach ($Project as $key) { 
 						$rawDl = !empty($key['Deadline']) ? $key['Deadline'] : '-';
-						$PisahPJ = explode("|", $key['PJ']); 
-						$Pj = ""; 
-						for ($i=0; $i < count($PisahPJ); $i++) { 
-							$Pj .= (ucfirst($PisahPJ[$i]).' '); 
-						}
-						$fileList = getSuperProjectFileList($key['File'] ?? ''); 
-						$fileJsonAttr = htmlspecialchars(json_encode($fileList), ENT_QUOTES, 'UTF-8');
-						$totalDocs = count($fileList);
+						
+						// Dokumen Admin
+						$fileAdminList = getSuperProjectFileList($key['DokumenAdmin'] ?? '');
+						$fileAdminJsonAttr = htmlspecialchars(json_encode($fileAdminList), ENT_QUOTES, 'UTF-8');
+						$totalAdminDocs = count($fileAdminList);
+
+						// Dokumen Project (dengan fallback data lama 'File')
+						$docProjectRaw = !empty($key['DokumenProject']) ? $key['DokumenProject'] : ($key['File'] ?? '');
+						$fileProjectList = getSuperProjectFileList($docProjectRaw);
+						$fileProjectJsonAttr = htmlspecialchars(json_encode($fileProjectList), ENT_QUOTES, 'UTF-8');
+						$totalProjectDocs = count($fileProjectList);
+
+						// Tag List
+						$tagStr = trim($key['Tag'] ?? '');
+						$tags = !empty($tagStr) ? array_filter(array_map('trim', explode(',', $tagStr))) : array();
+
+						// Jenis Pengadaan fallback
+						$jenisPengadaan = !empty($key['JenisPengadaan']) ? $key['JenisPengadaan'] : (!empty($key['Kategori']) ? $key['Kategori'] : '-');
+						$statusVal = !empty($key['Status']) ? $key['Status'] : 'Sedang Berjalan';
 					?>
 						<tr>
-							<th scope="row" class="text-center align-middle"><?=$No++?></th>
-							<th scope="row" class="align-middle"><?=$key['PJ']?></th>
-							<th scope="row" class="align-middle"><?=$key['NamaProject']?></th>
-							<th scope="row" class="text-center align-middle"><?=!empty($key['Kategori']) ? htmlspecialchars($key['Kategori']) : '-'?></th>
-							<!-- Tag / Label Column in SuperAdmin -->
-							<th scope="row" class="text-center align-middle">
-								<?=renderSuperTagBadges($key['Tag'] ?? '')?>
-							</th>
-							<!-- Timeline Garis Waktu Project SuperAdmin -->
-							<th scope="row" class="text-center align-middle">
+							<th scope="row" class="text-center align-middle font-weight-bold"><?=$No++?></th>
+							
+							<!-- Kolom 1: Nama project/Kegiatan dengan Tahun Selesai & Tag Label di Bawahnya -->
+							<td class="align-middle">
+								<div class="font-weight-bold text-dark" style="font-size: 13px; line-height: 1.4;">
+									<i class="fa fa-file-text text-primary mr-1"></i> <?=htmlspecialchars($key['NamaProject'])?>
+								</div>
+
+								<?php 
+								$endYear = getSuperProjectEndYear($rawDl);
+								if (!empty($endYear)) { 
+								?>
+									<div class="mt-1" style="font-size: 11px; font-weight: 700; color: #043168;">
+										<i class="fa fa-calendar-check-o mr-1 text-danger"></i> Tahun <?=$endYear?>
+									</div>
+								<?php } ?>
+
+								<?php if (!empty($tags)) { ?>
+									<div class="mt-1 d-flex flex-wrap align-items-center" style="gap: 4px;">
+										<?php foreach ($tags as $t) { 
+											$cleanTag = ltrim($t, '#');
+										?>
+											<span class="tag-label-badge">
+												<i class="fa fa-hashtag text-primary mr-1" style="font-size: 9px;"></i><?=htmlspecialchars($cleanTag)?>
+											</span>
+										<?php } ?>
+									</div>
+								<?php } ?>
+							</td>
+
+							<!-- Kolom 2: Jenis Pengadaan -->
+							<td class="text-center align-middle">
+								<?php if ($jenisPengadaan !== '-') { ?>
+									<span class="badge px-2 py-1" style="background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 11px; font-weight: 600;">
+										<i class="fa fa-tag text-secondary mr-1"></i> <?=htmlspecialchars($jenisPengadaan)?>
+									</span>
+								<?php } else { ?>
+									<span class="text-muted" style="font-size: 12px;">-</span>
+								<?php } ?>
+							</td>
+
+							<!-- Kolom 3: Timeline -->
+							<td class="text-center align-middle">
 								<?=renderSuperTimelineCell($rawDl)?>
-							</th>
-							<th scope="row" class="align-middle"><?=$key['Catatan']?></th>
-							<th scope="row" class="text-center align-middle text-nowrap">
-								<?php if ($totalDocs > 0) { ?>
+							</td>
+
+							<!-- Kolom 4: Status (Single Clean Pill Card) -->
+							<td class="text-center align-middle text-nowrap">
+								<?=renderSuperStatusBadge($key['Id'], $statusVal)?>
+							</td>
+
+							<!-- Kolom 5: Dokumen Admin -->
+							<td class="text-center align-middle text-nowrap">
+								<?php if ($totalAdminDocs > 0) { ?>
 									<button type="button" 
 										class="btn btn-sm btn-info text-white btn-open-project-docs" 
+										data-type="Admin"
 										data-project="<?=htmlspecialchars($key['NamaProject'], ENT_QUOTES)?>"
-										data-files="<?=$fileJsonAttr?>"
-										title="Buka <?=$totalDocs?> Dokumen Project" 
-										style="border-radius: 6px; padding: 4px 10px; font-weight: 600; font-size: 11.5px; background: #0284c7; border: none;">
-										<i class="fa fa-folder-open mr-1"></i> <?=$totalDocs?> Dokumen
+										data-files="<?=$fileAdminJsonAttr?>"
+										title="Buka <?=$totalAdminDocs?> Dokumen Admin" 
+										style="border-radius: 6px; padding: 4px 9px; font-weight: 600; font-size: 11px; background: #0284c7; border: none;">
+										<i class="fa fa-folder-open mr-1"></i> <?=$totalAdminDocs?> Berkas
 									</button>
 								<?php } else { ?>
-									<span class="text-muted">-</span>
+									<span class="text-muted" style="font-size: 12px;">-</span>
 								<?php } ?>
-							</th>
+							</td>
+
+							<!-- Kolom 6: Dokumen Project -->
+							<td class="text-center align-middle text-nowrap">
+								<?php if ($totalProjectDocs > 0) { ?>
+									<button type="button" 
+										class="btn btn-sm btn-success text-white btn-open-project-docs" 
+										data-type="Project"
+										data-project="<?=htmlspecialchars($key['NamaProject'], ENT_QUOTES)?>"
+										data-files="<?=$fileProjectJsonAttr?>"
+										title="Buka <?=$totalProjectDocs?> Dokumen Project" 
+										style="border-radius: 6px; padding: 4px 9px; font-weight: 600; font-size: 11px; background: #059669; border: none;">
+										<i class="fa fa-folder-open mr-1"></i> <?=$totalProjectDocs?> Berkas
+									</button>
+								<?php } else { ?>
+									<span class="text-muted" style="font-size: 12px;">-</span>
+								<?php } ?>
+							</td>
+
 						</tr>
 					<?php } ?>  
 				</tbody>
@@ -422,7 +645,7 @@ rsort($listTahun);
       <div class="modal-header d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #043168 0%, #0a3d7c 100%); color: #ffffff; padding: 14px 22px;">
         <div class="d-flex align-items-center" style="gap: 12px;">
           <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center;">
-            <i class="fa-solid fa-folder-open text-white" style="font-size: 18px;"></i>
+            <i class="fa fa-folder-open text-white" style="font-size: 18px;"></i>
           </div>
           <div>
             <h5 class="modal-title font-weight-bold mb-0 text-white" style="font-size: 16px;" id="ModalViewerProjectName">
@@ -433,7 +656,7 @@ rsort($listTahun);
         </div>
         <div class="d-flex align-items-center" style="gap: 12px;">
           <a href="#" id="BtnDownloadDoc" target="_blank" download class="btn btn-sm btn-light font-weight-bold px-3 py-1" style="border-radius: 14px; font-size: 12px; color: #043168;">
-            <i class="fa-solid fa-download mr-1 text-primary"></i> Unduh File Aktif
+            <i class="fa fa-download mr-1 text-primary"></i> Unduh File Aktif
           </a>
           <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="margin: 0; padding: 0; opacity: 0.9;">
             <span aria-hidden="true">&times;</span>
@@ -444,7 +667,7 @@ rsort($listTahun);
       <!-- Document Slide Navigation Bar (Slide Tabs & Arrows) -->
       <div class="px-3 py-2 border-bottom d-flex align-items-center justify-content-between" id="DocSlideNavBar" style="background: #f1f5f9; gap: 10px;">
         <button type="button" class="btn btn-sm btn-outline-secondary" id="BtnPrevDocSlide" style="border-radius: 8px; padding: 5px 12px;" title="Dokumen Sebelumnya">
-          <i class="fa-solid fa-chevron-left"></i>
+          <i class="fa fa-chevron-left"></i>
         </button>
         
         <div class="d-flex align-items-center flex-nowrap" id="DocSlideTabsList" style="gap: 8px; overflow-x: auto; scroll-behavior: smooth; max-width: calc(100% - 110px); padding: 4px 2px;">
@@ -452,7 +675,7 @@ rsort($listTahun);
         </div>
 
         <button type="button" class="btn btn-sm btn-outline-secondary" id="BtnNextDocSlide" style="border-radius: 8px; padding: 5px 12px;" title="Dokumen Selanjutnya">
-          <i class="fa-solid fa-chevron-right"></i>
+          <i class="fa fa-chevron-right"></i>
         </button>
       </div>
 
@@ -484,12 +707,12 @@ rsort($listTahun);
         <!-- Fallback Download Card Container (ZIP, RAR & Other Files) -->
         <div id="FallbackViewerContainer" class="text-center py-5" style="display: none;">
           <div class="mb-3 d-inline-flex align-items-center justify-content-center rounded-circle" id="FallbackIconWrapper" style="width: 76px; height: 76px; background: rgba(4, 49, 104, 0.1); color: #043168; margin: 0 auto;">
-            <i class="fa-solid fa-file-zipper" id="FallbackIcon" style="font-size: 34px;"></i>
+            <i class="fa fa-file-archive-o" id="FallbackIcon" style="font-size: 34px;"></i>
           </div>
           <h5 class="font-weight-bold text-dark mb-2" id="FallbackFileName">Dokumen Project</h5>
           <p class="text-muted" style="font-size: 13.5px;" id="FallbackFileDesc">Berkas arsip (ZIP / RAR) dapat diunduh dan diekstrak langsung pada komputer Anda.</p>
           <a href="#" id="BtnFallbackDownload" target="_blank" download class="btn btn-primary px-4 py-2" style="border-radius: 20px; font-weight: 700;">
-            <i class="fa-solid fa-download mr-1"></i> Buka / Unduh Berkas
+            <i class="fa fa-download mr-1"></i> Buka / Unduh Berkas
           </a>
         </div>
 
@@ -529,8 +752,8 @@ rsort($listTahun);
 				"infoEmpty": "Data tidak tersedia",
 				"zeroRecords": "Tidak ada data yang sesuai",
 				"paginate": {
-					'previous': '<i class="fa-solid fa-chevron-left"></i>',
-					'next': '<i class="fa-solid fa-chevron-right"></i>'
+					'previous': '<i class="fa fa-chevron-left"></i>',
+					'next': '<i class="fa fa-chevron-right"></i>'
 				}
 			}
 		});
@@ -551,7 +774,7 @@ rsort($listTahun);
 
     $('#SelectFilterTahun').on('change', function() {
       var selectedYear = $(this).val();
-      table.column(5).search(selectedYear ? selectedYear : '', true, false).draw();
+      table.column(3).search(selectedYear ? selectedYear : '', true, false).draw();
     });
 
     // =========================================================================
@@ -659,10 +882,10 @@ rsort($listTahun);
       }
       else if (ext === 'zip' || ext === 'rar' || ext === '7z') {
         $('#ViewerLoadingSpinner').hide();
-        $('#FallbackIcon').attr('class', 'fa-solid fa-file-zipper');
+        $('#FallbackIcon').attr('class', 'fa fa-file-archive-o');
         $('#FallbackIconWrapper').css({ 'background': 'rgba(234, 88, 12, 0.1)', 'color': '#ea580c' });
         $('#FallbackFileDesc').text('Berkas arsip terkompresi (' + ext.toUpperCase() + ') dapat diunduh langsung untuk diekstrak pada komputer Anda.');
-        $('#BtnFallbackDownload').html('<i class="fa-solid fa-download mr-1"></i> Unduh Berkas ' + ext.toUpperCase());
+        $('#BtnFallbackDownload').html('<i class="fa fa-download mr-1"></i> Unduh Berkas ' + ext.toUpperCase());
         $('#FallbackViewerContainer').show();
       }
       else {
@@ -670,13 +893,14 @@ rsort($listTahun);
         $('#FallbackIcon').attr('class', 'fa fa-download');
         $('#FallbackIconWrapper').css({ 'background': 'rgba(4, 49, 104, 0.1)', 'color': '#043168' });
         $('#FallbackFileDesc').text('Format berkas ini dapat dibuka langsung melalui aplikasi atau diunduh ke perangkat Anda.');
-        $('#BtnFallbackDownload').html('<i class="fa-solid fa-download mr-1"></i> Buka / Unduh Berkas');
+        $('#BtnFallbackDownload').html('<i class="fa fa-download mr-1"></i> Buka / Unduh Berkas');
         $('#FallbackViewerContainer').show();
       }
     }
 
     // Open Multi-Doc Slide Modal
     $(document).on('click', '.btn-open-project-docs', function(){
+      var docType = $(this).data('type') || 'Dokumen';
       var projectName = $(this).data('project') || 'Project';
       var filesData = $(this).data('files');
 
@@ -697,11 +921,14 @@ rsort($listTahun);
       }
 
       if (activeProjectFiles.length === 0) {
-        alert('Tidak ada dokumen terlampir pada project ini.');
+        alert('Tidak ada ' + docType + ' terlampir pada project ini.');
         return;
       }
 
-      $('#ModalViewerProjectName').text('Pratinjau Dokumen — ' + projectName);
+      $('#ModalViewerProjectName').html(
+        '<span class="badge badge-warning text-dark mr-1" style="font-size: 11px;">' + (docType === 'Admin' ? 'Dokumen Admin' : 'Dokumen Project') + '</span> ' +
+        projectName
+      );
 
       var tabsHtml = '';
       $.each(activeProjectFiles, function(i, f) {
@@ -709,13 +936,13 @@ rsort($listTahun);
         var iconHtml = '<i class="fa fa-file-text-o mr-1"></i>';
 
         if (ext === 'pdf') {
-          iconHtml = '<i class="fa-file-pdf-o mr-1 text-danger"></i>';
+          iconHtml = '<i class="fa fa-file-pdf-o mr-1 text-danger"></i>';
         } else if (ext === 'doc' || ext === 'docx') {
-          iconHtml = '<i class="fa-file-word-o mr-1 text-primary"></i>';
+          iconHtml = '<i class="fa fa-file-word-o mr-1 text-primary"></i>';
         } else if (ext === 'xls' || ext === 'xlsx' || ext === 'csv') {
-          iconHtml = '<i class="fa-file-excel-o mr-1 text-success"></i>';
+          iconHtml = '<i class="fa fa-file-excel-o mr-1 text-success"></i>';
         } else if (ext === 'zip' || ext === 'rar' || ext === '7z') {
-          iconHtml = '<i class="fa-solid fa-file-zipper mr-1" style="color: #ea580c;"></i>';
+          iconHtml = '<i class="fa fa-file-archive-o mr-1" style="color: #ea580c;"></i>';
         }
 
         var displayName = f.length > 32 ? f.substring(0, 29) + '...' : f;
@@ -759,6 +986,32 @@ rsort($listTahun);
     $(document).on('click', '.sheet-tab-btn', function() {
       var sheetName = $(this).data('sheet');
       renderExcelSheet(sheetName);
+    });
+
+    // Ubah status project langsung dari kolom tabel
+    $(document).on("click", ".btn-change-status", function(e) {
+      e.preventDefault();
+      var id = $(this).data('id');
+      var newStatus = $(this).data('status');
+      
+      $.ajax({
+        url: BaseURL + 'Staf/UpdateStatus',
+        type: 'post',
+        data: {
+          Id: id,
+          Status: newStatus
+        },
+        success: function(res) {
+          if (res == '1') {
+            window.location.reload();
+          } else {
+            alert(res);
+          }
+        },
+        error: function() {
+          alert("Gagal mengubah status project!");
+        }
+      });
     });
 	});
 </script>

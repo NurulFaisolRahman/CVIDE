@@ -34,9 +34,9 @@ class Staf extends CI_Controller {
   }
 
   /**
-   * Helper untuk mengunggah berkas tunggal / ganda (PDF, Word, Excel) dengan mempertahankan nama asli file
+   * Helper untuk mengunggah berkas tunggal / ganda (PDF, Word, Excel) dengan mempertahankan nama asli atau nama manual dari user
    */
-  private function handleFileUploads($fileInputName = 'Files') {
+  private function handleFileUploads($fileInputName = 'Files', $customNames = array()) {
     $uploadedFiles = array();
     
     if (!isset($_FILES[$fileInputName])) {
@@ -59,10 +59,17 @@ class Staf extends CI_Controller {
       for ($i = 0; $i < $count; $i++) {
         if (!empty($fileData['tmp_name'][$i]) && is_uploaded_file($fileData['tmp_name'][$i])) {
           $originalName = $fileData['name'][$i];
-          $fileNameOnly = pathinfo($originalName, PATHINFO_FILENAME);
           $tipe = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
 
-          // Bersihkan karakter terlarang dari nama file tanpa merusak nama asli
+          // Cek apakah ada penamaan manual dari user
+          $manualName = !empty($customNames[$i]) ? trim($customNames[$i]) : '';
+          if (!empty($manualName)) {
+            $fileNameOnly = pathinfo($manualName, PATHINFO_FILENAME);
+          } else {
+            $fileNameOnly = pathinfo($originalName, PATHINFO_FILENAME);
+          }
+
+          // Bersihkan karakter terlarang dari nama file
           $cleanName = preg_replace('/[\\\\\/:\*\?"<>\|]/', '_', $fileNameOnly);
           $cleanName = trim($cleanName);
           if (empty($cleanName)) {
@@ -86,8 +93,14 @@ class Staf extends CI_Controller {
       // Jika single file
       if (!empty($fileData['tmp_name']) && is_uploaded_file($fileData['tmp_name'])) {
         $originalName = $fileData['name'];
-        $fileNameOnly = pathinfo($originalName, PATHINFO_FILENAME);
         $tipe = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+
+        $manualName = !empty($customNames[0]) ? trim($customNames[0]) : (!empty($customNames) && is_string($customNames) ? trim($customNames) : '');
+        if (!empty($manualName)) {
+          $fileNameOnly = pathinfo($manualName, PATHINFO_FILENAME);
+        } else {
+          $fileNameOnly = pathinfo($originalName, PATHINFO_FILENAME);
+        }
 
         $cleanName = preg_replace('/[\\\\\/:\*\?"<>\|]/', '_', $fileNameOnly);
         $cleanName = trim($cleanName);
@@ -112,19 +125,24 @@ class Staf extends CI_Controller {
   }
 
   public function Input(){
-    $pj = $this->session->userdata('Username') ?: ($this->session->userdata('username') ?: 'Staf');
-    
-    $uploaded = $this->handleFileUploads('Files');
-    $fileVal = !empty($uploaded) ? json_encode($uploaded) : null;
+    $sessionUser = $this->session->userdata('Username') ?: ($this->session->userdata('username') ?: 'Staf');
+    $picInput = $this->input->post('PIC');
+    $pic = !empty(trim($picInput ?? '')) ? trim($picInput) : $sessionUser;
 
     $insertData = array(
-      'PJ'          => $pj,
-      'NamaProject' => $this->input->post('NamaProject'),
-      'Kategori'    => $this->input->post('Kategori'),
-      'Tag'         => $this->input->post('Tag'),
-      'Deadline'    => $this->input->post('Deadline'),
-      'Catatan'     => $this->input->post('Catatan'),
-      'File'        => $fileVal
+      'PJ'             => $pic,
+      'NamaProject'    => $this->input->post('NamaProject'),
+      'Tag'            => $this->input->post('Tag'),
+      'Instansi'       => $this->input->post('Instansi'),
+      'JenisPengadaan' => $this->input->post('JenisPengadaan'),
+      'Nominal'        => $this->input->post('Nominal'),
+      'Deadline'       => $this->input->post('Deadline'),
+      'Status'         => 'Belum Mulai', // Status otomatis 'Belum Mulai' saat input awal
+      'OutputKegiatan' => $this->input->post('OutputKegiatan'),
+      'Catatan'        => $this->input->post('Catatan') ?: '',
+      'DokumenAdmin'   => null,
+      'DokumenProject' => null,
+      'File'           => null
     );
 
     $this->db->insert('project', $insertData);
@@ -143,47 +161,18 @@ class Staf extends CI_Controller {
       return;
     }
 
-    // Berkas lama yang dipertahankan
-    $existingFilesRaw = $this->input->post('FileLama');
-    $existingFiles = array();
-    if (!empty($existingFilesRaw)) {
-      $decoded = json_decode($existingFilesRaw, true);
-      if (is_array($decoded)) {
-        $existingFiles = $decoded;
-      } else if (strpos($existingFilesRaw, '|') !== false) {
-        $existingFiles = explode('|', $existingFilesRaw);
-      } else {
-        $existingFiles = array($existingFilesRaw);
-      }
-    }
-
-    // Berkas yang dihapus oleh user
-    $deletedFilesRaw = $this->input->post('FileHapus');
-    if (!empty($deletedFilesRaw)) {
-      $deletedFiles = json_decode($deletedFilesRaw, true);
-      if (is_array($deletedFiles)) {
-        foreach ($deletedFiles as $df) {
-          if (!empty($df) && file_exists('Project/' . $df)) {
-            @unlink('Project/' . $df);
-          }
-        }
-      }
-    }
-
-    // Berkas baru yang diunggah
-    $newUploaded = $this->handleFileUploads('Files');
-
-    // Gabungkan berkas lama yang dipertahankan + berkas baru
-    $allFiles = array_merge($existingFiles, $newUploaded);
-    $fileVal = !empty($allFiles) ? json_encode(array_values(array_filter($allFiles))) : null;
+    $pic = $this->input->post('PIC');
 
     $updateData = array(
-      'NamaProject' => $this->input->post('NamaProject'),
-      'Kategori'    => $this->input->post('Kategori'),
-      'Tag'         => $this->input->post('Tag'),
-      'Deadline'    => $this->input->post('Deadline'),
-      'Catatan'     => $this->input->post('Catatan'),
-      'File'        => $fileVal
+      'PJ'             => !empty($pic) ? $pic : ($this->session->userdata('Username') ?: 'Staf'),
+      'NamaProject'    => $this->input->post('NamaProject'),
+      'Tag'            => $this->input->post('Tag'),
+      'Instansi'       => $this->input->post('Instansi'),
+      'JenisPengadaan' => $this->input->post('JenisPengadaan'),
+      'Nominal'        => $this->input->post('Nominal'),
+      'Deadline'       => $this->input->post('Deadline'),
+      'OutputKegiatan' => $this->input->post('OutputKegiatan'),
+      'Catatan'        => $this->input->post('Catatan') ?: ''
     );
 
     $this->db->where('Id', $id);
@@ -196,30 +185,330 @@ class Staf extends CI_Controller {
     }
   }
 
+  /**
+   * Mengambil daftar file dokumen (Admin / Project) untuk modal kelola dokumen
+   */
+  public function GetDokumen(){
+    $id = $this->input->post('Id');
+    $type = $this->input->post('Type'); // 'Admin' atau 'Project'
+    $project = $this->db->get_where('project', array('Id' => $id))->row_array();
+    if (!$project) {
+      echo json_encode(array('status' => 'error', 'message' => 'Project tidak ditemukan!'));
+      return;
+    }
+
+    $field = ($type === 'Admin') ? 'DokumenAdmin' : 'DokumenProject';
+    $raw = !empty($project[$field]) ? $project[$field] : ($type === 'Project' ? ($project['File'] ?? '') : '');
+
+    $files = array();
+    if (!empty($raw)) {
+      $decoded = json_decode($raw, true);
+      if (is_array($decoded)) {
+        $files = array_values(array_filter($decoded));
+      } else if (strpos($raw, '|') !== false) {
+        $files = array_values(array_filter(explode('|', $raw)));
+      } else {
+        $files = array($raw);
+      }
+    }
+
+    echo json_encode(array(
+      'status'      => 'success',
+      'id'          => $id,
+      'type'        => $type,
+      'projectName' => $project['NamaProject'],
+      'files'       => $files,
+      'total'       => count($files)
+    ));
+  }
+
+  /**
+   * Mengunggah berkas baru langsung ke dokumen spesifik (Admin / Project)
+   */
+  public function UploadDokumen(){
+    $id = $this->input->post('Id');
+    $type = $this->input->post('Type'); // 'Admin' atau 'Project'
+    $customNames = $this->input->post('CustomNames') ?: array();
+
+    $project = $this->db->get_where('project', array('Id' => $id))->row_array();
+    if (!$project) {
+      echo json_encode(array('status' => 'error', 'message' => 'Project tidak ditemukan!'));
+      return;
+    }
+
+    $newFiles = $this->handleFileUploads('Files', $customNames);
+    if (empty($newFiles)) {
+      echo json_encode(array('status' => 'error', 'message' => 'Silakan pilih berkas yang akan diunggah!'));
+      return;
+    }
+
+    $field = ($type === 'Admin') ? 'DokumenAdmin' : 'DokumenProject';
+    $raw = !empty($project[$field]) ? $project[$field] : ($type === 'Project' ? ($project['File'] ?? '') : '');
+    $existingFiles = array();
+    if (!empty($raw)) {
+      $decoded = json_decode($raw, true);
+      if (is_array($decoded)) {
+        $existingFiles = array_values(array_filter($decoded));
+      } else if (strpos($raw, '|') !== false) {
+        $existingFiles = array_values(array_filter(explode('|', $raw)));
+      } else {
+        $existingFiles = array($raw);
+      }
+    }
+
+    $merged = array_values(array_filter(array_merge($existingFiles, $newFiles)));
+    $jsonVal = json_encode($merged);
+
+    $updateData = array($field => $jsonVal);
+    if ($type === 'Project') {
+      $updateData['File'] = $jsonVal;
+    }
+
+    $this->db->where('Id', $id);
+    $this->db->update('project', $updateData);
+
+    echo json_encode(array(
+      'status'      => 'success',
+      'id'          => $id,
+      'type'        => $type,
+      'projectName' => $project['NamaProject'],
+      'files'       => $merged,
+      'total'       => count($merged),
+      'message'     => count($newFiles) . ' berkas berhasil diunggah!'
+    ));
+  }
+
+  /**
+   * Menghapus 1 berkas spesifik dari dokumen project
+   */
+  public function HapusDokumenItem(){
+    $id = $this->input->post('Id');
+    $type = $this->input->post('Type'); // 'Admin' atau 'Project'
+    $fileName = $this->input->post('FileName');
+
+    $project = $this->db->get_where('project', array('Id' => $id))->row_array();
+    if (!$project) {
+      echo json_encode(array('status' => 'error', 'message' => 'Project tidak ditemukan!'));
+      return;
+    }
+
+    $field = ($type === 'Admin') ? 'DokumenAdmin' : 'DokumenProject';
+    $raw = !empty($project[$field]) ? $project[$field] : ($type === 'Project' ? ($project['File'] ?? '') : '');
+    $existingFiles = array();
+    if (!empty($raw)) {
+      $decoded = json_decode($raw, true);
+      if (is_array($decoded)) {
+        $existingFiles = array_values(array_filter($decoded));
+      } else if (strpos($raw, '|') !== false) {
+        $existingFiles = array_values(array_filter(explode('|', $raw)));
+      } else {
+        $existingFiles = array($raw);
+      }
+    }
+
+    $remainingFiles = array_values(array_diff($existingFiles, array($fileName)));
+    $jsonVal = !empty($remainingFiles) ? json_encode($remainingFiles) : null;
+
+    $updateData = array($field => $jsonVal);
+    if ($type === 'Project') {
+      $updateData['File'] = $jsonVal;
+    }
+
+    $this->db->where('Id', $id);
+    $this->db->update('project', $updateData);
+
+    if (!empty($fileName) && file_exists('Project/' . $fileName)) {
+      @unlink('Project/' . $fileName);
+    }
+
+    echo json_encode(array(
+      'status'      => 'success',
+      'id'          => $id,
+      'type'        => $type,
+      'projectName' => $project['NamaProject'],
+      'files'       => $remainingFiles,
+      'total'       => count($remainingFiles),
+      'message'     => 'Berkas berhasil dihapus!'
+    ));
+  }
+
+  /**
+   * Mengedit nama berkas atau mengganti file dokumen yang sudah terlampir
+   */
+  public function EditDokumenItem(){
+    $id = $this->input->post('Id');
+    $type = $this->input->post('Type'); // 'Admin' atau 'Project'
+    $oldFileName = trim($this->input->post('OldFileName') ?? '');
+    $newCustomName = trim($this->input->post('NewFileName') ?? '');
+
+    $project = $this->db->get_where('project', array('Id' => $id))->row_array();
+    if (!$project) {
+      echo json_encode(array('status' => 'error', 'message' => 'Project tidak ditemukan!'));
+      return;
+    }
+
+    $field = ($type === 'Admin') ? 'DokumenAdmin' : 'DokumenProject';
+    $raw = !empty($project[$field]) ? $project[$field] : ($type === 'Project' ? ($project['File'] ?? '') : '');
+    $existingFiles = array();
+    if (!empty($raw)) {
+      $decoded = json_decode($raw, true);
+      if (is_array($decoded)) {
+        $existingFiles = array_values(array_filter($decoded));
+      } else if (strpos($raw, '|') !== false) {
+        $existingFiles = array_values(array_filter(explode('|', $raw)));
+      } else {
+        $existingFiles = array($raw);
+      }
+    }
+
+    $fileIndex = array_search($oldFileName, $existingFiles);
+    if ($fileIndex === false) {
+      echo json_encode(array('status' => 'error', 'message' => 'Berkas lama tidak ditemukan dalam daftar!'));
+      return;
+    }
+
+    $hasNewUploadedFile = isset($_FILES['ReplaceFile']) && !empty($_FILES['ReplaceFile']['tmp_name']) && is_uploaded_file($_FILES['ReplaceFile']['tmp_name']);
+
+    if (!is_dir('Project')) {
+      mkdir('Project', 0777, true);
+    }
+
+    $finalFileName = $oldFileName;
+
+    if ($hasNewUploadedFile) {
+      // Ada file baru yang diunggah untuk menggantikan
+      $originalNewName = $_FILES['ReplaceFile']['name'];
+      $tipe = strtolower(pathinfo($originalNewName, PATHINFO_EXTENSION));
+
+      if (!empty($newCustomName)) {
+        $cleanName = preg_replace('/[\\\\\/:\*\?"<>\|]/', '_', pathinfo($newCustomName, PATHINFO_FILENAME));
+      } else {
+        $cleanName = preg_replace('/[\\\\\/:\*\?"<>\|]/', '_', pathinfo($originalNewName, PATHINFO_FILENAME));
+      }
+      $cleanName = trim($cleanName);
+      if (empty($cleanName)) {
+        $cleanName = 'Dokumen_' . date('YmdHis');
+      }
+
+      $targetFileName = $cleanName . '.' . $tipe;
+      $counter = 1;
+      while (file_exists('Project/' . $targetFileName) && $targetFileName !== $oldFileName) {
+        $targetFileName = $cleanName . ' (' . $counter . ').' . $tipe;
+        $counter++;
+      }
+
+      if (move_uploaded_file($_FILES['ReplaceFile']['tmp_name'], "Project/" . $targetFileName)) {
+        if ($oldFileName !== $targetFileName && file_exists('Project/' . $oldFileName)) {
+          @unlink('Project/' . $oldFileName);
+        }
+        $finalFileName = $targetFileName;
+      } else {
+        echo json_encode(array('status' => 'error', 'message' => 'Gagal mengunggah berkas pengganti!'));
+        return;
+      }
+    } else {
+      // Hanya ganti nama dokumen
+      if (!empty($newCustomName)) {
+        $oldExt = strtolower(pathinfo($oldFileName, PATHINFO_EXTENSION));
+        $cleanName = preg_replace('/[\\\\\/:\*\?"<>\|]/', '_', pathinfo($newCustomName, PATHINFO_FILENAME));
+        $cleanName = trim($cleanName);
+        if (empty($cleanName)) {
+          $cleanName = pathinfo($oldFileName, PATHINFO_FILENAME);
+        }
+        $targetFileName = $cleanName . '.' . $oldExt;
+
+        if ($targetFileName !== $oldFileName) {
+          $counter = 1;
+          while (file_exists('Project/' . $targetFileName)) {
+            $targetFileName = $cleanName . ' (' . $counter . ').' . $oldExt;
+            $counter++;
+          }
+
+          if (file_exists('Project/' . $oldFileName)) {
+            @rename('Project/' . $oldFileName, 'Project/' . $targetFileName);
+          }
+          $finalFileName = $targetFileName;
+        }
+      }
+    }
+
+    $existingFiles[$fileIndex] = $finalFileName;
+    $jsonVal = json_encode(array_values(array_filter($existingFiles)));
+
+    $updateData = array($field => $jsonVal);
+    if ($type === 'Project') {
+      $updateData['File'] = $jsonVal;
+    }
+
+    $this->db->where('Id', $id);
+    $this->db->update('project', $updateData);
+
+    echo json_encode(array(
+      'status'      => 'success',
+      'id'          => $id,
+      'type'        => $type,
+      'projectName' => $project['NamaProject'],
+      'files'       => $existingFiles,
+      'total'       => count($existingFiles),
+      'updatedFile' => $finalFileName,
+      'message'     => 'Berkas dokumen berhasil diperbarui!'
+    ));
+  }
+
+  /**
+   * Mengubah Status Project secara langsung dari kolom status pada tabel
+   * (Pilihan: Belum Mulai, Sedang Proses, Selesai)
+   */
+  public function UpdateStatus(){
+    $id = $this->input->post('Id');
+    $status = $this->input->post('Status');
+
+    $validStatuses = array('Belum Mulai', 'Sedang Proses', 'Selesai');
+    if (empty($id) || !in_array($status, $validStatuses)) {
+      echo 'Status tidak valid!';
+      return;
+    }
+
+    $this->db->where('Id', $id);
+    $this->db->update('project', array('Status' => $status));
+    echo '1';
+  }
+
   public function Hapus(){
     $id = $this->input->post('Id');
-    $file = $this->input->post('File');
+    $fileProject = $this->input->post('FileProject') ?: $this->input->post('File');
+    $fileAdmin = $this->input->post('FileAdmin');
     
     $this->db->delete('project', array('Id' => $id));
     if ($this->db->affected_rows() > 0){
-      if (!empty($file)) {
-        $decoded = json_decode($file, true);
+      // Hapus berkas Dokumen Project
+      $filesToDelete = array();
+      if (!empty($fileProject)) {
+        $decoded = json_decode($fileProject, true);
         if (is_array($decoded)) {
-          foreach ($decoded as $f) {
-            if (!empty($f) && file_exists('Project/' . $f)) {
-              @unlink('Project/' . $f);
-            }
-          }
-        } else if (strpos($file, '|') !== false) {
-          foreach (explode('|', $file) as $f) {
-            if (!empty($f) && file_exists('Project/' . $f)) {
-              @unlink('Project/' . $f);
-            }
-          }
+          $filesToDelete = array_merge($filesToDelete, $decoded);
+        } else if (strpos($fileProject, '|') !== false) {
+          $filesToDelete = array_merge($filesToDelete, explode('|', $fileProject));
         } else {
-          if (file_exists('Project/' . $file)) {
-            @unlink('Project/' . $file);
-          }
+          $filesToDelete[] = $fileProject;
+        }
+      }
+
+      // Hapus berkas Dokumen Admin
+      if (!empty($fileAdmin)) {
+        $decodedAdmin = json_decode($fileAdmin, true);
+        if (is_array($decodedAdmin)) {
+          $filesToDelete = array_merge($filesToDelete, $decodedAdmin);
+        } else if (strpos($fileAdmin, '|') !== false) {
+          $filesToDelete = array_merge($filesToDelete, explode('|', $fileAdmin));
+        } else {
+          $filesToDelete[] = $fileAdmin;
+        }
+      }
+
+      foreach (array_unique($filesToDelete) as $f) {
+        if (!empty($f) && file_exists('Project/' . $f)) {
+          @unlink('Project/' . $f);
         }
       }
       echo '1';
