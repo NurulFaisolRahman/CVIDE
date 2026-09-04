@@ -35,6 +35,9 @@ class SuperAdmin extends CI_Controller {
   }
 
   public function Project(){
+    if ($this->db->field_exists('is_deleted', 'project')) {
+      $this->db->where('(is_deleted = 0 OR is_deleted IS NULL)', NULL, FALSE);
+    }
     $projects = $this->db->get('project')->result_array();
     
     // Sort dengan prioritas:

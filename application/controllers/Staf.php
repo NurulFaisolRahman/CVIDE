@@ -28,6 +28,9 @@ class Staf extends CI_Controller {
   }
 
   public function Project(){
+    if ($this->db->field_exists('is_deleted', 'project')) {
+      $this->db->where('(is_deleted = 0 OR is_deleted IS NULL)', NULL, FALSE);
+    }
     $projects = $this->db->get('project')->result_array();
     
     // Sort dengan prioritas:
@@ -529,44 +532,27 @@ class Staf extends CI_Controller {
 
   public function Hapus(){
     $id = $this->input->post('Id');
-    $fileProject = $this->input->post('FileProject') ?: $this->input->post('File');
-    $fileAdmin = $this->input->post('FileAdmin');
-    
-    $this->db->delete('project', array('Id' => $id));
-    if ($this->db->affected_rows() > 0){
-      // Hapus berkas Dokumen Project
-      $filesToDelete = array();
-      if (!empty($fileProject)) {
-        $decoded = json_decode($fileProject, true);
-        if (is_array($decoded)) {
-          $filesToDelete = array_merge($filesToDelete, $decoded);
-        } else if (strpos($fileProject, '|') !== false) {
-          $filesToDelete = array_merge($filesToDelete, explode('|', $fileProject));
-        } else {
-          $filesToDelete[] = $fileProject;
-        }
-      }
+    if (empty($id)) {
+      echo 'ID Project tidak ditemukan!';
+      return;
+    }
 
-      // Hapus berkas Dokumen Admin
-      if (!empty($fileAdmin)) {
-        $decodedAdmin = json_decode($fileAdmin, true);
-        if (is_array($decodedAdmin)) {
-          $filesToDelete = array_merge($filesToDelete, $decodedAdmin);
-        } else if (strpos($fileAdmin, '|') !== false) {
-          $filesToDelete = array_merge($filesToDelete, explode('|', $fileAdmin));
-        } else {
-          $filesToDelete[] = $fileAdmin;
-        }
-      }
+    $sessionUser = $this->session->userdata('Username') ?: ($this->session->userdata('username') ?: 'Staf');
 
-      foreach (array_unique($filesToDelete) as $f) {
-        if (!empty($f) && file_exists('Project/' . $f)) {
-          @unlink('Project/' . $f);
-        }
-      }
+    // Lakukan Soft Delete
+    $updateData = array(
+      'is_deleted' => 1,
+      'DeletedAt'  => date('Y-m-d H:i:s'),
+      'DeletedBy'  => $sessionUser
+    );
+
+    $this->db->where('Id', $id);
+    $result = $this->db->update('project', $updateData);
+    if ($result) {
       echo '1';
     } else {
-      echo 'Gagal Menghapus Data!';
+      $error = $this->db->error();
+      echo !empty($error['message']) ? 'Gagal Menghapus Data: ' . $error['message'] : 'Gagal Menghapus Data!';
     }
   }
 

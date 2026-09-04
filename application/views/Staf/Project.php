@@ -2340,22 +2340,15 @@ rsort($listTahun);
     });
 
     // =========================================================================
-    // HAPUS ACTION AJAX
+    // HAPUS ACTION AJAX (SOFT DELETE)
     // =========================================================================
     $(document).on("click", ".Hapus", function(){
-      if (!confirm("Apakah Anda yakin ingin menghapus data project ini beserta seluruh berkasnya?")) {
+      if (!confirm("Apakah Anda yakin ingin menghapus data project ini?")) {
         return;
       }
 
       var id = $(this).data('id');
-      var fileAdmin = $(this).data('fileadmin');
-      var fileProject = $(this).data('fileproject');
-
-      var Hapus = { 
-        Id: id,
-        FileAdmin: typeof fileAdmin === 'object' ? JSON.stringify(fileAdmin) : fileAdmin,
-        FileProject: typeof fileProject === 'object' ? JSON.stringify(fileProject) : fileProject
-      };
+      var Hapus = { Id: id };
       
       $.post(BaseURL + "Staf/Hapus", Hapus).done(function(Respon) {
         if (Respon == '1') {
