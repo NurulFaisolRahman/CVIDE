@@ -667,32 +667,38 @@ rsort($listTahun);
                 <tr>
                   <td class="text-center align-middle font-weight-bold"><?=$No++?></td>
                   
-                  <!-- Kolom 1: Nama project/Kegiatan dengan Tahun Selesai & Tag Label di Bawahnya -->
+                  <!-- Kolom 1: Nama project/Kegiatan dengan PIC, Tahun Selesai & Tag Label di Bawahnya -->
                   <td class="align-middle">
-                    <div class="font-weight-bold text-dark" style="font-size: 13.5px; line-height: 1.4;">
-                      <i class="fa-solid fa-file-lines mr-1 text-primary"></i> <?=htmlspecialchars($key['NamaProject'])?>
+                    <div class="font-weight-bold text-dark" style="font-size: 12px; line-height: 1.35;">
+                      <?=htmlspecialchars($key['NamaProject'])?>
                     </div>
 
-                    <?php 
-                    $endYear = getProjectEndYear($rawDl);
-                    if (!empty($endYear)) { 
-                    ?>
-                      <div class="mt-1" style="font-size: 11.5px; font-weight: 700; color: #043168;">
-                        <i class="fa-regular fa-calendar-check mr-1 text-danger"></i> Tahun <?=$endYear?>
-                      </div>
-                    <?php } ?>
+                    <div class="mt-1 d-flex flex-wrap align-items-center" style="gap: 5px;">
+                      <?php if (!empty($key['PJ'])) { ?>
+                        <span class="badge" style="background-color: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; border-radius: 4px; font-size: 10px; font-weight: 600; padding: 2px 6px;">
+                          <i class="fa-solid fa-user-tie text-success mr-1"></i> PIC: <?=htmlspecialchars($key['PJ'])?>
+                        </span>
+                      <?php } ?>
 
-                    <?php if (!empty($tags)) { ?>
-                      <div class="mt-1 d-flex flex-wrap align-items-center" style="gap: 4px;">
+                      <?php 
+                      $endYear = getProjectEndYear($rawDl);
+                      if (!empty($endYear)) { 
+                      ?>
+                        <span class="badge" style="background-color: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; border-radius: 4px; font-size: 10px; font-weight: 600; padding: 2px 6px;">
+                          <i class="fa-regular fa-calendar-check mr-1 text-danger"></i> Tahun <?=$endYear?>
+                        </span>
+                      <?php } ?>
+
+                      <?php if (!empty($tags)) { ?>
                         <?php foreach ($tags as $t) { 
                           $cleanTag = ltrim($t, '#');
                         ?>
-                          <span class="tag-label-badge">
-                            <i class="fa-solid fa-hashtag text-primary mr-1" style="font-size: 9px;"></i><?=htmlspecialchars($cleanTag)?>
+                          <span class="tag-label-badge" style="font-size: 9.5px; padding: 2px 6px;">
+                            <i class="fa-solid fa-hashtag text-primary mr-1" style="font-size: 8.5px;"></i><?=htmlspecialchars($cleanTag)?>
                           </span>
                         <?php } ?>
-                      </div>
-                    <?php } ?>
+                      <?php } ?>
+                    </div>
                   </td>
 
                   <!-- Kolom 2: Jenis Pengadaan -->
