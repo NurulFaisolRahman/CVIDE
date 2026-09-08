@@ -1032,7 +1032,7 @@ class Staf extends CI_Controller {
       'Subjudul'   => trim($this->input->post('Subjudul') ?? ''),
       'BannerImg'  => $bannerImg,
       'LogoImg'    => $logoImg,
-      'FooterText' => trim($this->input->post('FooterText') ?? ('© ' . date('Y') . ' ' . $judul)),
+      'FooterText' => '© ' . date('Y') . ' ' . $judul . ' | Kebijakan Privasi',
       'CreatedAt'  => date('Y-m-d H:i:s'),
       'UpdatedAt'  => date('Y-m-d H:i:s')
     );
@@ -1089,7 +1089,7 @@ class Staf extends CI_Controller {
       'Subjudul'   => trim($this->input->post('Subjudul') ?? ''),
       'BannerImg'  => $bannerImg,
       'LogoImg'    => $logoImg,
-      'FooterText' => trim($this->input->post('FooterText') ?? ''),
+      'FooterText' => '© ' . date('Y') . ' ' . $judul . ' | Kebijakan Privasi',
       'UpdatedAt'  => date('Y-m-d H:i:s')
     );
 

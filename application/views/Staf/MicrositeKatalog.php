@@ -255,7 +255,7 @@
           <!-- Judul Microsite -->
           <div class="form-group mb-3">
             <label class="font-weight-bold text-dark" style="font-size: 13px;">Judul Microsite <span class="text-danger">*</span></label>
-            <input type="text" name="Judul" class="form-control" placeholder="Contoh: IPPD SITUBONDO atau KAJIAN BANYUWANGI" required style="border-radius: 10px; border: 1.5px solid #cbd5e1; font-weight: 600; padding: 10px 14px;">
+            <input type="text" name="Judul" id="input_judul" class="form-control" placeholder="Contoh: IPPD SITUBONDO atau KAJIAN BANYUWANGI" required style="border-radius: 10px; border: 1.5px solid #cbd5e1; font-weight: 600; padding: 10px 14px;">
           </div>
 
           <!-- Slug URL -->
@@ -284,16 +284,10 @@
           </div>
 
           <!-- Foto Logo Badge -->
-          <div class="form-group mb-3">
+          <div class="form-group mb-0">
             <label class="font-weight-bold text-dark" style="font-size: 13px;">Foto Lambang / Badge Logo (Unggah Berkas atau URL)</label>
             <input type="file" name="LogoFile" class="form-control-file mb-2" accept="image/*">
             <input type="url" name="LogoImg" class="form-control" placeholder="Atau tempel URL gambar logo badge (https://...)" style="border-radius: 10px; border: 1.5px solid #cbd5e1; font-size: 12.5px;">
-          </div>
-
-          <!-- Footer Copyright -->
-          <div class="form-group mb-0">
-            <label class="font-weight-bold text-dark" style="font-size: 13px;">Teks Footer / Copyright</label>
-            <input type="text" name="FooterText" class="form-control" placeholder="Contoh: © 2025 IPPD Situbondo | Kebijakan Privasi" style="border-radius: 10px; border: 1.5px solid #cbd5e1; padding: 10px 14px;">
           </div>
         </div>
         <div class="modal-footer" style="background-color: #f8fafc; border-top: 1px solid #e2e8f0; padding: 16px 24px; gap: 10px;">
@@ -350,16 +344,10 @@
           </div>
 
           <!-- Foto Logo Badge -->
-          <div class="form-group mb-3">
+          <div class="form-group mb-0">
             <label class="font-weight-bold text-dark" style="font-size: 13px;">Ganti Lambang / Badge Logo (Unggah Berkas atau Ubah URL)</label>
             <input type="file" name="LogoFile" class="form-control-file mb-2" accept="image/*">
             <input type="text" name="LogoImg" id="edit_logo" class="form-control" placeholder="URL Logo Badge" style="border-radius: 10px; border: 1.5px solid #cbd5e1; font-size: 12.5px;">
-          </div>
-
-          <!-- Footer Copyright -->
-          <div class="form-group mb-0">
-            <label class="font-weight-bold text-dark" style="font-size: 13px;">Teks Footer / Copyright</label>
-            <input type="text" name="FooterText" id="edit_footer" class="form-control" style="border-radius: 10px; border: 1.5px solid #cbd5e1; padding: 10px 14px;">
           </div>
         </div>
         <div class="modal-footer" style="background-color: #f8fafc; border-top: 1px solid #e2e8f0; padding: 16px 24px; gap: 10px;">
@@ -381,7 +369,7 @@
     <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 20px 50px rgba(0,0,0,0.25); overflow: hidden;">
       <div class="modal-header" style="background: linear-gradient(135deg, var(--ide-red) 0%, #ee626b 100%); color: #ffffff; padding: 18px 24px; border: none;">
         <h5 class="modal-title" style="font-weight: 800; font-size: 16px; letter-spacing: 0.5px; text-transform: uppercase;">
-          <i class="fa-solid fa-triangle-exclamation mr-2"></i> Konfirmasi Hapus Microsite
+          <i class="fa-solid fa-triangle-exclamation mr-2"></i> Konfirmasi Hapus
         </h5>
         <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.9; outline: none;">
           <span aria-hidden="true">&times;</span>
@@ -391,9 +379,9 @@
         <div class="mb-3 d-inline-flex align-items-center justify-content-center rounded-circle" style="width: 64px; height: 64px; background: rgba(180, 8, 20, 0.1); color: var(--ide-red);">
           <i class="fa-solid fa-trash-can" style="font-size: 28px;"></i>
         </div>
-        <h5 class="font-weight-bold text-dark mb-1">Hapus Seluruh Microsite Ini?</h5>
+        <h5 class="font-weight-bold text-dark mb-1">Hapus Microsite Ini?</h5>
         <p class="text-muted mb-0" style="font-size: 13px;" id="textHapusMicrosite">
-          Seluruh bab, sub-bab, dan dokumen di dalamnya akan dihapus permanen.
+          Yakin ingin menghapus microsite ini beserta seluruh bab dan dokumen di dalamnya?
         </p>
       </div>
       <div class="modal-footer justify-content-center p-3" style="background-color: #f8fafc; border-top: 1px solid #f1f5f9; gap: 10px;">
@@ -464,7 +452,6 @@
       $('#edit_subjudul').val($(this).data('subjudul'));
       $('#edit_banner').val($(this).data('banner'));
       $('#edit_logo').val($(this).data('logo'));
-      $('#edit_footer').val($(this).data('footer'));
 
       $('#ModalEditMicrosite').modal('show');
     });

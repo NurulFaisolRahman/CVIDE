@@ -8,9 +8,8 @@ function renderParentOptions($nodes, $prefix = '', $excludeId = 0) {
     if ($node['Tipe'] !== 'grup') continue;
     if ($excludeId > 0 && $node['Id'] == $excludeId) continue;
 
-    $indent = empty($prefix) ? '' : $prefix . '↳ ';
     $html .= '<option value="' . $node['Id'] . '">';
-    $html .= $indent . htmlspecialchars($node['Judul']);
+    $html .= $prefix . htmlspecialchars($node['Judul']);
     $html .= '</option>';
 
     if (!empty($node['children'])) {
@@ -355,9 +354,6 @@ function renderBuilderTree($nodes, $level = 1) {
           <a href="<?=base_url('IDE/Microsite/'.$Microsite['Slug'])?>" target="_blank" class="btn btn-outline-info" style="border-radius: 10px; font-weight: 600; font-size: 12.5px; padding: 8px 16px;">
             <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Buka Tampilan Publik
           </a>
-          <button type="button" class="btn btn-primary btnAddRootBab" style="border-radius: 10px; font-weight: 700; font-size: 13px; padding: 9px 20px; background: var(--ide-navy); border: none; box-shadow: 0 4px 14px rgba(4, 49, 104, 0.3);">
-            <i class="fa-solid fa-folder-plus mr-1"></i> + Tambah Bab Utama
-          </button>
         </div>
       </div>
     </div>
@@ -368,13 +364,17 @@ function renderBuilderTree($nodes, $level = 1) {
 <div class="row">
   <div class="col-12">
     <div class="builder-tree-container">
-      <div class="d-flex align-items-center justify-content-between mb-3 pb-2" style="border-bottom: 2px solid #f1f5f9;">
-        <h5 class="font-weight-bold text-dark mb-0" style="font-size: 15px; text-transform: uppercase; letter-spacing: 0.5px;">
-          <i class="fa-solid fa-sitemap mr-2 text-primary"></i> Struktur Hirarki Bab, Sub-Bab & Dokumen
-        </h5>
-        <span class="badge badge-light px-3 py-2" style="border: 1px solid #cbd5e1; font-weight: 600; font-size: 12px;">
-          Total <?=count($AllItems)?> Item Terdaftar
-        </span>
+      <div class="d-flex flex-wrap align-items-center justify-content-between mb-3 pb-3" style="border-bottom: 2px solid #f1f5f9; gap: 12px;">
+        <div class="d-flex flex-wrap align-items-center" style="gap: 12px;">
+          <h5 class="font-weight-bold text-dark mb-0" style="font-size: 15px; text-transform: uppercase; letter-spacing: 0.5px;">
+            <i class="fa-solid fa-sitemap mr-2 text-primary"></i> Struktur Hirarki Bab, Sub-Bab & Dokumen
+          </h5>
+        </div>
+        <div>
+          <button type="button" class="btn btn-primary btnAddRootBab" style="border-radius: 10px; font-weight: 700; font-size: 13px; padding: 9px 20px; background: var(--ide-navy); border: none; box-shadow: 0 4px 14px rgba(4, 49, 104, 0.25);">
+            <i class="fa-solid fa-folder-plus mr-1"></i> + Tambah Bab Utama
+          </button>
+        </div>
       </div>
 
       <?php if (!empty($Tree) && count($Tree) > 0): ?>
@@ -418,7 +418,7 @@ function renderBuilderTree($nodes, $level = 1) {
           <div class="form-group mb-3">
             <label class="font-weight-bold text-dark" style="font-size: 13px;" id="label_input_parent">Posisi Induk / Parent <span class="text-danger">*</span></label>
             <div class="d-flex align-items-center p-2 px-3 rounded" style="background: #f1f5f9; border: 1.5px solid #cbd5e1; font-weight: 700; color: #1e293b; font-size: 13.5px;">
-              <span id="textParentInfo">[ Bab Utama - Level Teratas (Root) ]</span>
+              <span id="textParentInfo">Bab Utama</span>
             </div>
             <small class="text-muted" id="noteParentInfo">Otomatis ditetapkan berdasarkan tombol + yang Anda pilih.</small>
           </div>
@@ -482,7 +482,7 @@ function renderBuilderTree($nodes, $level = 1) {
           <div class="form-group mb-3">
             <label class="font-weight-bold text-dark" style="font-size: 13px;">Posisi Induk / Parent <span class="text-danger">*</span></label>
             <select name="ParentId" id="edit_parent_id" class="form-control" style="border-radius: 10px; border: 1.5px solid #cbd5e1; font-weight: 600;">
-              <option value="0">[ Bab Utama - Level Teratas (Root) ]</option>
+              <option value="0">Bab Utama</option>
               <?=renderParentOptions($Tree)?>
             </select>
           </div>
@@ -658,8 +658,8 @@ function renderBuilderTree($nodes, $level = 1) {
       $('#modalInputItemTitle').html('<i class="fa-solid fa-folder-plus mr-2"></i> Tambah Bab Utama Baru');
       $('#input_tipe').val('grup');
       $('#input_parent_id').val('0');
-      $('#textParentInfo').html('[ Bab Utama - Level Teratas (Root) ]');
-      $('#noteParentInfo').html('Item ini akan menjadi Bab Utama di tingkat paling luar.');
+      $('#textParentInfo').text('Bab Utama');
+      $('#noteParentInfo').html('Item ini akan menjadi Bab Utama.');
       $('#label_input_judul').html('Nama Bab Utama <span class="text-danger">*</span>');
       $('#input_judul').attr('placeholder', 'Contoh: BAB I: Pendahuluan');
       $('#groupInputUrl').hide();
@@ -682,16 +682,16 @@ function renderBuilderTree($nodes, $level = 1) {
         $('#label_input_judul').html('Nama Sub-Bab <span class="text-danger">*</span>');
         $('#input_judul').attr('placeholder', 'Contoh: Sub-Bab 1.1: Dasar Hukum');
         $('#groupInputUrl').hide();
-        $('#textParentInfo').html('↳ Di dalam Sub-Bab: ' + $('<div>').text(parentTitle).html());
-        $('#noteParentInfo').html('Sub-Bab baru ini otomatis diletakkan di dalam "' + $('<div>').text(parentTitle).html() + '".');
+        $('#textParentInfo').text(parentTitle);
+        $('#noteParentInfo').html('Sub-Bab baru berada di bawah <b>' + $('<div>').text(parentTitle).html() + '</b>.');
       } else {
         $('#modalInputItemTitle').html('<i class="fa-brands fa-google-drive mr-2"></i> Tambah Dokumen Google Drive');
         $('#input_tipe').val('link');
         $('#label_input_judul').html('Nama Dokumen <span class="text-danger">*</span>');
         $('#input_judul').attr('placeholder', 'Contoh: Kertas Kerja Evaluasi / Laporan Akhir');
         $('#groupInputUrl').show();
-        $('#textParentInfo').html('↳ Di dalam: ' + $('<div>').text(parentTitle).html());
-        $('#noteParentInfo').html('Dokumen Google Drive ini otomatis diletakkan di dalam "' + $('<div>').text(parentTitle).html() + '".');
+        $('#textParentInfo').text(parentTitle);
+        $('#noteParentInfo').html('Dokumen baru berada di bawah <b>' + $('<div>').text(parentTitle).html() + '</b>.');
       }
 
       $('#input_parent_id').val(parentId);

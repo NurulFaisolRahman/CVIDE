@@ -372,7 +372,7 @@
 
     <!-- Footer -->
     <div class="footer">
-      <p><?=htmlspecialchars($Microsite['FooterText'] ?: ('© ' . date('Y') . ' ' . $Microsite['Judul']))?></p>
+      <p><?=htmlspecialchars(!empty($Microsite['FooterText']) ? $Microsite['FooterText'] : ('© ' . date('Y') . ' ' . ($Microsite['Judul'] ?? '') . ' | Kebijakan Privasi'))?></p>
     </div>
 
     <!-- jQuery & Bootstrap Scripts -->
