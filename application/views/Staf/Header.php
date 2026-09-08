@@ -939,6 +939,7 @@
                 <ul class="nav side-menu">
                   <li><a href="<?=base_url('Staf/Project')?>"><i class="fa-solid fa-diagram-project"></i> <b>Project</b> </a></li>
                   <li><a href="<?=base_url('Staf/BankData')?>"><i class="fa-solid fa-database"></i> <b>Bank Data</b> </a></li>
+                  <li><a href="<?=base_url('Staf/Microsite')?>"><i class="fa-solid fa-globe"></i> <b>Microsite Hub</b> </a></li>
                 </ul>
 
                 <div class="sidebar-menu-title">Sistem</div>

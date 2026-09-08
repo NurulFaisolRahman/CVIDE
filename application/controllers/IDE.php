@@ -1893,12 +1893,80 @@ public function InputIKMYogyakarta()
     $this->load->view('KabupatenPonorogo');
   }
 
-  public function IPPDSitubondo(){
-    $this->load->view('IPPDSitubondo');
-  }
-  public function IPPDBanyuwangi(){
-      $this->load->view('IPPDBanyuwangi');
+  private function getMicrositeTreeData($slug = 'ippd-situbondo') {
+    // Pastikan tabel ada
+    $this->db->query("CREATE TABLE IF NOT EXISTS `microsite` (
+      `Id` INT(11) NOT NULL AUTO_INCREMENT,
+      `Slug` VARCHAR(100) NOT NULL UNIQUE,
+      `Judul` VARCHAR(255) NOT NULL,
+      `Subjudul` VARCHAR(255) NULL,
+      `BannerImg` TEXT NULL,
+      `LogoImg` TEXT NULL,
+      `FooterText` VARCHAR(255) NULL,
+      `CreatedAt` DATETIME NULL,
+      `UpdatedAt` DATETIME NULL,
+      PRIMARY KEY (`Id`),
+      KEY `idx_slug` (`Slug`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+    $this->db->query("CREATE TABLE IF NOT EXISTS `microsite_item` (
+      `Id` INT(11) NOT NULL AUTO_INCREMENT,
+      `MicrositeId` INT(11) NOT NULL,
+      `ParentId` INT(11) NULL DEFAULT 0,
+      `Tipe` VARCHAR(20) NOT NULL DEFAULT 'grup',
+      `Judul` VARCHAR(255) NOT NULL,
+      `Url` TEXT NULL,
+      `Icon` VARCHAR(50) NULL DEFAULT 'fas fa-file-alt',
+      `Urutan` INT(11) NOT NULL DEFAULT 0,
+      `CreatedAt` DATETIME NULL,
+      `UpdatedAt` DATETIME NULL,
+      PRIMARY KEY (`Id`),
+      KEY `idx_microsite_id` (`MicrositeId`),
+      KEY `idx_parent_id` (`ParentId`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+    $microsite = $this->db->get_where('microsite', array('Slug' => $slug))->row_array();
+    if (!$microsite) {
+      return array('Microsite' => array('Judul' => strtoupper(str_replace('-', ' ', $slug))), 'Tree' => array());
     }
+
+    $items = $this->db->where('MicrositeId', $microsite['Id'])->order_by('Urutan', 'ASC')->order_by('Id', 'ASC')->get('microsite_item')->result_array();
+
+    $tree = array();
+    $lookup = array();
+    foreach ($items as $item) {
+      $item['children'] = array();
+      $lookup[$item['Id']] = $item;
+    }
+    foreach ($lookup as $itemId => $item) {
+      $pId = (int)$item['ParentId'];
+      if ($pId === 0 || !isset($lookup[$pId])) {
+        $tree[$itemId] = &$lookup[$itemId];
+      } else {
+        $lookup[$pId]['children'][] = &$lookup[$itemId];
+      }
+    }
+
+    return array(
+      'Microsite' => $microsite,
+      'Tree'      => array_values($tree)
+    );
+  }
+
+  public function Microsite($slug = 'ippd-situbondo'){
+    $data = $this->getMicrositeTreeData($slug);
+    $this->load->view('MicrositePublic', $data);
+  }
+
+  public function IPPDSitubondo(){
+    $data = $this->getMicrositeTreeData('ippd-situbondo');
+    $this->load->view('MicrositePublic', $data);
+  }
+
+  public function IPPDBanyuwangi(){
+    $data = $this->getMicrositeTreeData('ippd-banyuwangi');
+    $this->load->view('MicrositePublic', $data);
+  }
   public function RenstraBanyuwangi(){
     $this->load->view('RenstraBanyuwangi');
   }

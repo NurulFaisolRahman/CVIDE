@@ -771,4 +771,493 @@ class Staf extends CI_Controller {
       echo 'Gagal Menghapus Bank Data!';
     }
   }
+
+  /**
+   * =========================================================================
+   * MODUL MANAJEMEN MICROSITE TERISOLASI & STRUKTUR BAB/SUB-BAB BERSARANG
+   * =========================================================================
+   */
+  private function ensureMicrositeStructure() {
+    // 1. Tabel Induk Microsite
+    $this->db->query("CREATE TABLE IF NOT EXISTS `microsite` (
+      `Id` INT(11) NOT NULL AUTO_INCREMENT,
+      `Slug` VARCHAR(100) NOT NULL UNIQUE,
+      `Judul` VARCHAR(255) NOT NULL,
+      `Subjudul` VARCHAR(255) NULL,
+      `BannerImg` TEXT NULL,
+      `LogoImg` TEXT NULL,
+      `FooterText` VARCHAR(255) NULL,
+      `CreatedAt` DATETIME NULL,
+      `UpdatedAt` DATETIME NULL,
+      PRIMARY KEY (`Id`),
+      KEY `idx_slug` (`Slug`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+    // 2. Tabel Struktur Bab, Sub-Bab, & Dokumen Bersarang
+    $this->db->query("CREATE TABLE IF NOT EXISTS `microsite_item` (
+      `Id` INT(11) NOT NULL AUTO_INCREMENT,
+      `MicrositeId` INT(11) NOT NULL,
+      `ParentId` INT(11) NULL DEFAULT 0,
+      `Tipe` VARCHAR(20) NOT NULL DEFAULT 'grup',
+      `Judul` VARCHAR(255) NOT NULL,
+      `Url` TEXT NULL,
+      `Icon` VARCHAR(50) NULL DEFAULT '',
+      `Urutan` INT(11) NOT NULL DEFAULT 0,
+      `CreatedAt` DATETIME NULL,
+      `UpdatedAt` DATETIME NULL,
+      PRIMARY KEY (`Id`),
+      KEY `idx_microsite_id` (`MicrositeId`),
+      KEY `idx_parent_id` (`ParentId`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+    // Pastikan seluruh ikon lama dibersihkan
+    $this->db->query("UPDATE `microsite_item` SET `Icon` = '' WHERE `Icon` != ''");
+
+    // Auto-seed jika tabel microsite masih kosong
+    if ($this->db->count_all('microsite') == 0) {
+      // 1. Seed IPPD Situbondo
+      $this->db->insert('microsite', array(
+        'Slug'       => 'ippd-situbondo',
+        'Judul'      => 'IPPD SITUBONDO',
+        'Subjudul'   => 'Microsite Dokumen IPPD Kabupaten Situbondo',
+        'BannerImg'  => 'https://awsimages.detik.net.id/community/media/visual/2020/11/25/pemkab-situbondo-1_169.jpeg?w=600&q=90',
+        'LogoImg'    => 'https://situbondo.info/wp-content/uploads/2024/04/logo-kabupaten-situbondo-png-3-2.png',
+        'FooterText' => '© 2025 IPPD Situbondo | Kebijakan Privasi',
+        'CreatedAt'  => date('Y-m-d H:i:s'),
+        'UpdatedAt'  => date('Y-m-d H:i:s')
+      ));
+      $situbondoId = $this->db->insert_id();
+
+      // Bab 1: Laporan
+      $this->db->insert('microsite_item', array(
+        'MicrositeId' => $situbondoId,
+        'ParentId'    => 0,
+        'Tipe'        => 'grup',
+        'Judul'       => 'Laporan',
+        'Icon'        => '',
+        'Urutan'      => 1,
+        'CreatedAt'   => date('Y-m-d H:i:s')
+      ));
+      $babLaporanId = $this->db->insert_id();
+
+      $itemsLaporan = array(
+        array('MicrositeId' => $situbondoId, 'ParentId' => $babLaporanId, 'Tipe' => 'link', 'Judul' => 'Kertas Kerja', 'Url' => 'https://drive.google.com/drive/folders/1D1PjEg2SiyYtfTcSS81nUA7ktighq9_0', 'Urutan' => 1, 'CreatedAt' => date('Y-m-d H:i:s')),
+        array('MicrositeId' => $situbondoId, 'ParentId' => $babLaporanId, 'Tipe' => 'link', 'Judul' => 'BAB I', 'Url' => 'https://docs.google.com/document/d/1sjCyW0PEFbYkymnceodu7itLlJ1Gh5CGjsCAU3KScK8/edit?usp=sharing', 'Urutan' => 2, 'CreatedAt' => date('Y-m-d H:i:s')),
+        array('MicrositeId' => $situbondoId, 'ParentId' => $babLaporanId, 'Tipe' => 'link', 'Judul' => 'BAB II', 'Url' => 'https://docs.google.com/document/d/1bjAsnY8OfR9nGamwx6Aol3gx7Yp81eaAe1U8zAqVapI/edit?usp=drive_link', 'Urutan' => 3, 'CreatedAt' => date('Y-m-d H:i:s')),
+        array('MicrositeId' => $situbondoId, 'ParentId' => $babLaporanId, 'Tipe' => 'link', 'Judul' => 'BAB III', 'Url' => 'https://docs.google.com/document/d/1abbjbdWFWMFTBB_DxFCIWeOpmDso2uBOw_I_bFKhMuM/edit?usp=drive_link', 'Urutan' => 4, 'CreatedAt' => date('Y-m-d H:i:s')),
+        array('MicrositeId' => $situbondoId, 'ParentId' => $babLaporanId, 'Tipe' => 'link', 'Judul' => 'BAB IV', 'Url' => '', 'Urutan' => 5, 'CreatedAt' => date('Y-m-d H:i:s')),
+        array('MicrositeId' => $situbondoId, 'ParentId' => $babLaporanId, 'Tipe' => 'link', 'Judul' => 'LAPORAN PENDAHULUAN', 'Url' => '', 'Urutan' => 6, 'CreatedAt' => date('Y-m-d H:i:s')),
+        array('MicrositeId' => $situbondoId, 'ParentId' => $babLaporanId, 'Tipe' => 'link', 'Judul' => 'LAPORAN AKHIR', 'Url' => '', 'Urutan' => 7, 'CreatedAt' => date('Y-m-d H:i:s'))
+      );
+      $this->db->insert_batch('microsite_item', $itemsLaporan);
+
+      // Bab 2: Upload Dokumen
+      $this->db->insert('microsite_item', array(
+        'MicrositeId' => $situbondoId,
+        'ParentId'    => 0,
+        'Tipe'        => 'grup',
+        'Judul'       => 'Upload Dokumen',
+        'Icon'        => '',
+        'Urutan'      => 2,
+        'CreatedAt'   => date('Y-m-d H:i:s')
+      ));
+      $babUploadId = $this->db->insert_id();
+
+      $itemsUpload = array(
+        array('MicrositeId' => $situbondoId, 'ParentId' => $babUploadId, 'Tipe' => 'link', 'Judul' => 'P RENJA 2025', 'Url' => 'https://drive.google.com/drive/folders/1No92_NbtN_5DOGIXqowFexAHAOL9aAee?usp=drive_link', 'Urutan' => 1, 'CreatedAt' => date('Y-m-d H:i:s')),
+        array('MicrositeId' => $situbondoId, 'ParentId' => $babUploadId, 'Tipe' => 'link', 'Judul' => 'RENSTRA 2025 - 2026', 'Url' => 'https://drive.google.com/drive/folders/186IY8jPfHb2yMvpHwXod_yLIUqA--wbR?usp=drive_link', 'Urutan' => 2, 'CreatedAt' => date('Y-m-d H:i:s')),
+        array('MicrositeId' => $situbondoId, 'ParentId' => $babUploadId, 'Tipe' => 'link', 'Judul' => 'P-RKPD 2025', 'Url' => 'https://drive.google.com/drive/folders/18BaH26rpe_xs8nq2bI7xalDDX2TuefGl?usp=drive_link', 'Urutan' => 3, 'CreatedAt' => date('Y-m-d H:i:s')),
+        array('MicrositeId' => $situbondoId, 'ParentId' => $babUploadId, 'Tipe' => 'link', 'Judul' => 'RPJMD 2025 - 2029', 'Url' => 'https://drive.google.com/drive/folders/1gLa2GzKXgsrN3KcDaJas3bsjt9GTutCn?usp=drive_link', 'Urutan' => 4, 'CreatedAt' => date('Y-m-d H:i:s'))
+      );
+      $this->db->insert_batch('microsite_item', $itemsUpload);
+
+      // 2. Seed IPPD Banyuwangi
+      $this->db->insert('microsite', array(
+        'Slug'       => 'ippd-banyuwangi',
+        'Judul'      => 'IPPD BANYUWANGI',
+        'Subjudul'   => 'Microsite Dokumen IPPD Kabupaten Banyuwangi',
+        'BannerImg'  => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZk60T9ljRKayq88gckmZWpC2PjxD_SzFA7Q&s',
+        'LogoImg'    => 'https://pengairan.banyuwangikab.go.id/images/banyuwangi.png',
+        'FooterText' => '© 2025 IPPD Banyuwangi | Kebijakan Privasi',
+        'CreatedAt'  => date('Y-m-d H:i:s'),
+        'UpdatedAt'  => date('Y-m-d H:i:s')
+      ));
+      $banyuwangiId = $this->db->insert_id();
+
+      // Bab 1: Laporan
+      $this->db->insert('microsite_item', array('MicrositeId' => $banyuwangiId, 'ParentId' => 0, 'Tipe' => 'grup', 'Judul' => 'Laporan', 'Icon' => '', 'Urutan' => 1, 'CreatedAt' => date('Y-m-d H:i:s')));
+      $bwiLaporanId = $this->db->insert_id();
+      $this->db->insert_batch('microsite_item', array(
+        array('MicrositeId' => $banyuwangiId, 'ParentId' => $bwiLaporanId, 'Tipe' => 'link', 'Judul' => 'Kertas Kerja', 'Url' => 'https://docs.google.com/spreadsheets/d/16eVJkVTVVFNyDAmr54tVqHyPrHkVZlHl-U5lcxv8MXs/edit?usp=drive_link', 'Urutan' => 1, 'CreatedAt' => date('Y-m-d H:i:s')),
+        array('MicrositeId' => $banyuwangiId, 'ParentId' => $bwiLaporanId, 'Tipe' => 'link', 'Judul' => 'Laporan', 'Url' => 'https://docs.google.com/document/d/1yORD0PP6axrGlge87tJFqsAJ9SI88x9T1qKnY3GvupM/edit?tab=t.0', 'Urutan' => 2, 'CreatedAt' => date('Y-m-d H:i:s'))
+      ));
+
+      // Bab 2: Justifikasi Penilaian
+      $this->db->insert('microsite_item', array('MicrositeId' => $banyuwangiId, 'ParentId' => 0, 'Tipe' => 'grup', 'Judul' => 'Justifikasi Penilaian', 'Icon' => '', 'Urutan' => 2, 'CreatedAt' => date('Y-m-d H:i:s')));
+      $bwiJustId = $this->db->insert_id();
+      $this->db->insert_batch('microsite_item', array(
+        array('MicrositeId' => $banyuwangiId, 'ParentId' => $bwiJustId, 'Tipe' => 'link', 'Judul' => 'Lembar Kerja - Sinergi', 'Url' => 'https://docs.google.com/spreadsheets/d/1pTxeLhUEJVpj5_hZPVkYaAwA-uo0YTd38QRuev-aHOA/edit?usp=drive_link', 'Urutan' => 1, 'CreatedAt' => date('Y-m-d H:i:s')),
+        array('MicrositeId' => $banyuwangiId, 'ParentId' => $bwiJustId, 'Tipe' => 'link', 'Judul' => 'Kertas Kerja - Kualitas Perencanaan', 'Url' => 'https://docs.google.com/spreadsheets/d/1IJd37K7wsCEstzq9nou_HiNMbtzFeLnFCZYBBHpy0p4/edit?usp=drive_link', 'Urutan' => 2, 'CreatedAt' => date('Y-m-d H:i:s')),
+        array('MicrositeId' => $banyuwangiId, 'ParentId' => $bwiJustId, 'Tipe' => 'link', 'Judul' => 'Lembar Kerja - Keterhubungan Perencanaan Pembangunan dengan Perencanaan Kinerja', 'Url' => 'https://docs.google.com/spreadsheets/d/16LwtXtpCH6Ri_LdRihJLeXL8JLCrbLkfe45kPX-t6VY/edit?usp=drive_link', 'Urutan' => 3, 'CreatedAt' => date('Y-m-d H:i:s'))
+      ));
+
+      // Bab 3: Upload Dokumen
+      $this->db->insert('microsite_item', array('MicrositeId' => $banyuwangiId, 'ParentId' => 0, 'Tipe' => 'grup', 'Judul' => 'Upload Dokumen', 'Icon' => '', 'Urutan' => 3, 'CreatedAt' => date('Y-m-d H:i:s')));
+      $bwiUpId = $this->db->insert_id();
+      $this->db->insert_batch('microsite_item', array(
+        array('MicrositeId' => $banyuwangiId, 'ParentId' => $bwiUpId, 'Tipe' => 'link', 'Judul' => 'RENJA SKPD Tahun 2025', 'Url' => 'https://drive.google.com/drive/folders/1m1YNSLMOjSrzbW-A2BYFWFaYyhy6346x?usp=drive_link', 'Urutan' => 1, 'CreatedAt' => date('Y-m-d H:i:s')),
+        array('MicrositeId' => $banyuwangiId, 'ParentId' => $bwiUpId, 'Tipe' => 'link', 'Judul' => 'RENSTRA SKPD Tahun 2025-2029', 'Url' => 'https://drive.google.com/drive/folders/1DRSnxisnDcgYntUdFD09yX52gG9LQUdm?usp=drive_link', 'Urutan' => 2, 'CreatedAt' => date('Y-m-d H:i:s')),
+        array('MicrositeId' => $banyuwangiId, 'ParentId' => $bwiUpId, 'Tipe' => 'link', 'Judul' => 'RKPD Tahun 2024 & 2025 (Murni dan Perubahan)', 'Url' => 'https://drive.google.com/drive/folders/1YvE1K3nEX1r7mSqr_LobewTEPstZSFuY?usp=drive_link', 'Urutan' => 3, 'CreatedAt' => date('Y-m-d H:i:s')),
+        array('MicrositeId' => $banyuwangiId, 'ParentId' => $bwiUpId, 'Tipe' => 'link', 'Judul' => 'RPJMD Tahun 2025-2029', 'Url' => 'https://drive.google.com/drive/folders/1jOc37e73VFJWYfGzkPxJC38xXaM41RUL?usp=drive_link', 'Urutan' => 4, 'CreatedAt' => date('Y-m-d H:i:s'))
+      ));
+    }
+  }
+
+  /**
+   * Helper untuk mengunggah gambar Foto Banner / Logo Badge
+   */
+  private function uploadMicrositeImage($inputName) {
+    if (!isset($_FILES[$inputName]) || empty($_FILES[$inputName]['tmp_name']) || !is_uploaded_file($_FILES[$inputName]['tmp_name'])) {
+      return null;
+    }
+
+    if (!is_dir('MicrositeAssets')) {
+      mkdir('MicrositeAssets', 0777, true);
+    }
+
+    $file = $_FILES[$inputName];
+    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    $validExts = array('jpg', 'jpeg', 'png', 'webp', 'svg', 'gif');
+    if (!in_array($ext, $validExts)) {
+      return null;
+    }
+
+    $fileName = 'img_' . date('YmdHis') . '_' . uniqid() . '.' . $ext;
+    $targetPath = 'MicrositeAssets/' . $fileName;
+
+    if (move_uploaded_file($file['tmp_name'], $targetPath)) {
+      return base_url($targetPath);
+    }
+    return null;
+  }
+
+  /**
+   * 1. KATALOG SEMUA MICROSITE (Setiap microsite terpisah dalam kartu tersendiri)
+   */
+  public function Microsite(){
+    $this->ensureMicrositeStructure();
+
+    $microsites = $this->db->order_by('Id', 'ASC')->get('microsite')->result_array();
+    foreach ($microsites as &$m) {
+      $m['TotalBab'] = $this->db->where(array('MicrositeId' => $m['Id'], 'ParentId' => 0))->count_all_results('microsite_item');
+      $m['TotalDokumen'] = $this->db->where(array('MicrositeId' => $m['Id'], 'Tipe' => 'link'))->count_all_results('microsite_item');
+      $m['TotalItems'] = $this->db->where('MicrositeId', $m['Id'])->count_all_results('microsite_item');
+    }
+
+    $Data['Microsites'] = $microsites;
+    $this->load->view('Staf/Header', $Data);
+    $this->load->view('Staf/MicrositeKatalog', $Data);
+  }
+
+  /**
+   * 2. BUILDER STRUKTUR BAB & SUB-BAB BERSARANG UNTUK SATU MICROSITE TERTENTU
+   */
+  public function KelolaMicrosite($id = 0){
+    $this->ensureMicrositeStructure();
+    $id = (int)$id;
+
+    $microsite = $this->db->get_where('microsite', array('Id' => $id))->row_array();
+    if (!$microsite) {
+      redirect('Staf/Microsite');
+      return;
+    }
+
+    // Ambil seluruh item untuk microsite ini
+    $items = $this->db->where('MicrositeId', $id)->order_by('Urutan', 'ASC')->order_by('Id', 'ASC')->get('microsite_item')->result_array();
+
+    // Bangun tree hirarki bersarang
+    $tree = array();
+    $lookup = array();
+    foreach ($items as $item) {
+      $item['children'] = array();
+      $lookup[$item['Id']] = $item;
+    }
+    foreach ($lookup as $itemId => $item) {
+      $pId = (int)$item['ParentId'];
+      if ($pId === 0 || !isset($lookup[$pId])) {
+        $tree[$itemId] = &$lookup[$itemId];
+      } else {
+        $lookup[$pId]['children'][] = &$lookup[$itemId];
+      }
+    }
+
+    $Data['Microsite'] = $microsite;
+    $Data['AllItems'] = $items;
+    $Data['Tree'] = array_values($tree);
+
+    $this->load->view('Staf/Header', $Data);
+    $this->load->view('Staf/MicrositeBuilder', $Data);
+  }
+
+  /**
+   * 3. TAMBAH MICROSITE BARU (Profil, Judul, Foto)
+   */
+  public function InputMicrosite(){
+    $this->ensureMicrositeStructure();
+
+    $judul = trim($this->input->post('Judul') ?? '');
+    $slugInput = trim($this->input->post('Slug') ?? '');
+    if (empty($judul)) {
+      echo 'Judul Microsite wajib diisi!';
+      return;
+    }
+
+    $slug = !empty($slugInput) ? url_title(strtolower($slugInput), '-', true) : url_title(strtolower($judul), '-', true);
+
+    // Cek slug duplikat
+    $existing = $this->db->get_where('microsite', array('Slug' => $slug))->row_array();
+    if ($existing) {
+      $slug = $slug . '-' . time();
+    }
+
+    $bannerUpload = $this->uploadMicrositeImage('BannerFile');
+    $logoUpload = $this->uploadMicrositeImage('LogoFile');
+
+    $bannerImg = $bannerUpload ?: trim($this->input->post('BannerImg') ?? '');
+    $logoImg = $logoUpload ?: trim($this->input->post('LogoImg') ?? '');
+
+    $insertData = array(
+      'Slug'       => $slug,
+      'Judul'      => $judul,
+      'Subjudul'   => trim($this->input->post('Subjudul') ?? ''),
+      'BannerImg'  => $bannerImg,
+      'LogoImg'    => $logoImg,
+      'FooterText' => trim($this->input->post('FooterText') ?? ('© ' . date('Y') . ' ' . $judul)),
+      'CreatedAt'  => date('Y-m-d H:i:s'),
+      'UpdatedAt'  => date('Y-m-d H:i:s')
+    );
+
+    $this->db->insert('microsite', $insertData);
+    if ($this->db->affected_rows() > 0 || $this->db->insert_id() > 0){
+      echo '1';
+    } else {
+      $error = $this->db->error();
+      echo !empty($error['message']) ? 'Gagal Input Microsite: ' . $error['message'] : 'Gagal Input Microsite!';
+    }
+  }
+
+  /**
+   * 4. EDIT PENGATURAN & FOTO PROFIL MICROSITE
+   */
+  public function EditMicrosite(){
+    $this->ensureMicrositeStructure();
+    $id = (int)$this->input->post('Id');
+    if (empty($id)) {
+      echo 'ID Microsite tidak ditemukan!';
+      return;
+    }
+
+    $microsite = $this->db->get_where('microsite', array('Id' => $id))->row_array();
+    if (!$microsite) {
+      echo 'Microsite tidak ditemukan!';
+      return;
+    }
+
+    $judul = trim($this->input->post('Judul') ?? '');
+    $slugInput = trim($this->input->post('Slug') ?? '');
+    if (empty($judul)) {
+      echo 'Judul Microsite wajib diisi!';
+      return;
+    }
+
+    $slug = !empty($slugInput) ? url_title(strtolower($slugInput), '-', true) : url_title(strtolower($judul), '-', true);
+    // Cek slug duplikat
+    $existing = $this->db->where('Slug', $slug)->where('Id !=', $id)->get('microsite')->row_array();
+    if ($existing) {
+      $slug = $slug . '-' . time();
+    }
+
+    $bannerUpload = $this->uploadMicrositeImage('BannerFile');
+    $logoUpload = $this->uploadMicrositeImage('LogoFile');
+
+    $bannerImg = $bannerUpload ?: trim($this->input->post('BannerImg') ?? ($microsite['BannerImg'] ?? ''));
+    $logoImg = $logoUpload ?: trim($this->input->post('LogoImg') ?? ($microsite['LogoImg'] ?? ''));
+
+    $updateData = array(
+      'Slug'       => $slug,
+      'Judul'      => $judul,
+      'Subjudul'   => trim($this->input->post('Subjudul') ?? ''),
+      'BannerImg'  => $bannerImg,
+      'LogoImg'    => $logoImg,
+      'FooterText' => trim($this->input->post('FooterText') ?? ''),
+      'UpdatedAt'  => date('Y-m-d H:i:s')
+    );
+
+    $this->db->where('Id', $id);
+    $result = $this->db->update('microsite', $updateData);
+    if ($result) {
+      echo '1';
+    } else {
+      $error = $this->db->error();
+      echo !empty($error['message']) ? 'Gagal Update Microsite: ' . $error['message'] : 'Gagal Update Microsite!';
+    }
+  }
+
+  /**
+   * 5. HAPUS MICROSITE (Beserta seluruh item Bab & Sub-Babnya)
+   */
+  public function HapusMicrosite(){
+    $this->ensureMicrositeStructure();
+    $id = (int)$this->input->post('Id');
+
+    $this->db->delete('microsite_item', array('MicrositeId' => $id));
+    $this->db->delete('microsite', array('Id' => $id));
+    if ($this->db->affected_rows() > 0){
+      echo '1';
+    } else {
+      echo 'Gagal Menghapus Microsite!';
+    }
+  }
+
+  /**
+   * 6. TAMBAH BAB / SUB-BAB / DOKUMEN BERSARANG
+   */
+  public function InputMicrositeItem(){
+    $this->ensureMicrositeStructure();
+
+    $micrositeId = (int)$this->input->post('MicrositeId');
+    $parentId = (int)($this->input->post('ParentId') ?? 0);
+    $tipe = trim($this->input->post('Tipe') ?? 'grup'); // 'grup' (Bab/Sub-Bab) atau 'link' (Tombol Dokumen)
+    $judul = trim($this->input->post('Judul') ?? '');
+    $url = trim($this->input->post('Url') ?? '');
+    $icon = trim($this->input->post('Icon') ?? '');
+    $urutan = (int)($this->input->post('Urutan') ?? 0);
+
+    if (empty($judul) || empty($micrositeId)) {
+      echo 'Judul tidak boleh kosong!';
+      return;
+    }
+
+    if ($urutan <= 0) {
+      $maxRow = $this->db->select_max('Urutan', 'max_u')->where(array('MicrositeId' => $micrositeId, 'ParentId' => $parentId))->get('microsite_item')->row_array();
+      $urutan = !empty($maxRow['max_u']) ? ((int)$maxRow['max_u'] + 1) : 1;
+    }
+
+    $insertData = array(
+      'MicrositeId' => $micrositeId,
+      'ParentId'    => $parentId,
+      'Tipe'        => $tipe,
+      'Judul'       => $judul,
+      'Url'         => $url,
+      'Icon'        => '',
+      'Urutan'      => $urutan,
+      'CreatedAt'   => date('Y-m-d H:i:s'),
+      'UpdatedAt'   => date('Y-m-d H:i:s')
+    );
+
+    $this->db->insert('microsite_item', $insertData);
+    if ($this->db->affected_rows() > 0 || $this->db->insert_id() > 0){
+      echo '1';
+    } else {
+      $error = $this->db->error();
+      echo !empty($error['message']) ? 'Gagal Input Item: ' . $error['message'] : 'Gagal Input Item!';
+    }
+  }
+
+  /**
+   * 7. EDIT BAB / SUB-BAB / DOKUMEN BERSARANG
+   */
+  public function EditMicrositeItem(){
+    $this->ensureMicrositeStructure();
+
+    $id = (int)$this->input->post('Id');
+    $parentId = (int)($this->input->post('ParentId') ?? 0);
+    $tipe = trim($this->input->post('Tipe') ?? 'grup');
+    $judul = trim($this->input->post('Judul') ?? '');
+    $url = trim($this->input->post('Url') ?? '');
+    $urutan = (int)($this->input->post('Urutan') ?? 1);
+
+    if (empty($id) || empty($judul)) {
+      echo 'ID dan Judul wajib diisi!';
+      return;
+    }
+
+    // Hindari circular parent
+    if ($parentId == $id) {
+      echo 'Item tidak bisa menjadi induk untuk dirinya sendiri!';
+      return;
+    }
+
+    $updateData = array(
+      'ParentId'  => $parentId,
+      'Tipe'      => $tipe,
+      'Judul'     => $judul,
+      'Url'       => $url,
+      'Icon'      => '',
+      'Urutan'    => $urutan,
+      'UpdatedAt' => date('Y-m-d H:i:s')
+    );
+
+    $this->db->where('Id', $id);
+    $result = $this->db->update('microsite_item', $updateData);
+    if ($result) {
+      echo '1';
+    } else {
+      $error = $this->db->error();
+      echo !empty($error['message']) ? 'Gagal Update Item: ' . $error['message'] : 'Gagal Update Item!';
+    }
+  }
+
+  /**
+   * 8. HAPUS BAB / SUB-BAB (Rekursif Hapus Semua Anak di Dalamnya)
+   */
+  public function HapusMicrositeItem(){
+    $this->ensureMicrositeStructure();
+    $id = (int)$this->input->post('Id');
+    if (empty($id)) {
+      echo 'ID Item tidak ditemukan!';
+      return;
+    }
+
+    // Fungsi rekursif untuk menghapus anak-anaknya
+    $deleteRecursive = function($targetId) use (&$deleteRecursive) {
+      $children = $this->db->where('ParentId', $targetId)->get('microsite_item')->result_array();
+      foreach ($children as $c) {
+        $deleteRecursive($c['Id']);
+      }
+      $this->db->delete('microsite_item', array('Id' => $targetId));
+    };
+
+    $deleteRecursive($id);
+    echo '1';
+  }
+
+  /**
+   * 9. REORDER / DRAG & DROP URUTAN ITEM SECARA REAL-TIME
+   */
+  public function ReorderMicrositeItems(){
+    $this->ensureMicrositeStructure();
+    
+    $micrositeId = (int)$this->input->post('MicrositeId');
+    $items = $this->input->post('Items'); // Array of Item IDs in desired sequence
+    
+    if (empty($micrositeId) || empty($items) || !is_array($items)) {
+      echo json_encode(array('status' => 'error', 'message' => 'Data urutan tidak valid!'));
+      return;
+    }
+
+    $order = 1;
+    foreach ($items as $itemId) {
+      $itemId = (int)$itemId;
+      if ($itemId > 0) {
+        $this->db->where(array('Id' => $itemId, 'MicrositeId' => $micrositeId))->update('microsite_item', array(
+          'Urutan'    => $order,
+          'UpdatedAt' => date('Y-m-d H:i:s')
+        ));
+        $order++;
+      }
+    }
+
+    echo json_encode(array('status' => 'success', 'message' => 'Urutan berhasil disimpan!'));
+  }
 }

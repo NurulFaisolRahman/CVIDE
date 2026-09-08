@@ -249,46 +249,58 @@
       <div class="content-section">
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
           
-          <!-- Laporan Menu -->
-          <div class="panel panel-default">
-            <div class="panel-heading" role="tab">
-              <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#laporan" aria-expanded="true" aria-controls="laporan">
-                  <i class="fas fa-file-alt"></i> Laporan
-                </a>
-              </h4>
-            </div>
-            <div id="laporan" class="panel-collapse collapse" role="tabpanel">
-              <div class="panel-body">
-                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1D1PjEg2SiyYtfTcSS81nUA7ktighq9_0')" role="button">Kertas Kerja</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1sjCyW0PEFbYkymnceodu7itLlJ1Gh5CGjsCAU3KScK8/edit?usp=sharing')" role="button">BAB I</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1bjAsnY8OfR9nGamwx6Aol3gx7Yp81eaAe1U8zAqVapI/edit?usp=drive_link')" role="button">BAB II</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('https://docs.google.com/document/d/1abbjbdWFWMFTBB_DxFCIWeOpmDso2uBOw_I_bFKhMuM/edit?usp=drive_link')" role="button">BAB III</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('')" role="button">BAB IV</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('')" role="button">LAPORAN PENDAHULUAN</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('')" role="button">LAPORAN AKHIR</a>
+          <?php 
+          if (!empty($Menu) && is_array($Menu)):
+            $catIndex = 0;
+            foreach ($Menu as $kategori => $items):
+              $catIndex++;
+              $catId = 'cat_' . md5($kategori);
+              $isFirst = ($catIndex === 1);
+              
+              // Tentukan ikon sesuai nama kategori
+              $iconClass = 'fas fa-file-alt';
+              $katLower = strtolower($kategori);
+              if (strpos($katLower, 'upload') !== false) {
+                $iconClass = 'fas fa-upload';
+              } else if (strpos($katLower, 'justifikasi') !== false || strpos($katLower, 'penilaian') !== false) {
+                $iconClass = 'fas fa-clipboard-check';
+              }
+          ?>
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab">
+                <h4 class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion" href="#<?=$catId?>" aria-expanded="<?=$isFirst ? 'true' : 'false'?>" class="<?=$isFirst ? '' : 'collapsed'?>">
+                    <i class="<?=$iconClass?>"></i> <?=htmlspecialchars($kategori)?>
+                  </a>
+                </h4>
+              </div>
+              <div id="<?=$catId?>" class="panel-collapse collapse <?=$isFirst ? 'in' : ''?>" role="tabpanel">
+                <div class="panel-body">
+                  <?php foreach ($items as $doc): 
+                    $url = trim($doc['Url'] ?? '');
+                    $hasUrl = !empty($url);
+                  ?>
+                    <a class="btn btn-primary btn-block" 
+                       <?php if ($hasUrl): ?>
+                         onclick="window.open('<?=htmlspecialchars($url, ENT_QUOTES, 'UTF-8')?>')"
+                       <?php else: ?>
+                         onclick="alert('Dokumen <?=htmlspecialchars($doc['NamaDokumen'], ENT_QUOTES, 'UTF-8')?> belum tersedia.')"
+                       <?php endif; ?>
+                       role="button">
+                      <span class="btn-text"><?=htmlspecialchars($doc['NamaDokumen'])?></span>
+                    </a>
+                  <?php endforeach; ?>
+                </div>
               </div>
             </div>
-          </div>
-
-          <!-- Upload Menu -->
-          <div class="panel panel-default">
-            <div class="panel-heading" role="tab">
-              <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#upload" aria-expanded="true" aria-controls="upload">
-                  <i class="fas fa-upload"></i> Upload Dokumen
-                </a>
-              </h4>
+          <?php 
+            endforeach;
+          else: 
+          ?>
+            <div class="text-center p-4 text-muted">
+              <p>Belum ada dokumen yang dipublikasikan.</p>
             </div>
-            <div id="upload" class="panel-collapse collapse" role="tabpanel">
-              <div class="panel-body">
-                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1No92_NbtN_5DOGIXqowFexAHAOL9aAee?usp=drive_link')" role="button">P RENJA 2025</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/186IY8jPfHb2yMvpHwXod_yLIUqA--wbR?usp=drive_link')" role="button">RENSTRA 2025 - 2026</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/18BaH26rpe_xs8nq2bI7xalDDX2TuefGl?usp=drive_link')" role="button">P-RKPD 2025</a>
-                <a class="btn btn-primary btn-block" onclick="window.open('https://drive.google.com/drive/folders/1gLa2GzKXgsrN3KcDaJas3bsjt9GTutCn?usp=drive_link')" role="button">RPJMD 2025 - 2029</a>
-              </div>
-            </div>
-          </div>
+          <?php endif; ?>
           
         </div>
       </div>
