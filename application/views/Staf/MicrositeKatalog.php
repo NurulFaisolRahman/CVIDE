@@ -20,29 +20,52 @@
   .microsite-card-banner {
     height: 140px;
     width: 100%;
-    background-size: cover;
-    background-position: center;
     position: relative;
-    background-color: var(--ide-navy);
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--ide-navy) 0%, #0a3d7c 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .microsite-card-banner img.banner-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
   }
   .microsite-card-banner-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(4, 49, 104, 0.2) 0%, rgba(4, 49, 104, 0.85) 100%);
+    background: linear-gradient(180deg, rgba(4, 49, 104, 0.15) 0%, rgba(4, 49, 104, 0.85) 100%);
+    pointer-events: none;
   }
-  .microsite-card-logo {
+  .microsite-card-logo-box {
     position: absolute;
     bottom: -22px;
     left: 20px;
-    width: 54px;
-    height: 54px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     background: #ffffff;
     border: 3px solid #ffffff;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    object-fit: contain;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
     padding: 3px;
     z-index: 2;
+  }
+  .microsite-card-logo {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    transform: scale(1.05);
   }
   .microsite-card-badge {
     position: absolute;
@@ -176,13 +199,18 @@
       <div class="col-lg-4 col-md-6 col-12 mb-4">
         <div class="microsite-card">
           <!-- Banner & Badge Logo -->
-          <div class="microsite-card-banner" style="<?php if ($hasBanner): ?>background-image: url('<?=htmlspecialchars($bannerUrl, ENT_QUOTES, 'UTF-8')?>');<?php else: ?>background: linear-gradient(135deg, var(--ide-navy) 0%, #0a3d7c 100%);<?php endif; ?>">
+          <div class="microsite-card-banner">
+            <?php if ($hasBanner): ?>
+              <img class="banner-thumb" src="<?=htmlspecialchars($bannerUrl, ENT_QUOTES, 'UTF-8')?>" alt="Banner">
+            <?php endif; ?>
             <div class="microsite-card-banner-overlay"></div>
             <span class="microsite-card-badge">
               <i class="fa-solid fa-link mr-1"></i> /<?=$m['Slug']?>
             </span>
             <?php if ($hasLogo): ?>
-              <img class="microsite-card-logo" src="<?=htmlspecialchars($logoUrl, ENT_QUOTES, 'UTF-8')?>" alt="Logo">
+              <div class="microsite-card-logo-box">
+                <img class="microsite-card-logo" src="<?=htmlspecialchars($logoUrl, ENT_QUOTES, 'UTF-8')?>" alt="Logo">
+              </div>
             <?php endif; ?>
           </div>
 
@@ -281,6 +309,7 @@
             <label class="font-weight-bold text-dark" style="font-size: 13px;">Foto Banner Header Utama (Unggah Berkas atau URL)</label>
             <input type="file" name="BannerFile" class="form-control-file mb-2" accept="image/*">
             <input type="url" name="BannerImg" class="form-control" placeholder="Atau tempel URL gambar banner (https://...)" style="border-radius: 10px; border: 1.5px solid #cbd5e1; font-size: 12.5px;">
+            <small class="text-muted d-block mt-1" style="font-size: 11.5px;"><i class="fa-solid fa-circle-info text-primary mr-1"></i> <b>Otomatis presisi:</b> Gambar ukuran besar/kecil otomatis disesuaikan penuh ke frame banner (Rekomendasi rasio landscape / ~1200x400 px).</small>
           </div>
 
           <!-- Foto Logo Badge -->
@@ -288,6 +317,7 @@
             <label class="font-weight-bold text-dark" style="font-size: 13px;">Foto Lambang / Badge Logo (Unggah Berkas atau URL)</label>
             <input type="file" name="LogoFile" class="form-control-file mb-2" accept="image/*">
             <input type="url" name="LogoImg" class="form-control" placeholder="Atau tempel URL gambar logo badge (https://...)" style="border-radius: 10px; border: 1.5px solid #cbd5e1; font-size: 12.5px;">
+            <small class="text-muted d-block mt-1" style="font-size: 11.5px;"><i class="fa-solid fa-circle-info text-primary mr-1"></i> <b>Otomatis presisi:</b> Logo otomatis di-scale pas di lingkaran. Gunakan PNG transparan tanpa kop surat/garis pinggir agar logo tampak besar & jelas.</small>
           </div>
         </div>
         <div class="modal-footer" style="background-color: #f8fafc; border-top: 1px solid #e2e8f0; padding: 16px 24px; gap: 10px;">
@@ -341,6 +371,7 @@
             <label class="font-weight-bold text-dark" style="font-size: 13px;">Ganti Foto Banner Header (Unggah Berkas atau Ubah URL)</label>
             <input type="file" name="BannerFile" class="form-control-file mb-2" accept="image/*">
             <input type="text" name="BannerImg" id="edit_banner" class="form-control" placeholder="URL Gambar Banner" style="border-radius: 10px; border: 1.5px solid #cbd5e1; font-size: 12.5px;">
+            <small class="text-muted d-block mt-1" style="font-size: 11.5px;"><i class="fa-solid fa-circle-info text-primary mr-1"></i> <b>Otomatis presisi:</b> Gambar banner otomatis disesuaikan penuh (Rekomendasi rasio landscape / ~1200x400 px).</small>
           </div>
 
           <!-- Foto Logo Badge -->
@@ -348,6 +379,7 @@
             <label class="font-weight-bold text-dark" style="font-size: 13px;">Ganti Lambang / Badge Logo (Unggah Berkas atau Ubah URL)</label>
             <input type="file" name="LogoFile" class="form-control-file mb-2" accept="image/*">
             <input type="text" name="LogoImg" id="edit_logo" class="form-control" placeholder="URL Logo Badge" style="border-radius: 10px; border: 1.5px solid #cbd5e1; font-size: 12.5px;">
+            <small class="text-muted d-block mt-1" style="font-size: 11.5px;"><i class="fa-solid fa-circle-info text-primary mr-1"></i> <b>Otomatis presisi:</b> Logo otomatis di-scale pas di lingkaran. Gunakan PNG transparan tanpa kop surat/garis pinggir agar logo tampak besar & jelas.</small>
           </div>
         </div>
         <div class="modal-footer" style="background-color: #f8fafc; border-top: 1px solid #e2e8f0; padding: 16px 24px; gap: 10px;">

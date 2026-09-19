@@ -60,39 +60,59 @@
       .banner-wrapper {
         width: 100%;
         height: 200px;
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
         position: relative;
-        background-color: var(--primary-color);
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .banner-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
       }
       .banner-overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.25) 100%);
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.22) 100%);
+        pointer-events: none;
       }
       
       .badge-logo-container {
         position: absolute;
-        bottom: -45px;
+        bottom: -46px;
         left: 50%;
         transform: translateX(-50%);
         z-index: 5;
+        width: 94px;
+        height: 94px;
+        background-color: #ffffff;
+        border-radius: 50%;
+        padding: 6px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+        border: 4px solid #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
       }
       
       .badge-logo {
-        width: 90px;
-        height: 90px;
-        background-color: white;
-        border-radius: 50%;
-        padding: 5px;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
-        border: 4px solid #ffffff;
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
         object-fit: contain;
+        object-position: center;
+        display: block;
+        transform: scale(1.08);
       }
       
       .title-section {
-        padding: 55px 20px 20px;
+        padding: 56px 20px 20px;
         text-align: center;
         background-color: white;
       }
@@ -267,6 +287,25 @@
         font-weight: 600;
         text-decoration: underline;
       }
+
+      @media (max-width: 480px) {
+        .app-container {
+          margin: 0 auto;
+          border-radius: 0;
+          min-height: 100vh;
+        }
+        .banner-wrapper {
+          height: 175px;
+        }
+        .badge-logo-container {
+          width: 86px;
+          height: 86px;
+          bottom: -43px;
+        }
+        .title-section {
+          padding: 50px 16px 18px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -281,7 +320,10 @@
       <!-- Header Section -->
       <?php if ($hasBanner || $hasLogo): ?>
       <div class="header-section">
-        <div class="banner-wrapper" style="<?php if ($hasBanner): ?>background-image: url('<?=htmlspecialchars($bannerUrl, ENT_QUOTES, 'UTF-8')?>');<?php else: ?>height: 120px; background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);<?php endif; ?>">
+        <div class="banner-wrapper" <?php if (!$hasBanner): ?>style="height: 110px;"<?php endif; ?>>
+          <?php if ($hasBanner): ?>
+            <img class="banner-img" src="<?=htmlspecialchars($bannerUrl, ENT_QUOTES, 'UTF-8')?>" alt="Banner">
+          <?php endif; ?>
           <div class="banner-overlay"></div>
         </div>
         <?php if ($hasLogo): ?>
