@@ -124,6 +124,8 @@
         margin: 0;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+        word-break: break-word;
+        overflow-wrap: anywhere;
       }
       
       .title-section p {
@@ -132,6 +134,8 @@
         margin-top: 6px;
         margin-bottom: 0;
         line-height: 1.4;
+        word-break: break-word;
+        overflow-wrap: anywhere;
       }
       
       .content-section {
@@ -158,16 +162,24 @@
         border-radius: 14px !important;
       }
       
+      .panel-title {
+        margin: 0;
+        width: 100%;
+      }
+
       .panel-title a {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 14px 20px;
+        padding: 14px 18px;
         color: white !important;
         font-weight: 700;
         font-size: 14px;
         text-decoration: none !important;
         transition: all 0.25s ease;
+        white-space: normal !important;
+        word-break: break-word;
+        overflow-wrap: anywhere;
       }
       
       .panel-title a:hover {
@@ -177,6 +189,18 @@
       .panel-title a.collapsed {
         border-radius: 14px;
       }
+
+      .panel-title a span,
+      .panel-title a .panel-title-text {
+        flex: 1;
+        min-width: 0;
+        word-wrap: break-word;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        line-height: 1.4;
+        padding-right: 12px;
+        text-align: left;
+      }
       
       .panel-title a:after {
         content: "\f078";
@@ -184,6 +208,8 @@
         font-weight: 900;
         font-size: 12px;
         transition: transform 0.3s ease;
+        flex-shrink: 0;
+        margin-left: 6px;
       }
       
       .panel-title a.collapsed:after {
@@ -195,6 +221,8 @@
         border-radius: 0 0 14px 14px;
         padding: 16px;
         border-top: none !important;
+        word-break: break-word;
+        overflow-wrap: anywhere;
       }
       
       /* Nested Accordion Sub-Bab Level 2, 3, 4+ (Warna sama dengan Header Bab Utama) */
@@ -213,13 +241,30 @@
       
       .nested-panel-group .panel-title a {
         color: #ffffff !important;
-        font-size: 13.5px;
+        font-size: 13px;
         font-weight: 700;
-        padding: 12px 18px;
+        padding: 12px 16px;
+        white-space: normal !important;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+      }
+
+      .nested-panel-group .panel-title a span,
+      .nested-panel-group .panel-title a .panel-title-text {
+        flex: 1;
+        min-width: 0;
+        word-wrap: break-word;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        line-height: 1.4;
+        padding-right: 10px;
+        text-align: left;
       }
 
       .nested-panel-group .panel-title a:after {
         color: rgba(255, 255, 255, 0.85) !important;
+        flex-shrink: 0;
+        margin-left: 6px;
       }
       
       .nested-panel-group .panel-title a:hover {
@@ -230,6 +275,8 @@
         background-color: #ffffff;
         padding: 14px;
         border-radius: 0 0 12px 12px;
+        word-break: break-word;
+        overflow-wrap: anywhere;
       }
       
       /* Button Item Styling (Isi Dokumen Berwarna Putih) */
@@ -237,7 +284,7 @@
         background: #ffffff !important;
         border: 1.5px solid #e2e8f0 !important;
         border-radius: 12px;
-        padding: 12px 18px;
+        padding: 12px 16px;
         margin-bottom: 10px;
         font-weight: 600;
         box-shadow: 0 2px 8px rgba(4, 49, 104, 0.05);
@@ -251,6 +298,9 @@
         align-items: center;
         justify-content: space-between;
         color: #1e293b !important;
+        white-space: normal !important;
+        word-break: break-word;
+        overflow-wrap: anywhere;
       }
       
       .btn-primary.btn-microsite-item:hover {
@@ -267,11 +317,19 @@
         font-weight: 900;
         font-size: 13px;
         color: #043168;
+        flex-shrink: 0;
+        margin-left: 6px;
       }
       
       .btn-text {
         flex: 1;
-        padding-right: 12px;
+        min-width: 0;
+        word-wrap: break-word;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        padding-right: 10px;
+        line-height: 1.4;
+        text-align: left;
       }
       
       /* Footer */
@@ -387,7 +445,7 @@
               $html .= '  <div class="panel-heading" role="tab">';
               $html .= '    <h4 class="panel-title">';
               $html .= '      <a role="button" data-toggle="collapse" data-parent="#' . $parentId . '" href="#' . $itemId . '" aria-expanded="false" class="collapsed">';
-              $html .= '        <span>' . htmlspecialchars($item['Judul']) . '</span>';
+              $html .= '        <span class="panel-title-text">' . htmlspecialchars($item['Judul']) . '</span>';
               $html .= '      </a>';
               $html .= '    </h4>';
               $html .= '  </div>';
