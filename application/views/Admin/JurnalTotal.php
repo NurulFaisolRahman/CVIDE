@@ -1,3 +1,41 @@
+<style>
+  @media (max-width: 767.98px) {
+    .jurnal-filter-container > div:first-child {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      width: 100% !important;
+    }
+    .jurnal-filter-date-group {
+      width: 100% !important;
+      display: flex !important;
+      align-items: center !important;
+      margin-right: 0 !important;
+    }
+    .jurnal-filter-date-group input {
+      flex: 1 1 auto !important;
+      width: auto !important;
+    }
+    .jurnal-filter-btns {
+      display: flex !important;
+      gap: 8px !important;
+      width: 100% !important;
+    }
+    .jurnal-filter-btns button {
+      flex: 1 1 50% !important;
+      justify-content: center !important;
+      margin: 0 !important;
+    }
+    .jurnal-export-container {
+      width: 100% !important;
+      margin-top: 10px !important;
+    }
+    .jurnal-export-container button {
+      width: 100% !important;
+      justify-content: center !important;
+    }
+  }
+</style>
+
 <!-- Summary Balance Cards Section -->
 <div class="row mb-4 align-items-stretch" style="margin-top: 10px;">
   <div class="col-xl-3 col-md-6 mb-3 d-flex">
@@ -59,28 +97,30 @@
 
 <!-- Filter & Export Header Bar -->
 <div class="card mb-4 border-0 shadow-sm" style="border-radius: 20px; background: #ffffff; border: 1px solid #e2e8f0; padding: 20px;">
-  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 jurnal-filter-container">
     <div class="d-flex align-items-center flex-wrap gap-2">
       <span class="badge badge-primary px-3 py-2 mr-2 mb-1" style="background: var(--ide-navy); font-size: 13px; border-radius: 12px;">
         <i class="fa-solid fa-filter mr-1"></i> Filter Periode
       </span>
-      <div class="d-flex align-items-center mr-3 mb-1">
+      <div class="d-flex align-items-center mr-3 mb-1 jurnal-filter-date-group">
         <label class="mb-0 mr-2 font-weight-bold" style="font-size: 12px; color: #64748b;">DARI:</label>
         <input type="date" class="form-control form-control-sm" id="From" value="" style="border-radius: 16px; border: 2px solid #e2e8f0; padding: 5px 12px; outline: none;">
       </div>
-      <div class="d-flex align-items-center mr-3 mb-1">
+      <div class="d-flex align-items-center mr-3 mb-1 jurnal-filter-date-group">
         <label class="mb-0 mr-2 font-weight-bold" style="font-size: 12px; color: #64748b;">HINGGA:</label>
         <input type="date" class="form-control form-control-sm" id="To" value="" style="border-radius: 16px; border: 2px solid #e2e8f0; padding: 5px 12px; outline: none;">
       </div>
-      <button type="button" class="btn btn-sm btn-primary px-3 py-2 mb-1 mr-2" id="FilterBtn" style="background: var(--ide-navy); border: none; border-radius: 16px; font-weight: 700;">
-        <i class="fa-solid fa-magnifying-glass mr-1"></i> Terapkan Filter
-      </button>
-      <button type="button" class="btn btn-sm btn-light px-3 py-2 mb-1" id="ResetFilterBtn" style="border-radius: 16px; font-weight: 600; border: 1px solid #cbd5e1;">
-        <i class="fa-solid fa-rotate-left mr-1"></i> Reset
-      </button>
+      <div class="jurnal-filter-btns">
+        <button type="button" class="btn btn-sm btn-primary px-3 py-2 mb-1 mr-2" id="FilterBtn" style="background: var(--ide-navy); border: none; border-radius: 16px; font-weight: 700;">
+          <i class="fa-solid fa-magnifying-glass mr-1"></i> Terapkan Filter
+        </button>
+        <button type="button" class="btn btn-sm btn-light px-3 py-2 mb-1" id="ResetFilterBtn" style="border-radius: 16px; font-weight: 600; border: 1px solid #cbd5e1;">
+          <i class="fa-solid fa-rotate-left mr-1"></i> Reset
+        </button>
+      </div>
     </div>
 
-    <div>
+    <div class="jurnal-export-container">
       <button type="button" class="btn btn-sm btn-danger px-4 py-2" id="Rekap" style="background: var(--ide-red); border: none; border-radius: 20px; font-weight: 700; box-shadow: 0 4px 12px rgba(180, 8, 20, 0.35);">
         <i class="fa-solid fa-file-excel mr-1"></i> Ekspor Rekap Excel
       </button>

@@ -2230,43 +2230,491 @@
       box-shadow: 0 8px 20px rgba(238, 98, 107, 0.6);
     }
 
-    /* Responsive Queries */
-    @media (max-width: 992px) {
-      .banner-container,
-      .about-grid,
-      .footer-grid {
-        grid-template-columns: 1fr;
-      }
-      .features-container {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .nav-menu {
-        display: none;
-      }
+    /* ==========================================================================
+       MOBILE RESPONSIVE SYSTEM (Only active on Mobile/Tablet < 992px)
+       Desktop (>= 992px) remains 100% untouched
+       ========================================================================== */
+    @media (min-width: 992px) {
+      .mobile-nav,
+      .mobile-nav-overlay,
       .menu-toggle {
-        display: flex;
-      }
-      .banner-left h2 {
-        font-size: 36px;
-      }
-      .features-section {
-        margin-top: 30px;
+        display: none !important;
       }
     }
 
-    @media (max-width: 576px) {
-      .features-container,
-      .vm-grid {
-        grid-template-columns: 1fr;
+    @media (max-width: 991.98px) {
+      .header-area {
+        border-bottom-left-radius: 20px !important;
+        border-bottom-right-radius: 20px !important;
       }
+
+      .main-nav {
+        padding: 10px 20px !important;
+        height: 72px !important;
+      }
+
+      .logo {
+        height: 38px !important;
+        gap: 10px !important;
+        max-width: calc(100% - 54px) !important;
+      }
+
+      .logo img {
+        height: 36px !important;
+        max-height: 36px !important;
+      }
+
+      .logo-text {
+        font-size: 14.5px !important;
+        white-space: nowrap !important;
+        transform: translateY(2px) !important;
+        display: inline-flex !important;
+        align-items: center !important;
+      }
+
+      .logo-text span {
+        display: inline !important;
+        color: var(--lugx-red) !important;
+        margin-left: 4px !important;
+        font-weight: 800 !important;
+      }
+
+      .nav-menu {
+        display: none !important;
+      }
+
+      .menu-toggle {
+        display: flex !important;
+      }
+
+      .mobile-nav {
+        padding: 40px 20px 30px !important;
+      }
+
       .main-banner {
-        border-bottom-right-radius: 60px;
-        border-bottom-left-radius: 60px;
-        padding-top: 140px;
+        padding: 135px 0 80px 0 !important;
+        border-bottom-right-radius: 60px !important;
+        border-bottom-left-radius: 60px !important;
       }
+
+      .banner-container {
+        padding: 0 24px !important;
+        grid-template-columns: 1fr !important;
+      }
+
+      .banner-left h2 {
+        font-size: 32px !important;
+        line-height: 1.35 !important;
+        margin-bottom: 16px !important;
+      }
+
+      .banner-left p {
+        font-size: 15px !important;
+        line-height: 1.65 !important;
+        margin-bottom: 24px !important;
+      }
+
+      .features-section {
+        margin-top: 25px !important;
+      }
+
+      .features-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 20px !important;
+        padding: 0 24px !important;
+      }
+
+      .about-desc-grid {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+        margin-bottom: 35px !important;
+      }
+
+      .vm-grid {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 18px !important;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr !important;
+        gap: 32px !important;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .trending-section {
+        padding: 55px 0 !important;
+      }
+
+      .trending-container {
+        padding: 0 16px !important;
+      }
+
+      .section-heading-flex {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 16px !important;
+        margin-bottom: 28px !important;
+      }
+
+      .section-heading-flex .section-heading {
+        text-align: left !important;
+      }
+
+      .section-heading-flex .main-button {
+        width: 100% !important;
+      }
+
+      .section-heading-flex .main-button a {
+        width: 100% !important;
+        text-align: center !important;
+        display: block !important;
+        padding: 12px 20px !important;
+        font-size: 13px !important;
+      }
+
+      .section-heading h2 {
+        font-size: 24px !important;
+        line-height: 1.3 !important;
+      }
+
+      .section-heading .subtitle {
+        font-size: 13px !important;
+      }
+
+      .trending-grid {
+        grid-template-columns: 1fr !important;
+        gap: 22px !important;
+      }
+
+      .trending-thumb {
+        height: 180px !important;
+      }
+
+      .about-section {
+        padding: 55px 0 !important;
+      }
+
+      .about-container {
+        padding: 0 16px !important;
+      }
+
+      .about-video-centered {
+        border-radius: 20px !important;
+        margin-bottom: 30px !important;
+        border-width: 2px !important;
+      }
+
+      .cta-banner {
+        padding: 50px 18px 40px 18px !important;
+        margin: 40px 14px 20px 14px !important;
+        border-radius: 24px !important;
+      }
+
+      .cta-banner h2 {
+        font-size: 22px !important;
+        line-height: 1.35 !important;
+        margin-bottom: 14px !important;
+      }
+
+      .cta-banner p {
+        font-size: 13.5px !important;
+        line-height: 1.6 !important;
+        margin-bottom: 24px !important;
+      }
+
+      .cta-banner .main-button a {
+        width: 100% !important;
+        justify-content: center !important;
+        font-size: 13px !important;
+        padding: 12px 20px !important;
+        display: inline-flex !important;
+      }
+
+      .cta-doodle {
+        display: none !important;
+      }
+
+      .partners-section {
+        padding: 50px 0 !important;
+      }
+
+      .partners-stats-section {
+        padding: 50px 0 !important;
+        margin-top: 25px !important;
+      }
+
+      .partners-stats-container {
+        padding: 0 16px !important;
+      }
+
+      .stats-header h3 {
+        font-size: 20px !important;
+        line-height: 1.35 !important;
+      }
+
+      .stats-header p {
+        font-size: 13px !important;
+      }
+
+      .stats-cta .btn-stats-portfolio {
+        width: 100% !important;
+        max-width: 300px !important;
+        text-align: center !important;
+        font-size: 13px !important;
+        padding: 12px 20px !important;
+      }
+
+      .team-section {
+        padding: 55px 0 !important;
+      }
+
+      .team-container {
+        padding: 0 16px !important;
+      }
+
+      .team-cat-heading {
+        font-size: 17px !important;
+        margin: 30px auto 18px auto !important;
+      }
+
+      .team-grid {
+        gap: 20px !important;
+      }
+
+      .team-card {
+        flex: 0 1 100% !important;
+        max-width: 320px !important;
+        border-radius: 20px !important;
+      }
+
+      .team-img-wrapper {
+        height: 250px !important;
+      }
+
       .footer-area {
-        border-top-left-radius: 60px;
-        border-top-right-radius: 60px;
+        padding: 50px 0 25px 0 !important;
+        border-top-left-radius: 36px !important;
+        border-top-right-radius: 36px !important;
+      }
+
+      .footer-container {
+        padding: 0 20px !important;
+      }
+
+      .whatsapp-float {
+        width: 50px !important;
+        height: 50px !important;
+        bottom: 18px !important;
+        right: 18px !important;
+        font-size: 26px !important;
+      }
+
+      /* Modal Responsive */
+      .modal {
+        padding: 12px 10px !important;
+        align-items: center !important;
+      }
+
+      .modal-content-split {
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 20px !important;
+        margin: auto !important;
+      }
+
+      .login-modal-grid {
+        grid-template-columns: 1fr !important;
+        min-height: auto !important;
+      }
+
+      .login-banner-side {
+        display: none !important;
+      }
+
+      .login-form-side {
+        padding: 28px 18px 24px !important;
+      }
+
+      .login-form-header h3 {
+        font-size: 20px !important;
+      }
+
+      .form-input-custom {
+        height: 46px !important;
+        font-size: 13.5px !important;
+      }
+
+      .btn-login-large {
+        height: 48px !important;
+        font-size: 14px !important;
+      }
+
+      #ModalPortofolio .modal-content {
+        width: 100% !important;
+        margin: auto !important;
+        border-radius: 20px !important;
+      }
+
+      #ModalPortofolio .modal-body > div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+        padding: 12px !important;
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      .main-nav {
+        padding: 8px 12px !important;
+        height: 64px !important;
+      }
+
+      .logo {
+        height: 34px !important;
+        gap: 8px !important;
+        max-width: calc(100% - 46px) !important;
+      }
+
+      .logo img {
+        height: 30px !important;
+        max-height: 30px !important;
+      }
+
+      .logo-text {
+        font-size: 12px !important;
+        letter-spacing: 0.2px !important;
+        white-space: nowrap !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        transform: translateY(1px) !important;
+      }
+
+      .logo-text span {
+        display: inline !important;
+        color: var(--lugx-red) !important;
+        margin-left: 3px !important;
+        font-weight: 800 !important;
+      }
+
+      .main-banner {
+        padding: 105px 0 50px 0 !important;
+        border-bottom-right-radius: 36px !important;
+        border-bottom-left-radius: 36px !important;
+      }
+
+      .banner-container {
+        padding: 0 16px !important;
+      }
+
+      .banner-left h2 {
+        font-size: 22px !important;
+        line-height: 1.3 !important;
+        margin-bottom: 12px !important;
+      }
+
+      .banner-left p {
+        font-size: 13px !important;
+        margin-bottom: 20px !important;
+        line-height: 1.6 !important;
+      }
+
+      .banner-left .main-button a {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 12px 20px !important;
+        font-size: 13px !important;
+      }
+
+      .features-section {
+        margin-top: 15px !important;
+      }
+
+      .features-container {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+        padding: 0 16px !important;
+      }
+
+      .feature-item {
+        padding: 20px 16px !important;
+        border-radius: 18px !important;
+      }
+
+      .feature-icon {
+        width: 62px !important;
+        height: 62px !important;
+        font-size: 24px !important;
+        margin-bottom: 14px !important;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+      }
+
+      .stat-item {
+        padding: 18px 12px !important;
+        border-radius: 16px !important;
+      }
+
+      .stat-number {
+        font-size: 26px !important;
+      }
+
+      .stat-label {
+        font-size: 12px !important;
+      }
+
+      .about-desc-card {
+        padding: 20px 16px !important;
+        border-radius: 18px !important;
+      }
+
+      .vm-card {
+        padding: 24px 18px !important;
+        border-radius: 20px !important;
+      }
+
+      .vm-card h3 {
+        font-size: 17px !important;
+        gap: 10px !important;
+      }
+
+      .vm-card h3 i {
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 16px !important;
+      }
+
+      .footer-area {
+        border-top-left-radius: 28px !important;
+        border-top-right-radius: 28px !important;
+        padding: 45px 0 20px 0 !important;
+      }
+    }
+
+    @media (max-width: 375px) {
+      .main-nav {
+        padding: 8px 10px !important;
+      }
+
+      .logo {
+        gap: 6px !important;
+      }
+
+      .logo img {
+        height: 28px !important;
+        max-height: 28px !important;
+      }
+
+      .logo-text {
+        font-size: 11px !important;
+        letter-spacing: 0 !important;
       }
     }
 

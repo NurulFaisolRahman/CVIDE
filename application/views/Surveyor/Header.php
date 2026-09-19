@@ -177,14 +177,144 @@
           border: none !important;
           outline: none !important;
       }
+
+      /* Mobile Responsive Overrides - Desktop (> 991px) remains 100% untouched */
+      @media (max-width: 991.98px) {
+        .top_nav,
+        body.nav-sm .top_nav {
+          margin-left: 0 !important;
+          width: 100% !important;
+        }
+
+        .right_col,
+        body.nav-sm .right_col {
+          margin-left: 0 !important;
+          width: 100% !important;
+          padding: 15px 12px 30px 12px !important;
+        }
+
+        .col-md-3.left_col,
+        .left_col,
+        body.nav-sm .col-md-3.left_col,
+        body.nav-sm .left_col {
+          position: fixed !important;
+          top: 0 !important;
+          bottom: 0 !important;
+          left: 0 !important;
+          width: 260px !important;
+          max-width: 85vw !important;
+          height: 100vh !important;
+          z-index: 1060 !important;
+          transform: translateX(-105%) !important;
+          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+          overflow-y: auto !important;
+          display: block !important;
+        }
+
+        body.mobile-nav-open .col-md-3.left_col,
+        body.mobile-nav-open .left_col,
+        body.nav-sm.mobile-nav-open .col-md-3.left_col,
+        body.nav-sm.mobile-nav-open .left_col {
+          transform: translateX(0) !important;
+          box-shadow: 10px 0 35px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        .sidebar-mobile-backdrop {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.6);
+          backdrop-filter: blur(3px);
+          z-index: 1055;
+          display: none;
+        }
+
+        body.mobile-nav-open .sidebar-mobile-backdrop {
+          display: block;
+        }
+
+        body.mobile-nav-open {
+          overflow: hidden !important;
+        }
+
+        .btn-sidebar-close {
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          border: none;
+          background: rgba(255, 255, 255, 0.2);
+          color: #ffffff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 18px;
+          cursor: pointer;
+          z-index: 10;
+        }
+
+        body.nav-sm .profile,
+        body.nav-sm .nav.side-menu > li > a b,
+        body.nav-sm .nav.side-menu > li > a span {
+          display: inline-block !important;
+          opacity: 1 !important;
+          visibility: visible !important;
+        }
+      }
+
+      @media (min-width: 992px) {
+        .sidebar-mobile-backdrop,
+        .btn-sidebar-close {
+          display: none !important;
+        }
+      }
     </style>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var menuToggle = document.getElementById('menu_toggle');
+        var backdrop = document.getElementById('sidebarMobileBackdrop');
+        var btnClose = document.getElementById('btnSidebarClose');
+        
+        function isMobile() { return window.innerWidth < 992; }
+        
+        if (menuToggle) {
+          menuToggle.addEventListener('click', function(e) {
+            if (isMobile()) {
+              e.preventDefault();
+              e.stopPropagation();
+              document.body.classList.toggle('mobile-nav-open');
+            }
+          });
+        }
+        
+        if (backdrop) {
+          backdrop.addEventListener('click', function() {
+            document.body.classList.remove('mobile-nav-open');
+          });
+        }
+        
+        if (btnClose) {
+          btnClose.addEventListener('click', function() {
+            document.body.classList.remove('mobile-nav-open');
+          });
+        }
+      });
+    </script>
   </head>
 
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
+        <!-- Mobile Drawer Backdrop -->
+        <div id="sidebarMobileBackdrop" class="sidebar-mobile-backdrop"></div>
+
         <div class="col-md-3 left_col">
-          <div class="left_col scroll-view">
+          <div class="left_col scroll-view" style="position: relative;">
+            <button type="button" class="btn-sidebar-close" id="btnSidebarClose" title="Tutup Menu">&times;</button>
             <div class="clearfix"></div>
             <!-- menu profile quick info -->
             <div class="profile clearfix">

@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Enterprise Portal Staf - IDE Consultant</title>
     
     <!-- Favicon & Fonts -->
@@ -909,6 +909,375 @@
         background-color: #cbd5e1 !important;
         color: #1e293b !important;
       }
+
+      /* ==========================================================================
+         ENTERPRISE MOBILE RESPONSIVE SYSTEM (Handphone & Tablet < 992px)
+         ========================================================================== */
+      .sidebar-mobile-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(15, 23, 42, 0.65);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        z-index: 1055;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: none;
+      }
+
+      .btn-sidebar-close {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.18);
+        border: none;
+        color: #ffffff;
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      .btn-sidebar-close:hover {
+        background: var(--ide-red);
+        color: #ffffff;
+      }
+
+      @media (max-width: 991.98px) {
+        /* Reset Layout Wrappers */
+        body.nav-md, body.nav-sm {
+          overflow-x: hidden !important;
+          width: 100% !important;
+          position: relative !important;
+        }
+
+        .container.body,
+        .main_container {
+          width: 100% !important;
+          max-width: 100vw !important;
+          overflow-x: hidden !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+
+        /* Top Navbar 100% Width on Mobile */
+        .top_nav,
+        body.nav-sm .top_nav {
+          margin-left: 0 !important;
+          width: 100% !important;
+          position: sticky !important;
+          top: 0 !important;
+          z-index: 1030 !important;
+        }
+
+        .top_nav .nav_menu {
+          height: 60px !important;
+          padding: 0 14px !important;
+        }
+
+        .top-nav-left #menu_toggle {
+          padding: 8px 12px !important;
+          font-size: 18px !important;
+          border-radius: 10px !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+        }
+
+        .admin-top-greeting {
+          font-size: 12px !important;
+          gap: 6px !important;
+        }
+
+        .admin-top-greeting span strong {
+          max-width: 130px;
+          display: inline-block;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          vertical-align: bottom;
+        }
+
+        .btn-header-logout {
+          padding: 6px 13px !important;
+          font-size: 12px !important;
+          border-radius: 16px !important;
+          gap: 5px !important;
+        }
+
+        /* Right Content 100% Width with Zero Left Margin */
+        .right_col,
+        body.nav-sm .right_col {
+          margin-left: 0 !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          padding: 14px 12px 30px 12px !important;
+          min-height: calc(100vh - 60px) !important;
+          box-sizing: border-box !important;
+        }
+
+        /* Off-Canvas Sliding Drawer Sidebar */
+        .col-md-3.left_col,
+        .left_col,
+        body.nav-sm .col-md-3.left_col,
+        body.nav-sm .left_col {
+          position: fixed !important;
+          top: 0 !important;
+          bottom: 0 !important;
+          left: 0 !important;
+          width: 280px !important;
+          max-width: 85vw !important;
+          min-width: 280px !important;
+          height: 100vh !important;
+          z-index: 1060 !important;
+          transform: translateX(-105%) !important;
+          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease !important;
+          overflow-y: auto !important;
+          -webkit-overflow-scrolling: touch !important;
+          display: block !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+          box-shadow: none !important;
+        }
+
+        /* Active Drawer State */
+        body.mobile-nav-open {
+          overflow: hidden !important;
+        }
+
+        body.mobile-nav-open .col-md-3.left_col,
+        body.mobile-nav-open .left_col,
+        body.nav-sm.mobile-nav-open .col-md-3.left_col,
+        body.nav-sm.mobile-nav-open .left_col {
+          transform: translateX(0) !important;
+          box-shadow: 14px 0 45px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        body.mobile-nav-open .sidebar-mobile-backdrop {
+          display: block !important;
+          opacity: 1 !important;
+          pointer-events: auto !important;
+        }
+
+        .btn-sidebar-close {
+          display: flex !important;
+        }
+
+        /* Force Sidebar Text & Labels to be fully visible in mobile drawer */
+        body.nav-sm .sidebar-brand-text,
+        body.nav-sm .profile_info,
+        body.nav-sm .sidebar-menu-title,
+        body.nav-sm .nav.side-menu > li > a b,
+        body.nav-sm .nav.side-menu > li > a span {
+          display: inline-block !important;
+          opacity: 1 !important;
+          visibility: visible !important;
+        }
+
+        body.nav-sm .sidebar-brand-header {
+          padding: 18px 16px 12px 16px !important;
+          justify-content: flex-start !important;
+        }
+
+        body.nav-sm .sidebar-brand-header img {
+          max-height: 42px !important;
+          margin: 0 !important;
+        }
+
+        body.nav-sm .nav.side-menu > li > a {
+          text-align: left !important;
+          padding: 12px 18px !important;
+          justify-content: flex-start !important;
+          gap: 12px !important;
+        }
+
+        body.nav-sm .nav.side-menu > li > a i {
+          font-size: 16px !important;
+          margin: 0 !important;
+          width: 24px !important;
+        }
+
+        body.nav-sm .nav.child_menu {
+          position: static !important;
+          width: 100% !important;
+        }
+
+        body.nav-sm .nav.child_menu li a {
+          text-align: left !important;
+          padding: 10px 20px 10px 48px !important;
+        }
+      }
+
+      /* Extra Handphone Polish (< 768px) */
+      @media (max-width: 767.98px) {
+        .admin-top-greeting span {
+          display: none !important;
+        }
+
+        /* DataTables Controls Stack & Responsive */
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter {
+          float: none !important;
+          width: 100% !important;
+          text-align: left !important;
+          margin: 4px 0 8px 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_length label,
+        .dataTables_wrapper .dataTables_filter label {
+          width: 100% !important;
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: stretch !important;
+          gap: 4px !important;
+          margin-bottom: 0 !important;
+          font-size: 12.5px !important;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+          width: 100% !important;
+          max-width: 100% !important;
+          margin-left: 0 !important;
+          height: 38px !important;
+          font-size: 13.5px !important;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: 38px !important;
+        }
+
+        /* Table Wrapper with Touch Momentum */
+        .table-responsive {
+          border-radius: 14px !important;
+          border: 1px solid #e2e8f0 !important;
+          margin-bottom: 12px !important;
+          width: 100% !important;
+          overflow-x: auto !important;
+          -webkit-overflow-scrolling: touch !important;
+          background: #ffffff !important;
+        }
+
+        table.dataTable,
+        .table {
+          font-size: 12.5px !important;
+          width: 100% !important;
+          margin-bottom: 0 !important;
+        }
+
+        .table th,
+        .table td {
+          padding: 10px 8px !important;
+          white-space: nowrap;
+        }
+
+        .table td.wrap-mobile,
+        .table td:nth-child(2) {
+          white-space: normal !important;
+          min-width: 160px;
+        }
+
+        /* Center Pagination on Mobile */
+        .dataTables_wrapper .dataTables_info {
+          float: none !important;
+          width: 100% !important;
+          text-align: center !important;
+          margin: 6px 0 !important;
+          font-size: 12px !important;
+          padding: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate {
+          float: none !important;
+          width: 100% !important;
+          display: flex !important;
+          justify-content: center !important;
+          flex-wrap: wrap !important;
+          margin: 6px auto 14px auto !important;
+          gap: 3px !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button,
+        .pagination .page-item .page-link {
+          min-width: 30px !important;
+          height: 30px !important;
+          padding: 0 8px !important;
+          font-size: 12px !important;
+        }
+
+        /* Card & Panel Polish */
+        .card, 
+        .x_panel {
+          padding: 14px 12px !important;
+          border-radius: 14px !important;
+          margin-bottom: 12px !important;
+        }
+
+        .x_title h2 {
+          font-size: 14px !important;
+        }
+
+        /* Touch Friendly Buttons */
+        .btn-sm,
+        .btn {
+          min-height: 34px !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+        }
+
+        /* Modal Dialog Mobile Adaptation */
+        .modal-dialog {
+          margin: 12px auto !important;
+          width: 95% !important;
+          max-width: 95% !important;
+        }
+
+        .modal-content {
+          border-radius: 18px !important;
+        }
+
+        .modal-header {
+          padding: 14px 16px !important;
+        }
+
+        .modal-header .modal-title,
+        .modal-header h4,
+        .modal-header h5 {
+          font-size: 15px !important;
+        }
+
+        .modal-body {
+          padding: 16px 14px !important;
+          max-height: calc(100vh - 170px) !important;
+          overflow-y: auto !important;
+        }
+
+        .modal-footer {
+          padding: 12px 14px !important;
+          flex-wrap: wrap !important;
+          gap: 8px !important;
+        }
+
+        .modal-footer .btn {
+          flex: 1 1 auto !important;
+          min-width: 110px !important;
+          justify-content: center !important;
+          padding: 10px 16px !important;
+          font-size: 12.5px !important;
+        }
+      }
     </style>
   </head>
 
@@ -916,15 +1285,21 @@
     <div class="container body">
       <div class="main_container">
         
+        <!-- Mobile Drawer Backdrop -->
+        <div id="sidebarMobileBackdrop" class="sidebar-mobile-backdrop"></div>
+        
         <!-- Sidebar Navigation -->
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             
-            <!-- Sidebar Brand Header (Logo IDE Saja) -->
-            <div class="sidebar-brand-header text-center" style="padding: 20px 15px 10px 15px; display: flex; justify-content: center; align-items: center;">
+            <!-- Sidebar Brand Header (Logo IDE Saja & Tombol Tutup Mobile) -->
+            <div class="sidebar-brand-header text-center" style="padding: 20px 15px 10px 15px; display: flex; justify-content: center; align-items: center; position: relative;">
               <a href="<?=base_url('Staf')?>">
                 <img src="<?=base_url('assets/img/logo-white-solid.webp')?>" alt="IDE Logo" style="max-height: 48px; width: auto; object-fit: contain;">
               </a>
+              <button type="button" class="btn-sidebar-close d-lg-none" id="btnSidebarClose" title="Tutup Menu">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
             </div>
 
             <!-- Sidebar Menu Items -->
@@ -1043,6 +1418,36 @@
                   elObj.click();
                   $(elObj).data('confirmed', false);
                 }, 200);
+              }
+            });
+
+            // Mobile Off-Canvas Drawer Toggle System
+            function isMobileScreen() {
+              return $(window).width() < 992;
+            }
+
+            $(document).on('click', '#menu_toggle', function(e) {
+              if (isMobileScreen()) {
+                e.preventDefault();
+                e.stopPropagation();
+                $('body').toggleClass('mobile-nav-open');
+              }
+            });
+
+            $(document).on('click', '#sidebarMobileBackdrop, #btnSidebarClose', function(e) {
+              e.preventDefault();
+              $('body').removeClass('mobile-nav-open');
+            });
+
+            $(document).on('click', '#sidebar-menu a:not([href^="#"]):not([data-toggle])', function() {
+              if (isMobileScreen()) {
+                $('body').removeClass('mobile-nav-open');
+              }
+            });
+
+            $(window).on('resize', function() {
+              if (!isMobileScreen()) {
+                $('body').removeClass('mobile-nav-open');
               }
             });
           });

@@ -49,31 +49,35 @@
       
       .header-section {
         position: relative;
-        background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+        z-index: 10;
         text-align: center;
-        border-bottom: 5px solid var(--light-color);
-        padding-bottom: 50px;
+        border-bottom: 4px solid var(--light-color);
+        padding-bottom: 0;
+        background-color: transparent;
+        overflow: visible;
       }
       
       .banner-wrapper {
         width: 100%;
-        height: 160px;
+        height: 200px;
         background-size: cover;
         background-position: center;
+        background-repeat: no-repeat;
         position: relative;
+        background-color: var(--primary-color);
       }
       .banner-overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(180deg, rgba(4, 49, 104, 0.1) 0%, rgba(4, 49, 104, 0.6) 100%);
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.25) 100%);
       }
       
       .badge-logo-container {
         position: absolute;
-        bottom: -40px;
+        bottom: -45px;
         left: 50%;
         transform: translateX(-50%);
-        z-index: 3;
+        z-index: 5;
       }
       
       .badge-logo {
@@ -81,14 +85,14 @@
         height: 90px;
         background-color: white;
         border-radius: 50%;
-        padding: 6px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        border: 4px solid var(--light-color);
+        padding: 5px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+        border: 4px solid #ffffff;
         object-fit: contain;
       }
       
       .title-section {
-        padding: 50px 20px 20px;
+        padding: 55px 20px 20px;
         text-align: center;
         background-color: white;
       }
@@ -275,8 +279,9 @@
 
     <div class="app-container">
       <!-- Header Section -->
-      <div class="header-section" <?php if (!$hasLogo && !$hasBanner): ?>style="padding-bottom: 0; border-bottom: none;"<?php elseif (!$hasLogo): ?>style="padding-bottom: 0;"<?php endif; ?>>
-        <div class="banner-wrapper" style="<?php if ($hasBanner): ?>background-image: url('<?=htmlspecialchars($bannerUrl, ENT_QUOTES, 'UTF-8')?>');<?php else: ?>height: 110px; background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);<?php endif; ?>">
+      <?php if ($hasBanner || $hasLogo): ?>
+      <div class="header-section">
+        <div class="banner-wrapper" style="<?php if ($hasBanner): ?>background-image: url('<?=htmlspecialchars($bannerUrl, ENT_QUOTES, 'UTF-8')?>');<?php else: ?>height: 120px; background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);<?php endif; ?>">
           <div class="banner-overlay"></div>
         </div>
         <?php if ($hasLogo): ?>
@@ -285,6 +290,7 @@
           </div>
         <?php endif; ?>
       </div>
+      <?php endif; ?>
       
       <!-- Title Section -->
       <div class="title-section" <?php if (!$hasLogo): ?>style="padding-top: 22px;"<?php endif; ?>>

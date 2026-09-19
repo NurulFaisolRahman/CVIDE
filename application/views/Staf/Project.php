@@ -779,6 +779,50 @@ rsort($listTahun);
     color: #dc2626 !important;
     line-height: 1 !important;
   }
+
+  /* Responsive Adjustments for Mobile Project Table Controls */
+  @media (max-width: 991.98px) {
+    #TabelProject_wrapper > .row:first-child {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 10px !important;
+    }
+    #TabelProject_wrapper > .row:first-child > div:first-child,
+    #TabelProject_wrapper > .row:first-child > div:last-child {
+      width: 100% !important;
+      justify-content: flex-start !important;
+    }
+    #TabelProject_wrapper .dataTables_filter {
+      flex-wrap: wrap !important;
+      justify-content: flex-start !important;
+      width: 100% !important;
+      gap: 8px !important;
+    }
+    #TabelProject_wrapper .dataTables_filter label {
+      width: 100% !important;
+      flex: 1 1 100% !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 4px !important;
+    }
+    #TabelProject_wrapper .dataTables_filter input {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin-left: 0 !important;
+    }
+    #WrapperUnifiedFilter {
+      width: 100% !important;
+      flex-wrap: wrap !important;
+      height: auto !important;
+      padding: 6px 8px !important;
+      gap: 6px !important;
+    }
+    #WrapperUnifiedFilter select {
+      flex: 1 1 auto !important;
+      min-width: 110px !important;
+    }
+  }
 </style>
 
 <!-- Enterprise Page Header Card -->
