@@ -1260,4 +1260,1070 @@ class Staf extends CI_Controller {
 
     echo json_encode(array('status' => 'success', 'message' => 'Urutan berhasil disimpan!'));
   }
+
+  /**
+   * =========================================================================
+   * MODUL OLAH DATA BERDASARKAN DAERAH, INDIKATOR, GENDER, DAN TAHUN DINAMIS
+   * =========================================================================
+   */
+  private function ensureOlahDataStructure() {
+    $this->db->query("CREATE TABLE IF NOT EXISTS `olah_data_daerah` (
+      `Id` INT(11) NOT NULL AUTO_INCREMENT,
+      `NamaDaerah` VARCHAR(255) NOT NULL,
+      `Keterangan` TEXT NULL,
+      `TahunList` TEXT NULL,
+      `CreatedAt` DATETIME NULL,
+      `UpdatedAt` DATETIME NULL,
+      PRIMARY KEY (`Id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+    $this->db->query("CREATE TABLE IF NOT EXISTS `olah_data_indikator` (
+      `Id` INT(11) NOT NULL AUTO_INCREMENT,
+      `DaerahId` INT(11) NOT NULL,
+      `NamaIndikator` VARCHAR(255) NOT NULL,
+      `Kategori` VARCHAR(100) NULL,
+      `Gender` VARCHAR(50) NULL DEFAULT 'Total',
+      `Satuan` VARCHAR(100) NULL,
+      `DataTahun` TEXT NULL,
+      `Keterangan` TEXT NULL,
+      `Urutan` INT(11) NOT NULL DEFAULT 1,
+      `CreatedAt` DATETIME NULL,
+      `UpdatedAt` DATETIME NULL,
+      PRIMARY KEY (`Id`),
+      KEY `idx_daerah_id` (`DaerahId`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+    // Pastikan kolom Kategori, ApiUrl, dan TipeSumber tersedia jika tabel sudah terbentuk sebelumnya
+    if (!$this->db->field_exists('Kategori', 'olah_data_indikator')) {
+      $this->db->query("ALTER TABLE `olah_data_indikator` ADD COLUMN `Kategori` VARCHAR(100) NULL AFTER `NamaIndikator`");
+    }
+    if (!$this->db->field_exists('ApiUrl', 'olah_data_indikator')) {
+      $this->db->query("ALTER TABLE `olah_data_indikator` ADD COLUMN `ApiUrl` VARCHAR(1000) NULL AFTER `DataTahun`");
+    }
+    if (!$this->db->field_exists('TipeSumber', 'olah_data_indikator')) {
+      $this->db->query("ALTER TABLE `olah_data_indikator` ADD COLUMN `TipeSumber` ENUM('manual', 'api') DEFAULT 'manual' AFTER `ApiUrl`");
+    }
+  }
+
+  public function OlahData(){
+    $this->ensureOlahDataStructure();
+
+    $daerahList = $this->db->order_by('Id', 'ASC')->get('olah_data_daerah')->result_array();
+
+    // Hitung jumlah indikator dan rentang tahun untuk setiap daerah
+    foreach ($daerahList as &$d) {
+      $d['TotalIndikator'] = $this->db->where('DaerahId', $d['Id'])->count_all_results('olah_data_indikator');
+      $years = json_decode($d['TahunList'] ?? '[]', true) ?: array();
+      $d['YearsCount'] = count($years);
+      if (!empty($years)) {
+        sort($years, SORT_NUMERIC);
+        $d['RentangTahun'] = min($years) . ' - ' . max($years);
+      } else {
+        $d['RentangTahun'] = '-';
+      }
+    }
+    unset($d);
+
+    $daerahId = (int)$this->input->get('daerah_id');
+    $activeDaerah = null;
+
+    // Hanya aktifkan detail jika user secara spesifik membuka suatu daerah (?daerah_id=X)
+    if ($daerahId > 0) {
+      foreach ($daerahList as $d) {
+        if ((int)$d['Id'] === $daerahId) {
+          $activeDaerah = $d;
+          break;
+        }
+      }
+    }
+
+    $tahunList = array();
+    $indikatorList = array();
+
+    if ($activeDaerah) {
+      $decodedYears = json_decode($activeDaerah['TahunList'] ?? '[]', true);
+      if (is_array($decodedYears) && !empty($decodedYears)) {
+        sort($decodedYears, SORT_NUMERIC);
+        $tahunList = $decodedYears;
+      }
+
+      $rawIndikator = $this->db->where('DaerahId', $daerahId)->order_by('Urutan', 'ASC')->order_by('Id', 'ASC')->get('olah_data_indikator')->result_array();
+      foreach ($rawIndikator as $item) {
+        $item['DataTahunParsed'] = json_decode($item['DataTahun'] ?? '{}', true) ?: array();
+        $indikatorList[] = $item;
+      }
+    }
+
+    $Data['title'] = $activeDaerah ? 'Olah Data: ' . $activeDaerah['NamaDaerah'] . ' | IDE Consultant' : 'Katalog Daerah Olah Data | IDE Consultant';
+    $Data['DaerahList'] = $daerahList;
+    $Data['ActiveDaerah'] = $activeDaerah;
+    $Data['TahunList'] = $tahunList;
+    $Data['IndikatorList'] = $indikatorList;
+
+    $this->load->view('Staf/Header', $Data);
+    $this->load->view('Staf/OlahData', $Data);
+  }
+
+  public function InputDaerah(){
+    $this->ensureOlahDataStructure();
+
+    $nama = trim($this->input->post('NamaDaerah') ?? '');
+    if (empty($nama)) {
+      echo 'Nama Daerah wajib diisi!';
+      return;
+    }
+
+    $tahunInput = trim($this->input->post('TahunList') ?? '');
+    $tahunArr = array();
+    if (!empty($tahunInput)) {
+      $rawYears = preg_split('/[\s,]+/', $tahunInput);
+      foreach ($rawYears as $y) {
+        $y = trim($y);
+        if (preg_match('/^\d{4}$/', $y) && !in_array($y, $tahunArr)) {
+          $tahunArr[] = $y;
+        }
+      }
+    }
+
+    if (empty($tahunArr)) {
+      $currentYear = (int)date('Y');
+      for ($y = $currentYear - 4; $y <= $currentYear; $y++) {
+        $tahunArr[] = (string)$y;
+      }
+    }
+    sort($tahunArr, SORT_NUMERIC);
+
+    $now = date('Y-m-d H:i:s');
+    $this->db->insert('olah_data_daerah', array(
+      'NamaDaerah' => $nama,
+      'Keterangan' => trim($this->input->post('Keterangan') ?? ''),
+      'TahunList'  => json_encode($tahunArr),
+      'CreatedAt'  => $now,
+      'UpdatedAt'  => $now
+    ));
+
+    if ($this->db->affected_rows() > 0) {
+      $newId = $this->db->insert_id();
+      echo json_encode(array('status' => 'success', 'id' => $newId));
+    } else {
+      echo json_encode(array('status' => 'error', 'message' => 'Gagal menambahkan daerah!'));
+    }
+  }
+
+  public function EditDaerah(){
+    $this->ensureOlahDataStructure();
+
+    $id = (int)$this->input->post('Id');
+    $nama = trim($this->input->post('NamaDaerah') ?? '');
+    if ($id <= 0 || empty($nama)) {
+      echo 'Data daerah tidak valid!';
+      return;
+    }
+
+    $this->db->where('Id', $id)->update('olah_data_daerah', array(
+      'NamaDaerah' => $nama,
+      'Keterangan' => trim($this->input->post('Keterangan') ?? ''),
+      'UpdatedAt'  => date('Y-m-d H:i:s')
+    ));
+
+    echo '1';
+  }
+
+  public function HapusDaerah(){
+    $this->ensureOlahDataStructure();
+
+    $id = (int)$this->input->post('Id');
+    if ($id <= 0) {
+      echo 'ID daerah tidak valid!';
+      return;
+    }
+
+    $this->db->where('DaerahId', $id)->delete('olah_data_indikator');
+    $this->db->where('Id', $id)->delete('olah_data_daerah');
+    echo '1';
+  }
+
+  public function TambahTahun(){
+    $this->ensureOlahDataStructure();
+
+    $daerahId = (int)$this->input->post('DaerahId');
+    $tahun = trim($this->input->post('Tahun') ?? '');
+
+    if ($daerahId <= 0 || !preg_match('/^\d{4}$/', $tahun)) {
+      echo 'Tahun harus berupa 4 digit angka (misal: 2025)!';
+      return;
+    }
+
+    $daerah = $this->db->get_where('olah_data_daerah', array('Id' => $daerahId))->row_array();
+    if (!$daerah) {
+      echo 'Daerah tidak ditemukan!';
+      return;
+    }
+
+    $years = json_decode($daerah['TahunList'] ?? '[]', true) ?: array();
+    if (in_array($tahun, $years)) {
+      echo 'Tahun ' . $tahun . ' sudah ada di daerah ini!';
+      return;
+    }
+
+    $years[] = $tahun;
+    sort($years, SORT_NUMERIC);
+
+    $this->db->where('Id', $daerahId)->update('olah_data_daerah', array(
+      'TahunList' => json_encode($years),
+      'UpdatedAt' => date('Y-m-d H:i:s')
+    ));
+
+    echo '1';
+  }
+
+  public function HapusTahun(){
+    $this->ensureOlahDataStructure();
+
+    $daerahId = (int)$this->input->post('DaerahId');
+    $tahun = trim($this->input->post('Tahun') ?? '');
+
+    if ($daerahId <= 0 || empty($tahun)) {
+      echo 'Parameter tidak valid!';
+      return;
+    }
+
+    $daerah = $this->db->get_where('olah_data_daerah', array('Id' => $daerahId))->row_array();
+    if (!$daerah) {
+      echo 'Daerah tidak ditemukan!';
+      return;
+    }
+
+    $years = json_decode($daerah['TahunList'] ?? '[]', true) ?: array();
+    $newYears = array();
+    foreach ($years as $y) {
+      if ((string)$y !== (string)$tahun) {
+        $newYears[] = (string)$y;
+      }
+    }
+    sort($newYears, SORT_NUMERIC);
+
+    $this->db->where('Id', $daerahId)->update('olah_data_daerah', array(
+      'TahunList' => json_encode($newYears),
+      'UpdatedAt' => date('Y-m-d H:i:s')
+    ));
+
+    echo '1';
+  }
+
+  /**
+   * Endpoint Preview/Uji Penarikan Data dari URL API atau String JSON (Mendukung Tabel Penuh / Multi-Indikator)
+   */
+  public function PreviewApiIndikator(){
+    $this->ensureOlahDataStructure();
+
+    $apiSource = trim($this->input->post('ApiSource') ?? '');
+    if (empty($apiSource)) {
+      echo json_encode(array('status' => 'error', 'message' => 'Silakan masukkan URL API atau paste kode JSON.'));
+      return;
+    }
+
+    $result = $this->parseTableApiJson($apiSource);
+    // Selalu sertakan properti flat indikator pertama agar form API otomatis terisi lengkap
+    if ($result['status'] === 'success' && !empty($result['indicators'])) {
+      $first = $result['indicators'][0];
+      $result['DataTahun'] = $first['DataTahun'];
+      $result['NamaIndikator'] = $first['NamaIndikator'];
+      $result['Kategori'] = $first['Kategori'];
+      $result['Gender'] = $first['Gender'] ?: 'Total';
+      $result['Satuan'] = $first['Satuan'];
+      $result['Keterangan'] = !empty($first['Keterangan']) ? $first['Keterangan'] : (!empty($result['global_keterangan']) ? $result['global_keterangan'] : '');
+      $result['TotalTahun'] = count($first['DataTahun']);
+    }
+    echo json_encode($result);
+  }
+
+  /**
+   * Helper Cerdas untuk Mengurai Tabel Penuh dari API / JSON (Bisa Multi-Indikator Sekaligus)
+   */
+  private function parseTableApiJson($inputSource) {
+    $inputSource = trim($inputSource ?? '');
+    if (empty($inputSource)) {
+      return array('status' => 'error', 'message' => 'Sumber API atau teks JSON tidak boleh kosong.');
+    }
+
+    $rawJson = '';
+    if (preg_match('/^https?:\/\//i', $inputSource)) {
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, $inputSource);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+      curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+      curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json, text/plain, */*'));
+      curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) CVIDE-OlahData/1.0');
+      $rawJson = curl_exec($ch);
+      $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      $curlError = curl_error($ch);
+      curl_close($ch);
+
+      if ($rawJson === false || !empty($curlError)) {
+        return array('status' => 'error', 'message' => 'Gagal menghubungi API: ' . ($curlError ?: 'Koneksi gagal / URL tidak merespons.'));
+      }
+      if ($httpCode >= 400) {
+        return array('status' => 'error', 'message' => 'Server API mengembalikan kode status error HTTP ' . $httpCode);
+      }
+    } else {
+      $rawJson = $inputSource;
+    }
+
+    $data = json_decode($rawJson, true);
+    if ($data === null && json_last_error() !== JSON_ERROR_NONE) {
+      return array('status' => 'error', 'message' => 'Respon bukan format JSON yang valid (' . json_last_error_msg() . ').');
+    }
+
+    // Cari letak list/array utama baris data & tangkap metadata global di root
+    $itemList = null;
+    $globalMeta = array(
+      'nama_indikator' => '',
+      'kategori'       => '',
+      'satuan'         => '',
+      'gender'         => 'Total',
+      'keterangan'     => ''
+    );
+
+    if (is_array($data)) {
+      // Cek apakah data root adalah list numerik
+      if (isset($data[0]) || (array_keys($data) === range(0, count($data) - 1))) {
+        $itemList = $data;
+      } else {
+        // Cek metadata di root
+        foreach ($data as $k => $v) {
+          if (is_scalar($v) && !empty($v)) {
+            $kl = strtolower((string)$k);
+            if (empty($globalMeta['nama_indikator']) && in_array($kl, array('nama_indikator', 'indikator', 'indicator', 'nama', 'title', 'judul', 'uraian', 'variabel', 'variable', 'label', 'nama_data', 'aspek'))) {
+              $globalMeta['nama_indikator'] = (string)$v;
+            }
+            if (empty($globalMeta['kategori']) && in_array($kl, array('kategori', 'category', 'bidang', 'sektor'))) {
+              $globalMeta['kategori'] = (string)$v;
+            }
+            if (empty($globalMeta['satuan']) && in_array($kl, array('satuan', 'unit', 'satuan_data', 'measurement'))) {
+              $globalMeta['satuan'] = (string)$v;
+            }
+            if (in_array($kl, array('gender', 'jenis_kelamin', 'sex'))) {
+              $globalMeta['gender'] = (string)$v;
+            }
+            if (empty($globalMeta['keterangan']) && in_array($kl, array('keterangan', 'catatan', 'note', 'description', 'desc', 'sumber', 'source'))) {
+              $globalMeta['keterangan'] = (string)$v;
+            }
+          }
+        }
+
+        // Cari child array yang berisi list baris
+        foreach (array('data', 'result', 'rows', 'indikator', 'indicators', 'dataset', 'items', 'content', 'series', 'values') as $prop) {
+          if (isset($data[$prop]) && is_array($data[$prop])) {
+            $itemList = $data[$prop];
+            break;
+          }
+        }
+      }
+    }
+
+    if (!is_array($itemList) || empty($itemList)) {
+      // Jika root bukan list tapi single object indikator
+      $single = $this->parseJsonIndikatorData($rawJson);
+      if ($single['status'] === 'success') {
+        $singleItem = array(
+          'NamaIndikator' => $single['NamaIndikator'] ?: ($globalMeta['nama_indikator'] ?: 'Indikator API'),
+          'Kategori'      => $single['Kategori'] ?: $globalMeta['kategori'],
+          'Gender'        => $single['Gender'] ?: $globalMeta['gender'],
+          'Satuan'        => $single['Satuan'] ?: $globalMeta['satuan'],
+          'Keterangan'    => $globalMeta['keterangan'] ?: '',
+          'DataTahun'     => $single['DataTahun']
+        );
+        return array(
+          'status'            => 'success',
+          'is_multi'          => false,
+          'total_indikator'   => 1,
+          'all_years'         => $single['Years'],
+          'indicators'        => array($singleItem),
+          'global_keterangan' => $globalMeta['keterangan']
+        );
+      }
+      return array('status' => 'error', 'message' => 'Tidak dapat menemukan kumpulan data tahun & nilai di dalam respon JSON.');
+    }
+
+    // Cek apakah ada baris yang memiliki nama indikator eksplisit
+    $hasExplicitIndicatorColumn = false;
+    foreach ($itemList as $checkItem) {
+      if (is_array($checkItem)) {
+        foreach ($checkItem as $ck => $cv) {
+          if (is_scalar($cv) && !empty($cv)) {
+            $ckl = strtolower((string)$ck);
+            if (in_array($ckl, array('nama_indikator', 'indikator', 'indicator', 'title', 'judul', 'uraian', 'variabel', 'variable', 'label', 'nama_data', 'aspek'))) {
+              $hasExplicitIndicatorColumn = true;
+              break 2;
+            }
+          }
+        }
+      }
+    }
+
+    // Proses $itemList (setiap elemen bisa mewakili 1 indikator, atau baris per tahun)
+    $allYearsSet = array();
+    $groupedByName = array();
+
+    foreach ($itemList as $idx => $item) {
+      if (!is_array($item)) continue;
+
+      // 1. Cari Nama Indikator
+      $namaInd = '';
+      foreach ($item as $k => $v) {
+        if (is_scalar($v) && !empty($v)) {
+          $kl = strtolower((string)$k);
+          if (in_array($kl, array('nama_indikator', 'indikator', 'indicator', 'nama', 'title', 'judul', 'uraian', 'variabel', 'variable', 'label', 'nama_data', 'aspek'))) {
+            $namaInd = trim((string)$v);
+            break;
+          }
+        }
+      }
+
+      // 2. Kategori, Gender, Satuan
+      $kategori = $globalMeta['kategori'];
+      $gender = $globalMeta['gender'];
+      $satuan = $globalMeta['satuan'];
+      $keterangan = $globalMeta['keterangan'];
+
+      foreach ($item as $k => $v) {
+        if (is_scalar($v) && !empty($v)) {
+          $kl = strtolower((string)$k);
+          if (empty($kategori) && in_array($kl, array('kategori', 'category', 'bidang', 'sektor'))) $kategori = (string)$v;
+          if (in_array($kl, array('gender', 'jenis_kelamin', 'sex'))) $gender = (string)$v;
+          if (empty($satuan) && in_array($kl, array('satuan', 'unit', 'measurement', 'satuan_data'))) $satuan = (string)$v;
+          if (empty($keterangan) && in_array($kl, array('keterangan', 'catatan', 'note', 'description', 'desc', 'sumber', 'source'))) $keterangan = (string)$v;
+        }
+      }
+
+      // 3. Cari Data Tahun & Nilai
+      $dataTahun = array();
+
+      // Kasus A: Tahun adalah key 4 digit langsung {"2020": 71.5, "2021": 72.3}
+      foreach ($item as $k => $v) {
+        if (preg_match('/^(19|20)\d{2}$/', (string)$k) && (is_numeric($v) || (is_string($v) && strlen($v) < 20))) {
+          $dataTahun[(string)$k] = (string)$v;
+          $allYearsSet[(string)$k] = true;
+        }
+      }
+
+      // Kasus B: Objek memiliki properti 'tahun' dan 'nilai' (Tidy format baris tunggal)
+      if (empty($dataTahun)) {
+        $singleYear = null;
+        $singleVal = null;
+        foreach ($item as $k => $v) {
+          $kl = strtolower((string)$k);
+          if (in_array($kl, array('tahun', 'year', 'th', 'thn', 'periode', 'period'))) {
+            if (preg_match('/\b(19|20\d{2})\b/', (string)$v, $ym)) {
+              $singleYear = $ym[1];
+            }
+          }
+          if (in_array($kl, array('nilai', 'value', 'val', 'angka', 'jumlah', 'total', 'score', 'data', 'realisasi', 'persentase', 'hasil'))) {
+            if (is_scalar($v) && (string)$v !== '') {
+              $singleVal = (string)$v;
+            }
+          }
+        }
+        if ($singleYear && $singleVal !== null) {
+          $dataTahun[(string)$singleYear] = (string)$singleVal;
+          $allYearsSet[(string)$singleYear] = true;
+        }
+      }
+
+      // Kasus C: Objek memiliki child array 'data_tahun' / 'series' / 'values'
+      if (empty($dataTahun)) {
+        foreach (array('data_tahun', 'tahun', 'series', 'values', 'datapoints') as $childKey) {
+          if (isset($item[$childKey]) && is_array($item[$childKey])) {
+            foreach ($item[$childKey] as $ck => $cv) {
+              if (preg_match('/^(19|20)\d{2}$/', (string)$ck) && is_scalar($cv)) {
+                $dataTahun[(string)$ck] = (string)$cv;
+                $allYearsSet[(string)$ck] = true;
+              } elseif (is_array($cv)) {
+                $cy = null; $cval = null;
+                foreach ($cv as $k2 => $v2) {
+                  $k2l = strtolower((string)$k2);
+                  if (in_array($k2l, array('tahun', 'year', 'th', 'thn', 'periode'))) {
+                    if (preg_match('/\b(19|20\d{2})\b/', (string)$v2, $m2)) $cy = $m2[1];
+                  }
+                  if (in_array($k2l, array('nilai', 'value', 'val', 'angka', 'jumlah', 'score'))) {
+                    if (is_scalar($v2)) $cval = (string)$v2;
+                  }
+                }
+                if ($cy && $cval !== null) {
+                  $dataTahun[(string)$cy] = (string)$cval;
+                  $allYearsSet[(string)$cy] = true;
+                }
+              }
+            }
+            break;
+          }
+        }
+      }
+
+      if (empty($namaInd)) {
+        if (!empty($globalMeta['nama_indikator'])) {
+          $namaInd = $globalMeta['nama_indikator'];
+        } elseif (!$hasExplicitIndicatorColumn) {
+          $namaInd = 'Indikator API';
+        } else {
+          $namaInd = 'Indikator ' . ($idx + 1);
+        }
+      }
+
+      // Grouping jika nama indikator sama (format tidy data per tahun)
+      if (isset($groupedByName[$namaInd])) {
+        foreach ($dataTahun as $y => $v) {
+          $groupedByName[$namaInd]['DataTahun'][(string)$y] = $v;
+        }
+        if (empty($groupedByName[$namaInd]['Kategori']) && !empty($kategori)) $groupedByName[$namaInd]['Kategori'] = $kategori;
+        if (empty($groupedByName[$namaInd]['Satuan']) && !empty($satuan)) $groupedByName[$namaInd]['Satuan'] = $satuan;
+      } else {
+        $groupedByName[$namaInd] = array(
+          'NamaIndikator' => $namaInd,
+          'Kategori'      => $kategori,
+          'Gender'        => $gender ?: 'Total',
+          'Satuan'        => $satuan,
+          'Keterangan'    => $keterangan,
+          'DataTahun'     => $dataTahun
+        );
+      }
+    }
+
+    $finalList = array_values($groupedByName);
+    $sortedYears = array_keys($allYearsSet);
+    sort($sortedYears, SORT_NUMERIC);
+
+    if (empty($finalList) || empty($sortedYears)) {
+      return array('status' => 'error', 'message' => 'Gagal membaca baris indikator atau kolom tahun dari API. Pastikan JSON memiliki format tabel atau array indikator.');
+    }
+
+    return array(
+      'status'          => 'success',
+      'is_multi'        => count($finalList) > 1,
+      'total_indikator' => count($finalList),
+      'all_years'       => $sortedYears,
+      'indicators'      => $finalList
+    );
+  }
+
+  /**
+   * Endpoint Impor Seluruh Tabel Indikator & Kolom Tahun dari API / JSON
+   */
+  public function ImportTabelApi(){
+    $this->ensureOlahDataStructure();
+
+    $daerahId = (int)$this->input->post('DaerahId');
+    if ($daerahId <= 0) {
+      echo json_encode(array('status' => 'error', 'message' => 'Daerah tidak valid.'));
+      return;
+    }
+
+    $apiSource = trim($this->input->post('ApiSource') ?? '');
+    if (empty($apiSource)) {
+      echo json_encode(array('status' => 'error', 'message' => 'Silakan masukkan URL API atau paste kode JSON.'));
+      return;
+    }
+
+    $mode = trim($this->input->post('Mode') ?? 'tambah'); // 'tambah' atau 'replace'
+
+    $parsed = $this->parseTableApiJson($apiSource);
+    if ($parsed['status'] !== 'success') {
+      echo json_encode($parsed);
+      return;
+    }
+
+    $indicators = $parsed['indicators'];
+    $newYears = $parsed['all_years'];
+
+    // 1. Update TahunList Daerah agar semua kolom tahun dari API langsung aktif
+    $daerah = $this->db->get_where('olah_data_daerah', array('Id' => $daerahId))->row_array();
+    if (!$daerah) {
+      echo json_encode(array('status' => 'error', 'message' => 'Data Daerah tidak ditemukan.'));
+      return;
+    }
+
+    $currentYears = json_decode($daerah['TahunList'] ?? '[]', true) ?: array();
+    if ($mode === 'replace') {
+      $currentYears = $newYears;
+    } else {
+      foreach ($newYears as $y) {
+        if (!in_array((string)$y, $currentYears)) {
+          $currentYears[] = (string)$y;
+        }
+      }
+    }
+    sort($currentYears, SORT_NUMERIC);
+
+    $this->db->where('Id', $daerahId)->update('olah_data_daerah', array(
+      'TahunList' => json_encode($currentYears),
+      'UpdatedAt' => date('Y-m-d H:i:s')
+    ));
+
+    // 2. Jika mode replace: bersihkan indikator lama daerah ini
+    if ($mode === 'replace') {
+      $this->db->where('DaerahId', $daerahId)->delete('olah_data_indikator');
+    }
+
+    // 3. Masukkan seluruh indikator dari API ke database
+    $now = date('Y-m-d H:i:s');
+    $insertedCount = 0;
+    $isUrl = preg_match('/^https?:\/\//i', $apiSource);
+
+    foreach ($indicators as $idx => $ind) {
+      $this->db->insert('olah_data_indikator', array(
+        'DaerahId'      => $daerahId,
+        'NamaIndikator' => $ind['NamaIndikator'],
+        'Kategori'      => $ind['Kategori'] ?? '',
+        'Gender'        => $ind['Gender'] ?? 'Total',
+        'Satuan'        => $ind['Satuan'] ?? '',
+        'DataTahun'     => json_encode($ind['DataTahun'] ?? array()),
+        'ApiUrl'        => $isUrl ? $apiSource : NULL,
+        'TipeSumber'    => $isUrl ? 'api' : 'manual',
+        'Keterangan'    => $ind['Keterangan'] ?? 'Diimpor otomatis dari API',
+        'Urutan'        => $idx + 1,
+        'CreatedAt'     => $now,
+        'UpdatedAt'     => $now
+      ));
+      if ($this->db->affected_rows() > 0) {
+        $insertedCount++;
+      }
+    }
+
+    echo json_encode(array(
+      'status'  => 'success',
+      'message' => "Berhasil mengimpor $insertedCount indikator dan " . count($currentYears) . " kolom tahun ke dalam tabel!",
+      'total'   => $insertedCount,
+      'years'   => $currentYears
+    ));
+  }
+
+  /**
+   * Helper Parser Cerdas untuk Response API JSON (URL atau String JSON)
+   */
+  private function parseJsonIndikatorData($inputSource) {
+    $inputSource = trim($inputSource ?? '');
+    if (empty($inputSource)) {
+      return array('status' => 'error', 'message' => 'Sumber API atau JSON tidak boleh kosong.');
+    }
+
+    $rawJson = '';
+    // Jika diawali http:// atau https:// -> panggil via cURL
+    if (preg_match('/^https?:\/\//i', $inputSource)) {
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, $inputSource);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+      curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+      curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json, text/plain, */*'));
+      curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) CVIDE-OlahData/1.0');
+      $rawJson = curl_exec($ch);
+      $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      $curlError = curl_error($ch);
+      curl_close($ch);
+
+      if ($rawJson === false || !empty($curlError)) {
+        return array('status' => 'error', 'message' => 'Gagal menghubungi API: ' . ($curlError ?: 'Koneksi gagal / URL tidak merespons.'));
+      }
+      if ($httpCode >= 400) {
+        return array('status' => 'error', 'message' => 'Server API mengembalikan respon error HTTP ' . $httpCode);
+      }
+    } else {
+      $rawJson = $inputSource;
+    }
+
+    $data = json_decode($rawJson, true);
+    if ($data === null && json_last_error() !== JSON_ERROR_NONE) {
+      return array('status' => 'error', 'message' => 'Format respon bukan JSON yang valid (' . json_last_error_msg() . ').');
+    }
+
+    // Parsing data tahun & nilai, serta metadata (satuan, kategori, gender, indikator)
+    $parsedTahun = array();
+    $metadata = array(
+      'Satuan' => '',
+      'Kategori' => '',
+      'Gender' => 'Total',
+      'NamaIndikator' => ''
+    );
+
+    $this->extractDataFromJsonNode($data, $parsedTahun, $metadata);
+
+    // Urutkan tahun numerik (ASC)
+    uksort($parsedTahun, function($a, $b) {
+      return (int)$a <=> (int)$b;
+    });
+
+    if (empty($parsedTahun)) {
+      return array('status' => 'error', 'message' => 'Tidak ditemukan data tahun (format 4 digit seperti 2020, 2021) atau angka nilai di dalam respon JSON.');
+    }
+
+    return array(
+      'status'        => 'success',
+      'DataTahun'     => $parsedTahun,
+      'Years'         => array_keys($parsedTahun),
+      'Satuan'        => $metadata['Satuan'],
+      'Kategori'      => $metadata['Kategori'],
+      'Gender'        => $metadata['Gender'],
+      'NamaIndikator' => $metadata['NamaIndikator'],
+      'TotalTahun'    => count($parsedTahun)
+    );
+  }
+
+  /**
+   * Rekursif / Heuristik untuk mengekstrak tahun dan nilai dari aneka format JSON
+   */
+  private function extractDataFromJsonNode($node, &$parsedTahun, &$metadata) {
+    if (!is_array($node)) return;
+
+    // Cek metadata umum di level objek
+    foreach ($node as $k => $v) {
+      if (is_scalar($v)) {
+        $kLower = strtolower((string)$k);
+        if (empty($metadata['Satuan']) && in_array($kLower, array('satuan', 'unit', 'measurement', 'satuan_data', 'satuan_nama'))) {
+          $metadata['Satuan'] = (string)$v;
+        }
+        if (empty($metadata['Kategori']) && in_array($kLower, array('kategori', 'category', 'bidang', 'sektor'))) {
+          $metadata['Kategori'] = (string)$v;
+        }
+        if (in_array($kLower, array('gender', 'jenis_kelamin', 'sex'))) {
+          $metadata['Gender'] = (string)$v;
+        }
+        if (empty($metadata['NamaIndikator']) && in_array($kLower, array('nama_indikator', 'indikator', 'indicator', 'title', 'judul', 'nama'))) {
+          $metadata['NamaIndikator'] = (string)$v;
+        }
+      }
+    }
+
+    // Pola 1: Key adalah tahun 4 digit langsung (misal: {"2020": 72.5, "2021": 73.1})
+    $hasDirectYearKeys = false;
+    foreach ($node as $k => $v) {
+      if (preg_match('/^(19|20)\d{2}$/', (string)$k) && (is_numeric($v) || (is_string($v) && strlen($v) < 20))) {
+        $parsedTahun[(string)$k] = (string)$v;
+        $hasDirectYearKeys = true;
+      }
+    }
+    if ($hasDirectYearKeys) {
+      return;
+    }
+
+    // Pola 2: Node adalah array of items (misal: [{"tahun": 2020, "nilai": 72.5}, ...])
+    $isListOfItems = isset($node[0]) || (array_keys($node) === range(0, count($node) - 1));
+    if ($isListOfItems) {
+      foreach ($node as $item) {
+        if (is_array($item)) {
+          $itemYear = null;
+          $itemVal = null;
+
+          // Cari key tahun
+          foreach ($item as $ik => $iv) {
+            $ikLower = strtolower((string)$ik);
+            if (in_array($ikLower, array('tahun', 'year', 'th', 'thn', 'periode', 'period', 'label', 'time', 'date'))) {
+              if (preg_match('/\b(19|20\d{2})\b/', (string)$iv, $m)) {
+                $itemYear = $m[1];
+              }
+            }
+          }
+          if (!$itemYear) {
+            foreach ($item as $ik => $iv) {
+              if (is_scalar($iv) && preg_match('/^(19|20)\d{2}$/', trim((string)$iv))) {
+                $itemYear = trim((string)$iv);
+                break;
+              }
+            }
+          }
+
+          // Cari key nilai
+          foreach ($item as $ik => $iv) {
+            $ikLower = strtolower((string)$ik);
+            if (in_array($ikLower, array('nilai', 'value', 'val', 'angka', 'jumlah', 'total', 'score', 'data', 'realisasi', 'persentase', 'hasil'))) {
+              if (is_scalar($iv) && (string)$iv !== '') {
+                $itemVal = (string)$iv;
+                break;
+              }
+            }
+          }
+          if ($itemYear && $itemVal === null) {
+            foreach ($item as $ik => $iv) {
+              if (is_scalar($iv) && is_numeric($iv) && (string)$iv !== (string)$itemYear) {
+                $itemVal = (string)$iv;
+                break;
+              }
+            }
+          }
+
+          if ($itemYear && $itemVal !== null) {
+            $parsedTahun[(string)$itemYear] = (string)$itemVal;
+          } else {
+            $this->extractDataFromJsonNode($item, $parsedTahun, $metadata);
+          }
+        }
+      }
+      return;
+    }
+
+    // Pola 3: Traversing objek bersarang (misal {"result": {"data": ...}})
+    foreach ($node as $k => $v) {
+      if (is_array($v)) {
+        $this->extractDataFromJsonNode($v, $parsedTahun, $metadata);
+      }
+    }
+  }
+
+  public function InputIndikator(){
+    $this->ensureOlahDataStructure();
+
+    $daerahId = (int)$this->input->post('DaerahId');
+    $namaIndikator = trim($this->input->post('NamaIndikator') ?? '');
+    if ($daerahId <= 0 || empty($namaIndikator)) {
+      echo 'Nama Indikator wajib diisi!';
+      return;
+    }
+
+    $apiUrl = trim($this->input->post('ApiUrl') ?? '');
+    $tipeSumber = !empty($apiUrl) ? 'api' : 'manual';
+
+    $dataTahun = array();
+    $nilaiTahunPost = $this->input->post('NilaiTahun');
+    if (is_array($nilaiTahunPost)) {
+      foreach ($nilaiTahunPost as $thn => $val) {
+        $valClean = trim($val ?? '');
+        if ($valClean !== '') {
+          $dataTahun[(string)$thn] = $valClean;
+        }
+      }
+    }
+
+    // Jika API diisi tetapi data tahun belum ada atau mode API langsung
+    if (!empty($apiUrl) && empty($dataTahun)) {
+      $parsedTable = $this->parseTableApiJson($apiUrl);
+      if ($parsedTable['status'] === 'success' && !empty($parsedTable['indicators'])) {
+        $first = $parsedTable['indicators'][0];
+        $dataTahun = $first['DataTahun'];
+        if (empty($_POST['Satuan']) && !empty($first['Satuan'])) {
+          $_POST['Satuan'] = $first['Satuan'];
+        }
+        if (empty($_POST['Kategori']) && !empty($first['Kategori'])) {
+          $_POST['Kategori'] = $first['Kategori'];
+        }
+        if (empty($_POST['Keterangan']) && !empty($first['Keterangan'])) {
+          $_POST['Keterangan'] = $first['Keterangan'];
+        }
+      } else {
+        $parsed = $this->parseJsonIndikatorData($apiUrl);
+        if ($parsed['status'] === 'success') {
+          $dataTahun = $parsed['DataTahun'];
+          if (empty($_POST['Satuan']) && !empty($parsed['Satuan'])) {
+            $_POST['Satuan'] = $parsed['Satuan'];
+          }
+          if (empty($_POST['Kategori']) && !empty($parsed['Kategori'])) {
+            $_POST['Kategori'] = $parsed['Kategori'];
+          }
+        }
+      }
+    }
+
+    // Periksa apakah ada tahun baru yang belum terdaftar pada Daerah ini
+    if (!empty($dataTahun)) {
+      $daerah = $this->db->get_where('olah_data_daerah', array('Id' => $daerahId))->row_array();
+      if ($daerah) {
+        $currentYears = json_decode($daerah['TahunList'] ?? '[]', true) ?: array();
+        $hasNewYear = false;
+        foreach (array_keys($dataTahun) as $y) {
+          if (!in_array((string)$y, $currentYears)) {
+            $currentYears[] = (string)$y;
+            $hasNewYear = true;
+          }
+        }
+        if ($hasNewYear) {
+          sort($currentYears, SORT_NUMERIC);
+          $this->db->where('Id', $daerahId)->update('olah_data_daerah', array(
+            'TahunList' => json_encode($currentYears),
+            'UpdatedAt' => date('Y-m-d H:i:s')
+          ));
+        }
+      }
+    }
+
+    $now = date('Y-m-d H:i:s');
+    $this->db->insert('olah_data_indikator', array(
+      'DaerahId'      => $daerahId,
+      'NamaIndikator' => $namaIndikator,
+      'Kategori'      => trim($this->input->post('Kategori') ?? ''),
+      'Gender'        => trim($this->input->post('Gender') ?? 'Total'),
+      'Satuan'        => trim($this->input->post('Satuan') ?? ''),
+      'DataTahun'     => json_encode($dataTahun),
+      'ApiUrl'        => $apiUrl ?: NULL,
+      'TipeSumber'    => $tipeSumber,
+      'Keterangan'    => trim($this->input->post('Keterangan') ?? ''),
+      'Urutan'        => (int)($this->input->post('Urutan') ?? 1),
+      'CreatedAt'     => $now,
+      'UpdatedAt'     => $now
+    ));
+
+    if ($this->db->affected_rows() > 0) {
+      echo '1';
+    } else {
+      echo 'Gagal menyimpan indikator!';
+    }
+  }
+
+  public function EditIndikator(){
+    $this->ensureOlahDataStructure();
+
+    $id = (int)$this->input->post('Id');
+    $namaIndikator = trim($this->input->post('NamaIndikator') ?? '');
+    if ($id <= 0 || empty($namaIndikator)) {
+      echo 'Nama Indikator wajib diisi!';
+      return;
+    }
+
+    $apiUrl = trim($this->input->post('ApiUrl') ?? '');
+    $tipeSumber = !empty($apiUrl) ? 'api' : 'manual';
+
+    $nilaiTahunPost = $this->input->post('NilaiTahun');
+    $dataTahun = array();
+    if (is_array($nilaiTahunPost)) {
+      foreach ($nilaiTahunPost as $thn => $val) {
+        $valClean = trim($val ?? '');
+        if ($valClean !== '') {
+          $dataTahun[(string)$thn] = $valClean;
+        }
+      }
+    }
+
+    $this->db->where('Id', $id)->update('olah_data_indikator', array(
+      'NamaIndikator' => $namaIndikator,
+      'Kategori'      => trim($this->input->post('Kategori') ?? ''),
+      'Gender'        => trim($this->input->post('Gender') ?? 'Total'),
+      'Satuan'        => trim($this->input->post('Satuan') ?? ''),
+      'DataTahun'     => json_encode($dataTahun),
+      'ApiUrl'        => $apiUrl ?: NULL,
+      'TipeSumber'    => $tipeSumber,
+      'Keterangan'    => trim($this->input->post('Keterangan') ?? ''),
+      'Urutan'        => (int)($this->input->post('Urutan') ?? 1),
+      'UpdatedAt'     => date('Y-m-d H:i:s')
+    ));
+
+    echo '1';
+  }
+
+  /**
+   * Endpoint Sinkronkan / Tarik Ulang Data Indikator dari URL API
+   */
+  public function SinkronkanIndikator(){
+    $this->ensureOlahDataStructure();
+
+    $id = (int)$this->input->post('Id');
+    if ($id <= 0) {
+      echo json_encode(array('status' => 'error', 'message' => 'ID Indikator tidak valid.'));
+      return;
+    }
+
+    $row = $this->db->get_where('olah_data_indikator', array('Id' => $id))->row_array();
+    if (!$row) {
+      echo json_encode(array('status' => 'error', 'message' => 'Indikator tidak ditemukan.'));
+      return;
+    }
+
+    $apiUrl = trim($row['ApiUrl'] ?? '');
+    if (empty($apiUrl)) {
+      echo json_encode(array('status' => 'error', 'message' => 'Indikator ini tidak memiliki tautan URL API.'));
+      return;
+    }
+
+    $parsed = $this->parseJsonIndikatorData($apiUrl);
+    if ($parsed['status'] !== 'success') {
+      echo json_encode(array('status' => 'error', 'message' => 'Gagal menarik data dari API: ' . $parsed['message']));
+      return;
+    }
+
+    $dataTahun = $parsed['DataTahun'];
+    $daerahId = (int)$row['DaerahId'];
+
+    // Update TahunList daerah jika ada tahun baru
+    $daerah = $this->db->get_where('olah_data_daerah', array('Id' => $daerahId))->row_array();
+    if ($daerah) {
+      $currentYears = json_decode($daerah['TahunList'] ?? '[]', true) ?: array();
+      $hasNewYear = false;
+      foreach (array_keys($dataTahun) as $y) {
+        if (!in_array((string)$y, $currentYears)) {
+          $currentYears[] = (string)$y;
+          $hasNewYear = true;
+        }
+      }
+      if ($hasNewYear) {
+        sort($currentYears, SORT_NUMERIC);
+        $this->db->where('Id', $daerahId)->update('olah_data_daerah', array(
+          'TahunList' => json_encode($currentYears),
+          'UpdatedAt' => date('Y-m-d H:i:s')
+        ));
+      }
+    }
+
+    $this->db->where('Id', $id)->update('olah_data_indikator', array(
+      'DataTahun' => json_encode($dataTahun),
+      'UpdatedAt' => date('Y-m-d H:i:s')
+    ));
+
+    echo json_encode(array(
+      'status'    => 'success', 
+      'message'   => 'Berhasil disinkronkan! ' . count($dataTahun) . ' data tahun diperbarui dari API.',
+      'DataTahun' => $dataTahun
+    ));
+  }
+
+  public function HapusIndikator(){
+    $this->ensureOlahDataStructure();
+
+    $id = (int)$this->input->post('Id');
+    if ($id <= 0) {
+      echo 'ID Indikator tidak valid!';
+      return;
+    }
+
+    $this->db->where('Id', $id)->delete('olah_data_indikator');
+    if ($this->db->affected_rows() > 0) {
+      echo '1';
+    } else {
+      echo 'Gagal menghapus indikator!';
+    }
+  }
+
+  public function UpdateNilaiCell(){
+    $this->ensureOlahDataStructure();
+
+    $id = (int)$this->input->post('IndikatorId');
+    $tahun = trim($this->input->post('Tahun') ?? '');
+    $nilai = trim($this->input->post('Nilai') ?? '');
+
+    if ($id <= 0 || empty($tahun)) {
+      echo 'Data tidak lengkap!';
+      return;
+    }
+
+    $row = $this->db->get_where('olah_data_indikator', array('Id' => $id))->row_array();
+    if (!$row) {
+      echo 'Indikator tidak ditemukan!';
+      return;
+    }
+
+    $dataTahun = json_decode($row['DataTahun'] ?? '{}', true) ?: array();
+    if ($nilai === '') {
+      unset($dataTahun[$tahun]);
+    } else {
+      $dataTahun[$tahun] = $nilai;
+    }
+
+    $this->db->where('Id', $id)->update('olah_data_indikator', array(
+      'DataTahun' => json_encode($dataTahun),
+      'UpdatedAt' => date('Y-m-d H:i:s')
+    ));
+
+    echo '1';
+  }
 }
