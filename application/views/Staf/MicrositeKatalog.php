@@ -17,6 +17,12 @@
     box-shadow: 0 18px 40px rgba(4, 49, 104, 0.12);
     border-color: #cbd5e1;
   }
+  .microsite-card-header {
+    position: relative;
+    overflow: visible;
+    width: 100%;
+    z-index: 3;
+  }
   .microsite-card-banner {
     height: 140px;
     width: 100%;
@@ -42,20 +48,25 @@
   }
   .microsite-card-logo-box {
     position: absolute;
-    bottom: -22px;
+    bottom: -28px;
     left: 20px;
-    width: 56px;
-    height: 56px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     background: #ffffff;
-    border: 3px solid #ffffff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border: 3.5px solid #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    padding: 3px;
-    z-index: 2;
+    padding: 4px;
+    z-index: 5;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .microsite-card:hover .microsite-card-logo-box {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
   }
   .microsite-card-logo {
     width: 100%;
@@ -65,7 +76,6 @@
     object-fit: contain;
     object-position: center;
     display: block;
-    transform: scale(1.05);
   }
   .microsite-card-badge {
     position: absolute;
@@ -81,10 +91,12 @@
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   }
   .microsite-card-body {
-    padding: 32px 20px 20px 20px;
+    padding: 38px 20px 20px 20px;
     flex: 1;
     display: flex;
     flex-direction: column;
+    position: relative;
+    z-index: 1;
   }
   .microsite-card-title {
     font-size: 16px;
@@ -198,15 +210,17 @@
     ?>
       <div class="col-lg-4 col-md-6 col-12 mb-4">
         <div class="microsite-card">
-          <!-- Banner & Badge Logo -->
-          <div class="microsite-card-banner">
-            <?php if ($hasBanner): ?>
-              <img class="banner-thumb" src="<?=htmlspecialchars($bannerUrl, ENT_QUOTES, 'UTF-8')?>" alt="Banner">
-            <?php endif; ?>
-            <div class="microsite-card-banner-overlay"></div>
-            <span class="microsite-card-badge">
-              <i class="fa-solid fa-link mr-1"></i> /<?=$m['Slug']?>
-            </span>
+          <!-- Header Banner & Logo -->
+          <div class="microsite-card-header">
+            <div class="microsite-card-banner">
+              <?php if ($hasBanner): ?>
+                <img class="banner-thumb" src="<?=htmlspecialchars($bannerUrl, ENT_QUOTES, 'UTF-8')?>" alt="Banner">
+              <?php endif; ?>
+              <div class="microsite-card-banner-overlay"></div>
+              <span class="microsite-card-badge">
+                <i class="fa-solid fa-link mr-1"></i> /<?=$m['Slug']?>
+              </span>
+            </div>
             <?php if ($hasLogo): ?>
               <div class="microsite-card-logo-box">
                 <img class="microsite-card-logo" src="<?=htmlspecialchars($logoUrl, ENT_QUOTES, 'UTF-8')?>" alt="Logo">
