@@ -703,7 +703,7 @@ $kategoriStats = $KategoriStats ?? array();
     <!-- 5 Card Grid Kategori Utama -->
     <div class="row align-items-stretch">
       <?php foreach ($masterKategori as $kKey => $kat): 
-        $stat = $kategoriStats[$kat['nama']] ?? array('total' => 0, 'filled' => 0);
+        $stat = $kategoriStats[$kat['nama']] ?? array('total' => 0, 'filled' => 0, 'subs' => array());
         $totalSub = count($kat['sub']);
       ?>
         <div class="col-lg-4 col-md-6 mb-4">
@@ -730,7 +730,27 @@ $kategoriStats = $KategoriStats ?? array();
                   Sub Kategori:
                 </div>
                 <?php foreach ($kat['sub'] as $subK => $subV): 
-                  $countInd = count($subV['indikator']);
+                  // Hitung riil dari database (dinamis bertambah saat indikator baru diinput)
+                  $countInd = 0;
+                  if (!empty($groupedIndikator[$kat['nama']][$subV['nama']])) {
+                    $countInd = count($groupedIndikator[$kat['nama']][$subV['nama']]);
+                  } elseif (isset($stat['subs'][$subV['nama']]['total'])) {
+                    $countInd = (int)$stat['subs'][$subV['nama']]['total'];
+                  } else {
+                    foreach ($groupedIndikator as $gK => $gSubs) {
+                      if (strcasecmp(trim($gK), trim($kat['nama'])) === 0) {
+                        foreach ($gSubs as $gS => $gItems) {
+                          if (strcasecmp(trim($gS), trim($subV['nama'])) === 0) {
+                            $countInd = count($gItems);
+                            break 2;
+                          }
+                        }
+                      }
+                    }
+                    if ($countInd === 0 && !empty($subV['indikator'])) {
+                      $countInd = count($subV['indikator']);
+                    }
+                  }
                 ?>
                   <div class="subkat-chip">
                     <span class="badge-code"><?= $subK ?></span>
@@ -811,10 +831,25 @@ $kategoriStats = $KategoriStats ?? array();
           <div class="subkat-nav-pills">
             <?php foreach ($activeKatData['sub'] as $subK => $subV): 
               $isSubActive = ((string)$subK === (string)$activeSubCode);
-              $subIndList = $groupedIndikator[$activeKatData['nama']][$subV['nama']] ?? array();
-              $totalSubInd = count($subIndList);
-              if ($totalSubInd === 0 && !empty($subV['indikator'])) {
-                $totalSubInd = count($subV['indikator']);
+              $totalSubInd = 0;
+              if (!empty($groupedIndikator[$activeKatData['nama']][$subV['nama']])) {
+                $totalSubInd = count($groupedIndikator[$activeKatData['nama']][$subV['nama']]);
+              } elseif (isset($kategoriStats[$activeKatData['nama']]['subs'][$subV['nama']]['total'])) {
+                $totalSubInd = (int)$kategoriStats[$activeKatData['nama']]['subs'][$subV['nama']]['total'];
+              } else {
+                foreach ($groupedIndikator as $gK => $gSubs) {
+                  if (strcasecmp(trim($gK), trim($activeKatData['nama'])) === 0) {
+                    foreach ($gSubs as $gS => $gItems) {
+                      if (strcasecmp(trim($gS), trim($subV['nama'])) === 0) {
+                        $totalSubInd = count($gItems);
+                        break 2;
+                      }
+                    }
+                  }
+                }
+                if ($totalSubInd === 0 && !empty($subV['indikator'])) {
+                  $totalSubInd = count($subV['indikator']);
+                }
               }
             ?>
               <a href="<?= base_url('Staf/OlahData?daerah_id='.$activeId.'&kategori='.$selectedKategori.'&sub='.$subK) ?>" class="subkat-nav-item <?= $isSubActive ? 'active' : '' ?>">
@@ -834,6 +869,18 @@ $kategoriStats = $KategoriStats ?? array();
     <?php
     // Ambil baris indikator untuk sub kategori aktif ini
     $currentSubIndikators = $groupedIndikator[$activeKatData['nama']][$activeSubData['nama']] ?? array();
+    if (empty($currentSubIndikators)) {
+      foreach ($groupedIndikator as $gK => $gSubs) {
+        if (strcasecmp(trim($gK), trim($activeKatData['nama'])) === 0) {
+          foreach ($gSubs as $gS => $gItems) {
+            if (strcasecmp(trim($gS), trim($activeSubData['nama'])) === 0) {
+              $currentSubIndikators = $gItems;
+              break 2;
+            }
+          }
+        }
+      }
+    }
 
     // Jika di database belum ada atau beda format, kita bisa padukan dengan template indikator standar
     $displayRows = array();
