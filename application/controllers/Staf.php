@@ -2674,4 +2674,162 @@ class Staf extends CI_Controller {
 
     echo '1';
   }
+
+  /**
+   * Endpoint Komparasi Indikator Antar Daerah (Maksimal 3 Daerah)
+   */
+  public function GetKomparasiData(){
+    $this->ensureOlahDataStructure();
+
+    $daerahIdsRaw = $this->input->post('daerah_ids');
+    if (empty($daerahIdsRaw)) {
+      $daerahIdsRaw = $this->input->get('daerah_ids');
+    }
+
+    $daerahIds = array();
+    if (is_array($daerahIdsRaw)) {
+      foreach ($daerahIdsRaw as $id) {
+        $idInt = (int)$id;
+        if ($idInt > 0 && !in_array($idInt, $daerahIds)) {
+          $daerahIds[] = $idInt;
+        }
+      }
+    } elseif (is_string($daerahIdsRaw)) {
+      $parts = explode(',', $daerahIdsRaw);
+      foreach ($parts as $p) {
+        $idInt = (int)trim($p);
+        if ($idInt > 0 && !in_array($idInt, $daerahIds)) {
+          $daerahIds[] = $idInt;
+        }
+      }
+    }
+
+    // Maksimal 3 daerah
+    if (count($daerahIds) > 3) {
+      $daerahIds = array_slice($daerahIds, 0, 3);
+    }
+
+    if (empty($daerahIds)) {
+      echo json_encode(array('status' => 'error', 'message' => 'Pilih minimal 1 daerah (maksimal 3 daerah) untuk dibandingkan!'));
+      return;
+    }
+
+    // Ambil data profil masing-masing daerah
+    $regions = array();
+    $allYearsSet = array();
+    $indicatorsByRegion = array();
+
+    foreach ($daerahIds as $did) {
+      $d = $this->db->get_where('olah_data_daerah', array('Id' => $did))->row_array();
+      if ($d) {
+        $years = json_decode($d['TahunList'] ?? '[]', true) ?: array();
+        sort($years, SORT_NUMERIC);
+        $d['Years'] = $years;
+        $d['TotalIndikator'] = $this->db->where('DaerahId', $did)->count_all_results('olah_data_indikator');
+        $regions[] = $d;
+
+        foreach ($years as $y) {
+          $allYearsSet[(string)$y] = true;
+        }
+
+        // Ambil semua indikator daerah ini
+        $inds = $this->db->where('DaerahId', $did)->order_by('Urutan', 'ASC')->order_by('Id', 'ASC')->get('olah_data_indikator')->result_array();
+        foreach ($inds as &$ind) {
+          $ind['DataTahunParsed'] = json_decode($ind['DataTahun'] ?? '{}', true) ?: array();
+          foreach (array_keys($ind['DataTahunParsed']) as $y) {
+            $allYearsSet[(string)$y] = true;
+          }
+        }
+        unset($ind);
+        $indicatorsByRegion[$did] = $inds;
+      }
+    }
+
+    if (empty($regions)) {
+      echo json_encode(array('status' => 'error', 'message' => 'Daerah yang dipilih tidak ditemukan!'));
+      return;
+    }
+
+    $sortedYears = array_keys($allYearsSet);
+    sort($sortedYears, SORT_NUMERIC);
+
+    // Master Kategori untuk penyusunan urutan komparasi standar
+    $masterKategori = $this->getMasterKategoriOlahData();
+
+    // Bangun matriks komparasi indikator:
+    $matrix = array();
+    $seenMap = array();
+
+    // 1. Masukkan kerangka template standar 5 kategori terlebih dahulu agar urutan teratur
+    foreach ($masterKategori as $katKey => $kat) {
+      $katNama = $kat['nama'];
+      foreach ($kat['sub'] as $subKey => $sub) {
+        $subNama = $sub['nama'];
+        foreach ($sub['indikator'] as $stdInd) {
+          $key = strtolower(trim($katNama)) . '|||' . strtolower(trim($subNama)) . '|||' . strtolower(trim($stdInd['nama']));
+          $matrix[$key] = array(
+            'Kategori'      => $katNama,
+            'SubKategori'   => $subNama,
+            'NamaIndikator' => $stdInd['nama'],
+            'Satuan'        => $stdInd['satuan'] ?? '',
+            'Values'        => array() // [daerah_id => [tahun => val]]
+          );
+          $seenMap[$key] = true;
+        }
+      }
+    }
+
+    // 2. Petakan nilai dari masing-masing daerah
+    foreach ($regions as $r) {
+      $did = $r['Id'];
+      $inds = $indicatorsByRegion[$did] ?? array();
+
+      foreach ($inds as $ind) {
+        $k = trim($ind['Kategori'] ?? '');
+        $s = trim($ind['SubKategori'] ?? '');
+        $n = trim($ind['NamaIndikator'] ?? '');
+        $key = strtolower($k) . '|||' . strtolower($s) . '|||' . strtolower($n);
+
+        if (!isset($matrix[$key])) {
+          // Cek kesamaan nama indikator saja jika sub/kategori sedikit beda
+          $matchedKey = null;
+          foreach ($matrix as $mK => $mV) {
+            if (strcasecmp(trim($mV['NamaIndikator']), $n) === 0) {
+              $matchedKey = $mK;
+              break;
+            }
+          }
+          if ($matchedKey) {
+            $key = $matchedKey;
+          } else {
+            // Indikator kustom tambahan daerah
+            $matrix[$key] = array(
+              'Kategori'      => $k ?: 'LAINNYA',
+              'SubKategori'   => $s ?: 'Umum',
+              'NamaIndikator' => $n,
+              'Satuan'        => $ind['Satuan'] ?? '',
+              'Values'        => array()
+            );
+          }
+        }
+
+        // Simpan nilai data tahun daerah ini
+        $matrix[$key]['Values'][$did] = $ind['DataTahunParsed'];
+        if (empty($matrix[$key]['Satuan']) && !empty($ind['Satuan'])) {
+          $matrix[$key]['Satuan'] = $ind['Satuan'];
+        }
+      }
+    }
+
+    // Format output matriks sebagai list array terstruktur
+    $rows = array_values($matrix);
+
+    echo json_encode(array(
+      'status'          => 'success',
+      'regions'         => $regions,
+      'all_years'       => $sortedYears,
+      'rows'            => $rows,
+      'master_kategori' => $masterKategori
+    ));
+  }
 }

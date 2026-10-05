@@ -436,6 +436,178 @@ $kategoriStats = $KategoriStats ?? array();
     0% { background-color: #86efac; }
     100% { background-color: transparent; }
   }
+
+  /* Komparasi Daerah Styles */
+  .btn-tab-main-view {
+    color: #64748b;
+    background: transparent;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .btn-tab-main-view:hover {
+    color: var(--ide-navy);
+  }
+  .btn-tab-main-view.active {
+    background: #ffffff !important;
+    color: var(--ide-navy) !important;
+    box-shadow: 0 4px 12px rgba(4, 49, 104, 0.12) !important;
+  }
+  .custom-checkbox-compare .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #38bdf8;
+    border-color: #38bdf8;
+  }
+  .custom-checkbox-compare .custom-control-label::before {
+    border-radius: 6px;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.25);
+    width: 20px;
+    height: 20px;
+  }
+  .custom-checkbox-compare .custom-control-label::after {
+    width: 20px;
+    height: 20px;
+  }
+  .daerah-card.selected-for-compare {
+    border: 2.5px solid #0284c7 !important;
+    box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.2), 0 16px 36px rgba(4, 49, 104, 0.16) !important;
+  }
+  .floating-compare-bar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050;
+    background: #0f172a;
+    color: #ffffff;
+    border-radius: 18px;
+    padding: 12px 20px;
+    min-width: 320px;
+    max-width: 90vw;
+    width: 780px;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+    animation: slideUpFloating 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+  @keyframes slideUpFloating {
+    from { transform: translate(-50%, 60px); opacity: 0; }
+    to { transform: translate(-50%, 0); opacity: 1; }
+  }
+  .floating-badge-counter {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 800;
+    color: #38bdf8;
+    letter-spacing: 0.3px;
+  }
+  .compare-chip {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .compare-chip .btn-remove-chip {
+    cursor: pointer;
+    color: #f87171;
+    font-size: 12px;
+  }
+  .compare-chip .btn-remove-chip:hover {
+    color: #ef4444;
+  }
+
+  /* Styling Tabel Komparasi */
+  .table-komparasi th {
+    vertical-align: middle !important;
+    text-align: center;
+    font-size: 12px;
+  }
+  .th-region-1 {
+    background: linear-gradient(135deg, #043168 0%, #0369a1 100%) !important;
+    color: #ffffff !important;
+  }
+  .th-region-2 {
+    background: linear-gradient(135deg, #065f46 0%, #059669 100%) !important;
+    color: #ffffff !important;
+  }
+  .th-region-3 {
+    background: linear-gradient(135deg, #9a3412 0%, #d97706 100%) !important;
+    color: #ffffff !important;
+  }
+  .th-year-1 {
+    background: #eff6ff !important;
+    color: #1e3a8a !important;
+    font-weight: 700;
+  }
+  .th-year-2 {
+    background: #ecfdf5 !important;
+    color: #064e3b !important;
+    font-weight: 700;
+  }
+  .th-year-3 {
+    background: #fffbeb !important;
+    color: #78350f !important;
+    font-weight: 700;
+  }
+  .val-cell-comp-1 {
+    background: #f8fafc;
+    font-family: 'Consolas', monospace;
+    font-weight: 700;
+    text-align: center;
+    font-size: 12.5px;
+    color: #0284c7;
+  }
+  .val-cell-comp-2 {
+    background: #f8fafc;
+    font-family: 'Consolas', monospace;
+    font-weight: 700;
+    text-align: center;
+    font-size: 12.5px;
+    color: #059669;
+  }
+  .val-cell-comp-3 {
+    background: #f8fafc;
+    font-family: 'Consolas', monospace;
+    font-weight: 700;
+    text-align: center;
+    font-size: 12.5px;
+    color: #d97706;
+  }
+  .badge-selisih-pos {
+    background: #dcfce7;
+    color: #15803d;
+    border: 1px solid #86efac;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 11px;
+    display: inline-block;
+  }
+  .badge-selisih-neg {
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fca5a5;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 11px;
+    display: inline-block;
+  }
+  .badge-selisih-zero {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 11px;
+    display: inline-block;
+  }
 </style>
 
 <?php if (!$hasActiveDaerah): ?>
@@ -465,7 +637,8 @@ $kategoriStats = $KategoriStats ?? array();
             </div>
           </div>
 
-          <div>
+          <div class="d-flex align-items-center flex-wrap" style="gap: 10px;">
+           
             <button type="button" class="btn btn-primary btnBukaModalTambahDaerah" data-toggle="modal" data-target="#ModalInputDaerah" style="border-radius: 12px; font-weight: 700; font-size: 13px; padding: 10px 22px; background: var(--ide-navy); border: none; box-shadow: 0 4px 14px rgba(4, 49, 104, 0.3); display: inline-flex; align-items: center; gap: 8px;">
               <i class="fa-solid fa-plus-circle"></i> Tambah Daerah Baru
             </button>
@@ -475,20 +648,39 @@ $kategoriStats = $KategoriStats ?? array();
     </div>
   </div>
 
+  <!-- Tab Pilihan Mode Halaman: Katalog Daerah vs Komparasi Antar Daerah -->
+  <div class="row" style="margin-top: 14px; margin-bottom: 12px;">
+    <div class="col-12">
+      <div class="d-flex align-items-center justify-content-between flex-wrap" style="gap: 12px;">
+        <div class="p-1 d-inline-flex" style="background: #e2e8f0; border-radius: 14px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
+          <button type="button" class="btn font-weight-bold btn-tab-main-view active" id="btnTabKatalogView" style="border-radius: 11px; padding: 9px 22px; font-size: 13px; border: none;">
+            <i class="fa-solid fa-city mr-1.5 text-primary"></i> Katalog Daerah (<?= count($DaerahList) ?>)
+          </button>
+          <button type="button" class="btn font-weight-bold btn-tab-main-view" id="btnTabKomparasiView" style="border-radius: 11px; padding: 9px 24px; font-size: 13px; border: none;">
+            <i class="fa-solid fa-code-compare mr-1.5 text-success"></i> Komparasi Antar Daerah (Maks. 3)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="sectionKatalogDaerah">
   <!-- Grid Kartu Nama Daerah -->
   <div class="row align-items-stretch">
     <?php if (!empty($DaerahList)): ?>
       <?php foreach ($DaerahList as $d): ?>
         <div class="col-lg-4 col-md-6 mb-4">
-          <div class="daerah-card">
+          <div class="daerah-card" id="cardDaerah_<?= $d['Id'] ?>">
             <div class="daerah-card-header">
               <div class="d-flex align-items-center justify-content-between">
                 <div class="daerah-card-icon">
                   <i class="fa-solid fa-city"></i>
                 </div>
-                <span class="badge badge-light px-2 py-1" style="font-size: 11px; font-weight: 700; border-radius: 6px; color: var(--ide-navy);">
-                  <?= $d['YearsCount'] ?> Kolom Tahun
-                </span>
+                <div class="d-flex align-items-center">
+                  <span class="badge badge-light px-2 py-1" style="font-size: 11px; font-weight: 700; border-radius: 6px; color: var(--ide-navy);">
+                    <?= $d['YearsCount'] ?> Kolom Tahun
+                  </span>
+                </div>
               </div>
               <h5 class="daerah-card-title"><?= htmlspecialchars($d['NamaDaerah']) ?></h5>
               <div style="font-size: 11.5px; opacity: 0.85;">
@@ -515,7 +707,13 @@ $kategoriStats = $KategoriStats ?? array();
                   <span>Buka Olah Data</span> <i class="fa-solid fa-arrow-right"></i>
                 </a>
 
-                <div class="d-flex align-items-center" style="gap: 4px;">
+                <div class="d-flex align-items-center" style="gap: 5px;">
+                  <button type="button" class="btn btn-sm btn-outline-primary btn-toggle-compare-card" 
+                          data-id="<?= $d['Id'] ?>" 
+                          data-nama="<?= htmlspecialchars($d['NamaDaerah'], ENT_QUOTES) ?>" 
+                          title="Bandingkan daerah ini" style="border-radius: 8px; height: 34px; font-size: 11.5px; font-weight: 700; padding: 0 8px; display: inline-flex; align-items: center; gap: 4px;">
+                    <i class="fa-solid fa-code-compare"></i> <span>Bandingkan</span>
+                  </button>
                   <button type="button" class="btn btn-sm btn-outline-warning btnEditDaerah" 
                           data-id="<?= $d['Id'] ?>" 
                           data-nama="<?= htmlspecialchars($d['NamaDaerah'], ENT_QUOTES) ?>" 
@@ -554,6 +752,260 @@ $kategoriStats = $KategoriStats ?? array();
       </div>
     <?php endif; ?>
   </div>
+  </div> <!-- /sectionKatalogDaerah -->
+
+  <!-- =========================================================================
+       TAMPILAN KOMPARASI ANTAR DAERAH (HALAMAN PENUH / DI LUAR MODAL)
+       ========================================================================= -->
+  <div id="sectionKomparasiDaerah" style="display: none; margin-top: 6px;">
+    <!-- Card Pilih 3 Slot Daerah (Dropdown Slot) -->
+    <div class="card border-0 shadow-sm mb-3" style="border-radius: 16px; background: #ffffff;">
+      <div class="card-body p-4">
+        <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap" style="gap: 8px;">
+          <span class="font-weight-bold text-dark" style="font-size: 13.5px;">
+            <i class="fa-solid fa-layer-group text-primary mr-1"></i> Pilih Daerah yang Dibandingkan (Maksimal 3 Daerah):
+          </span>
+          <span class="text-muted font-italic" style="font-size: 12px;">Pilih slot daerah lalu klik tombol <b>Terapkan Daerah</b>.</span>
+        </div>
+
+        <div class="row">
+          <!-- Slot 1 (Biru) -->
+          <div class="col-md-4 mb-2 mb-md-0">
+            <div class="p-3 rounded border" style="background: #f0f9ff; border-color: #bae6fd !important; border-left: 5px solid #0284c7 !important;">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="font-weight-bold" style="font-size: 11.5px; color: #0369a1; text-transform: uppercase;">
+                  <i class="fa-solid fa-location-dot mr-1"></i> Daerah 1 (Utama)
+                </span>
+                <span class="badge badge-primary px-2 py-0.5" style="font-size: 10.5px; background: #0284c7;">Slot 1</span>
+              </div>
+              <select class="form-control form-control-sm font-weight-bold select-slot-daerah" id="slotDaerah1" style="border-radius: 8px; height: 38px; font-size: 13px;">
+                <option value="">-- Pilih Daerah 1 --</option>
+                <?php foreach ($DaerahList as $dl): ?>
+                  <option value="<?= $dl['Id'] ?>"><?= htmlspecialchars($dl['NamaDaerah']) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+
+          <!-- Slot 2 (Hijau) -->
+          <div class="col-md-4 mb-2 mb-md-0">
+            <div class="p-3 rounded border" style="background: #f0fdf4; border-color: #bbf7d0 !important; border-left: 5px solid #10b981 !important;">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="font-weight-bold" style="font-size: 11.5px; color: #047857; text-transform: uppercase;">
+                  <i class="fa-solid fa-location-dot mr-1"></i> Daerah 2
+                </span>
+                <span class="badge badge-success px-2 py-0.5" style="font-size: 10.5px; background: #10b981;">Slot 2</span>
+              </div>
+              <select class="form-control form-control-sm font-weight-bold select-slot-daerah" id="slotDaerah2" style="border-radius: 8px; height: 38px; font-size: 13px;">
+                <option value="">-- Pilih Daerah 2 --</option>
+                <?php foreach ($DaerahList as $dl): ?>
+                  <option value="<?= $dl['Id'] ?>"><?= htmlspecialchars($dl['NamaDaerah']) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+
+          <!-- Slot 3 (Oranye) -->
+          <div class="col-md-4">
+            <div class="p-3 rounded border" style="background: #fffbeb; border-color: #fde68a !important; border-left: 5px solid #f59e0b !important;">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="font-weight-bold" style="font-size: 11.5px; color: #b45309; text-transform: uppercase;">
+                  <i class="fa-solid fa-location-dot mr-1"></i> Daerah 3 (Opsional)
+                </span>
+                <span class="badge badge-warning text-dark px-2 py-0.5" style="font-size: 10.5px; background: #fde68a;">Slot 3</span>
+              </div>
+              <select class="form-control form-control-sm font-weight-bold select-slot-daerah" id="slotDaerah3" style="border-radius: 8px; height: 38px; font-size: 13px;">
+                <option value="">-- Kosong / Pilih Daerah 3 --</option>
+                <?php foreach ($DaerahList as $dl): ?>
+                  <option value="<?= $dl['Id'] ?>"><?= htmlspecialchars($dl['NamaDaerah']) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between mt-3 pt-3 border-top">
+          <span id="compareMetaNotice" class="text-muted" style="font-size: 12px;"></span>
+          <button type="button" class="btn btn-primary" id="btnRefreshKomparasi" style="border-radius: 10px; font-weight: 700; font-size: 13px; padding: 9px 24px; background: var(--ide-navy); border: none; box-shadow: 0 4px 12px rgba(4, 49, 104, 0.2);">
+            <i class="fa-solid fa-arrows-rotate mr-1.5"></i> Terapkan Daerah
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Filter & Toolbar Komparasi (Dropdown Filter) -->
+    <div class="card border-0 shadow-sm mb-3" style="border-radius: 16px; background: #ffffff;">
+      <div class="card-body p-4">
+        <div class="row align-items-center">
+          <div class="col-md-3 mb-2 mb-md-0">
+            <label class="font-weight-bold text-dark mb-1" style="font-size: 12px;">Filter Kategori:</label>
+            <select class="form-control" id="filterKomparasiKategori" style="border-radius: 8px; height: 38px; font-size: 12.5px;">
+              <option value="ALL">Semua Kategori (Pilar 1 - 5)</option>
+              <option value="GEOGRAFI DAN DEMOGRAFI (KEPENDUDUKAN)">1. GEOGRAFI & DEMOGRAFI</option>
+              <option value="KESEJAHTERAAN MASYARAKAT (SOSIAL)">2. KESEJAHTERAAN MASYARAKAT</option>
+              <option value="INFRASTRUKTUR DAN PELAYANAN UMUM">3. INFRASTRUKTUR & PELAYANAN UMUM</option>
+              <option value="EKONOMI DAN DAYA SAING DAERAH">4. EKONOMI & DAYA SAING</option>
+              <option value="KAPASITAS KEUANGAN DAERAH">5. KAPASITAS KEUANGAN DAERAH</option>
+            </select>
+          </div>
+
+          <div class="col-md-3 mb-2 mb-md-0">
+            <label class="font-weight-bold text-dark mb-1" style="font-size: 12px;">Filter Sub-Kategori:</label>
+            <select class="form-control" id="filterKomparasiSub" style="border-radius: 8px; height: 38px; font-size: 12.5px;">
+              <option value="ALL">Semua Sub-Kategori</option>
+            </select>
+          </div>
+
+          <div class="col-md-3 mb-2 mb-md-0">
+            <label class="font-weight-bold text-dark mb-1" style="font-size: 12px;">Tampilan Kolom Tahun:</label>
+            <select class="form-control" id="filterKomparasiTahun" style="border-radius: 8px; height: 38px; font-size: 12.5px;">
+              <option value="ALL">Semua Kolom Tahun</option>
+            </select>
+          </div>
+
+          <div class="col-md-3">
+            <label class="font-weight-bold text-dark mb-1" style="font-size: 12px;">Cari Indikator:</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="searchKomparasiIndikator" placeholder="Ketik nama indikator..." style="border-radius: 8px 0 0 8px; height: 38px; font-size: 12.5px;">
+              <div class="input-group-append">
+                <span class="input-group-text bg-white" style="border-radius: 0 8px 8px 0;"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Box Loading Indicator -->
+    <div id="loadingKomparasi" class="text-center py-5 card border-0 shadow-sm mb-3" style="border-radius: 16px; background: #ffffff; display: none;">
+      <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+        <span class="sr-only">Memuat data...</span>
+      </div>
+      <p class="font-weight-bold text-dark mt-3 mb-0" style="font-size: 14px;">Memuat Matriks Komparasi Indikator Daerah...</p>
+    </div>
+
+    <!-- Container Hasil Komparasi (Grafik & Tabel) -->
+    <div id="containerKomparasiResult" style="display: none;">
+
+      <!-- CARD 3: GRAFIK & VISUALISASI KOMPARASI (LANGSUNG DI BAWAH CARD DROPDOWN) -->
+      <div class="card border-0 shadow-sm mb-4" id="cardKomparasiGrafik" style="border-radius: 16px; background: #ffffff;">
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center justify-content-between flex-wrap pb-3 mb-3 border-bottom" style="gap: 12px;">
+            <div class="d-flex align-items-center" style="gap: 10px;">
+              <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(2, 132, 199, 0.1); color: #0284c7; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+              <div>
+                <h5 class="font-weight-bold text-dark mb-0" style="font-size: 16px;">
+                  Grafik Visualisasi Tren & Benchmark Daerah
+                </h5>
+                <small class="text-muted" id="lblKomparasiInfoRingkasChart">Perbandingan indikator pembangunan antar daerah.</small>
+              </div>
+            </div>
+
+            <!-- Kontrol Tipe Chart & Satuan -->
+            <div class="d-flex align-items-center flex-wrap" style="gap: 10px;">
+              <span class="badge badge-light border p-2" id="badgeSatuanChart" style="font-size: 12px; border-radius: 8px;">
+                Satuan: <b class="text-primary" id="lblSatuanChart">-</b>
+              </span>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-sm btn-primary active btn-toggle-chart-type" data-type="line" id="btnTypeLine" style="border-radius: 8px 0 0 8px; font-weight: 700; padding: 6px 14px;">
+                  <i class="fa-solid fa-chart-line mr-1"></i> Line (Garis)
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-primary btn-toggle-chart-type" data-type="bar" id="btnTypeBar" style="border-radius: 0 8px 8px 0; font-weight: 700; padding: 6px 14px;">
+                  <i class="fa-solid fa-chart-column mr-1"></i> Bar (Batang)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Selector Indikator yang Dianalisis -->
+          <div class="p-3 mb-3 rounded" style="background: #f8fafc; border: 1.5px solid #e2e8f0;">
+            <div class="row align-items-center">
+              <div class="col-12">
+                <label class="font-weight-bold text-dark mb-1" style="font-size: 12px;">
+                  <i class="fa-solid fa-chart-simple text-primary mr-1"></i> Pilih Indikator yang Ditampilkan dalam Grafik:
+                </label>
+                <select class="form-control font-weight-bold" id="selectChartIndikator" style="border-radius: 8px; font-size: 13px; height: 38px;">
+                  <!-- Diisi via JS -->
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stat Cards Perbandingan Indikator Terpilih -->
+          <div class="row mb-3" id="containerStatCardsChart"></div>
+
+          <!-- Canvas Grafik Utama Tren Tahunan -->
+          <div class="card border p-3 mb-4" style="border-radius: 14px; background: #ffffff;">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <h6 class="font-weight-bold text-dark mb-0" style="font-size: 14px;" id="titleMainChart">
+                Grafik Tren Waktu Antar Daerah
+              </h6>
+              <small class="text-muted font-italic">Pergerakan angka per tahun dari masing-masing daerah.</small>
+            </div>
+            <div style="position: relative; height: 380px; width: 100%;">
+              <canvas id="canvasKomparasiChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Canvas Grafik Benchmark Sub-Kategori -->
+          <div class="card border p-3" style="border-radius: 14px; background: #ffffff;" id="boxMultiSubChart">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <div>
+                <h6 class="font-weight-bold text-dark mb-0" style="font-size: 14px;" id="titleMultiSubChart">
+                  Benchmark Seluruh Indikator Sub-Kategori
+                </h6>
+                <small class="text-muted font-italic" id="subTitleMultiSubChart">Perbandingan indikator dalam sub-kategori aktif untuk tahun yang dipilih.</small>
+              </div>
+            </div>
+            <div style="position: relative; height: 380px; width: 100%;">
+              <canvas id="canvasMultiSubChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 4: TABEL MATRIKS KOMPARASI INDIKATOR LENGKAP (DI BAWAH GRAFIK) -->
+      <div class="card border-0 shadow-sm mb-4" id="cardKomparasiTabel" style="border-radius: 16px; background: #ffffff;">
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center justify-content-between flex-wrap pb-3 mb-3 border-bottom" style="gap: 12px;">
+            <div class="d-flex align-items-center" style="gap: 10px;">
+              <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(16, 185, 129, 0.1); color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                <i class="fa-solid fa-table-cells"></i>
+              </div>
+              <div>
+                <div class="d-flex align-items-center" style="gap: 8px;">
+                  <h5 class="font-weight-bold text-dark mb-0" style="font-size: 16px;">
+                    Matriks Perbandingan Indikator Lengkap
+                  </h5>
+                  <span class="badge badge-light border text-muted" id="badgeTotalRowsKomparasi" style="font-size: 12px; padding: 4px 10px;">0 Baris</span>
+                </div>
+                <small class="text-muted" id="lblKomparasiInfoRingkas">Data olahan indikator antar daerah berdampingan.</small>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center" style="gap: 8px;">
+              <button type="button" class="btn btn-sm btn-outline-secondary" id="btnExportCsvKomparasi" style="border-radius: 8px; font-weight: 600; font-size: 12px; padding: 7px 14px;">
+                <i class="fa-solid fa-file-csv mr-1"></i> Ekspor CSV
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-primary" id="btnPrintKomparasi" style="border-radius: 8px; font-weight: 600; font-size: 12px; padding: 7px 14px;">
+                <i class="fa-solid fa-print mr-1"></i> Cetak
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
+            <table class="table table-hover table-bordered table-sm mb-0 table-komparasi" id="tabelKomparasiData">
+              <thead id="theadKomparasi"></thead>
+              <tbody id="tbodyKomparasi"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- /containerKomparasiResult -->
+  </div> <!-- /sectionKomparasiDaerah -->
 
 <?php else: ?>
   <!-- =========================================================================
@@ -1537,7 +1989,8 @@ $kategoriStats = $KategoriStats ?? array();
   </div>
 </div>
 
-<!-- Scripts Eksternal Pendukung Bootstrap & DataTables -->
+<!-- Scripts Eksternal Pendukung Bootstrap & DataTables & Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="<?=base_url("vendors/bootstrap/dist/js/bootstrap.bundle.min.js")?>"></script>
 <script src="<?=base_url("assets/datatables/jquery.dataTables.js")?>"></script>
 <script src="<?=base_url("assets/datatables-bs4/js/dataTables.bootstrap4.js")?>"></script>
@@ -2156,6 +2609,722 @@ $kategoriStats = $KategoriStats ?? array();
           alert('Terjadi kesalahan server saat menyinkronkan data!');
         }
       });
+    });
+
+    // =========================================================================
+    // 11. FITUR KOMPARASI DAERAH (HALAMAN PENUH / TAB LUAR)
+    // =========================================================================
+    var _komparasiData = null;
+
+    function switchToKomparasiTab() {
+      $('#btnTabKatalogView').removeClass('active');
+      $('#btnTabKomparasiView').addClass('active');
+      $('#sectionKatalogDaerah').hide();
+      $('#sectionKomparasiDaerah').fadeIn(200);
+
+      // Pastikan slot daerah terisi default jika belum
+      if (!$('#slotDaerah1').val()) {
+        var opts = [];
+        $('#slotDaerah1 option').each(function() {
+          if ($(this).val()) opts.push($(this).val());
+        });
+        if (opts.length > 0) $('#slotDaerah1').val(opts[0]);
+        if (opts.length > 1) $('#slotDaerah2').val(opts[1]);
+      }
+
+      if (!_komparasiData) {
+        loadKomparasiData();
+      } else {
+        if (_chartInstance) _chartInstance.resize();
+        if (_chartInstanceSub) _chartInstanceSub.resize();
+      }
+    }
+
+    function switchToKatalogTab() {
+      $('#btnTabKomparasiView').removeClass('active');
+      $('#btnTabKatalogView').addClass('active');
+      $('#sectionKomparasiDaerah').hide();
+      $('#sectionKatalogDaerah').fadeIn(200);
+    }
+
+    $(document).on('click', '#btnTabKatalogView, #btnKembaliKeKatalog', function(e) {
+      e.preventDefault();
+      switchToKatalogTab();
+    });
+
+    $(document).on('click', '#btnTabKomparasiView, #btnBukaBandingkanTop', function(e) {
+      e.preventDefault();
+      switchToKomparasiTab();
+    });
+
+    // Tombol Bandingkan pada kartu daerah -> Beralih ke tab komparasi untuk daerah ini
+    $(document).on('click', '.btn-toggle-compare-card', function(e) {
+      e.preventDefault();
+      var did = parseInt($(this).data('id'), 10);
+
+      $('#slotDaerah1').val(did);
+
+      // Cari daerah kedua yang berbeda dari slot 1 untuk otomatis dipasangkan
+      var secondVal = '';
+      $('#slotDaerah2 option').each(function() {
+        var val = $(this).val();
+        if (val && parseInt(val, 10) !== did) {
+          secondVal = val;
+          return false; // break loop
+        }
+      });
+      $('#slotDaerah2').val(secondVal);
+      $('#slotDaerah3').val('');
+
+      switchToKomparasiTab();
+      loadKomparasiData();
+      if ($('#sectionKomparasiDaerah').length) {
+        $('html, body').animate({ scrollTop: $('#sectionKomparasiDaerah').offset().top - 70 }, 300);
+      }
+    });
+
+    // Deteksi URL parameter atau hash untuk membuka tab komparasi langsung
+    var _urlParams = new URLSearchParams(window.location.search);
+    if (_urlParams.get('tab') === 'komparasi' || window.location.hash === '#komparasi') {
+      switchToKomparasiTab();
+    }
+
+    // Tombol Terapkan Daerah
+    $('#btnRefreshKomparasi').on('click', function() {
+      var s1 = $('#slotDaerah1').val();
+      var s2 = $('#slotDaerah2').val();
+      var s3 = $('#slotDaerah3').val();
+
+      var newIds = [];
+      [s1, s2, s3].forEach(function(id) {
+        var intId = parseInt(id, 10);
+        if (intId && newIds.indexOf(intId) === -1) {
+          newIds.push(intId);
+        }
+      });
+
+      if (newIds.length === 0) {
+        alert('Silakan pilih minimal 1 daerah di slot komparasi!');
+        return;
+      }
+
+      loadKomparasiData();
+    });
+
+    function loadKomparasiData() {
+      var s1 = $('#slotDaerah1').val();
+      var s2 = $('#slotDaerah2').val();
+      var s3 = $('#slotDaerah3').val();
+
+      var ids = [];
+      [s1, s2, s3].forEach(function(id) {
+        var intId = parseInt(id, 10);
+        if (intId && ids.indexOf(intId) === -1) {
+          ids.push(intId);
+        }
+      });
+
+      if (ids.length === 0) {
+        $('#theadKomparasi').empty();
+        $('#tbodyKomparasi').html('<tr><td colspan="10" class="text-center py-4 text-muted">Belum ada daerah yang dipilih.</td></tr>');
+        return;
+      }
+
+      $('#loadingKomparasi').show();
+      $('#containerKomparasiResult').hide();
+
+      $.ajax({
+        url: BaseURL + 'Staf/GetKomparasiData',
+        type: 'POST',
+        data: { daerah_ids: ids },
+        dataType: 'json',
+        success: function(resp) {
+          $('#loadingKomparasi').hide();
+          $('#containerKomparasiResult').show();
+
+          if (resp.status !== 'success') {
+            alert(resp.message || 'Gagal memuat komparasi daerah!');
+            return;
+          }
+
+          _komparasiData = resp;
+
+          var names = [];
+          resp.regions.forEach(function(r) { names.push(r.NamaDaerah); });
+          $('#lblKomparasiInfoRingkas').html('<i class="fa-solid fa-code-compare text-primary mr-1"></i> ' + names.join(' <span class="text-muted font-weight-normal">vs</span> '));
+
+          var thnHtml = '<option value="ALL">Semua Kolom Tahun</option>';
+          if (resp.all_years && resp.all_years.length > 0) {
+            resp.all_years.forEach(function(y) {
+              thnHtml += '<option value="' + y + '">Tahun ' + y + '</option>';
+            });
+          }
+          var prevThn = $('#filterKomparasiTahun').val();
+          $('#filterKomparasiTahun').html(thnHtml);
+          if (prevThn && resp.all_years.indexOf(prevThn) !== -1) {
+            $('#filterKomparasiTahun').val(prevThn);
+          } else if (resp.all_years && resp.all_years.length > 0) {
+            $('#filterKomparasiTahun').val(resp.all_years[resp.all_years.length - 1]);
+          }
+
+          updateSubKategoriFilter();
+          updateChartIndikatorOptions();
+          renderKomparasiTable();
+          renderKomparasiCharts();
+        },
+        error: function() {
+          $('#loadingKomparasi').hide();
+          $('#containerKomparasiResult').show();
+          alert('Terjadi kesalahan koneksi server saat memuat data komparasi!');
+        }
+      });
+    }
+
+    function updateSubKategoriFilter() {
+      var katVal = $('#filterKomparasiKategori').val();
+      var subSelect = $('#filterKomparasiSub');
+      var prevSub = subSelect.val();
+      subSelect.empty().append('<option value="ALL">Semua Sub-Kategori</option>');
+
+      if (!_komparasiData || !_komparasiData.master_kategori) return;
+
+      var subList = [];
+      $.each(_komparasiData.master_kategori, function(kKey, kat) {
+        if (katVal === 'ALL' || kat.nama === katVal) {
+          $.each(kat.sub || {}, function(sKey, sub) {
+            if (subList.indexOf(sub.nama) === -1) {
+              subList.push(sub.nama);
+            }
+          });
+        }
+      });
+
+      subList.forEach(function(s) {
+        subSelect.append('<option value="' + s + '">' + s + '</option>');
+      });
+
+      if (prevSub && subList.indexOf(prevSub) !== -1) {
+        subSelect.val(prevSub);
+      }
+    }
+
+    // Filter events
+    $('#filterKomparasiKategori').on('change', function() {
+      updateSubKategoriFilter();
+      updateChartIndikatorOptions();
+      renderKomparasiTable();
+      renderKomparasiCharts();
+    });
+    $('#filterKomparasiSub').on('change', function() {
+      updateChartIndikatorOptions();
+      renderKomparasiTable();
+      renderKomparasiCharts();
+    });
+    $('#filterKomparasiTahun').on('change', function() {
+      renderKomparasiTable();
+      renderKomparasiCharts();
+    });
+    $('#searchKomparasiIndikator').on('input', function() {
+      renderKomparasiTable();
+    });
+
+    function renderKomparasiTable() {
+      if (!_komparasiData || !_komparasiData.rows || !_komparasiData.regions) return;
+
+      var regions = _komparasiData.regions;
+      var allYears = _komparasiData.all_years || [];
+      var rows = _komparasiData.rows;
+      var selectedKat = $('#filterKomparasiKategori').val();
+      var selectedSub = $('#filterKomparasiSub').val();
+      var selectedThn = $('#filterKomparasiTahun').val();
+      var searchWord = $('#searchKomparasiIndikator').val().trim().toLowerCase();
+
+      var filteredRows = rows.filter(function(r) {
+        if (selectedKat !== 'ALL' && r.Kategori !== selectedKat) return false;
+        if (selectedSub !== 'ALL' && r.SubKategori !== selectedSub) return false;
+        if (searchWord && r.NamaIndikator.toLowerCase().indexOf(searchWord) === -1) return false;
+        return true;
+      });
+
+      $('#badgeTotalRowsKomparasi').text(filteredRows.length + ' Indikator');
+
+      var isSingleYear = (selectedThn !== 'ALL');
+      var theadHtml = '';
+
+      if (isSingleYear) {
+        theadHtml += '<tr style="background: #0f172a; color: #ffffff;">';
+        theadHtml += '<th style="width: 40px;">No</th>';
+        theadHtml += '<th style="width: 200px;">Kategori & Sub-Kategori</th>';
+        theadHtml += '<th style="min-width: 220px;">Nama Indikator</th>';
+        theadHtml += '<th style="width: 80px;">Satuan</th>';
+
+        regions.forEach(function(r, idx) {
+          var cls = (idx === 0) ? 'th-region-1' : ((idx === 1) ? 'th-region-2' : 'th-region-3');
+          theadHtml += '<th class="' + cls + '" style="min-width: 140px;">' + r.NamaDaerah + ' (' + selectedThn + ')</th>';
+        });
+
+        if (regions.length === 2) {
+          theadHtml += '<th style="background: #334155; color: #ffffff; width: 130px;">Selisih (' + regions[0].NamaDaerah.replace('Kabupaten ', 'Kab. ').replace('Kota ', 'Kota ') + ' - ' + regions[1].NamaDaerah.replace('Kabupaten ', 'Kab. ').replace('Kota ', 'Kota ') + ')</th>';
+        }
+        theadHtml += '</tr>';
+      } else {
+        theadHtml += '<tr>';
+        theadHtml += '<th rowspan="2" style="width: 40px; background: #0f172a; color: #ffffff;">No</th>';
+        theadHtml += '<th rowspan="2" style="width: 180px; background: #0f172a; color: #ffffff;">Kategori</th>';
+        theadHtml += '<th rowspan="2" style="width: 180px; background: #0f172a; color: #ffffff;">Sub-Kategori</th>';
+        theadHtml += '<th rowspan="2" style="min-width: 220px; background: #0f172a; color: #ffffff;">Nama Indikator</th>';
+        theadHtml += '<th rowspan="2" style="width: 80px; background: #0f172a; color: #ffffff;">Satuan</th>';
+
+        regions.forEach(function(r, idx) {
+          var colSpan = allYears.length || 1;
+          var cls = (idx === 0) ? 'th-region-1' : ((idx === 1) ? 'th-region-2' : 'th-region-3');
+          theadHtml += '<th colspan="' + colSpan + '" class="' + cls + '">' + r.NamaDaerah + '</th>';
+        });
+        theadHtml += '</tr>';
+
+        theadHtml += '<tr>';
+        regions.forEach(function(r, idx) {
+          var cls = (idx === 0) ? 'th-year-1' : ((idx === 1) ? 'th-year-2' : 'th-year-3');
+          if (allYears.length > 0) {
+            allYears.forEach(function(y) {
+              theadHtml += '<th class="' + cls + '" style="min-width: 75px;">' + y + '</th>';
+            });
+          } else {
+            theadHtml += '<th class="' + cls + '">-</th>';
+          }
+        });
+        theadHtml += '</tr>';
+      }
+
+      $('#theadKomparasi').html(theadHtml);
+
+      if (filteredRows.length === 0) {
+        var colCount = isSingleYear ? (4 + regions.length + (regions.length === 2 ? 1 : 0)) : (5 + (regions.length * (allYears.length || 1)));
+        $('#tbodyKomparasi').html('<tr><td colspan="' + colCount + '" class="text-center py-5 text-muted"><i class="fa-solid fa-filter mr-1"></i> Tidak ada indikator yang sesuai dengan filter pencarian.</td></tr>');
+        return;
+      }
+
+      var tbodyHtml = '';
+      filteredRows.forEach(function(row, rIdx) {
+        tbodyHtml += '<tr>';
+        tbodyHtml += '<td class="text-center font-weight-bold text-muted" style="font-size: 11px;">' + (rIdx + 1) + '</td>';
+
+        if (isSingleYear) {
+          tbodyHtml += '<td style="font-size: 11.5px;">' +
+                       '<span class="font-weight-bold text-dark">' + (row.SubKategori || '-') + '</span><br>' +
+                       '<small class="text-muted">' + (row.Kategori || '-') + '</small>' +
+                       '</td>';
+        } else {
+          tbodyHtml += '<td style="font-size: 11px;" class="text-muted">' + (row.Kategori || '-') + '</td>';
+          tbodyHtml += '<td style="font-size: 11.5px;" class="font-weight-bold text-dark">' + (row.SubKategori || '-') + '</td>';
+        }
+
+        tbodyHtml += '<td class="font-weight-bold text-dark" style="font-size: 12.5px;">' + 
+                     escapeHtml(row.NamaIndikator) + 
+                     ' <button type="button" class="btn btn-xs btn-outline-info btn-lihat-chart-row py-0 px-2 ml-1" data-nama="' + escapeHtml(row.NamaIndikator) + '" style="font-size: 10px; border-radius: 6px; font-weight: 700;" title="Buka grafik tren untuk indikator ini"><i class="fa-solid fa-chart-line"></i> Grafik</button>' +
+                     '</td>';
+        tbodyHtml += '<td class="text-center" style="font-size: 11px;"><span class="satuan-badge">' + (row.Satuan || '-') + '</span></td>';
+
+        if (isSingleYear) {
+          var valList = [];
+          regions.forEach(function(r, idx) {
+            var cls = (idx === 0) ? 'val-cell-comp-1' : ((idx === 1) ? 'val-cell-comp-2' : 'val-cell-comp-3');
+            var v = (row.Values && row.Values[r.Id] && row.Values[r.Id][selectedThn] !== undefined) ? row.Values[r.Id][selectedThn] : '';
+            valList.push(v);
+            tbodyHtml += '<td class="' + cls + '">' + (v !== '' ? v : '<span class="text-muted font-italic">-</span>') + '</td>';
+          });
+
+          if (regions.length === 2) {
+            var v1 = valList[0];
+            var v2 = valList[1];
+            var deltaHtml = '<span class="text-muted">-</span>';
+            var n1 = parseFloat(String(v1).replace(',', '.'));
+            var n2 = parseFloat(String(v2).replace(',', '.'));
+
+            if (!isNaN(n1) && !isNaN(n2)) {
+              var diff = n1 - n2;
+              var diffFormatted = (Math.round(diff * 100) / 100).toFixed(2);
+              if (diff > 0) {
+                deltaHtml = '<span class="badge-selisih-pos">+' + diffFormatted + '</span>';
+              } else if (diff < 0) {
+                deltaHtml = '<span class="badge-selisih-neg">' + diffFormatted + '</span>';
+              } else {
+                deltaHtml = '<span class="badge-selisih-zero">0.00 (Sama)</span>';
+              }
+            }
+            tbodyHtml += '<td class="text-center">' + deltaHtml + '</td>';
+          }
+        } else {
+          regions.forEach(function(r, idx) {
+            var cls = (idx === 0) ? 'val-cell-comp-1' : ((idx === 1) ? 'val-cell-comp-2' : 'val-cell-comp-3');
+            if (allYears.length > 0) {
+              allYears.forEach(function(y) {
+                var v = (row.Values && row.Values[r.Id] && row.Values[r.Id][y] !== undefined) ? row.Values[r.Id][y] : '';
+                tbodyHtml += '<td class="' + cls + '">' + (v !== '' ? v : '<span class="text-muted">-</span>') + '</td>';
+              });
+            } else {
+              tbodyHtml += '<td class="' + cls + '">-</td>';
+            }
+          });
+        }
+
+        tbodyHtml += '</tr>';
+      });
+
+      $('#tbodyKomparasi').html(tbodyHtml);
+
+      // Perbarui opsi dropdown indikator di tampilan grafik
+      updateChartIndikatorOptions();
+    }
+
+    // =========================================================================
+    // VISUALISASI GRAFIK / CHART.JS LOGIC
+    // =========================================================================
+    var _chartInstanceTrend = null;
+    var _chartInstanceSub = null;
+    var _currentChartType = 'line';
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // Tab switcher Tabel vs Grafik
+    $(document).on('click', '.btn-tab-komparasi-mode', function() {
+      var mode = $(this).data('mode');
+      $('.btn-tab-komparasi-mode').removeClass('active');
+      $(this).addClass('active');
+
+      if (mode === 'grafik') {
+        $('#paneKomparasiTabel').hide();
+        $('#paneKomparasiGrafik').show();
+        updateChartIndikatorOptions();
+        renderKomparasiCharts();
+      } else {
+        $('#paneKomparasiGrafik').hide();
+        $('#paneKomparasiTabel').show();
+      }
+    });
+
+    // Toggle tipe chart Line vs Bar
+    $(document).on('click', '.btn-toggle-chart-type', function() {
+      var type = $(this).data('type');
+      _currentChartType = type;
+      $('.btn-toggle-chart-type').removeClass('btn-primary active').addClass('btn-outline-primary');
+      $(this).removeClass('btn-outline-primary').addClass('btn-primary active');
+      renderKomparasiCharts();
+    });
+
+    // Klik tombol grafik di baris tabel langsung loncat ke visualisasi indikator tersebut
+    $(document).on('click', '.btn-lihat-chart-row', function(e) {
+      e.preventDefault();
+      var namaInd = $(this).data('nama');
+      if (namaInd) {
+        $('#selectChartIndikator').val(namaInd);
+        renderKomparasiCharts();
+        if ($('#cardKomparasiGrafik').length) {
+          $('html, body').animate({ scrollTop: $('#cardKomparasiGrafik').offset().top - 80 }, 300);
+        }
+      }
+    });
+
+    $('#selectChartIndikator').on('change', function() {
+      renderKomparasiCharts();
+    });
+
+    function updateChartIndikatorOptions(selectedNama) {
+      if (!_komparasiData || !_komparasiData.rows) return;
+      var sel = $('#selectChartIndikator');
+      var curVal = selectedNama || sel.val();
+      sel.empty();
+
+      var selectedKat = $('#filterKomparasiKategori').val();
+      var selectedSub = $('#filterKomparasiSub').val();
+
+      var availableRows = _komparasiData.rows.filter(function(r) {
+        if (selectedKat !== 'ALL' && r.Kategori !== selectedKat) return false;
+        if (selectedSub !== 'ALL' && r.SubKategori !== selectedSub) return false;
+        return true;
+      });
+
+      if (availableRows.length === 0) availableRows = _komparasiData.rows;
+
+      availableRows.forEach(function(r) {
+        var opt = $('<option></option>').attr('value', r.NamaIndikator).text(r.NamaIndikator + ' (' + (r.SubKategori || '-') + ')');
+        sel.append(opt);
+      });
+
+      if (curVal && sel.find('option[value="' + curVal + '"]').length) {
+        sel.val(curVal);
+      } else if (availableRows.length > 0) {
+        sel.val(availableRows[0].NamaIndikator);
+      }
+    }
+
+    function renderKomparasiCharts() {
+      if (typeof Chart === 'undefined') {
+        console.warn('Chart.js belum siap.');
+        return;
+      }
+      if (!_komparasiData || !_komparasiData.rows || !_komparasiData.regions) return;
+
+      var targetName = $('#selectChartIndikator').val();
+      var targetRow = null;
+      for (var i = 0; i < _komparasiData.rows.length; i++) {
+        if (_komparasiData.rows[i].NamaIndikator === targetName) {
+          targetRow = _komparasiData.rows[i];
+          break;
+        }
+      }
+      if (!targetRow && _komparasiData.rows.length > 0) {
+        targetRow = _komparasiData.rows[0];
+      }
+      if (!targetRow) return;
+
+      $('#lblSatuanChart').text(targetRow.Satuan || '-');
+      $('#titleMainChart').html('<i class="fa-solid fa-chart-line text-primary mr-1"></i> Tren Komparasi: ' + targetRow.NamaIndikator + (targetRow.Satuan ? ' (' + targetRow.Satuan + ')' : ''));
+
+      var regions = _komparasiData.regions;
+      var allYears = _komparasiData.all_years || [];
+
+      var colorSchemes = [
+        { border: '#0284c7', bg: 'rgba(2, 132, 199, 0.25)', badge: 'background: #0284c7; color: #fff;' },
+        { border: '#10b981', bg: 'rgba(16, 185, 129, 0.25)', badge: 'background: #10b981; color: #fff;' },
+        { border: '#f59e0b', bg: 'rgba(245, 158, 11, 0.25)', badge: 'background: #f59e0b; color: #fff;' }
+      ];
+
+      // 1. Stat Cards
+      var statCardsHtml = '';
+      var latestYear = allYears.length > 0 ? allYears[allYears.length - 1] : null;
+
+      regions.forEach(function(r, idx) {
+        var c = colorSchemes[idx % colorSchemes.length];
+        var valLatest = (latestYear && targetRow.Values && targetRow.Values[r.Id] && targetRow.Values[r.Id][latestYear] !== undefined) ? targetRow.Values[r.Id][latestYear] : '-';
+
+        statCardsHtml += 
+          '<div class="col-md-' + (12 / regions.length) + ' mb-2">' +
+            '<div class="p-3 rounded shadow-sm border" style="background: #ffffff; border-top: 4px solid ' + c.border + ' !important;">' +
+              '<div class="d-flex align-items-center justify-content-between mb-1">' +
+                '<span class="badge px-2 py-1 font-weight-bold" style="' + c.badge + '; font-size: 11px; border-radius: 6px;">' + r.NamaDaerah + '</span>' +
+                '<small class="text-muted font-weight-bold">Tahun ' + (latestYear || '-') + '</small>' +
+              '</div>' +
+              '<div class="d-flex align-items-baseline justify-content-between mt-2">' +
+                '<div style="font-size: 22px; font-weight: 800; color: #1e293b;">' + (valLatest !== '-' ? valLatest : '<span class="text-muted font-italic">-</span>') + '</div>' +
+                '<div class="text-muted" style="font-size: 12px; font-weight: 600;">' + (targetRow.Satuan || '') + '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+      });
+
+      $('#containerStatCardsChart').html(statCardsHtml);
+
+      // 2. Render Main Trend Chart (canvasKomparasiChart)
+      var datasetsTrend = [];
+      regions.forEach(function(r, idx) {
+        var c = colorSchemes[idx % colorSchemes.length];
+        var dataPoints = [];
+        allYears.forEach(function(y) {
+          var raw = (targetRow.Values && targetRow.Values[r.Id] && targetRow.Values[r.Id][y] !== undefined) ? targetRow.Values[r.Id][y] : null;
+          if (raw !== null && raw !== '') {
+            var parsed = parseFloat(String(raw).replace(',', '.'));
+            dataPoints.push(!isNaN(parsed) ? parsed : null);
+          } else {
+            dataPoints.push(null);
+          }
+        });
+
+        datasetsTrend.push({
+          label: r.NamaDaerah,
+          data: dataPoints,
+          borderColor: c.border,
+          backgroundColor: c.bg,
+          borderWidth: 3,
+          tension: 0.35,
+          fill: (_currentChartType === 'line' ? false : true),
+          pointRadius: 5,
+          pointHoverRadius: 8
+        });
+      });
+
+      if (_chartInstanceTrend) {
+        _chartInstanceTrend.destroy();
+        _chartInstanceTrend = null;
+      }
+
+      var ctxTrend = document.getElementById('canvasKomparasiChart');
+      if (ctxTrend) {
+        _chartInstanceTrend = new Chart(ctxTrend.getContext('2d'), {
+          type: _currentChartType,
+          data: {
+            labels: allYears,
+            datasets: datasetsTrend
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+              legend: {
+                position: 'top',
+                labels: { font: { weight: 'bold', size: 12 }, padding: 15 }
+              },
+              tooltip: {
+                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                padding: 12,
+                titleFont: { size: 13, weight: 'bold' },
+                bodyFont: { size: 12 },
+                callbacks: {
+                  label: function(context) {
+                    var val = context.parsed.y !== null ? context.parsed.y : '-';
+                    return ' ' + context.dataset.label + ': ' + val + (targetRow.Satuan ? ' ' + targetRow.Satuan : '');
+                  }
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: false,
+                grid: { color: '#f1f5f9' },
+                ticks: { font: { weight: '600' } }
+              },
+              x: {
+                grid: { display: false },
+                ticks: { font: { weight: '700' } }
+              }
+            }
+          }
+        });
+      }
+
+      // 3. Render Benchmark Multi-Indikator Sub-Kategori (canvasMultiSubChart)
+      var subName = targetRow.SubKategori || '';
+      var subRows = _komparasiData.rows.filter(function(r) {
+        return r.SubKategori === subName;
+      });
+
+      if (subRows.length > 0) {
+        $('#boxMultiSubChart').show();
+        var selectedThn = $('#filterKomparasiTahun').val();
+        var compYear = (selectedThn !== 'ALL') ? selectedThn : latestYear;
+        $('#titleMultiSubChart').html('<i class="fa-solid fa-chart-column text-success mr-1"></i> Benchmark Sub-Kategori: ' + subName);
+        $('#subTitleMultiSubChart').html('Perbandingan seluruh indikator dalam sub-kategori <b>' + subName + '</b> untuk Tahun <b>' + compYear + '</b>:');
+
+        var subLabels = [];
+        var subFullNames = [];
+        subRows.forEach(function(sr) {
+          var shortName = sr.NamaIndikator.length > 26 ? (sr.NamaIndikator.substring(0, 24) + '...') : sr.NamaIndikator;
+          subLabels.push(shortName);
+          subFullNames.push(sr.NamaIndikator + (sr.Satuan ? ' (' + sr.Satuan + ')' : ''));
+        });
+
+        var datasetsSub = [];
+        regions.forEach(function(r, idx) {
+          var c = colorSchemes[idx % colorSchemes.length];
+          var points = [];
+          subRows.forEach(function(sr) {
+            var raw = (sr.Values && sr.Values[r.Id] && sr.Values[r.Id][compYear] !== undefined) ? sr.Values[r.Id][compYear] : null;
+            if (raw !== null && raw !== '') {
+              var parsed = parseFloat(String(raw).replace(',', '.'));
+              points.push(!isNaN(parsed) ? parsed : null);
+            } else {
+              points.push(null);
+            }
+          });
+
+          datasetsSub.push({
+            label: r.NamaDaerah,
+            data: points,
+            backgroundColor: c.border,
+            borderRadius: 6
+          });
+        });
+
+        if (_chartInstanceSub) {
+          _chartInstanceSub.destroy();
+          _chartInstanceSub = null;
+        }
+
+        var ctxSub = document.getElementById('canvasMultiSubChart');
+        if (ctxSub) {
+          _chartInstanceSub = new Chart(ctxSub.getContext('2d'), {
+            type: 'bar',
+            data: {
+              labels: subLabels,
+              datasets: datasetsSub
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              interaction: { mode: 'index', intersect: false },
+              plugins: {
+                legend: {
+                  position: 'top',
+                  labels: { font: { weight: 'bold', size: 12 }, padding: 15 }
+                },
+                tooltip: {
+                  backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                  padding: 12,
+                  callbacks: {
+                    title: function(items) {
+                      var idx = items[0].dataIndex;
+                      return subFullNames[idx] || items[0].label;
+                    }
+                  }
+                }
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  grid: { color: '#f1f5f9' },
+                  ticks: { font: { weight: '600' } }
+                },
+                x: {
+                  grid: { display: false },
+                  ticks: { font: { size: 11, weight: '600' } }
+                }
+              }
+            }
+          });
+        }
+      } else {
+        $('#boxMultiSubChart').hide();
+      }
+    }
+
+    // Export CSV Komparasi
+    $('#btnExportCsvKomparasi').on('click', function() {
+      var table = document.getElementById('tabelKomparasiData');
+      if (!table) return;
+
+      var csv = [];
+      for (var i = 0; i < table.rows.length; i++) {
+        var row = [];
+        var cols = table.rows[i].querySelectorAll('td, th');
+        for (var j = 0; j < cols.length; j++) {
+          var cleanText = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, ' ').replace(/"/g, '""').trim();
+          row.push('"' + cleanText + '"');
+        }
+        csv.push(row.join(','));
+      }
+
+      var csvString = '\uFEFF' + csv.join('\n');
+      var blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+      var link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute('download', 'komparasi_indikator_daerah.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    // Print Komparasi
+    $('#btnPrintKomparasi').on('click', function() {
+      window.print();
     });
 
   });
