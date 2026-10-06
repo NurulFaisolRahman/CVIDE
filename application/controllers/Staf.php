@@ -1854,6 +1854,18 @@ class Staf extends CI_Controller {
       'UpdatedAt' => date('Y-m-d H:i:s')
     ));
 
+    // Bersihkan juga data nilai tahun tersebut dari semua indikator daerah ini agar tidak terbaca di diagram/tabel
+    $inds = $this->db->where('DaerahId', $daerahId)->get('olah_data_indikator')->result_array();
+    foreach ($inds as $ind) {
+      $dt = json_decode($ind['DataTahun'] ?? '{}', true) ?: array();
+      if (isset($dt[(string)$tahun])) {
+        unset($dt[(string)$tahun]);
+        $this->db->where('Id', $ind['Id'])->update('olah_data_indikator', array(
+          'DataTahun' => json_encode($dt)
+        ));
+      }
+    }
+
     echo '1';
   }
 
@@ -2728,16 +2740,21 @@ class Staf extends CI_Controller {
         $d['TotalIndikator'] = $this->db->where('DaerahId', $did)->count_all_results('olah_data_indikator');
         $regions[] = $d;
 
-        foreach ($years as $y) {
-          $allYearsSet[(string)$y] = true;
+        if (!empty($years)) {
+          foreach ($years as $y) {
+            $allYearsSet[(string)$y] = true;
+          }
         }
 
         // Ambil semua indikator daerah ini
         $inds = $this->db->where('DaerahId', $did)->order_by('Urutan', 'ASC')->order_by('Id', 'ASC')->get('olah_data_indikator')->result_array();
         foreach ($inds as &$ind) {
           $ind['DataTahunParsed'] = json_decode($ind['DataTahun'] ?? '{}', true) ?: array();
-          foreach (array_keys($ind['DataTahunParsed']) as $y) {
-            $allYearsSet[(string)$y] = true;
+          if (empty($years)) {
+            // Fallback hanya jika daerah belum memiliki TahunList sama sekali
+            foreach (array_keys($ind['DataTahunParsed']) as $y) {
+              $allYearsSet[(string)$y] = true;
+            }
           }
         }
         unset($ind);
@@ -2750,8 +2767,9 @@ class Staf extends CI_Controller {
       return;
     }
 
-    $sortedYears = array_keys($allYearsSet);
+    $sortedYears = array_map('strval', array_keys($allYearsSet));
     sort($sortedYears, SORT_NUMERIC);
+    $sortedYears = array_values(array_map('strval', $sortedYears));
 
     // Master Kategori untuk penyusunan urutan komparasi standar
     $masterKategori = $this->getMasterKategoriOlahData();
@@ -2813,8 +2831,15 @@ class Staf extends CI_Controller {
           }
         }
 
-        // Simpan nilai data tahun daerah ini
-        $matrix[$key]['Values'][$did] = $ind['DataTahunParsed'];
+        // Simpan nilai data tahun daerah ini (hanya tahun aktif yang diizinkan)
+        $cleanValues = array();
+        foreach ($ind['DataTahunParsed'] as $yK => $yV) {
+          $strYK = (string)$yK;
+          if (isset($allYearsSet[$strYK])) {
+            $cleanValues[$strYK] = $yV;
+          }
+        }
+        $matrix[$key]['Values'][$did] = $cleanValues;
         if (empty($matrix[$key]['Satuan']) && !empty($ind['Satuan'])) {
           $matrix[$key]['Satuan'] = $ind['Satuan'];
         }
