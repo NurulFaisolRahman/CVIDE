@@ -530,6 +530,20 @@ $kategoriStats = $KategoriStats ?? array();
     text-align: center;
     font-size: 12px;
   }
+  .table-komparasi td.cell-kategori-merged {
+    vertical-align: middle !important;
+    background-color: #f1f5f9 !important;
+    font-weight: 800;
+    color: #043168;
+    font-size: 11.5px;
+    border: 1.5px solid #94a3b8 !important;
+    border-right: 2px solid #64748b !important;
+    padding: 10px 12px !important;
+    text-align: left;
+  }
+  .table-komparasi tr.tr-category-start td {
+    border-top: 3px solid #043168 !important;
+  }
   .th-region-1 {
     background: linear-gradient(135deg, #043168 0%, #0369a1 100%) !important;
     color: #ffffff !important;
@@ -710,6 +724,66 @@ $kategoriStats = $KategoriStats ?? array();
   .catatan-inline-editor textarea:focus {
     border-color: #ef4444 !important;
     box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2) !important;
+  }
+
+  /* Styling Khusus Mode Cetak (Hanya Mencetak Tabel Saja) */
+  @media print {
+    @page {
+      size: landscape;
+      margin: 10mm;
+    }
+    .left_col, .top_nav, .sidebar-footer, footer,
+    .olah-header-card, .olah-breadcrumb,
+    .btn, button, .modal, .modal-backdrop,
+    .dataTables_length, .dataTables_filter, .dataTables_info, .dataTables_paginate,
+    .col-aksi-th, .col-aksi-td,
+    .col-verif-th, .col-verif-td, .cell-verifikasi-container,
+    .btn-lihat-chart-row,
+    .container-catatan-verif .catatan-inline-editor,
+    .btn-buka-modal-catatan .fa-pen {
+      display: none !important;
+    }
+
+    body, .right_col, .main_container, .container.body {
+      background: #ffffff !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      width: 100% !important;
+      min-height: auto !important;
+    }
+
+    #cardTabelUtama, #cardTabelUtama .card-body,
+    #cardKomparasiGrafik, #cardKomparasiGrafik .card-body,
+    #cardKomparasiTabel, #cardKomparasiTabel .card-body {
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      width: 100% !important;
+    }
+
+    #cardSlotKomparasi, #loadingKomparasi,
+    #selectChartIndikator, .btn-group,
+    #filterTabelTahunKomparasi, #btnExportCsvKomparasi, #btnPrintKomparasi {
+      display: none !important;
+    }
+
+    .table-responsive {
+      overflow: visible !important;
+      max-height: none !important;
+    }
+
+    #TabelIndikatorSub, #tabelKomparasiData {
+      width: 100% !important;
+      font-size: 11px !important;
+      border-collapse: collapse !important;
+    }
+
+    #TabelIndikatorSub th, #TabelIndikatorSub td,
+    #tabelKomparasiData th, #tabelKomparasiData td {
+      border: 1px solid #cbd5e1 !important;
+      padding: 6px 8px !important;
+    }
   }
 </style>
 
@@ -1508,7 +1582,7 @@ $kategoriStats = $KategoriStats ?? array();
 
     <div class="row">
       <div class="col-12">
-        <div class="card shadow-sm border-0" style="border-radius: 18px; background: #ffffff;">
+        <div class="card shadow-sm border-0" id="cardTabelUtama" style="border-radius: 18px; background: #ffffff;">
           <div class="card-body p-4">
             <div class="d-flex flex-wrap align-items-center justify-content-between pb-3 mb-3" style="gap: 12px; border-bottom: 1px solid #f1f5f9;">
               <div>
@@ -1555,7 +1629,7 @@ $kategoriStats = $KategoriStats ?? array();
                         style="border-radius: 10px; font-weight: 700; font-size: 12.5px; padding: 8px 18px; background: #0284c7; border: none; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25); display: inline-flex; align-items: center; gap: 6px;">
                   <i class="fa-solid fa-cloud-arrow-down"></i> Tambah via API
                 </button>
-                <button type="button" class="btn btn-outline-secondary" onclick="window.print()" style="border-radius: 10px; font-weight: 600; font-size: 12.5px; padding: 8px 16px; border: 1.5px solid #cbd5e1; background: #ffffff; color: #334155; display: inline-flex; align-items: center; gap: 6px;">
+                <button type="button" class="btn btn-outline-secondary" id="btnCetakTabelIndikator" style="border-radius: 10px; font-weight: 600; font-size: 12.5px; padding: 8px 16px; border: 1.5px solid #cbd5e1; background: #ffffff; color: #334155; display: inline-flex; align-items: center; gap: 6px;">
                   <i class="fa-solid fa-print"></i> Cetak Tabel
                 </button>
               </div>
@@ -1575,10 +1649,10 @@ $kategoriStats = $KategoriStats ?? array();
                         <?= htmlspecialchars($thn) ?>
                       </th>
                     <?php endforeach; ?>
-                    <th style="width: 14%; min-width: 145px;" class="text-center align-middle">
+                    <th style="width: 14%; min-width: 145px;" class="text-center align-middle col-verif-th">
                       <i class="fa-solid fa-clipboard-check mr-1"></i> Verifikasi
                     </th>
-                    <th style="width: 10%; min-width: 95px;" class="text-center align-middle">Aksi</th>
+                    <th style="width: 10%; min-width: 95px;" class="text-center align-middle col-aksi-th">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1667,7 +1741,7 @@ $kategoriStats = $KategoriStats ?? array();
 
                       <!-- Kolom Verifikasi (Sebelum Kolom Aksi) -->
                       <?php $catatanVerif = trim($ind['CatatanVerifikasi'] ?? ''); ?>
-                      <td class="text-center align-middle cell-verifikasi-container" 
+                      <td class="text-center align-middle cell-verifikasi-container col-verif-td" 
                           data-order="<?= $statusVerif ?>" 
                           data-indikator-id="<?= $indId ?>"
                           data-indikator-nama="<?= htmlspecialchars($ind['NamaIndikator'], ENT_QUOTES) ?>">
@@ -1762,7 +1836,7 @@ $kategoriStats = $KategoriStats ?? array();
                         <?php endif; ?>
                       </td>
 
-                      <td class="text-center align-middle">
+                      <td class="text-center align-middle col-aksi-td">
                         <div class="d-inline-flex align-items-center justify-content-center" style="gap: 5px;">
                           <?php if ($indId > 0): ?>
                             <?php if (!empty($ind['ApiUrl'])): ?>
@@ -2367,10 +2441,10 @@ $kategoriStats = $KategoriStats ?? array();
           "infoFiltered": "(difilter dari _MAX_ total)",
           "search": "Cari Indikator:",
           "paginate": {
-            "first": "Awal",
-            "last": "Akhir",
-            "next": "Lanjut",
-            "previous": "Sebelum"
+            "first": '<i class="fa-solid fa-angles-left"></i>',
+            "last": '<i class="fa-solid fa-angles-right"></i>',
+            "next": '<i class="fa-solid fa-chevron-right"></i>',
+            "previous": '<i class="fa-solid fa-chevron-left"></i>'
           }
         },
         "pageLength": 25,
@@ -3601,7 +3675,8 @@ $kategoriStats = $KategoriStats ?? array();
       if (isSingleYear) {
         theadHtml += '<tr style="background: #0f172a; color: #ffffff;">';
         theadHtml += '<th style="width: 40px;">No</th>';
-        theadHtml += '<th style="width: 200px;">Kategori & Sub-Kategori</th>';
+        theadHtml += '<th style="width: 170px;">Kategori</th>';
+        theadHtml += '<th style="width: 170px;">Sub-Kategori</th>';
         theadHtml += '<th style="min-width: 220px;">Nama Indikator</th>';
         theadHtml += '<th style="width: 80px;">Satuan</th>';
 
@@ -3646,31 +3721,52 @@ $kategoriStats = $KategoriStats ?? array();
       $('#theadKomparasi').html(theadHtml);
 
       if (filteredRows.length === 0) {
-        var colCount = isSingleYear ? (4 + regions.length + (regions.length === 2 ? 1 : 0)) : (5 + (regions.length * (allYears.length || 1)));
+        var colCount = isSingleYear ? (5 + regions.length + (regions.length === 2 ? 1 : 0)) : (5 + (regions.length * (allYears.length || 1)));
         $('#tbodyKomparasi').html('<tr><td colspan="' + colCount + '" class="text-center py-5 text-muted"><i class="fa-solid fa-filter mr-1"></i> Tidak ada indikator yang sesuai dengan filter pencarian.</td></tr>');
         return;
       }
 
+      // Hitung rowspan untuk kolom Kategori (menggabungkan baris yang memiliki Kategori yang sama)
+      var katSpans = {};
+      var currentKat = null;
+      var currentStart = 0;
+
+      for (var i = 0; i < filteredRows.length; i++) {
+        var kVal = (filteredRows[i].Kategori || '-').trim();
+        if (i === 0) {
+          currentKat = kVal;
+          currentStart = 0;
+        } else if (kVal !== currentKat) {
+          katSpans[currentStart] = i - currentStart;
+          currentKat = kVal;
+          currentStart = i;
+        }
+      }
+      if (filteredRows.length > 0) {
+        katSpans[currentStart] = filteredRows.length - currentStart;
+      }
+
       var tbodyHtml = '';
       filteredRows.forEach(function(row, rIdx) {
-        tbodyHtml += '<tr>';
-        tbodyHtml += '<td class="text-center font-weight-bold text-muted" style="font-size: 11px;">' + (rIdx + 1) + '</td>';
+        var isNewCategory = (rIdx > 0 && katSpans[rIdx]);
+        var trClass = isNewCategory ? ' class="tr-category-start"' : '';
+        tbodyHtml += '<tr' + trClass + '>';
+        tbodyHtml += '<td class="text-center font-weight-bold text-muted align-middle" style="font-size: 11px;">' + (rIdx + 1) + '</td>';
 
-        if (isSingleYear) {
-          tbodyHtml += '<td style="font-size: 11.5px;">' +
-                       '<span class="font-weight-bold text-dark">' + (row.SubKategori || '-') + '</span><br>' +
-                       '<small class="text-muted">' + (row.Kategori || '-') + '</small>' +
-                       '</td>';
-        } else {
-          tbodyHtml += '<td style="font-size: 11px;" class="text-muted">' + (row.Kategori || '-') + '</td>';
-          tbodyHtml += '<td style="font-size: 11.5px;" class="font-weight-bold text-dark">' + (row.SubKategori || '-') + '</td>';
+        if (katSpans[rIdx]) {
+          tbodyHtml += '<td rowspan="' + katSpans[rIdx] + '" class="cell-kategori-merged">' +
+                       '<div class="font-weight-bold" style="color: #043168; font-size: 12px; line-height: 1.35;">' +
+                       escapeHtml(row.Kategori || '-') +
+                       '</div></td>';
         }
 
-        tbodyHtml += '<td class="font-weight-bold text-dark" style="font-size: 12.5px;">' + 
+        tbodyHtml += '<td style="font-size: 11.5px; vertical-align: middle;" class="font-weight-bold text-dark">' + escapeHtml(row.SubKategori || '-') + '</td>';
+
+        tbodyHtml += '<td class="font-weight-bold text-dark align-middle" style="font-size: 12.5px;">' + 
                      escapeHtml(row.NamaIndikator) + 
                      ' <button type="button" class="btn btn-xs btn-outline-info btn-lihat-chart-row py-0 px-2 ml-1" data-nama="' + escapeHtml(row.NamaIndikator) + '" style="font-size: 10px; border-radius: 6px; font-weight: 700;" title="Buka grafik tren untuk indikator ini"><i class="fa-solid fa-chart-line"></i> Grafik</button>' +
                      '</td>';
-        tbodyHtml += '<td class="text-center" style="font-size: 11px;"><span class="satuan-badge">' + (row.Satuan || '-') + '</span></td>';
+        tbodyHtml += '<td class="text-center align-middle" style="font-size: 11px;"><span class="satuan-badge">' + escapeHtml(row.Satuan || '-') + '</span></td>';
 
         if (isSingleYear) {
           var valList = [];
@@ -4136,9 +4232,287 @@ $kategoriStats = $KategoriStats ?? array();
       document.body.removeChild(link);
     });
 
-    // Print Komparasi
-    $('#btnPrintKomparasi').on('click', function() {
-      window.print();
+    // =========================================================================
+    // CETAK TABEL INDIKATOR (HANYA TABEL SAJA TANPA TAMPILAN HALAMAN/SIDEBAR)
+    // =========================================================================
+    function cetakTabelOlahData() {
+      var daerahNama = '<?= addslashes(htmlspecialchars($ActiveDaerah['NamaDaerah'] ?? 'Daerah', ENT_QUOTES)) ?>';
+      var katNama = '<?= addslashes(htmlspecialchars($activeKatData['nama'] ?? '-', ENT_QUOTES)) ?>';
+      var subNama = '<?= addslashes(htmlspecialchars($activeSubData['nama'] ?? '-', ENT_QUOTES)) ?>';
+      var subCode = '<?= addslashes($activeSubCode ?? '') ?>';
+      var subDesc = '<?= addslashes(htmlspecialchars($activeSubData['deskripsi'] ?? '', ENT_QUOTES)) ?>';
+
+      // Clone header tabel dan hapus kolom Aksi serta Verifikasi
+      var theadClone = $('#TabelIndikatorSub thead').clone();
+      theadClone.find('.col-aksi-th, .col-verif-th').remove();
+
+      // Dapatkan baris-baris data (seluruh baris data pada DataTable yang terfilter/aktif)
+      var rowsHtml = '';
+      var totalBaris = 0;
+
+      if ($.fn.DataTable && $.fn.DataTable.isDataTable('#TabelIndikatorSub')) {
+        var dt = $('#TabelIndikatorSub').DataTable();
+        var rowNodes = dt.rows({ search: 'applied' }).nodes();
+        totalBaris = rowNodes.length;
+
+        $.each(rowNodes, function(idx, tr) {
+          var trClone = $(tr).clone();
+          // Hapus kolom aksi dan kolom verifikasi
+          trClone.find('.col-aksi-td, .col-verif-td, .cell-verifikasi-container').remove();
+
+          // Bersihkan kolom nama indikator dari badge API jika ada
+          trClone.find('.badge-info').remove();
+
+          rowsHtml += '<tr>' + trClone.html() + '</tr>';
+        });
+      } else {
+        $('#TabelIndikatorSub tbody tr').each(function() {
+          totalBaris++;
+          var trClone = $(this).clone();
+          trClone.find('.col-aksi-td, .col-verif-td, .cell-verifikasi-container').remove();
+          trClone.find('.badge-info').remove();
+          rowsHtml += '<tr>' + trClone.html() + '</tr>';
+        });
+      }
+
+      var now = new Date();
+      var tglStr = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }) + ', ' +
+                   now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+
+      var printDoc = 
+        '<!DOCTYPE html>' +
+        '<html>' +
+        '<head>' +
+          '<meta charset="utf-8">' +
+          '<title>Tabel Indikator - ' + daerahNama + '</title>' +
+          '<style>' +
+            '@page { size: landscape; margin: 12mm 15mm; }' +
+            '* { box-sizing: border-box; }' +
+            'body { font-family: "Segoe UI", Arial, sans-serif; font-size: 11px; color: #1e293b; margin: 0; padding: 15px; background: #ffffff; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }' +
+            '.header-print { border-bottom: 2.5px solid #043168; padding-bottom: 10px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-end; }' +
+            '.header-print h2 { margin: 0 0 4px 0; font-size: 18px; color: #043168; font-weight: 800; letter-spacing: 0.3px; }' +
+            '.header-print .sub-info { font-size: 12.5px; font-weight: 700; color: #334155; margin-top: 2px; }' +
+            '.header-print .meta-desc { font-size: 11px; color: #64748b; margin-top: 3px; }' +
+            '.header-right { text-align: right; font-size: 10.5px; color: #475569; line-height: 1.45; }' +
+            'table { width: 100%; border-collapse: collapse; font-size: 10.5px; margin-top: 8px; }' +
+            'th, td { border: 1px solid #cbd5e1; padding: 6px 8px; vertical-align: middle; }' +
+            'thead th { background-color: #043168 !important; color: #ffffff !important; font-weight: 700; text-align: center; font-size: 11px; }' +
+            'tbody tr:nth-child(even) { background-color: #f8fafc !important; }' +
+            '.text-center { text-align: center; }' +
+            '.text-left { text-align: left; }' +
+            '.text-right { text-align: right; }' +
+            '.val-text { font-weight: 700; }' +
+            '.badge-print { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 9.5px; font-weight: 700; text-align: center; }' +
+            '.badge-verif-terverifikasi { background: #dcfce7 !important; color: #15803d !important; border: 1px solid #86efac; }' +
+            '.badge-verif-diproses { background: #fef3c7 !important; color: #b45309 !important; border: 1px solid #fcd34d; }' +
+            '.badge-verif-belum-sesuai { background: #fee2e2 !important; color: #b91c1c !important; border: 1px solid #fca5a5; }' +
+            '.badge-gender { display: inline-block; padding: 2px 5px; border-radius: 4px; font-size: 9.5px; font-weight: 600; background: #e2e8f0; color: #334155; }' +
+            '.satuan-badge { font-size: 10px; color: #475569; }' +
+            '.catatan-print { font-size: 9.5px; color: #b91c1c; font-style: italic; margin-top: 3px; line-height: 1.25; }' +
+            '.footer-print { margin-top: 14px; border-top: 1px solid #e2e8f0; padding-top: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; color: #94a3b8; }' +
+          '</style>' +
+        '</head>' +
+        '<body>' +
+          '<div class="header-print">' +
+            '<div>' +
+              '<h2>Tabel Indikator: ' + subNama + '</h2>' +
+              '<div class="sub-info">Daerah: ' + daerahNama + ' &nbsp;|&nbsp; Kategori: ' + katNama + ' (Sub ' + subCode + ')</div>' +
+              (subDesc ? '<div class="meta-desc">' + subDesc + '</div>' : '') +
+            '</div>' +
+            '<div class="header-right">' +
+              '<div><b>Sistem CVIDE - IDE Consultant</b></div>' +
+              '<div>Dicetak: ' + tglStr + '</div>' +
+              '<div>Total: ' + totalBaris + ' Indikator</div>' +
+            '</div>' +
+          '</div>' +
+          '<table>' +
+            theadClone.prop('outerHTML') +
+            '<tbody>' +
+              rowsHtml +
+            '</tbody>' +
+          '</table>' +
+          '<div class="footer-print">' +
+            '<div>Dokumen Resmi Olah Data Indikator Pembangunan Daerah - CVIDE</div>' +
+            '<div>Dicetak oleh Pengguna Sistem</div>' +
+          '</div>' +
+        '</body>' +
+        '</html>';
+
+      var frame = document.createElement('iframe');
+      frame.style.position = 'fixed';
+      frame.style.right = '0';
+      frame.style.bottom = '0';
+      frame.style.width = '0';
+      frame.style.height = '0';
+      frame.style.border = '0';
+      document.body.appendChild(frame);
+
+      var frameDoc = frame.contentWindow || frame.contentDocument.document || frame.contentDocument;
+      frameDoc.document.open();
+      frameDoc.document.write(printDoc);
+      frameDoc.document.close();
+
+      setTimeout(function() {
+        frame.contentWindow.focus();
+        frame.contentWindow.print();
+        setTimeout(function() {
+          document.body.removeChild(frame);
+        }, 1500);
+      }, 350);
+    }
+
+    // Trigger tombol Cetak Tabel Indikator
+    $('#btnCetakTabelIndikator').on('click', function(e) {
+      e.preventDefault();
+      cetakTabelOlahData();
+    });
+
+    // =========================================================================
+    // CETAK KOMPARASI DAERAH (HANYA GRAFIK & TABEL MATRIKS SAJA)
+    // =========================================================================
+    function cetakKomparasiData() {
+      var d1 = $('#slotDaerah1 option:selected').text();
+      var d2 = $('#slotDaerah2 option:selected').text();
+      var d3 = $('#slotDaerah3').val() ? $('#slotDaerah3 option:selected').text() : '';
+      var indikatorAktif = $('#selectChartIndikator option:selected').text() || 'Seluruh Indikator';
+      var tahunFilter = $('#filterTabelTahunKomparasi option:selected').text() || 'Semua Tahun';
+
+      var daerahListStr = [d1, d2, d3].filter(function(v) { 
+        return v && v !== '' && v.indexOf('--') === -1; 
+      }).join(' vs ');
+
+      // Ambil gambar chart tren utama (konversi canvas ke dataURL agar pasti ter-render saat cetak)
+      var canvas1 = document.getElementById('canvasKomparasiChart');
+      var imgChart1 = '';
+      if (canvas1) {
+        try {
+          imgChart1 = canvas1.toDataURL('image/png');
+        } catch(e) { console.error('Gagal mengambil gambar canvas 1:', e); }
+      }
+
+      // Ambil gambar chart benchmark sub-kategori jika terlihat
+      var canvas2 = document.getElementById('canvasMultiSubChart');
+      var imgChart2 = '';
+      var isBox2Visible = $('#boxMultiSubChart').is(':visible');
+      if (canvas2 && isBox2Visible) {
+        try {
+          imgChart2 = canvas2.toDataURL('image/png');
+        } catch(e) { console.error('Gagal mengambil gambar canvas 2:', e); }
+      }
+
+      // Ambil tabel matriks komparasi (tanpa tombol/tulisan grafik)
+      var tabelHtml = '';
+      if ($('#tabelKomparasiData').length) {
+        var $tabelClone = $('#tabelKomparasiData').clone();
+        $tabelClone.find('.btn-lihat-chart-row, button, .btn').remove();
+        tabelHtml = $tabelClone.prop('outerHTML');
+      }
+
+      var now = new Date();
+      var tglStr = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }) + ', ' +
+                   now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+
+      var printDoc = 
+        '<!DOCTYPE html>' +
+        '<html>' +
+        '<head>' +
+          '<meta charset="utf-8">' +
+          '<title>Komparasi Indikator Daerah</title>' +
+          '<style>' +
+            '@page { size: landscape; margin: 12mm 15mm; }' +
+            '* { box-sizing: border-box; }' +
+            'body { font-family: "Segoe UI", Arial, sans-serif; font-size: 11px; color: #1e293b; margin: 0; padding: 15px; background: #ffffff; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }' +
+            '.header-print { border-bottom: 2.5px solid #043168; padding-bottom: 10px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: flex-end; }' +
+            '.header-print h2 { margin: 0 0 4px 0; font-size: 18px; color: #043168; font-weight: 800; letter-spacing: 0.3px; }' +
+            '.header-print .sub-info { font-size: 13px; font-weight: 700; color: #334155; margin-top: 2px; }' +
+            '.header-print .meta-desc { font-size: 11px; color: #64748b; margin-top: 3px; }' +
+            '.header-right { text-align: right; font-size: 10.5px; color: #475569; line-height: 1.45; }' +
+            '.section-title { font-size: 13px; font-weight: 700; color: #043168; margin: 16px 0 8px 0; padding-bottom: 4px; border-bottom: 1.5px solid #e2e8f0; }' +
+            '.chart-box { text-align: center; margin-bottom: 16px; page-break-inside: avoid; }' +
+            '.chart-img { max-width: 100%; height: auto; max-height: 350px; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px; background: #fff; }' +
+            'table { width: 100%; border-collapse: collapse; font-size: 10px; margin-top: 6px; page-break-inside: auto; }' +
+            'tr { page-break-inside: avoid; page-break-after: auto; }' +
+            'th, td { border: 1px solid #cbd5e1; padding: 5px 6px; vertical-align: middle; }' +
+            'thead th { background-color: #043168 !important; color: #ffffff !important; font-weight: 700; text-align: center; font-size: 10.5px; }' +
+            'tbody tr:nth-child(even) { background-color: #f8fafc !important; }' +
+            '.cell-kategori-merged { background-color: #f1f5f9 !important; font-weight: 800; color: #043168; vertical-align: middle !important; border: 1.5px solid #94a3b8 !important; border-right: 2px solid #64748b !important; }' +
+            'tr.tr-category-start td { border-top: 2.5px solid #043168 !important; }' +
+            '.text-center { text-align: center; }' +
+            '.text-left { text-align: left; }' +
+            '.text-right { text-align: right; }' +
+            '.footer-print { margin-top: 14px; border-top: 1px solid #e2e8f0; padding-top: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; color: #94a3b8; }' +
+          '</style>' +
+        '</head>' +
+        '<body>' +
+          '<div class="header-print">' +
+            '<div>' +
+              '<h2>Laporan Komparasi & Benchmark Daerah</h2>' +
+              '<div class="sub-info">Perbandingan: ' + daerahListStr + '</div>' +
+              '<div class="meta-desc">Indikator Dianalisis: <b>' + indikatorAktif + '</b> &nbsp;|&nbsp; Filter: ' + tahunFilter + '</div>' +
+            '</div>' +
+            '<div class="header-right">' +
+              '<div><b>Sistem CVIDE - IDE Consultant</b></div>' +
+              '<div>Dicetak: ' + tglStr + '</div>' +
+            '</div>' +
+          '</div>';
+
+      if (imgChart1) {
+        printDoc += 
+          '<div class="section-title">1. Grafik Visualisasi Tren Waktu</div>' +
+          '<div class="chart-box">' +
+            '<img class="chart-img" src="' + imgChart1 + '" alt="Grafik Komparasi Tren">' +
+          '</div>';
+      }
+
+      if (imgChart2) {
+        printDoc += 
+          '<div class="section-title">2. Benchmark Seluruh Indikator Sub-Kategori</div>' +
+          '<div class="chart-box">' +
+            '<img class="chart-img" src="' + imgChart2 + '" alt="Grafik Benchmark Sub-Kategori">' +
+          '</div>';
+      }
+
+      if (tabelHtml) {
+        printDoc += 
+          '<div class="section-title" style="margin-top: 20px;">' + (imgChart1 ? '3.' : '1.') + ' Matriks Perbandingan Data Indikator Lengkap</div>' +
+          tabelHtml;
+      }
+
+      printDoc += 
+          '<div class="footer-print">' +
+            '<div>Dokumen Resmi Komparasi Indikator Pembangunan Daerah - CVIDE</div>' +
+            '<div>Dicetak oleh Pengguna Sistem</div>' +
+          '</div>' +
+        '</body>' +
+        '</html>';
+
+      var frame = document.createElement('iframe');
+      frame.style.position = 'fixed';
+      frame.style.right = '0';
+      frame.style.bottom = '0';
+      frame.style.width = '0';
+      frame.style.height = '0';
+      frame.style.border = '0';
+      document.body.appendChild(frame);
+
+      var frameDoc = frame.contentWindow || frame.contentDocument.document || frame.contentDocument;
+      frameDoc.document.open();
+      frameDoc.document.write(printDoc);
+      frameDoc.document.close();
+
+      setTimeout(function() {
+        frame.contentWindow.focus();
+        frame.contentWindow.print();
+        setTimeout(function() {
+          document.body.removeChild(frame);
+        }, 1500);
+      }, 400);
+    }
+
+    // Trigger tombol Cetak Komparasi
+    $('#btnPrintKomparasi').on('click', function(e) {
+      e.preventDefault();
+      cetakKomparasiData();
     });
 
   });
