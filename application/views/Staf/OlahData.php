@@ -11,10 +11,13 @@ $kategoriStats = $KategoriStats ?? array();
 <style>
   /* Modal Overlay & Z-Index Protection */
   .modal {
-    z-index: 1055 !important;
+    z-index: 1065 !important;
   }
   .modal-backdrop {
-    z-index: 1050 !important;
+    z-index: 1055 !important;
+  }
+  .modal-backdrop.show {
+    opacity: 0.5 !important;
   }
 
   /* Header Card */
@@ -607,6 +610,106 @@ $kategoriStats = $KategoriStats ?? array();
     font-weight: 700;
     font-size: 11px;
     display: inline-block;
+  }
+
+  /* Verifikasi Badges & Select Elements */
+  .badge-verif {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+  .badge-verif-diproses {
+    background-color: #fef3c7 !important;
+    color: #92400e !important;
+    border: 1.5px solid #fcd34d !important;
+  }
+  .badge-verif-belum-sesuai {
+    background-color: #fee2e2 !important;
+    color: #b91c1c !important;
+    border: 1.5px solid #fca5a5 !important;
+  }
+  .badge-verif-terverifikasi {
+    background-color: #dcfce7 !important;
+    color: #15803d !important;
+    border: 1.5px solid #86efac !important;
+  }
+
+  /* Dropdown Verifikasi Berlatar Belakang Putih */
+  .select-verifikasi, #editStatusVerifikasi {
+    background-color: #ffffff !important;
+    height: 33px !important;
+    border-radius: 10px !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+    padding: 2px 8px !important;
+    width: 100% !important;
+  }
+  .select-verifikasi.select-verif-diproses, #editStatusVerifikasi.select-verif-diproses {
+    border: 1.5px solid #d97706 !important;
+    color: #b45309 !important;
+  }
+  .select-verifikasi.select-verif-belum-sesuai, #editStatusVerifikasi.select-verif-belum-sesuai {
+    border: 1.5px solid #dc2626 !important;
+    color: #b91c1c !important;
+  }
+  .select-verifikasi.select-verif-terverifikasi, #editStatusVerifikasi.select-verif-terverifikasi {
+    border: 1.5px solid #16a34a !important;
+    color: #15803d !important;
+  }
+  .select-verifikasi:focus, #editStatusVerifikasi:focus {
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.25) !important;
+    outline: none;
+  }
+  .select-verifikasi:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  /* Kotak Catatan Verifikasi */
+  .catatan-verif-box {
+    background: #fff1f2;
+    border: 1px dashed #fca5a5;
+    border-radius: 8px;
+    padding: 5px 8px;
+    font-size: 11px;
+    text-align: left;
+    margin-top: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(239, 68, 68, 0.06);
+    display: block;
+    text-decoration: none !important;
+  }
+  .catatan-verif-box:hover {
+    background: #ffe4e6;
+    border-color: #f87171;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(239, 68, 68, 0.12);
+  }
+
+  /* Editor Inline Catatan (Muncul Langsung di Bawah Dropdown) */
+  .catatan-inline-editor {
+    background: #fff5f5;
+    border: 1.5px solid #fca5a5;
+    border-radius: 8px;
+    padding: 6px;
+    text-align: left;
+    margin-top: 5px;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.08);
+  }
+  .catatan-inline-editor textarea:focus {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2) !important;
   }
 </style>
 
@@ -1375,7 +1478,9 @@ $kategoriStats = $KategoriStats ?? array();
             'Satuan' => $stdInd['satuan'] ?? '',
             'DataTahunParsed' => array(),
             'ApiUrl' => null,
-            'Keterangan' => 'Indikator Standar'
+            'Keterangan' => 'Indikator Standar',
+            'StatusVerifikasi' => 'diproses',
+            'CatatanVerifikasi' => ''
           );
         }
       }
@@ -1383,6 +1488,21 @@ $kategoriStats = $KategoriStats ?? array();
     // Masukkan sisa indikator kustom tambahan di sub kategori ini
     foreach ($existingMap as $rem) {
       $displayRows[] = $rem;
+    }
+
+    // Hitung ringkasan status verifikasi
+    $cntDiproses = 0;
+    $cntBelumSesuai = 0;
+    $cntTerverifikasi = 0;
+    foreach ($displayRows as $dr) {
+      $st = strtolower(trim($dr['StatusVerifikasi'] ?? 'diproses'));
+      if ($st === 'terverifikasi') {
+        $cntTerverifikasi++;
+      } elseif ($st === 'belum sesuai') {
+        $cntBelumSesuai++;
+      } else {
+        $cntDiproses++;
+      }
     }
     ?>
 
@@ -1400,8 +1520,22 @@ $kategoriStats = $KategoriStats ?? array();
                     Tabel Indikator: <?= htmlspecialchars($activeSubData['nama']) ?>
                   </h5>
                 </div>
-                <div class="text-muted" style="font-size: 12px; margin-top: 4px;">
-                  <?= htmlspecialchars($activeSubData['deskripsi'] ?? '') ?> | Total <b><?= count($displayRows) ?></b> indikator.
+                <div class="text-muted d-flex align-items-center flex-wrap" style="font-size: 12px; margin-top: 5px; gap: 6px;">
+                  <span><?= htmlspecialchars($activeSubData['deskripsi'] ?? '') ?> | Total <b><?= count($displayRows) ?></b> indikator.</span>
+                  <span class="badge badge-warning text-dark px-2 py-0.5 ml-1" style="font-size: 11px; font-weight: 700; border-radius: 6px; background: #fef3c7; color: #92400e; border: 1px solid #fcd34d;">
+                    <i class="fa-solid fa-clock-rotate-left mr-1"></i> Diproses: <b><?= $cntDiproses ?></b>
+                  </span>
+                  <span class="badge badge-danger px-2 py-0.5" style="font-size: 11px; font-weight: 700; border-radius: 6px; background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5;">
+                    <i class="fa-solid fa-circle-xmark mr-1"></i> Belum Sesuai: <b><?= $cntBelumSesuai ?></b>
+                  </span>
+                  <span class="badge badge-success px-2 py-0.5" style="font-size: 11px; font-weight: 700; border-radius: 6px; background: #dcfce7; color: #15803d; border: 1px solid #86efac;">
+                    <i class="fa-solid fa-circle-check mr-1"></i> Terverifikasi: <b><?= $cntTerverifikasi ?></b>
+                  </span>
+                  <?php if ($userLevel === 4): ?>
+                    <span class="badge badge-primary px-2 py-0.5" style="font-size: 11px; font-weight: 700; border-radius: 6px; background: var(--ide-navy);">
+                      <i class="fa-solid fa-user-shield mr-1"></i> Mode Verifikator & Pengisi (Level 4)
+                    </span>
+                  <?php endif; ?>
                 </div>
               </div>
 
@@ -1433,14 +1567,17 @@ $kategoriStats = $KategoriStats ?? array();
                 <thead>
                   <tr style="background: linear-gradient(135deg, #043168 0%, #0a3d7c 100%); color: #ffffff;">
                     <th style="width: 4%;" class="text-center align-middle">No</th>
-                    <th style="width: 28%; min-width: 200px;" class="align-middle">Nama Indikator</th>
-                    <th style="width: 9%; min-width: 90px;" class="text-center align-middle">Gender</th>
-                    <th style="width: 9%; min-width: 80px;" class="text-center align-middle">Satuan</th>
+                    <th style="width: 26%; min-width: 190px;" class="align-middle">Nama Indikator</th>
+                    <th style="width: 8%; min-width: 85px;" class="text-center align-middle">Gender</th>
+                    <th style="width: 8%; min-width: 75px;" class="text-center align-middle">Satuan</th>
                     <?php foreach ($TahunList as $thn): ?>
-                      <th style="min-width: 95px;" class="text-center align-middle">
+                      <th style="min-width: 90px;" class="text-center align-middle">
                         <?= htmlspecialchars($thn) ?>
                       </th>
                     <?php endforeach; ?>
+                    <th style="width: 14%; min-width: 145px;" class="text-center align-middle">
+                      <i class="fa-solid fa-clipboard-check mr-1"></i> Verifikasi
+                    </th>
                     <th style="width: 10%; min-width: 95px;" class="text-center align-middle">Aksi</th>
                   </tr>
                 </thead>
@@ -1463,6 +1600,21 @@ $kategoriStats = $KategoriStats ?? array();
                       $genderLabel = 'L + P';
                     }
                     $dataThn = $ind['DataTahunParsed'] ?? array();
+
+                    $statusVerif = strtolower(trim($ind['StatusVerifikasi'] ?? 'diproses'));
+                    if (!in_array($statusVerif, array('diproses', 'belum sesuai', 'terverifikasi'))) {
+                      $statusVerif = 'diproses';
+                    }
+                    $verifSlug = str_replace(' ', '-', $statusVerif);
+                    $verifLabel = 'Diproses';
+                    $verifIcon = 'fa-solid fa-clock-rotate-left';
+                    if ($statusVerif === 'belum sesuai') {
+                      $verifLabel = 'Belum Sesuai';
+                      $verifIcon = 'fa-solid fa-circle-xmark';
+                    } elseif ($statusVerif === 'terverifikasi') {
+                      $verifLabel = 'Terverifikasi';
+                      $verifIcon = 'fa-solid fa-circle-check';
+                    }
                   ?>
                     <tr>
                       <td class="text-center align-middle font-weight-bold text-muted"><?= $no++ ?></td>
@@ -1512,6 +1664,104 @@ $kategoriStats = $KategoriStats ?? array();
                           <?php endif; ?>
                         </td>
                       <?php endforeach; ?>
+
+                      <!-- Kolom Verifikasi (Sebelum Kolom Aksi) -->
+                      <?php $catatanVerif = trim($ind['CatatanVerifikasi'] ?? ''); ?>
+                      <td class="text-center align-middle cell-verifikasi-container" 
+                          data-order="<?= $statusVerif ?>" 
+                          data-indikator-id="<?= $indId ?>"
+                          data-indikator-nama="<?= htmlspecialchars($ind['NamaIndikator'], ENT_QUOTES) ?>">
+                        <?php if ($userLevel === 4): ?>
+                          <?php if ($indId > 0): ?>
+                            <!-- Akun Level 4: Berhak Memilih & Mengubah Status Verifikasi Langsung -->
+                            <div class="verif-select-box position-relative d-inline-block w-100" style="min-width: 145px; max-width: 180px;">
+                              <select class="custom-select custom-select-sm select-verifikasi font-weight-bold select-verif-<?= $verifSlug ?>" 
+                                      data-id="<?= $indId ?>" 
+                                      data-nama="<?= htmlspecialchars($ind['NamaIndikator'], ENT_QUOTES) ?>"
+                                      data-prev="<?= $statusVerif ?>"
+                                      data-catatan="<?= htmlspecialchars($catatanVerif, ENT_QUOTES) ?>"
+                                      title="Pilih untuk mengubah status verifikasi (Khusus Akun Level 4)">
+                                <option value="diproses" <?= ($statusVerif === 'diproses') ? 'selected' : '' ?>>⏳ Diproses</option>
+                                <option value="belum sesuai" <?= ($statusVerif === 'belum sesuai') ? 'selected' : '' ?>>❌ Belum Sesuai</option>
+                                <option value="terverifikasi" <?= ($statusVerif === 'terverifikasi') ? 'selected' : '' ?>>✅ Terverifikasi</option>
+                              </select>
+
+                              <!-- Box Catatan Belum Sesuai (Khusus Status Belum Sesuai) -->
+                              <div class="container-catatan-verif" style="<?= ($statusVerif === 'belum sesuai') ? '' : 'display: none;' ?>">
+                                <!-- Preview Catatan jika sudah ada catatan -->
+                                <div class="catatan-verif-box btn-buka-modal-catatan" 
+                                     data-id="<?= $indId ?>" 
+                                     data-nama="<?= htmlspecialchars($ind['NamaIndikator'], ENT_QUOTES) ?>" 
+                                     data-catatan="<?= htmlspecialchars($catatanVerif, ENT_QUOTES) ?>" 
+                                     style="<?= (!empty($catatanVerif)) ? '' : 'display: none;' ?>"
+                                     title="Klik untuk mengubah catatan">
+                                  <div class="d-flex align-items-center justify-content-between" style="gap: 4px;">
+                                    <span class="text-danger font-weight-bold" style="font-size: 10px;">
+                                      <i class="fa-solid fa-triangle-exclamation mr-1"></i> Catatan:
+                                    </span>
+                                    <span class="text-danger font-weight-bold" style="font-size: 8.5px;">
+                                      <i class="fa-solid fa-pen"></i> Ubah
+                                    </span>
+                                  </div>
+                                  <div class="text-dark font-italic preview-text-catatan mt-0.5" style="font-size: 10.5px; line-height: 1.3; text-align: left; word-break: break-word;">
+                                    <?= htmlspecialchars($catatanVerif) ?>
+                                  </div>
+                                </div>
+
+                                <!-- Editor Catatan Inline (Muncul otomatis saat memilih Belum Sesuai) -->
+                                <div class="catatan-inline-editor" style="<?= (empty($catatanVerif) && $statusVerif === 'belum sesuai') ? '' : 'display: none;' ?>">
+                                  <div class="d-flex align-items-center justify-content-between mb-1" style="font-size: 10px;">
+                                    <span class="text-danger font-weight-bold">
+                                      <i class="fa-solid fa-triangle-exclamation mr-1"></i> Catatan (Ctt):
+                                    </span>
+                                  </div>
+                                  <textarea class="form-control form-control-sm input-catatan-inline mb-1" 
+                                            rows="2" 
+                                            placeholder="Tuliskan catatan..." 
+                                            style="font-size: 11px; border-radius: 6px; border: 1.5px solid #f87171; background: #fff; resize: vertical; padding: 4px 6px;"><?= htmlspecialchars($catatanVerif) ?></textarea>
+                                  <div class="d-flex align-items-center justify-content-end" style="gap: 4px;">
+                                    <button type="button" class="btn btn-light btn-batal-catatan-inline border" 
+                                            data-id="<?= $indId ?>"
+                                            style="font-size: 9.5px; padding: 2px 6px; border-radius: 4px; line-height: 1.2;">Batal</button>
+                                    <button type="button" class="btn btn-danger font-weight-bold btn-simpan-catatan-inline" 
+                                            data-id="<?= $indId ?>"
+                                            style="font-size: 9.5px; padding: 2px 8px; border-radius: 4px; line-height: 1.2;">
+                                      <i class="fa-solid fa-check mr-0.5"></i> Simpan
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          <?php else: ?>
+                            <span class="badge-verif badge-verif-<?= $verifSlug ?>" title="Simpan baris indikator terlebih dahulu untuk memverifikasi">
+                              <i class="<?= $verifIcon ?>"></i> <?= $verifLabel ?>
+                            </span>
+                          <?php endif; ?>
+                        <?php else: ?>
+                          <!-- Akun Non-Level 4: Read-Only (Hanya Dapat Dilihat) -->
+                          <div class="d-inline-block text-center" style="max-width: 145px;">
+                            <span class="badge-verif badge-verif-<?= $verifSlug ?>" title="Status Verifikasi: <?= $verifLabel ?> (Hanya Akun Level 4 yang berhak memverifikasi)">
+                              <i class="<?= $verifIcon ?>"></i> <?= $verifLabel ?>
+                            </span>
+                            <?php if ($statusVerif === 'belum sesuai' && !empty($catatanVerif)): ?>
+                              <div class="catatan-verif-box btn-baca-catatan mt-1" 
+                                   data-nama="<?= htmlspecialchars($ind['NamaIndikator'], ENT_QUOTES) ?>" 
+                                   data-catatan="<?= htmlspecialchars($catatanVerif, ENT_QUOTES) ?>" 
+                                   title="Klik untuk membaca catatan ketidaksesuaian">
+                                <div class="d-flex align-items-center" style="gap: 4px;">
+                                  <span class="text-danger font-weight-bold" style="font-size: 10px;">
+                                    <i class="fa-solid fa-comment-dots mr-1"></i> Catatan:
+                                  </span>
+                                </div>
+                                <div class="text-dark font-italic text-truncate mt-0.5" style="max-width: 130px; font-size: 10px;">
+                                  <?= htmlspecialchars($catatanVerif) ?>
+                                </div>
+                              </div>
+                            <?php endif; ?>
+                          </div>
+                        <?php endif; ?>
+                      </td>
+
                       <td class="text-center align-middle">
                         <div class="d-inline-flex align-items-center justify-content-center" style="gap: 5px;">
                           <?php if ($indId > 0): ?>
@@ -1533,6 +1783,8 @@ $kategoriStats = $KategoriStats ?? array();
                                     data-gender="<?= htmlspecialchars($ind['Gender'] ?? 'Total', ENT_QUOTES) ?>"
                                     data-satuan="<?= htmlspecialchars($ind['Satuan'] ?? '', ENT_QUOTES) ?>"
                                     data-ket="<?= htmlspecialchars($ind['Keterangan'] ?? '', ENT_QUOTES) ?>"
+                                    data-verif="<?= htmlspecialchars($statusVerif, ENT_QUOTES) ?>"
+                                    data-catatan="<?= htmlspecialchars($catatanVerif, ENT_QUOTES) ?>"
                                     data-tahun='<?= json_encode($dataThn, JSON_HEX_APOS | JSON_HEX_QUOT) ?>'
                                     title="Edit Indikator">
                               <i class="fa-solid fa-pen-to-square"></i>
@@ -1987,7 +2239,24 @@ $kategoriStats = $KategoriStats ?? array();
                 </div>
               <?php endforeach; ?>
             </div>
-          </div>
+          <?php if ($userLevel === 4): ?>
+            <div class="form-group mb-3">
+              <label class="font-weight-bold text-dark" style="font-size: 12.5px;">
+                <i class="fa-solid fa-stamp text-primary mr-1"></i> Status Verifikasi <span class="badge badge-primary px-1.5 py-0.5" style="font-size: 10px; border-radius: 4px;">Khusus Level 4</span>
+              </label>
+              <select class="form-control" name="StatusVerifikasi" id="editStatusVerifikasi" style="border-radius: 10px; font-weight: 700;">
+                <option value="diproses">⏳ Diproses</option>
+                <option value="belum sesuai">❌ Belum Sesuai</option>
+                <option value="terverifikasi">✅ Terverifikasi</option>
+              </select>
+            </div>
+            <div class="form-group mb-3" id="groupEditCatatanVerifikasi" style="display: none;">
+              <label class="font-weight-bold text-danger" style="font-size: 12.5px;">
+                <i class="fa-solid fa-triangle-exclamation mr-1"></i> Catatan Belum Sesuai
+              </label>
+              <textarea class="form-control" name="CatatanVerifikasi" id="editCatatanVerifikasi" rows="3" placeholder="Tuliskan catatan mengapa indikator ini belum sesuai..." style="border-radius: 10px; border: 1.5px solid #fca5a5; font-size: 12.5px;"></textarea>
+            </div>
+          <?php endif; ?>
 
           <div class="form-group mb-0">
             <label class="font-weight-bold text-dark" style="font-size: 12.5px;">Keterangan / Catatan</label>
@@ -2005,6 +2274,74 @@ $kategoriStats = $KategoriStats ?? array();
   </div>
 </div>
 
+<!-- Modal Input / Edit Catatan Verifikasi Khusus Status Belum Sesuai (Level 4) -->
+<div class="modal fade" id="ModalCatatanVerifikasi" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 1060;">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 480px;">
+    <div class="modal-content" style="border-radius: 16px; border: none; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.25);">
+      <div class="modal-header" style="background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%); color: #ffffff;">
+        <h5 class="modal-title font-weight-bold" style="font-size: 15px;">
+          <i class="fa-solid fa-triangle-exclamation mr-2"></i> Catatan Verifikasi: Belum Sesuai
+        </h5>
+        <button type="button" class="close text-white btnBatalCatatan" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-4">
+        <input type="hidden" id="modalCatatanIndikatorId">
+        <input type="hidden" id="modalCatatanPrevStatus">
+        <div class="p-2.5 mb-3 rounded" style="background: #fef2f2; border: 1px solid #fecaca;">
+          <div style="font-size: 11px; font-weight: 700; color: #991b1b; text-transform: uppercase;">Indikator:</div>
+          <div class="font-weight-bold text-dark mt-0.5" id="modalCatatanNamaIndikator" style="font-size: 13.5px;">-</div>
+        </div>
+
+        <div class="form-group mb-0">
+          <label class="font-weight-bold text-dark" style="font-size: 12.5px;">
+            Catatan / Alasan Belum Sesuai <span class="text-danger">*</span>
+          </label>
+          <textarea class="form-control" id="modalCatatanTextarea" rows="4" placeholder="Tuliskan catatan mengapa data ini belum sesuai (contoh: data tahun 2023 belum valid, perbaiki angka, sumber belum ada, dll.)..." style="border-radius: 10px; font-size: 13px;"></textarea>
+          <small class="text-muted mt-1 d-block" style="font-size: 11px;">Catatan ini akan tersimpan dan dapat dibaca oleh staf/admin sebagai panduan perbaikan data.</small>
+        </div>
+      </div>
+      <div class="modal-footer bg-light" style="border-top: 1px solid #e2e8f0;">
+        <button type="button" class="btn btn-secondary btnBatalCatatan" data-dismiss="modal" style="border-radius: 10px; font-weight: 600; font-size: 12.5px;">Batal</button>
+        <button type="button" class="btn btn-danger font-weight-bold" id="btnSimpanCatatanVerifikasi" style="border-radius: 10px; font-size: 12.5px;">
+          <i class="fa-solid fa-check mr-1"></i> Simpan Status & Catatan
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Baca Catatan Verifikasi Lengkap (Untuk Semua Level) -->
+<div class="modal fade" id="ModalBacaCatatanVerifikasi" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 1060;">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 460px;">
+    <div class="modal-content" style="border-radius: 16px; border: none; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.25);">
+      <div class="modal-header" style="background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%); color: #ffffff;">
+        <h5 class="modal-title font-weight-bold" style="font-size: 15px;">
+          <i class="fa-solid fa-circle-exclamation mr-2"></i> Catatan Verifikator
+        </h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-4">
+        <div class="p-2.5 mb-3 rounded" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+          <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">Indikator:</div>
+          <div class="font-weight-bold text-dark mt-0.5" id="modalBacaNamaIndikator" style="font-size: 13.5px;">-</div>
+        </div>
+
+        <div>
+          <label class="font-weight-bold text-dark" style="font-size: 12.5px;">Catatan Ketidaksesuaian:</label>
+          <div class="p-3 rounded text-dark" id="modalBacaIsiCatatan" style="background: #fef2f2; border: 1.5px solid #fecaca; font-size: 13px; line-height: 1.5; white-space: pre-wrap;">-</div>
+        </div>
+      </div>
+      <div class="modal-footer bg-light" style="border-top: 1px solid #e2e8f0;">
+        <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal" style="border-radius: 10px; font-size: 12.5px;">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Scripts Eksternal Pendukung Bootstrap & DataTables & Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="<?=base_url("vendors/bootstrap/dist/js/bootstrap.bundle.min.js")?>"></script>
@@ -2015,6 +2352,9 @@ $kategoriStats = $KategoriStats ?? array();
 <script>
   $(document).ready(function() {
     var BaseURL = '<?= base_url() ?>';
+    
+    // Pindahkan semua modal ke direct <body> agar tidak terperangkap stacking context dan tidak tertutup backdrop hitam
+    $('.modal').appendTo('body');
 
     // Inisialisasi DataTable untuk Tabel Indikator Sub Kategori
     if ($('#TabelIndikatorSub').length && $.fn.DataTable) {
@@ -2343,6 +2683,315 @@ $kategoriStats = $KategoriStats ?? array();
       });
     });
 
+    // =========================================================================
+    // 6.b VERIFIKASI BARIS INDIKATOR (KHUSUS AKUN LEVEL 4)
+    var activeVerifSelect = null;
+
+    // Saat dropdown verifikasi diubah
+    $(document).on('change', '.select-verifikasi', function() {
+      var select = $(this);
+      var indId = select.data('id') || select.attr('data-id');
+      var newStatus = select.val();
+      var prevStatus = select.data('prev') || select.attr('data-prev') || 'diproses';
+      var currentCatatan = select.attr('data-catatan') || select.data('catatan') || '';
+      var verifBox = select.closest('.verif-select-box');
+      var containerCatatan = verifBox.find('.container-catatan-verif');
+      var inlineEditor = containerCatatan.find('.catatan-inline-editor');
+      var previewBox = containerCatatan.find('.catatan-verif-box');
+      var inputCatatan = inlineEditor.find('.input-catatan-inline');
+
+      activeVerifSelect = select;
+
+      // Update styling dropdown secara langsung sesuai status
+      select.removeClass('select-verif-diproses select-verif-belum-sesuai select-verif-terverifikasi');
+      var slug = newStatus.replace(/\s+/g, '-');
+      select.addClass('select-verif-' + slug);
+
+      // Jika memilih "belum sesuai", TAMPILKAN CATATAN LANGSUNG DI BAWAH DROPDOWN
+      if (newStatus === 'belum sesuai') {
+        containerCatatan.stop(true, true).slideDown(150);
+
+        if (currentCatatan && currentCatatan.trim() !== '') {
+          // Jika sudah ada catatan, tampilkan box preview & siapkan textarea
+          inputCatatan.val(currentCatatan);
+          previewBox.find('.preview-text-catatan').text(currentCatatan);
+          previewBox.show();
+          inlineEditor.hide();
+        } else {
+          // Jika belum ada catatan, tampilkan editor inline dan otomatis fokuskan
+          previewBox.hide();
+          inlineEditor.show();
+          setTimeout(function() {
+            inputCatatan.focus();
+          }, 100);
+        }
+        return;
+      }
+
+      // Jika memilih selain "belum sesuai" ("diproses" atau "terverifikasi")
+      containerCatatan.stop(true, true).slideUp(150);
+      select.prop('disabled', true);
+
+      $.ajax({
+        url: BaseURL + 'Staf/UpdateStatusVerifikasi',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          Id: indId,
+          StatusVerifikasi: newStatus,
+          CatatanVerifikasi: ''
+        },
+        success: function(res) {
+          select.prop('disabled', false);
+          if (res && res.status === 'success') {
+            select.data('prev', newStatus);
+            select.attr('data-prev', newStatus);
+            select.data('catatan', '');
+            select.attr('data-catatan', '');
+            select.closest('td').attr('data-order', newStatus);
+
+            inputCatatan.val('');
+            previewBox.find('.preview-text-catatan').text('');
+
+            // Update atribut pada tombol edit di baris yang sama
+            select.closest('tr').find('.btnEditIndikator').attr('data-verif', newStatus).attr('data-catatan', '');
+
+            select.addClass('cell-saved-flash');
+            setTimeout(function() { select.removeClass('cell-saved-flash'); }, 1200);
+          } else {
+            alert(res && res.message ? res.message : 'Gagal memperbarui status verifikasi.');
+            select.val(prevStatus);
+            select.removeClass('select-verif-diproses select-verif-belum-sesuai select-verif-terverifikasi');
+            select.addClass('select-verif-' + prevStatus.replace(/\s+/g, '-'));
+            if (prevStatus === 'belum sesuai') containerCatatan.show();
+          }
+        },
+        error: function(xhr) {
+          select.prop('disabled', false);
+          var errMsg = 'Terjadi kesalahan server saat memperbarui status verifikasi.';
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            errMsg = xhr.responseJSON.message;
+          }
+          alert(errMsg);
+          select.val(prevStatus);
+          select.removeClass('select-verif-diproses select-verif-belum-sesuai select-verif-terverifikasi');
+          select.addClass('select-verif-' + prevStatus.replace(/\s+/g, '-'));
+          if (prevStatus === 'belum sesuai') containerCatatan.show();
+        }
+      });
+    });
+
+    // Simpan catatan inline pada status belum sesuai
+    $(document).on('click', '.btn-simpan-catatan-inline', function() {
+      var btn = $(this);
+      var indId = btn.data('id') || btn.attr('data-id');
+      var containerCatatan = btn.closest('.container-catatan-verif');
+      var verifBox = btn.closest('.verif-select-box');
+      var select = verifBox.find('.select-verifikasi');
+      var textarea = containerCatatan.find('.input-catatan-inline');
+      var catatan = textarea.val().trim();
+
+      if (!catatan) {
+        alert('Mohon isi catatan atau alasan mengapa indikator ini belum sesuai!');
+        textarea.focus();
+        return;
+      }
+
+      btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i>');
+
+      $.ajax({
+        url: BaseURL + 'Staf/UpdateStatusVerifikasi',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          Id: indId,
+          StatusVerifikasi: 'belum sesuai',
+          CatatanVerifikasi: catatan
+        },
+        success: function(res) {
+          btn.prop('disabled', false).html('<i class="fa-solid fa-check mr-0.5"></i> Simpan');
+          if (res && res.status === 'success') {
+            select.val('belum sesuai');
+            select.removeClass('select-verif-diproses select-verif-belum-sesuai select-verif-terverifikasi').addClass('select-verif-belum-sesuai');
+            select.data('prev', 'belum sesuai').attr('data-prev', 'belum sesuai');
+            select.data('catatan', catatan).attr('data-catatan', catatan);
+            select.closest('td').attr('data-order', 'belum sesuai');
+
+            containerCatatan.find('.preview-text-catatan').text(catatan);
+            containerCatatan.find('.catatan-verif-box').attr('data-catatan', catatan).show();
+            containerCatatan.find('.catatan-inline-editor').hide();
+
+            select.closest('tr').find('.btnEditIndikator').attr('data-verif', 'belum sesuai').attr('data-catatan', catatan);
+
+            select.addClass('cell-saved-flash');
+            setTimeout(function() { select.removeClass('cell-saved-flash'); }, 1200);
+          } else {
+            alert(res && res.message ? res.message : 'Gagal menyimpan catatan verifikasi.');
+          }
+        },
+        error: function(xhr) {
+          btn.prop('disabled', false).html('<i class="fa-solid fa-check mr-0.5"></i> Simpan');
+          var errMsg = 'Terjadi kesalahan server saat menyimpan catatan.';
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            errMsg = xhr.responseJSON.message;
+          }
+          alert(errMsg);
+        }
+      });
+    });
+
+    // Batalkan catatan inline
+    $(document).on('click', '.btn-batal-catatan-inline', function() {
+      var btn = $(this);
+      var containerCatatan = btn.closest('.container-catatan-verif');
+      var verifBox = btn.closest('.verif-select-box');
+      var select = verifBox.find('.select-verifikasi');
+      var prevStatus = select.data('prev') || select.attr('data-prev') || 'diproses';
+      var savedCatatan = select.attr('data-catatan') || select.data('catatan') || '';
+
+      if (savedCatatan && savedCatatan.trim() !== '') {
+        containerCatatan.find('.input-catatan-inline').val(savedCatatan);
+        containerCatatan.find('.catatan-inline-editor').hide();
+        containerCatatan.find('.catatan-verif-box').show();
+      } else {
+        select.val(prevStatus);
+        select.removeClass('select-verif-diproses select-verif-belum-sesuai select-verif-terverifikasi');
+        select.addClass('select-verif-' + prevStatus.replace(/\s+/g, '-'));
+        containerCatatan.stop(true, true).slideUp(150);
+      }
+    });
+
+    // Enter untuk simpan catatan inline, Esc untuk batal
+    $(document).on('keydown', '.input-catatan-inline', function(e) {
+      if (e.which === 13 && !e.shiftKey) {
+        e.preventDefault();
+        $(this).closest('.catatan-inline-editor').find('.btn-simpan-catatan-inline').click();
+      } else if (e.which === 27) {
+        e.preventDefault();
+        $(this).closest('.catatan-inline-editor').find('.btn-batal-catatan-inline').click();
+      }
+    });
+
+    // Klik kotak catatan / Ubah untuk membuka editor inline kembali
+    $(document).on('click', '.btn-buka-modal-catatan', function(e) {
+      e.preventDefault();
+      var btn = $(this);
+      var containerCatatan = btn.closest('.container-catatan-verif');
+      var currentCatatan = btn.attr('data-catatan') || btn.data('catatan') || '';
+
+      btn.hide();
+      containerCatatan.find('.input-catatan-inline').val(currentCatatan);
+      containerCatatan.find('.catatan-inline-editor').show();
+      containerCatatan.find('.input-catatan-inline').focus();
+    });
+
+    // Simpan catatan pada status belum sesuai via Modal (Fallback)
+    $('#btnSimpanCatatanVerifikasi').on('click', function() {
+      var indId = $('#modalCatatanIndikatorId').val();
+      var catatan = $('#modalCatatanTextarea').val().trim();
+      var prevStatus = $('#modalCatatanPrevStatus').val();
+
+      if (!catatan) {
+        alert('Mohon isi catatan atau alasan mengapa indikator ini belum sesuai!');
+        $('#modalCatatanTextarea').focus();
+        return;
+      }
+
+      var btn = $(this);
+      btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin mr-1"></i> Menyimpan...');
+
+      $.ajax({
+        url: BaseURL + 'Staf/UpdateStatusVerifikasi',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          Id: indId,
+          StatusVerifikasi: 'belum sesuai',
+          CatatanVerifikasi: catatan
+        },
+        success: function(res) {
+          btn.prop('disabled', false).html('<i class="fa-solid fa-check mr-1"></i> Simpan Status & Catatan');
+          if (res && res.status === 'success') {
+            $('#ModalCatatanVerifikasi').modal('hide');
+
+            if (activeVerifSelect && activeVerifSelect.length) {
+              activeVerifSelect.val('belum sesuai');
+              activeVerifSelect.removeClass('select-verif-diproses select-verif-belum-sesuai select-verif-terverifikasi');
+              activeVerifSelect.addClass('select-verif-belum-sesuai');
+              activeVerifSelect.data('prev', 'belum sesuai');
+              activeVerifSelect.attr('data-prev', 'belum sesuai');
+              activeVerifSelect.data('catatan', catatan);
+              activeVerifSelect.attr('data-catatan', catatan);
+              activeVerifSelect.closest('td').attr('data-order', 'belum sesuai');
+
+              // Tampilkan & perbarui isi kotak catatan di tabel
+              var boxContainer = activeVerifSelect.closest('.verif-select-box').find('.container-catatan-verif');
+              boxContainer.find('.preview-text-catatan').text(catatan);
+              boxContainer.find('.catatan-verif-box').attr('data-catatan', catatan).show();
+              boxContainer.find('.catatan-inline-editor').hide();
+              boxContainer.find('.input-catatan-inline').val(catatan);
+              boxContainer.show();
+
+              // Update data tombol edit
+              activeVerifSelect.closest('tr').find('.btnEditIndikator').attr('data-verif', 'belum sesuai').attr('data-catatan', catatan);
+
+              activeVerifSelect.addClass('cell-saved-flash');
+              setTimeout(function() { activeVerifSelect.removeClass('cell-saved-flash'); }, 1200);
+            }
+          } else {
+            alert(res && res.message ? res.message : 'Gagal menyimpan catatan verifikasi.');
+          }
+        },
+        error: function(xhr) {
+          btn.prop('disabled', false).html('<i class="fa-solid fa-check mr-1"></i> Simpan Status & Catatan');
+          var errMsg = 'Terjadi kesalahan server saat menyimpan catatan.';
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            errMsg = xhr.responseJSON.message;
+          }
+          alert(errMsg);
+        }
+      });
+    });
+
+    // Batalkan modal input catatan
+    $(document).on('click', '.btnBatalCatatan', function() {
+      if (activeVerifSelect && activeVerifSelect.length) {
+        var prevStatus = activeVerifSelect.data('prev') || 'diproses';
+        var savedCatatan = activeVerifSelect.attr('data-catatan') || activeVerifSelect.data('catatan') || '';
+        if (!savedCatatan) {
+          activeVerifSelect.val(prevStatus);
+          activeVerifSelect.removeClass('select-verif-diproses select-verif-belum-sesuai select-verif-terverifikasi');
+          activeVerifSelect.addClass('select-verif-' + prevStatus.replace(/\s+/g, '-'));
+          activeVerifSelect.closest('.verif-select-box').find('.container-catatan-verif').hide();
+        }
+      }
+    });
+    $('#ModalCatatanVerifikasi').on('hidden.bs.modal', function() {
+      if (activeVerifSelect && activeVerifSelect.length) {
+        var currentVal = activeVerifSelect.val();
+        var prevStatus = activeVerifSelect.data('prev') || 'diproses';
+        var savedCatatan = activeVerifSelect.attr('data-catatan') || activeVerifSelect.data('catatan') || '';
+        if (currentVal === 'belum sesuai' && !savedCatatan) {
+          activeVerifSelect.val(prevStatus);
+          activeVerifSelect.removeClass('select-verif-diproses select-verif-belum-sesuai select-verif-terverifikasi');
+          activeVerifSelect.addClass('select-verif-' + prevStatus.replace(/\s+/g, '-'));
+          activeVerifSelect.closest('.verif-select-box').find('.container-catatan-verif').hide();
+        }
+      }
+    });
+
+    // Klik kotak catatan untuk membaca (Non-Level 4)
+    $(document).on('click', '.btn-baca-catatan', function(e) {
+      e.preventDefault();
+      var btn = $(this);
+      var nama = btn.data('nama');
+      var catatan = btn.attr('data-catatan') || btn.data('catatan') || '-';
+
+      $('#modalBacaNamaIndikator').text(nama);
+      $('#modalBacaIsiCatatan').text(catatan);
+      $('#ModalBacaCatatanVerifikasi').modal('show');
+    });
+
     // Quick Save Row Indikator jika belum ada ID di database
     $(document).on('click', '.btnQuickSaveRow', function(e) {
       e.preventDefault();
@@ -2540,6 +3189,17 @@ $kategoriStats = $KategoriStats ?? array();
       $('#editGender').val(gender);
       $('#editSatuan').val(satuan);
       $('#editKeteranganIndikator').val(ket);
+      var verif = $(this).attr('data-verif') || $(this).data('verif') || 'diproses';
+      var catatan = $(this).attr('data-catatan') || $(this).data('catatan') || '';
+      $('#editStatusVerifikasi').val(verif);
+      $('#editCatatanVerifikasi').val(catatan);
+      $('#editStatusVerifikasi').removeClass('select-verif-diproses select-verif-belum-sesuai select-verif-terverifikasi');
+      $('#editStatusVerifikasi').addClass('select-verif-' + verif.replace(/\s+/g, '-'));
+      if (verif === 'belum sesuai') {
+        $('#groupEditCatatanVerifikasi').show();
+      } else {
+        $('#groupEditCatatanVerifikasi').hide();
+      }
 
       $('.input-edit-tahun').each(function() {
         var thn = $(this).data('tahun');
@@ -2548,6 +3208,18 @@ $kategoriStats = $KategoriStats ?? array();
       });
 
       $('#ModalEditIndikator').modal('show');
+    });
+
+    $('#editStatusVerifikasi').on('change', function() {
+      var val = $(this).val();
+      $(this).removeClass('select-verif-diproses select-verif-belum-sesuai select-verif-terverifikasi');
+      $(this).addClass('select-verif-' + val.replace(/\s+/g, '-'));
+      if (val === 'belum sesuai') {
+        $('#groupEditCatatanVerifikasi').stop(true, true).slideDown(200);
+        setTimeout(function() { $('#editCatatanVerifikasi').focus(); }, 150);
+      } else {
+        $('#groupEditCatatanVerifikasi').stop(true, true).slideUp(200);
+      }
     });
 
     $('#btnUpdateIndikator').on('click', function() {

@@ -1306,6 +1306,14 @@ class Staf extends CI_Controller {
     if (!$this->db->field_exists('TipeSumber', 'olah_data_indikator')) {
       $this->db->query("ALTER TABLE `olah_data_indikator` ADD COLUMN `TipeSumber` ENUM('manual', 'api') DEFAULT 'manual' AFTER `ApiUrl`");
     }
+    if (!$this->db->field_exists('StatusVerifikasi', 'olah_data_indikator')) {
+      $this->db->query("ALTER TABLE `olah_data_indikator` ADD COLUMN `StatusVerifikasi` VARCHAR(50) NOT NULL DEFAULT 'diproses' AFTER `Keterangan`");
+    }
+    if (!$this->db->field_exists('CatatanVerifikasi', 'olah_data_indikator')) {
+      $this->db->query("ALTER TABLE `olah_data_indikator` ADD COLUMN `CatatanVerifikasi` TEXT NULL AFTER `StatusVerifikasi`");
+    }
+    // Pastikan seluruh baris terisi status verifikasi valid
+    $this->db->query("UPDATE `olah_data_indikator` SET `StatusVerifikasi` = 'diproses' WHERE `StatusVerifikasi` IS NULL OR `StatusVerifikasi` = ''");
   }
 
   /**
@@ -1580,9 +1588,10 @@ class Staf extends CI_Controller {
               'Satuan'        => $satuan,
               'DataTahun'     => '{}',
               'ApiUrl'        => NULL,
-              'TipeSumber'    => 'manual',
-              'Keterangan'    => 'Indikator standar Pilar ' . $kat['nomor'] . ' - Sub ' . $sub['kode'] . ' (' . $sub['nama'] . ')',
-              'Urutan'        => $urutan++,
+              'TipeSumber'       => 'manual',
+              'Keterangan'       => 'Indikator standar Pilar ' . $kat['nomor'] . ' - Sub ' . $sub['kode'] . ' (' . $sub['nama'] . ')',
+              'StatusVerifikasi' => 'diproses',
+              'Urutan'           => $urutan++,
               'CreatedAt'     => $now,
               'UpdatedAt'     => $now
             ));
@@ -2507,21 +2516,27 @@ class Staf extends CI_Controller {
       }
     }
 
+    $statusVerifikasi = strtolower(trim($this->input->post('StatusVerifikasi') ?? 'diproses'));
+    if (!in_array($statusVerifikasi, array('diproses', 'belum sesuai', 'terverifikasi'))) {
+      $statusVerifikasi = 'diproses';
+    }
+
     $now = date('Y-m-d H:i:s');
     $this->db->insert('olah_data_indikator', array(
-      'DaerahId'      => $daerahId,
-      'NamaIndikator' => $namaIndikator,
-      'Kategori'      => trim($this->input->post('Kategori') ?? ''),
-      'SubKategori'   => trim($this->input->post('SubKategori') ?? ''),
-      'Gender'        => trim($this->input->post('Gender') ?? 'Total'),
-      'Satuan'        => trim($this->input->post('Satuan') ?? ''),
-      'DataTahun'     => json_encode($dataTahun),
-      'ApiUrl'        => $apiUrl ?: NULL,
-      'TipeSumber'    => $tipeSumber,
-      'Keterangan'    => trim($this->input->post('Keterangan') ?? ''),
-      'Urutan'        => (int)($this->input->post('Urutan') ?? 1),
-      'CreatedAt'     => $now,
-      'UpdatedAt'     => $now
+      'DaerahId'         => $daerahId,
+      'NamaIndikator'    => $namaIndikator,
+      'Kategori'         => trim($this->input->post('Kategori') ?? ''),
+      'SubKategori'      => trim($this->input->post('SubKategori') ?? ''),
+      'Gender'           => trim($this->input->post('Gender') ?? 'Total'),
+      'Satuan'           => trim($this->input->post('Satuan') ?? ''),
+      'DataTahun'        => json_encode($dataTahun),
+      'ApiUrl'           => $apiUrl ?: NULL,
+      'TipeSumber'       => $tipeSumber,
+      'Keterangan'       => trim($this->input->post('Keterangan') ?? ''),
+      'StatusVerifikasi' => $statusVerifikasi,
+      'Urutan'           => (int)($this->input->post('Urutan') ?? 1),
+      'CreatedAt'        => $now,
+      'UpdatedAt'        => $now
     ));
 
     if ($this->db->affected_rows() > 0) {
@@ -2555,7 +2570,7 @@ class Staf extends CI_Controller {
       }
     }
 
-    $this->db->where('Id', $id)->update('olah_data_indikator', array(
+    $updateData = array(
       'NamaIndikator' => $namaIndikator,
       'Kategori'      => trim($this->input->post('Kategori') ?? ''),
       'SubKategori'   => trim($this->input->post('SubKategori') ?? ''),
@@ -2567,9 +2582,84 @@ class Staf extends CI_Controller {
       'Keterangan'    => trim($this->input->post('Keterangan') ?? ''),
       'Urutan'        => (int)($this->input->post('Urutan') ?? 1),
       'UpdatedAt'     => date('Y-m-d H:i:s')
-    ));
+    );
+
+    // Hanya Akun Level 4 yang berhak memperbarui StatusVerifikasi & CatatanVerifikasi
+    $userLevel = (int)($this->session->userdata('level') ?? 3);
+    $statusVerifikasiPost = $this->input->post('StatusVerifikasi');
+    if ($userLevel === 4 && !empty($statusVerifikasiPost)) {
+      $cleanVerif = strtolower(trim($statusVerifikasiPost));
+      if (in_array($cleanVerif, array('diproses', 'belum sesuai', 'terverifikasi'))) {
+        $updateData['StatusVerifikasi'] = $cleanVerif;
+        if (isset($_POST['CatatanVerifikasi'])) {
+          $updateData['CatatanVerifikasi'] = trim($this->input->post('CatatanVerifikasi') ?? '');
+        }
+      }
+    }
+
+    $this->db->where('Id', $id)->update('olah_data_indikator', $updateData);
 
     echo '1';
+  }
+
+  /**
+   * Endpoint Khusus Akun Level 4 untuk Memperbarui Status Verifikasi Indikator & Catatan
+   * Pilihan Status: 'diproses', 'belum sesuai', 'terverifikasi'
+   */
+  public function UpdateStatusVerifikasi(){
+    $this->ensureOlahDataStructure();
+
+    $userLevel = (int)($this->session->userdata('level') ?? 3);
+    if ($userLevel !== 4) {
+      echo json_encode(array(
+        'status'  => 'error',
+        'message' => 'Akses ditolak: Hanya akun Level 4 yang memiliki hak akses untuk memverifikasi data!'
+      ));
+      return;
+    }
+
+    $id = (int)$this->input->post('Id');
+    $status = strtolower(trim($this->input->post('StatusVerifikasi') ?? ''));
+    $catatan = trim($this->input->post('CatatanVerifikasi') ?? '');
+
+    $allowed = array('diproses', 'belum sesuai', 'terverifikasi');
+    if (!in_array($status, $allowed)) {
+      echo json_encode(array(
+        'status'  => 'error',
+        'message' => 'Status verifikasi tidak valid! Pilihan: diproses, belum sesuai, terverifikasi.'
+      ));
+      return;
+    }
+
+    if ($id <= 0) {
+      echo json_encode(array(
+        'status'  => 'error',
+        'message' => 'ID Indikator tidak valid!'
+      ));
+      return;
+    }
+
+    $updateData = array(
+      'StatusVerifikasi' => $status,
+      'CatatanVerifikasi'=> ($status === 'belum sesuai') ? $catatan : ($catatan ?: NULL),
+      'UpdatedAt'        => date('Y-m-d H:i:s')
+    );
+
+    $this->db->where('Id', $id)->update('olah_data_indikator', $updateData);
+
+    $labelMap = array(
+      'diproses'      => 'Diproses',
+      'belum sesuai'  => 'Belum Sesuai',
+      'terverifikasi' => 'Terverifikasi'
+    );
+
+    echo json_encode(array(
+      'status'           => 'success',
+      'message'          => 'Status verifikasi berhasil diubah menjadi: ' . ($labelMap[$status] ?? $status),
+      'StatusVerifikasi' => $status,
+      'CatatanVerifikasi'=> $catatan,
+      'Label'            => $labelMap[$status] ?? $status
+    ));
   }
 
   /**
