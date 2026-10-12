@@ -1074,7 +1074,7 @@ $kategoriStats = $KategoriStats ?? array();
               </div>
               <div>
                 <h5 class="font-weight-bold text-dark mb-0" style="font-size: 16px;">
-                  Grafik Visualisasi Tren & Benchmark Daerah
+                  Grafik Visualisasi Komparasi Indikator Daerah
                 </h5>
                 <small class="text-muted" id="lblKomparasiInfoRingkasChart">Perbandingan indikator pembangunan antar daerah.</small>
               </div>
@@ -1089,8 +1089,11 @@ $kategoriStats = $KategoriStats ?? array();
                 <button type="button" class="btn btn-sm btn-primary active btn-toggle-chart-type" data-type="line" id="btnTypeLine" style="border-radius: 8px 0 0 8px; font-weight: 700; padding: 6px 14px;">
                   <i class="fa-solid fa-chart-line mr-1"></i> Line (Garis)
                 </button>
-                <button type="button" class="btn btn-sm btn-outline-primary btn-toggle-chart-type" data-type="bar" id="btnTypeBar" style="border-radius: 0 8px 8px 0; font-weight: 700; padding: 6px 14px;">
+                <button type="button" class="btn btn-sm btn-outline-primary btn-toggle-chart-type" data-type="bar" id="btnTypeBar" style="border-radius: 0; font-weight: 700; padding: 6px 14px;">
                   <i class="fa-solid fa-chart-column mr-1"></i> Bar (Batang)
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-primary btn-toggle-chart-type" data-type="pie" id="btnTypePie" style="border-radius: 0 8px 8px 0; font-weight: 700; padding: 6px 14px;">
+                  <i class="fa-solid fa-chart-pie mr-1"></i> Pie (Bulat)
                 </button>
               </div>
             </div>
@@ -1114,35 +1117,17 @@ $kategoriStats = $KategoriStats ?? array();
           <div class="row mb-3" id="containerStatCardsChart"></div>
 
           <!-- Canvas Grafik Utama Tren Tahunan -->
-          <div class="card border p-4 mb-4 shadow-sm" style="border-radius: 16px; background: #ffffff; padding: 22px 24px 28px 24px;">
+          <div class="card border p-4 shadow-sm" style="border-radius: 16px; background: #ffffff; padding: 22px 24px 28px 24px;">
             <div class="d-flex align-items-center justify-content-between mb-3">
               <div>
                 <h6 class="font-weight-bold text-dark mb-0" style="font-size: 15px;" id="titleMainChart">
                   Grafik Tren Waktu Antar Daerah
                 </h6>
-                <small class="text-muted font-italic">Pergerakan angka per tahun dari masing-masing daerah.</small>
+                <small class="text-muted font-italic" id="subTitleMainChart">Pergerakan angka per tahun dari masing-masing daerah.</small>
               </div>
             </div>
             <div style="position: relative; height: 380px; width: 100%; margin-bottom: 12px;">
               <canvas id="canvasKomparasiChart"></canvas>
-            </div>
-          </div>
-
-          <!-- Jarak Pemisah Antar Diagram -->
-          <div style="height: 24px;"></div>
-
-          <!-- Canvas Grafik Benchmark Sub-Kategori -->
-          <div class="card border p-4 shadow-sm" style="border-radius: 16px; background: #ffffff; margin-top: 16px !important; border: 1.5px solid #e2e8f0;" id="boxMultiSubChart">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <div>
-                <h6 class="font-weight-bold text-dark mb-0" style="font-size: 15px;" id="titleMultiSubChart">
-                  Benchmark Seluruh Indikator Sub-Kategori
-                </h6>
-                <small class="text-muted font-italic" id="subTitleMultiSubChart">Perbandingan indikator dalam sub-kategori aktif untuk tahun yang dipilih.</small>
-              </div>
-            </div>
-            <div style="position: relative; height: 380px; width: 100%; margin-top: 10px;">
-              <canvas id="canvasMultiSubChart"></canvas>
             </div>
           </div>
         </div>
@@ -3827,6 +3812,122 @@ $kategoriStats = $KategoriStats ?? array();
     var _chartInstanceSub = null;
     var _currentChartType = 'line';
 
+    // Plugin Chart.js untuk menampilkan angka langsung di dalam diagram (Pie, Bar, Line)
+    var cvideDataLabelsPlugin = {
+      id: 'cvideDataLabels',
+      afterDatasetsDraw: function(chart) {
+        var ctx = chart.ctx;
+        var chartType = chart.config.type;
+
+        if (chartType === 'pie' || chartType === 'doughnut') {
+          var dataset = chart.data.datasets[0];
+          if (!dataset || !dataset.data) return;
+          var meta = chart.getDatasetMeta(0);
+          if (!meta || !meta.data) return;
+
+          var total = dataset.data.reduce(function(a, b) {
+            return a + (typeof b === 'number' && !isNaN(b) && b > 0 ? b : 0);
+          }, 0);
+
+          meta.data.forEach(function(element, index) {
+            var val = dataset.data[index];
+            if (val === null || val === undefined || isNaN(val) || val <= 0) return;
+
+            var startAngle = element.startAngle;
+            var endAngle = element.endAngle;
+            var angleDiff = endAngle - startAngle;
+            if (angleDiff < 0.16) return; // Irisan terlalu kecil untuk teks
+
+            var innerRadius = element.innerRadius || 0;
+            var outerRadius = element.outerRadius;
+            var midAngle = (startAngle + endAngle) / 2;
+            var midRadius = innerRadius + (outerRadius - innerRadius) * 0.55;
+            var posX = element.x + Math.cos(midAngle) * midRadius;
+            var posY = element.y + Math.sin(midAngle) * midRadius;
+
+            var pct = total > 0 ? ((val / total) * 100).toFixed(1) + '%' : '';
+            var formattedVal = (Math.round(val) === val) ? String(val) : String(parseFloat(val.toFixed(2)));
+
+            ctx.save();
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            ctx.shadowBlur = 6;
+            ctx.fillStyle = '#ffffff';
+
+            if (angleDiff > 0.42) {
+              ctx.font = 'bold 13px system-ui, -apple-system, sans-serif';
+              ctx.fillText(formattedVal, posX, posY - 7);
+              ctx.font = 'bold 11px system-ui, -apple-system, sans-serif';
+              ctx.fillText('(' + pct + ')', posX, posY + 8);
+            } else {
+              ctx.font = 'bold 12px system-ui, -apple-system, sans-serif';
+              ctx.fillText(formattedVal, posX, posY);
+            }
+            ctx.restore();
+          });
+        } else if (chartType === 'bar') {
+          chart.data.datasets.forEach(function(ds, dsIdx) {
+            var meta = chart.getDatasetMeta(dsIdx);
+            if (!meta || !meta.data || meta.hidden) return;
+
+            meta.data.forEach(function(bar, idx) {
+              var val = ds.data[idx];
+              if (val === null || val === undefined || isNaN(val)) return;
+
+              // Jangan tampilkan jika batang terlalu ramping agar tidak menumpuk
+              if (bar.width && bar.width < 14) return;
+
+              var formattedVal = (Math.round(val) === val) ? String(val) : String(parseFloat(val.toFixed(2)));
+              var posX = bar.x;
+              var isNearTop = chart.chartArea && (bar.y - 14 < chart.chartArea.top);
+              var posY = isNearTop ? (bar.y + 14) : (bar.y - 5);
+
+              ctx.save();
+              ctx.textAlign = 'center';
+              ctx.textBaseline = isNearTop ? 'top' : 'bottom';
+              ctx.font = 'bold 11px system-ui, -apple-system, sans-serif';
+              if (isNearTop) {
+                ctx.fillStyle = '#ffffff';
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+                ctx.shadowBlur = 4;
+              } else {
+                ctx.fillStyle = '#1e293b';
+                ctx.shadowColor = 'rgba(255, 255, 255, 0.95)';
+                ctx.shadowBlur = 3;
+              }
+              ctx.fillText(formattedVal, posX, posY);
+              ctx.restore();
+            });
+          });
+        } else if (chartType === 'line') {
+          chart.data.datasets.forEach(function(ds, dsIdx) {
+            var meta = chart.getDatasetMeta(dsIdx);
+            if (!meta || !meta.data || meta.hidden) return;
+
+            meta.data.forEach(function(point, idx) {
+              var val = ds.data[idx];
+              if (val === null || val === undefined || isNaN(val)) return;
+
+              var formattedVal = (Math.round(val) === val) ? String(val) : String(parseFloat(val.toFixed(2)));
+              var posX = point.x;
+              var posY = point.y - 8;
+
+              ctx.save();
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'bottom';
+              ctx.font = 'bold 11px system-ui, -apple-system, sans-serif';
+              ctx.fillStyle = ds.borderColor || '#0f172a';
+              ctx.shadowColor = 'rgba(255, 255, 255, 0.95)';
+              ctx.shadowBlur = 4;
+              ctx.fillText(formattedVal, posX, posY);
+              ctx.restore();
+            });
+          });
+        }
+      }
+    };
+
     function escapeHtml(text) {
       if (!text) return '';
       return String(text)
@@ -3967,205 +4068,159 @@ $kategoriStats = $KategoriStats ?? array();
 
       $('#containerStatCardsChart').html(statCardsHtml);
 
-      var focusBadge = (chartYearVal && chartYearVal !== 'ALL') ? ' <span class="badge badge-info ml-2 px-2 py-1" style="font-size: 11px; background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; font-weight: 700;">Tahun ' + chartYearVal + '</span>' : '';
-      $('#titleMainChart').html('<i class="fa-solid fa-chart-line text-primary mr-1"></i> Tren Komparasi: ' + targetRow.NamaIndikator + (targetRow.Satuan ? ' (' + targetRow.Satuan + ')' : '') + focusBadge);
-
-      // 2. Render Main Trend Chart (canvasKomparasiChart)
-      var datasetsTrend = [];
-      regions.forEach(function(r, idx) {
-        var c = colorSchemes[idx % colorSchemes.length];
-        var dataPoints = [];
-        var pointRadii = [];
-        var pointHoverRadii = [];
-
-        allYears.forEach(function(y) {
-          var raw = (targetRow.Values && targetRow.Values[r.Id] && targetRow.Values[r.Id][y] !== undefined) ? targetRow.Values[r.Id][y] : null;
-          if (raw !== null && raw !== '') {
-            var parsed = parseFloat(String(raw).replace(',', '.'));
-            dataPoints.push(!isNaN(parsed) ? parsed : null);
-          } else {
-            dataPoints.push(null);
-          }
-
-          if (chartYearVal && chartYearVal !== 'ALL' && String(y) === String(chartYearVal)) {
-            pointRadii.push(9);
-            pointHoverRadii.push(12);
-          } else {
-            pointRadii.push(5);
-            pointHoverRadii.push(8);
-          }
-        });
-
-        datasetsTrend.push({
-          label: r.NamaDaerah,
-          data: dataPoints,
-          borderColor: c.border,
-          backgroundColor: c.bg,
-          borderWidth: 3,
-          tension: 0,
-          fill: (_currentChartType === 'line' ? false : true),
-          pointRadius: pointRadii,
-          pointHoverRadius: pointHoverRadii,
-          spanGaps: true
-        });
-      });
-
+      // 2. Render Main Chart (canvasKomparasiChart)
       if (_chartInstanceTrend) {
         _chartInstanceTrend.destroy();
         _chartInstanceTrend = null;
       }
 
-      var allNums = [];
-      datasetsTrend.forEach(function(ds) {
-        ds.data.forEach(function(val) {
-          if (val !== null && !isNaN(val)) allNums.push(val);
-        });
-      });
-
-      var minVal = allNums.length > 0 ? Math.min.apply(null, allNums) : 0;
-      var maxVal = allNums.length > 0 ? Math.max.apply(null, allNums) : 100;
-
-      var yMin = 0;
-      var yMax = undefined;
-      var stepSize = undefined;
-      var isTruncatedZero = false;
-
-      if (minVal > 15) {
-        var span = maxVal - minVal;
-        stepSize = span <= 15 ? 5 : 10;
-        var roundedFloor = Math.floor(minVal / stepSize) * stepSize;
-        yMin = roundedFloor - stepSize;
-        yMax = Math.ceil((maxVal + 2) / stepSize) * stepSize;
-        isTruncatedZero = true;
-      } else {
-        yMin = 0;
-      }
-
       var ctxTrend = document.getElementById('canvasKomparasiChart');
       if (ctxTrend) {
-        _chartInstanceTrend = new Chart(ctxTrend.getContext('2d'), {
-          type: _currentChartType,
-          data: {
-            labels: allYears,
-            datasets: datasetsTrend
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: { mode: 'index', intersect: false },
-            plugins: {
-              legend: {
-                position: 'top',
-                labels: { font: { weight: 'bold', size: 12 }, padding: 15 }
-              },
-              tooltip: {
-                backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                padding: 12,
-                titleFont: { size: 13, weight: 'bold' },
-                bodyFont: { size: 12 },
-                callbacks: {
-                  label: function(context) {
-                    var val = context.parsed.y !== null ? context.parsed.y : '-';
-                    return ' ' + context.dataset.label + ': ' + val + (targetRow.Satuan ? ' ' + targetRow.Satuan : '');
+        if (_currentChartType === 'pie') {
+          var pieLabels = [];
+          var pieData = [];
+          var pieColors = [];
+
+          regions.forEach(function(r, idx) {
+            var c = colorSchemes[idx % colorSchemes.length];
+            pieLabels.push(r.NamaDaerah);
+
+            var raw = (activeChartYear && targetRow.Values && targetRow.Values[r.Id] && targetRow.Values[r.Id][activeChartYear] !== undefined) ? targetRow.Values[r.Id][activeChartYear] : null;
+            if (raw !== null && raw !== '') {
+              var parsed = parseFloat(String(raw).replace(',', '.'));
+              pieData.push(!isNaN(parsed) ? parsed : 0);
+            } else {
+              pieData.push(0);
+            }
+            pieColors.push(c.border);
+          });
+
+          var pieYearText = activeChartYear ? 'Tahun ' + activeChartYear : 'Data Terbaru';
+          var yearBadgePie = ' <span class="badge badge-info ml-2 px-2 py-1" style="font-size: 11px; background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; font-weight: 700;">' + pieYearText + '</span>';
+          $('#titleMainChart').html('<i class="fa-solid fa-chart-pie text-primary mr-1"></i> Perbandingan Daerah (Diagram Bulat): ' + targetRow.NamaIndikator + (targetRow.Satuan ? ' (' + targetRow.Satuan + ')' : '') + yearBadgePie);
+          $('#subTitleMainChart').html('Proporsi komparasi indikator antar daerah pada <b>' + pieYearText + '</b>.');
+
+          _chartInstanceTrend = new Chart(ctxTrend.getContext('2d'), {
+            type: 'pie',
+            data: {
+              labels: pieLabels,
+              datasets: [{
+                label: targetRow.NamaIndikator,
+                data: pieData,
+                backgroundColor: pieColors,
+                borderColor: '#ffffff',
+                borderWidth: 2,
+                hoverOffset: 8
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'top',
+                  labels: { font: { weight: 'bold', size: 12 }, padding: 15 }
+                },
+                tooltip: {
+                  backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                  padding: 12,
+                  titleFont: { size: 13, weight: 'bold' },
+                  bodyFont: { size: 12 },
+                  callbacks: {
+                    label: function(context) {
+                      var val = context.raw;
+                      var total = context.dataset.data.reduce(function(a, b) {
+                        return a + (typeof b === 'number' && !isNaN(b) ? b : 0);
+                      }, 0);
+                      var pct = '';
+                      if (total > 0 && typeof val === 'number' && val > 0) {
+                        pct = ' (' + ((val / total) * 100).toFixed(1) + '%)';
+                      }
+                      return ' ' + context.label + ': ' + (val !== null && val !== undefined ? val : '-') + (targetRow.Satuan ? ' ' + targetRow.Satuan : '') + pct;
+                    }
                   }
                 }
               }
             },
-            scales: {
-              y: {
-                min: yMin,
-                max: yMax,
-                grid: { color: '#f1f5f9' },
-                ticks: {
-                  stepSize: stepSize,
-                  font: { weight: '600' },
-                  callback: function(value) {
-                    if (isTruncatedZero && value === yMin) {
-                      return '0';
-                    }
-                    return value;
-                  }
-                }
-              },
-              x: {
-                grid: { display: false },
-                ticks: { font: { weight: '700' } }
+            plugins: [cvideDataLabelsPlugin]
+          });
+        } else {
+          // Line or Bar
+          var datasetsTrend = [];
+          regions.forEach(function(r, idx) {
+            var c = colorSchemes[idx % colorSchemes.length];
+            var dataPoints = [];
+            var pointRadii = [];
+            var pointHoverRadii = [];
+
+            allYears.forEach(function(y) {
+              var raw = (targetRow.Values && targetRow.Values[r.Id] && targetRow.Values[r.Id][y] !== undefined) ? targetRow.Values[r.Id][y] : null;
+              if (raw !== null && raw !== '') {
+                var parsed = parseFloat(String(raw).replace(',', '.'));
+                dataPoints.push(!isNaN(parsed) ? parsed : null);
+              } else {
+                dataPoints.push(null);
               }
-            }
+
+              if (chartYearVal && chartYearVal !== 'ALL' && String(y) === String(chartYearVal)) {
+                pointRadii.push(9);
+                pointHoverRadii.push(12);
+              } else {
+                pointRadii.push(5);
+                pointHoverRadii.push(8);
+              }
+            });
+
+            datasetsTrend.push({
+              label: r.NamaDaerah,
+              data: dataPoints,
+              borderColor: c.border,
+              backgroundColor: c.bg,
+              borderWidth: 3,
+              tension: 0,
+              fill: (_currentChartType === 'line' ? false : true),
+              pointRadius: pointRadii,
+              pointHoverRadius: pointHoverRadii,
+              spanGaps: true
+            });
+          });
+
+          var allNums = [];
+          datasetsTrend.forEach(function(ds) {
+            ds.data.forEach(function(val) {
+              if (val !== null && !isNaN(val)) allNums.push(val);
+            });
+          });
+
+          var minVal = allNums.length > 0 ? Math.min.apply(null, allNums) : 0;
+          var maxVal = allNums.length > 0 ? Math.max.apply(null, allNums) : 100;
+
+          var yMin = 0;
+          var yMax = undefined;
+          var stepSize = undefined;
+          var isTruncatedZero = false;
+
+          if (minVal > 15) {
+            var span = maxVal - minVal;
+            stepSize = span <= 15 ? 5 : 10;
+            var roundedFloor = Math.floor(minVal / stepSize) * stepSize;
+            yMin = roundedFloor - stepSize;
+            yMax = Math.ceil((maxVal + 2) / stepSize) * stepSize;
+            isTruncatedZero = true;
+          } else {
+            yMin = 0;
           }
-        });
-      }
 
-      // 3. Render Benchmark Multi-Indikator Sub-Kategori (canvasMultiSubChart)
-      var subName = targetRow.SubKategori || '';
-      var subRows = _komparasiData.rows.filter(function(r) {
-        return r.SubKategori === subName;
-      });
+          var chartIcon = (_currentChartType === 'bar' ? 'fa-chart-column' : 'fa-chart-line');
+          var focusBadge = (chartYearVal && chartYearVal !== 'ALL') ? ' <span class="badge badge-info ml-2 px-2 py-1" style="font-size: 11px; background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; font-weight: 700;">Tahun ' + chartYearVal + '</span>' : '';
+          $('#titleMainChart').html('<i class="fa-solid ' + chartIcon + ' text-primary mr-1"></i> Tren Komparasi: ' + targetRow.NamaIndikator + (targetRow.Satuan ? ' (' + targetRow.Satuan + ')' : '') + focusBadge);
+          $('#subTitleMainChart').html('Pergerakan angka per tahun dari masing-masing daerah.');
 
-      if (subRows.length > 0) {
-        $('#boxMultiSubChart').show();
-        var selectedThn = $('#filterKomparasiTahun').val();
-        var fallbackLatest = (allYears.length > 0) ? allYears[allYears.length - 1] : null;
-        var compYear = (selectedThn && selectedThn !== 'ALL') ? selectedThn : (fallbackLatest || '2023');
-
-        $('#titleMultiSubChart').html('<i class="fa-solid fa-chart-column text-success mr-1"></i> Benchmark Sub-Kategori: ' + subName);
-        $('#subTitleMultiSubChart').html('Perbandingan seluruh indikator dalam sub-kategori <b>' + subName + '</b> untuk Tahun <b>' + compYear + '</b>:');
-
-        // Saring indikator agar yang memiliki nilai pada tahun compYear tampil proporsional
-        var activeSubRows = subRows.filter(function(sr) {
-          var hasAny = false;
-          regions.forEach(function(r) {
-            if (sr.Values && sr.Values[r.Id] && sr.Values[r.Id][compYear] !== undefined && sr.Values[r.Id][compYear] !== '') {
-              hasAny = true;
-            }
-          });
-          return hasAny;
-        });
-
-        var displaySubRows = (activeSubRows.length > 0) ? activeSubRows : subRows;
-
-        var subLabels = [];
-        var subFullNames = [];
-        displaySubRows.forEach(function(sr) {
-          var shortName = sr.NamaIndikator.length > 26 ? (sr.NamaIndikator.substring(0, 24) + '...') : sr.NamaIndikator;
-          subLabels.push(shortName);
-          subFullNames.push(sr.NamaIndikator + (sr.Satuan ? ' (' + sr.Satuan + ')' : ''));
-        });
-
-        var datasetsSub = [];
-        regions.forEach(function(r, idx) {
-          var c = colorSchemes[idx % colorSchemes.length];
-          var points = [];
-          displaySubRows.forEach(function(sr) {
-            var raw = (sr.Values && sr.Values[r.Id] && sr.Values[r.Id][compYear] !== undefined) ? sr.Values[r.Id][compYear] : null;
-            if (raw !== null && raw !== '') {
-              var parsed = parseFloat(String(raw).replace(',', '.'));
-              points.push(!isNaN(parsed) ? parsed : null);
-            } else {
-              points.push(null);
-            }
-          });
-
-          datasetsSub.push({
-            label: r.NamaDaerah,
-            data: points,
-            backgroundColor: c.border,
-            borderRadius: 6
-          });
-        });
-
-        if (_chartInstanceSub) {
-          _chartInstanceSub.destroy();
-          _chartInstanceSub = null;
-        }
-
-        var ctxSub = document.getElementById('canvasMultiSubChart');
-        if (ctxSub) {
-          _chartInstanceSub = new Chart(ctxSub.getContext('2d'), {
-            type: 'bar',
+          _chartInstanceTrend = new Chart(ctxTrend.getContext('2d'), {
+            type: _currentChartType,
             data: {
-              labels: subLabels,
-              datasets: datasetsSub
+              labels: allYears,
+              datasets: datasetsTrend
             },
             options: {
               responsive: true,
@@ -4179,30 +4234,47 @@ $kategoriStats = $KategoriStats ?? array();
                 tooltip: {
                   backgroundColor: 'rgba(15, 23, 42, 0.9)',
                   padding: 12,
+                  titleFont: { size: 13, weight: 'bold' },
+                  bodyFont: { size: 12 },
                   callbacks: {
-                    title: function(items) {
-                      var idx = items[0].dataIndex;
-                      return subFullNames[idx] || items[0].label;
+                    label: function(context) {
+                      var val = context.parsed.y !== null ? context.parsed.y : '-';
+                      return ' ' + context.dataset.label + ': ' + val + (targetRow.Satuan ? ' ' + targetRow.Satuan : '');
                     }
                   }
                 }
               },
               scales: {
                 y: {
-                  beginAtZero: true,
+                  min: yMin,
+                  max: yMax,
+                  grace: '8%',
                   grid: { color: '#f1f5f9' },
-                  ticks: { font: { weight: '600' } }
+                  ticks: {
+                    stepSize: stepSize,
+                    font: { weight: '600' },
+                    callback: function(value) {
+                      if (isTruncatedZero && value === yMin) {
+                        return '0';
+                      }
+                      return value;
+                    }
+                  }
                 },
                 x: {
                   grid: { display: false },
-                  ticks: { font: { size: 11, weight: '600' } }
+                  ticks: { font: { weight: '700' } }
                 }
               }
-            }
+            },
+            plugins: [cvideDataLabelsPlugin]
           });
         }
-      } else {
-        $('#boxMultiSubChart').hide();
+      }
+
+      if (_chartInstanceSub) {
+        _chartInstanceSub.destroy();
+        _chartInstanceSub = null;
       }
     }
 
@@ -4390,16 +4462,6 @@ $kategoriStats = $KategoriStats ?? array();
         } catch(e) { console.error('Gagal mengambil gambar canvas 1:', e); }
       }
 
-      // Ambil gambar chart benchmark sub-kategori jika terlihat
-      var canvas2 = document.getElementById('canvasMultiSubChart');
-      var imgChart2 = '';
-      var isBox2Visible = $('#boxMultiSubChart').is(':visible');
-      if (canvas2 && isBox2Visible) {
-        try {
-          imgChart2 = canvas2.toDataURL('image/png');
-        } catch(e) { console.error('Gagal mengambil gambar canvas 2:', e); }
-      }
-
       // Ambil tabel matriks komparasi (tanpa tombol/tulisan grafik)
       var tabelHtml = '';
       if ($('#tabelKomparasiData').length) {
@@ -4446,7 +4508,7 @@ $kategoriStats = $KategoriStats ?? array();
         '<body>' +
           '<div class="header-print">' +
             '<div>' +
-              '<h2>Laporan Komparasi & Benchmark Daerah</h2>' +
+              '<h2>Laporan Komparasi Indikator Daerah</h2>' +
               '<div class="sub-info">Perbandingan: ' + daerahListStr + '</div>' +
               '<div class="meta-desc">Indikator Dianalisis: <b>' + indikatorAktif + '</b> &nbsp;|&nbsp; Filter: ' + tahunFilter + '</div>' +
             '</div>' +
@@ -4458,23 +4520,15 @@ $kategoriStats = $KategoriStats ?? array();
 
       if (imgChart1) {
         printDoc += 
-          '<div class="section-title">1. Grafik Visualisasi Tren Waktu</div>' +
+          '<div class="section-title">1. Grafik Visualisasi Indikator</div>' +
           '<div class="chart-box">' +
-            '<img class="chart-img" src="' + imgChart1 + '" alt="Grafik Komparasi Tren">' +
-          '</div>';
-      }
-
-      if (imgChart2) {
-        printDoc += 
-          '<div class="section-title">2. Benchmark Seluruh Indikator Sub-Kategori</div>' +
-          '<div class="chart-box">' +
-            '<img class="chart-img" src="' + imgChart2 + '" alt="Grafik Benchmark Sub-Kategori">' +
+            '<img class="chart-img" src="' + imgChart1 + '" alt="Grafik Komparasi Indikator">' +
           '</div>';
       }
 
       if (tabelHtml) {
         printDoc += 
-          '<div class="section-title" style="margin-top: 20px;">' + (imgChart1 ? '3.' : '1.') + ' Matriks Perbandingan Data Indikator Lengkap</div>' +
+          '<div class="section-title" style="margin-top: 20px;">' + (imgChart1 ? '2.' : '1.') + ' Matriks Perbandingan Data Indikator Lengkap</div>' +
           tabelHtml;
       }
 
