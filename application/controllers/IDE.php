@@ -2036,6 +2036,219 @@ public function RoadmapHilirisasiBanyuwangi2026() {
         $this->load->view('MasterData', $data);
     }
 
+    /**
+     * Halaman Publik: Komparasi Data Wilayah (Hanya data terverifikasi)
+     */
+    public function KomparasiData() {
+        $data['title'] = 'Komparasi Data Wilayah | IDE Consultant';
+        $data['isLoggedIn'] = $this->session->userdata('logged_in') ? true : false;
+        $data['userLevel'] = $this->session->userdata('level') ? (int)$this->session->userdata('level') : 0;
+        $data['userName'] = $this->session->userdata('nama_lengkap') ? $this->session->userdata('nama_lengkap') : $this->session->userdata('username');
+        if (empty($data['userName'])) {
+            $data['userName'] = 'User';
+        }
+
+        // Ambil daftar daerah yang terdaftar
+        $data['daerah_list'] = $this->db->order_by('NamaDaerah', 'ASC')->get('olah_data_daerah')->result_array();
+
+        $this->load->view('KomparasiDataWilayah', $data);
+    }
+
+    /**
+     * Endpoint Publik: Data Komparasi Wilayah (Khusus Indikator yang Sudah Terverifikasi)
+     */
+    public function GetKomparasiDataPublik() {
+        $daerahIdsRaw = $this->input->post('daerah_ids');
+        if (empty($daerahIdsRaw)) {
+            $daerahIdsRaw = $this->input->post('daerah_ids[]');
+        }
+        if (empty($daerahIdsRaw) && isset($_POST['daerah_ids'])) {
+            $daerahIdsRaw = $_POST['daerah_ids'];
+        }
+        if (empty($daerahIdsRaw) && isset($_POST['daerah_ids[]'])) {
+            $daerahIdsRaw = $_POST['daerah_ids[]'];
+        }
+        if (empty($daerahIdsRaw)) {
+            $daerahIdsRaw = $this->input->get('daerah_ids');
+        }
+        if (empty($daerahIdsRaw) && isset($_GET['daerah_ids'])) {
+            $daerahIdsRaw = $_GET['daerah_ids'];
+        }
+        if (empty($daerahIdsRaw) && isset($_GET['daerah_ids[]'])) {
+            $daerahIdsRaw = $_GET['daerah_ids[]'];
+        }
+
+        $daerahIds = array();
+        if (is_array($daerahIdsRaw)) {
+            foreach ($daerahIdsRaw as $id) {
+                $idInt = (int)$id;
+                if ($idInt > 0 && !in_array($idInt, $daerahIds)) {
+                    $daerahIds[] = $idInt;
+                }
+            }
+        } elseif (is_string($daerahIdsRaw)) {
+            $parts = explode(',', $daerahIdsRaw);
+            foreach ($parts as $p) {
+                $idInt = (int)trim($p);
+                if ($idInt > 0 && !in_array($idInt, $daerahIds)) {
+                    $daerahIds[] = $idInt;
+                }
+            }
+        }
+
+        // Maksimal 3 daerah
+        if (count($daerahIds) > 3) {
+            $daerahIds = array_slice($daerahIds, 0, 3);
+        }
+
+        if (empty($daerahIds)) {
+            echo json_encode(array('status' => 'error', 'message' => 'Pilih minimal 1 daerah (maksimal 3 daerah) untuk dibandingkan!'));
+            return;
+        }
+
+        $regions = array();
+        $allYearsSet = array();
+        $indicatorsByRegion = array();
+
+        foreach ($daerahIds as $did) {
+            $d = $this->db->get_where('olah_data_daerah', array('Id' => $did))->row_array();
+            if ($d) {
+                $years = json_decode($d['TahunList'] ?? '[]', true) ?: array();
+                sort($years, SORT_NUMERIC);
+                $d['Years'] = $years;
+
+                // Hitung hanya indikator yang berstatus terverifikasi
+                $d['TotalIndikator'] = $this->db->where('DaerahId', $did)
+                                                ->where('LOWER(TRIM(StatusVerifikasi))', 'terverifikasi')
+                                                ->count_all_results('olah_data_indikator');
+                $regions[] = $d;
+
+                if (!empty($years)) {
+                    foreach ($years as $y) {
+                        $allYearsSet[(string)$y] = true;
+                    }
+                }
+
+                // Ambil HANYA indikator yang statusnya 'terverifikasi'
+                $inds = $this->db->where('DaerahId', $did)
+                                 ->where('LOWER(TRIM(StatusVerifikasi))', 'terverifikasi')
+                                 ->order_by('Urutan', 'ASC')
+                                 ->order_by('Id', 'ASC')
+                                 ->get('olah_data_indikator')
+                                 ->result_array();
+
+                foreach ($inds as &$ind) {
+                    $ind['DataTahunParsed'] = json_decode($ind['DataTahun'] ?? '{}', true) ?: array();
+                    if (empty($years)) {
+                        foreach (array_keys($ind['DataTahunParsed']) as $y) {
+                            $allYearsSet[(string)$y] = true;
+                        }
+                    }
+                }
+                unset($ind);
+                $indicatorsByRegion[$did] = $inds;
+            }
+        }
+
+        if (empty($regions)) {
+            echo json_encode(array('status' => 'error', 'message' => 'Daerah yang dipilih tidak ditemukan!'));
+            return;
+        }
+
+        $sortedYears = array_map('strval', array_keys($allYearsSet));
+        sort($sortedYears, SORT_NUMERIC);
+        $sortedYears = array_values(array_map('strval', $sortedYears));
+
+        $this->load->helper('olahdata');
+        $masterKategori = get_master_kategori_olah_data();
+
+        // Bangun matriks komparasi indikator:
+        $matrix = array();
+
+        foreach ($masterKategori as $katKey => $kat) {
+            $katNama = $kat['nama'];
+            foreach ($kat['sub'] as $subKey => $sub) {
+                $subNama = $sub['nama'];
+                foreach ($sub['indikator'] as $stdInd) {
+                    $key = strtolower(trim($katNama)) . '|||' . strtolower(trim($subNama)) . '|||' . strtolower(trim($stdInd['nama']));
+                    $matrix[$key] = array(
+                        'Kategori'      => $katNama,
+                        'SubKategori'   => $subNama,
+                        'NamaIndikator' => $stdInd['nama'],
+                        'Satuan'        => $stdInd['satuan'] ?? '',
+                        'Values'        => array(),
+                        'HasVerified'   => false
+                    );
+                }
+            }
+        }
+
+        // Petakan nilai terverifikasi dari masing-masing daerah
+        foreach ($regions as $r) {
+            $did = $r['Id'];
+            $inds = $indicatorsByRegion[$did] ?? array();
+
+            foreach ($inds as $ind) {
+                $k = trim($ind['Kategori'] ?? '');
+                $s = trim($ind['SubKategori'] ?? '');
+                $n = trim($ind['NamaIndikator'] ?? '');
+                $key = strtolower($k) . '|||' . strtolower($s) . '|||' . strtolower($n);
+
+                if (!isset($matrix[$key])) {
+                    $matchedKey = null;
+                    foreach ($matrix as $mK => $mV) {
+                        if (strcasecmp(trim($mV['NamaIndikator']), $n) === 0) {
+                            $matchedKey = $mK;
+                            break;
+                        }
+                    }
+                    if ($matchedKey) {
+                        $key = $matchedKey;
+                    } else {
+                        $matrix[$key] = array(
+                            'Kategori'      => $k ?: 'LAINNYA',
+                            'SubKategori'   => $s ?: 'Umum',
+                            'NamaIndikator' => $n,
+                            'Satuan'        => $ind['Satuan'] ?? '',
+                            'Values'        => array(),
+                            'HasVerified'   => false
+                        );
+                    }
+                }
+
+                $cleanValues = array();
+                foreach ($ind['DataTahunParsed'] as $yK => $yV) {
+                    $strYK = (string)$yK;
+                    if (isset($allYearsSet[$strYK])) {
+                        $cleanValues[$strYK] = $yV;
+                    }
+                }
+                $matrix[$key]['Values'][$did] = $cleanValues;
+                $matrix[$key]['HasVerified'] = true;
+                if (empty($matrix[$key]['Satuan']) && !empty($ind['Satuan'])) {
+                    $matrix[$key]['Satuan'] = $ind['Satuan'];
+                }
+            }
+        }
+
+        // Filter: Hanya tampilkan baris yang memiliki nilai terverifikasi
+        $filteredRows = array();
+        foreach ($matrix as $row) {
+            if (!empty($row['HasVerified'])) {
+                unset($row['HasVerified']);
+                $filteredRows[] = $row;
+            }
+        }
+
+        echo json_encode(array(
+            'status'          => 'success',
+            'regions'         => $regions,
+            'all_years'       => $sortedYears,
+            'rows'            => $filteredRows,
+            'master_kategori' => $masterKategori
+        ));
+    }
+
     public function debug_session() {
     echo '<pre>';
     echo 'Session Data:<br>';

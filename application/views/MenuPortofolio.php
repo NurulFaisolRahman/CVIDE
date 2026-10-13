@@ -1424,6 +1424,7 @@
                 <p class="mega-desc">Metode ilmiah dengan analisis mendalam.</p>
                 <h4 class="mega-heading">MasterData</h4>
                 <a href="<?= base_url('MasterData') ?>">Repositori Data</a>
+                <a href="<?= base_url('KomparasiData') ?>">Komparasi Data Wilayah</a>
               </div>
             </div>
           </div>
@@ -1435,7 +1436,7 @@
             <div class="mega-grid">
               <div class="mega-column">
                 <h4 class="mega-heading">Proyek Pemerintahan</h4>
-                <a href="<?= base_url('MenuPortofolio') ?>" style="color: var(--lugx-red); font-weight: 700;">Portofolio Proyek Selesai (Aktif)</a>
+                <a href="<?= base_url('MenuPortofolio') ?>">Portofolio Proyek Selesai</a>
                 <p class="mega-desc">Kerjasama dengan berbagai Pemda di Jawa Timur & luar pulau.</p>
               </div>
             </div>
@@ -1482,6 +1483,7 @@
       <a href="<?= base_url('#services') ?>" onclick="closeMobileMenu()">Konsultasi Ekonomi</a>
       <a href="<?= base_url('MenuSurvei') ?>">Survei Kepuasan SKM</a>
       <a href="<?= base_url('MasterData') ?>">Repositori MasterData</a>
+      <a href="<?= base_url('KomparasiData') ?>">Komparasi Data Wilayah</a>
     </div>
 
     <div class="dropbtn" onclick="toggleMobileDropdown(this)">Portfolio <i class="fa-solid fa-chevron-down"></i></div>
@@ -2986,6 +2988,7 @@ Timur
             <li><a href="<?= base_url('MenuPortofolio') ?>">Portofolio Proyek</a></li>
             <li><a href="<?= base_url('legalitas') ?>">Legalitas Usaha</a></li>
             <li><a href="<?= base_url('MasterData') ?>">Repositori Data</a></li>
+            <li><a href="<?= base_url('KomparasiData') ?>">Komparasi Data Wilayah</a></li>
           </ul>
         </div>
       </div>

@@ -1679,7 +1679,7 @@ $userName   = isset($userName) ? $userName : 'User';
         </li>
 
         <li class="dropdown">
-          <a href="<?= base_url('#services') ?>" class="nav-item-link active">Layanan <i class="fa-solid fa-chevron-down" style="font-size: 11px;"></i></a>
+          <a href="<?= base_url('#services') ?>" class="nav-item-link">Layanan <i class="fa-solid fa-chevron-down" style="font-size: 11px;"></i></a>
           <div class="dropdown-content mega-dropdown">
             <div class="mega-grid">
               <div class="mega-column">
@@ -1690,7 +1690,8 @@ $userName   = isset($userName) ? $userName : 'User';
                 <a href="<?= base_url('MenuSurvei') ?>">Survei Kepuasan Masyarakat</a>
                 <p class="mega-desc">Metode ilmiah dengan analisis mendalam.</p>
                 <h4 class="mega-heading">MasterData</h4>
-                <a href="<?= base_url('MasterData') ?>" style="color: var(--lugx-red); font-weight: 700;">Repositori Data (Aktif)</a>
+                <a href="<?= base_url('MasterData') ?>">Repositori Data</a>
+                <a href="<?= base_url('KomparasiData') ?>">Komparasi Data Wilayah</a>
               </div>
             </div>
           </div>
@@ -1752,7 +1753,8 @@ $userName   = isset($userName) ? $userName : 'User';
     <div class="dropdown-content">
       <a href="<?= base_url('#services') ?>" onclick="closeMobileMenu()">Konsultasi Ekonomi</a>
       <a href="<?= base_url('MenuSurvei') ?>">Survei Kepuasan SKM</a>
-      <a href="<?= base_url('MasterData') ?>" style="color: var(--lugx-red); font-weight: 700;">Repositori MasterData</a>
+      <a href="<?= base_url('MasterData') ?>">Repositori Data</a>
+      <a href="<?= base_url('KomparasiData') ?>">Komparasi Data Wilayah</a>
     </div>
 
     <div class="dropbtn" onclick="toggleMobileDropdown(this)">Portfolio <i class="fa-solid fa-chevron-down"></i></div>
@@ -2149,6 +2151,7 @@ $userName   = isset($userName) ? $userName : 'User';
             <li><a href="<?= base_url('MenuPortofolio') ?>">Portofolio Proyek</a></li>
             <li><a href="<?= base_url('legalitas') ?>">Legalitas Usaha</a></li>
             <li><a href="<?= base_url('MasterData') ?>">Repositori Data</a></li>
+            <li><a href="<?= base_url('KomparasiData') ?>">Komparasi Data Wilayah</a></li>
           </ul>
         </div>
       </div>

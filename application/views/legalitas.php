@@ -1403,7 +1403,7 @@
                 <a href="<?= base_url('#about') ?>">Sejarah & Visi Misi</a>
                 <p class="mega-desc">Inti Desain Ekonomi Consultant berdiri sejak 2015 dengan fokus pada solusi ekonomi berkelanjutan.</p>
                 <h4 class="mega-heading">Legal & Sertifikasi</h4>
-                <a href="<?= base_url('legalitas') ?>" style="color: var(--lugx-red); font-weight: 700;">Sertifikasi & Izin Usaha (Aktif)</a>
+                <a href="<?= base_url('legalitas') ?>">Sertifikasi & Izin Usaha</a>
                 <p class="mega-desc">Terdaftar resmi dan bekerja sama dengan lembaga terkemuka di Indonesia.</p>
               </div>
               <div class="mega-column">
@@ -1428,6 +1428,7 @@
                 <p class="mega-desc">Metode ilmiah dengan analisis mendalam.</p>
                 <h4 class="mega-heading">MasterData</h4>
                 <a href="<?= base_url('MasterData') ?>">Repositori Data</a>
+                <a href="<?= base_url('KomparasiData') ?>">Komparasi Data Wilayah</a>
               </div>
             </div>
           </div>
@@ -1486,6 +1487,7 @@
       <a href="<?= base_url('#services') ?>" onclick="closeMobileMenu()">Konsultasi Ekonomi</a>
       <a href="<?= base_url('MenuSurvei') ?>">Survei Kepuasan SKM</a>
       <a href="<?= base_url('MasterData') ?>">Repositori MasterData</a>
+      <a href="<?= base_url('KomparasiData') ?>">Komparasi Data Wilayah</a>
     </div>
 
     <div class="dropbtn" onclick="toggleMobileDropdown(this)">Portfolio <i class="fa-solid fa-chevron-down"></i></div>
@@ -1799,6 +1801,7 @@
             <li><a href="<?= base_url('MenuPortofolio') ?>">Portofolio Proyek</a></li>
             <li><a href="<?= base_url('legalitas') ?>">Legalitas Usaha</a></li>
             <li><a href="<?= base_url('MasterData') ?>">Repositori Data</a></li>
+            <li><a href="<?= base_url('KomparasiData') ?>">Komparasi Data Wilayah</a></li>
           </ul>
         </div>
       </div>
