@@ -65,3 +65,7 @@ $route['IDE/save_api_config'] = 'IDE/save_api_config';
 $route['IDE/update_api_config'] = 'IDE/update_api_config';
 $route['IDE/delete_api_config'] = 'IDE/delete_api_config';
 $route['IDE/edit_dokumen/(:num)'] = 'IDE/edit_dokumen/$1';
+$route['SmbLoginPage'] = 'IDE/SmbLoginPage';
+$route['SmbLandingPage'] = 'IDE/SmbLandingPage';
+$route['SmbDashboard'] = 'IDE/SmbDashboard';
+$route['SmbLogin'] = 'IDE/SmbLogin';

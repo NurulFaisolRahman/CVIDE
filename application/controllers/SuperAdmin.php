@@ -171,4 +171,9 @@ class SuperAdmin extends CI_Controller {
     $this->load->view('SuperAdmin/Header',$Data);
 		$this->load->view('SuperAdmin/JurnalTotal',$Data);
   }
+
+  public function RepositoriData(){
+    $this->load->view('SuperAdmin/Header');
+    $this->load->view('SuperAdmin/RepositoriData');
+  }
 }

@@ -1445,7 +1445,12 @@
                   </li>
                 </ul>
 
-                <div class="sidebar-menu-title">Sistem</div>
+                                  <div class="sidebar-menu-title">Tools</div>
+                  <ul class="nav side-menu">
+                    <li><a href="<?=base_url('Admin/Komparasi')?>"><i class="fa-solid fa-code-compare"></i> <b>Komparasi</b> </a></li>
+                  </ul>
+
+                  <div class="sidebar-menu-title">Sistem</div>
                 <ul class="nav side-menu">
                   <li><a href="<?=base_url('IDE/SignOut')?>"><i class="fa-solid fa-right-from-bracket"></i> <b>Keluar (Sign Out)</b> </a></li>
                 </ul>

@@ -484,7 +484,7 @@
             success: function(response){
                 $('#loadingOverlay').fadeOut(300);
                 $('#loginBtn').prop('disabled', false).html('<i class="fas fa-arrow-right-to-bracket me-2"></i> Secure Login');
-                if(response == '1'){
+                if($.trim(response) === '1' || response == '1'){
                     // Redirect ke dashboard
                     window.location.href = '<?= base_url('IDE/SmbDashboard') ?>';
                 } else {

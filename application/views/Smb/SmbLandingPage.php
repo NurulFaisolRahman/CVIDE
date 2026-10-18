@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 /* ===================================================
    RESET & ROOT
@@ -125,6 +126,7 @@ button { cursor: pointer; font-family: inherit; }
    NAVBAR - FIXED & ALWAYS TRANSPARENT
    =================================================== */
 :root {
+  --ticker-h: 38px;
   --nav-h: 90px;
 }
 
@@ -139,6 +141,10 @@ button { cursor: pointer; font-family: inherit; }
   height: var(--nav-h);
   transition: all 0.3s ease;
   pointer-events: auto;
+}
+
+.navbar.scrolled {
+  top: 0;
 }
 
 /* Container navbar */
@@ -1353,6 +1359,7 @@ footer {
     font-size: 11px;
   }
 }
+
 </style>
 </head>
 <body>
@@ -1412,12 +1419,12 @@ footer {
 
       <!-- Tombol Kanan -->
       <div class="nav-cta">
-        <button class="btn-login" onclick="window.location.href='SmbLoginPage'">
+        <a href="<?= base_url('SmbLoginPage') ?>" class="btn-login">
           <svg viewBox="0 0 16 16" fill="currentColor">
             <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h4a1 1 0 010 2H5v8h3a1 1 0 010 2H4a1 1 0 01-1-1V3zm9.293 2.293a1 1 0 011.414 0l2 2a1 1 0 010 1.414l-2 2a1 1 0 01-1.414-1.414L13.586 8l-1.293-1.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
           </svg>
           Masuk
-        </button>
+        </a>
       </div>
     </div>
   </div>
@@ -1651,6 +1658,7 @@ footer {
     </div>
   </div>
 </section>
+
 
 <!-- ===================================================
      PENGUMUMAN & DOKUMEN
@@ -1902,10 +1910,10 @@ footer {
         <p class="section-sub" style="color:rgba(255,255,255,0.7);">Masuk ke platform SMB dan nikmati kemudahan pengelolaan dokumen, printer, dan koordinasi antar bidang dalam satu dashboard terpadu.</p>
       </div>
       <div class="cta-actions">
-        <button class="btn-cta" onclick="window.location.href='smb_bappeda_dashboard.html'">
+        <a href="<?= base_url('SmbLoginPage') ?>" class="btn-cta">
           <svg viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 011-1h4a1 1 0 010 2H5v8h3a1 1 0 010 2H4a1 1 0 01-1-1V3zm9.293 2.293a1 1 0 011.414 0l2 2a1 1 0 010 1.414l-2 2a1 1 0 01-1.414-1.414L13.586 8l-1.293-1.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
           Masuk ke Sistem SMB
-        </button>
+        </a>
         <button class="btn-cta-outline">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="8" r="7"/><path d="M8 5v3.5l2.5 1.5"/></svg>
           Panduan Penggunaan
@@ -2297,7 +2305,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
-
 
 </script>
 </body>

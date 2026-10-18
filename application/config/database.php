@@ -73,7 +73,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
-if (in_array($_SERVER['SERVER_NAME'], ['localhost', '127.0.0.1'])) {
+$server_name = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '';
+$http_host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
+$is_local = in_array($server_name, ['localhost', '127.0.0.1'])
+    || strpos($http_host, 'localhost') !== false
+    || strpos($http_host, '127.0.0.1') !== false
+    || (php_sapi_name() === 'cli');
+
+if ($is_local) {
 
 	// DATABASE LOCAL
 	$db['default'] = array(

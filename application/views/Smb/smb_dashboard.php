@@ -1,55 +1,52 @@
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
+// Validasi session SMB atau session CVIDE
+if (!$this->session->userdata('smb_logged_in') && !$this->session->userdata('logged_in')) {
+    redirect('IDE/SmbLoginPage');
+    exit();
+}
 
-    <?php
+// Ambil data user dari session (kompatibel SMB & CVIDE)
+$user_id = $this->session->userdata('user_id') ?: $this->session->userdata('Username');
+$username = $this->session->userdata('username') ?: $this->session->userdata('Username');
+$nama_lengkap = $this->session->userdata('nama_lengkap') ?: $username;
+$level = (int)($this->session->userdata('level') !== null ? $this->session->userdata('level') : 0);
 
-    // Di file smb_dashboard.php - PASTIKAN INI DI AWAL
-    if (!$this->session->userdata('smb_logged_in')) {
-        redirect('IDE/SmbLoginPage');
-        exit();
-    }
+// Jika nama_lengkap kosong, gunakan username
+$display_name = !empty($nama_lengkap) ? $nama_lengkap : $username;
 
-    // Ambil data user dari session
-    $user_id = $this->session->userdata('user_id');
-    $username = $this->session->userdata('username');
-    $nama_lengkap = $this->session->userdata('nama_lengkap');
-    $level = $this->session->userdata('level');
+// Tentukan role berdasarkan level
+$role_name = '';
+if ($level == 1) {
+    $role_name = 'Super Admin';
+} elseif ($level == 2) {
+    $role_name = 'Kepala Bappeda'; 
+} elseif ($level == 3) {
+    $role_name = 'Kepala Bidang';
+} elseif ($level == 4) {
+    $role_name = 'Staff';
+} else {
+    $role_name = 'Administrator';
+}
 
-    // Jika nama_lengkap kosong, gunakan username
-    $display_name = !empty($nama_lengkap) ? $nama_lengkap : $username;
-
-    // Tentukan role berdasarkan level
-    $role_name = '';
-    if ($level == 1) {
-        $role_name = 'Super Admin';
-    } elseif ($level == 2) {
-        $role_name = 'Kepala Bappeda'; 
-    } elseif ($level == 3) {
-        $role_name = 'Kepala Bidang';
-    } elseif ($level == 4) {
-        $role_name = 'Staff';
-    } else {
-        $role_name = 'User';
-    }
-
-    // Inisial untuk avatar (2 huruf pertama)
-    $initial = strtoupper(substr($display_name, 0, 2));
-    ?>
-
-    <!DOCTYPE html>
-    <html lang="id">
-    <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bappeda Smart Office Management</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
+// Inisial untuk avatar (2 huruf pertama)
+$initial = strtoupper(substr($display_name, 0, 2));
+?>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bappeda Smart Office Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Core CSS & Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<style>
 
     /* ============================================================
     /* ============================================================
@@ -2736,6 +2733,18 @@
         
 
         <div class="nav-section">App Lainnya</div>
+        <div class="nav-item" data-panel="repositori-iku" onclick="navigate(this)">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+            </svg>
+            Repositori Data IKU
+        </div>
+                <div class="nav-item" data-panel="komparasi-data" onclick="navigate(this)">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M5 4v12M15 4v12M3 8h4M13 8h4M3 16h4M13 16h4"/>
+            </svg>
+            Komparasi Data
+        </div>
         <div class="nav-item" data-panel="satu-data" onclick="navigate(this)">
             <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
             <path d="M10 2C6.686 2 4 3.343 4 5s2.686 3 6 3 6-1.343 6-3-2.686-3-6-3zM4 7v3c0 1.657 2.686 3 6 3s6-1.343 6-3V7c0 1.657-2.686 3-6 3S4 8.657 4 7zm0 5v3c0 1.657 2.686 3 6 3s6-1.343 6-3v-3c0 1.657-2.686 3-6 3S4 13.657 4 12z"/>
@@ -4152,6 +4161,369 @@
             </div>
         </section>
 
+        <!-- ======== REPOSITORI DATA IKU ======== -->
+        <section id="panel-repositori-iku" class="panel">
+            <div class="page-hdr">
+                <div class="page-hdr-left">
+                    <div class="page-hdr-icon">
+                        <svg viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="page-hdr-title">Repositori Data IKU</div>
+                        <div class="page-hdr-sub">Integrasi Realtime REST API IPPD &amp; Telaah Evaluasi Asisten AI</div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-sm btn-primary" onclick="syncIkuSmbData()" id="btnSyncSmb">
+                        <i class="fas fa-sync-alt mr-1"></i> Sinkronisasi API
+                    </button>
+                    <button class="btn btn-sm" onclick="batchGenerateAllAISmb()" style="background: linear-gradient(135deg, #043168 0%, #1e40af 100%); color: #fff; font-weight: 700;">
+                        <i class="fas fa-file-signature mr-1"></i> Telaah Semua Indikator
+                    </button>
+                </div>
+            </div>
+
+            <!-- Banner API IPPD Real-time -->
+            <div class="card mb-3" style="background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%); border: 1px solid #bbf7d0;">
+                <div class="card-body" style="padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                        <span style="background: #fff; color: #15803d; border: 1px solid #86efac; padding: 4px 12px; border-radius: 99px; font-size: 11.5px; font-weight: 700;">
+                            ● Data Real Database IPPD
+                        </span>
+                        <span style="font-size: 12.5px; color: #334155;">
+                            <i class="fas fa-shield-alt text-success mr-1"></i> Terautentikasi &amp; Terhubung | Wilayah: <strong>Kabupaten Banyuwangi (35.12)</strong> | Periode RPJMD: <strong>2025–2029</strong>
+                        </span>
+                    </div>
+                    <div>
+                        <span class="badge" style="background: #10b981; color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 11.5px;">Live Synchronized</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 Metrics Ringkas -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                <div class="card" style="margin-bottom: 0; border-left: 4px solid #1340c4; transition: transform 0.2s ease;">
+                    <div class="card-body" style="padding: 16px 20px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Total Indikator</span>
+                            <span style="background: #eef2ff; color: #1e40af; width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px;">📊</span>
+                        </div>
+                        <div style="font-size: 24px; font-weight: 800; color: #0f172a; line-height: 1.2;" id="smbKpiTotal">7 Indikator</div>
+                        <div style="font-size: 11.5px; color: #94a3b8; margin-top: 4px;">Data riil IKU Banyuwangi</div>
+                    </div>
+                </div>
+                <div class="card" style="margin-bottom: 0; border-left: 4px solid #059669; transition: transform 0.2s ease;">
+                    <div class="card-body" style="padding: 16px 20px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Kab. Banyuwangi</span>
+                            <span style="background: #ecfdf5; color: #065f46; width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px;">🏛️</span>
+                        </div>
+                        <div style="font-size: 24px; font-weight: 800; color: #059669; line-height: 1.2;" id="smbKpiBwi">7 Indikator</div>
+                        <div style="font-size: 11.5px; color: #94a3b8; margin-top: 4px;">Kode Wilayah 35.12</div>
+                    </div>
+                </div>
+                <div class="card" style="margin-bottom: 0; border-left: 4px solid #d97706; transition: transform 0.2s ease;">
+                    <div class="card-body" style="padding: 16px 20px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Periode RPJMD</span>
+                            <span style="background: #fffbeb; color: #92400e; width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px;">📅</span>
+                        </div>
+                        <div style="font-size: 24px; font-weight: 800; color: #d97706; line-height: 1.2;">2025–2029</div>
+                        <div style="font-size: 11.5px; color: #94a3b8; margin-top: 4px;">Target Tahunan T1 s/d T5</div>
+                    </div>
+                </div>
+                <div class="card" style="margin-bottom: 0; border-left: 4px solid #6366f1; transition: transform 0.2s ease;">
+                    <div class="card-body" style="padding: 16px 20px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Evaluasi Asisten AI</span>
+                            <span style="background: #f5f3ff; color: #5b21b6; width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px;"><i class="fas fa-clipboard-check"></i></span>
+                        </div>
+                        <div style="font-size: 24px; font-weight: 800; color: #6366f1; line-height: 1.2;" id="smbKpiAi">0 / 7</div>
+                        <div style="font-size: 11.5px; color: #94a3b8; margin-top: 4px;" id="smbKpiAiStatus">Siap menyusun telaah</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toolbar Pencarian & Filter -->
+            <div class="card mb-3">
+                <div class="table-toolbar" style="padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                    <div class="mini-search" style="flex: 1; min-width: 260px; height: 38px;">
+                        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="5.5" cy="5.5" r="4"/>
+                            <path d="M9 9l2.5 2.5"/>
+                        </svg>
+                        <input type="text" id="smbIkuSearch" placeholder="Cari nama indikator atau sasaran kinerja..." oninput="filterSmbIkuTable()" style="font-size: 13px;">
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <select id="smbFilterWilayah" class="sel-filter" onchange="filterSmbIkuTable()" style="height: 38px; border-radius: 8px; font-size: 12.5px; min-width: 220px;">
+                            <option value="35.12" selected>Kabupaten Banyuwangi (35.12)</option>
+                        </select>
+                        <select id="smbFilterAi" class="sel-filter" onchange="filterSmbIkuTable()" style="height: 38px; border-radius: 8px; font-size: 12.5px; min-width: 160px;">
+                            <option value="all">Semua Status Telaah</option>
+                            <option value="evaluated">Sudah Ditelaah</option>
+                            <option value="pending">Belum Ditelaah</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabel Data IKU -->
+            <div class="card mb-4">
+                <div class="card-head" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                    <div class="card-title">
+                        <i class="fas fa-table mr-2 text-primary"></i> Matriks Capaian Indikator Kinerja Utama (IKU)
+                    </div>
+                    <div>
+                        <span class="badge" style="background: #e0f2fe; color: #0284c7; padding: 6px 12px; border-radius: 6px; font-size: 11.5px; font-weight: 700;">
+                            Integrasi Real-time IPPD (Wilayah 35.12)
+                        </span>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="tbl">
+                        <thead>
+                            <tr>
+                                <th style="width: 40px; text-align: center;">No</th>
+                                <th style="width: 120px;">Wilayah</th>
+                                <th>Indikator Kinerja Utama (IKU)</th>
+                                <th style="text-align: center;">Periode</th>
+                                <th style="text-align: center;">2025 (T1)</th>
+                                <th style="text-align: center;">2026 (T2)</th>
+                                <th style="text-align: center;">2027 (T3)</th>
+                                <th style="text-align: center;">2028 (T4)</th>
+                                <th style="text-align: center;">2029 (T5)</th>
+                                <th style="width: 200px; text-align: center;">Kesimpulan &amp; Evaluasi (Asisten AI)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="smbIkuTbody">
+                            <tr>
+                                <td style="text-align: center; font-weight: 700; color: #475569;">1</td>
+                                <td><span class="pill" style="background:#dcfce7; color:#166534; font-weight:700; font-size:11px;">35.12 Banyuwangi</span></td>
+                                <td>
+                                    <div style="font-weight: 700; color: #0f172a; font-size: 13px;">Indeks Pembangunan Manusia</div>
+                                    <div style="font-size: 11.5px; color: #64748b; margin-top: 2px;"><i class="fas fa-bullseye mr-1 text-primary"></i> Indeks komposit yang mengukur pembangunan manusia dari tiga aspek dasar yaitu umur panjang dan hidup sehat, pengetahuan, dan standar hidup layak.</div>
+                                    <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Satuan: <strong>%</strong></div>
+                                </td>
+                                <td style="text-align: center;"><span class="pill pill-print" style="font-size: 11px;">2025–2029</span></td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">71.49</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">71.8</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">72.1</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">72.42</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">72.8</td>
+                                <td style="text-align: center;"><button class="btn btn-sm" onclick="openSmbAiModal(191)" style="background:linear-gradient(135deg, #043168 0%, #1e3a8a 100%); color:#fff; font-size:11px; padding:4px 10px; border-radius:6px; font-weight:700; width:100%;"><i class="fas fa-pen-nib mr-1"></i> Telaah Asisten AI</button></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center; font-weight: 700; color: #475569;">2</td>
+                                <td><span class="pill" style="background:#dcfce7; color:#166534; font-weight:700; font-size:11px;">35.12 Banyuwangi</span></td>
+                                <td>
+                                    <div style="font-weight: 700; color: #0f172a; font-size: 13px;">Pertumbuhan Ekonomi</div>
+                                    <div style="font-size: 11.5px; color: #64748b; margin-top: 2px;"><i class="fas fa-bullseye mr-1 text-primary"></i> Perkembangan Produksi Barang dan Jasa di suatu wilayah perekonomian pada tahun tertentu terhadap nilai tahun sebelumnya yang dihitung berdasarkan PDRB harga konstan</div>
+                                    <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Satuan: <strong>%</strong></div>
+                                </td>
+                                <td style="text-align: center;"><span class="pill pill-print" style="font-size: 11px;">2025–2029</span></td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">4.82</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">4.87</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">4.92</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">4.97</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">5.02</td>
+                                <td style="text-align: center;"><button class="btn btn-sm" onclick="openSmbAiModal(192)" style="background:linear-gradient(135deg, #043168 0%, #1e3a8a 100%); color:#fff; font-size:11px; padding:4px 10px; border-radius:6px; font-weight:700; width:100%;"><i class="fas fa-pen-nib mr-1"></i> Telaah Asisten AI</button></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center; font-weight: 700; color: #475569;">3</td>
+                                <td><span class="pill" style="background:#dcfce7; color:#166534; font-weight:700; font-size:11px;">35.12 Banyuwangi</span></td>
+                                <td>
+                                    <div style="font-weight: 700; color: #0f172a; font-size: 13px;">Ketimpangan Pendapatan (Gini Rasio)</div>
+                                    <div style="font-size: 11.5px; color: #64748b; margin-top: 2px;"><i class="fas fa-bullseye mr-1 text-primary"></i> Rasio gini merupakan salah satu teknik statistik untuk mengukur ketimpangan pendapatan.</div>
+                                    <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Satuan: <strong>%</strong></div>
+                                </td>
+                                <td style="text-align: center;"><span class="pill pill-print" style="font-size: 11px;">2025–2029</span></td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">0.38</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">0.38</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">0.37</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">0.37</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">0.36</td>
+                                <td style="text-align: center;"><button class="btn btn-sm" onclick="openSmbAiModal(193)" style="background:linear-gradient(135deg, #043168 0%, #1e3a8a 100%); color:#fff; font-size:11px; padding:4px 10px; border-radius:6px; font-weight:700; width:100%;"><i class="fas fa-pen-nib mr-1"></i> Telaah Asisten AI</button></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center; font-weight: 700; color: #475569;">4</td>
+                                <td><span class="pill" style="background:#dcfce7; color:#166534; font-weight:700; font-size:11px;">35.12 Banyuwangi</span></td>
+                                <td>
+                                    <div style="font-weight: 700; color: #0f172a; font-size: 13px;">Tingkat Kemiskinan</div>
+                                    <div style="font-size: 11.5px; color: #64748b; margin-top: 2px;"><i class="fas fa-bullseye mr-1 text-primary"></i> Kemiskinan adalah kondisi seseorang yang tidak mampu memenuhi kebutuhan dasar makanan maupun bukan makanan yang diukur dari sisi pengeluaran.</div>
+                                    <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Satuan: <strong>%</strong></div>
+                                </td>
+                                <td style="text-align: center;"><span class="pill pill-print" style="font-size: 11px;">2025–2029</span></td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">10.81</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">10.46</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">10</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">9.66</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">9.08</td>
+                                <td style="text-align: center;"><button class="btn btn-sm" onclick="openSmbAiModal(194)" style="background:linear-gradient(135deg, #043168 0%, #1e3a8a 100%); color:#fff; font-size:11px; padding:4px 10px; border-radius:6px; font-weight:700; width:100%;"><i class="fas fa-pen-nib mr-1"></i> Telaah Asisten AI</button></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center; font-weight: 700; color: #475569;">5</td>
+                                <td><span class="pill" style="background:#dcfce7; color:#166534; font-weight:700; font-size:11px;">35.12 Banyuwangi</span></td>
+                                <td>
+                                    <div style="font-weight: 700; color: #0f172a; font-size: 13px;">Indeks Kepuasan Layanan Infrastruktur (IKLI)</div>
+                                    <div style="font-size: 11.5px; color: #64748b; margin-top: 2px;"><i class="fas fa-bullseye mr-1 text-primary"></i> Tingkat kepuasan masyarakat terhadap kondisi dan kemanfaatan infrastruktur daerah.</div>
+                                    <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Satuan: <strong>%</strong></div>
+                                </td>
+                                <td style="text-align: center;"><span class="pill pill-print" style="font-size: 11px;">2025–2029</span></td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">85.03</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">85.94</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">86.5</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">87.29</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">88.89</td>
+                                <td style="text-align: center;"><button class="btn btn-sm" onclick="openSmbAiModal(195)" style="background:linear-gradient(135deg, #043168 0%, #1e3a8a 100%); color:#fff; font-size:11px; padding:4px 10px; border-radius:6px; font-weight:700; width:100%;"><i class="fas fa-pen-nib mr-1"></i> Telaah Asisten AI</button></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center; font-weight: 700; color: #475569;">6</td>
+                                <td><span class="pill" style="background:#dcfce7; color:#166534; font-weight:700; font-size:11px;">35.12 Banyuwangi</span></td>
+                                <td>
+                                    <div style="font-weight: 700; color: #0f172a; font-size: 13px;">Indeks Reformasi Birokrasi</div>
+                                    <div style="font-size: 11.5px; color: #64748b; margin-top: 2px;"><i class="fas fa-bullseye mr-1 text-primary"></i> Kemajuan pelaksanaan reformasi birokrasi pada 8 area perubahan tata kelola.</div>
+                                    <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Satuan: <strong>%</strong></div>
+                                </td>
+                                <td style="text-align: center;"><span class="pill pill-print" style="font-size: 11px;">2025–2029</span></td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">84.86</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">85.11</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">85.61</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">86.11</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">86.61</td>
+                                <td style="text-align: center;"><button class="btn btn-sm" onclick="openSmbAiModal(196)" style="background:linear-gradient(135deg, #043168 0%, #1e3a8a 100%); color:#fff; font-size:11px; padding:4px 10px; border-radius:6px; font-weight:700; width:100%;"><i class="fas fa-pen-nib mr-1"></i> Telaah Asisten AI</button></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center; font-weight: 700; color: #475569;">7</td>
+                                <td><span class="pill" style="background:#dcfce7; color:#166534; font-weight:700; font-size:11px;">35.12 Banyuwangi</span></td>
+                                <td>
+                                    <div style="font-weight: 700; color: #0f172a; font-size: 13px;">Indeks Kesalehan Sosial</div>
+                                    <div style="font-size: 11.5px; color: #64748b; margin-top: 2px;"><i class="fas fa-bullseye mr-1 text-primary"></i> Tingkat sikap gotong royong dan keharmonisan sosial masyarakat.</div>
+                                    <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Satuan: <strong>%</strong></div>
+                                </td>
+                                <td style="text-align: center;"><span class="pill pill-print" style="font-size: 11px;">2025–2029</span></td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">82.67</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">84.07</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">85.47</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">86.87</td>
+                                <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">88.27</td>
+                                <td style="text-align: center;"><button class="btn btn-sm" onclick="openSmbAiModal(197)" style="background:linear-gradient(135deg, #043168 0%, #1e3a8a 100%); color:#fff; font-size:11px; padding:4px 10px; border-radius:6px; font-weight:700; width:100%;"><i class="fas fa-pen-nib mr-1"></i> Telaah Asisten AI</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Visualisasi Target Chart.js -->
+            <div class="card mb-4">
+                <div class="card-head" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                    <div class="card-title">
+                        <i class="fas fa-chart-line mr-1"></i> Visualisasi Tren Target Kinerja 2025–2029
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <select id="smbChartIndicator" class="form-control" onchange="renderSmbChart()" style="border-radius: 6px; font-size: 12.5px; max-width: 300px;">
+                            <!-- dinamis -->
+                        </select>
+                        <select id="smbChartType" class="form-control" onchange="renderSmbChart()" style="border-radius: 6px; font-size: 12.5px; width: 100px;">
+                            <option value="line">Line</option>
+                            <option value="bar">Bar</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-body" style="position: relative; height: 320px;">
+                    <canvas id="smbIkuChartCanvas"></canvas>
+                </div>
+            </div>
+        </section>
+
+                        <!-- ======== KOMPARASI DATA ======== -->
+        <section id="panel-komparasi-data" class="panel">
+            <div class="page-hdr">
+                <div class="page-hdr-left">
+                    <div class="page-hdr-icon">
+                        <svg viewBox="0 0 20 20" fill="currentColor">
+                          <path d="M5 4v12M15 4v12M3 8h4M13 8h4M3 16h4M13 16h4"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="page-hdr-title">Komparasi Data IKU</div>
+                        <div class="page-hdr-sub">Perbandingan Indikator Kinerja Utama Antar Wilayah</div>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-primary" onclick="fetchDataWilayahPembanding()">
+                        <i class="fas fa-sync-alt mr-1"></i> Refresh Komparasi
+                    </button>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top:20px;">
+                <!-- Item 1 (Fixed Banyuwangi) -->
+                <div class="col-md-6 text-center">
+                    <div style="padding: 20px; border: 1px solid #cce5ff; border-radius: 12px; background: #e6f2ff; height: 100%;">
+                        <div style="width: 80px; height: 80px; background: #043168; color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(4,49,104,0.3);">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h4 style="font-weight: 700; color: #043168; margin-bottom: 15px;">Kabupaten Banyuwangi</h4>
+                        <input type="text" class="form-control text-center" value="Kode Wilayah: 35.12" readonly style="font-weight: bold; background: white; cursor: default;">
+                    </div>
+                </div>
+                                <!-- Item 2 (Dropdown Dinamis) -->
+                <div class="col-md-6 text-center">
+                    <div style="padding: 20px; border: 1px dashed #cbd5e1; border-radius: 12px; background: #f8fafc; height: 100%;">
+                        <div style="width: 80px; height: 80px; background: #94a3b8; color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(148,163,184,0.3);">
+                            <i class="fas fa-search-location"></i>
+                        </div>
+                        <h4 style="font-weight: 700; color: #475569; margin-bottom: 15px;">Wilayah Pembanding</h4>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <select id="selectProvinsiKomparasi" class="form-control text-center" style="font-weight: bold; cursor: pointer; font-size:12px;" onchange="fetchKabKotaKomparasi()">
+                                    <option value="">-- Pilih Provinsi --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <select id="selectWilayahKomparasi" class="form-control text-center" style="font-weight: bold; cursor: pointer; font-size:12px;" onchange="fetchDataWilayahPembanding()">
+                                    <option value="">-- Pilih Kab/Kota --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pilih Indikator -->
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-md-12">
+                    <label style="font-weight: 600; color: #334155;">Pilih Indikator Kinerja Utama untuk Dibandingkan:</label>
+                    <select id="selectIndikatorKomparasi" class="form-control" style="font-weight: bold;" onchange="renderKomparasiData()">
+                        <option value="">-- Semua Indikator --</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-responsive" style="margin-top: 20px;">
+                <table class="table table-bordered table-striped" style="border-radius: 8px; overflow: hidden; background: white;">
+                    <thead style="background-color: #043168; color: white;">
+                        <tr>
+                            <th style="width: 30%; font-size: 15px; padding: 12px;">Atribut / Target</th>
+                            <th style="width: 35%; font-size: 15px; padding: 12px; text-align: center;">Banyuwangi (35.12)</th>
+                            <th id="thPembanding" style="width: 35%; font-size: 15px; padding: 12px; text-align: center;">Wilayah Pembanding</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyKomparasi">
+                        <tr>
+                            <td colspan="3" class="text-center text-muted" style="padding: 30px;">
+                                <i class="fas fa-balance-scale fa-3x" style="color: #cbd5e1; margin-bottom: 15px; display: block;"></i>
+                                Silakan pilih Wilayah Pembanding dan Indikator untuk melihat komparasi data.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
         <!-- ======== SATU DATA ======== -->
         <section id="panel-satu-data" class="panel">
     <div class="page-hdr">
@@ -4636,6 +5008,7 @@ $('#google_docs_link').on('input', function() {
     const panel = el.dataset.panel;
     if (!panel) return;
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.sub-item').forEach(s => s.classList.remove('active'));
     el.classList.add('active');
     showPanel(panel);
     }
@@ -4648,8 +5021,14 @@ $('#google_docs_link').on('input', function() {
     function showPanel(id) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     const target = document.getElementById('panel-' + id);
-    if (target) target.classList.add('active');
-    document.querySelector('.page-content').scrollTop = 0;
+    if (target) {
+        target.classList.add('active');
+    }
+    const pc = document.querySelector('.page-content');
+    if (pc) pc.scrollTop = 0;
+    if (id === 'repositori-iku' && typeof onRepositoriIkuPanelOpen === 'function') {
+        onRepositoriIkuPanelOpen();
+    }
     }
 
     /* ---- BIDANG ACCORDION ---- */
@@ -4697,8 +5076,10 @@ $('#google_docs_link').on('input', function() {
     const fullName = bidangNama[id] || 'Bidang';
     const short = bidangShort[id] || '';
 
-    document.getElementById('bidang-title').textContent = fullName;
-    document.getElementById('bidang-doc-title').textContent = `Daftar Dokumen — ${fullName}`;
+    const bTitle = document.getElementById('bidang-title');
+    if (bTitle) bTitle.textContent = fullName;
+    const bDocTitle = document.getElementById('bidang-doc-title');
+    if (bDocTitle) bDocTitle.textContent = `Daftar Dokumen — ${fullName}`;
 
     const bidangSubtitle = document.querySelector('#panel-bidang .page-hdr-sub');
     if (bidangSubtitle) {
@@ -4706,11 +5087,15 @@ $('#google_docs_link').on('input', function() {
     }
 
     // reset filter
-    document.getElementById('bidang-search').value = '';
-    document.getElementById('bidang-status-filter').value = '';
+    const bSearch = document.getElementById('bidang-search');
+    if (bSearch) bSearch.value = '';
+    const bStatus = document.getElementById('bidang-status-filter');
+    if (bStatus) bStatus.value = '';
 
     // load dokumen dari DB
-    loadDokumenFromDB(id);
+    if (typeof loadDokumenFromDB === 'function') {
+        loadDokumenFromDB(id);
+    }
 
     showPanel('bidang');
 
@@ -9571,6 +9956,1100 @@ $('#formUploadDokumen').off('submit').on('submit', function(e) {
             }
         });
     }
+
+    // ==================== REPOSITORI DATA IKU & ASISTEN AI INTEGRATION ====================
+    function getDefaultBanyuwangiIku() {
+        return [
+            {
+                id: 191,
+                kodewilayah: "35.12",
+                kode_wilayah: "35.12",
+                id_tujuan: 18,
+                indikator: "Indeks Pembangunan Manusia",
+                indikator_tujuan: "Indeks Pembangunan Manusia",
+                sasaran: "Indeks komposit yang mengukur pembangunan manusia dari tiga aspek dasar yaitu umur panjang dan hidup sehat, pengetahuan, dan standar hidup layak.",
+                definisi_operasional: "Indeks komposit yang mengukur pembangunan manusia dari tiga aspek dasar yaitu umur panjang dan hidup sehat, pengetahuan, dan standar hidup layak.",
+                satuan: "%",
+                rumus: "IPM = ∛Indeks Kesehatan × Indeks Pendidikan × Indeks Standar Hidup Layak",
+                tahun_mulai: 2025,
+                tahun_awal: 2025,
+                tahun_akhir: 2029,
+                target_1: 71.49,
+                target_t1: 71.49,
+                target_2: 71.8,
+                target_t2: 71.8,
+                target_3: 72.1,
+                target_t3: 72.1,
+                target_4: 72.42,
+                target_t4: 72.42,
+                target_5: 72.8,
+                target_t5: 72.8
+            },
+            {
+                id: 192,
+                kodewilayah: "35.12",
+                kode_wilayah: "35.12",
+                id_tujuan: 19,
+                indikator: "Pertumbuhan Ekonomi",
+                indikator_tujuan: "Pertumbuhan Ekonomi",
+                sasaran: "Perkembangan Produksi Barang dan Jasa di suatu wilayah perekonomian pada tahun tertentu terhadap nilai tahun sebelumnya yang dihitung berdasarkan PDRB harga konstan",
+                definisi_operasional: "Perkembangan Produksi Barang dan Jasa di suatu wilayah perekonomian pada tahun tertentu terhadap nilai tahun sebelumnya yang dihitung berdasarkan PDRB harga konstan",
+                satuan: "%",
+                rumus: "Pertumbuhan Ekonomi = ((PDRBₜ - PDRBₜ₋₁) / PDRBₜ₋₁) × 100%",
+                tahun_mulai: 2025,
+                tahun_awal: 2025,
+                tahun_akhir: 2029,
+                target_1: 4.82,
+                target_t1: 4.82,
+                target_2: 4.87,
+                target_t2: 4.87,
+                target_3: 4.92,
+                target_t3: 4.92,
+                target_4: 4.97,
+                target_t4: 4.97,
+                target_5: 5.02,
+                target_t5: 5.02
+            },
+            {
+                id: 193,
+                kodewilayah: "35.12",
+                kode_wilayah: "35.12",
+                id_tujuan: 19,
+                indikator: "Ketimpangan Pendapatan (Gini Rasio)",
+                indikator_tujuan: "Ketimpangan Pendapatan (Gini Rasio)",
+                sasaran: "Rasio gini merupakan salah satu teknik statistik untuk mengukur ketimpangan pendapatan.",
+                definisi_operasional: "Rasio gini merupakan salah satu teknik statistik untuk mengukur ketimpangan pendapatan.",
+                satuan: "%",
+                rumus: "GR",
+                tahun_mulai: 2025,
+                tahun_awal: 2025,
+                tahun_akhir: 2029,
+                target_1: 0.38,
+                target_t1: 0.38,
+                target_2: 0.38,
+                target_t2: 0.38,
+                target_3: 0.37,
+                target_t3: 0.37,
+                target_4: 0.37,
+                target_t4: 0.37,
+                target_5: 0.36,
+                target_t5: 0.36
+            },
+            {
+                id: 194,
+                kodewilayah: "35.12",
+                kode_wilayah: "35.12",
+                id_tujuan: 19,
+                indikator: "Tingkat Kemiskinan",
+                indikator_tujuan: "Tingkat Kemiskinan",
+                sasaran: "Kemiskinan adalah kondisi seseorang yang tidak mampu memenuhi kebutuhan dasar makanan maupun bukan makanan yang diukur dari sisi pengeluaran.",
+                definisi_operasional: "Kemiskinan adalah kondisi seseorang yang tidak mampu memenuhi kebutuhan dasar makanan maupun bukan makanan yang diukur dari sisi pengeluaran.",
+                satuan: "%",
+                rumus: "P0",
+                tahun_mulai: 2025,
+                tahun_awal: 2025,
+                tahun_akhir: 2029,
+                target_1: 10.81,
+                target_t1: 10.81,
+                target_2: 10.46,
+                target_t2: 10.46,
+                target_3: 10,
+                target_t3: 10,
+                target_4: 9.66,
+                target_t4: 9.66,
+                target_5: 9.08,
+                target_t5: 9.08
+            },
+            {
+                id: 195,
+                kodewilayah: "35.12",
+                kode_wilayah: "35.12",
+                id_tujuan: 20,
+                indikator: "Indeks Kepuasan Layanan Infrastruktur (IKLI)",
+                indikator_tujuan: "Indeks Kepuasan Layanan Infrastruktur (IKLI)",
+                sasaran: "Tingkat kepuasan masyarakat terhadap kondisi dan kemanfaatan infrastruktur daerah.",
+                definisi_operasional: "Tingkat kepuasan masyarakat terhadap kondisi dan kemanfaatan infrastruktur daerah.",
+                satuan: "%",
+                rumus: "",
+                tahun_mulai: 2025,
+                tahun_awal: 2025,
+                tahun_akhir: 2029,
+                target_1: 85.03,
+                target_t1: 85.03,
+                target_2: 85.94,
+                target_t2: 85.94,
+                target_3: 86.5,
+                target_t3: 86.5,
+                target_4: 87.29,
+                target_t4: 87.29,
+                target_5: 88.89,
+                target_t5: 88.89
+            },
+            {
+                id: 196,
+                kodewilayah: "35.12",
+                kode_wilayah: "35.12",
+                id_tujuan: 21,
+                indikator: "Indeks Reformasi Birokrasi",
+                indikator_tujuan: "Indeks Reformasi Birokrasi",
+                sasaran: "Kemajuan pelaksanaan reformasi birokrasi pada 8 area perubahan tata kelola.",
+                definisi_operasional: "Kemajuan pelaksanaan reformasi birokrasi pada 8 area perubahan tata kelola.",
+                satuan: "%",
+                rumus: "",
+                tahun_mulai: 2025,
+                tahun_awal: 2025,
+                tahun_akhir: 2029,
+                target_1: 84.86,
+                target_t1: 84.86,
+                target_2: 85.11,
+                target_t2: 85.11,
+                target_3: 85.61,
+                target_t3: 85.61,
+                target_4: 86.11,
+                target_t4: 86.11,
+                target_5: 86.61,
+                target_t5: 86.61
+            },
+            {
+                id: 197,
+                kodewilayah: "35.12",
+                kode_wilayah: "35.12",
+                id_tujuan: 22,
+                indikator: "Indeks Kesalehan Sosial",
+                indikator_tujuan: "Indeks Kesalehan Sosial",
+                sasaran: "Tingkat sikap gotong royong dan keharmonisan sosial masyarakat.",
+                definisi_operasional: "Tingkat sikap gotong royong dan keharmonisan sosial masyarakat.",
+                satuan: "%",
+                rumus: "",
+                tahun_mulai: 2025,
+                tahun_awal: 2025,
+                tahun_akhir: 2029,
+                target_1: 82.67,
+                target_t1: 82.67,
+                target_2: 84.07,
+                target_t2: 84.07,
+                target_3: 85.47,
+                target_t3: 85.47,
+                target_4: 86.87,
+                target_t4: 86.87,
+                target_5: 88.27,
+                target_t5: 88.27
+            }
+        ];
+    }
+
+    let smbIkuData = getDefaultBanyuwangiIku();
+    let smbEvaluasiCache = {};
+    let smbIkuChart = null;
+    let currentSmbActiveIku = null;
+
+        // ==================== KOMPARASI IKU LOGIC ====================
+    let pembandingDataCache = [];
+
+    function initDropdownProvinsi() {
+        $.get('<?= base_url('index.php/IDE/get_provinsi') ?>', function(res) {
+            if (res.status === 'success') {
+                const selProv = document.getElementById('selectProvinsiKomparasi');
+                if(!selProv) return;
+                selProv.innerHTML = '<option value="">-- Pilih Provinsi --</option>';
+                res.data.forEach(p => {
+                    let opt = document.createElement('option');
+                    opt.value = p.Kode;
+                    opt.text = p.Nama;
+                    selProv.add(opt);
+                });
+            }
+        });
+    }
+
+    function fetchKabKotaKomparasi() {
+        const prov = $('#selectProvinsiKomparasi').val();
+        const selKab = document.getElementById('selectWilayahKomparasi');
+        selKab.innerHTML = '<option value="">-- Memuat... --</option>';
+        pembandingDataCache = [];
+        renderKomparasiData();
+
+        if (!prov) {
+            selKab.innerHTML = '<option value="">-- Pilih Kab/Kota --</option>';
+            return;
+        }
+
+        $.get('<?= base_url('index.php/IDE/get_kabkota') ?>?provinsi=' + prov, function(res) {
+            selKab.innerHTML = '<option value="">-- Pilih Kab/Kota --</option>';
+            if (res.status === 'success') {
+                res.data.forEach(k => {
+                    let opt = document.createElement('option');
+                    opt.value = k.Kode;
+                    opt.text = k.Nama;
+                    selKab.add(opt);
+                });
+            }
+        });
+    }
+
+    function fetchDataWilayahPembanding() {
+        const kab = $('#selectWilayahKomparasi').val();
+        if (!kab) {
+            pembandingDataCache = [];
+            renderKomparasiData();
+            return;
+        }
+
+        const btn = document.querySelector('#panel-komparasi-data .btn-primary');
+        if (btn) btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Menarik Data API...';
+
+        $.get('<?= base_url('index.php/IDE/get_repositori_iku') ?>?kodewilayah=' + kab, function(res) {
+            if (btn) btn.innerHTML = '<i class="fas fa-sync-alt mr-1"></i> Refresh Komparasi';
+            if (res.status === 'success' || Array.isArray(res.data)) {
+                pembandingDataCache = res.data || [];
+            } else {
+                pembandingDataCache = [];
+            }
+            renderKomparasiData();
+        }).fail(function() {
+            if (btn) btn.innerHTML = '<i class="fas fa-sync-alt mr-1"></i> Refresh Komparasi';
+            pembandingDataCache = [];
+            renderKomparasiData();
+        });
+    }
+
+    function renderKomparasiData() {
+        if (!smbIkuData || smbIkuData.length === 0) return;
+
+        const selKab = document.getElementById('selectWilayahKomparasi');
+        const selIndikator = document.getElementById('selectIndikatorKomparasi');
+        const tbody = document.getElementById('tbodyKomparasi');
+        const thPembanding = document.getElementById('thPembanding');
+
+        if (selIndikator.options.length <= 1) {
+            let indikatorSet = new Set();
+            smbIkuData.forEach(d => {
+                if (d.indikator && String(d.kode_wilayah || d.kodewilayah).includes('35.12')) {
+                    indikatorSet.add(d.indikator);
+                }
+            });
+            indikatorSet.forEach(ind => {
+                let opt = document.createElement('option');
+                opt.value = ind;
+                opt.text = ind;
+                selIndikator.add(opt);
+            });
+        }
+
+        const selectedKab = selKab ? selKab.value : '';
+        const selectedKabName = selKab && selKab.options[selKab.selectedIndex] ? selKab.options[selKab.selectedIndex].text : '';
+        const selectedIndikator = selIndikator.value;
+
+        if (!selectedKab) {
+            thPembanding.innerText = "Wilayah Pembanding";
+            tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted" style="padding: 30px;"><i class="fas fa-balance-scale fa-3x" style="color: #cbd5e1; margin-bottom: 15px; display: block;"></i>Silakan pilih Provinsi dan Kab/Kota untuk membandingkan.</td></tr>`;
+            return;
+        }
+
+        thPembanding.innerText = selectedKabName;
+
+        let bwiData = smbIkuData.filter(d => String(d.kode_wilayah || d.kodewilayah).includes('35.12'));
+        let pembandingData = pembandingDataCache;
+
+        if (selectedIndikator) {
+            bwiData = bwiData.filter(d => d.indikator === selectedIndikator);
+            pembandingData = pembandingData.filter(d => d.indikator === selectedIndikator);
+        }
+
+        let html = '';
+        let combinedIndikator = new Set();
+        bwiData.forEach(d => combinedIndikator.add(d.indikator));
+        pembandingData.forEach(d => combinedIndikator.add(d.indikator));
+
+        if (combinedIndikator.size === 0) {
+            tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted" style="padding: 30px;">Tidak ada data indikator yang ditemukan untuk perbandingan ini.</td></tr>`;
+            return;
+        }
+
+        let isEmpty = true;
+        combinedIndikator.forEach(ind => {
+            let bwiItem = bwiData.find(d => d.indikator === ind);
+            let pmbItem = pembandingData.find(d => d.indikator === ind);
+            
+            if (!bwiItem && !pmbItem) return;
+            isEmpty = false;
+            bwiItem = bwiItem || {};
+            pmbItem = pmbItem || {};
+
+            html += `
+                <tr style="background-color: #f1f5f9; font-weight: bold;">
+                    <td colspan="3" style="padding: 12px 15px; color: #0f172a; font-size: 15px;">
+                        <i class="fas fa-chart-bar text-primary mr-2"></i> ${ind}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 500; color: #475569;">Sasaran</td>
+                    <td>${bwiItem.sasaran || '-'}</td>
+                    <td>${pmbItem.sasaran || '-'}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 500; color: #475569;">Satuan</td>
+                    <td class="text-center">${bwiItem.satuan || '-'}</td>
+                    <td class="text-center">${pmbItem.satuan || '-'}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 500; color: #475569;">Target ${bwiItem.tahun_awal || 'Tahun 1'}</td>
+                    <td class="text-center font-weight-bold text-success">${bwiItem.target_1 || bwiItem.target_t1 || '-'}</td>
+                    <td class="text-center font-weight-bold text-primary">${pmbItem.target_1 || pmbItem.target_t1 || '-'}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 500; color: #475569;">Target Akhir (${bwiItem.tahun_akhir || 'Tahun 5'})</td>
+                    <td class="text-center font-weight-bold text-success">${bwiItem.target_5 || bwiItem.target_t5 || '-'}</td>
+                    <td class="text-center font-weight-bold text-primary">${pmbItem.target_5 || pmbItem.target_t5 || '-'}</td>
+                </tr>
+            `;
+        });
+
+        if (isEmpty) {
+            tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted" style="padding: 30px;">Wilayah ini belum merilis data IKU pada API IPPD.</td></tr>`;
+        } else {
+            tbody.innerHTML = html;
+        }
+    }
+
+    function onRepositoriIkuPanelOpen() {
+        if (!smbIkuData || smbIkuData.length === 0) {
+            smbIkuData = getDefaultBanyuwangiIku();
+        }
+        updateSmbKpiCards();
+        populateSmbChartSelect();
+        filterSmbIkuTable();
+        renderSmbChart();
+                renderKomparasiData();
+        syncIkuSmbData(true);
+    }
+
+    function syncIkuSmbData(silent = false) {
+        const btn = document.getElementById('btnSyncSmb');
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Menyinkronkan...';
+        }
+
+        $.ajax({
+            url: '<?= base_url('index.php/IDE/get_repositori_iku') ?>',
+            type: 'GET',
+            dataType: 'json',
+            timeout: 5000,
+            success: function(res) {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-sync-alt mr-1"></i> Sinkronisasi API';
+                }
+                if (res && res.status === 'success' && Array.isArray(res.data) && res.data.length > 0) {
+                    smbIkuData = res.data;
+                } else if (!smbIkuData || smbIkuData.length === 0) {
+                    smbIkuData = getDefaultBanyuwangiIku();
+                }
+                updateSmbKpiCards();
+                populateSmbChartSelect();
+                filterSmbIkuTable();
+                renderSmbChart();
+                renderKomparasiData();
+            },
+            error: function(xhr, status, error) {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-sync-alt mr-1"></i> Sinkronisasi API';
+                }
+                // Jika koneksi lambat atau timeout, data lokal 7 indikator Banyuwangi tetap utuh dan aktif
+                if (!smbIkuData || smbIkuData.length === 0) {
+                    smbIkuData = getDefaultBanyuwangiIku();
+                }
+                updateSmbKpiCards();
+                populateSmbChartSelect();
+                filterSmbIkuTable();
+                renderSmbChart();
+                renderKomparasiData();
+            }
+        });
+    }
+
+    function updateSmbKpiCards() {
+        const total = smbIkuData.length;
+        const bwi = smbIkuData.filter(d => {
+            const w = String(d.kode_wilayah || d.kodewilayah || '');
+            return w.includes('35.12');
+        }).length;
+        const aiEvaluated = Object.keys(smbEvaluasiCache).length;
+
+        $('#smbKpiTotal').text(total + ' Indikator');
+        $('#smbKpiBwi').text(bwi + ' Indikator');
+        $('#smbKpiAi').text(aiEvaluated + ' / ' + total);
+        $('#smbKpiAiStatus').text(aiEvaluated === total ? 'Semua teranalisis' : (total - aiEvaluated) + ' belum dievaluasi');
+    }
+
+    function populateSmbChartSelect() {
+        const sel = document.getElementById('smbChartIndicator');
+        if (!sel) return;
+        sel.innerHTML = '';
+        smbIkuData.forEach((item, idx) => {
+            const opt = document.createElement('option');
+            opt.value = item.id;
+            const name = item.indikator || item.indikator_tujuan || ('Indikator #' + (idx + 1));
+            const satuan = item.satuan ? ' (' + item.satuan + ')' : '';
+            opt.textContent = (idx + 1) + '. ' + name + satuan;
+            sel.appendChild(opt);
+        });
+    }
+
+    function getRawTargetVal(item, key1, key2) {
+        let v = null;
+        if (item[key1] !== null && item[key1] !== undefined && item[key1] !== '') {
+            v = item[key1];
+        } else if (item[key2] !== null && item[key2] !== undefined && item[key2] !== '') {
+            v = item[key2];
+        }
+        if (v === null || v === undefined || v === '') return '-';
+        if (typeof v === 'number') return String(v);
+        if (typeof v === 'string') {
+            let trimmed = v.trim();
+            if (!isNaN(trimmed) && trimmed !== '') {
+                let n = parseFloat(trimmed);
+                if (!isNaN(n)) return String(n);
+            }
+            return trimmed;
+        }
+        return String(v);
+    }
+
+    function filterSmbIkuTable() {
+        const q = ($('#smbIkuSearch').val() || '').toLowerCase().trim();
+        const wilayah = $('#smbFilterWilayah').val() || 'all';
+        const aiStatus = $('#smbFilterAi').val() || 'all';
+
+        let filtered = smbIkuData.filter(item => {
+            const indName = (item.indikator || item.indikator_tujuan || '').toLowerCase();
+            const sasName = (item.sasaran || item.definisi_operasional || '').toLowerCase();
+            const matchQ = !q || indName.includes(q) || sasName.includes(q);
+            const wilCode = String(item.kode_wilayah || item.kodewilayah || '');
+            const matchWil = wilayah === 'all' || wilCode.includes(wilayah);
+            const isEvaluated = !!smbEvaluasiCache[item.id];
+            const matchAi = aiStatus === 'all' || (aiStatus === 'evaluated' && isEvaluated) || (aiStatus === 'pending' && !isEvaluated);
+            return matchQ && matchWil && matchAi;
+        });
+
+        const tbody = document.getElementById('smbIkuTbody');
+        if (!tbody) return;
+
+        if (filtered.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="10" class="text-center py-4" style="color: #64748b;">
+                <i class="fas fa-search fa-2x mb-2" style="opacity: 0.4;"></i>
+                <div>Tidak ada indikator yang sesuai dengan filter pencarian.</div>
+            </td></tr>`;
+            return;
+        }
+
+        let html = '';
+        filtered.forEach((item, idx) => {
+            const isEvaluated = !!smbEvaluasiCache[item.id] || !!localStorage.getItem('smb_iku_eval_' + item.id);
+            const wilCode = String(item.kode_wilayah || item.kodewilayah || '35.12');
+            const wilBadge = `<span class="pill" style="background:#dcfce7; color:#166534; font-weight:700; font-size:11px;">${escapeHtml(wilCode)} Banyuwangi</span>`;
+
+            const aiButton = isEvaluated
+                ? `<div style="display: flex; gap: 4px; justify-content: center;">
+                    <button class="btn btn-sm" onclick="openSmbAiModal(${item.id})" style="background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd; font-size:11px; padding:4px 8px; border-radius:6px; font-weight:700;">
+                        <i class="fas fa-eye mr-1"></i> Lihat &amp; Edit
+                    </button>
+                    <button class="btn btn-sm" onclick="openSmbAiModal(${item.id}, true)" title="Generate Topik Baru" style="background:#f8fafc; border:1px solid #cbd5e1; color:#475569; font-size:11px; padding:4px 8px; border-radius:6px;">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                   </div>`
+                : `<button class="btn btn-sm" onclick="openSmbAiModal(${item.id})" style="background:linear-gradient(135deg, #043168 0%, #1e3a8a 100%); color:#fff; font-size:11px; padding:4px 10px; border-radius:6px; font-weight:700; width:100%;">
+                    <i class="fas fa-pen-nib mr-1"></i> Telaah Asisten AI
+                   </button>`;
+
+            const indTitle = item.indikator || item.indikator_tujuan || '-';
+            const sasaranText = item.sasaran || item.definisi_operasional || '-';
+            const satuanText = item.satuan || '%';
+
+            // Raw values from API/database without extra decimals or commas
+            const t1 = getRawTargetVal(item, 'target_t1', 'target_1');
+            const t2 = getRawTargetVal(item, 'target_t2', 'target_2');
+            const t3 = getRawTargetVal(item, 'target_t3', 'target_3');
+            const t4 = getRawTargetVal(item, 'target_t4', 'target_4');
+            const t5 = getRawTargetVal(item, 'target_t5', 'target_5');
+
+            html += `
+                <tr>
+                    <td style="text-align: center; font-weight: 700; color: #475569;">${idx + 1}</td>
+                    <td>${wilBadge}</td>
+                    <td>
+                        <div style="font-weight: 700; color: #0f172a; font-size: 13px;">${escapeHtml(indTitle)}</div>
+                        <div style="font-size: 11.5px; color: #64748b; margin-top: 2px;"><i class="fas fa-bullseye mr-1 text-primary"></i> ${escapeHtml(sasaranText)}</div>
+                        <div style="font-size: 11px; color: #94a3b8; margin-top: 2px; display:flex; align-items:center; gap:8px;">
+                            <span>Satuan: <strong>${escapeHtml(satuanText)}</strong></span>
+                            <button class="btn btn-xs" onclick="openSmbAiModal(${item.id})" style="background:#f1f5f9; border:1px solid #cbd5e1; color:#043168; font-size:10.5px; padding:1px 6px; border-radius:4px; font-weight:600;"><i class="fas fa-chart-line mr-1"></i>Grafik</button>
+                        </div>
+                    </td>
+                    <td style="text-align: center;"><span class="pill pill-print" style="font-size: 11px;">${escapeHtml(String(item.tahun_awal || item.tahun_mulai || '2025'))}–${escapeHtml(String(item.tahun_akhir || '2029'))}</span></td>
+                    <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">${escapeHtml(t1)}</td>
+                    <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">${escapeHtml(t2)}</td>
+                    <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">${escapeHtml(t3)}</td>
+                    <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">${escapeHtml(t4)}</td>
+                    <td style="text-align: center; font-weight: 700; color: #043168; background: #f8fafc;">${escapeHtml(t5)}</td>
+                    <td style="text-align: center;">${aiButton}</td>
+                </tr>
+            `;
+        });
+
+        tbody.innerHTML = html;
+    }
+
+    /* ==================== GRAFIK INDIKATOR MODAL ==================== */
+    let smbModalChartInstance = null;
+    let smbModalChartType = 'line';
+
+    function switchSmbModalChartType(type) {
+        smbModalChartType = type;
+        if (type === 'line') {
+            $('#btnSmbModalChartLine').addClass('active');
+            $('#btnSmbModalChartBar').removeClass('active');
+        } else {
+            $('#btnSmbModalChartBar').addClass('active');
+            $('#btnSmbModalChartLine').removeClass('active');
+        }
+        if (currentSmbActiveIku) {
+            renderSmbModalChart(currentSmbActiveIku);
+        }
+    }
+
+    function renderSmbModalChart(item) {
+        const canvas = document.getElementById('smbModalIndicatorChartCanvas');
+        if (!canvas) return;
+
+        if (smbModalChartInstance) {
+            smbModalChartInstance.destroy();
+            smbModalChartInstance = null;
+        }
+
+        const cleanVal = (v) => {
+            if (!v) return null;
+            let s = String(v).replace(',', '.').replace(/[^0-9.]/g, '');
+            let n = parseFloat(s);
+            return isNaN(n) ? null : n;
+        };
+
+        const t1 = cleanVal(getRawTargetVal(item, 'target_t1', 'target_1'));
+        const t2 = cleanVal(getRawTargetVal(item, 'target_t2', 'target_2'));
+        const t3 = cleanVal(getRawTargetVal(item, 'target_t3', 'target_3'));
+        const t4 = cleanVal(getRawTargetVal(item, 'target_t4', 'target_4'));
+        const t5 = cleanVal(getRawTargetVal(item, 'target_t5', 'target_5'));
+
+        const ctx = canvas.getContext('2d');
+        const gradient = ctx.createLinearGradient(0, 0, 0, 180);
+        gradient.addColorStop(0, 'rgba(4, 49, 104, 0.35)');
+        gradient.addColorStop(1, 'rgba(4, 49, 104, 0.0)');
+
+        smbModalChartInstance = new Chart(ctx, {
+            type: smbModalChartType,
+            data: {
+                labels: ['2025 (T1)', '2026 (T2)', '2027 (T3)', '2028 (T4)', '2029 (T5)'],
+                datasets: [{
+                    label: (item.indikator || item.indikator_tujuan) + (item.satuan ? ' (' + item.satuan + ')' : ''),
+                    data: [t1, t2, t3, t4, t5],
+                    borderColor: '#043168',
+                    backgroundColor: smbModalChartType === 'line' ? gradient : 'rgba(4, 49, 104, 0.85)',
+                    borderWidth: 2.5,
+                    fill: smbModalChartType === 'line',
+                    tension: 0.35,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#043168',
+                    pointBorderWidth: 2.5,
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: true, position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return ' Target: ' + context.parsed.y + (item.satuan ? ' ' + item.satuan : '');
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { grid: { color: 'rgba(226, 232, 240, 0.6)' } }
+                }
+            }
+        });
+    }
+
+    function setSmbQuickTopic(topic) {
+        $('#smbAiCustomPrompt').val(topic).focus();
+    }
+
+    function openSmbAiModal(id, forceOpenForm = false) {
+        const item = smbIkuData.find(d => String(d.id) === String(id));
+        if (!item) return;
+        currentSmbActiveIku = item;
+        cancelSmbEditMode();
+
+        const t1 = getRawTargetVal(item, 'target_t1', 'target_1');
+        const t2 = getRawTargetVal(item, 'target_t2', 'target_2');
+        const t3 = getRawTargetVal(item, 'target_t3', 'target_3');
+        const t4 = getRawTargetVal(item, 'target_t4', 'target_4');
+        const t5 = getRawTargetVal(item, 'target_t5', 'target_5');
+
+        $('#modalSmbAiTitle').html(`<i class="fas fa-file-signature text-warning mr-2"></i> Telaah Asisten AI — ${escapeHtml(item.indikator || item.indikator_tujuan)}`);
+        $('#smbAiIndikatorInfo').html(`
+            <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+                <div>
+                    <div style="font-size:11px; color:#64748b; text-transform:uppercase; font-weight:700;">Indikator Kinerja Utama</div>
+                    <div style="font-size:15px; font-weight:800; color:#0f172a;">${escapeHtml(item.indikator || item.indikator_tujuan)}</div>
+                    <div style="font-size:12px; color:#475569;"><i class="fas fa-bullseye text-primary mr-1"></i> Sasaran: ${escapeHtml(item.sasaran || item.definisi_operasional || '-')}</div>
+                </div>
+                <div style="text-align:right;">
+                    <div style="font-size:11px; color:#64748b; font-weight:700;">Wilayah &amp; Satuan</div>
+                    <div style="font-size:13px; font-weight:700; color:#043168;">${escapeHtml(item.kode_wilayah || item.kodewilayah || '35.12')} Banyuwangi | Satuan: ${escapeHtml(item.satuan || '-')}</div>
+                </div>
+            </div>
+            <div style="display:grid; grid-template-columns: repeat(5, 1fr); gap:8px; background:#fff; padding:10px; border-radius:10px; border:1px solid #e2e8f0; text-align:center;">
+                <div><span style="font-size:10px; color:#64748b;">2025 (T1)</span><div style="font-weight:800; color:#043168;">${escapeHtml(t1)}</div></div>
+                <div><span style="font-size:10px; color:#64748b;">2026 (T2)</span><div style="font-weight:800; color:#043168;">${escapeHtml(t2)}</div></div>
+                <div><span style="font-size:10px; color:#64748b;">2027 (T3)</span><div style="font-weight:800; color:#043168;">${escapeHtml(t3)}</div></div>
+                <div><span style="font-size:10px; color:#64748b;">2028 (T4)</span><div style="font-weight:800; color:#043168;">${escapeHtml(t4)}</div></div>
+                <div><span style="font-size:10px; color:#64748b;">2029 (T5)</span><div style="font-weight:800; color:#043168;">${escapeHtml(t5)}</div></div>
+            </div>
+        `);
+
+        // Check local storage or in-memory cache
+        let cached = smbEvaluasiCache[item.id];
+        if (!cached) {
+            const stored = localStorage.getItem('smb_iku_eval_' + item.id);
+            if (stored) {
+                try {
+                    cached = JSON.parse(stored);
+                    smbEvaluasiCache[item.id] = cached;
+                } catch(e) {
+                    cached = stored;
+                    smbEvaluasiCache[item.id] = stored;
+                }
+            }
+        }
+
+        const evalText = (cached && typeof cached === 'object') ? cached.text : cached;
+        const isManual = (cached && typeof cached === 'object') ? !!cached.isManualEdited : false;
+        const topic = (cached && typeof cached === 'object') ? (cached.topic || '') : '';
+        const tone = (cached && typeof cached === 'object') ? (cached.tone || 'komprehensif') : 'komprehensif';
+
+        if (forceOpenForm) {
+            $('#smbAiFormSection').show();
+            $('#smbAiResultSection').hide();
+            $('#smbAiCustomPrompt').val(topic);
+            $('#smbAiTone').val(tone);
+        } else if (evalText) {
+            renderSmbAiResultHtml(evalText, isManual, topic);
+            $('#smbAiFormSection').hide();
+            $('#smbAiResultSection').show();
+        } else {
+            $('#smbAiFormSection').show();
+            $('#smbAiResultSection').hide();
+            $('#smbAiCustomPrompt').val('');
+        }
+
+        $('#modalSmbAi').css('display', 'flex');
+
+        setTimeout(() => {
+            renderSmbModalChart(item);
+        }, 150);
+    }
+
+    function closeSmbAiModal() {
+        $('#modalSmbAi').css('display', 'none');
+        cancelSmbEditMode();
+    }
+
+    function runSmbAiGenerate() {
+        if (!currentSmbActiveIku) return;
+
+        const btn = document.getElementById('btnDoSmbAi');
+        const customPrompt = $('#smbAiCustomPrompt').val() || '';
+        const tone = $('#smbAiTone').val() || 'komprehensif';
+
+        if (btn) {
+            btn.disabled = true;
+            btn.textContent = 'Asisten AI sedang menelaah data...';
+        }
+
+        $('#smbAiFormSection').hide();
+        $('#smbAiResultSection').show();
+        $('#smbAiResultContent').html(`
+            <div style="text-align:center; padding:35px;">
+                <div class="modern-spinner" style="margin: 0 auto 12px;"></div>
+                <div style="font-weight:700; color:#0f172a; font-size:14px;">Asisten AI sedang menyusun telaah target indikator...</div>
+                <div style="font-size:12px; color:#64748b; margin-top:4px;">Mengkaji trajektori angka target RPJMD 2025–2029${customPrompt ? ` [Topik: ${escapeHtml(customPrompt)}]` : ''}</div>
+            </div>
+        `);
+
+        const t1 = getRawTargetVal(currentSmbActiveIku, 'target_t1', 'target_1');
+        const t2 = getRawTargetVal(currentSmbActiveIku, 'target_t2', 'target_2');
+        const t3 = getRawTargetVal(currentSmbActiveIku, 'target_t3', 'target_3');
+        const t4 = getRawTargetVal(currentSmbActiveIku, 'target_t4', 'target_4');
+        const t5 = getRawTargetVal(currentSmbActiveIku, 'target_t5', 'target_5');
+
+        $.ajax({
+            url: '<?= base_url('index.php/IDE/generate_gemini_evaluasi') ?>',
+            type: 'POST',
+            data: {
+                indikator: currentSmbActiveIku.indikator || currentSmbActiveIku.indikator_tujuan,
+                sasaran: currentSmbActiveIku.sasaran || currentSmbActiveIku.definisi_operasional,
+                satuan: currentSmbActiveIku.satuan,
+                kode_wilayah: currentSmbActiveIku.kode_wilayah || currentSmbActiveIku.kodewilayah || '35.12',
+                target_t1: t1 !== '-' ? t1 : '',
+                target_t2: t2 !== '-' ? t2 : '',
+                target_t3: t3 !== '-' ? t3 : '',
+                target_t4: t4 !== '-' ? t4 : '',
+                target_t5: t5 !== '-' ? t5 : '',
+                tone: tone,
+                topik: customPrompt,
+                catatan_tambahan: customPrompt
+            },
+            dataType: 'json',
+            timeout: 45000,
+            success: function(res) {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = 'Susun Telaah Asisten AI';
+                }
+                if (res.status === 'success' && res.evaluasi) {
+                    const evalObj = {
+                        id: currentSmbActiveIku.id,
+                        text: res.evaluasi,
+                        originalAiText: res.evaluasi,
+                        isManualEdited: false,
+                        topic: customPrompt,
+                        tone: tone,
+                        model: res.model || 'Asisten AI',
+                        timestamp: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })
+                    };
+                    smbEvaluasiCache[currentSmbActiveIku.id] = evalObj;
+                    localStorage.setItem('smb_iku_eval_' + currentSmbActiveIku.id, JSON.stringify(evalObj));
+
+                    renderSmbAiResultHtml(res.evaluasi, false, customPrompt);
+                    updateSmbKpiCards();
+                    filterSmbIkuTable();
+                } else {
+                    $('#smbAiResultContent').html(`
+                        <div style="color:#dc2626; padding:20px; text-align:center;">
+                            <i class="fas fa-exclamation-circle fa-2x mb-2"></i>
+                            <div>Gagal menyusun telaah AI: ${res.message || 'Terjadi kesalahan saat memproses data'}</div>
+                            <button class="btn btn-sm btn-outline-danger mt-3" onclick="$('#smbAiFormSection').show(); $('#smbAiResultSection').hide();">Kembali ke Form</button>
+                        </div>
+                    `);
+                }
+            },
+            error: function(xhr, status, error) {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-wand-magic-sparkles mr-1"></i> Susun Telaah Asisten AI';
+                }
+                $('#smbAiResultContent').html(`
+                    <div style="color:#dc2626; padding:20px; text-align:center;">
+                        <i class="fas fa-plug fa-2x mb-2"></i>
+                        <div>Koneksi ke Asisten AI terputus (${error}). Silakan periksa jaringan internet dan coba lagi.</div>
+                        <button class="btn btn-sm btn-outline-danger mt-3" onclick="$('#smbAiFormSection').show(); $('#smbAiResultSection').hide();">Kembali ke Form</button>
+                    </div>
+                `);
+            }
+        });
+    }
+
+    function renderSmbAiResultHtml(text, isManualEdited = false, topic = '') {
+        if (!text) return;
+        // Clean markdown headers, asterisks, bullet points or AI formatting
+        let cleanText = text
+            .replace(/^#+\s*/gm, '')
+            .replace(/\*\*(.*?)\*\*/g, '$1')
+            .replace(/\*(.*?)\*/g, '$1')
+            .replace(/^\s*[-•*]\s+/gm, '')
+            .trim();
+
+        // Split into narrative paragraphs
+        let paragraphs = cleanText.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+        if (paragraphs.length <= 1) {
+            paragraphs = cleanText.split(/\n/).filter(p => p.trim().length > 0);
+        }
+
+        let parasHtml = paragraphs.map(p => {
+            return `<p style="margin-bottom: 14px; text-indent: 28px; text-align: justify; line-height: 1.85; color: #1e293b; font-size: 13.5px;">${escapeHtml(p.trim())}</p>`;
+        }).join('');
+
+        const statusBadge = isManualEdited
+            ? `<span style="font-size:11px; background:#fef3c7; color:#b45309; padding:3px 10px; border-radius:20px; font-weight:700; border:1px solid #fde68a;">Diedit Secara Manual</span>`
+            : `<span style="font-size:11px; background:#eff6ff; color:#1d4ed8; padding:3px 10px; border-radius:20px; font-weight:700; border:1px solid #bfdbfe;">Peneliti Ekonomi Pembangunan (AI)</span>`;
+
+        const topicBadge = topic
+            ? `<span style="font-size:11px; background:#f1f5f9; color:#475569; padding:3px 8px; border-radius:6px; font-weight:600;">${escapeHtml(topic)}</span>`
+            : '';
+
+        $('#smbAiResultContent').html(`
+            <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:12px; padding:22px 26px; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+                <div style="border-bottom:1px solid #e2e8f0; padding-bottom:12px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <div style="font-weight:700; color:#043168; font-size:14px; display:flex; align-items:center; gap:8px;">
+                        Telaah Hasil Evaluasi Kinerja Pembangunan
+                        ${topicBadge}
+                    </div>
+                    ${statusBadge}
+                </div>
+                <div class="smb-narrative-content">
+                    ${parasHtml}
+                </div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; flex-wrap:wrap; gap:10px;">
+                <span style="font-size:11.5px; color:#475569; font-weight:600;">Disusun oleh Asisten AI Bappeda</span>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn btn-sm btn-outline-primary" id="btnToggleSmbEdit" onclick="toggleSmbEditMode()" style="border-radius:6px; font-size:12px; font-weight:600; padding: 5px 12px;">
+                        Edit Manual
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="openSmbRegenForm()" style="border-radius:6px; font-size:12px; padding: 5px 12px;">
+                        Topik Lain
+                    </button>
+                    <button class="btn btn-sm btn-success" onclick="copySmbAiResult()" style="border-radius:6px; font-size:12px; font-weight:600; padding: 5px 12px;">
+                        Salin Naskah
+                    </button>
+                </div>
+            </div>
+        `);
+    }
+
+    /* ==================== MODE EDIT MANUAL SMB ==================== */
+    function toggleSmbEditMode() {
+        const editContainer = $('#smbAiEditContainer');
+        const narrativeContent = $('.smb-narrative-content');
+        const btn = $('#btnToggleSmbEdit');
+
+        if (editContainer.is(':visible')) {
+            cancelSmbEditMode();
+        } else {
+            if (!currentSmbActiveIku) return;
+            const cached = smbEvaluasiCache[currentSmbActiveIku.id];
+            const currentText = (cached && typeof cached === 'object') ? cached.text : (cached || '');
+
+            $('#smbAiEditTextarea').val(currentText);
+            narrativeContent.hide();
+            editContainer.slideDown(200);
+            btn.text('Batal Edit').removeClass('btn-outline-primary').addClass('btn-outline-secondary');
+        }
+    }
+
+    function cancelSmbEditMode() {
+        $('#smbAiEditContainer').slideUp(150);
+        $('.smb-narrative-content').show();
+        $('#btnToggleSmbEdit').text('Edit Manual').removeClass('btn-outline-secondary').addClass('btn-outline-primary');
+    }
+
+    function saveSmbManualEdit() {
+        if (!currentSmbActiveIku) return;
+        const newText = $('#smbAiEditTextarea').val().trim();
+        if (!newText) {
+            alert('Teks evaluasi tidak boleh kosong.');
+            return;
+        }
+
+        let cached = smbEvaluasiCache[currentSmbActiveIku.id] || {};
+        if (typeof cached !== 'object') {
+            cached = { text: cached, originalAiText: cached };
+        }
+
+        cached.text = newText;
+        if (!cached.originalAiText) {
+            cached.originalAiText = newText;
+        }
+        cached.isManualEdited = true;
+        cached.timestamp = new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
+
+        smbEvaluasiCache[currentSmbActiveIku.id] = cached;
+        localStorage.setItem('smb_iku_eval_' + currentSmbActiveIku.id, JSON.stringify(cached));
+
+        // Simpan ke backend
+        $.ajax({
+            url: '<?= base_url('index.php/IDE/simpan_evaluasi_manual') ?>',
+            type: 'POST',
+            data: {
+                id: currentSmbActiveIku.id,
+                indikator: currentSmbActiveIku.indikator || currentSmbActiveIku.indikator_tujuan,
+                evaluasi: newText,
+                topik: cached.topic || ''
+            },
+            dataType: 'json'
+        });
+
+        cancelSmbEditMode();
+        renderSmbAiResultHtml(newText, true, cached.topic);
+        updateSmbKpiCards();
+        filterSmbIkuTable();
+
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Tersimpan!',
+                text: 'Perubahan naskah evaluasi berhasil disimpan.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        } else {
+            alert('Perubahan naskah evaluasi berhasil disimpan!');
+        }
+    }
+
+    function resetSmbToOriginalAi() {
+        if (!currentSmbActiveIku) return;
+        const cached = smbEvaluasiCache[currentSmbActiveIku.id];
+        if (!cached || !cached.originalAiText) {
+            alert('Naskah asli AI tidak ditemukan.');
+            return;
+        }
+
+        if (!confirm('Kembalikan naskah evaluasi ke naskah asli Asisten AI? Perubahan manual Anda akan ditimpa.')) {
+            return;
+        }
+
+        cached.text = cached.originalAiText;
+        cached.isManualEdited = false;
+        smbEvaluasiCache[currentSmbActiveIku.id] = cached;
+        localStorage.setItem('smb_iku_eval_' + currentSmbActiveIku.id, JSON.stringify(cached));
+
+        cancelSmbEditMode();
+        renderSmbAiResultHtml(cached.originalAiText, false, cached.topic);
+        updateSmbKpiCards();
+        filterSmbIkuTable();
+    }
+
+    function openSmbRegenForm() {
+        $('#smbAiFormSection').slideDown(200);
+        $('#smbAiResultSection').slideUp(200);
+        $('#smbAiCustomPrompt').focus();
+    }
+
+    function copySmbAiResult() {
+        if (!currentSmbActiveIku) return;
+        const cached = smbEvaluasiCache[currentSmbActiveIku.id];
+        const text = (cached && typeof cached === 'object') ? cached.text : (cached || '');
+        if (!text) return;
+        navigator.clipboard.writeText(text).then(function() {
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Tersalin!',
+                    text: 'Hasil telaah evaluasi berhasil disalin ke clipboard.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            } else {
+                alert('Hasil telaah berhasil disalin ke clipboard!');
+            }
+        });
+    }
+
+    function renderSmbChart() {
+        const selId = $('#smbChartIndicator').val();
+        if (!selId || smbIkuData.length === 0) return;
+
+        const item = smbIkuData.find(d => String(d.id) === String(selId)) || smbIkuData[0];
+        const chartType = $('#smbChartType').val() || 'line';
+        const canvas = document.getElementById('smbIkuChartCanvas');
+        if (!canvas) return;
+
+        const cleanVal = (v) => {
+            if (!v) return null;
+            let s = String(v).replace(',', '.').replace(/[^0-9.]/g, '');
+            let n = parseFloat(s);
+            return isNaN(n) ? null : n;
+        };
+
+        const targets = [
+            cleanVal(item.target_t1),
+            cleanVal(item.target_t2),
+            cleanVal(item.target_t3),
+            cleanVal(item.target_t4),
+            cleanVal(item.target_t5)
+        ];
+
+        if (smbIkuChart) {
+            smbIkuChart.destroy();
+        }
+
+        const ctx = canvas.getContext('2d');
+        smbIkuChart = new Chart(ctx, {
+            type: chartType,
+            data: {
+                labels: ['2025 (T1)', '2026 (T2)', '2027 (T3)', '2028 (T4)', '2029 (T5)'],
+                datasets: [{
+                    label: item.indikator + (item.satuan ? ' (' + item.satuan + ')' : ''),
+                    data: targets,
+                    backgroundColor: chartType === 'line' ? 'rgba(4, 49, 104, 0.12)' : 'rgba(4, 49, 104, 0.85)',
+                    borderColor: '#043168',
+                    borderWidth: 2.5,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#043168',
+                    pointBorderWidth: 2.5,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    tension: 0.3,
+                    fill: chartType === 'line'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: { font: { weight: 'bold' } }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(c) {
+                                return c.dataset.label + ': ' + c.raw;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    }
+
+    function batchGenerateAllAISmb() {
+        if (!smbIkuData || smbIkuData.length === 0) {
+            alert('Silakan muat data indikator terlebih dahulu.');
+            return;
+        }
+        openSmbAiModal(smbIkuData[0].id);
+    }
+
+    // Inisialisasi otomatis data IKU dan visualisasi saat halaman siap
+    $(function() {
+        if (!smbIkuData || smbIkuData.length === 0) {
+            smbIkuData = getDefaultBanyuwangiIku();
+        }
+        updateSmbKpiCards();
+        populateSmbChartSelect();
+        filterSmbIkuTable();
+        renderSmbChart();
+                renderKomparasiData();
+    });
     </script>
 
     <!-- Modal Detail Rekap dari Log Aktivitas -->
@@ -9620,5 +11099,131 @@ $('#formUploadDokumen').off('submit').on('submit', function(e) {
             </div>
         </div>
     </div>
+    <!-- Modal Asisten AI Evaluasi IKU -->
+    <div id="modalSmbAi" class="modal-log-rekap" style="display: none; align-items: center; justify-content: center; z-index: 9999;">
+        <div class="modal-log-rekap-content" style="max-width: 1150px; width: 96%; border-radius: 18px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.25);">
+            <div class="modal-log-rekap-header" style="background: linear-gradient(135deg, #043168 0%, #1e1b4b 100%); padding: 18px 24px;">
+                <h3 id="modalSmbAiTitle" style="color: #fff; font-size: 16px; font-weight: 700; margin: 0;">
+                    Telaah Asisten AI
+                </h3>
+                <button class="modal-log-rekap-close" onclick="closeSmbAiModal()">&times;</button>
+            </div>
+            <div class="modal-log-rekap-body" style="padding: 24px 28px; max-height: 80vh; overflow-y: auto;">
+                <!-- Ringkasan Indikator & Target -->
+                <div id="smbAiIndikatorInfo" style="background: #f1f5f9; border-radius: 12px; padding: 16px; margin-bottom: 16px; border: 1px solid #cbd5e1;"></div>
+
+                <!-- 1. Visualisasi Grafik pada Setiap Indikator di Modal -->
+                <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 14px 18px; margin-bottom: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+                        <div style="font-weight: 700; color: #043168; font-size: 13.5px;">
+                            Visualisasi Grafik Target Indikator (2025–2029)
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 11.5px; font-weight: 600; color: #64748b;">Tipe Grafik:</span>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button type="button" class="btn btn-outline-primary btn-sm active" id="btnSmbModalChartLine" onclick="switchSmbModalChartType('line')" style="padding: 3px 10px; font-size: 12px; font-weight: 600;">
+                                    Garis
+                                </button>
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="btnSmbModalChartBar" onclick="switchSmbModalChartType('bar')" style="padding: 3px 10px; font-size: 12px; font-weight: 600;">
+                                    Batang
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="position: relative; height: 180px; width: 100%;">
+                        <canvas id="smbModalIndicatorChartCanvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- 2. Form Konfigurasi Analisis & Topik Fleksibel -->
+                <div id="smbAiFormSection">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label style="font-size: 12.5px; font-weight: 700; color: #475569; margin-bottom: 6px; display: block;">Fokus &amp; Gaya Telaah</label>
+                            <select id="smbAiTone" class="form-control" style="border-radius: 8px; font-size: 13px;">
+                                <option value="komprehensif" selected>Komprehensif (Telaah Tren + Evaluasi + Kesimpulan)</option>
+                                <option value="kritis">Kritis &amp; Mitigasi Risiko Pencapaian Target</option>
+                                <option value="rekomendasi">Fokus Intervensi Program Pembangunan</option>
+                                <option value="ringkas">Ringkas &amp; Padat (Ikhtisar Eksekutif)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label style="font-size: 12.5px; font-weight: 700; color: #475569; margin-bottom: 6px; display: block;">Peran Penelaah</label>
+                            <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 9px 12px; font-size: 12.5px; color: #0f172a; font-weight: 600;">
+                                Peneliti Ekonomi Pembangunan <span class="badge" style="background: #10b981; color: #fff; margin-left: 6px; font-size: 10.5px;">Asisten AI</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label style="font-size: 12.5px; font-weight: 700; color: #475569; margin-bottom: 4px; display: block;">Topik &amp; Fokus Evaluasi yang Diinginkan</label>
+                        <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">Tuliskan topik bebas sesuai kebutuhan analisis Anda untuk indikator ini:</div>
+                        <textarea id="smbAiCustomPrompt" class="form-control" rows="2" placeholder="Contoh: Fokuskan telaah pada daya dorong sektor pertanian, kestabilan harga, efisiensi belanja, atau pengentasan kemiskinan..." style="border-radius: 8px; font-size: 13px;"></textarea>
+                        
+                        <!-- Pilihan Cepat Topik (Tanpa Icon) -->
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px;">
+                            <span style="font-size: 11.5px; font-weight: 700; color: #64748b;">Pilihan Cepat:</span>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="setSmbQuickTopic('Analisis Laju & Akselerasi Target RPJMD')" style="border-radius: 20px; font-size: 11.5px; padding: 3px 12px;">Akselerasi Target</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="setSmbQuickTopic('Mitigasi Risiko & Hambatan Lapangan')" style="border-radius: 20px; font-size: 11.5px; padding: 3px 12px;">Mitigasi Risiko</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="setSmbQuickTopic('Efisiensi Anggaran & Prioritas Belanja Daerah')" style="border-radius: 20px; font-size: 11.5px; padding: 3px 12px;">Efisiensi Belanja</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="setSmbQuickTopic('Pengentasan Kemiskinan & Daya Beli Masyarakat')" style="border-radius: 20px; font-size: 11.5px; padding: 3px 12px;">Kesejahteraan</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="setSmbQuickTopic('Dukungan Sektor Unggulan & Investasi Daerah')" style="border-radius: 20px; font-size: 11.5px; padding: 3px 12px;">Sektor Unggulan</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="setSmbQuickTopic('')" style="border-radius: 20px; font-size: 11.5px; padding: 3px 12px;">Kosongkan</button>
+                        </div>
+                    </div>
+
+                    <div style="text-align: right; margin-top: 18px;">
+                        <button class="btn btn-secondary mr-2" onclick="closeSmbAiModal()" style="border-radius: 8px; font-size: 13px; padding: 8px 16px;">Tutup</button>
+                        <button id="btnDoSmbAi" class="btn btn-primary" onclick="runSmbAiGenerate()" style="background: linear-gradient(135deg, #043168 0%, #1e3a8a 100%); border: none; border-radius: 8px; font-weight: 700; padding: 8px 22px; font-size: 13px;">
+                            Susun Telaah Asisten AI
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3. Bagian Hasil Analisis AI & Mode Edit Manual -->
+                <div id="smbAiResultSection" style="display: none;">
+                    <div id="smbAiResultContent"></div>
+                    
+                    <!-- Container Mode Edit Manual (Lebar, Nyaman, Tanpa Icon) -->
+                    <div id="smbAiEditContainer" style="display: none; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 14px; padding: 22px 24px; margin-top: 16px; box-shadow: 0 4px 14px rgba(0,0,0,0.04);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+                            <div>
+                                <div style="font-weight: 800; color: #0f172a; font-size: 14px;">
+                                    Mode Pengeditan Manual Naskah Telaah
+                                </div>
+                                <div style="font-size: 12px; color: #64748b; margin-top: 2px;">
+                                    Ubah atau lengkapi narasi evaluasi secara leluasa pada kotak di bawah ini:
+                                </div>
+                            </div>
+                            <span style="font-size: 11.5px; background: #fef3c7; color: #92400e; font-weight: 600; padding: 4px 10px; border-radius: 6px;">
+                                Format Naratif Fleksibel
+                            </span>
+                        </div>
+                        <textarea id="smbAiEditTextarea" class="form-control" rows="12" style="border-radius: 10px; font-size: 14px; line-height: 1.8; color: #1e293b; background: #f8fafc; border: 1.5px solid #cbd5e1; width: 100%; min-height: 280px; padding: 16px; resize: vertical;"></textarea>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; flex-wrap: wrap; gap: 10px;">
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="resetSmbToOriginalAi()" style="border-radius: 8px; font-size: 12.5px; padding: 6px 14px;">
+                                Kembalikan ke Asli AI
+                            </button>
+                            <div style="display: flex; gap: 8px;">
+                                <button type="button" class="btn btn-sm btn-secondary" onclick="cancelSmbEditMode()" style="border-radius: 8px; font-size: 12.5px; padding: 6px 14px;">
+                                    Batal
+                                </button>
+                                <button type="button" class="btn btn-sm btn-success" onclick="saveSmbManualEdit()" style="border-radius: 8px; font-size: 12.5px; font-weight: 700; padding: 6px 18px;">
+                                    Simpan Perubahan
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </body>
     </html>
+
+
+
+
+
+
+
