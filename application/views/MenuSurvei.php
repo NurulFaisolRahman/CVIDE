@@ -6913,6 +6913,27 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
 
           <input type="hidden" id="modalRtkdActiveInstrument" name="RtkdInstrument" value="A">
 
+          <!-- GPS & Device Tracking Info Bar (Otomatis & Transparan) -->
+          <div class="rtkd-device-gps-bar" id="rtkdDeviceGpsBar">
+            <div class="track-item">
+              <span class="track-icon gps"><i class="fa-solid fa-location-crosshairs"></i></span>
+              <div class="track-info">
+                <span class="track-label">Koordinat Lokasi Pengisian (GPS)</span>
+                <span class="track-val" id="rtkdDispGps"><i class="fa-solid fa-spinner fa-spin"></i> Mendeteksi GPS satelit...</span>
+              </div>
+              <button type="button" class="btn-refresh-gps" onclick="detectRespondentDeviceLocation(true)" title="Deteksi Ulang GPS">
+                <i class="fa-solid fa-rotate"></i>
+              </button>
+            </div>
+            <div class="track-item">
+              <span class="track-icon device"><i class="fa-solid fa-mobile-screen-button"></i></span>
+              <div class="track-info">
+                <span class="track-label">Perangkat Pengisi Terdeteksi</span>
+                <span class="track-val" id="rtkdDispDevice">Mendeteksi perangkat...</span>
+              </div>
+            </div>
+          </div>
+
           <!-- Meta Row Enumerator -->
           <div class="rtkd-meta-row">
             <label class="rtkd-meta-label" for="respEnumerator">
@@ -8796,6 +8817,13 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
             // Open modal
             $('#surveyRespondentModal').addClass('active');
             $('body').css('overflow', 'hidden');
+
+            // Jalankan deteksi perangkat dan koordinat lokasi GPS secara otomatis
+            setTimeout(function() {
+              if (typeof detectRespondentDeviceLocation === 'function') {
+                detectRespondentDeviceLocation(false);
+              }
+            }, 100);
           } else {
             Swal.fire('Error', res.message || 'Kuesioner tidak ditemukan.', 'error');
           }
@@ -10281,54 +10309,153 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
       });
     };
 
-    // Deteksi Sensor GPS Device Responden
+    // Helper: Deteksi Rinci Perangkat (Brand, Model HP, OS, dan Browser)
+    window.getDetailedDeviceInfo = function() {
+      var ua = navigator.userAgent || '';
+      var os = 'Unknown OS';
+      var brand = 'Perangkat';
+      var browser = 'Browser';
+
+      // 1. Deteksi Sistem Operasi
+      if (/Android/i.test(ua)) {
+        var vMatch = ua.match(/Android\s([0-9\.]+)/i);
+        os = 'Android' + (vMatch ? ' ' + vMatch[1] : '');
+      } else if (/iPhone/i.test(ua)) {
+        var iosMatch = ua.match(/OS\s([0-9_]+)/i);
+        os = 'iOS' + (iosMatch ? ' ' + iosMatch[1].replace(/_/g, '.') : '');
+      } else if (/iPad/i.test(ua)) {
+        var ipadMatch = ua.match(/OS\s([0-9_]+)/i);
+        os = 'iPadOS' + (ipadMatch ? ' ' + ipadMatch[1].replace(/_/g, '.') : '');
+      } else if (/Windows NT 10\.0/i.test(ua)) {
+        os = 'Windows 10/11';
+      } else if (/Windows NT 6\.3/i.test(ua)) {
+        os = 'Windows 8.1';
+      } else if (/Windows NT 6\.1/i.test(ua)) {
+        os = 'Windows 7';
+      } else if (/Macintosh|Mac OS X/i.test(ua)) {
+        os = 'macOS';
+      } else if (/Linux/i.test(ua)) {
+        os = 'Linux';
+      }
+
+      // 2. Deteksi Merek & Seri Smartphone
+      if (/iPhone/i.test(ua)) {
+        brand = 'Apple iPhone';
+      } else if (/iPad/i.test(ua)) {
+        brand = 'Apple iPad';
+      } else if (/SM-[A-Za-z0-9]+/i.test(ua)) {
+        var smMatch = ua.match(/SM-([A-Za-z0-9]+)/i);
+        brand = 'Samsung Galaxy (SM-' + (smMatch ? smMatch[1] : 'Series') + ')';
+      } else if (/SAMSUNG/i.test(ua)) {
+        brand = 'Samsung Mobile';
+      } else if (/Redmi|POCO|Mi\s[0-9A-Za-z]+|2[0-9]{7}[A-Z]+/i.test(ua)) {
+        var miMatch = ua.match(/(Redmi[^\;\)]*|POCO[^\;\)]*|Mi\s[0-9A-Za-z]+)/i);
+        brand = 'Xiaomi ' + (miMatch ? miMatch[0] : 'Redmi');
+      } else if (/CPH[0-9]+|OPPO/i.test(ua)) {
+        var oppoMatch = ua.match(/CPH[0-9]+/i);
+        brand = 'OPPO ' + (oppoMatch ? oppoMatch[0] : 'Mobile');
+      } else if (/V[0-9]{4}[A-Z]*|vivo/i.test(ua)) {
+        var vivoMatch = ua.match(/V[0-9]{4}[A-Z]*/i);
+        brand = 'vivo ' + (vivoMatch ? vivoMatch[0] : 'Mobile');
+      } else if (/RMX[0-9]+|Realme/i.test(ua)) {
+        var rmxMatch = ua.match(/RMX[0-9]+/i);
+        brand = 'Realme ' + (rmxMatch ? rmxMatch[0] : 'Mobile');
+      } else if (/Infinix/i.test(ua)) {
+        brand = 'Infinix Mobile';
+      } else if (/TECNO/i.test(ua)) {
+        brand = 'Tecno Mobile';
+      } else if (/;\s([^;]+)\sBuild\//i.test(ua)) {
+        var bMatch = ua.match(/;\s([^;]+)\sBuild\//i);
+        brand = bMatch ? bMatch[1] : 'Android Smartphone';
+      } else if (/Windows/i.test(ua)) {
+        brand = 'PC / Laptop Desktop';
+      } else if (/Macintosh/i.test(ua)) {
+        brand = 'Apple Mac';
+      }
+
+      // 3. Deteksi Peramban / Browser
+      if (/SamsungBrowser\/([0-9\.]+)/i.test(ua)) {
+        browser = 'Samsung Internet';
+      } else if (/Edg\/([0-9\.]+)/i.test(ua)) {
+        browser = 'MS Edge';
+      } else if (/Chrome\/([0-9\.]+)/i.test(ua) && !/Edg/i.test(ua)) {
+        browser = 'Chrome';
+      } else if (/Safari\/([0-9\.]+)/i.test(ua) && !/Chrome/i.test(ua)) {
+        browser = 'Safari';
+      } else if (/Firefox\/([0-9\.]+)/i.test(ua)) {
+        browser = 'Firefox';
+      }
+
+      var fullInfo = brand + ' (' + os + ') · ' + browser;
+
+      // Update Client Hints jika browser modern mendukung query model presisi
+      if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
+        navigator.userAgentData.getHighEntropyValues(['model', 'platform', 'platformVersion'])
+          .then(function(hints) {
+            if (hints.model) {
+              var refined = hints.model + ' (' + (hints.platform || os) + ') · ' + browser;
+              $('#respDevicePlatform').val(refined);
+              $('#rtkdDispDevice, #dispGpsDevice').text(refined);
+            }
+          }).catch(function() {});
+      }
+
+      return fullInfo;
+    };
+
+    // Deteksi Sensor GPS Device & Pelacakan Perangkat Responden
     window.detectRespondentDeviceLocation = function(forcePrompt) {
       var $status = $('#respGpsBadgeStatus');
       var $dispDev = $('#dispGpsDevice');
+      var $rtkdGps = $('#rtkdDispGps');
+      var $rtkdDev = $('#rtkdDispDevice');
+      var $rtkdBar = $('#rtkdDeviceGpsBar');
 
-      // Deteksi Platform Perangkat & Browser Pengisi Survei
-      var userAgent = navigator.userAgent || '';
-      var platformName = 'Desktop Browser (Chrome)';
-      if (/android/i.test(userAgent)) {
-        platformName = 'Android Mobile (' + (navigator.userAgentData ? navigator.userAgentData.platform : 'Chrome Mobile') + ')';
-      } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        platformName = 'iPhone / iOS Mobile';
-      } else if (/Macintosh|Mac OS X/.test(userAgent)) {
-        platformName = 'macOS (Safari / Chrome)';
-      } else if (/Windows/.test(userAgent)) {
-        platformName = 'Windows PC';
-      } else if (/Linux/.test(userAgent)) {
-        platformName = 'Linux Device';
-      }
+      // 1. Eksekusi Pelacakan Identitas Device
+      var platformName = window.getDetailedDeviceInfo();
       $dispDev.text(platformName);
+      $rtkdDev.text(platformName);
       $('#respDevicePlatform').val(platformName);
 
+      // 2. Eksekusi Pengambilan Koordinat GPS Geolocation
       if ("geolocation" in navigator) {
         $status.html('<i class="fa-solid fa-spinner fa-spin"></i> Mendeteksi GPS...');
+        $rtkdGps.html('<i class="fa-solid fa-spinner fa-spin"></i> Mendeteksi GPS satelit...');
+
         var options = {
           enableHighAccuracy: true,
-          timeout: 8000,
-          maximumAge: 10000
+          timeout: 10000,
+          maximumAge: 0
         };
 
         navigator.geolocation.getCurrentPosition(
           function(position) {
             var lat = parseFloat(position.coords.latitude);
             var lng = parseFloat(position.coords.longitude);
-            var acc = parseFloat(position.coords.accuracy || 8.5);
+            var acc = parseFloat(position.coords.accuracy || 6.5);
             if (isNaN(lat) || isNaN(lng) || !isFinite(lat) || !isFinite(lng)) {
               lat = -8.219234;
               lng = 114.369120;
             }
             if (isNaN(acc) || !isFinite(acc)) {
-              acc = 8.5;
+              acc = 6.5;
             }
 
             lat = Number(lat.toFixed(6));
             lng = Number(lng.toFixed(6));
             acc = Number(acc.toFixed(1));
 
-            updateRespondentPinPosition(lat, lng, acc, 'GPS Terkunci Presisi');
+            // Simpan ke input tersembunyi
+            $('#respLatitude').val(lat);
+            $('#respLongitude').val(lng);
+            $('#respLokasiAccuracy').val(acc);
+
+            // Update UI RTKD Bar
+            $rtkdBar.addClass('gps-locked');
+            $rtkdGps.html('<span style="color: #16a34a; font-weight: 700;"><i class="fa-solid fa-circle-check"></i> ' + lat + ', ' + lng + '</span> <span style="font-size: 11px; color: #15803d; font-weight: 700;">(±' + acc + 'm)</span>');
+
+            // Update UI Standar
+            updateRespondentPinPosition(lat, lng, acc, 'GPS Terkunci Presisi (±' + acc + 'm)');
             $('#respGpsCard').css({ 'background': '#f0fdf4', 'border-color': '#86efac' });
 
             if (respFormMiniMapInstance && $('#respFormMiniMap').is(':visible') && $('#respFormMiniMap').width() > 0) {
@@ -10338,18 +10465,26 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
             }
           },
           function(err) {
-            // Gunakan centroid wilayah yang dipilih atau pusat Banyuwangi
-            var curKec = $('#respKecamatan').val();
-            if (curKec) {
-              focusMiniMapToKecamatan(curKec);
+            var curKec = $('#respKecamatan').val() || 'Banyuwangi';
+            var errMessage = 'Izin lokasi belum aktif';
+            if (err.code === 1) errMessage = 'Akses GPS ditolak';
+            else if (err.code === 2) errMessage = 'Sinyal GPS lemah';
+            else if (err.code === 3) errMessage = 'Waktu GPS habis';
+
+            $rtkdBar.removeClass('gps-locked');
+            $rtkdGps.html('<span style="color: #d97706; font-weight: 700;"><i class="fa-solid fa-location-dot"></i> Kec. ' + curKec + '</span> <span style="font-size: 11px; color: #b45309;">(' + errMessage + ')</span>');
+
+            if ($('#respKecamatan').val()) {
+              focusMiniMapToKecamatan($('#respKecamatan').val());
             } else {
               updateRespondentPinPosition(-8.219234, 114.369120, 15.0, 'Pusat Kab. Banyuwangi');
             }
+
             if (forcePrompt) {
               Swal.fire({
                 icon: 'info',
-                title: 'Izin Lokasi Belum Aktif',
-                text: 'Silakan izinkan akses lokasi pada browser Anda, atau Anda dapat mengklik dan menggeser pin merah di peta untuk menentukan lokasi secara manual.',
+                title: 'Izin Lokasi (GPS)',
+                html: '<p style="font-size: 13.5px; color: #475569; margin: 0;">Silakan izinkan akses lokasi pada browser/HP Anda agar koordinat tempat pengisian survei tercatat secara otomatis dan presisi di peta GIS Banyuwangi.</p>',
                 confirmButtonColor: '#043168'
               });
             }
@@ -10357,12 +10492,10 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
           options
         );
       } else {
-        var curKec = $('#respKecamatan').val();
-        if (curKec) {
-          focusMiniMapToKecamatan(curKec);
-        } else {
-          updateRespondentPinPosition(-8.219234, 114.369120, 15.0, 'Pusat Kab. Banyuwangi');
-        }
+        var curKec = $('#respKecamatan').val() || 'Banyuwangi';
+        $rtkdBar.removeClass('gps-locked');
+        $rtkdGps.html('<span style="color: #64748b;"><i class="fa-solid fa-location-dot"></i> Kec. ' + curKec + ' (GPS Browser Non-Aktif)</span>');
+        updateRespondentPinPosition(-8.219234, 114.369120, 15.0, 'Pusat Kab. Banyuwangi');
       }
     };
 

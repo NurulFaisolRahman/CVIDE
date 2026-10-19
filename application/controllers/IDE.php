@@ -2918,7 +2918,12 @@ public function InputIKMYogyakarta()
     $latitude = isset($input['Latitude']) && $input['Latitude'] !== '' ? (float)$input['Latitude'] : (isset($input['latitude']) && $input['latitude'] !== '' ? (float)$input['latitude'] : $defLat);
     $longitude = isset($input['Longitude']) && $input['Longitude'] !== '' ? (float)$input['Longitude'] : (isset($input['longitude']) && $input['longitude'] !== '' ? (float)$input['longitude'] : $defLng);
     $lokasiAccuracy = isset($input['LokasiAccuracy']) && $input['LokasiAccuracy'] !== '' ? (float)$input['LokasiAccuracy'] : 15.0;
-    $devicePlatform = isset($input['DevicePlatform']) && $input['DevicePlatform'] !== '' ? trim($input['DevicePlatform']) : 'Web Responsive';
+    
+    // Resolusi nama dan tipe perangkat pengisi survei
+    $devicePlatform = isset($input['DevicePlatform']) && $input['DevicePlatform'] !== '' ? trim($input['DevicePlatform']) : '';
+    if (empty($devicePlatform) || $devicePlatform === 'Desktop Browser' || $devicePlatform === 'Web Responsive') {
+      $devicePlatform = $this->parseUserAgentToDevice($this->input->user_agent());
+    }
 
     $totalSkor = 0.0;
     $countScored = 0;
@@ -3079,6 +3084,74 @@ public function InputIKMYogyakarta()
       'daerah_survei'   => trim($kabupaten . ' ' . $kecamatan . ' ' . $desa) ?: ($survei['DaerahSurvei'] ?: 'Nasional')
     ));
     return;
+  }
+
+  /**
+   * Helper: Parse User-Agent String to Device Brand, Model, OS, and Browser
+   */
+  private function parseUserAgentToDevice($ua = '') {
+    if (empty($ua)) return 'Web Browser / Desktop';
+
+    $os = 'Unknown OS';
+    if (preg_match('/Android\s([0-9\.]+)/i', $ua, $m)) {
+      $os = 'Android ' . $m[1];
+    } elseif (preg_match('/iPhone OS\s([0-9_]+)/i', $ua, $m)) {
+      $os = 'iOS ' . str_replace('_', '.', $m[1]);
+    } elseif (preg_match('/iPad.*OS\s([0-9_]+)/i', $ua, $m)) {
+      $os = 'iPadOS ' . str_replace('_', '.', $m[1]);
+    } elseif (preg_match('/Windows NT 10\.0/i', $ua)) {
+      $os = 'Windows 10/11';
+    } elseif (preg_match('/Windows NT 6\.3/i', $ua)) {
+      $os = 'Windows 8.1';
+    } elseif (preg_match('/Windows NT 6\.1/i', $ua)) {
+      $os = 'Windows 7';
+    } elseif (preg_match('/Macintosh|Mac OS X/i', $ua)) {
+      $os = 'macOS';
+    } elseif (preg_match('/Linux/i', $ua)) {
+      $os = 'Linux';
+    }
+
+    $brand = 'Perangkat';
+    if (preg_match('/iPhone/i', $ua)) {
+      $brand = 'Apple iPhone';
+    } elseif (preg_match('/iPad/i', $ua)) {
+      $brand = 'Apple iPad';
+    } elseif (preg_match('/SM-([A-Za-z0-9]+)/i', $ua, $m)) {
+      $brand = 'Samsung Galaxy (SM-' . $m[1] . ')';
+    } elseif (preg_match('/(Redmi[^\;\)]*|POCO[^\;\)]*|Mi\s[0-9A-Za-z]+|2[0-9]{7}[A-Z]+)/i', $ua, $m)) {
+      $brand = 'Xiaomi ' . trim($m[1]);
+    } elseif (preg_match('/CPH[0-9]+/i', $ua, $m)) {
+      $brand = 'OPPO ' . $m[0];
+    } elseif (preg_match('/V[0-9]{4}[A-Z]*/i', $ua, $m)) {
+      $brand = 'vivo ' . $m[0];
+    } elseif (preg_match('/RMX[0-9]+/i', $ua, $m)) {
+      $brand = 'Realme ' . $m[0];
+    } elseif (preg_match('/Infinix[^\;\)]*/i', $ua, $m)) {
+      $brand = trim($m[0]);
+    } elseif (preg_match('/TECNO[^\;\)]*/i', $ua, $m)) {
+      $brand = trim($m[0]);
+    } elseif (preg_match('/;\s([^;]+)\sBuild\//i', $ua, $m)) {
+      $brand = trim($m[1]);
+    } elseif (preg_match('/Windows/i', $ua)) {
+      $brand = 'PC / Laptop Desktop';
+    } elseif (preg_match('/Macintosh/i', $ua)) {
+      $brand = 'Apple Mac';
+    }
+
+    $browser = 'Browser';
+    if (preg_match('/SamsungBrowser\/([0-9\.]+)/i', $ua)) {
+      $browser = 'Samsung Internet';
+    } elseif (preg_match('/Edg\/([0-9\.]+)/i', $ua)) {
+      $browser = 'MS Edge';
+    } elseif (preg_match('/Chrome\/([0-9\.]+)/i', $ua)) {
+      $browser = 'Chrome';
+    } elseif (preg_match('/Safari\/([0-9\.]+)/i', $ua) && !preg_match('/Chrome/i', $ua)) {
+      $browser = 'Safari';
+    } elseif (preg_match('/Firefox\/([0-9\.]+)/i', $ua)) {
+      $browser = 'Firefox';
+    }
+
+    return $brand . ' (' . $os . ') · ' . $browser;
   }
 
   /**
