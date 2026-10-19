@@ -6203,6 +6203,22 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
         <p>Jelajahi dan berpartisipasi dalam berbagai survei penelitian, indeks kepuasan masyarakat (IKM), evaluasi program, dan pelayanan publik secara transparan dan terukur.</p>
       </div>
 
+      <!-- Offline Outbox Status Banner (Muncul otomatis saat ada respon survei tertunda di memori HP) -->
+      <div id="offlineSyncBanner" class="offline-sync-banner" style="display: none;">
+        <div class="banner-left">
+          <i class="fa-solid fa-cloud-arrow-up banner-icon"></i>
+          <div>
+            <div class="banner-title"><span id="offlineQueueBadgeCount">0</span> Respon Survei Tersimpan di Antrean Offline (Perangkat)</div>
+            <div class="banner-subtitle">Data aman di memori HP Anda dan otomatis disinkronkan ke server saat internet kembali terhubung.</div>
+          </div>
+        </div>
+        <div class="banner-right">
+          <button type="button" class="btn-sync-now" onclick="window.SurveiOfflineManager && window.SurveiOfflineManager.syncQueue(true)">
+            <i class="fa-solid fa-rotate"></i> Sinkronkan Sekarang
+          </button>
+        </div>
+      </div>
+
       <!-- Modern Filter Section -->
       <div class="filter-section-lugx">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
@@ -6815,11 +6831,14 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
       <!-- 2. Google Forms Style Title & Information Card -->
       <div class="gform-title-card" id="modalRespTitleCard">
         <!-- Section Tab (Seperti 'Section 1 of 3' di gambar contoh) & Accent Line -->
-        <div class="gform-card-top-bar">
+        <div class="gform-card-top-bar" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
           <div class="gform-section-badge" id="modalGformSectionBadge">
             <span id="modalGformSectionText">Bagian 1 dari 4: Instrumen A &bull; Perusahaan</span>
           </div>
-          <div class="gform-card-accent-line" id="modalGformAccentLine"></div>
+          <div class="rtkd-draft-save-status" id="rtkdDraftSaveStatus">
+            <i class="fa-solid fa-cloud"></i> <span id="rtkdDraftSaveText">Draft otomatis aktif</span>
+          </div>
+          <div class="gform-card-accent-line" id="modalGformAccentLine" style="width: 100%;"></div>
         </div>
 
         <!-- Card Body Content -->
@@ -8879,6 +8898,11 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
       if (window.RTKDEngine) {
         window.RTKDEngine.render('modalRtkdSheet', tabKey);
       }
+
+      // Pulihkan draft jika ada yang tersimpan di memori perangkat untuk instrumen ini
+      if (window.SurveiOfflineManager) {
+        window.SurveiOfflineManager.restoreDraft(parseInt($('#respSurveiId').val()) || 4, tabKey);
+      }
     };
 
     window.resetModalRtkdForm = function() {
@@ -8894,6 +8918,9 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
         if (result.isConfirmed) {
           if (window.RTKDEngine) {
             window.RTKDEngine.render('modalRtkdSheet', window.modalRtkdActiveInstrument || 'A');
+          }
+          if (window.SurveiOfflineManager) {
+            window.SurveiOfflineManager.clearDraft(parseInt($('#respSurveiId').val()) || 4, window.modalRtkdActiveInstrument || 'A');
           }
         }
       });
@@ -9237,15 +9264,30 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
         var origHtml = $btn.html();
         $btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan Jawaban...');
 
+        // Jika perangkat sedang offline / tanpa sinyal internet, amankan ke antrean offline lokal
+        if (!navigator.onLine) {
+          $btn.prop('disabled', false).html(origHtml);
+          if (window.SurveiOfflineManager) {
+            window.SurveiOfflineManager.enqueueOffline(payload, inst);
+          } else {
+            Swal.fire('Offline', 'Tidak ada koneksi internet. Silakan coba kembali saat terhubung.', 'warning');
+          }
+          return;
+        }
+
         $.ajax({
           url: BaseURL + 'IDE/submit_jawaban_survei',
           type: 'POST',
           data: JSON.stringify(payload),
           contentType: 'application/json; charset=utf-8',
           dataType: 'json',
+          timeout: 12000,
           success: function(res) {
             $btn.prop('disabled', false).html(origHtml);
             if (res && res.status) {
+              if (window.SurveiOfflineManager) {
+                window.SurveiOfflineManager.clearDraft(payload.SurveiId, inst);
+              }
               closeSurveyRespondentModal();
               Swal.fire({
                 icon: 'success',
@@ -9268,9 +9310,16 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
               Swal.fire('Gagal', res.message || 'Gagal menyimpan survei.', 'error');
             }
           },
-          error: function() {
+          error: function(xhr, status, error) {
             $btn.prop('disabled', false).html(origHtml);
-            Swal.fire('Error', 'Gagal mengirim survei. Periksa koneksi Anda.', 'error');
+            // Jika request gagal akibat jaringan terputus / timeout di tengah jalan
+            if (!navigator.onLine || status === 'timeout' || xhr.status === 0) {
+              if (window.SurveiOfflineManager) {
+                window.SurveiOfflineManager.enqueueOffline(payload, inst);
+                return;
+              }
+            }
+            Swal.fire('Error', 'Gagal mengirim survei. Periksa koneksi internet Anda.', 'error');
           }
         });
         return;
@@ -10509,5 +10558,6 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
 
 
   </script>
+  <script src="<?= base_url('assets/js/survei_offline_manager.js') ?>"></script>
 </body>
 </html>
