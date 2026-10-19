@@ -1,0 +1,504 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Survei Ketenagakerjaan Banyuwangi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one working column (form sheet) under a sticky instrument switcher; recap as a ledger of counts */
+:root{
+  --bg:#f3f5f5; --surface:#ffffff; --ink:#152326; --muted:#5a6a6d; --line:#d6dee0;
+  --accent:#0f5e66; --accent-ink:#ffffff; --accent-soft:#e1eff0; --sulfur:#b88a10; --sulfur-soft:#f7eccb;
+  --good:#1f7a4a; --warn:#9a5b00; --crit:#b3261e; --crit-soft:#fbe6e4;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1719; --surface:#162124; --ink:#e4ecec; --muted:#9aaaad; --line:#2a393c;
+  --accent:#5fb7bf; --accent-ink:#06282b; --accent-soft:#183539; --sulfur:#e2b73f; --sulfur-soft:#3a2f12;
+  --good:#5ec58c; --warn:#e3a54a; --crit:#f08a80; --crit-soft:#3c1f1d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1719; --surface:#162124; --ink:#e4ecec; --muted:#9aaaad; --line:#2a393c;
+  --accent:#5fb7bf; --accent-ink:#06282b; --accent-soft:#183539; --sulfur:#e2b73f; --sulfur-soft:#3a2f12;
+  --good:#5ec58c; --warn:#e3a54a; --crit:#f08a80; --crit-soft:#3c1f1d; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:760px;margin:0 auto}
+header.top{padding-block:28px 12px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--f-display);font-size:clamp(26px,5vw,34px);line-height:1.15;margin:6px 0 8px;text-wrap:balance}
+.lede{color:var(--muted);margin:0;max-width:62ch}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:6px;overflow-x:auto;padding-block:12px;border-bottom:1px solid var(--line);margin-bottom:20px}
+nav.tabs button{font:600 14px var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:8px 14px;border-radius:999px;cursor:pointer;white-space:nowrap;display:flex;gap:8px;align-items:center}
+nav.tabs button .tag{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+nav.tabs button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+nav.tabs button[aria-selected="true"] .tag{color:var(--accent-ink)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,label.opt:focus-within{outline:2px solid var(--sulfur);outline-offset:2px}
+.notice{border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:15px;border:1px solid var(--line);background:var(--surface)}
+.notice.warn{background:var(--sulfur-soft);border-color:transparent}
+.notice.err{background:var(--crit-soft);border-color:transparent;color:var(--ink)}
+.notice.ok{background:var(--accent-soft);border-color:transparent}
+.meta-row{display:grid;grid-template-columns:1fr;gap:6px;margin-bottom:18px}
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px}
+.blk{margin:0 0 4px;padding-top:18px;border-top:1px solid var(--line)}
+.blk:first-of-type{border-top:0;padding-top:0}
+.blk h2{font-family:var(--f-display);font-size:19px;margin:0 0 4px}
+.blk p.hint{margin:0 0 12px;color:var(--muted);font-size:14px}
+.q{display:grid;grid-template-columns:44px 1fr;gap:4px 10px;padding-block:12px;border-top:1px dashed var(--line)}
+.q:first-of-type{border-top:0}
+.code{font-family:var(--f-mono);font-size:12px;color:var(--accent);padding-top:3px}
+.ql{font-weight:600;margin-bottom:8px}
+.ql .req{color:var(--crit);margin-left:2px}
+.ql small{display:block;font-weight:400;color:var(--muted)}
+.qbody{min-width:0}
+input[type=text],input[type=number],input[type=date],select,textarea{width:100%;font:16px var(--f-body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 11px}
+textarea{min-height:84px;resize:vertical}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+label.opt{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:8px;padding:7px 11px;cursor:pointer;background:var(--bg);font-size:15px}
+label.opt input{accent-color:var(--accent);margin:0}
+label.opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.grid label{font-size:13px;color:var(--muted);display:grid;gap:3px}
+.scale{display:grid;gap:8px}
+.scale .row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+.scale .pts{display:flex;gap:4px}
+.scale .pts label{width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--line);border-radius:8px;cursor:pointer;font-family:var(--f-mono);font-size:13px;background:var(--bg)}
+.scale .pts input{position:absolute;opacity:0;pointer-events:none}
+.scale .pts label:has(input:checked){background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.scale .pts label:focus-within{outline:2px solid var(--sulfur)}
+.scale-key{font-size:12px;color:var(--muted);font-family:var(--f-mono)}
+.consent{display:flex;gap:10px;align-items:flex-start;background:var(--sulfur-soft);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:15px}
+.consent input{accent-color:var(--accent);margin-top:4px;width:18px;height:18px;flex:none}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:20px}
+.btn{font:700 15px var(--f-body);border-radius:8px;padding:11px 18px;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.status{font-size:14px;color:var(--muted)}
+.hide-q{display:none}
+label.why{display:grid;gap:4px;margin-top:10px;font-size:13px;font-weight:600;color:var(--muted)}
+label.why span{font-weight:400}
+label.why textarea{min-height:56px;font-size:15px}
+/* recap */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:18px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.kpi .n{font-family:var(--f-display);font-size:30px;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi .l{font-size:13px;color:var(--muted)}
+.kpi .t{font-family:var(--f-mono);font-size:11px;color:var(--accent)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+.panel h3{font-family:var(--f-display);font-size:17px;margin:0 0 10px}
+.bars{display:grid;gap:6px}
+.bar{display:grid;grid-template-columns:minmax(0,180px) 1fr 36px;gap:10px;align-items:center;font-size:14px}
+.bar .name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar .track{height:10px;background:var(--accent-soft);border-radius:5px;overflow:hidden}
+.bar .fill{height:100%;background:var(--accent);border-radius:5px}
+.bar .v{font-variant-numeric:tabular-nums;text-align:right;font-family:var(--f-mono);font-size:13px}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+td.mono{font-family:var(--f-mono);font-size:12px}
+.chip{display:inline-block;font-family:var(--f-mono);font-size:11px;padding:2px 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.empty{color:var(--muted);font-size:15px;padding:8px 0}
+.exports{display:flex;flex-wrap:wrap;gap:8px}
+@media (max-width:520px){.kpis{grid-template-columns:1fr 1fr}.kpi .n{font-size:24px}.q{grid-template-columns:1fr}.code{padding-top:0}.bar{grid-template-columns:minmax(0,110px) 1fr 30px}.sheet{padding:16px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">RTKD Kabupaten Banyuwangi · Survei primer</div>
+    <h1>Survei Ketenagakerjaan Banyuwangi</h1>
+    <p class="lede">Formulir pengisian untuk tim survei. Pilih instrumen, isi bersama responden, lalu simpan. Kode pertanyaan sama dengan dokumen desain survei.</p>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Instrumen survei">
+    <button role="tab" id="tab-A" data-tab="A" aria-selected="true"><span class="tag">A</span>Perusahaan</button>
+    <button role="tab" id="tab-B" data-tab="B" aria-selected="false"><span class="tag">B</span>Pencari kerja &amp; lulusan</button>
+    <button role="tab" id="tab-C" data-tab="C" aria-selected="false"><span class="tag">C</span>Pemangku kepentingan</button>
+    <button role="tab" id="tab-D" data-tab="D" aria-selected="false"><span class="tag">D</span>Siswa kelas 12</button>
+    <button role="tab" id="tab-R" data-tab="R" aria-selected="false"><span class="tag">∑</span>Rekap</button>
+  </nav>
+
+  <div id="conn" class="notice">Menghubungkan penyimpanan jawaban…</div>
+
+  <section id="formArea">
+    <div class="meta-row">
+      <label for="enumerator" style="font-weight:600">Nama enumerator</label>
+      <input type="text" id="enumerator" placeholder="Nama petugas yang mengisi formulir" autocomplete="name">
+    </div>
+    <form id="surveyForm" novalidate>
+      <label class="consent" for="consent">
+        <input type="checkbox" id="consent">
+        <span id="consentText">Responden sudah menerima penjelasan tujuan survei, menyetujui pengisian, dan mengetahui bahwa jawaban hanya disajikan secara agregat.</span>
+      </label>
+      <div class="sheet" id="sheet"></div>
+      <div class="actions">
+        <button type="submit" class="btn" id="submitBtn">Simpan jawaban</button>
+        <button type="button" class="btn ghost" id="resetBtn">Kosongkan formulir</button>
+        <span class="status" id="formStatus" role="status" aria-live="polite"></span>
+      </div>
+      <div id="resetConfirm" class="notice warn" hidden style="margin-top:12px">
+        Kosongkan semua isian formulir ini?
+        <div class="actions" style="margin-top:8px">
+          <button type="button" class="btn" id="resetYes">Ya, kosongkan</button>
+          <button type="button" class="btn ghost" id="resetNo">Batal</button>
+        </div>
+      </div>
+    </form>
+  </section>
+
+  <section id="recapArea" hidden>
+    <div class="kpis" id="kpis"></div>
+    <div id="recapBody"></div>
+    <div class="panel">
+      <h3>Unduh data mentah (CSV)</h3>
+      <p class="hint" style="margin:0 0 10px;color:var(--muted);font-size:14px">Satu file per instrumen, satu baris per responden, kolom mengikuti kode pertanyaan.</p>
+      <div class="exports">
+        <button class="btn ghost" data-export="A" type="button">Instrumen A</button>
+        <button class="btn ghost" data-export="B" type="button">Instrumen B</button>
+        <button class="btn ghost" data-export="C" type="button">Instrumen C</button>
+        <button class="btn ghost" data-export="D" type="button">Instrumen D</button>
+      </div>
+      <div class="status" id="exportStatus" role="status" aria-live="polite" style="margin-top:8px"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+const KEC=["Banyuwangi","Blimbingsari","Bangorejo","Cluring","Gambiran","Genteng","Giri","Glagah","Glenmore","Kabat","Kalibaru","Kalipuro","Licin","Muncar","Pesanggaran","Purwoharjo","Rogojampi","Sempu","Siliragung","Singojuruh","Songgon","Srono","Tegaldlimo","Tegalsari","Wongsorejo"];
+const SEKTOR=["Pertanian/perikanan","Industri pengolahan","Perdagangan","Akomodasi dan makan-minum","Konstruksi","Transportasi/pergudangan","Jasa pendidikan/kesehatan","Jasa lainnya"];
+const BEKERJA=["Bekerja sebagai karyawan/buruh","Berusaha sendiri","Pekerja lepas","Membantu usaha keluarga"];
+const SCALE_NOTE="1 = sangat kurang · 5 = sangat baik";
+const IDENTITAS=new Set(["P1","P2","P3","P4","P5","L1","L2","L3","L4","L5","L6","K1","K2","K3","K4","K5","K6","K7"]);
+function hasWhy(q){return ["one","many","scale"].includes(q.type)&&!IDENTITAS.has(q.c)&&/^[PLK]\d/.test(q.c);}
+
+const SCHEMA={
+ A:{name:"Perusahaan/pemberi kerja",blocks:[
+  {t:"Pencatatan petugas",hint:"Diisi oleh enumerator sebelum wawancara.",qs:[
+   {c:"SR",l:"Sumber responden",type:"one",o:["Daftar wajib lapor Disnaker (sampel acak)","Ditemui di lapangan (sampel kuota)"],req:1},
+   {c:"SR2",l:"Nama lokasi pengambilan",note:"misalnya nama pasar atau kawasan usaha",type:"text",show:a=>a.SR==="Ditemui di lapangan (sampel kuota)"}]},
+  {t:"A. Identitas usaha",qs:[
+   {c:"P1",l:"Nama usaha",note:"opsional",type:"text"},
+   {c:"P2",l:"Kecamatan lokasi usaha",type:"kec",req:1},
+   {c:"P3",l:"Sektor utama usaha",type:"one",o:SEKTOR,req:1},
+   {c:"P4",l:"Jumlah seluruh pekerja",type:"one",o:["1–4","5–19","20–99","100 ke atas"],req:1},
+   {c:"P5",l:"Bentuk usaha",type:"one",o:["Perorangan tidak berbadan hukum","CV/firma","PT","Koperasi","BUMN/BUMD"]}]},
+  {t:"B. Tenaga kerja saat ini",qs:[
+   {c:"P6",l:"Jumlah pekerja menurut jenis kelamin",type:"grid",f:["Laki-laki","Perempuan"]},
+   {c:"P7",l:"Jumlah pekerja menurut status",type:"grid",f:["Tetap","Kontrak","Harian lepas"]},
+   {c:"P8",l:"Jumlah pekerja menurut pendidikan",type:"grid",f:["SD ke bawah","SMP","SMA","SMK","Diploma","S1 ke atas"]},
+   {c:"P9",l:"Jumlah pekerja yang berasal dari luar Banyuwangi",type:"num"}]},
+  {t:"C. Rekrutmen 12 bulan terakhir",qs:[
+   {c:"P10",l:"Jumlah pekerja baru yang direkrut",type:"num"},
+   {c:"P11",l:"Saluran rekrutmen yang dipakai",note:"boleh lebih dari satu",type:"many",o:["Kenalan/keluarga","Media sosial","Disnaker/bursa kerja","Sekolah/kampus","Portal lowongan","Agen penyalur"]},
+   {c:"P12",l:"Adakah lowongan yang sulit diisi?",type:"one",o:["Ya","Tidak"]},
+   {c:"P13",l:"Jabatan yang sulit diisi",type:"text",show:a=>a.P12==="Ya"},
+   {c:"P14",l:"Alasan utama sulit diisi",type:"one",o:["Pelamar kurang","Keterampilan tidak sesuai","Pengalaman kurang","Upah yang diharapkan terlalu tinggi","Lokasi jauh","Lainnya"],show:a=>a.P12==="Ya"}]},
+  {t:"D. Kebutuhan tenaga kerja tiga tahun ke depan",qs:[
+   {c:"P15",l:"Rencana jumlah pekerja",type:"one",o:["Bertambah","Tetap","Berkurang"]},
+   {c:"P16",l:"Perkiraan tambahan pekerja",type:"num",show:a=>a.P15==="Bertambah"},
+   {c:"P17",l:"Jabatan dan pendidikan yang paling dibutuhkan",note:"jabatan, pendidikan minimal, jumlah",type:"area"},
+   {c:"P18",l:"Faktor yang paling memengaruhi rencana tersebut",type:"one",o:["Permintaan pasar","Investasi/perluasan","Otomasi/digitalisasi","Biaya tenaga kerja","Lainnya"]}]},
+  {t:"E. Keterampilan dan pelatihan",qs:[
+   {c:"P19",l:"Penilaian keterampilan lulusan lokal",type:"scale",f:["Teknis sesuai bidang","Digital","Bahasa asing","Komunikasi","Kerja sama tim","Disiplin/etos kerja"]},
+   {c:"P20",l:"Keterampilan yang paling kurang dari pelamar",type:"text"},
+   {c:"P21",l:"Apakah usaha memberi pelatihan kepada pekerja?",type:"one",o:["Ya, rutin","Kadang-kadang","Tidak"]},
+   {c:"P22",l:"Kerja sama dengan SMK, BLK, atau kampus",note:"boleh lebih dari satu",type:"many",o:["Magang/prakerin","Rekrutmen lulusan","Penyusunan kurikulum","Belum ada"]},
+   {c:"P23",l:"Pekerja yang memiliki sertifikat kompetensi (BNSP)",type:"one",o:["Sebagian besar","Sebagian kecil","Tidak ada","Tidak tahu"]}]},
+  {t:"F. Upah, jaminan sosial, dan hubungan kerja",qs:[
+   {c:"P24",l:"Upah pekerja pemula dibandingkan UMK",type:"one",o:["Di bawah UMK","Setara UMK","Di atas UMK"]},
+   {c:"P25",l:"Kepesertaan BPJS Ketenagakerjaan",type:"one",o:["Semua pekerja","Sebagian","Tidak ada"]},
+   {c:"P26",l:"Kepesertaan BPJS Kesehatan dari pemberi kerja",type:"one",o:["Semua pekerja","Sebagian","Tidak ada"]},
+   {c:"P27",l:"Dokumen hubungan kerja yang dimiliki",note:"boleh lebih dari satu",type:"many",o:["Kontrak tertulis","Peraturan perusahaan","PKB","LKS Bipartit","Belum ada"]},
+   {c:"P28",l:"Kecelakaan kerja dalam 12 bulan terakhir",type:"one",o:["Tidak ada","1–2 kejadian","3 atau lebih"]}]},
+  {t:"G. Kendala dan harapan",qs:[
+   {c:"P29",l:"Kendala utama terkait tenaga kerja",type:"area"},
+   {c:"P30",l:"Dukungan yang diharapkan dari pemerintah daerah",note:"boleh lebih dari satu",type:"many",o:["Pelatihan sesuai kebutuhan","Informasi pasar kerja","Insentif perekrutan","Sertifikasi","Lainnya"]}]}
+ ]},
+ B:{name:"Pencari kerja dan lulusan",blocks:[
+  {t:"Pencatatan petugas dan penyaringan",hint:"Diisi oleh enumerator sebelum wawancara. Jika responden tidak memenuhi satu pun kriteria penyaring (SC), hentikan wawancara.",qs:[
+   {c:"SR",l:"Sumber responden",type:"one",o:["Daftar pencari kerja Disnaker (AK/I)","Daftar alumni BKK SMK atau tracer study kampus","Lapangan: cafe, rumah makan, atau toko","Lapangan: pasar, terminal, atau tempat umum","Lapangan: kunjungan rumah tangga di desa","Bursa kerja atau job fair","Lainnya"],req:1},
+   {c:"SR2",l:"Nama lokasi pengambilan",note:"misalnya nama cafe, pasar, atau desa",type:"text",show:a=>!!a.SR&&(a.SR.startsWith("Lapangan")||a.SR==="Bursa kerja atau job fair"||a.SR==="Lainnya")},
+   {c:"SC",l:"Penyaring: responden berusia 15 tahun ke atas dan…",note:"boleh lebih dari satu",type:"many",o:["Bekerja paling sedikit 1 jam dalam seminggu terakhir","Sedang mencari kerja atau menyiapkan usaha","Lulus SMA, SMK, diploma, atau sarjana dalam 3 tahun terakhir","Tidak satu pun"],req:1}]},
+  {t:"A. Profil responden",qs:[
+   {c:"L1",l:"Umur",type:"one",o:["15–19","20–24","25–29","30–39","40 ke atas"],req:1},
+   {c:"L2",l:"Jenis kelamin",type:"one",o:["Laki-laki","Perempuan"],req:1},
+   {c:"L3",l:"Kecamatan tempat tinggal",type:"kec",req:1},
+   {c:"L4",l:"Pendidikan terakhir",type:"one",o:["SD/SMP","SMA","SMK","Diploma","S1 ke atas"],req:1},
+   {c:"L5",l:"Jurusan/bidang studi",type:"text"},
+   {c:"L6",l:"Tahun lulus",type:"num"}]},
+  {t:"B. Status kegiatan saat ini",qs:[
+   {c:"L7",l:"Kegiatan utama saat ini",type:"one",o:[...BEKERJA,"Mencari kerja","Melanjutkan sekolah/kuliah","Mengurus rumah tangga"],req:1},
+   {c:"L8",l:"Apakah sedang mencari pekerjaan (baru atau tambahan)?",type:"one",o:["Ya","Tidak"]}]},
+  {t:"C. Pengalaman mencari kerja",qs:[
+   {c:"L9",l:"Lama mencari kerja",note:"sejak lulus atau sejak mulai mencari",type:"one",o:["Kurang dari 3 bulan","3–6 bulan","6–12 bulan","Lebih dari 12 bulan"]},
+   {c:"L10",l:"Jumlah lamaran yang dikirim",type:"one",o:["0","1–5","6–20","Lebih dari 20"]},
+   {c:"L11",l:"Cara mencari kerja",note:"boleh lebih dari satu",type:"many",o:["Kenalan/keluarga","Media sosial","Portal lowongan","Disnaker/bursa kerja","Sekolah/kampus","Melamar langsung"]},
+   {c:"L12",l:"Terdaftar sebagai pencari kerja di Disnaker (kartu AK/I)?",type:"one",o:["Ya","Tidak","Tidak tahu caranya"]},
+   {c:"L13",l:"Kendala utama mendapat pekerjaan",note:"boleh lebih dari satu",type:"many",o:["Lowongan sedikit","Keterampilan belum sesuai","Kurang pengalaman","Upah rendah","Lokasi jauh","Syarat umur/penampilan","Lainnya"]}]},
+  {t:"D. Pekerjaan saat ini",hint:"Diisi hanya oleh responden yang bekerja atau berusaha (L7).",qs:[
+   {c:"L14",l:"Sektor pekerjaan",type:"one",o:SEKTOR,show:a=>BEKERJA.includes(a.L7)},
+   {c:"L15",l:"Kesesuaian pekerjaan dengan pendidikan",type:"one",o:["Sesuai","Kurang sesuai","Tidak sesuai"],show:a=>BEKERJA.includes(a.L7)},
+   {c:"L16",l:"Pendapatan bersih per bulan",type:"one",o:["Kurang dari Rp1 juta","Rp1–2 juta","Rp2–3 juta","Rp3–5 juta","Lebih dari Rp5 juta"],show:a=>BEKERJA.includes(a.L7)},
+   {c:"L17",l:"Jam kerja per minggu",type:"one",o:["Kurang dari 15","15–34","35–48","Lebih dari 48"],show:a=>BEKERJA.includes(a.L7)},
+   {c:"L18",l:"Memiliki kontrak kerja tertulis",type:"one",o:["Ya","Tidak","Tidak berlaku (usaha sendiri)"],show:a=>BEKERJA.includes(a.L7)},
+   {c:"L19",l:"Terdaftar BPJS Ketenagakerjaan",type:"one",o:["Ya","Tidak","Tidak tahu"],show:a=>BEKERJA.includes(a.L7)},
+   {c:"L20",l:"Lokasi kerja",type:"one",o:["Di Banyuwangi","Di luar Banyuwangi","Di luar negeri"],show:a=>BEKERJA.includes(a.L7)}]},
+  {t:"E. Keterampilan dan pelatihan",qs:[
+   {c:"L21",l:"Pelatihan yang pernah diikuti",note:"boleh lebih dari satu",type:"many",o:["BLK","Kartu Prakerja","Lembaga kursus swasta","Pelatihan dari perusahaan","Belum pernah"]},
+   {c:"L22",l:"Memiliki sertifikat kompetensi (BNSP)",type:"one",o:["Ya","Tidak"]},
+   {c:"L23",l:"Penilaian diri atas keterampilan",type:"scale",f:["Teknis","Digital","Bahasa asing","Komunikasi"]},
+   {c:"L24",l:"Pelatihan yang paling diinginkan",type:"text"}]},
+  {t:"F. Harapan dan rencana",qs:[
+   {c:"L25",l:"Rata-rata pengeluaran pribadi per bulan",note:"makan, transportasi, pulsa, dan kebutuhan lain",type:"one",o:["Kurang dari Rp1 juta","Rp1–2 juta","Rp2–3 juta","Rp3–5 juta","Lebih dari Rp5 juta"]},
+   {c:"L26",l:"Sektor yang paling diminati",type:"one",o:[...SEKTOR,"Pemerintahan/ASN"]},
+   {c:"L27",l:"Kesediaan bekerja di luar Banyuwangi",type:"one",o:["Ya, dalam negeri","Ya, termasuk luar negeri","Tidak"]},
+   {c:"L28",l:"Minat membuka usaha sendiri",type:"one",o:["Sudah berusaha","Berminat","Tidak berminat"]},
+   {c:"L29",l:"Kendala utama memulai usaha",type:"one",o:["Modal","Keterampilan","Pasar","Perizinan","Lainnya"]}]}
+ ]},
+ C:{name:"Pemangku kepentingan",blocks:[
+  {t:"Identitas narasumber",hint:"Catatan wawancara mendalam atau FGD. Tulis pokok jawaban, bukan transkrip lengkap.",qs:[
+   {c:"S1",l:"Kelompok narasumber",type:"one",o:["Perencana dan pengelola program","Penyedia pelatihan dan pendidikan","Dunia usaha","Pekerja/serikat pekerja","Penempatan dan migrasi kerja"],req:1},
+   {c:"S2",l:"Nama lembaga",type:"text",req:1},
+   {c:"S3",l:"Jabatan narasumber",type:"text"},
+   {c:"S4",l:"Tanggal wawancara",type:"date"},
+   {c:"S5",l:"Bentuk kegiatan",type:"one",o:["Wawancara mendalam","FGD"]}]},
+  {t:"Pokok jawaban per tema",hint:"Isi tema yang relevan dengan peran narasumber saja.",qs:[
+   {c:"T1",l:"Kondisi pasar kerja",note:"perubahan terbesar, sektor tumbuh/menurun, dampak investasi dan pariwisata",type:"area"},
+   {c:"T2",l:"Kesesuaian keterampilan",note:"jabatan sulit diisi, keselarasan kurikulum SMK/kampus/BLK",type:"area"},
+   {c:"T3",l:"Program dan layanan ketenagakerjaan",note:"program yang berjalan, hambatan, koordinasi, sistem informasi pasar kerja",type:"area"},
+   {c:"T4",l:"Pengupahan dan hubungan industrial",note:"kepatuhan UMK dan jaminan sosial, perselisihan yang sering muncul",type:"area"},
+   {c:"T5",l:"Pekerja rentan dan informal",note:"pekerja informal, perempuan, penyandang disabilitas, pekerja migran",type:"area"},
+   {c:"T6",l:"Usulan kebijakan dan program prioritas",type:"area"}]},
+  {t:"Tiga isu terpenting menurut narasumber",qs:[
+   {c:"I1",l:"Isu pertama",type:"text"},
+   {c:"I2",l:"Isu kedua",type:"text"},
+   {c:"I3",l:"Isu ketiga",type:"text"}]}
+ ]},
+ D:{name:"Siswa kelas 12",blocks:[
+  {t:"A. Profil responden",hint:"Diisi sendiri oleh siswa kelas 12 SMA, SMK, atau MA. Jangan menulis nama siswa.",qs:[
+   {c:"K1",l:"Jenis sekolah",type:"one",o:["SMA","SMK","MA"],req:1},
+   {c:"K2",l:"Nama sekolah",type:"text",req:1},
+   {c:"K3",l:"Kecamatan lokasi sekolah",type:"kec",req:1},
+   {c:"K4",l:"Jurusan atau kompetensi keahlian",type:"text"},
+   {c:"K5",l:"Umur",type:"one",o:["16 tahun atau kurang","17 tahun","18 tahun","19 tahun atau lebih"],req:1},
+   {c:"K6",l:"Jenis kelamin",type:"one",o:["Laki-laki","Perempuan"],req:1},
+   {c:"K7",l:"Kecamatan tempat tinggal",type:"kec"}]},
+  {t:"B. Rencana setelah lulus",qs:[
+   {c:"K8",l:"Rencana utama setelah lulus",type:"one",o:["Bekerja","Kuliah","Kuliah sambil bekerja","Berwirausaha","Kursus/pelatihan dulu","Bekerja di luar negeri","Belum tahu"],req:1},
+   {c:"K9",l:"Jika bekerja, lokasi kerja yang diinginkan",type:"one",o:["Di Banyuwangi","Di luar Banyuwangi, masih di Jawa Timur","Di luar Jawa Timur","Di luar negeri"]},
+   {c:"K10",l:"Sektor pekerjaan yang paling diminati",type:"one",o:[...SEKTOR,"Pemerintahan/ASN"]},
+   {c:"K11",l:"Pekerjaan atau jabatan yang dicita-citakan",type:"text"},
+   {c:"K12",l:"Upah minimal per bulan yang bersedia diterima pada pekerjaan pertama",type:"one",o:["Kurang dari Rp2 juta","Rp2–3 juta","Rp3–4 juta","Lebih dari Rp4 juta"]},
+   {c:"K13",l:"Keyakinan mendapat pekerjaan dalam 6 bulan setelah lulus",type:"one",o:["Sangat yakin","Yakin","Ragu-ragu","Tidak yakin"]},
+   {c:"K14",l:"Minat bekerja sebagai pekerja migran di luar negeri",type:"one",o:["Berminat","Mungkin","Tidak berminat"]}]},
+  {t:"C. Pengalaman dan keterampilan",qs:[
+   {c:"K15",l:"Pengalaman praktik kerja lapangan (PKL/prakerin) atau magang",type:"one",o:["Ya, sesuai jurusan","Ya, tidak sesuai jurusan","Belum pernah"]},
+   {c:"K16",l:"Sektor tempat PKL atau magang",type:"one",o:[...SEKTOR,"Pemerintahan/ASN"],show:a=>a.K15&&a.K15!=="Belum pernah"},
+   {c:"K17",l:"Pengalaman bekerja paruh waktu atau membantu usaha keluarga",type:"one",o:["Ya, dibayar","Ya, tidak dibayar","Tidak pernah"]},
+   {c:"K18",l:"Kursus atau pelatihan di luar sekolah",note:"boleh lebih dari satu",type:"many",o:["Komputer/digital","Bahasa asing","Keterampilan teknik","Tata boga/tata busana/kecantikan","Belum pernah"]},
+   {c:"K19",l:"Memiliki sertifikat kompetensi (BNSP/LSP)",type:"one",o:["Ya","Sedang proses","Tidak"]},
+   {c:"K20",l:"Penilaian diri atas keterampilan",type:"scale",f:["Teknis sesuai jurusan","Digital","Bahasa asing","Komunikasi"]},
+   {c:"K21",l:"Keterampilan yang paling ingin dipelajari",type:"text"}]},
+  {t:"D. Informasi dan dukungan",qs:[
+   {c:"K22",l:"Sumber informasi lowongan kerja yang diketahui",note:"boleh lebih dari satu",type:"many",o:["Media sosial","Bursa Kerja Khusus (BKK) sekolah","Guru BK","Keluarga/kenalan","Portal lowongan","Disnaker/bursa kerja","Belum tahu"]},
+   {c:"K23",l:"Pengetahuan tentang layanan Disnaker (kartu AK/I, bursa kerja, pelatihan)",type:"one",o:["Pernah memakai","Pernah dengar, belum memakai","Belum pernah dengar"]},
+   {c:"K24",l:"Hambatan yang paling dikhawatirkan untuk mendapat pekerjaan",note:"boleh lebih dari satu",type:"many",o:["Lowongan sedikit","Keterampilan belum cukup","Belum punya pengalaman","Biaya kuliah/pelatihan","Upah rendah","Syarat umur/penampilan","Lainnya"]},
+   {c:"K25",l:"Dukungan yang paling dibutuhkan dari sekolah atau pemerintah daerah",note:"boleh lebih dari satu",type:"many",o:["Informasi lowongan","Pelatihan keterampilan","Magang di perusahaan","Beasiswa","Modal usaha","Bimbingan karier"]},
+   {c:"K26",l:"Lapangan usaha pekerjaan utama orang tua atau wali",type:"one",o:[...SEKTOR,"Pemerintahan/ASN","Tidak bekerja"]}]}
+ ]}
+};
+
+/* ---------- state ---------- */
+let current="A", db=null, canWrite=true, userId=null, entries=[], downloads=null;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+
+/* ---------- render form ---------- */
+function qHTML(q){
+  const id=q.c, req=q.req?'<span class="req" aria-hidden="true">*</span>':"";
+  let body="";
+  if(q.type==="text") body=`<input type="text" id="${id}" name="${id}">`;
+  else if(q.type==="area") body=`<textarea id="${id}" name="${id}"></textarea>`;
+  else if(q.type==="num") body=`<input type="number" min="0" inputmode="numeric" id="${id}" name="${id}" style="max-width:180px">`;
+  else if(q.type==="date") body=`<input type="date" id="${id}" name="${id}" style="max-width:220px">`;
+  else if(q.type==="kec") body=`<select id="${id}" name="${id}"><option value="">Pilih kecamatan</option>${KEC.map(k=>`<option>${k}</option>`).join("")}</select>`;
+  else if(q.type==="one"||q.type==="many"){
+    const t=q.type==="one"?"radio":"checkbox";
+    body=`<div class="opts" role="${t==="radio"?"radiogroup":"group"}" aria-labelledby="lbl-${id}">${q.o.map((o,i)=>`<label class="opt" for="${id}_${i}"><input type="${t}" id="${id}_${i}" name="${id}" value="${esc(o)}">${esc(o)}</label>`).join("")}</div>`;
+  } else if(q.type==="grid"){
+    body=`<div class="grid">${q.f.map((f,i)=>`<label for="${id}_${i}">${esc(f)}<input type="number" min="0" inputmode="numeric" id="${id}_${i}" name="${id}" data-field="${esc(f)}"></label>`).join("")}</div>`;
+  } else if(q.type==="scale"){
+    body=`<div class="scale"><div class="scale-key">${SCALE_NOTE}</div>${q.f.map((f,i)=>`<div class="row"><span>${esc(f)}</span><div class="pts" role="radiogroup" aria-label="${esc(f)}">${[1,2,3,4,5].map(n=>`<label for="${id}_${i}_${n}"><input type="radio" id="${id}_${i}_${n}" name="${id}__${i}" value="${n}" data-field="${esc(f)}" data-q="${id}">${n}</label>`).join("")}</div></div>`).join("")}</div>`;
+  }
+  const why=hasWhy(q)?`<label class="why" for="${id}__why">Alasan <span>(opsional)</span><textarea id="${id}__why" name="${id}__why" rows="2"></textarea></label>`:"";
+  return `<div class="q" id="wrap-${id}"><div class="code">${id}</div><div class="qbody"><div class="ql" id="lbl-${id}">${esc(q.l)}${req}${q.note?`<small>${esc(q.note)}</small>`:""}</div>${body}${why}</div></div>`;
+}
+function renderForm(){
+  const s=SCHEMA[current];
+  $("#sheet").innerHTML=s.blocks.map(b=>`<div class="blk"><h2>${esc(b.t)}</h2>${b.hint?`<p class="hint">${esc(b.hint)}</p>`:""}${b.qs.map(qHTML).join("")}</div>`).join("");
+  $("#consentText").textContent = current==="C"
+    ? "Narasumber sudah menerima penjelasan tujuan wawancara dan menyetujui pencatatan pokok jawaban untuk penyusunan RTKD."
+    : current==="D"
+    ? "Sekolah sudah memberi izin, siswa sudah menerima penjelasan tujuan survei dan bersedia mengisi, serta mengetahui bahwa jawaban tidak memuat nama dan hanya disajikan secara agregat."
+    : "Responden sudah menerima penjelasan tujuan survei, menyetujui pengisian, dan mengetahui bahwa jawaban hanya disajikan secara agregat.";
+  const draft=store.get("draft-"+current); if(draft){try{fill(JSON.parse(draft))}catch(e){}}
+  $("#consent").checked=false;
+  applyShow();
+  setStatus(draft?"Isian sementara di perangkat ini dipulihkan.":"");
+}
+function allQs(){return SCHEMA[current].blocks.flatMap(b=>b.qs)}
+function collect(){
+  const a={}, form=$("#surveyForm");
+  for(const q of allQs()){
+    const c=q.c;
+    if(["text","area","num","date","kec"].includes(q.type)){const v=form.querySelector("#"+c).value.trim(); if(v!=="") a[c]=q.type==="num"?Number(v):v;}
+    else if(q.type==="one"){const el=form.querySelector(`input[name="${c}"]:checked`); if(el) a[c]=el.value;}
+    else if(q.type==="many"){const v=[...form.querySelectorAll(`input[name="${c}"]:checked`)].map(e=>e.value); if(v.length) a[c]=v;}
+    else if(q.type==="grid"){const o={}; form.querySelectorAll(`input[name="${c}"]`).forEach(e=>{if(e.value!=="") o[e.dataset.field]=Number(e.value)}); if(Object.keys(o).length) a[c]=o;}
+    else if(q.type==="scale"){const o={}; form.querySelectorAll(`input[data-q="${c}"]:checked`).forEach(e=>{o[e.dataset.field]=Number(e.value)}); if(Object.keys(o).length) a[c]=o;}
+    if(hasWhy(q)){const w=form.querySelector("#"+c+"__why").value.trim(); if(w) a[c+"_alasan"]=w;}
+  }
+  return a;
+}
+function fill(a){
+  const form=$("#surveyForm");
+  for(const q of allQs()){
+    const c=q.c, v=a[c];
+    if(hasWhy(q)&&a[c+"_alasan"]!=null) form.querySelector("#"+c+"__why").value=a[c+"_alasan"];
+    if(v==null) continue;
+    if(["text","area","num","date","kec"].includes(q.type)) form.querySelector("#"+c).value=v;
+    else if(q.type==="one") form.querySelectorAll(`input[name="${c}"]`).forEach(e=>e.checked=e.value===v);
+    else if(q.type==="many") form.querySelectorAll(`input[name="${c}"]`).forEach(e=>e.checked=v.includes(e.value));
+    else if(q.type==="grid") form.querySelectorAll(`input[name="${c}"]`).forEach(e=>{if(v[e.dataset.field]!=null)e.value=v[e.dataset.field]});
+    else if(q.type==="scale") form.querySelectorAll(`input[data-q="${c}"]`).forEach(e=>e.checked=v[e.dataset.field]===Number(e.value));
+  }
+}
+function applyShow(){
+  const a=collect();
+  for(const q of allQs()) if(q.show) $("#wrap-"+q.c).classList.toggle("hide-q",!q.show(a));
+}
+function setStatus(t,kind){const s=$("#formStatus"); s.textContent=t; s.style.color=kind==="err"?"var(--crit)":kind==="ok"?"var(--good)":"var(--muted)";}
+
+/* ---------- tabs ---------- */
+function selectTab(t){
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===t)));
+  if(t==="R"){$("#formArea").hidden=true;$("#recapArea").hidden=false;renderRecap();}
+  else{$("#formArea").hidden=false;$("#recapArea").hidden=true;current=t;renderForm();}
+  store.set("tab",t);
+}
+document.querySelectorAll("nav.tabs button").forEach(b=>b.addEventListener("click",()=>selectTab(b.dataset.tab)));
+
+/* ---------- form events ---------- */
+const form=$("#surveyForm");
+form.addEventListener("input",()=>{applyShow();store.set("draft-"+current,JSON.stringify(collect()));});
+form.addEventListener("change",()=>{applyShow();store.set("draft-"+current,JSON.stringify(collect()));});
+$("#enumerator").value=store.get("enumerator")||"";
+$("#enumerator").addEventListener("input",e=>store.set("enumerator",e.target.value));
+$("#resetBtn").addEventListener("click",()=>{$("#resetConfirm").hidden=false;});
+$("#resetNo").addEventListener("click",()=>{$("#resetConfirm").hidden=true;});
+$("#resetYes").addEventListener("click",()=>{store.del("draft-"+current);$("#resetConfirm").hidden=true;renderForm();setStatus("Formulir dikosongkan.");});
+
+form.addEventListener("submit",async e=>{
+  e.preventDefault();
+  const a=collect();
+  // keep only answers to visible questions
+  for(const q of allQs()) if(q.show&&!q.show(a)){delete a[q.c];delete a[q.c+"_alasan"];}
+  const missing=allQs().filter(q=>q.req&&a[q.c]==null).map(q=>q.c);
+  if(!$("#consent").checked){setStatus("Centang persetujuan responden terlebih dahulu.","err");$("#consent").focus();return;}
+  if(missing.length){setStatus("Lengkapi pertanyaan wajib: "+missing.join(", ")+".","err");const el=$("#wrap-"+missing[0]);el&&el.scrollIntoView({block:"center"});return;}
+  if(current==="B"&&Array.isArray(a.SC)&&a.SC.includes("Tidak satu pun")){setStatus(a.SC.length===1?"Responden tidak memenuhi kriteria penyaring. Wawancara dihentikan dan jawaban tidak disimpan.":"Pada SC, \"Tidak satu pun\" tidak bisa dipilih bersama kriteria lain. Perbaiki jawaban SC.","err");$("#wrap-SC").scrollIntoView({block:"center"});return;}
+  if(!$("#enumerator").value.trim()){setStatus("Isi nama enumerator terlebih dahulu.","err");$("#enumerator").focus();return;}
+  if(!db){setStatus("Jawaban belum bisa disimpan: penyimpanan tidak tersedia di tampilan ini.","err");return;}
+  const btn=$("#submitBtn"); btn.disabled=true; setStatus("Menyimpan…");
+  try{
+    await db.collection("entries").add({instrument:current,enumerator:$("#enumerator").value.trim(),createdBy:userId||"",createdAt:new Date().toISOString(),answers:a});
+    store.del("draft-"+current); renderForm();
+    setStatus("Tersimpan. Formulir siap untuk responden berikutnya.","ok");
+    window.scrollTo({top:0});
+  }catch(err){
+    if(err&&err.code==="invalid_argument"){canWrite=false;showConn();setStatus("Akun Anda belum punya izin menyimpan jawaban. Minta pemilik survei memberi akses Editor.","err");}
+    else if(err&&err.code==="quota_exceeded") setStatus("Kapasitas penyimpanan penuh. Hubungi pemilik survei.","err");
+    else setStatus("Gagal menyimpan. Periksa koneksi lalu coba lagi.","err");
+  }finally{btn.disabled=false;}
+});
+
+/* ---------- recap ---------- */
+function countBy(list,fn){const m=new Map();for(const e of list){const v=fn(e);if(v==null)continue;for(const k of [].concat(v))m.set(k,(m.get(k)||0)+1);}return [...m.entries()].sort((x,y)=>y[1]-x[1]);}
+function barsHTML(title,pairs,total){
+  if(!pairs.length) return `<div class="panel"><h3>${esc(title)}</h3><div class="empty">Belum ada data.</div></div>`;
+  const max=Math.max(...pairs.map(p=>p[1]));
+  return `<div class="panel"><h3>${esc(title)}</h3><div class="bars">${pairs.map(([k,v])=>`<div class="bar"><span class="name" title="${esc(k)}">${esc(k)}</span><div class="track"><div class="fill" style="width:${(v/max*100).toFixed(1)}%"></div></div><span class="v">${v}</span></div>`).join("")}</div></div>`;
+}
+function renderRecap(){
+  const A=entries.filter(e=>e.instrument==="A"),B=entries.filter(e=>e.instrument==="B"),C=entries.filter(e=>e.instrument==="C"),D=entries.filter(e=>e.instrument==="D");
+  $("#kpis").innerHTML=[["A","Perusahaan",A.length,"target 150–250"],["B","Pencari kerja & lulusan",B.length,"target 300–400"],["C","Narasumber",C.length,"target 10–15"],["D","Siswa kelas 12",D.length,"target 100"]]
+    .map(([t,l,n,g])=>`<div class="kpi"><div class="t">${t}</div><div class="n">${n}</div><div class="l">${l}<br>${g}</div></div>`).join("");
+  if(!db){$("#recapBody").innerHTML=`<div class="panel"><div class="empty">Rekap tampil setelah penyimpanan terhubung. Buka halaman ini dengan akun yang diberi akses oleh pemilik survei.</div></div>`;return;}
+  if(!entries.length){$("#recapBody").innerHTML=`<div class="panel"><h3>Belum ada jawaban tersimpan</h3><div class="empty">Rekap terisi otomatis begitu enumerator menyimpan formulir pertama di tab A, B, C, atau D.</div></div>`;return;}
+  const kec=countBy([...A,...B],e=>e.answers.P2||e.answers.L3);
+  const recent=entries.slice(0,15).map(e=>{
+    const a=e.answers||{}; const sum=e.instrument==="A"?[a.P3,a.P2].filter(Boolean).join(" · "):e.instrument==="B"?[a.L4,a.L7].filter(Boolean).join(" · "):e.instrument==="D"?[a.K1,a.K8].filter(Boolean).join(" · "):[a.S2,a.S1].filter(Boolean).join(" · ");
+    return `<tr><td><span class="chip">${esc(e.instrument)}</span></td><td class="mono">${esc((e.createdAt||"").slice(0,16).replace("T"," "))}</td><td>${esc(e.enumerator)}</td><td>${esc(sum)}</td></tr>`;}).join("");
+  $("#recapBody").innerHTML=
+    barsHTML("Perusahaan menurut sektor (P3)",countBy(A,e=>e.answers.P3))+
+    barsHTML("Perusahaan yang punya lowongan sulit diisi (P12)",countBy(A,e=>e.answers.P12))+
+    barsHTML("Pencari kerja/lulusan menurut pendidikan (L4)",countBy(B,e=>e.answers.L4))+
+    barsHTML("Pencari kerja/lulusan menurut kegiatan utama (L7)",countBy(B,e=>e.answers.L7))+
+    barsHTML("Pencari kerja/lulusan menurut sumber responden (SR)",countBy(B,e=>e.answers.SR))+
+    barsHTML("Siswa kelas 12 menurut jenis sekolah (K1)",countBy(D,e=>e.answers.K1))+
+    barsHTML("Siswa kelas 12 menurut rencana setelah lulus (K8)",countBy(D,e=>e.answers.K8))+
+    barsHTML("Sebaran responden A dan B menurut kecamatan",kec)+
+    `<div class="panel"><h3>15 isian terakhir</h3><div class="tbl-wrap"><table><thead><tr><th>Instrumen</th><th>Waktu (UTC)</th><th>Enumerator</th><th>Ringkasan</th></tr></thead><tbody>${recent}</tbody></table></div></div>`;
+}
+
+/* ---------- CSV export ---------- */
+function toCSV(inst){
+  const qs=SCHEMA[inst].blocks.flatMap(b=>b.qs), cols=["id","waktu","enumerator"];
+  for(const q of qs){ if(q.type==="grid"||q.type==="scale") q.f.forEach(f=>cols.push(q.c+"_"+f)); else cols.push(q.c); if(hasWhy(q)) cols.push(q.c+"_alasan"); }
+  const cell=v=>{const s=v==null?"":String(v);return /[",\n;]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;};
+  const rows=entries.filter(e=>e.instrument===inst).map(e=>{
+    const a=e.answers||{}, r=[e._id,e.createdAt,e.enumerator];
+    for(const q of qs){ if(q.type==="grid"||q.type==="scale") q.f.forEach(f=>r.push(a[q.c]?.[f])); else r.push(Array.isArray(a[q.c])?a[q.c].join("; "):a[q.c]); if(hasWhy(q)) r.push(a[q.c+"_alasan"]); }
+    return r.map(cell).join(",");
+  });
+  return "﻿"+[cols.map(cell).join(","),...rows].join("\n");
+}
+document.querySelectorAll("[data-export]").forEach(b=>b.addEventListener("click",async()=>{
+  const inst=b.dataset.export, st=$("#exportStatus");
+  if(!downloads){st.textContent="Unduhan tidak tersedia di tampilan ini.";return;}
+  if(!entries.some(e=>e.instrument===inst)){st.textContent="Belum ada data untuk instrumen "+inst+".";return;}
+  try{const r=await downloads.save({filename:`survei-ketenagakerjaan-instrumen-${inst}.csv`,data:new Blob([toCSV(inst)],{type:"text/csv"})});st.textContent=r.status==="saved"?"File CSV diunduh.":"";}
+  catch(err){st.textContent=err&&err.code==="unavailable"?"Unduhan tidak tersedia di tampilan ini.":"";}
+}));
+
+/* ---------- connection ---------- */
+function showConn(){
+  const n=$("#conn");
+  if(!db){n.className="notice warn";n.innerHTML="<strong>Penyimpanan belum terhubung.</strong> Formulir tetap bisa diisi, tetapi jawaban hanya tersimpan setelah Anda masuk ke claude.ai dengan akun yang diberi akses Editor oleh pemilik survei.";return;}
+  if(!canWrite){n.className="notice err";n.innerHTML="<strong>Akses baca saja.</strong> Akun ini belum bisa menyimpan jawaban. Minta pemilik survei menambahkan Anda sebagai Editor.";return;}
+  n.className="notice ok";n.textContent="Tersambung. Jawaban yang disimpan langsung masuk ke rekap tim survei.";
+}
+(async()=>{
+  const C=window.claude;
+  try{
+    const [d,u,dl]=await Promise.all([C?.use?.("db")??null,C?.use?.("user")??null,C?.use?.("downloads")??null]);
+    db=d; downloads=dl;
+    if(u){userId=await u.id().catch(()=>null);const w=await u.can("data.write").catch(()=>null);if(w===false)canWrite=false;}
+  }catch(e){db=null;}
+  showConn();
+  if(db){
+    db.collection("entries").orderBy("createdAt","desc").onSnapshot(snap=>{
+      entries=snap.docs.map(d=>({...d.data(),_id:d.id}));
+      if(!$("#recapArea").hidden) renderRecap();
+    },()=>{});
+  }
+  if(!$("#recapArea").hidden) renderRecap();
+})();
+
+const startTab=store.get("tab");
+selectTab(["A","B","C","D","R"].includes(startTab)?startTab:"A");
+</script>
+
+</body></html>

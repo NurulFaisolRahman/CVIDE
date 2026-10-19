@@ -314,24 +314,21 @@
 
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view" style="position: relative;">
-            <button type="button" class="btn-sidebar-close" id="btnSidebarClose" title="Tutup Menu">&times;</button>
-            <div class="clearfix"></div>
-            <!-- menu profile quick info -->
-            <div class="profile clearfix">
-              <div class="profile_pic">
-                <img src="<?=base_url('assets/img/Profil.jpg')?>" alt="..." class="img-circle profile_img">
-              </div>
-              <div class="profile_info">
-                <span class="font-weight-bold">Welcome,</span>
-                <h2 class="font-weight-bold">Surveyor</h2>
-              </div>
+            <!-- Sidebar Brand Header (Logo IDE Saja & Tombol Tutup Mobile) -->
+            <div class="sidebar-brand-header text-center" style="padding: 20px 15px 12px 15px; display: flex; justify-content: center; align-items: center; position: relative;">
+              <a href="<?=base_url('Surveyor')?>">
+                <img src="<?=base_url('assets/img/logo-white-solid.webp')?>" alt="IDE Logo" style="max-height: 48px; width: auto; object-fit: contain;">
+              </a>
+              <button type="button" class="btn-sidebar-close d-lg-none" id="btnSidebarClose" title="Tutup Menu">&times;</button>
             </div>
-            <!-- /menu profile quick info -->
             <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 <ul class="nav side-menu">
 									<li><a href="<?=base_url('Surveyor')?>"><i class="fa fa-user"></i> <b>Profil</b> </a></li>
+								</ul>
+								<ul class="nav side-menu">
+									<li><a href="<?=base_url('MenuSurvei')?>"><i class="fa fa-clipboard"></i> <b>Layanan Survei</b></a></li>
 								</ul>
 								<ul class="nav side-menu">
                   <li><a><i class="fa fa-tasks"></i> <b>Survei Desa</b> <span class="fa fa-chevron-down"></span></a>

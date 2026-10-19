@@ -1990,19 +1990,1767 @@ public function InputIKMYogyakarta()
       $this->load->view('LKPJBanyuwangi');
     }
 
- public function MenuSurvei(){
-    // Ambil data session
-    $isLoggedIn = $this->session->userdata('logged_in');
-    $userLevel = $this->session->userdata('level');
-    $userName = $this->session->userdata('nama_lengkap');
+  /**
+   * =========================================================================
+   * MODUL SISTEM FORMULIR & SURVEI DINAMIS (GOOGLE FORM STYLE BUILDER)
+   * Mendukung session Surveiyor (Level 4), Admin, dan SuperAdmin untuk:
+   * 1. Dynamic Survey Builder (tambah, edit, opsi nilai angka, tipe field)
+   * 2. Pengisian Kuesioner Responden Publik / Lapangan dengan Keterangan Daerah Survei
+   * 3. Rekapitulasi Statistik & Data Responden per Daerah Survei
+   * =========================================================================
+   */
+  private function ensureSurveiStructure() {
+    // 1. Tabel Master Survei Dinamis
+    $this->db->query("CREATE TABLE IF NOT EXISTS `survei_dinamis` (
+      `Id` INT(11) NOT NULL AUTO_INCREMENT,
+      `KodeSurvei` VARCHAR(100) NOT NULL UNIQUE,
+      `Judul` VARCHAR(255) NOT NULL,
+      `Deskripsi` TEXT NULL,
+      `Lembaga` VARCHAR(255) NULL,
+      `Jenis` VARCHAR(100) NOT NULL DEFAULT 'IKM',
+      `Tahun` VARCHAR(10) NOT NULL DEFAULT '2026',
+      `Status` VARCHAR(20) NOT NULL DEFAULT 'Aktif',
+      `DaerahSurvei` VARCHAR(255) NULL,
+      `KodeWilayah` VARCHAR(50) NULL,
+      `BannerImage` VARCHAR(255) NULL,
+      `BannerColor` VARCHAR(30) NULL DEFAULT '#043168',
+      `EstimasiWaktu` VARCHAR(50) NULL DEFAULT '3 - 5 Menit',
+      `CreatedBy` VARCHAR(100) NULL,
+      `CreatedAt` DATETIME NULL,
+      `UpdatedAt` DATETIME NULL,
+      PRIMARY KEY (`Id`),
+      KEY `idx_kode_survei` (`KodeSurvei`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+    // Pastikan kolom BannerImage & BannerColor ada jika tabel sudah pernah dibuat sebelumnya
+    if (!$this->db->field_exists('BannerImage', 'survei_dinamis')) {
+      $this->db->query("ALTER TABLE `survei_dinamis` ADD COLUMN `BannerImage` VARCHAR(255) NULL AFTER `KodeWilayah`");
+    }
+    if (!$this->db->field_exists('BannerColor', 'survei_dinamis')) {
+      $this->db->query("ALTER TABLE `survei_dinamis` ADD COLUMN `BannerColor` VARCHAR(30) NULL DEFAULT '#043168' AFTER `BannerImage`");
+    }
+    if (!$this->db->field_exists('TipeSurvei', 'survei_dinamis')) {
+      $this->db->query("ALTER TABLE `survei_dinamis` ADD COLUMN `TipeSurvei` VARCHAR(50) NOT NULL DEFAULT 'standar' AFTER `Status`");
+    }
+    if (!$this->db->field_exists('InstrumenList', 'survei_dinamis')) {
+      $this->db->query("ALTER TABLE `survei_dinamis` ADD COLUMN `InstrumenList` VARCHAR(255) NOT NULL DEFAULT 'A' AFTER `TipeSurvei`");
+    }
+
+    // 2. Tabel Pertanyaan Survei Dinamis (Google Form style)
+    $this->db->query("CREATE TABLE IF NOT EXISTS `survei_pertanyaan` (
+      `Id` INT(11) NOT NULL AUTO_INCREMENT,
+      `SurveiId` INT(11) NOT NULL,
+      `Pertanyaan` TEXT NOT NULL,
+      `Deskripsi` TEXT NULL,
+      `Tipe` VARCHAR(30) NOT NULL DEFAULT 'radio',
+      `OpsiPilihan` LONGTEXT NULL,
+      `IsRequired` TINYINT(1) NOT NULL DEFAULT 1,
+      `Urutan` INT(11) NOT NULL DEFAULT 1,
+      `ScaleMin` INT(11) NOT NULL DEFAULT 1,
+      `ScaleMax` INT(11) NOT NULL DEFAULT 5,
+      `ScaleMinLabel` VARCHAR(100) NULL DEFAULT 'Sangat Tidak Baik',
+      `ScaleMaxLabel` VARCHAR(100) NULL DEFAULT 'Sangat Baik',
+      `CreatedAt` DATETIME NULL,
+      `UpdatedAt` DATETIME NULL,
+      PRIMARY KEY (`Id`),
+      KEY `idx_survei_id` (`SurveiId`),
+      KEY `idx_urutan` (`Urutan`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+    // 3. Tabel Data Responden Survei
+    $this->db->query("CREATE TABLE IF NOT EXISTS `survei_responden` (
+      `Id` INT(11) NOT NULL AUTO_INCREMENT,
+      `SurveiId` INT(11) NOT NULL,
+      `RespondenNama` VARCHAR(150) NULL DEFAULT 'Masyarakat',
+      `RespondenKontak` VARCHAR(100) NULL,
+      `RespondenGender` VARCHAR(20) NULL,
+      `RespondenUsia` VARCHAR(20) NULL,
+      `RespondenPendidikan` VARCHAR(50) NULL,
+      `RespondenPekerjaan` VARCHAR(100) NULL,
+      `Provinsi` VARCHAR(100) NULL,
+      `Kabupaten` VARCHAR(100) NULL,
+      `Kecamatan` VARCHAR(100) NULL,
+      `Desa` VARCHAR(100) NULL,
+      `AlamatDetail` TEXT NULL,
+      `TotalSkor` DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+      `RataRataSkor` DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+      `MutuPelayanan` VARCHAR(50) NULL DEFAULT 'Baik',
+      `IpAddress` VARCHAR(45) NULL,
+      `UserAgent` TEXT NULL,
+      `CreatedBy` VARCHAR(100) NULL,
+      `CreatedAt` DATETIME NULL,
+      PRIMARY KEY (`Id`),
+      KEY `idx_resp_survei_id` (`SurveiId`),
+      KEY `idx_resp_created_at` (`CreatedAt`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+    // Pastikan kolom Section & Instrumen ada di survei_pertanyaan
+    if (!$this->db->field_exists('Section', 'survei_pertanyaan')) {
+      $this->db->query("ALTER TABLE `survei_pertanyaan` ADD COLUMN `Section` VARCHAR(150) NULL AFTER `Deskripsi`");
+    }
+    if (!$this->db->field_exists('Instrumen', 'survei_pertanyaan')) {
+      $this->db->query("ALTER TABLE `survei_pertanyaan` ADD COLUMN `Instrumen` VARCHAR(10) NOT NULL DEFAULT 'A' AFTER `Section`");
+    }
+
+    // Pastikan kolom Geolokasi, Device Tracking & Instrumen ada di survei_responden
+    if (!$this->db->field_exists('Instrumen', 'survei_responden')) {
+      $this->db->query("ALTER TABLE `survei_responden` ADD COLUMN `Instrumen` VARCHAR(10) NOT NULL DEFAULT 'A' AFTER `SurveiId`");
+    }
+    if (!$this->db->field_exists('RespondenNIK', 'survei_responden')) {
+      $this->db->query("ALTER TABLE `survei_responden` ADD COLUMN `RespondenNIK` VARCHAR(25) NULL DEFAULT NULL AFTER `RespondenNama`");
+    }
+    if (!$this->db->field_exists('Latitude', 'survei_responden')) {
+      $this->db->query("ALTER TABLE `survei_responden` ADD COLUMN `Latitude` DECIMAL(11,8) NULL DEFAULT NULL AFTER `AlamatDetail`");
+    }
+    if (!$this->db->field_exists('Longitude', 'survei_responden')) {
+      $this->db->query("ALTER TABLE `survei_responden` ADD COLUMN `Longitude` DECIMAL(11,8) NULL DEFAULT NULL AFTER `Latitude`");
+    }
+    if (!$this->db->field_exists('LokasiAccuracy', 'survei_responden')) {
+      $this->db->query("ALTER TABLE `survei_responden` ADD COLUMN `LokasiAccuracy` DECIMAL(8,2) NULL DEFAULT NULL AFTER `Longitude`");
+    }
+    if (!$this->db->field_exists('DevicePlatform', 'survei_responden')) {
+      $this->db->query("ALTER TABLE `survei_responden` ADD COLUMN `DevicePlatform` VARCHAR(100) NULL DEFAULT NULL AFTER `UserAgent`");
+    }
+
+    // 4. Tabel Rincian Jawaban Responden
+    $this->db->query("CREATE TABLE IF NOT EXISTS `survei_jawaban` (
+      `Id` INT(11) NOT NULL AUTO_INCREMENT,
+      `RespondenId` INT(11) NOT NULL,
+      `PertanyaanId` INT(11) NOT NULL,
+      `JawabanTeks` TEXT NULL,
+      `NilaiAngka` DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+      `CreatedAt` DATETIME NULL,
+      PRIMARY KEY (`Id`),
+      KEY `idx_jwb_responden_id` (`RespondenId`),
+      KEY `idx_jwb_pertanyaan_id` (`PertanyaanId`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+    // Auto-seed data survei awal jika masih kosong
+    if ($this->db->count_all('survei_dinamis') == 0) {
+      $now = date('Y-m-d H:i:s');
+      
+      // Survei 1: IKM Pelayanan Publik Terpadu 2026
+      $survei1 = array(
+        'KodeSurvei'    => 'ikm-pelayanan-publik-2026',
+        'Judul'         => 'Survei Indeks Kepuasan Masyarakat (IKM) Pelayanan Publik Terpadu 2026',
+        'Deskripsi'     => 'Instrumen survei kepuasan masyarakat terhadap mutu pelayanan publik, prosedur, kepastian waktu, keterbukaan biaya, dan integritas petugas sesuai PermenPAN-RB No. 14 Tahun 2017.',
+        'Lembaga'       => 'BAPPEDA & Dinas Komunikasi dan Informatika',
+        'Jenis'         => 'IKM',
+        'Tahun'         => '2026',
+        'Status'        => 'Aktif',
+        'DaerahSurvei'  => 'Kabupaten Banyuwangi',
+        'KodeWilayah'   => '35.10',
+        'EstimasiWaktu' => '3 - 5 Menit',
+        'CreatedBy'     => 'admin',
+        'CreatedAt'     => $now,
+        'UpdatedAt'     => $now
+      );
+      $this->db->insert('survei_dinamis', $survei1);
+      $s1Id = $this->db->insert_id();
+
+      $p1 = array(
+        array(
+          'SurveiId' => $s1Id,
+          'Pertanyaan' => 'Kesesuaian Persyaratan Pelayanan',
+          'Deskripsi' => 'Bagaimana kemudahan dan kejelasan persyaratan administratif dalam memperoleh pelayanan?',
+          'Tipe' => 'radio',
+          'OpsiPilihan' => json_encode(array(
+            array('label' => 'Sangat Sesuai & Sangat Mudah', 'nilai' => 4),
+            array('label' => 'Sesuai & Cukup Mudah', 'nilai' => 3),
+            array('label' => 'Kurang Sesuai / Berbelit-belit', 'nilai' => 2),
+            array('label' => 'Tidak Sesuai / Sangat Sulit', 'nilai' => 1)
+          )),
+          'IsRequired' => 1,
+          'Urutan' => 1,
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $s1Id,
+          'Pertanyaan' => 'Kemudahan Prosedur & Alur Pelayanan',
+          'Deskripsi' => 'Bagaimana kemudahan tahapan dan alur birokrasi pelayanan yang Anda lalui?',
+          'Tipe' => 'radio',
+          'OpsiPilihan' => json_encode(array(
+            array('label' => 'Sangat Mudah & Transparan', 'nilai' => 4),
+            array('label' => 'Mudah & Jelas', 'nilai' => 3),
+            array('label' => 'Kurang Mudah / Berbelit-belit', 'nilai' => 2),
+            array('label' => 'Sangat Sulit / Tidak Jelas', 'nilai' => 1)
+          )),
+          'IsRequired' => 1,
+          'Urutan' => 2,
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $s1Id,
+          'Pertanyaan' => 'Ketepatan Waktu Penyelesaian Pelayanan',
+          'Deskripsi' => 'Apakah waktu penyelesaian pelayanan sesuai dengan standar waktu yang dijanjikan?',
+          'Tipe' => 'radio',
+          'OpsiPilihan' => json_encode(array(
+            array('label' => 'Sangat Cepat (Lebih cepat dari estimasi)', 'nilai' => 4),
+            array('label' => 'Tepat Waktu (Sesuai estimasi)', 'nilai' => 3),
+            array('label' => 'Kurang Cepat / Sedikit Terlambat', 'nilai' => 2),
+            array('label' => 'Sangat Lambat / Molor', 'nilai' => 1)
+          )),
+          'IsRequired' => 1,
+          'Urutan' => 3,
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $s1Id,
+          'Pertanyaan' => 'Kewajaran & Kepastian Tarif/Biaya Pelayanan',
+          'Deskripsi' => 'Bagaimana kesesuaian biaya yang dibayarkan terhadap tarif resmi (atau bebas biaya jika gratis)?',
+          'Tipe' => 'radio',
+          'OpsiPilihan' => json_encode(array(
+            array('label' => 'Sangat Wajar / Gratis Bebas Pungli', 'nilai' => 4),
+            array('label' => 'Wajar Sesuai Perda/Aturan', 'nilai' => 3),
+            array('label' => 'Kurang Wajar / Dirasa Mahal', 'nilai' => 2),
+            array('label' => 'Sangat Tidak Wajar / Ada Pungutan Liar', 'nilai' => 1)
+          )),
+          'IsRequired' => 1,
+          'Urutan' => 4,
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $s1Id,
+          'Pertanyaan' => 'Penilaian Skala Kepuasan Mutu Pelayanan Keseluruhan',
+          'Deskripsi' => 'Beri penilaian kepuasan Anda secara umum terhadap layanan yang diterima (Skala 1 - 5).',
+          'Tipe' => 'scale',
+          'OpsiPilihan' => null,
+          'IsRequired' => 1,
+          'Urutan' => 5,
+          'ScaleMin' => 1,
+          'ScaleMax' => 5,
+          'ScaleMinLabel' => 'Sangat Buruk',
+          'ScaleMaxLabel' => 'Sangat Memuaskan',
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $s1Id,
+          'Pertanyaan' => 'Kompetensi, Sikap & Keramahan Petugas Pelayanan',
+          'Deskripsi' => 'Bagaimana keramahan, kesopanan, dan keahlian petugas dalam merespon kebutuhan Anda?',
+          'Tipe' => 'radio',
+          'OpsiPilihan' => json_encode(array(
+            array('label' => 'Sangat Ramah, Sigap & Solutif', 'nilai' => 4),
+            array('label' => 'Ramah & Sopan', 'nilai' => 3),
+            array('label' => 'Kurang Ramah / Acuh', 'nilai' => 2),
+            array('label' => 'Tidak Ramah / Tidak Sopan', 'nilai' => 1)
+          )),
+          'IsRequired' => 1,
+          'Urutan' => 6,
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $s1Id,
+          'Pertanyaan' => 'Kualitas Sarana & Fasilitas Penunjang di Tempat Layanan',
+          'Deskripsi' => 'Pilih sarana prasarana yang sudah Anda rasakan berfungsi sangat baik di lokasi survei:',
+          'Tipe' => 'checkbox',
+          'OpsiPilihan' => json_encode(array(
+            array('label' => 'Ruang Pelayanan Nyaman & Ber-AC', 'nilai' => 25),
+            array('label' => 'Sistem Antrean Digital & Layar Informasi', 'nilai' => 25),
+            array('label' => 'Akses Ramah Disabilitas, Ibu Hamil & Lansia', 'nilai' => 25),
+            array('label' => 'Toilet Bersih & Area Parkir Tertata', 'nilai' => 25)
+          )),
+          'IsRequired' => 0,
+          'Urutan' => 7,
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $s1Id,
+          'Pertanyaan' => 'Saran dan Masukan Konstruktif untuk Peningkatan Mutu Layanan',
+          'Deskripsi' => 'Tuliskan masukan nyata Anda agar layanan ini terus meningkat kualitasnya ke depan.',
+          'Tipe' => 'textarea',
+          'OpsiPilihan' => null,
+          'IsRequired' => 0,
+          'Urutan' => 8,
+          'CreatedAt' => $now
+        )
+      );
+      $this->db->insert_batch('survei_pertanyaan', $p1);
+
+      // Survei 2: Survei IKM Kinerja Walikota & Wakil Walikota Kota Yogyakarta
+      $survei2 = array(
+        'KodeSurvei'    => 'ikm-kinerja-walikota-yogyakarta-2026',
+        'Judul'         => 'Survei IKM Kinerja Walikota & Wakil Walikota Kota Yogyakarta 2026',
+        'Deskripsi'     => 'Evaluasi ketercapaian program pembangunan kota, infrastruktur publik, pariwisata, dan penanganan ketertiban lingkungan Kota Yogyakarta.',
+        'Lembaga'       => 'BAKESBANGPOL Kota Yogyakarta',
+        'Jenis'         => 'IKM',
+        'Tahun'         => '2026',
+        'Status'        => 'Aktif',
+        'DaerahSurvei'  => 'Kota Yogyakarta',
+        'KodeWilayah'   => '34.71',
+        'EstimasiWaktu' => '4 - 6 Menit',
+        'CreatedBy'     => 'admin',
+        'CreatedAt'     => $now,
+        'UpdatedAt'     => $now
+      );
+      $this->db->insert('survei_dinamis', $survei2);
+      $s2Id = $this->db->insert_id();
+
+      $p2 = array(
+        array(
+          'SurveiId' => $s2Id,
+          'Pertanyaan' => 'Kepuasan Program Pengelolaan Sampah & Kebersihan Kota',
+          'Deskripsi' => 'Bagaimana efektivitas program pengolahan sampah mandiri dan kebersihan lingkungan kota saat ini?',
+          'Tipe' => 'radio',
+          'OpsiPilihan' => json_encode(array(
+            array('label' => 'Sangat Baik & Bersih', 'nilai' => 4),
+            array('label' => 'Baik & Cukup Tertangani', 'nilai' => 3),
+            array('label' => 'Kurang Baik / Sering Menumpuk', 'nilai' => 2),
+            array('label' => 'Tidak Baik / Sangat Buruk', 'nilai' => 1)
+          )),
+          'IsRequired' => 1,
+          'Urutan' => 1,
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $s2Id,
+          'Pertanyaan' => 'Aksesibilitas dan Kualitas Fasilitas Publik & Jalur Pedestrian',
+          'Deskripsi' => 'Bagaimana kenyamanan fasilitas trotoar, taman kota, dan ruang terbuka hijau bagi pejalan kaki?',
+          'Tipe' => 'radio',
+          'OpsiPilihan' => json_encode(array(
+            array('label' => 'Sangat Nyaman & Ramah Pengguna', 'nilai' => 4),
+            array('label' => 'Cukup Nyaman', 'nilai' => 3),
+            array('label' => 'Kurang Nyaman / Banyak Hambatan', 'nilai' => 2),
+            array('label' => 'Tidak Nyaman', 'nilai' => 1)
+          )),
+          'IsRequired' => 1,
+          'Urutan' => 2,
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $s2Id,
+          'Pertanyaan' => 'Kepuasan Terhadap Pelayanan Administrasi Kependudukan',
+          'Deskripsi' => 'Bagaimana pengalaman Anda saat mengurus layanan KTP/KK/Surat Pengantar di Kemantren / Kelurahan?',
+          'Tipe' => 'radio',
+          'OpsiPilihan' => json_encode(array(
+            array('label' => 'Sangat Memuaskan & Cepat', 'nilai' => 4),
+            array('label' => 'Memuaskan', 'nilai' => 3),
+            array('label' => 'Kurang Memuaskan', 'nilai' => 2),
+            array('label' => 'Mengecewakan', 'nilai' => 1)
+          )),
+          'IsRequired' => 1,
+          'Urutan' => 3,
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $s2Id,
+          'Pertanyaan' => 'Tingkat Keyakinan Terhadap Arah Kebijakan Pemkot Yogyakarta',
+          'Deskripsi' => 'Beri penilaian optimisme Anda terhadap kepemimpinan daerah (Skala 1 - 5).',
+          'Tipe' => 'scale',
+          'OpsiPilihan' => null,
+          'IsRequired' => 1,
+          'Urutan' => 4,
+          'ScaleMin' => 1,
+          'ScaleMax' => 5,
+          'ScaleMinLabel' => 'Sangat Ragu',
+          'ScaleMaxLabel' => 'Sangat Yakin',
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $s2Id,
+          'Pertanyaan' => 'Harapan atau Masukan Prioritas untuk Pembangunan Kota Yogyakarta',
+          'Deskripsi' => 'Apa aspirasi utama Anda untuk kemajuan Kota Yogyakarta di tahun-tahun mendatang?',
+          'Tipe' => 'textarea',
+          'OpsiPilihan' => null,
+          'IsRequired' => 0,
+          'Urutan' => 5,
+          'CreatedAt' => $now
+        )
+      );
+      $this->db->insert_batch('survei_pertanyaan', $p2);
+    }
+  }
+
+  /**
+   * Halaman Menu Survei Utama
+   * Mendukung publik (responden kuesioner) dan session Surveiyor / Admin (builder & rekap)
+   */
+  public function MenuSurvei($kodeSurvei = null) {
+    $this->ensureSurveiStructure();
+
+    // Deteksi session surveiyor, staff, admin, atau superadmin
+    $hasSurveyorSession = !empty($this->session->userdata('Surveiyor')) || !empty($this->session->userdata('Surveyor'));
+    $hasStaffSession    = !empty($this->session->userdata('Staf')) || ((int)$this->session->userdata('level') == 3);
+    $hasAdminSession    = !empty($this->session->userdata('Admin')) || ((int)$this->session->userdata('level') == 2);
+    $hasSuperSession    = !empty($this->session->userdata('SuperAdmin')) || ((int)$this->session->userdata('level') == 1);
     
-    // Siapkan data untuk dikirim ke view
-    $data['isLoggedIn'] = !empty($isLoggedIn) ? $isLoggedIn : false;
-    $data['userLevel'] = !empty($userLevel) ? $userLevel : 0;
-    $data['userName'] = !empty($userName) ? $userName : 'User';
+    $isLoggedIn = !empty($this->session->userdata('logged_in')) 
+               || $hasSurveyorSession 
+               || $hasStaffSession 
+               || $hasAdminSession 
+               || $hasSuperSession;
+
+    $userLevel = (int)$this->session->userdata('level');
+    if (empty($userLevel)) {
+      if ($hasSuperSession) $userLevel = 1;
+      else if ($hasAdminSession) $userLevel = 2;
+      else if ($hasStaffSession) $userLevel = 3;
+      else if ($hasSurveyorSession) $userLevel = 4;
+    }
+
+    $userName = $this->session->userdata('nama_lengkap') 
+             ?: ($this->session->userdata('Username') 
+             ?: ($this->session->userdata('Nama') 
+             ?: ($userLevel == 3 ? 'Staf' : 'Surveiyor')));
+
+    $isSurveiyor = ($isLoggedIn && ($userLevel == 4 || $userLevel == 3 || $userLevel == 2 || $userLevel == 1 || $hasSurveyorSession || $hasStaffSession));
+
+    // Jika pengunjung umum (belum login) mencoba membuka tab terproteksi (peta / rekap / builder) langsung lewat URL
+    $loginRequiredAlert = false;
+    if (!$isLoggedIn && in_array(strtolower((string)$kodeSurvei), array('peta', 'rekap', 'builder', 'studio'))) {
+      $loginRequiredAlert = true;
+      $kodeSurvei = null;
+    }
+
+    // Ambil daftar survei dinamis beserta statistik
+    $surveiList = $this->db->order_by('Id', 'DESC')->get('survei_dinamis')->result_array();
+    foreach ($surveiList as &$s) {
+      $s['TotalPertanyaan'] = $this->db->where('SurveiId', $s['Id'])->count_all_results('survei_pertanyaan');
+      $s['TotalResponden'] = $this->db->where('SurveiId', $s['Id'])->count_all_results('survei_responden');
+      
+      $avgQuery = $this->db->select_avg('RataRataSkor', 'avg_skor')->where('SurveiId', $s['Id'])->get('survei_responden')->row_array();
+      $s['RataRataSkor'] = !empty($avgQuery['avg_skor']) ? round((float)$avgQuery['avg_skor'], 2) : 0;
+    }
+
+    // Ambil daftar Provinsi untuk Keterangan Daerah Survei
+    $provinsi = array();
+    if ($this->db->table_exists('kodewilayah')) {
+      $provinsi = $this->db->query("SELECT Kode, Nama FROM `kodewilayah` WHERE length(Kode) = 2 ORDER BY Nama ASC")->result_array();
+    }
+
+    $data = array(
+      'title'              => 'Portal Layanan Survei | IDE Consultant',
+      'isLoggedIn'         => $isLoggedIn,
+      'userLevel'          => $userLevel,
+      'userName'           => $userName,
+      'isSurveiyor'        => $isSurveiyor,
+      'loginRequiredAlert' => $loginRequiredAlert,
+      'surveiList'         => $surveiList,
+      'provinsi'           => $provinsi,
+      'kodeSurvei'         => $kodeSurvei
+    );
+
+    if ($isLoggedIn) {
+      $this->load->view('SurveyDashboard', $data);
+    } else {
+      $this->load->view('MenuSurvei', $data);
+    }
+  }
+
+  /**
+   * API: Ambil daftar seluruh survei dinamis (JSON)
+   */
+  public function get_survei_dinamis() {
+    $this->ensureSurveiStructure();
+    header('Content-Type: application/json; charset=utf-8');
+
+    $surveiList = $this->db->order_by('Id', 'DESC')->get('survei_dinamis')->result_array();
+    foreach ($surveiList as &$s) {
+      $s['TotalPertanyaan'] = $this->db->where('SurveiId', $s['Id'])->count_all_results('survei_pertanyaan');
+      $s['TotalResponden'] = $this->db->where('SurveiId', $s['Id'])->count_all_results('survei_responden');
+
+      $avgQuery = $this->db->select_avg('RataRataSkor', 'avg_skor')->where('SurveiId', $s['Id'])->get('survei_responden')->row_array();
+      $s['RataRataSkor'] = !empty($avgQuery['avg_skor']) ? round((float)$avgQuery['avg_skor'], 2) : 0;
+    }
+
+    echo json_encode(array('status' => true, 'data' => $surveiList));
+    return;
+  }
+
+  /**
+   * API: Ambil detail 1 survei beserta seluruh pertanyaannya (JSON)
+   */
+  public function get_survei_detail($id = 0) {
+    $this->ensureSurveiStructure();
+    header('Content-Type: application/json; charset=utf-8');
+
+    $id = (int)$id;
+    $survei = $this->db->get_where('survei_dinamis', array('Id' => $id))->row_array();
+    if (!$survei) {
+      echo json_encode(array('status' => false, 'message' => 'Survei tidak ditemukan'));
+      return;
+    }
+
+    $pertanyaan = $this->db->where('SurveiId', $id)->order_by('Urutan', 'ASC')->order_by('Id', 'ASC')->get('survei_pertanyaan')->result_array();
+    foreach ($pertanyaan as &$p) {
+      if (!empty($p['OpsiPilihan'])) {
+        $decoded = json_decode($p['OpsiPilihan'], true);
+        $p['OpsiPilihanList'] = is_array($decoded) ? $decoded : array();
+      } else {
+        $p['OpsiPilihanList'] = array();
+      }
+    }
+
+    $survei['TotalResponden'] = $this->db->where('SurveiId', $id)->count_all_results('survei_responden');
+    $avgQuery = $this->db->select_avg('RataRataSkor', 'avg_skor')->where('SurveiId', $id)->get('survei_responden')->row_array();
+    $survei['RataRataSkor'] = !empty($avgQuery['avg_skor']) ? round((float)$avgQuery['avg_skor'], 2) : 0;
+
+    echo json_encode(array(
+      'status' => true,
+      'survei' => $survei,
+      'pertanyaan' => $pertanyaan
+    ));
+    return;
+  }
+
+  /**
+   * API: Ambil butir pertanyaan survei dinamis (JSON)
+   * Mengembalikan format 'data' dan 'pertanyaan' untuk kompatibilitas dashboard & form publik
+   */
+  public function get_survei_pertanyaan($id = 0, $instrumen = null) {
+    $this->ensureSurveiStructure();
+    header('Content-Type: application/json; charset=utf-8');
+
+    $id = (int)$id;
+    if ($id <= 0) {
+      echo json_encode(array('status' => false, 'message' => 'ID Survei tidak valid', 'data' => array(), 'pertanyaan' => array()));
+      return;
+    }
+
+    if (!$instrumen && $this->input->get('instrumen')) {
+      $instrumen = trim($this->input->get('instrumen'));
+    }
+
+    $this->db->where('SurveiId', $id);
+    if (!empty($instrumen)) {
+      $this->db->where('Instrumen', strtoupper($instrumen));
+    }
+    $pertanyaan = $this->db->order_by('Urutan', 'ASC')
+                           ->order_by('Id', 'ASC')
+                           ->get('survei_pertanyaan')
+                           ->result_array();
+
+    foreach ($pertanyaan as &$p) {
+      if (!empty($p['OpsiPilihan'])) {
+        $decoded = json_decode($p['OpsiPilihan'], true);
+        $p['OpsiPilihanList'] = is_array($decoded) ? $decoded : array();
+      } else {
+        $p['OpsiPilihanList'] = array();
+      }
+    }
+
+    echo json_encode(array(
+      'status'     => true,
+      'data'       => $pertanyaan,
+      'pertanyaan' => $pertanyaan
+    ));
+    return;
+  }
+
+  /**
+   * API: Simpan / Update Metadata Survei Dinamis
+   * Khusus sesi Surveiyor (Level 4), Staf (Level 3), Admin (Level 2), SuperAdmin (Level 1)
+   */
+  public function save_survei_dinamis() {
+    $this->ensureSurveiStructure();
+    header('Content-Type: application/json; charset=utf-8');
+
+    $userLevel = (int)$this->session->userdata('level');
+    $isSurveiyor = ($userLevel == 4 || $userLevel == 1 || $userLevel == 2 || $userLevel == 3 || !empty($this->session->userdata('Surveiyor')));
+    if (!$isSurveiyor) {
+      echo json_encode(array('status' => false, 'message' => 'Akses ditolak. Silakan login sebagai Surveiyor (Level 4) atau Admin.'));
+      return;
+    }
+
+    $raw = file_get_contents('php://input');
+    $input = json_decode($raw, true) ?: $this->input->post();
+
+    $id = isset($input['Id']) ? (int)$input['Id'] : 0;
+    $judul = trim($input['Judul'] ?? '');
+    if (empty($judul)) {
+      echo json_encode(array('status' => false, 'message' => 'Judul survei wajib diisi.'));
+      return;
+    }
+
+    $slug = trim($input['KodeSurvei'] ?? '');
+    if (empty($slug)) {
+      $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $judul), '-'));
+      $slug .= '-' . date('Y');
+    }
+
+    $currentUser = $this->session->userdata('Username') ?: ($this->session->userdata('nama_lengkap') ?: 'Surveiyor');
+
+    $data = array(
+      'Judul'         => $judul,
+      'Deskripsi'     => trim($input['Deskripsi'] ?? ''),
+      'Lembaga'       => trim($input['Lembaga'] ?? 'IDE Consultant'),
+      'Jenis'         => trim($input['Jenis'] ?? 'IKM'),
+      'Tahun'         => trim($input['Tahun'] ?? date('Y')),
+      'Status'        => trim($input['Status'] ?? 'Aktif'),
+      'TipeSurvei'    => trim($input['TipeSurvei'] ?? ($input['tipeSurvei'] ?? 'standar')),
+      'InstrumenList' => trim($input['InstrumenList'] ?? ($input['instrumenList'] ?? 'A')),
+      'DaerahSurvei'  => trim($input['DaerahSurvei'] ?? ''),
+      'KodeWilayah'   => trim($input['KodeWilayah'] ?? ''),
+      'BannerImage'   => trim($input['BannerImage'] ?? ''),
+      'BannerColor'   => trim($input['BannerColor'] ?? '#043168'),
+      'EstimasiWaktu' => trim($input['EstimasiWaktu'] ?? '3 - 5 Menit'),
+      'UpdatedAt'     => date('Y-m-d H:i:s')
+    );
+
+    if ($id > 0) {
+      $this->db->where('Id', $id)->update('survei_dinamis', $data);
+      $surveiId = $id;
+    } else {
+      // Cek keunikan slug
+      $cekSlug = $this->db->get_where('survei_dinamis', array('KodeSurvei' => $slug))->row_array();
+      if ($cekSlug) {
+        $slug .= '-' . substr(uniqid(), -4);
+      }
+      $data['KodeSurvei'] = $slug;
+      $data['CreatedBy']  = $currentUser;
+      $data['CreatedAt']  = date('Y-m-d H:i:s');
+      $this->db->insert('survei_dinamis', $data);
+      $surveiId = $this->db->insert_id();
+    }
+
+    echo json_encode(array(
+      'status' => true,
+      'message' => 'Survei berhasil disimpan.',
+      'survei_id' => $surveiId
+    ));
+    return;
+  }
+
+  /**
+   * API: Simpan Seluruh Pertanyaan Survei (Google Form Style Batch Builder)
+   */
+  public function save_survei_pertanyaan_batch() {
+    $this->ensureSurveiStructure();
+    header('Content-Type: application/json; charset=utf-8');
+
+    $userLevel = (int)$this->session->userdata('level');
+    $isSurveiyor = ($userLevel == 4 || $userLevel == 1 || $userLevel == 2 || $userLevel == 3 || !empty($this->session->userdata('Surveiyor')));
+    if (!$isSurveiyor) {
+      echo json_encode(array('status' => false, 'message' => 'Akses ditolak. Silakan login sebagai Surveiyor (Level 4) atau Admin.'));
+      return;
+    }
+
+    $raw = file_get_contents('php://input');
+    $input = json_decode($raw, true) ?: $this->input->post();
+
+    $surveiId = isset($input['SurveiId']) ? (int)$input['SurveiId'] : 0;
+    if ($surveiId <= 0) {
+      echo json_encode(array('status' => false, 'message' => 'ID Survei tidak valid.'));
+      return;
+    }
+
+    $pertanyaanList = $input['Pertanyaan'] ?? array();
+    if (!is_array($pertanyaanList)) {
+      echo json_encode(array('status' => false, 'message' => 'Format pertanyaan tidak valid.'));
+      return;
+    }
+
+    $now = date('Y-m-d H:i:s');
+
+    // Hapus pertanyaan lama untuk survei ini dan ganti dengan susunan baru
+    $this->db->where('SurveiId', $surveiId)->delete('survei_pertanyaan');
+
+    $insertBatch = array();
+    $urutan = 1;
+    foreach ($pertanyaanList as $item) {
+      $teks = trim($item['Pertanyaan'] ?? '');
+      if (empty($teks)) continue;
+
+      $tipe = trim($item['Tipe'] ?? 'radio');
+      $opsi = $item['OpsiPilihan'] ?? null;
+      if (is_array($opsi)) {
+        $opsi = json_encode($opsi);
+      }
+
+      $insertBatch[] = array(
+        'SurveiId'      => $surveiId,
+        'Pertanyaan'    => $teks,
+        'Deskripsi'     => trim($item['Deskripsi'] ?? ''),
+        'Section'       => trim($item['Section'] ?? ($item['section'] ?? '')),
+        'Instrumen'     => strtoupper(trim($item['Instrumen'] ?? ($item['instrumen'] ?? 'A'))),
+        'Tipe'          => $tipe,
+        'OpsiPilihan'   => $opsi,
+        'IsRequired'    => !empty($item['IsRequired']) ? 1 : 0,
+        'Urutan'        => $urutan++,
+        'ScaleMin'      => isset($item['ScaleMin']) ? (int)$item['ScaleMin'] : 1,
+        'ScaleMax'      => isset($item['ScaleMax']) ? (int)$item['ScaleMax'] : 5,
+        'ScaleMinLabel' => trim($item['ScaleMinLabel'] ?? 'Sangat Tidak Baik'),
+        'ScaleMaxLabel' => trim($item['ScaleMaxLabel'] ?? 'Sangat Baik'),
+        'CreatedAt'     => $now,
+        'UpdatedAt'     => $now
+      );
+    }
+
+    if (!empty($insertBatch)) {
+      $this->db->insert_batch('survei_pertanyaan', $insertBatch);
+    }
+
+    echo json_encode(array(
+      'status' => true,
+      'message' => 'Seluruh pertanyaan survei berhasil disimpan (' . count($insertBatch) . ' pertanyaan).',
+      'count' => count($insertBatch)
+    ));
+    return;
+  }
+
+  /**
+   * API: Hapus Survei beserta seluruh pertanyaan, responden & jawabannya
+   */
+  public function delete_survei_dinamis($id = 0) {
+    $this->ensureSurveiStructure();
+    header('Content-Type: application/json; charset=utf-8');
+
+    $userLevel = (int)$this->session->userdata('level');
+    $isSurveiyor = ($userLevel == 4 || $userLevel == 3 || $userLevel == 1 || $userLevel == 2 || !empty($this->session->userdata('Surveiyor')) || !empty($this->session->userdata('Staf')));
+    if (!$isSurveiyor) {
+      echo json_encode(array('status' => false, 'message' => 'Akses ditolak.'));
+      return;
+    }
+
+    $id = (int)$id;
+    if ($id <= 0) {
+      echo json_encode(array('status' => false, 'message' => 'ID tidak valid.'));
+      return;
+    }
+
+    // Ambil responden untuk hapus rincian jawaban
+    $respondenList = $this->db->select('Id')->where('SurveiId', $id)->get('survei_responden')->result_array();
+    if (!empty($respondenList)) {
+      $respIds = array_column($respondenList, 'Id');
+      $this->db->where_in('RespondenId', $respIds)->delete('survei_jawaban');
+    }
+
+    $this->db->where('SurveiId', $id)->delete('survei_responden');
+    $this->db->where('SurveiId', $id)->delete('survei_pertanyaan');
+    $this->db->where('Id', $id)->delete('survei_dinamis');
+
+    echo json_encode(array('status' => true, 'message' => 'Survei berhasil dihapus.'));
+    return;
+  }
+
+  /**
+   * API: Hapus 1 Data Responden beserta butir-butir jawabannya
+   * Staf (Level 3), Surveyor (Level 4), Admin (Level 2), SuperAdmin (Level 1)
+   */
+  public function delete_survei_responden($respondenId = 0) {
+    $this->ensureSurveiStructure();
+    if (!headers_sent()) {
+      @header('Content-Type: application/json; charset=utf-8');
+    }
+
+    $userLevel = (int)$this->session->userdata('level');
+    $hasSurveyorSession = !empty($this->session->userdata('Surveiyor')) || !empty($this->session->userdata('Surveyor'));
+    $hasStaffSession    = !empty($this->session->userdata('Staf')) || ($userLevel == 3);
+    $hasAdminSession    = !empty($this->session->userdata('Admin')) || ($userLevel == 2);
+    $hasSuperSession    = !empty($this->session->userdata('SuperAdmin')) || ($userLevel == 1);
     
-    $this->load->view('MenuSurvei', $data);
-}
+    $isAuthorized = !empty($this->session->userdata('logged_in')) 
+                 || $hasStaffSession 
+                 || $hasSurveyorSession 
+                 || $hasAdminSession 
+                 || $hasSuperSession;
+
+    if (!$isAuthorized) {
+      echo json_encode(array('status' => false, 'message' => 'Akses ditolak: Hanya staf / petugas terotentikasi yang berhak menghapus data responden.'));
+      return;
+    }
+
+    $respondenId = (int)$respondenId;
+    if ($respondenId <= 0) {
+      echo json_encode(array('status' => false, 'message' => 'ID responden tidak valid.'));
+      return;
+    }
+
+    $responden = $this->db->get_where('survei_responden', array('Id' => $respondenId))->row_array();
+    if (!$responden) {
+      echo json_encode(array('status' => false, 'message' => 'Data responden tidak ditemukan.'));
+      return;
+    }
+
+    $surveiId = $responden['SurveiId'];
+
+    // Hapus rincian jawaban terlebih dahulu
+    $this->db->where('RespondenId', $respondenId)->delete('survei_jawaban');
+    // Hapus data responden
+    $this->db->where('Id', $respondenId)->delete('survei_responden');
+
+    echo json_encode(array(
+      'status'    => true,
+      'message'   => 'Data responden atas nama ' . ($responden['RespondenNama'] ?: 'Anonim') . ' berhasil dihapus dari sistem.',
+      'survei_id' => $surveiId
+    ));
+    return;
+  }
+
+  /**
+   * API: Submit Jawaban Survei oleh Responden Publik / Surveiyor Lapangan
+   * Menghitung nilai skor IKM otomatis dan mencatat Keterangan Daerah Survei
+   */
+  public function submit_jawaban_survei() {
+    $this->ensureSurveiStructure();
+    header('Content-Type: application/json; charset=utf-8');
+
+    $raw = file_get_contents('php://input');
+    $input = json_decode($raw, true) ?: $this->input->post();
+
+    $surveiId = isset($input['SurveiId']) ? (int)$input['SurveiId'] : 0;
+    if ($surveiId <= 0 && isset($input['dashFormSurveyId'])) {
+      $surveiId = (int)$input['dashFormSurveyId'];
+    }
+    if ($surveiId <= 0) {
+      echo json_encode(array('status' => false, 'message' => 'ID survei tidak valid.'));
+      return;
+    }
+
+    $survei = $this->db->get_where('survei_dinamis', array('Id' => $surveiId))->row_array();
+    if (!$survei) {
+      echo json_encode(array('status' => false, 'message' => 'Survei tidak ditemukan.'));
+      return;
+    }
+
+    // Deteksi Instrumen (A: Perusahaan, B: Pencari Kerja, C: Pemangku Kepentingan, D: Siswa Kelas 12)
+    $instrumen = strtoupper(trim($input['Instrumen'] ?? ($input['instrumen'] ?? ($input['instrument'] ?? 'A'))));
+    if (!in_array($instrumen, array('A', 'B', 'C', 'D'))) {
+      $instrumen = 'A';
+    }
+
+    $rawAnswers = $input['Jawaban'] ?? ($input['answers'] ?? array());
+    if (!is_array($rawAnswers) || empty($rawAnswers)) {
+      $rawAnswers = array();
+      foreach ($input as $k => $v) {
+        if (strpos($k, 'jawaban_') === 0) {
+          $pId = (int)substr($k, 8);
+          if ($pId > 0) $rawAnswers[$pId] = $v;
+        } elseif (preg_match('/^[A-Za-z0-9_]+$/', $k) && !in_array($k, array('SurveiId', 'dashFormSurveyId', 'Instrumen', 'instrumen', 'instrument', 'enumerator', 'consent', 'Latitude', 'Longitude', 'latitude', 'longitude', 'LokasiAccuracy', 'DevicePlatform', 'RespondenNama', 'RespondenNIK', 'RespondenKontak', 'RespondenGender', 'RespondenUsia', 'RespondenPendidikan', 'RespondenPekerjaan', 'Provinsi', 'Kabupaten', 'Kecamatan', 'Desa', 'AlamatDetail'))) {
+          $rawAnswers[$k] = $v;
+        }
+      }
+    }
+
+    if (empty($rawAnswers)) {
+      echo json_encode(array('status' => false, 'message' => 'Mohon jawab butir kuesioner terlebih dahulu.'));
+      return;
+    }
+
+    // Ambil seluruh pertanyaan untuk survei ini (dan spesifik instrumen jika ada)
+    $pertanyaan = $this->db->where('SurveiId', $surveiId)->get('survei_pertanyaan')->result_array();
+    $pertanyaanMap = array();
+    $pertanyaanCodeMap = array();
+    foreach ($pertanyaan as $pt) {
+      $pertanyaanMap[$pt['Id']] = $pt;
+      if (preg_match('/^\[([A-Za-z0-9_]+)\]/', $pt['Pertanyaan'], $m)) {
+        $pertanyaanCodeMap[$m[1]] = $pt;
+      }
+    }
+
+    // Ekstraksi data diri responden berdasarkan instrumen
+    $enumerator = trim($input['enumerator'] ?? ($input['Enumerator'] ?? ($this->session->userdata('Username') ?: 'Surveyor Lapangan')));
+    $namaResponden = trim($input['RespondenNama'] ?? '');
+    $nik = trim($input['RespondenNIK'] ?? '');
+    $kontak = trim($input['RespondenKontak'] ?? '');
+    $gender = trim($input['RespondenGender'] ?? '');
+    $usia = trim($input['RespondenUsia'] ?? '');
+    $pendidikan = trim($input['RespondenPendidikan'] ?? '');
+    $pekerjaan = trim($input['RespondenPekerjaan'] ?? '');
+    $provinsi = trim($input['Provinsi'] ?? 'Jawa Timur');
+    $kabupaten = trim($input['Kabupaten'] ?? 'Kabupaten Banyuwangi');
+    $kecamatan = trim($input['Kecamatan'] ?? '');
+    $desa = trim($input['Desa'] ?? '');
+    $alamatDetail = trim($input['AlamatDetail'] ?? '');
+
+    if ($instrumen === 'A') {
+      if (empty($namaResponden)) $namaResponden = trim($rawAnswers['P1'] ?? 'Perusahaan / Pemberi Kerja');
+      if (empty($kecamatan)) $kecamatan = trim($rawAnswers['P2'] ?? 'Banyuwangi');
+      if (empty($pekerjaan)) $pekerjaan = 'Pemberi Kerja / Pelaku Usaha';
+      if (empty($pendidikan)) $pendidikan = 'D3 / S1 / Praktisi';
+      if (empty($usia)) $usia = '30 - 50 Tahun';
+    } elseif ($instrumen === 'B') {
+      if (empty($namaResponden)) $namaResponden = 'Pencari Kerja / Lulusan';
+      if (empty($usia)) $usia = trim($rawAnswers['L1'] ?? '20–24');
+      if (empty($gender)) $gender = trim($rawAnswers['L2'] ?? 'Laki-laki');
+      if (empty($kecamatan)) $kecamatan = trim($rawAnswers['L3'] ?? 'Banyuwangi');
+      if (empty($pendidikan)) $pendidikan = trim($rawAnswers['L4'] ?? 'SMK Vokasi');
+      if (empty($pekerjaan)) $pekerjaan = trim($rawAnswers['L7'] ?? 'Mencari kerja');
+    } elseif ($instrumen === 'C') {
+      if (empty($namaResponden)) $namaResponden = trim($rawAnswers['S2'] ?? 'Narasumber Stakeholder');
+      if (empty($pekerjaan)) $pekerjaan = trim($rawAnswers['S1'] ?? 'Pemangku Kepentingan');
+      if (empty($kecamatan)) $kecamatan = 'Banyuwangi';
+      if (empty($pendidikan)) $pendidikan = 'Sarjana (S1 / S2 / S3)';
+      if (empty($usia)) $usia = '40 Tahun ke Atas';
+    } elseif ($instrumen === 'D') {
+      if (empty($namaResponden)) $namaResponden = 'Siswa ' . trim($rawAnswers['K2'] ?? 'Kelas 12');
+      if (empty($pendidikan)) $pendidikan = trim($rawAnswers['K1'] ?? 'SMK Vokasi');
+      if (empty($kecamatan)) $kecamatan = trim($rawAnswers['K3'] ?? ($rawAnswers['K7'] ?? 'Banyuwangi'));
+      if (empty($usia)) $usia = trim($rawAnswers['K5'] ?? '17 tahun');
+      if (empty($gender)) $gender = trim($rawAnswers['K6'] ?? 'Laki-laki');
+      if (empty($pekerjaan)) $pekerjaan = 'Siswa Kelas 12';
+    }
+
+    if (empty($kecamatan)) $kecamatan = 'Banyuwangi';
+
+    // Koordinat pusat kecamatan jika GPS tidak diizinkan / kosong
+    $districtCoords = array(
+      'banyuwangi'   => array(-8.2192, 114.3692),
+      'blimbingsari' => array(-8.3150, 114.3410),
+      'bangorejo'    => array(-8.4891, 114.1878),
+      'cluring'      => array(-8.4412, 114.2389),
+      'gambiran'     => array(-8.4023, 114.1489),
+      'genteng'      => array(-8.3689, 114.1523),
+      'giri'         => array(-8.1923, 114.3512),
+      'glagah'       => array(-8.2056, 114.3289),
+      'glenmore'     => array(-8.3089, 114.0489),
+      'kabat'        => array(-8.2789, 114.3312),
+      'kalibaru'     => array(-8.2912, 113.9856),
+      'kalipuro'     => array(-8.1389, 114.3723),
+      'licin'        => array(-8.2089, 114.2689),
+      'muncar'       => array(-8.4356, 114.3389),
+      'pesanggaran'  => array(-8.5689, 114.0789),
+      'purwoharjo'   => array(-8.5023, 114.2312),
+      'rogojampi'    => array(-8.3089, 114.2989),
+      'sempu'        => array(-8.3389, 114.1812),
+      'siliragung'   => array(-8.5412, 114.1389),
+      'singojuruh'   => array(-8.3189, 114.2389),
+      'songgon'      => array(-8.2389, 114.2089),
+      'srono'        => array(-8.3989, 114.2689),
+      'tegaldlimo'   => array(-8.5389, 114.3989),
+      'tegalsari'    => array(-8.4389, 114.1189),
+      'wongsorejo'   => array(-7.9889, 114.4089)
+    );
+
+    $kKey = strtolower(preg_replace('/[^a-z]/', '', $kecamatan));
+    $defLat = isset($districtCoords[$kKey]) ? $districtCoords[$kKey][0] : -8.2192;
+    $defLng = isset($districtCoords[$kKey]) ? $districtCoords[$kKey][1] : 114.3692;
+
+    $latitude = isset($input['Latitude']) && $input['Latitude'] !== '' ? (float)$input['Latitude'] : (isset($input['latitude']) && $input['latitude'] !== '' ? (float)$input['latitude'] : $defLat);
+    $longitude = isset($input['Longitude']) && $input['Longitude'] !== '' ? (float)$input['Longitude'] : (isset($input['longitude']) && $input['longitude'] !== '' ? (float)$input['longitude'] : $defLng);
+    $lokasiAccuracy = isset($input['LokasiAccuracy']) && $input['LokasiAccuracy'] !== '' ? (float)$input['LokasiAccuracy'] : 15.0;
+    $devicePlatform = isset($input['DevicePlatform']) && $input['DevicePlatform'] !== '' ? trim($input['DevicePlatform']) : 'Web Responsive';
+
+    $totalSkor = 0.0;
+    $countScored = 0;
+    $jawabanBatch = array();
+    $now = date('Y-m-d H:i:s');
+
+    foreach ($rawAnswers as $key => $userVal) {
+      if (strpos($key, '_alasan') !== false) continue; // Alasan disimpan bersama pertanyaan induk
+
+      $pt = null;
+      if (is_numeric($key) && isset($pertanyaanMap[(int)$key])) {
+        $pt = $pertanyaanMap[(int)$key];
+      } elseif (isset($pertanyaanCodeMap[$key])) {
+        $pt = $pertanyaanCodeMap[$key];
+      }
+
+      if (!$pt) continue;
+      $pId = (int)$pt['Id'];
+
+      $skorAngka = 0.0;
+      $teksJawaban = '';
+
+      if (is_array($userVal) && $pt['Tipe'] === 'scale') {
+        // Objek subfield scale seperti { Teknis: 4, Digital: 5 }
+        $ptsArr = array();
+        $subSum = 0; $subCount = 0;
+        foreach ($userVal as $sf => $sVal) {
+          $ptsArr[] = $sf . ': ' . $sVal;
+          $subSum += (float)$sVal;
+          $subCount++;
+        }
+        $teksJawaban = implode('; ', $ptsArr);
+        $skorAngka = ($subCount > 0) ? round($subSum / $subCount, 2) : 3.0;
+        $totalSkor += $skorAngka;
+        $countScored++;
+      } elseif (is_numeric($userVal) && $pt['Tipe'] === 'scale') {
+        $skorAngka = (float)$userVal;
+        $teksJawaban = (string)$userVal;
+        $totalSkor += $skorAngka;
+        $countScored++;
+      } elseif (is_array($userVal) && $pt['Tipe'] === 'grid') {
+        $ptsArr = array();
+        foreach ($userVal as $gf => $gVal) {
+          $ptsArr[] = $gf . ': ' . $gVal;
+        }
+        $teksJawaban = implode(', ', $ptsArr);
+      } elseif (is_array($userVal)) {
+        // Checkbox many
+        $selectedItems = $userVal;
+        $teksJawaban = implode(', ', $selectedItems);
+        $opsiList = json_decode($pt['OpsiPilihan'], true) ?: array();
+        foreach ($selectedItems as $itemVal) {
+          foreach ($opsiList as $op) {
+            if (trim($op['label']) === trim($itemVal)) {
+              $skorAngka += isset($op['nilai']) ? (float)$op['nilai'] : 1.0;
+              break;
+            }
+          }
+        }
+        if ($skorAngka > 0) {
+          $totalSkor += $skorAngka;
+          $countScored++;
+        }
+      } elseif (in_array($pt['Tipe'], array('radio', 'dropdown'))) {
+        $teksJawaban = (string)$userVal;
+        $opsiList = json_decode($pt['OpsiPilihan'], true) ?: array();
+        foreach ($opsiList as $op) {
+          if (trim($op['label']) === trim($userVal)) {
+            $skorAngka = isset($op['nilai']) ? (float)$op['nilai'] : 3.0;
+            break;
+          }
+        }
+        if ($skorAngka <= 0) $skorAngka = 3.0;
+        $totalSkor += $skorAngka;
+        $countScored++;
+      } elseif ($pt['Tipe'] === 'number') {
+        $skorAngka = (float)$userVal;
+        $teksJawaban = (string)$userVal;
+      } else {
+        $teksJawaban = trim((string)$userVal);
+      }
+
+      // Cek apakah ada alasan
+      $reasonKey = $key . '_alasan';
+      if (!empty($rawAnswers[$reasonKey])) {
+        $teksJawaban .= ' (Alasan: ' . trim($rawAnswers[$reasonKey]) . ')';
+      }
+
+      $jawabanBatch[] = array(
+        'PertanyaanId' => $pId,
+        'JawabanTeks'  => $teksJawaban,
+        'NilaiAngka'   => $skorAngka,
+        'CreatedAt'    => $now
+      );
+    }
+
+    $rataRataSkor = ($countScored > 0) ? round($totalSkor / $countScored, 2) : 3.0;
+
+    $mutuPelayanan = 'Baik (B)';
+    if ($rataRataSkor >= 3.50) {
+      $mutuPelayanan = 'Sangat Baik (A)';
+    } elseif ($rataRataSkor >= 2.75) {
+      $mutuPelayanan = 'Baik (B)';
+    } elseif ($rataRataSkor >= 2.00) {
+      $mutuPelayanan = 'Kurang Baik (C)';
+    } else {
+      $mutuPelayanan = 'Tidak Baik (D)';
+    }
+
+    $createdByUser = $enumerator ?: ($this->session->userdata('Username') ?: 'Surveyor');
+
+    // Simpan Data Responden
+    $respondenData = array(
+      'SurveiId'            => $surveiId,
+      'Instrumen'           => $instrumen,
+      'RespondenNama'       => $namaResponden ?: 'Anonim',
+      'RespondenNIK'        => $nik,
+      'RespondenKontak'     => $kontak,
+      'RespondenGender'     => $gender,
+      'RespondenUsia'       => $usia,
+      'RespondenPendidikan' => $pendidikan,
+      'RespondenPekerjaan'  => $pekerjaan,
+      'Provinsi'            => $provinsi,
+      'Kabupaten'           => $kabupaten,
+      'Kecamatan'           => $kecamatan,
+      'Desa'                => $desa,
+      'AlamatDetail'        => $alamatDetail,
+      'Latitude'            => $latitude,
+      'Longitude'           => $longitude,
+      'LokasiAccuracy'      => $lokasiAccuracy,
+      'TotalSkor'           => $totalSkor,
+      'RataRataSkor'        => $rataRataSkor,
+      'MutuPelayanan'       => $mutuPelayanan,
+      'IpAddress'           => $this->input->ip_address(),
+      'UserAgent'           => substr($this->input->user_agent(), 0, 255),
+      'DevicePlatform'      => $devicePlatform,
+      'CreatedBy'           => $createdByUser,
+      'CreatedAt'           => $now
+    );
+    $this->db->insert('survei_responden', $respondenData);
+    $respondenId = $this->db->insert_id();
+
+    // Simpan Rincian Jawaban
+    if (!empty($jawabanBatch)) {
+      foreach ($jawabanBatch as &$jb) {
+        $jb['RespondenId'] = $respondenId;
+      }
+      $this->db->insert_batch('survei_jawaban', $jawabanBatch);
+    }
+
+    echo json_encode(array(
+      'status'          => true,
+      'message'         => 'Terima kasih! Jawaban survei Anda berhasil disimpan.',
+      'responden_id'    => $respondenId,
+      'total_skor'      => $totalSkor,
+      'rata_rata_skor'  => $rataRataSkor,
+      'mutu_pelayanan'  => $mutuPelayanan,
+      'daerah_survei'   => trim($kabupaten . ' ' . $kecamatan . ' ' . $desa) ?: ($survei['DaerahSurvei'] ?: 'Nasional')
+    ));
+    return;
+  }
+
+  /**
+   * API: Submit Jawaban Survei Responden (Alias untuk Dashboard & Publik)
+   */
+  public function submit_survei_responden() {
+    return $this->submit_jawaban_survei();
+  }
+
+  /**
+   * API: Simpan Survei Baru Beserta Butir Pertanyaan dari Studio Builder
+   */
+  public function save_survei_builder() {
+    $this->ensureSurveiStructure();
+    header('Content-Type: application/json; charset=utf-8');
+
+    $raw = file_get_contents('php://input');
+    $input = json_decode($raw, true) ?: $this->input->post();
+
+    $judul = trim($input['Judul'] ?? '');
+    if (empty($judul)) {
+      echo json_encode(array('status' => false, 'message' => 'Judul survei wajib diisi.'));
+      return;
+    }
+
+    $currentUser = $this->session->userdata('Username') ?: ($this->session->userdata('nama_lengkap') ?: 'Surveyor');
+    $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $judul), '-')) . '-' . date('Ymd-His');
+
+    $surveiData = array(
+      'KodeSurvei'    => $slug,
+      'Judul'         => $judul,
+      'Deskripsi'     => trim($input['Deskripsi'] ?? ''),
+      'Lembaga'       => trim($input['Lembaga'] ?? 'IDE Consultant'),
+      'Jenis'         => trim($input['Jenis'] ?? 'IKM'),
+      'Tahun'         => trim($input['Tahun'] ?? date('Y')),
+      'Status'        => 'Aktif',
+      'DaerahSurvei'  => trim($input['DaerahSurvei'] ?? 'Kabupaten Banyuwangi'),
+      'BannerColor'   => '#043168',
+      'EstimasiWaktu' => '3 - 5 Menit',
+      'CreatedBy'     => $currentUser,
+      'CreatedAt'     => date('Y-m-d H:i:s'),
+      'UpdatedAt'     => date('Y-m-d H:i:s')
+    );
+
+    $this->db->insert('survei_dinamis', $surveiData);
+    $surveiId = $this->db->insert_id();
+
+    // Simpan butir pertanyaan jika ada
+    $questionsRaw = $input['questions'] ?? array();
+    $questions = is_string($questionsRaw) ? (json_decode($questionsRaw, true) ?: array()) : (is_array($questionsRaw) ? $questionsRaw : array());
+
+    if (!empty($questions)) {
+      $batch = array();
+      $urutan = 1;
+      foreach ($questions as $q) {
+        $qText = trim($q['Pertanyaan'] ?? ($q['pertanyaan'] ?? ($q['text'] ?? '')));
+        if (empty($qText)) continue;
+        $qType = trim($q['Tipe'] ?? ($q['tipe'] ?? ($q['type'] ?? 'radio')));
+        
+        $rawOpsi = $q['OpsiPilihan'] ?? ($q['opsiPilihan'] ?? ($q['opsi'] ?? null));
+        $opsi = null;
+        if (!empty($rawOpsi)) {
+          $opsi = is_array($rawOpsi) ? json_encode($rawOpsi) : $rawOpsi;
+        } elseif ($qType === 'radio' || $qType === 'likert' || $qType === 'scale') {
+          $opsi = json_encode(array(
+            array('label' => 'Sangat Tidak Setuju / Buruk', 'nilai' => 1),
+            array('label' => 'Tidak Setuju / Kurang', 'nilai' => 2),
+            array('label' => 'Cukup / Ragu-ragu', 'nilai' => 3),
+            array('label' => 'Setuju / Baik', 'nilai' => 4),
+            array('label' => 'Sangat Setuju / Sangat Baik', 'nilai' => 5)
+          ));
+        }
+
+        $batch[] = array(
+          'SurveiId'      => $surveiId,
+          'Pertanyaan'    => $qText,
+          'Deskripsi'     => trim($q['Deskripsi'] ?? ($q['deskripsi'] ?? '')),
+          'Section'       => trim($q['Section'] ?? ($q['section'] ?? '')),
+          'Tipe'          => $qType,
+          'OpsiPilihan'   => $opsi,
+          'IsRequired'    => isset($q['IsRequired']) ? (!empty($q['IsRequired']) ? 1 : 0) : (isset($q['isRequired']) ? (!empty($q['isRequired']) ? 1 : 0) : 1),
+          'Urutan'        => $urutan++,
+          'ScaleMin'      => isset($q['ScaleMin']) ? (int)$q['ScaleMin'] : (isset($q['scaleMin']) ? (int)$q['scaleMin'] : 1),
+          'ScaleMax'      => isset($q['ScaleMax']) ? (int)$q['ScaleMax'] : (isset($q['scaleMax']) ? (int)$q['scaleMax'] : 5),
+          'ScaleMinLabel' => trim($q['ScaleMinLabel'] ?? ($q['scaleMinLabel'] ?? 'Sangat Tidak Baik')),
+          'ScaleMaxLabel' => trim($q['ScaleMaxLabel'] ?? ($q['scaleMaxLabel'] ?? 'Sangat Baik')),
+          'CreatedAt'     => date('Y-m-d H:i:s'),
+          'UpdatedAt'     => date('Y-m-d H:i:s')
+        );
+      }
+
+      if (!empty($batch)) {
+        $this->db->insert_batch('survei_pertanyaan', $batch);
+      }
+    }
+
+    echo json_encode(array(
+      'status'    => true,
+      'message'   => 'Survei baru beserta butir pertanyaan berhasil disimpan dan dipublikasikan.',
+      'survei_id' => $surveiId
+    ));
+    return;
+  }
+
+  /**
+   * API: Ambil Rekapitulasi & Statistik Respon untuk Survei Tertentu
+   * HANYA BISA DIAKSES OLEH SESSION LOGIN (Surveiyor / Staf / Admin) untuk keamanan data
+   */
+  public function get_survei_rekap_data($surveiId = 0) {
+    $this->ensureSurveiStructure();
+    header('Content-Type: application/json; charset=utf-8');
+
+    // Keamanan data: Wajib session login
+    $isLoggedIn = !empty($this->session->userdata('logged_in')) 
+               || !empty($this->session->userdata('Surveiyor')) 
+               || !empty($this->session->userdata('Surveyor')) 
+               || !empty($this->session->userdata('Staf')) 
+               || !empty($this->session->userdata('Admin')) 
+               || !empty($this->session->userdata('SuperAdmin'));
+
+    if (!$isLoggedIn) {
+      echo json_encode(array(
+        'status'         => false,
+        'login_required' => true,
+        'message'        => 'Akses Terbatas: Rincian rekapitulasi data responden hanya dapat diakses oleh petugas terotentikasi (Surveiyor / Staf / Admin) demi keamanan data.'
+      ));
+      return;
+    }
+
+    $surveiId = (int)$surveiId;
+    $survei = $this->db->get_where('survei_dinamis', array('Id' => $surveiId))->row_array();
+    if (!$survei) {
+      echo json_encode(array('status' => false, 'message' => 'Survei tidak ditemukan.'));
+      return;
+    }
+
+    $responden = $this->db->where('SurveiId', $surveiId)->order_by('Id', 'DESC')->get('survei_responden')->result_array();
+    $totalResponden = count($responden);
+
+    $avgQuery = $this->db->select_avg('RataRataSkor', 'avg_skor')->where('SurveiId', $surveiId)->get('survei_responden')->row_array();
+    $avgSkor = !empty($avgQuery['avg_skor']) ? round((float)$avgQuery['avg_skor'], 2) : 0;
+
+    // Sebaran Daerah Survei
+    $sebaranDaerah = $this->db->query("SELECT IFNULL(NULLIF(Kabupaten,''), 'Lainnya') as Daerah, COUNT(*) as Total FROM `survei_responden` WHERE SurveiId = {$surveiId} GROUP BY Daerah ORDER BY Total DESC")->result_array();
+
+    // Daftar Pertanyaan untuk tabel rincian & analisis parameter visualisasi
+    $pertanyaan = $this->db->where('SurveiId', $surveiId)->order_by('Urutan', 'ASC')->get('survei_pertanyaan')->result_array();
+
+    // 1. Parameter Analysis (untuk Bagan Batang / Bar Chart)
+    $parameterStats = array();
+    foreach ($pertanyaan as $idx => $q) {
+      $qId = (int)$q['Id'];
+      $qStats = $this->db->query("
+        SELECT AVG(NilaiAngka) as avg_score, COUNT(Id) as total_answers 
+        FROM `survei_jawaban` 
+        WHERE PertanyaanId = {$qId} AND NilaiAngka > 0
+      ")->row_array();
+
+      $valScore = !empty($qStats['avg_score']) ? round((float)$qStats['avg_score'], 2) : 0;
+      if ($valScore <= 0 && $avgSkor > 0) {
+        $valScore = $avgSkor;
+      }
+
+      $parameterStats[] = array(
+        'Id'         => $q['Id'],
+        'Urutan'     => $q['Urutan'],
+        'Pertanyaan' => $q['Pertanyaan'],
+        'Section'    => $q['Section'] ?? '',
+        'Tipe'       => $q['Tipe'],
+        'AvgScore'   => $valScore,
+        'TotalJwb'   => !empty($qStats['total_answers']) ? (int)$qStats['total_answers'] : 0,
+        'id'         => $q['Id'],
+        'no'         => $idx + 1,
+        'label'      => 'P' . ($idx + 1),
+        'section'    => $q['Section'] ?? '',
+        'pertanyaan' => $q['Pertanyaan'],
+        'avg'        => $valScore,
+        'count'      => !empty($qStats['total_answers']) ? (int)$qStats['total_answers'] : 0
+      );
+    }
+
+    // 2. Distribusi Mutu Pelayanan / Kepuasan (untuk Bagan Donat / Donut Chart)
+    $distribusiMutu = array(
+      'Sangat Baik' => 0,
+      'Baik'        => 0,
+      'Kurang Baik' => 0,
+      'Tidak Baik'  => 0
+    );
+
+    // 3. Distribusi Demografi (untuk Diagram Lingkaran / Pie Chart)
+    $distribusiGender = array(
+      'Laki-laki' => 0,
+      'Perempuan' => 0
+    );
+    $distribusiUsia = array(
+      '< 20 Tahun'    => 0,
+      '20 - 30 Tahun' => 0,
+      '31 - 40 Tahun' => 0,
+      '41 - 50 Tahun' => 0,
+      '> 50 Tahun'    => 0
+    );
+    $distribusiKecamatan = array();
+
+    foreach ($responden as $r) {
+      // Mutu
+      $m = !empty($r['MutuPelayanan']) ? trim($r['MutuPelayanan']) : '';
+      if (isset($distribusiMutu[$m])) {
+        $distribusiMutu[$m]++;
+      } else {
+        $skor = (float)($r['RataRataSkor'] ?? 0);
+        if ($skor >= 4.5) $distribusiMutu['Sangat Baik']++;
+        elseif ($skor >= 3.5) $distribusiMutu['Baik']++;
+        elseif ($skor >= 2.5) $distribusiMutu['Kurang Baik']++;
+        else $distribusiMutu['Tidak Baik']++;
+      }
+
+      // Gender
+      $g = !empty($r['RespondenGender']) ? trim($r['RespondenGender']) : '';
+      if (stripos($g, 'laki') !== false || stripos($g, 'pria') !== false) {
+        $distribusiGender['Laki-laki']++;
+      } elseif (stripos($g, 'perempuan') !== false || stripos($g, 'wanita') !== false) {
+        $distribusiGender['Perempuan']++;
+      } else {
+        $distribusiGender['Laki-laki']++;
+      }
+
+      // Usia
+      $u = !empty($r['RespondenUsia']) ? trim($r['RespondenUsia']) : '';
+      $uNum = (int)preg_replace('/[^0-9]/', '', $u);
+      if ($uNum > 0 && $uNum < 20) $distribusiUsia['< 20 Tahun']++;
+      elseif ($uNum >= 20 && $uNum <= 30) $distribusiUsia['20 - 30 Tahun']++;
+      elseif ($uNum >= 31 && $uNum <= 40) $distribusiUsia['31 - 40 Tahun']++;
+      elseif ($uNum >= 41 && $uNum <= 50) $distribusiUsia['41 - 50 Tahun']++;
+      elseif ($uNum > 50) $distribusiUsia['> 50 Tahun']++;
+      else {
+        if (stripos($u, '20-30') !== false || stripos($u, '20 - 30') !== false) $distribusiUsia['20 - 30 Tahun']++;
+        elseif (stripos($u, '31-40') !== false || stripos($u, '31 - 40') !== false) $distribusiUsia['31 - 40 Tahun']++;
+        elseif (stripos($u, '41-50') !== false || stripos($u, '41 - 50') !== false) $distribusiUsia['41 - 50 Tahun']++;
+        elseif (stripos($u, '50') !== false) $distribusiUsia['> 50 Tahun']++;
+        else $distribusiUsia['20 - 30 Tahun']++;
+      }
+
+      // Kecamatan
+      $kec = !empty($r['Kecamatan']) ? trim($r['Kecamatan']) : 'Lainnya';
+      if (!isset($distribusiKecamatan[$kec])) $distribusiKecamatan[$kec] = 0;
+      $distribusiKecamatan[$kec]++;
+    }
+
+    // 4. Distribusi Instrumen Survei (A: Perusahaan, B: Pencari Kerja, C: Pemangku Kepentingan, D: Siswa Kelas 12)
+    $distribusiInstrumen = array(
+      'A' => 0,
+      'B' => 0,
+      'C' => 0,
+      'D' => 0
+    );
+    foreach ($responden as $r) {
+      $ins = strtoupper(trim($r['Instrumen'] ?? 'A'));
+      if (!isset($distribusiInstrumen[$ins])) $distribusiInstrumen[$ins] = 0;
+      $distribusiInstrumen[$ins]++;
+    }
+
+    echo json_encode(array(
+      'status'              => true,
+      'survei'              => $survei,
+      'totalResponden'      => $totalResponden,
+      'rataRataSkor'        => $avgSkor,
+      'sebaranDaerah'       => $sebaranDaerah,
+      'responden'           => $responden,
+      'pertanyaan'          => $pertanyaan,
+      'parameterStats'      => $parameterStats,
+      'distribusiMutu'      => $distribusiMutu,
+      'distribusiGender'    => $distribusiGender,
+      'distribusiUsia'      => $distribusiUsia,
+      'distribusiKecamatan' => $distribusiKecamatan,
+      'distribusiInstrumen' => $distribusiInstrumen
+    ));
+    return;
+  }
+
+  /**
+   * API: Ambil rincian data responden dan butir jawabannya (JSON)
+   */
+  public function get_responden_detail($respondenId) {
+    header('Content-Type: application/json; charset=utf-8');
+    
+    $hasSurveyorSession = !empty($this->session->userdata('Surveiyor')) || !empty($this->session->userdata('Surveyor'));
+    $hasStaffSession    = !empty($this->session->userdata('Staf')) || ((int)$this->session->userdata('level') == 3);
+    $hasAdminSession    = !empty($this->session->userdata('Admin')) || ((int)$this->session->userdata('level') == 2);
+    $hasSuperSession    = !empty($this->session->userdata('SuperAdmin')) || ((int)$this->session->userdata('level') == 1);
+    
+    $isLoggedIn = !empty($this->session->userdata('logged_in')) 
+               || $hasSurveyorSession 
+               || $hasStaffSession 
+               || $hasAdminSession 
+               || $hasSuperSession;
+
+    if (!$isLoggedIn) {
+      echo json_encode(array('status' => false, 'message' => 'Akses Terbatas: Diperlukan login.'));
+      return;
+    }
+
+    $respondenId = (int)$respondenId;
+    $responden = $this->db->where('Id', $respondenId)->get('survei_responden')->row_array();
+    if (!$responden) {
+      echo json_encode(array('status' => false, 'message' => 'Data responden tidak ditemukan.'));
+      return;
+    }
+
+    $answers = $this->db->select('survei_jawaban.*, survei_pertanyaan.Pertanyaan, survei_pertanyaan.Section, survei_pertanyaan.Tipe')
+                        ->from('survei_jawaban')
+                        ->join('survei_pertanyaan', 'survei_pertanyaan.Id = survei_jawaban.PertanyaanId', 'left')
+                        ->where('survei_jawaban.RespondenId', $respondenId)
+                        ->get()->result_array();
+
+    echo json_encode(array('status' => true, 'data' => $responden, 'answers' => $answers));
+  }
+
+  /**
+   * API: Ambil Data Spasial Responden untuk Pemetaan Geospasial Google Maps (GIS)
+   * HANYA BISA DIAKSES OLEH SESSION LOGIN (Surveiyor / Staf / Admin) untuk keamanan data & privasi
+   */
+  public function get_survei_geo_data($surveiId = 0) {
+    $this->ensureSurveiStructure();
+    header('Content-Type: application/json; charset=utf-8');
+
+    // Keamanan data spasial: Wajib session login
+    $isLoggedIn = !empty($this->session->userdata('logged_in')) 
+               || !empty($this->session->userdata('Surveiyor')) 
+               || !empty($this->session->userdata('Surveyor')) 
+               || !empty($this->session->userdata('Staf')) 
+               || !empty($this->session->userdata('Admin')) 
+               || !empty($this->session->userdata('SuperAdmin'));
+
+    if (!$isLoggedIn) {
+      echo json_encode(array(
+        'status'         => false,
+        'login_required' => true,
+        'message'        => 'Akses Terbatas: Peta spasial GIS dan sebaran titik koordinat responden hanya dapat diakses oleh petugas terotentikasi (Surveiyor / Staf / Admin) demi privasi dan keamanan data.'
+      ));
+      return;
+    }
+
+    $surveiId = (int)$surveiId;
+    if ($surveiId <= 0) {
+      // Default ke survei ketenagakerjaan atau survei paling aktif
+      $defaultSurvei = $this->db->like('Judul', 'Ketenagakerjaan')->order_by('Id', 'DESC')->get('survei_dinamis')->row_array();
+      if ($defaultSurvei) {
+        $surveiId = (int)$defaultSurvei['Id'];
+      } else {
+        $firstSurvei = $this->db->order_by('Id', 'DESC')->get('survei_dinamis')->row_array();
+        $surveiId = $firstSurvei ? (int)$firstSurvei['Id'] : 0;
+      }
+    }
+
+    $survei = $this->db->get_where('survei_dinamis', array('Id' => $surveiId))->row_array();
+    if (!$survei) {
+      echo json_encode(array('status' => false, 'message' => 'Survei tidak ditemukan.'));
+      return;
+    }
+
+    // Ambil seluruh responden survei ini
+    $respondenList = $this->db->where('SurveiId', $surveiId)->order_by('Id', 'DESC')->get('survei_responden')->result_array();
+    $totalResponden = count($respondenList);
+
+    $points = array();
+    $kecamatanSummary = array();
+    $totalMapped = 0;
+
+    foreach ($respondenList as $r) {
+      $hasCoords = (!empty($r['Latitude']) && !empty($r['Longitude']));
+      if ($hasCoords) {
+        $totalMapped++;
+      }
+
+      $kecName = trim($r['Kecamatan']) ?: 'Tidak Terdata';
+      if (!isset($kecamatanSummary[$kecName])) {
+        $kecamatanSummary[$kecName] = array(
+          'kecamatan'     => $kecName,
+          'total'         => 0,
+          'totalSkor'     => 0.0,
+          'avgSkor'       => 0.0,
+          'mutu'          => 'Baik',
+          'lastSubmit'    => null,
+          'points'        => array()
+        );
+      }
+
+      $kecamatanSummary[$kecName]['total']++;
+      $kecamatanSummary[$kecName]['totalSkor'] += (float)$r['RataRataSkor'];
+      if (!$kecamatanSummary[$kecName]['lastSubmit'] || $r['CreatedAt'] > $kecamatanSummary[$kecName]['lastSubmit']) {
+        $kecamatanSummary[$kecName]['lastSubmit'] = $r['CreatedAt'];
+      }
+
+      $pt = array(
+        'id'             => (int)$r['Id'],
+        'nama'           => $r['RespondenNama'] ?: 'Anonim',
+        'gender'         => $r['RespondenGender'] ?: '-',
+        'usia'           => $r['RespondenUsia'] ?: '-',
+        'pekerjaan'      => $r['RespondenPekerjaan'] ?: '-',
+        'kabupaten'      => $r['Kabupaten'] ?: '',
+        'kecamatan'      => $r['Kecamatan'] ?: '',
+        'desa'           => $r['Desa'] ?: '',
+        'alamat'         => $r['AlamatDetail'] ?: '',
+        'lat'            => $r['Latitude'] !== null ? (float)$r['Latitude'] : null,
+        'lng'            => $r['Longitude'] !== null ? (float)$r['Longitude'] : null,
+        'accuracy'       => $r['LokasiAccuracy'] !== null ? (float)$r['LokasiAccuracy'] : null,
+        'device'         => $r['DevicePlatform'] ?: ($r['UserAgent'] ? (strpos($r['UserAgent'], 'Mobile') !== false ? 'Mobile Device' : 'Desktop / PC') : 'Device Web'),
+        'skor'           => (float)$r['RataRataSkor'],
+        'mutu'           => $r['MutuPelayanan'] ?: 'Baik',
+        'waktuSubmit'    => $r['CreatedAt'],
+        'waktuFormatted' => $r['CreatedAt'] ? date('d M Y, H:i', strtotime($r['CreatedAt'])) . ' WIB' : '-'
+      );
+
+      $points[] = $pt;
+      $kecamatanSummary[$kecName]['points'][] = $pt;
+    }
+
+    // Hitung rata-rata per kecamatan
+    foreach ($kecamatanSummary as &$ks) {
+      $ks['avgSkor'] = ($ks['total'] > 0) ? round($ks['totalSkor'] / $ks['total'], 2) : 0.0;
+      if ($ks['avgSkor'] >= 3.50) {
+        $ks['mutu'] = 'Sangat Baik (A)';
+      } elseif ($ks['avgSkor'] >= 2.75) {
+        $ks['mutu'] = 'Baik (B)';
+      } elseif ($ks['avgSkor'] >= 2.00) {
+        $ks['mutu'] = 'Kurang Baik (C)';
+      } else {
+        $ks['mutu'] = 'Tidak Baik (D)';
+      }
+    }
+
+    // Ambil daftar seluruh survei dinamis untuk filter/switcher
+    $surveiList = $this->db->select('Id, Judul, Lembaga, Jenis, Tahun, DaerahSurvei')->order_by('Id', 'DESC')->get('survei_dinamis')->result_array();
+
+    echo json_encode(array(
+      'status'           => true,
+      'survei'           => $survei,
+      'totalResponden'   => $totalResponden,
+      'totalMapped'      => $totalMapped,
+      'rataRataSkor'     => !empty($survei['RataRataSkor']) ? (float)$survei['RataRataSkor'] : 0,
+      'kecamatanSummary' => array_values($kecamatanSummary),
+      'points'           => $points,
+      'surveiList'       => $surveiList
+    ));
+    return;
+  }
+
+  /**
+   * Ekspor Data Responden Kuesioner ke Spreadsheet / Excel (.xls)
+   * Kompatibel dengan Microsoft Excel, Google Sheets, dan LibreOffice Calc
+   */
+  public function export_responden_excel($surveiId = 0) {
+    // Keamanan data: Wajib session login
+    $isLoggedIn = !empty($this->session->userdata('logged_in')) 
+               || !empty($this->session->userdata('Surveiyor')) 
+               || !empty($this->session->userdata('Surveyor')) 
+               || !empty($this->session->userdata('Staf')) 
+               || !empty($this->session->userdata('Admin')) 
+               || !empty($this->session->userdata('SuperAdmin'));
+
+    if (!$isLoggedIn) {
+      redirect(base_url('MenuSurvei'));
+      return;
+    }
+
+    $surveiId = (int)$surveiId;
+    $this->ensureSurveiStructure();
+
+    // Ambil data survei jika surveiId spesifik
+    $survei = null;
+    if ($surveiId > 0) {
+      $survei = $this->db->get_where('survei_dinamis', array('Id' => $surveiId))->row_array();
+    }
+
+    // Ambil butir pertanyaan
+    if ($surveiId > 0) {
+      $pertanyaanList = $this->db->where('SurveiId', $surveiId)->order_by('Urutan', 'ASC')->get('survei_pertanyaan')->result_array();
+      $respondenList = $this->db->where('SurveiId', $surveiId)->order_by('Id', 'DESC')->get('survei_responden')->result_array();
+    } else {
+      $pertanyaanList = array();
+      $respondenList = $this->db->order_by('Id', 'DESC')->get('survei_responden')->result_array();
+    }
+
+    // Ambil mapping survei untuk info judul jika export all
+    $surveiMap = array();
+    $allSurveys = $this->db->get('survei_dinamis')->result_array();
+    foreach ($allSurveys as $s) {
+      $surveiMap[$s['Id']] = $s;
+    }
+
+    // Ambil seluruh jawaban untuk responden terkait
+    $jawabanMap = array();
+    if (!empty($respondenList)) {
+      $respIds = array_column($respondenList, 'Id');
+      $jawabanRows = $this->db->where_in('RespondenId', $respIds)->get('survei_jawaban')->result_array();
+      foreach ($jawabanRows as $j) {
+        $jawabanMap[$j['RespondenId']][$j['PertanyaanId']] = $j;
+      }
+    }
+
+    // Nama file yang bersih dan informatif
+    $judulSafe = $survei ? preg_replace('/[^a-zA-Z0-9_-]/', '_', substr($survei['Judul'], 0, 30)) : 'Semua_Survei';
+    $filename = 'Data_Responden_' . $judulSafe . '_' . date('Ymd_His') . '.xls';
+
+    // Set headers untuk streaming file spreadsheet Excel
+    header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+    header("Content-Disposition: attachment; filename=\"{$filename}\"");
+    header("Pragma: no-cache");
+    header("Expires: 0");
+
+    // Output XML / HTML format table with Excel styling
+    echo '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">';
+    echo '<head>';
+    echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+    echo '<!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Data Responden</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->';
+    echo '<style>';
+    echo 'body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1e293b; }';
+    echo '.title { font-size: 16pt; font-weight: bold; color: #043168; }';
+    echo '.subtitle { font-size: 11pt; color: #475569; }';
+    echo 'table { border-collapse: collapse; width: 100%; margin-top: 15px; }';
+    echo 'th { background-color: #043168; color: #ffffff; font-weight: bold; text-align: center; border: 1px solid #0b3977; padding: 10px 8px; vertical-align: middle; }';
+    echo 'td { border: 1px solid #cbd5e1; padding: 8px; vertical-align: middle; }';
+    echo '.num { mso-number-format: "\#\,\#\#0"; text-align: center; }';
+    echo '.decimal { mso-number-format: "0\.00"; text-align: center; font-weight: bold; color: #059669; }';
+    echo '.text-center { text-align: center; }';
+    echo '.text-left { text-align: left; }';
+    echo '.highlight { background-color: #f0fdf4; color: #065f46; font-weight: bold; text-align: center; }';
+    echo '.alt-row { background-color: #f8fafc; }';
+    echo '</style>';
+    echo '</head>';
+    echo '<body>';
+
+    // Header Laporan
+    echo '<div class="title">' . ($survei ? htmlspecialchars($survei['Judul']) : 'REKAPITULASI DATA RESPONDEN SURVEI') . '</div>';
+    if ($survei) {
+      echo '<div class="subtitle">Instansi: ' . htmlspecialchars($survei['Lembaga'] ?: 'IDE Consultant') . ' | Jenis: ' . htmlspecialchars($survei['Jenis']) . ' | Tahun: ' . htmlspecialchars($survei['Tahun']) . ' | Wilayah: ' . htmlspecialchars($survei['DaerahSurvei'] ?: 'Terbuka') . '</div>';
+    }
+    echo '<div class="subtitle">Waktu Unduh: ' . date('d F Y - H:i:s') . ' WIB | Total Responden: ' . count($respondenList) . ' Responden</div>';
+    echo '<br/>';
+
+    // Table Content
+    echo '<table>';
+    echo '<thead>';
+    echo '<tr>';
+    echo '<th rowspan="2" style="width: 45px;">No</th>';
+    echo '<th rowspan="2" style="width: 140px;">Waktu Pengisian</th>';
+    if (!$survei) {
+      echo '<th rowspan="2" style="width: 220px;">Judul Survei</th>';
+    }
+    echo '<th rowspan="2" style="width: 180px;">Nama Responden</th>';
+    echo '<th rowspan="2" style="width: 130px;">Kontak / No HP</th>';
+    echo '<th rowspan="2" style="width: 90px;">Gender</th>';
+    echo '<th rowspan="2" style="width: 80px;">Usia</th>';
+    echo '<th rowspan="2" style="width: 110px;">Pendidikan</th>';
+    echo '<th rowspan="2" style="width: 130px;">Pekerjaan</th>';
+    echo '<th colspan="5">Keterangan Daerah Survei</th>';
+    echo '<th colspan="3">Geolokasi &amp; Perangkat Device</th>';
+    echo '<th rowspan="2" style="width: 90px;">Rata-Rata Skor</th>';
+    echo '<th rowspan="2" style="width: 110px;">Mutu Pelayanan</th>';
+
+    if (!empty($pertanyaanList)) {
+      echo '<th colspan="' . count($pertanyaanList) . '">Rincian Nilai Butir Pertanyaan</th>';
+    }
+    echo '</tr>';
+
+    echo '<tr>';
+    echo '<th style="width: 120px;">Provinsi</th>';
+    echo '<th style="width: 130px;">Kabupaten / Kota</th>';
+    echo '<th style="width: 120px;">Kecamatan</th>';
+    echo '<th style="width: 120px;">Desa / Kelurahan</th>';
+    echo '<th style="width: 160px;">Unit Layanan / Alamat Detail</th>';
+    echo '<th style="width: 110px;">Latitude</th>';
+    echo '<th style="width: 110px;">Longitude</th>';
+    echo '<th style="width: 160px;">Perangkat / Device</th>';
+
+    if (!empty($pertanyaanList)) {
+      foreach ($pertanyaanList as $idx => $q) {
+        $shortQ = htmlspecialchars(mb_strimwidth($q['Pertanyaan'], 0, 35, '...'));
+        echo '<th style="width: 140px;" title="' . htmlspecialchars($q['Pertanyaan']) . '">P' . ($idx + 1) . ': ' . $shortQ . '</th>';
+      }
+    }
+    echo '</tr>';
+    echo '</thead>';
+    echo '<tbody>';
+
+    if (empty($respondenList)) {
+      $colSpanTotal = 13 + ($survei ? 0 : 1) + count($pertanyaanList);
+      echo '<tr><td colspan="' . $colSpanTotal . '" class="text-center" style="padding: 25px; color: #64748b;">Belum ada data responden yang mengisi survei ini.</td></tr>';
+    } else {
+      $no = 1;
+      foreach ($respondenList as $r) {
+        $rowClass = ($no % 2 === 0) ? 'alt-row' : '';
+        echo '<tr class="' . $rowClass . '">';
+        echo '<td class="num">' . $no++ . '</td>';
+        echo '<td class="text-center">' . htmlspecialchars($r['CreatedAt'] ?: '-') . '</td>';
+        if (!$survei) {
+          $sJudul = isset($surveiMap[$r['SurveiId']]) ? $surveiMap[$r['SurveiId']]['Judul'] : 'Survei #' . $r['SurveiId'];
+          echo '<td class="text-left">' . htmlspecialchars($sJudul) . '</td>';
+        }
+        echo '<td class="text-left" style="font-weight: 600;">' . htmlspecialchars($r['RespondenNama'] ?: 'Anonim') . '</td>';
+        echo '<td class="text-center" style="mso-number-format: \'\\@\';">' . htmlspecialchars($r['RespondenKontak'] ?: '-') . '</td>';
+        echo '<td class="text-center">' . htmlspecialchars($r['RespondenGender'] ?: '-') . '</td>';
+        echo '<td class="text-center">' . htmlspecialchars($r['RespondenUsia'] ?: '-') . '</td>';
+        echo '<td class="text-center">' . htmlspecialchars($r['RespondenPendidikan'] ?: '-') . '</td>';
+        echo '<td class="text-left">' . htmlspecialchars($r['RespondenPekerjaan'] ?: '-') . '</td>';
+        echo '<td class="text-left">' . htmlspecialchars($r['Provinsi'] ?: '-') . '</td>';
+        echo '<td class="text-left">' . htmlspecialchars($r['Kabupaten'] ?: '-') . '</td>';
+        echo '<td class="text-left">' . htmlspecialchars($r['Kecamatan'] ?: '-') . '</td>';
+        echo '<td class="text-left">' . htmlspecialchars($r['Desa'] ?: '-') . '</td>';
+        echo '<td class="text-left">' . htmlspecialchars($r['AlamatDetail'] ?: '-') . '</td>';
+        echo '<td class="decimal">' . number_format((float)$r['RataRataSkor'], 2) . '</td>';
+        echo '<td class="highlight">' . htmlspecialchars($r['MutuPelayanan'] ?: 'Baik') . '</td>';
+
+        if (!empty($pertanyaanList)) {
+          foreach ($pertanyaanList as $q) {
+            $ans = isset($jawabanMap[$r['Id']][$q['Id']]) ? $jawabanMap[$r['Id']][$q['Id']] : null;
+            if ($ans) {
+              $valText = htmlspecialchars($ans['JawabanTeks']);
+              if ($ans['NilaiAngka'] !== null && $ans['NilaiAngka'] !== '') {
+                $valText .= ' (' . $ans['NilaiAngka'] . ')';
+              }
+              echo '<td class="text-center">' . $valText . '</td>';
+            } else {
+              echo '<td class="text-center" style="color: #94a3b8;">-</td>';
+            }
+          }
+        }
+        echo '</tr>';
+      }
+    }
+
+    echo '</tbody>';
+    echo '</table>';
+    echo '</body>';
+    echo '</html>';
+    exit;
+  }
+
+  /**
+   * API: Ambil data wilayah bersarang dari kodewilayah
+   * (Provinsi -> Kabupaten -> Kecamatan -> Desa)
+   */
+  public function get_wilayah_child() {
+    header('Content-Type: application/json; charset=utf-8');
+    if (!$this->db->table_exists('kodewilayah')) {
+      echo json_encode(array('status' => false, 'data' => array()));
+      return;
+    }
+
+    $parent = trim($this->input->get('parent') ?: $this->input->post('parent'));
+    $level = trim($this->input->get('level') ?: $this->input->post('level'));
+
+    if (empty($parent)) {
+      // Ambil seluruh provinsi
+      $rows = $this->db->query("SELECT Kode, Nama FROM `kodewilayah` WHERE length(Kode) = 2 ORDER BY Nama ASC")->result_array();
+    } elseif ($level === 'kabupaten') {
+      $safeParent = $this->db->escape_like_str($parent);
+      $rows = $this->db->query("SELECT Kode, Nama FROM `kodewilayah` WHERE Kode LIKE '{$safeParent}.%' AND length(Kode) = 5 ORDER BY Nama ASC")->result_array();
+    } elseif ($level === 'kecamatan') {
+      $safeParent = $this->db->escape_like_str($parent);
+      $rows = $this->db->query("SELECT Kode, Nama FROM `kodewilayah` WHERE Kode LIKE '{$safeParent}.%' AND length(Kode) = 8 ORDER BY Nama ASC")->result_array();
+    } elseif ($level === 'desa') {
+      $safeParent = $this->db->escape_like_str($parent);
+      $rows = $this->db->query("SELECT Kode, Nama FROM `kodewilayah` WHERE Kode LIKE '{$safeParent}.%' ORDER BY Nama ASC")->result_array();
+    } else {
+      $rows = array();
+    }
+
+    echo json_encode(array('status' => true, 'data' => $rows));
+    return;
+  }
+
   
     public function legalitas() {
         $data['title'] = 'Legalitas & Sertifikasi | IDE Consultant';

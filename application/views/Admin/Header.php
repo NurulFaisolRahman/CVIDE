@@ -1445,6 +1445,11 @@
                   </li>
                 </ul>
 
+                <div class="sidebar-menu-title">Instrumen Survei</div>
+                <ul class="nav side-menu">
+                  <li><a href="<?=base_url('IDE/MenuSurvei')?>"><i class="fa-solid fa-square-poll-vertical"></i> <b>Layanan Survei</b></a></li>
+                </ul>
+
                                   <div class="sidebar-menu-title">Tools</div>
                   <ul class="nav side-menu">
                     <li><a href="<?=base_url('Admin/Komparasi')?>"><i class="fa-solid fa-code-compare"></i> <b>Komparasi</b> </a></li>

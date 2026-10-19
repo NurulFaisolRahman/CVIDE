@@ -1318,6 +1318,11 @@
                   <li><a href="<?=base_url('Staf/OlahData')?>"><i class="fa-solid fa-chart-pie"></i> <b>Olah Data</b> </a></li>
                 </ul>
 
+                <div class="sidebar-menu-title">Instrumen Survei</div>
+                <ul class="nav side-menu">
+                  <li><a href="<?=base_url('MenuSurvei')?>"><i class="fa-solid fa-square-poll-vertical"></i> <b>Layanan Survei</b></a></li>
+                </ul>
+
                 <div class="sidebar-menu-title">Sistem</div>
                 <ul class="nav side-menu">
                   <li><a href="<?=base_url('IDE/SignOut')?>"><i class="fa-solid fa-right-from-bracket"></i> <b>Keluar (Sign Out)</b> </a></li>

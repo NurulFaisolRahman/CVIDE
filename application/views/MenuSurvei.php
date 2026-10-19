@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" name="viewport">
-  <title><?= $title ?? 'Menu Survei IKM | IDE Consultant' ?></title>
-  <meta content="Layanan survei indeks kepuasan masyarakat (IKM) profesional oleh CV Inti Desain Ekonomi Consultant" name="description">
-  <meta content="survei, ikm, kepuasan masyarakat, pelayanan publik, riset kebijakan, ide consultant" name="keywords">
+  <title><?= $title ?? 'Portal Layanan Survei | IDE Consultant' ?></title>
+  <meta content="Layanan instrumen survei terpadu dan riset kebijakan profesional oleh CV Inti Desain Ekonomi Consultant" name="description">
+  <meta content="survei, ikm, riset kebijakan, kepuasan masyarakat, pelayanan publik, evaluasi daerah, ide consultant" name="keywords">
   
   <!-- Favicons (Logo IDE - Google Search & Multi-Device Compliant) -->
   <link rel="icon" type="image/png" sizes="192x192" href="<?= base_url('assets/img/android-chrome-192x192.png') ?>">
@@ -25,6 +25,23 @@
   
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- jQuery & SweetAlert2 -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <!-- Leaflet.js & OpenStreetMap CSS/JS for Interactive GIS Geospasial Infographics -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- QRCode.js & html2canvas for Automatic QR Code & Publication Banner Generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <!-- RTKD Multi-Instrument Dynamic Survey Stylesheet & Engine -->
+  <link rel="stylesheet" href="<?= base_url('assets/css/survei_rtkd.css') ?>?v=<?= time() ?>">
+  <script src="<?= base_url('assets/js/survei_rtkd_engine.js') ?>?v=<?= time() ?>"></script>
 
   <style>
     /* ==========================================================================
@@ -365,12 +382,12 @@
        ========================================================================== */
     .subpage-banner {
       background: linear-gradient(135deg, rgba(180, 8, 20, 0.95) 0%, rgba(4, 49, 104, 0.96) 50%, rgba(8, 35, 75, 0.98) 100%);
-      border-bottom-right-radius: 150px;
-      border-bottom-left-radius: 150px;
-      padding: 175px 0 115px 0;
+      border-bottom-right-radius: 60px;
+      border-bottom-left-radius: 60px;
+      padding: 135px 0 65px 0;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 20px 40px rgba(4, 49, 104, 0.35);
+      box-shadow: 0 15px 35px rgba(4, 49, 104, 0.28);
       text-align: center;
     }
 
@@ -437,12 +454,12 @@
     }
 
     .subpage-banner h1 {
-      font-size: 46px;
+      font-size: 36px;
       font-weight: 800;
       color: #ffffff;
       text-transform: uppercase;
       line-height: 1.25;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       text-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
 
@@ -453,18 +470,18 @@
 
     .subpage-banner p.lead-text {
       color: rgba(255, 255, 255, 0.92);
-      font-size: 16px;
-      max-width: 760px;
-      margin: 0 auto 40px;
-      line-height: 1.7;
+      font-size: 15px;
+      max-width: 720px;
+      margin: 0 auto 30px;
+      line-height: 1.65;
     }
 
     /* Stats strip */
     .hero-stats-strip {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 16px;
-      max-width: 860px;
+      max-width: 760px;
       margin: 0 auto;
     }
 
@@ -472,8 +489,8 @@
       background: rgba(255, 255, 255, 0.12);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.25);
-      border-radius: 20px;
-      padding: 18px 14px;
+      border-radius: 16px;
+      padding: 14px 12px;
       transition: all 0.3s ease;
     }
 
@@ -532,6 +549,83 @@
       max-width: 680px;
       margin: 12px auto 0;
       line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       SURVEY CONTENT & FILTER SECTION
+       ========================================================================== */
+    .survey-content {
+      padding: 40px 0 75px 0;
+      background-color: #ffffff;
+    }
+
+    .survey-content-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 30px;
+    }
+
+    /* Modern Filter Card */
+    .filter-section-lugx {
+      background: var(--lugx-light-gray);
+      border-radius: var(--lugx-radius);
+      border: 1px solid #e2e8f0;
+      padding: 30px;
+      margin-bottom: 45px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+
+    .filter-section-lugx h4 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--lugx-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-grid-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .filter-group-lugx {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .filter-group-lugx label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--lugx-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 8px;
+    }
+
+    .filter-select-custom {
+      width: 100%;
+      height: 48px;
+      border-radius: 24px;
+      border: 2px solid #cbd5e1;
+      padding: 0 20px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--lugx-dark);
+      font-family: inherit;
+      background-color: #ffffff;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filter-select-custom:focus {
+      border-color: var(--lugx-blue);
+      box-shadow: 0 0 0 3px rgba(4, 49, 104, 0.15);
     }
 
     /* ==========================================================================
@@ -611,19 +705,19 @@
       box-shadow: 0 0 0 3px rgba(4, 49, 104, 0.15);
     }
 
-    /* Survey Grid & Cards */
+    /* Survey Grid & Cards - Enterprise Proportion */
     .survey-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-      gap: 30px;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 24px;
     }
 
     .survey-card {
       background-color: #ffffff;
-      border-radius: var(--lugx-radius);
+      border-radius: 20px;
       border: 1px solid #e2e8f0;
-      box-shadow: 0 10px 30px rgba(4, 49, 104, 0.08);
-      padding: 34px 28px;
+      box-shadow: 0 8px 24px rgba(4, 49, 104, 0.06);
+      padding: 24px 22px;
       display: flex;
       flex-direction: column;
       position: relative;
@@ -650,57 +744,57 @@
     }
 
     .survey-card:hover {
-      transform: translateY(-8px);
+      transform: translateY(-6px);
       border-color: var(--lugx-red);
-      box-shadow: 0 20px 45px rgba(4, 49, 104, 0.16);
+      box-shadow: 0 16px 36px rgba(4, 49, 104, 0.14);
     }
 
     .card-header-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 20px;
+      margin-bottom: 14px;
       position: relative;
       z-index: 2;
     }
 
     .card-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
       background: linear-gradient(135deg, var(--lugx-blue) 0%, #0d4f9b 100%);
       color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
-      box-shadow: 0 6px 16px rgba(4, 49, 104, 0.25);
+      font-size: 19px;
+      box-shadow: 0 5px 14px rgba(4, 49, 104, 0.22);
       transition: all 0.35s ease;
     }
 
     .card-icon svg {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       color: #ffffff;
       stroke-width: 2;
     }
 
     .survey-card:hover .card-icon {
       background: var(--lugx-red);
-      transform: scale(1.08) rotate(4deg);
-      box-shadow: 0 8px 20px rgba(180, 8, 20, 0.35);
+      transform: scale(1.06) rotate(3deg);
+      box-shadow: 0 6px 18px rgba(180, 8, 20, 0.35);
     }
 
     .card-status {
       font-size: 11px;
       font-weight: 800;
-      padding: 6px 14px;
+      padding: 5px 12px;
       border-radius: 20px;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
       text-transform: uppercase;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .status-active {
@@ -715,12 +809,28 @@
       border: 1px solid rgba(220, 38, 38, 0.2);
     }
 
+    .badge-multi-instrumen {
+      background: linear-gradient(135deg, rgba(4, 49, 104, 0.08), rgba(180, 8, 20, 0.08));
+      color: var(--lugx-blue);
+      border: 1px solid rgba(4, 49, 104, 0.22);
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      margin-left: 6px;
+    }
+
     .card-title {
-      font-size: 18px;
+      font-size: 16.5px;
       font-weight: 800;
       color: var(--lugx-dark);
-      margin-bottom: 20px;
-      line-height: 1.4;
+      margin-bottom: 14px;
+      line-height: 1.38;
       text-transform: uppercase;
       transition: color 0.3s ease;
       position: relative;
@@ -734,20 +844,21 @@
     .card-meta {
       background: var(--lugx-light-gray);
       border: 1px solid #edf2f7;
-      border-radius: 18px;
-      padding: 16px 20px;
+      border-radius: 14px;
+      padding: 12px 16px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-bottom: 24px;
+      gap: 8px;
+      margin-bottom: 18px;
       position: relative;
       z-index: 2;
     }
 
     .meta-row {
       display: grid;
-      grid-template-columns: 120px 14px 1fr;
+      grid-template-columns: 110px 12px 1fr;
       align-items: baseline;
+      font-size: 12px;
     }
 
     .meta-label {
@@ -772,26 +883,28 @@
     }
 
     .card-actions {
-      display: flex;
-      gap: 12px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr 1fr;
+      gap: 8px;
       margin-top: auto;
       position: relative;
       z-index: 2;
     }
 
     .btn-action-fill {
-      flex: 1;
-      height: 46px;
-      border-radius: 23px;
-      background-color: var(--lugx-red);
+      height: 42px;
+      border-radius: 21px;
+      background: linear-gradient(135deg, #b40814 0%, #e11d48 55%, #b40814 100%);
+      background-size: 200% auto;
       color: #ffffff;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
       text-transform: uppercase;
+      letter-spacing: 0.4px;
       border: none;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(180, 8, 20, 0.35);
-      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(180, 8, 20, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -799,22 +912,28 @@
     }
 
     .btn-action-fill:hover {
-      background-color: var(--lugx-red-hover);
+      background-position: right center;
       transform: translateY(-2px);
-      box-shadow: 0 8px 18px rgba(180, 8, 20, 0.5);
+      box-shadow: 0 8px 22px rgba(180, 8, 20, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    .btn-action-fill:active {
+      transform: translateY(0);
+      box-shadow: 0 3px 10px rgba(180, 8, 20, 0.4);
     }
 
     .btn-action-demo {
-      flex: 1;
-      height: 46px;
-      border-radius: 23px;
+      height: 42px;
+      border-radius: 21px;
       background: #ffffff;
       color: var(--lugx-blue);
       border: 2px solid var(--lugx-blue);
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
       text-transform: uppercase;
+      letter-spacing: 0.4px;
       cursor: pointer;
+      box-shadow: 0 2px 8px rgba(4, 49, 104, 0.08);
       transition: all 0.3s ease;
       display: inline-flex;
       align-items: center;
@@ -823,9 +942,58 @@
     }
 
     .btn-action-demo:hover {
-      background: var(--lugx-blue);
+      background: linear-gradient(135deg, var(--lugx-blue) 0%, #0d4f9b 100%);
       color: #ffffff;
+      border-color: transparent;
       transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(4, 49, 104, 0.3);
+    }
+
+    .btn-action-demo:active {
+      transform: translateY(0);
+    }
+
+    /* BUTTON QR CODE BER-CSS MENAWAN & MODERN */
+    .btn-action-qr {
+      height: 42px;
+      border-radius: 21px;
+      background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+      color: #047857;
+      border: 2px solid #6ee7b7;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(4, 120, 87, 0.08);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-action-qr i {
+      color: #059669;
+      font-size: 14px;
+      transition: transform 0.25s ease;
+    }
+
+    .btn-action-qr:hover {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      color: #ffffff;
+      border-color: transparent;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(4, 120, 87, 0.35);
+    }
+
+    .btn-action-qr:hover i {
+      color: #ffffff;
+      transform: scale(1.18);
+    }
+
+    .btn-action-qr:active {
+      transform: translateY(0);
     }
 
     /* Login Status Badge Fixed on Top */
@@ -1423,7 +1591,16 @@
         grid-template-columns: 1fr;
       }
       .hero-stats-strip {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
+        max-width: 380px;
+        gap: 10px;
+      }
+      .hero-stat-box {
+        padding: 12px 14px;
+        border-radius: 14px;
+      }
+      .hero-stat-val {
+        font-size: 20px;
       }
       .subpage-banner {
         border-bottom-right-radius: 80px;
@@ -1460,7 +1637,4330 @@
         font-size: 26px;
       }
     }
-  </style>
+
+    /* ==========================================================================
+       SURVEYOR CONTROL BAR & TABS (Surveiyor Level 4 & Admin Portal)
+       ========================================================================== */
+    .surveyor-control-bar-wrap {
+      max-width: 1280px;
+      margin: -35px auto 35px auto;
+      padding: 0 30px;
+      position: relative;
+      z-index: 20;
+    }
+
+    .surveyor-control-bar {
+      background: linear-gradient(135deg, var(--lugx-blue) 0%, #0d3d7c 100%);
+      border-radius: 24px;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      box-shadow: 0 15px 35px rgba(4, 49, 104, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      flex-wrap: wrap;
+    }
+
+    .surveyor-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .surveyor-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .surveyor-bar-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #6ee7b7;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .surveyor-bar-name {
+      font-size: 17px;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .surveyor-bar-tabs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 6px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .surveyor-tab-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 13.5px;
+      font-weight: 700;
+      font-family: inherit;
+      padding: 10px 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+      outline: none;
+    }
+
+    .surveyor-tab-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .surveyor-tab-btn.active {
+      background: #ffffff;
+      color: var(--lugx-blue);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .tab-badge-pill {
+      background: var(--lugx-red);
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 10px;
+      letter-spacing: 0.3px;
+    }
+
+    .surveyor-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-create-survey {
+      background: var(--lugx-red);
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 800;
+      font-family: inherit;
+      padding: 12px 24px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 18px rgba(180, 8, 20, 0.4);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .btn-create-survey:hover {
+      transform: translateY(-2px) scale(1.03);
+      background: #9b0711;
+      box-shadow: 0 10px 24px rgba(180, 8, 20, 0.5);
+    }
+
+    /* Keterangan Daerah Survei Badge on Cards */
+    .badge-daerah-survei {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #0369a1;
+      background: #e0f2fe;
+      border: 1px solid #bae6fd;
+      padding: 4px 10px;
+      border-radius: 12px;
+      max-width: 100%;
+      word-break: break-word;
+    }
+
+    /* Survey Card Extra Actions for Surveyor */
+    .card-surveyor-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+      padding-top: 12px;
+      border-top: 1px dashed #e2e8f0;
+    }
+
+    .btn-action-edit, .btn-action-rekap, .btn-action-del {
+      border: none;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: inherit;
+      padding: 8px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-action-edit {
+      background: #f1f5f9;
+      color: var(--lugx-blue);
+      border: 1px solid #cbd5e1;
+    }
+    .btn-action-edit:hover {
+      background: var(--lugx-blue);
+      color: #ffffff;
+    }
+
+    .btn-action-rekap {
+      background: #ecfdf5;
+      color: #059669;
+      border: 1px solid #a7f3d0;
+    }
+    .btn-action-rekap:hover {
+      background: #059669;
+      color: #ffffff;
+    }
+
+    .btn-action-del {
+      grid-column: 1 / -1;
+      background: #fff1f2;
+      color: #e11d48;
+      border: 1px solid #fecdd3;
+    }
+    .btn-action-del:hover {
+      background: #e11d48;
+      color: #ffffff;
+    }
+
+    /* ==========================================================================
+       ENTERPRISE DYNAMIC SURVEY BUILDER STUDIO (MODERN PROGRESSIVE SCROLL)
+       ========================================================================== */
+    .gform-studio-section {
+      display: none;
+      padding: 36px 0 120px 0;
+      background: #f8fafc;
+      min-height: 90vh;
+    }
+
+    .gform-studio-section.active {
+      display: block;
+    }
+
+    .gform-container {
+      max-width: 1140px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* Enterprise Studio Header Bar */
+    .builder-studio-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 16px 24px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
+    }
+
+    .builder-studio-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .gform-back-btn {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 12px;
+      transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .gform-back-btn:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+      transform: translateX(-2px);
+    }
+
+    .gform-header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #eff6ff;
+      color: var(--lugx-blue);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 12px;
+      border: 1px solid #bfdbfe;
+      letter-spacing: 0.3px;
+    }
+
+    .builder-nav-stepper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .stepper-chip {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      color: #64748b;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 20px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .stepper-chip:hover {
+      background: #eff6ff;
+      color: var(--lugx-blue);
+      border-color: #bfdbfe;
+    }
+
+    .stepper-chip span.num {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: #475569;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .stepper-chip:hover span.num {
+      background: var(--lugx-blue);
+      color: #ffffff;
+    }
+
+    /* Enterprise Studio Form Cards */
+    .enterprise-builder-card {
+      background: #ffffff;
+      border-radius: 22px;
+      border: 1.5px solid #cbd5e1;
+      padding: 38px 46px;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+      position: relative;
+      transition: box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .enterprise-builder-card:hover {
+      box-shadow: 0 8px 30px -4px rgba(15, 23, 42, 0.08);
+      border-color: #cbd5e1;
+    }
+
+    .card-step-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #f1f5f9;
+      flex-wrap: wrap;
+    }
+
+    .card-step-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .card-step-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--lugx-blue) 0%, #1e40af 100%);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 800;
+      box-shadow: 0 4px 10px rgba(4, 49, 104, 0.2);
+      flex-shrink: 0;
+    }
+
+    .card-step-text h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0 0 4px 0;
+      line-height: 1.3;
+    }
+
+    .card-step-text p {
+      font-size: 13px;
+      color: #64748b;
+      margin: 0;
+      font-weight: 500;
+    }
+
+    /* Enterprise Inputs & Form Controls */
+    .gform-field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .gform-field-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .gform-field-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .gform-field-label i {
+      color: var(--lugx-blue);
+      font-size: 13px;
+    }
+
+    .gform-field-label span.req {
+      color: #ef4444;
+      font-weight: 800;
+    }
+
+    .gform-title-input {
+      width: 100%;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 14px;
+      font-size: 22px;
+      font-weight: 700;
+      color: #0f172a;
+      font-family: inherit;
+      padding: 14px 20px;
+      height: 56px;
+      outline: none;
+      background: #ffffff;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .gform-title-input:focus {
+      border-color: var(--lugx-blue);
+      box-shadow: 0 0 0 4px rgba(4, 49, 104, 0.1);
+      background: #ffffff;
+    }
+
+    .gform-desc-input {
+      width: 100%;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 14px;
+      font-size: 15px;
+      color: #334155;
+      font-family: inherit;
+      padding: 16px 20px;
+      outline: none;
+      background: #ffffff;
+      resize: vertical;
+      min-height: 100px;
+      line-height: 1.6;
+      transition: all 0.2s ease;
+    }
+
+    .gform-desc-input:focus {
+      border-color: var(--lugx-blue);
+      box-shadow: 0 0 0 4px rgba(4, 49, 104, 0.1);
+    }
+
+    .gform-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .gform-meta-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .gform-meta-field label {
+      font-size: 11px;
+      font-weight: 800;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .gform-meta-field label i {
+      color: var(--lugx-blue);
+      font-size: 12px;
+    }
+
+    .gform-meta-field input,
+    .gform-meta-field select {
+      height: 48px;
+      border-radius: 12px;
+      border: 1.5px solid #cbd5e1;
+      padding: 0 16px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      color: #0f172a;
+      outline: none;
+      background: #ffffff;
+      transition: all 0.2s ease;
+    }
+
+    .gform-meta-field input:focus,
+    .gform-meta-field select:focus {
+      border-color: var(--lugx-blue);
+      box-shadow: 0 0 0 3px rgba(4, 49, 104, 0.1);
+    }
+
+    /* Geographic Coverage Card */
+    .gform-daerah-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 2fr;
+      gap: 16px;
+    }
+
+    .enterprise-alert-box {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #1e40af;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 16px;
+    }
+
+    .enterprise-alert-box i {
+      font-size: 16px;
+      color: var(--lugx-blue);
+    }
+
+    /* Banner Design Card */
+    .gform-banner-preview {
+      position: relative;
+      border-radius: 16px;
+      min-height: 150px;
+      padding: 24px 28px;
+      color: #ffffff;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: flex-end;
+      box-shadow: 0 8px 24px -2px rgba(15, 23, 42, 0.15);
+      transition: all 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    .banner-preview-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.7) 100%);
+      z-index: 1;
+    }
+
+    .banner-preview-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+    }
+
+    .banner-preview-badge {
+      font-size: 11px;
+      font-weight: 800;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 4px 12px;
+      border-radius: 10px;
+      display: inline-block;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .banner-preview-content h3 {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 0 0 4px 0;
+      color: #ffffff;
+      line-height: 1.3;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    .banner-preview-content p {
+      font-size: 13.5px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.95);
+      font-weight: 600;
+    }
+
+    .gform-banner-controls {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 18px;
+    }
+
+    .banner-color-swatches {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    .swatch-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 2.5px solid #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .swatch-btn:hover {
+      transform: scale(1.15);
+    }
+
+    .swatch-btn.active {
+      outline: 3px solid var(--lugx-blue);
+      outline-offset: 2px;
+      transform: scale(1.15);
+    }
+
+    .swatch-picker {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1.5px solid #cbd5e1;
+      padding: 2px;
+      cursor: pointer;
+      background: #ffffff;
+    }
+
+    /* Enterprise Questions Section */
+    .btn-enterprise-add-q {
+      background: #eff6ff;
+      border: 1.5px solid #bfdbfe;
+      color: var(--lugx-blue);
+      font-size: 13px;
+      font-weight: 800;
+      font-family: inherit;
+      padding: 8px 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-enterprise-add-q:hover {
+      background: var(--lugx-blue);
+      color: #ffffff;
+      border-color: var(--lugx-blue);
+      transform: translateY(-1px);
+    }
+
+    .gform-cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      margin-top: 14px;
+    }
+
+    /* Individual Dynamic Question Card */
+    .gform-card {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1.5px solid #cbd5e1;
+      padding: 28px 34px;
+      box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
+      position: relative;
+      transition: all 0.25s ease;
+    }
+
+    .gform-card:hover {
+      box-shadow: 0 10px 28px -4px rgba(4, 49, 104, 0.08);
+      border-color: #cbd5e1;
+    }
+
+    .gform-card.active, .gform-card:focus-within {
+      border-left: 6px solid var(--lugx-blue);
+      box-shadow: 0 12px 32px -4px rgba(4, 49, 104, 0.12);
+    }
+
+    .gform-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .gform-q-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: #eff6ff;
+      color: var(--lugx-blue);
+      font-weight: 800;
+      font-size: 13px;
+      border-radius: 10px;
+      border: 1px solid #bfdbfe;
+    }
+
+    .gform-q-type-select {
+      height: 42px;
+      border-radius: 12px;
+      border: 1.5px solid #cbd5e1;
+      padding: 0 14px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: inherit;
+      color: #0f172a;
+      background: #ffffff;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .gform-q-type-select:focus {
+      border-color: var(--lugx-blue);
+      box-shadow: 0 0 0 3px rgba(4, 49, 104, 0.1);
+    }
+
+    .gform-q-title-input {
+      width: 100%;
+      height: 52px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: inherit;
+      color: #0f172a;
+      outline: none;
+      transition: all 0.2s ease;
+      margin-bottom: 12px;
+      background: #ffffff;
+    }
+
+    .gform-q-title-input:focus {
+      border-color: var(--lugx-blue);
+      box-shadow: 0 0 0 3px rgba(4, 49, 104, 0.1);
+      background: #ffffff;
+    }
+
+    .gform-q-desc-input {
+      width: 100%;
+      height: 44px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #475569;
+      outline: none;
+      margin-bottom: 18px;
+      background: #f8fafc;
+      transition: border-color 0.2s;
+    }
+
+    .gform-q-desc-input:focus {
+      border-color: var(--lugx-blue);
+      border-style: solid;
+    }
+
+    /* Options List with Dynamic Score/Value Inputs */
+    .gform-options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .gform-option-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #f8fafc;
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 1.5px solid #e2e8f0;
+      transition: all 0.2s ease;
+    }
+
+    .gform-option-row:hover {
+      background: #ffffff;
+      border-color: #cbd5e1;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .gform-opt-icon {
+      color: #94a3b8;
+      font-size: 15px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .gform-opt-input {
+      flex: 1;
+      height: 44px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 8px 16px;
+      font-size: 14.5px;
+      font-weight: 600;
+      font-family: inherit;
+      color: #0f172a;
+      outline: none;
+      background: #ffffff;
+      transition: border-color 0.2s;
+    }
+
+    .gform-opt-input:focus {
+      border-color: var(--lugx-blue);
+    }
+
+    .gform-val-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 44px;
+      background: #ecfdf5;
+      border: 1.5px solid #a7f3d0;
+      border-radius: 10px;
+      padding: 0 14px;
+    }
+
+    .gform-val-lbl {
+      font-size: 11px;
+      font-weight: 800;
+      color: #065f46;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .gform-val-input {
+      width: 52px;
+      border: none;
+      background: transparent;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #065f46;
+      text-align: center;
+      outline: none;
+    }
+
+    .btn-remove-opt {
+      background: transparent;
+      border: none;
+      color: var(--lugx-blue);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-remove-opt:hover {
+      color: var(--lugx-blue-dark);
+      background: rgba(4, 49, 104, 0.08);
+    }
+
+    /* Seragam Icon Navy Studio Pembuat Survei */
+    .gform-studio-section i,
+    .gform-card i,
+    .gform-opt-icon,
+    .gform-opt-icon i,
+    .gform-val-box i,
+    .btn-q-ctrl i,
+    .btn-remove-opt i,
+    .btn-add-opt i,
+    .btn-preset i,
+    .gform-scale-settings i,
+    .gform-card-footer i {
+      color: var(--lugx-blue) !important;
+    }
+
+    /* Add Option & Presets Bar */
+    .gform-opt-actions-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .btn-add-opt {
+      background: transparent;
+      border: 1.5px dashed var(--lugx-blue);
+      color: var(--lugx-blue);
+      font-size: 12.5px;
+      font-weight: 700;
+      font-family: inherit;
+      padding: 7px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-add-opt:hover {
+      background: #eff6ff;
+    }
+
+    .gform-preset-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .gform-preset-lbl {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+    }
+
+    .btn-preset {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: inherit;
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-preset:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    /* Linear Scale Settings in Builder */
+    .gform-scale-settings {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #f8fafc;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .gform-scale-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .gform-scale-group label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #64748b;
+    }
+
+    .gform-scale-group input,
+    .gform-scale-group select {
+      height: 38px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      padding: 0 10px;
+      font-size: 12.5px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    /* Card Footer Controls */
+    .gform-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 16px;
+      margin-top: 14px;
+      border-top: 1px solid #f1f5f9;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .gform-card-ctrls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-q-ctrl {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      color: var(--lugx-blue);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .btn-q-ctrl:hover {
+      background: #eff6ff;
+      color: var(--lugx-blue);
+      border-color: var(--lugx-blue);
+    }
+
+    .btn-q-ctrl.del:hover {
+      background: rgba(4, 49, 104, 0.08);
+      color: var(--lugx-blue);
+      border-color: var(--lugx-blue);
+    }
+
+    /* Custom Toggle Switch for Required */
+    .gform-switch-lbl {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #475569;
+      cursor: pointer;
+    }
+
+    .gform-switch {
+      position: relative;
+      display: inline-block;
+      width: 42px;
+      height: 24px;
+    }
+
+    .gform-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .gform-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #cbd5e1;
+      transition: .3s;
+      border-radius: 24px;
+    }
+
+    .gform-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .gform-switch input:checked + .gform-slider {
+      background-color: var(--lugx-blue);
+    }
+
+    .gform-switch input:checked + .gform-slider:before {
+      transform: translateX(18px);
+    }
+
+    /* Big Dropzone Add Button at Question Cards Bottom */
+    .enterprise-add-q-card-bottom {
+      background: #ffffff;
+      border: 2px dashed #93c5fd;
+      border-radius: 18px;
+      padding: 22px;
+      text-align: center;
+      cursor: pointer;
+      color: var(--lugx-blue);
+      font-weight: 800;
+      font-size: 14.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+      box-shadow: 0 2px 10px rgba(4, 49, 104, 0.03);
+    }
+
+    .enterprise-add-q-card-bottom:hover {
+      background: #eff6ff;
+      border-color: var(--lugx-blue);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(4, 49, 104, 0.08);
+    }
+
+    /* Enterprise Sticky Bottom Bar */
+    .gform-bottom-bar {
+      position: sticky;
+      bottom: 24px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 16px 28px;
+      box-shadow: 0 12px 35px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(15, 23, 42, 0.06);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      z-index: 100;
+    }
+
+    .builder-bottom-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    .builder-bottom-status i {
+      color: #059669;
+      font-size: 15px;
+    }
+
+    .btn-add-q-card {
+      background: #eff6ff;
+      color: var(--lugx-blue);
+      border: 1.5px solid #bfdbfe;
+      font-size: 13.5px;
+      font-weight: 800;
+      font-family: inherit;
+      padding: 11px 22px;
+      border-radius: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s;
+    }
+
+    .btn-add-q-card:hover {
+      background: var(--lugx-blue);
+      color: #ffffff;
+      border-color: var(--lugx-blue);
+    }
+
+    .btn-save-gform {
+      background: linear-gradient(135deg, var(--lugx-red) 0%, #991b1b 100%);
+      color: #ffffff;
+      border: none;
+      font-size: 14px;
+      font-weight: 800;
+      font-family: inherit;
+      padding: 12px 28px;
+      border-radius: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 20px rgba(180, 8, 20, 0.35);
+      transition: all 0.25s;
+    }
+
+    .btn-save-gform:hover {
+      background: linear-gradient(135deg, #9b0711 0%, #7f1d1d 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(180, 8, 20, 0.45);
+    }
+
+    @media (max-width: 991px) {
+      .gform-meta-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .gform-daerah-grid {
+        grid-template-columns: 1fr;
+      }
+      .gform-banner-controls {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .gform-container {
+        padding: 0 16px;
+      }
+      .enterprise-builder-card {
+        padding: 24px 20px;
+      }
+      .gform-meta-grid {
+        grid-template-columns: 1fr;
+      }
+      .gform-bottom-bar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 16px;
+      }
+      .builder-studio-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    /* ==========================================================================
+       MODAL PENGISIAN KUESIONER RESPONDEN (DENGAN KETERANGAN DAERAH SURVEI)
+       ========================================================================== */
+    .survey-respondent-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(4, 49, 104, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 2200;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .survey-respondent-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .survey-respondent-box {
+      background: #f1f5f9;
+      width: 100%;
+      max-width: 960px;
+      max-height: 94vh;
+      border-radius: 20px;
+      overflow-y: auto;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.22);
+      border: 1px solid #cbd5e1;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 24px;
+    }
+
+    /* ==========================================================================
+       GOOGLE FORMS / ENTERPRISE FORM HEADER BANNER & TITLE CARD
+       (Persis seperti Gambar Contoh Referensi Pengguna)
+       ========================================================================== */
+    /* 1. Header Image Banner Landscape di Atas */
+    .gform-banner-img-wrap {
+      padding: 18px 24px 0 24px;
+      position: relative;
+      width: 100%;
+    }
+
+    .gform-banner-img {
+      width: 100%;
+      height: 200px;
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+      border: 1px solid rgba(203, 213, 225, 0.7);
+      transition: all 0.3s ease;
+      background-color: #043168;
+    }
+
+    /* 2. Kartu Judul Formulir (Form Title Card) */
+    .gform-title-card {
+      margin: 16px 24px 8px 24px;
+      background: #ffffff;
+      border-radius: 0 12px 12px 12px;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+      position: relative;
+    }
+
+    /* Section Tab di Kiri Atas Kartu (Seperti 'Section 1 of 3' di Contoh) */
+    .gform-card-top-bar {
+      position: relative;
+      width: 100%;
+    }
+
+    .gform-section-badge {
+      position: absolute;
+      bottom: 100%;
+      left: -1px;
+      background: #475569;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 7px 18px;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      letter-spacing: 0.3px;
+      box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.04);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .gform-card-accent-line {
+      height: 8px;
+      background: #475569;
+      border-top-right-radius: 11px;
+      width: 100%;
+    }
+
+    /* Badan Kartu Judul */
+    .gform-card-body {
+      padding: 24px 28px 22px 28px;
+    }
+
+    .gform-title-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .gform-main-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 0;
+      line-height: 1.35;
+      letter-spacing: -0.2px;
+      flex: 1;
+    }
+
+    .gform-title-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #64748b;
+      padding-top: 4px;
+    }
+
+    .gform-icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .gform-icon-btn:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+
+    /* Deskripsi & Bullet Points (Google Forms Clean Style) */
+    .gform-desc-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .gform-desc-lead {
+      font-size: 13.5px;
+      color: #334155;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .gform-meta-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+      padding-top: 12px;
+      border-top: 1px dashed #e2e8f0;
+    }
+
+    .gform-bullet-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.5;
+    }
+
+    .gform-bullet-item i {
+      color: #0284c7;
+      font-size: 13px;
+      width: 16px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .gform-bullet-item strong {
+      color: #0f172a;
+    }
+
+
+    /* Floating Close Modal Button */
+    .btn-close-resp-modal {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255, 255, 255, 0.45);
+      color: #ffffff;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 50;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-close-resp-modal:hover {
+      background: #b40814;
+      border-color: #ff6b75;
+      transform: scale(1.08) rotate(90deg);
+      box-shadow: 0 6px 18px rgba(180, 8, 20, 0.45);
+    }
+
+    /* STICKY MULTI-STEP PROGRESS & NAVIGATION BAR */
+    .survey-sticky-progress {
+      position: sticky;
+      top: 0;
+      background: #ffffff;
+      padding: 12px 28px;
+      z-index: 10;
+      border-bottom: 1px solid #e2e8f0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .survey-steps-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .step-label-short,
+    .btn-txt-short {
+      display: none;
+    }
+
+    .survey-step-tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .survey-step-tab .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: #64748b;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      transition: all 0.2s;
+    }
+
+    .survey-step-tab.active {
+      color: var(--lugx-blue);
+    }
+
+    .survey-step-tab.active .step-num {
+      background: var(--lugx-blue);
+      color: #ffffff;
+    }
+
+    .survey-step-tab.completed {
+      color: #059669;
+    }
+
+    .survey-step-tab.completed .step-num {
+      background: #10b981;
+      color: #ffffff;
+    }
+
+    .survey-step-divider {
+      color: #cbd5e1;
+      font-size: 12px;
+    }
+
+    .survey-progress-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .survey-progress-track {
+      flex: 1;
+      height: 7px;
+      background: #e2e8f0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .survey-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--lugx-blue), #059669);
+      width: 0%;
+      transition: width 0.35s ease;
+      border-radius: 10px;
+    }
+
+    .survey-progress-text {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #64748b;
+      white-space: nowrap;
+    }
+
+    /* MULTI-STEP SURVEY PAGES */
+    .survey-step-page {
+      padding: 28px 32px 42px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .resp-step-intro {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 16px;
+      padding: 18px 24px;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 10px rgba(4, 49, 104, 0.03);
+    }
+
+    .resp-step-intro h4 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--lugx-blue);
+      margin: 0 0 6px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .resp-step-intro p {
+      font-size: 13.5px;
+      color: #475569;
+      margin: 0;
+      line-height: 1.55;
+    }
+
+    /* VERTICAL CARDS (BERGULIR KE BAWAH, BERSIH & NORMAL) */
+    .resp-vertical-card {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 24px 26px;
+      box-shadow: 0 4px 16px rgba(4, 49, 104, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 6px;
+    }
+
+    .resp-card-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--lugx-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1.5px solid #f1f5f9;
+    }
+
+    .resp-grid-2col {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .resp-field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .resp-field label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #475569;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .resp-field input,
+    .resp-field select,
+    .resp-field textarea {
+      height: 46px;
+      border-radius: 12px;
+      border: 1.5px solid #cbd5e1;
+      padding: 0 16px;
+      font-size: 13.5px;
+      font-family: inherit;
+      color: var(--lugx-dark);
+      outline: none;
+      background: #ffffff;
+      transition: all 0.25s ease;
+    }
+
+    .resp-field textarea {
+      height: auto;
+      padding: 12px 16px;
+      line-height: 1.5;
+    }
+
+    .resp-field input:focus,
+    .resp-field select:focus,
+    .resp-field textarea:focus {
+      border-color: var(--lugx-blue);
+      box-shadow: 0 0 0 3px rgba(4, 49, 104, 0.12);
+      background: #ffffff;
+    }
+
+    /* RESPONDENT QUESTION CARDS IN STEP 2 */
+    .resp-q-card {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 22px 26px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 14px rgba(4, 49, 104, 0.03);
+      transition: all 0.25s ease;
+    }
+
+    .resp-q-card:hover {
+      border-color: #93c5fd;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(4, 49, 104, 0.08);
+    }
+
+    .resp-q-card.answered {
+      border-color: #10b981;
+      background: #fafdfc;
+    }
+
+    .resp-q-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .resp-q-badge {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--lugx-blue);
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 3px 10px;
+      border-radius: 8px;
+    }
+
+    .resp-q-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--lugx-dark);
+      line-height: 1.45;
+    }
+
+    .resp-q-required {
+      color: var(--lugx-red);
+      font-weight: 800;
+      margin-left: 4px;
+    }
+
+    .resp-q-desc {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 16px;
+      line-height: 1.55;
+    }
+
+    /* Radio / Checkbox Interactive Options */
+    .resp-options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .resp-opt-label {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .resp-opt-label:hover {
+      border-color: var(--lugx-blue);
+      background: #f8fafc;
+      transform: translateX(2px);
+    }
+
+    .resp-opt-label.selected {
+      border-color: var(--lugx-blue);
+      background: #eff6ff;
+      box-shadow: 0 2px 8px rgba(4, 49, 104, 0.08);
+    }
+
+    .resp-opt-radio,
+    .resp-opt-checkbox {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--lugx-blue);
+      cursor: pointer;
+    }
+
+    .resp-opt-text {
+      flex: 1;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--lugx-dark);
+    }
+
+    /* Linear Scale Rating */
+    .resp-scale-box {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .resp-scale-buttons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-scale-choice {
+      flex: 1;
+      min-width: 44px;
+      height: 42px;
+      border-radius: 10px;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--lugx-dark);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .btn-scale-choice:hover {
+      border-color: var(--lugx-blue);
+      background: #eff6ff;
+    }
+
+    .btn-scale-choice.selected {
+      background: var(--lugx-blue);
+      color: #ffffff;
+      border-color: var(--lugx-blue);
+    }
+
+    .resp-scale-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #64748b;
+      padding: 0 4px;
+    }
+
+    /* MULTI-STEP ACTION FOOTER */
+    .survey-step-actions {
+      padding: 18px 28px 24px 28px;
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .btn-step-primary {
+      background: var(--lugx-blue);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 800;
+      font-family: inherit;
+      padding: 12px 26px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+    }
+
+    .btn-step-primary:hover {
+      background: #062b59;
+      transform: translateY(-2px);
+    }
+
+    .btn-step-secondary {
+      background: #f1f5f9;
+      color: #475569;
+      font-size: 13.5px;
+      font-weight: 700;
+      font-family: inherit;
+      padding: 11px 20px;
+      border-radius: 12px;
+      border: 1px solid #cbd5e1;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-step-secondary:hover {
+      background: #e2e8f0;
+      color: var(--lugx-dark);
+    }
+
+    .btn-submit-survey {
+      background: var(--lugx-red);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 800;
+      font-family: inherit;
+      padding: 12px 30px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 18px rgba(180, 8, 20, 0.35);
+      transition: all 0.25s ease;
+    }
+
+    .btn-submit-survey:hover {
+      background: #9b0711;
+      transform: translateY(-2px);
+    }
+
+    .btn-submit-survey:hover {
+      background: #9b0711;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(180, 8, 20, 0.45);
+    }
+
+    /* ==========================================================================
+       REKAPITULASI RESPON & DAERAH SURVEI SECTION
+       ========================================================================== */
+    .rekap-section {
+      display: none;
+      padding: 30px 0 80px 0;
+      background: #ffffff;
+    }
+
+    .rekap-section.active {
+      display: block;
+    }
+
+    .rekap-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .rekap-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .rekap-kpi-card {
+      background: var(--lugx-light-gray);
+      border-radius: 20px;
+      padding: 22px;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .rekap-kpi-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      background: var(--lugx-blue);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .rekap-kpi-val {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--lugx-dark);
+      line-height: 1;
+    }
+
+    .rekap-kpi-lbl {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--lugx-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+    }
+
+    .rekap-table-card {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      padding: 24px;
+      overflow-x: auto;
+    }
+
+    .rekap-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+
+    .rekap-table th {
+      background: #f8fafc;
+      padding: 12px 14px;
+      font-weight: 800;
+      color: var(--lugx-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #e2e8f0;
+      text-align: left;
+    }
+
+    .rekap-table td {
+      padding: 14px;
+      border-bottom: 1px solid #f1f5f9;
+      color: var(--lugx-dark);
+    }
+
+    .rekap-table tr:hover td {
+      background: #f8fafc;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE DESIGN SYSTEM UNTUK FORM ISI SURVEI USER UMUM (TABLET & SMARTPHONE)
+       ========================================================================== */
+    @media (max-width: 991.98px) {
+      .surveyor-control-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .surveyor-bar-tabs {
+        width: 100%;
+        overflow-x: auto;
+      }
+      .gform-meta-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .gform-daerah-inputs {
+        grid-template-columns: 1fr;
+      }
+      .resp-grid-2col,
+      .resp-grid-4col {
+        grid-template-columns: 1fr;
+      }
+      .rekap-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      /* Tablet Specific Modal & Form Sizing */
+      .survey-respondent-overlay {
+        padding: 16px;
+      }
+      .survey-respondent-box {
+        max-width: 780px;
+        max-height: 94vh;
+        border-radius: 18px;
+      }
+      .survey-custom-banner {
+        min-height: 150px;
+        padding: 24px 28px 20px 28px;
+      }
+      .survey-custom-banner h2 {
+        font-size: 20px;
+        max-width: calc(100% - 60px);
+      }
+      .survey-sticky-progress {
+        padding: 12px 24px;
+      }
+      .survey-step-page {
+        padding: 24px 26px 36px 26px;
+        gap: 20px;
+      }
+      .resp-vertical-card,
+      .resp-q-card {
+        padding: 20px 22px;
+      }
+      .btn-scale-choice {
+        min-width: 40px;
+        height: 44px;
+        font-size: 15px;
+      }
+      #respFormMiniMap {
+        height: 200px;
+      }
+      .survey-step-actions {
+        padding: 16px 22px;
+      }
+    }
+
+    /* Smartphone Breakpoint (< 768px) */
+    @media (max-width: 767.98px) {
+      .survey-respondent-overlay {
+        padding: 0 !important;
+        align-items: flex-end;
+      }
+
+      .survey-respondent-box {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 100% !important;
+        max-height: 100vh !important;
+        border-radius: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        -webkit-overflow-scrolling: touch !important;
+      }
+
+      .gform-banner-img-wrap {
+        padding: 14px 14px 0 14px !important;
+      }
+
+      .gform-banner-img {
+        height: 140px !important;
+        border-radius: 10px !important;
+      }
+
+      .gform-title-card {
+        margin: 14px 14px 8px 14px !important;
+        border-radius: 0 10px 10px 10px !important;
+      }
+
+      .gform-card-body {
+        padding: 18px 16px !important;
+      }
+
+      .gform-main-title {
+        font-size: 20px !important;
+        line-height: 1.35 !important;
+      }
+
+      .gform-section-badge {
+        font-size: 11px !important;
+        padding: 5px 12px !important;
+      }
+
+      .gform-desc-lead {
+        font-size: 12.5px !important;
+        line-height: 1.55 !important;
+      }
+
+      .gform-bullet-item {
+        font-size: 12px !important;
+      }
+
+
+      .btn-close-resp-modal {
+        top: 8px !important;
+        right: 8px !important;
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 13px !important;
+      }
+
+      /* Sticky Top Progress Header */
+      .survey-sticky-progress {
+        position: sticky !important;
+        top: 0 !important;
+        padding: 8px 14px !important;
+        gap: 6px !important;
+        z-index: 25 !important;
+        background: #ffffff !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+      }
+
+      .survey-steps-nav {
+        gap: 6px !important;
+      }
+
+      .survey-step-tab {
+        font-size: 12px !important;
+        gap: 6px !important;
+      }
+
+      .survey-step-tab .step-num {
+        width: 22px !important;
+        height: 22px !important;
+        font-size: 10px !important;
+      }
+
+      .survey-step-divider {
+        font-size: 9px !important;
+      }
+
+      .survey-progress-track {
+        height: 5px !important;
+      }
+
+      .survey-progress-text {
+        font-size: 10.5px !important;
+      }
+
+      /* Multi-Step Pages - Extra bottom padding for comfortable thumb reach */
+      .survey-step-page {
+        padding: 14px 14px 90px 14px !important;
+        gap: 12px !important;
+      }
+
+      .resp-step-intro {
+        padding: 12px 14px !important;
+        border-radius: 12px !important;
+        margin-bottom: 2px !important;
+      }
+
+      .resp-step-intro h4 {
+        font-size: 13.5px !important;
+        gap: 6px !important;
+        margin-bottom: 3px !important;
+      }
+
+      .resp-step-intro p {
+        font-size: 11.5px !important;
+        line-height: 1.45 !important;
+      }
+
+      .resp-vertical-card {
+        padding: 14px 14px !important;
+        border-radius: 14px !important;
+        gap: 12px !important;
+      }
+
+      .resp-card-title {
+        font-size: 12.5px !important;
+        padding-bottom: 8px !important;
+        gap: 6px !important;
+      }
+
+      /* Form Input Fields - Font size 16px to prevent iOS auto-zoom */
+      .resp-field label {
+        font-size: 11.5px !important;
+        margin-bottom: 5px !important;
+      }
+
+      .resp-field input,
+      .resp-field select,
+      .resp-field textarea {
+        height: 48px !important;
+        font-size: 16px !important;
+        border-radius: 10px !important;
+        padding: 0 14px !important;
+      }
+
+      .resp-field textarea {
+        height: auto !important;
+        min-height: 85px !important;
+        padding: 10px 14px !important;
+      }
+
+      /* Step 2: Question Cards */
+      .resp-q-card {
+        padding: 16px 14px !important;
+        border-radius: 14px !important;
+      }
+
+      .resp-q-card.answered {
+        border-color: #10b981 !important;
+        background: #f0fdf4 !important;
+        box-shadow: 0 2px 10px rgba(16, 185, 129, 0.08) !important;
+      }
+
+      .resp-q-card.answered .resp-q-badge {
+        background: #dcfce7 !important;
+        color: #15803d !important;
+      }
+
+      .resp-q-header {
+        gap: 6px !important;
+        margin-bottom: 6px !important;
+      }
+
+      .resp-q-badge {
+        font-size: 10.5px !important;
+        padding: 2px 7px !important;
+      }
+
+      .resp-q-title {
+        font-size: 14px !important;
+        line-height: 1.45 !important;
+      }
+
+      .resp-q-desc {
+        font-size: 11.5px !important;
+        margin-bottom: 10px !important;
+      }
+
+      /* Radio / Checkbox Large Tap Target */
+      .resp-options-list {
+        gap: 8px !important;
+      }
+
+      .resp-opt-label {
+        padding: 12px 14px !important;
+        min-height: 48px !important;
+        border-radius: 12px !important;
+        gap: 10px !important;
+        -webkit-tap-highlight-color: transparent !important;
+      }
+
+      .resp-opt-text {
+        font-size: 13.5px !important;
+        line-height: 1.35 !important;
+      }
+
+      .resp-opt-radio,
+      .resp-opt-checkbox {
+        width: 18px !important;
+        height: 18px !important;
+      }
+
+      /* Likert Scale Responsive Rating Buttons */
+      .resp-scale-buttons {
+        display: flex !important;
+        gap: 6px !important;
+        width: 100% !important;
+      }
+
+      .btn-scale-choice {
+        flex: 1 !important;
+        min-width: 0 !important;
+        height: 46px !important;
+        font-size: 16px !important;
+        font-weight: 800 !important;
+        border-radius: 10px !important;
+        -webkit-tap-highlight-color: transparent !important;
+      }
+
+      .resp-scale-labels {
+        font-size: 10px !important;
+        margin-top: 4px !important;
+      }
+
+      /* GPS & Mini-Map Responsiveness */
+      #respFormMiniMap {
+        height: 180px !important;
+        border-radius: 10px !important;
+      }
+
+      .resp-gps-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+      }
+
+      .btn-geo-detect {
+        width: 100% !important;
+        justify-content: center !important;
+        height: 38px !important;
+        font-size: 12px !important;
+      }
+
+      .resp-gps-coords-display {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 6px !important;
+        padding: 8px 10px !important;
+        border-radius: 10px !important;
+      }
+
+      .resp-gps-field span.lbl {
+        font-size: 9.5px !important;
+      }
+
+      .resp-gps-field span.val {
+        font-size: 11.5px !important;
+      }
+
+      /* Floating / Sticky Mobile Action Bar */
+      .survey-step-actions {
+        position: sticky !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        background: rgba(255, 255, 255, 0.96) !important;
+        backdrop-filter: blur(10px) !important;
+        padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px)) 14px !important;
+        border-top: 1px solid #e2e8f0 !important;
+        box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.06) !important;
+        z-index: 30 !important;
+        gap: 10px !important;
+      }
+
+      .btn-step-primary,
+      .btn-submit-survey {
+        flex: 1 !important;
+        height: 46px !important;
+        padding: 0 16px !important;
+        font-size: 13.5px !important;
+        border-radius: 12px !important;
+        justify-content: center !important;
+      }
+
+      .btn-step-secondary {
+        height: 46px !important;
+        padding: 0 16px !important;
+        font-size: 13px !important;
+        border-radius: 12px !important;
+        justify-content: center !important;
+      }
+    }
+
+    /* Extra Small Screen (< 576px) */
+    @media (max-width: 576px) {
+      .step-label-full,
+      .btn-txt-full {
+        display: none !important;
+      }
+      .step-label-short,
+      .btn-txt-short {
+        display: inline !important;
+      }
+      .gform-meta-grid {
+        grid-template-columns: 1fr;
+      }
+      .rekap-kpi-grid {
+        grid-template-columns: 1fr;
+      }
+      .survey-resp-header,
+      .survey-resp-body,
+      .survey-resp-footer {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+    }
+    /* ==========================================================================
+       QUICK FILTER PILLS / CHIPS FOR SURVEY TYPES (IKM, SOSIAL, DLL)
+       ========================================================================== */
+    .survey-type-pills-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px dashed #e2e8f0;
+      flex-wrap: wrap;
+    }
+
+    .type-pills-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--lugx-dark);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .type-pills-label i {
+      color: var(--lugx-red);
+    }
+
+    .type-pills-scroller {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .type-pill-btn {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 20px;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+      font-family: inherit;
+    }
+
+    .type-pill-btn:hover {
+      border-color: var(--lugx-blue);
+      color: var(--lugx-blue);
+      transform: translateY(-1px);
+    }
+
+    .type-pill-btn.active {
+      background: linear-gradient(135deg, var(--lugx-blue) 0%, #0d3d7c 100%);
+      color: #ffffff;
+      border-color: transparent;
+      box-shadow: 0 4px 12px rgba(4, 49, 104, 0.25);
+    }
+
+    .type-pill-btn.active .pill-badge {
+      background: var(--lugx-red);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(180, 8, 20, 0.4);
+    }
+
+    .pill-badge {
+      background: #f1f5f9;
+      color: #475569;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 800;
+      transition: all 0.25s ease;
+    }
+
+    /* ==========================================================================
+       SURVEYOR CONTROLS & EXCEL EXPORT BUTTONS
+       ========================================================================== */
+    .card-surveyor-actions {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed #e2e8f0;
+    }
+
+    .btn-action-edit,
+    .btn-action-rekap,
+    .btn-action-excel,
+    .btn-action-del {
+      height: 34px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .btn-action-edit {
+      background: #eff6ff;
+      color: #0369a1;
+      border: 1px solid #bfdbfe;
+    }
+
+    .btn-action-edit:hover {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
+      transform: translateY(-1px);
+    }
+
+    .btn-action-rekap {
+      background: #f8fafc;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+    }
+
+    .btn-action-rekap:hover {
+      background: var(--lugx-dark);
+      color: #ffffff;
+      border-color: var(--lugx-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-action-excel {
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+    }
+
+    .btn-action-excel:hover {
+      background: #059669;
+      color: #ffffff;
+      border-color: #059669;
+      transform: translateY(-1px);
+    }
+
+    .btn-action-del {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+
+    .btn-action-del:hover {
+      background: #dc2626;
+      color: #ffffff;
+      border-color: #dc2626;
+      transform: translateY(-1px);
+    }
+
+    .btn-export-excel {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      color: #ffffff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25);
+      text-decoration: none;
+      font-family: inherit;
+    }
+
+    .btn-export-excel:hover {
+      background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(5, 150, 105, 0.4);
+      color: #ffffff;
+    }
+
+    /* ==========================================================================
+       MODAL QR CODE (BERSIH, MINIMALIS, HANYA MUNCUL QR CODE SAJA)
+       ========================================================================== */
+    .qr-modal-dialog {
+      background: #ffffff;
+      width: 100%;
+      max-width: 380px;
+      border-radius: 24px;
+      box-shadow: 0 25px 60px rgba(4, 49, 104, 0.3);
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .qr-modal-header {
+      background: #ffffff;
+      color: var(--lugx-dark);
+      padding: 18px 22px 14px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #f1f5f9;
+      position: relative;
+    }
+
+    .qr-modal-header h3 {
+      font-size: 16px;
+      font-weight: 800;
+      margin: 0;
+      color: var(--lugx-blue);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-close-qr-modal {
+      background: #f1f5f9;
+      border: none;
+      color: #64748b;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      font-size: 14px;
+    }
+
+    .btn-close-qr-modal:hover {
+      background: var(--lugx-red);
+      color: #ffffff;
+      transform: rotate(90deg);
+    }
+
+    .qr-modal-body {
+      padding: 24px 22px;
+      text-align: center;
+      background: #ffffff;
+    }
+
+    /* White Crisp Frame untuk QR Code */
+    .qr-clean-card {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(4, 49, 104, 0.06);
+      margin-bottom: 18px;
+    }
+
+    .qr-clean-card img,
+    .qr-clean-card canvas {
+      display: block;
+      margin: 0 auto;
+      border-radius: 8px;
+    }
+
+    .qr-url-input-wrap {
+      display: flex;
+      align-items: center;
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 4px 6px 4px 12px;
+      margin-bottom: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .qr-url-input-wrap:focus-within {
+      border-color: var(--lugx-blue);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(4, 49, 104, 0.1);
+    }
+
+    .qr-url-icon {
+      color: #94a3b8;
+      font-size: 13px;
+      margin-right: 8px;
+    }
+
+    .qr-url-input {
+      border: none;
+      background: transparent;
+      font-size: 12px;
+      color: #1e293b;
+      font-weight: 600;
+      width: 100%;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .btn-copy-link-premium {
+      background: var(--lugx-blue);
+      color: #ffffff;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+
+    .btn-copy-link-premium:hover {
+      background: var(--lugx-red);
+      transform: translateY(-1px);
+    }
+
+    .btn-download-qr {
+      width: 100%;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--lugx-blue) 0%, #0d3d7c 100%);
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+      box-shadow: 0 6px 18px rgba(4, 49, 104, 0.25);
+      font-family: inherit;
+    }
+
+    .btn-download-qr:hover {
+      background: linear-gradient(135deg, #02234c 0%, #043168 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(4, 49, 104, 0.35);
+    }
+
+    /* ==========================================================================
+       MODAL & FLYER BANNER PUBLIKASI SURVEI (SIAP SEBAR & CETAK)
+       ========================================================================== */
+    .flyer-modal-dialog {
+      background: #ffffff;
+      width: 100%;
+      max-width: 580px;
+      border-radius: 24px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);
+      border: 1px solid #e2e8f0;
+      overflow-y: auto;
+      max-height: 94vh;
+      animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .flyer-modal-header {
+      background: linear-gradient(135deg, var(--lugx-blue) 0%, #0d3d7c 100%);
+      color: #ffffff;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .flyer-modal-header h3 {
+      font-size: 17px;
+      font-weight: 800;
+      margin: 0;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .flyer-modal-body {
+      padding: 24px;
+      background: #f1f5f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* KARTU BANNER PUBLIKASI VISUAL (Yang di-capture ke PNG) */
+    .pub-banner-card {
+      width: 100%;
+      max-width: 480px;
+      background: linear-gradient(150deg, #043168 0%, #0a254a 55%, #0b3977 100%);
+      color: #ffffff;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(4, 49, 104, 0.35);
+      position: relative;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+    }
+
+    /* Decorative Vector Accents on Flyer */
+    .pub-banner-card::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(180, 8, 20, 0.35) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .pub-banner-card::after {
+      content: '';
+      position: absolute;
+      bottom: 40px;
+      left: -40px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(4, 49, 104, 0.45) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .pub-banner-top {
+      padding: 22px 24px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      position: relative;
+      z-index: 2;
+    }
+
+    .pub-brand-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pub-brand-logo {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+
+    .pub-brand-text {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .pub-brand-text span {
+      color: #f87171;
+    }
+
+    .pub-badge-verified {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .pub-banner-content {
+      padding: 24px 24px 20px;
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .pub-type-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--lugx-red);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 14px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 12px rgba(180, 8, 20, 0.4);
+    }
+
+    .pub-banner-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.35;
+      margin-bottom: 12px;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .pub-banner-instansi {
+      font-size: 13.5px;
+      color: #e2e8f0;
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .pub-banner-daerah {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #f1f5f9;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 14px;
+      margin-bottom: 16px;
+    }
+
+    .pub-banner-cta-text {
+      font-size: 12.5px;
+      color: #cbd5e1;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Centered White QR Card on Flyer */
+    .pub-banner-qr-box {
+      background: #ffffff;
+      border-radius: 22px;
+      padding: 20px 22px 18px;
+      margin: 0 auto 18px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      max-width: 290px;
+      position: relative;
+      border: 2px solid rgba(4, 49, 104, 0.08);
+    }
+
+    .pub-qr-header {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--lugx-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pub-qr-pill-tag {
+      background: #b40814;
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    #pubBannerQrCanvas {
+      background: #ffffff;
+      padding: 8px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      border: 1.5px dashed #cbd5e1;
+    }
+
+    #pubBannerQrCanvas img,
+    #pubBannerQrCanvas canvas {
+      display: block;
+      margin: 0 auto;
+    }
+
+    .pub-short-url-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 4px 12px;
+      border-radius: 10px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--lugx-red);
+      word-break: break-all;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .pub-qr-hint {
+      font-size: 10.5px;
+      color: #64748b;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .pub-banner-footer {
+      background: rgba(0, 0, 0, 0.25);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 12px 20px;
+      font-size: 11px;
+      color: #cbd5e1;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .pub-banner-footer b {
+      color: #ffffff;
+    }
+
+    /* Action bar under flyer preview */
+    .flyer-control-bar {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn-flyer-dl {
+      background: linear-gradient(135deg, #b40814 0%, #e11d48 50%, #b40814 100%);
+      background-size: 200% auto;
+      color: #ffffff;
+      border: none;
+      height: 50px;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.35s ease;
+      box-shadow: 0 6px 20px rgba(180, 8, 20, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      font-family: inherit;
+    }
+
+    .btn-flyer-dl:hover {
+      background-position: right center;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(180, 8, 20, 0.55);
+    }
+
+    .flyer-secondary-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .btn-flyer-wa {
+      background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+      color: #ffffff;
+      border: none;
+      height: 44px;
+      border-radius: 22px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: all 0.3s ease;
+      font-family: inherit;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+    }
+
+    .btn-flyer-wa:hover {
+      background: linear-gradient(135deg, #1eb855 0%, #0d7367 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(37, 211, 102, 0.5);
+      color: #ffffff;
+    }
+
+    .btn-flyer-copy {
+      background: #ffffff;
+      color: var(--lugx-blue);
+      border: 2px solid var(--lugx-blue);
+      height: 44px;
+      border-radius: 22px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: all 0.3s ease;
+      font-family: inherit;
+      box-shadow: 0 2px 8px rgba(4, 49, 104, 0.08);
+    }
+
+    .btn-flyer-copy:hover {
+      background: var(--lugx-blue);
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(4, 49, 104, 0.25);
+    }
+  
+    /* ==========================================================================
+       GIS GEOSPASIAL & OPENSTREETMAP INFOGRAFIS STYLES
+       ========================================================================== */
+    .btn-action-map {
+      background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+      color: #ffffff;
+      border: 1px solid #4338ca;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: inherit;
+      padding: 9px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+
+    .btn-action-map:hover {
+      background: linear-gradient(135deg, #4338ca 0%, #312e81 100%);
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(79, 70, 229, 0.35);
+    }
+
+    .btn-public-gis-map {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff;
+      border: none;
+      font-size: 13px;
+      font-weight: 800;
+      font-family: inherit;
+      padding: 10px 20px;
+      border-radius: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.28);
+      transition: all 0.25s ease;
+    }
+
+    .btn-public-gis-map:hover {
+      background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4);
+    }
+
+    .geo-infografis-section {
+      display: none;
+      padding: 40px 0 90px 0;
+      background: #f8fafc;
+      min-height: 85vh;
+    }
+
+    .geo-infografis-section.active {
+      display: block;
+    }
+
+    .geo-header-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 22px;
+      padding: 30px 36px;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .geo-header-left {
+      max-width: 650px;
+    }
+
+    .geo-badge-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #eff6ff;
+      color: #2563eb;
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid #bfdbfe;
+      margin-bottom: 10px;
+    }
+
+    .geo-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0 0 6px 0;
+      line-height: 1.25;
+    }
+
+    .geo-subtitle {
+      font-size: 13.5px;
+      color: #64748b;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .geo-header-right {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-width: 280px;
+    }
+
+    .geo-survey-selector-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .geo-survey-selector-wrap label {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .geo-select-custom {
+      height: 44px;
+      border-radius: 12px;
+      border: 1.5px solid #cbd5e1;
+      padding: 0 14px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: inherit;
+      color: #0f172a;
+      background: #ffffff;
+      outline: none;
+    }
+
+    .geo-select-custom:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .btn-geo-refresh, .btn-geo-excel {
+      padding: 9px 16px;
+      font-size: 12.5px;
+      font-weight: 700;
+      font-family: inherit;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-geo-refresh {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+    }
+
+    .btn-geo-refresh:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .btn-geo-excel {
+      background: #ecfdf5;
+      border: 1.5px solid #a7f3d0;
+      color: #065f46;
+    }
+
+    .btn-geo-excel:hover {
+      background: #059669;
+      color: #ffffff;
+      border-color: #059669;
+    }
+
+    /* KPI Grid */
+    .geo-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .geo-kpi-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 20px 24px;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .geo-kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -2px rgba(15, 23, 42, 0.08);
+    }
+
+    .geo-kpi-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .geo-kpi-data {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .geo-kpi-val {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.2;
+    }
+
+    .geo-kpi-lbl {
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    /* GIS Main Workspace */
+    .geo-workspace-grid {
+      display: grid;
+      grid-template-columns: 2.5fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .geo-map-wrapper {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 6px 25px -4px rgba(15, 23, 42, 0.08);
+      position: relative;
+    }
+
+    .geo-map-toolbar {
+      padding: 14px 20px;
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .geo-filter-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .geo-filter-item label {
+      font-size: 12px;
+      font-weight: 800;
+      color: #475569;
+      white-space: nowrap;
+    }
+
+    .geo-toolbar-select {
+      height: 38px;
+      border-radius: 10px;
+      border: 1.5px solid #cbd5e1;
+      padding: 0 12px;
+      font-size: 12.5px;
+      font-weight: 600;
+      font-family: inherit;
+      color: #0f172a;
+      outline: none;
+      background: #f8fafc;
+    }
+
+    .geo-layer-toggles {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .geo-chk-lbl {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #475569;
+      cursor: pointer;
+    }
+
+    .geo-chk-lbl input {
+      accent-color: #2563eb;
+      width: 15px;
+      height: 15px;
+    }
+
+    .btn-geo-reset-view {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #2563eb;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: inherit;
+      padding: 7px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-geo-reset-view:hover {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
+    .leaflet-map-canvas {
+      width: 100%;
+      height: 600px;
+      z-index: 10;
+    }
+
+    .geo-map-legend {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: 14px;
+      padding: 12px 16px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+      z-index: 1000;
+      font-size: 11.5px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .legend-title {
+      font-weight: 800;
+      color: #0f172a;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 2px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .legend-pin {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      display: inline-block;
+    }
+
+    .legend-pin.green { background: #10b981; }
+    .legend-pin.blue { background: #2563eb; }
+    .legend-pin.yellow { background: #f59e0b; }
+    .legend-pin.red { background: #ef4444; }
+
+    /* GIS Sidebar */
+    .geo-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .geo-focus-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
+    }
+
+    .focus-header {
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .focus-badge {
+      font-size: 11px;
+      font-weight: 800;
+      color: #2563eb;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .focus-header h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0;
+    }
+
+    .focus-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .focus-stat {
+      background: #f8fafc;
+      border: 1px solid #edf2f7;
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .focus-stat span.lbl {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+
+    .focus-stat span.val {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-top: 2px;
+    }
+
+    .text-green { color: #16a34a !important; }
+
+    /* Feed List of Respondents */
+    .geo-feed-wrap {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
+    }
+
+    .geo-feed-header {
+      padding: 16px 20px;
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .geo-feed-header h4 {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feed-count-pill {
+      font-size: 11px;
+      font-weight: 800;
+      background: #e2e8f0;
+      color: #334155;
+      padding: 3px 10px;
+      border-radius: 12px;
+    }
+
+    .geo-feed-list {
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .geo-feed-item {
+      background: #f8fafc;
+      border: 1.5px solid #edf2f7;
+      border-radius: 14px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .geo-feed-item:hover {
+      background: #ffffff;
+      border-color: #2563eb;
+      transform: translateX(4px);
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08);
+    }
+
+    .feed-item-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .feed-item-name {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .feed-item-score {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 8px;
+    }
+
+    .feed-item-score.mutu-a { background: #dcfce7; color: #15803d; }
+    .feed-item-score.mutu-b { background: #dbeafe; color: #1d4ed8; }
+    .feed-item-score.mutu-c { background: #fef9c3; color: #a16207; }
+
+    .feed-item-meta {
+      font-size: 11.5px;
+      color: #64748b;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .feed-item-meta i {
+      width: 14px;
+      color: #94a3b8;
+    }
+
+    /* GOOGLE MAPS STYLE POPUP CARD IN LEAFLET */
+    .leaflet-popup-content-wrapper {
+      padding: 0 !important;
+      border-radius: 18px !important;
+      overflow: hidden !important;
+      box-shadow: 0 16px 38px rgba(15, 23, 42, 0.2) !important;
+      border: 1px solid #cbd5e1 !important;
+    }
+
+    .leaflet-popup-content {
+      margin: 0 !important;
+      width: 320px !important;
+      line-height: 1.4 !important;
+    }
+
+    .gmaps-popup-card {
+      font-family: inherit;
+    }
+
+    .gmaps-popup-header {
+      background: linear-gradient(135deg, #043168 0%, #0d3d7c 100%);
+      color: #ffffff;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .gmaps-popup-instansi {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    .gmaps-popup-badge {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 8px;
+      text-transform: uppercase;
+    }
+
+    .gmaps-popup-badge.badge-green { background: #10b981; color: #ffffff; }
+    .gmaps-popup-badge.badge-blue { background: #3b82f6; color: #ffffff; }
+    .gmaps-popup-badge.badge-yellow { background: #f59e0b; color: #ffffff; }
+
+    .gmaps-popup-body {
+      padding: 16px;
+      background: #ffffff;
+    }
+
+    .gmaps-popup-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .gmaps-popup-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #eff6ff;
+      color: #2563eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 800;
+      border: 1.5px solid #bfdbfe;
+      flex-shrink: 0;
+    }
+
+    .gmaps-popup-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0;
+    }
+
+    .gmaps-popup-time {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .gmaps-popup-geo {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12px;
+      color: #334155;
+      background: #f8fafc;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #edf2f7;
+      margin-bottom: 12px;
+    }
+
+    .geo-coord-row, .geo-admin-row, .geo-device-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .text-blue { color: #2563eb; }
+    .text-red { color: #ef4444; }
+    .text-slate { color: #64748b; }
+
+    .acc-tag {
+      font-size: 10px;
+      background: #e2e8f0;
+      color: #475569;
+      padding: 1px 6px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+
+    .gmaps-popup-score {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 10px;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: 8px;
+    }
+
+    .score-lbl {
+      font-size: 11px;
+      font-weight: 700;
+      color: #065f46;
+    }
+
+    .score-val {
+      font-size: 12px;
+      font-weight: 800;
+      color: #065f46;
+    }
+
+    .gmaps-popup-footer {
+      padding: 10px 16px 14px 16px;
+      background: #ffffff;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-popup-gmaps, .btn-popup-osm, .btn-popup-detail {
+      flex: 1;
+      padding: 6px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 8px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #334155;
+      transition: all 0.2s;
+    }
+
+    .btn-popup-gmaps:hover { background: #ea4335; color: #ffffff; border-color: #ea4335; }
+    .btn-popup-osm:hover { background: #0284c7; color: #ffffff; border-color: #0284c7; }
+    .btn-popup-detail:hover { background: #043168; color: #ffffff; border-color: #043168; }
+
+    /* Custom Leaflet Pin Markers */
+    .custom-svg-pin {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .custom-svg-pin:hover {
+      transform: scale(1.3) translateY(-4px);
+      z-index: 9999 !important;
+    }
+
+    .pin-inner {
+      width: 26px;
+      height: 26px;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #ffffff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+    }
+
+    .pin-inner i {
+      transform: rotate(45deg);
+      color: #ffffff;
+      font-size: 11px;
+    }
+
+    .pin-inner.pin-a { background: #10b981; }
+    .pin-inner.pin-b { background: #2563eb; }
+    .pin-inner.pin-c { background: #f59e0b; }
+    .pin-inner.pin-d { background: #ef4444; }
+
+    /* Geolocation Tracker Box in Respondent Form */
+    .resp-gps-tracker-card {
+      background: #f0fdf4;
+      border: 1.5px solid #bbf7d0;
+      border-radius: 16px;
+      padding: 18px 22px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .resp-gps-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .resp-gps-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #166534;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .resp-gps-status-badge {
+      font-size: 11px;
+      font-weight: 800;
+      background: #dcfce7;
+      color: #15803d;
+      padding: 3px 10px;
+      border-radius: 10px;
+      border: 1px solid #86efac;
+    }
+
+    .resp-gps-coords-display {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      background: #ffffff;
+      border: 1px solid #dcfce7;
+      border-radius: 12px;
+      padding: 10px 14px;
+    }
+
+    .resp-gps-field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .resp-gps-field span.lbl {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+
+    .resp-gps-field span.val {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-top: 2px;
+    }
+
+    @media (max-width: 991px) {
+      .geo-workspace-grid {
+        grid-template-columns: 1fr;
+      }
+      .geo-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .resp-gps-coords-display {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 576px) {
+      .geo-kpi-grid {
+        grid-template-columns: 1fr;
+      }
+      .geo-header-card {
+        padding: 20px;
+      }
+    }
+
+    /* Enterprise Responsive Styling (Tablet & Mobile UI Polish) */
+    @media (max-width: 768px) {
+      .survey-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .survey-card {
+        padding: 18px 16px;
+        border-radius: 16px;
+      }
+
+      .card-header-row {
+        margin-bottom: 12px;
+      }
+
+      .card-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        border-radius: 12px;
+      }
+
+      .card-icon svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .card-title {
+        font-size: 15px;
+        margin-bottom: 12px;
+      }
+
+      .card-meta {
+        padding: 10px 12px;
+        margin-bottom: 14px;
+        border-radius: 12px;
+        gap: 6px;
+      }
+
+      .meta-row {
+        grid-template-columns: 100px 10px 1fr;
+        font-size: 11.5px;
+      }
+
+      .card-actions {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .btn-action-fill,
+      .btn-action-demo,
+      .btn-action-qr,
+      .btn-action-map {
+        height: 38px;
+        font-size: 11.5px;
+        border-radius: 19px;
+      }
+
+      /* Banner Header Mobile Optimization */
+      .survey-custom-banner {
+        min-height: 130px;
+        padding: 20px 18px 16px 18px;
+      }
+
+      .survey-custom-banner h2 {
+        font-size: 17.5px;
+        line-height: 1.35;
+        margin-bottom: 6px;
+        max-width: calc(100% - 48px);
+      }
+
+      .survey-custom-banner p {
+        font-size: 12.5px;
+        line-height: 1.5;
+        margin-bottom: 8px;
+      }
+
+      .survey-resp-header-meta {
+        gap: 6px;
+        margin-bottom: 10px;
+      }
+
+      .survey-resp-pill {
+        font-size: 10px;
+        padding: 3px 9px;
+        border-radius: 999px;
+      }
+
+      .btn-close-resp-modal {
+        top: 16px;
+        right: 16px;
+        width: 36px;
+        height: 36px;
+        font-size: 15px;
+      }
+
+      .survey-resp-modal-dialog {
+        max-width: 96%;
+        margin: 12px auto;
+        border-radius: 16px;
+      }
+
+      .survey-resp-modal-body {
+        padding: 14px 16px 20px 16px;
+      }
+
+      /* Hero Subpage Banner Mobile */
+      .subpage-banner {
+        padding: 100px 16px 36px 16px;
+      }
+
+      .subpage-banner h1 {
+        font-size: 24px;
+      }
+
+      .subpage-banner .lead-text {
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .hero-stats-strip {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .cta-doodle {
+        display: none !important;
+      }
+    }
+    /* Public Notice Bar & Auth-Locked Styles */
+    .public-survey-notice-wrap {
+      max-width: 1200px;
+      margin: -25px auto 30px auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .public-survey-notice {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-left: 5px solid #0284c7;
+      border-radius: 14px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .notice-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #334155;
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+
+    .notice-shield-icon {
+      font-size: 24px;
+      color: #0284c7;
+      flex-shrink: 0;
+    }
+
+    .btn-notice-login {
+      background: linear-gradient(135deg, var(--lugx-blue), #1e40af);
+      color: #ffffff;
+      border: none;
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+    }
+
+    .btn-notice-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(2, 132, 199, 0.35);
+      background: #0369a1;
+    }
+
+    .btn-public-gis-map-locked {
+      background: #f1f5f9 !important;
+      color: #64748b !important;
+      border: 1.5px dashed #cbd5e1 !important;
+      box-shadow: none !important;
+    }
+
+    .btn-public-gis-map-locked:hover {
+      background: #e2e8f0 !important;
+      color: #334155 !important;
+      border-color: #94a3b8 !important;
+      transform: none !important;
+    }
+
+    .gis-locked-tag {
+      font-size: 11px;
+      background: #e2e8f0;
+      color: #475569;
+      padding: 2px 8px;
+      border-radius: 8px;
+      margin-left: 6px;
+      font-weight: 700;
+    }
+
+    .btn-action-map-locked {
+      background: #f1f5f9 !important;
+      color: #94a3b8 !important;
+      border: 1px dashed #cbd5e1 !important;
+    }
+
+    .btn-action-map-locked:hover {
+      background: #fee2e2 !important;
+      color: #dc2626 !important;
+      border-color: #fca5a5 !important;
+    }
+
+    /* Auth-locked Screen in Tab Sections */
+    .auth-locked-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 60px 30px;
+      text-align: center;
+      max-width: 680px;
+      margin: 40px auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .auth-locked-icon {
+      width: 72px;
+      height: 72px;
+      background: #fef2f2;
+      color: #ef4444;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.15);
+    }
+
+    .auth-locked-card h3 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 12px;
+    }
+
+    .auth-locked-card p {
+      font-size: 14.5px;
+      color: #64748b;
+      line-height: 1.6;
+      max-width: 540px;
+      margin: 0 auto 24px auto;
+    }
+
+    .btn-auth-unlock {
+      background: linear-gradient(135deg, #b40814, #88040d);
+      color: #ffffff;
+      border: none;
+      padding: 12px 28px;
+      font-size: 14px;
+      font-weight: 800;
+      border-radius: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 6px 18px rgba(180, 8, 20, 0.3);
+      transition: all 0.25s ease;
+    }
+
+    .btn-auth-unlock:hover {
+      background: #88040d;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(180, 8, 20, 0.4);
+    }
+
+</style>
+
 </head>
 
 <body>
@@ -1469,7 +5969,9 @@
 $isLoggedIn = isset($isLoggedIn) ? $isLoggedIn : false;
 $userLevel = isset($userLevel) ? $userLevel : 0;
 $userName = isset($userName) ? $userName : 'User';
+$isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLevel == 1 || $userLevel == 2);
 ?>
+
 
 <!-- Login Status Badge (Active Session) -->
 <?php if ($isLoggedIn): ?>
@@ -1624,17 +6126,13 @@ $userName = isset($userName) ? $userName : 'User';
     <i class="fa-solid fa-award cta-doodle doodle-6"></i>
 
     <div class="banner-container">
-      <h1>Layanan Survei <span>IKM</span></h1>
+      <h1>Portal Layanan <span>Survei</span></h1>
       <p class="lead-text">
-        Silakan berpartisipasi dalam Survei Indeks Kepuasan Masyarakat (IKM) berbasis instrumen ilmiah untuk mengevaluasi mutu pelayanan publik secara objektif, transparan, dan terukur.
+        Platform instrumen survei terpadu untuk pengumpulan data lapangan, evaluasi kebijakan daerah, indeks kepuasan publik, dan riset strategis berbasis data ilmiah yang objektif, transparan, dan terpercaya.
       </p>
 
-      <!-- Stats Summary Strip -->
+      <!-- Stats Summary Strip (Ukuran proporsional 3 pilar) -->
       <div class="hero-stats-strip">
-        <div class="hero-stat-box">
-          <span class="hero-stat-val">KemenPAN-RB</span>
-          <span class="hero-stat-lbl">Metode Baku Teruji</span>
-        </div>
         <div class="hero-stat-box">
           <span class="hero-stat-val">100%</span>
           <span class="hero-stat-lbl">Objektif &amp; Terukur</span>
@@ -1651,24 +6149,93 @@ $userName = isset($userName) ? $userName : 'User';
     </div>
   </section>
 
-  <!-- SURVEY CONTENT & FILTER -->
-  <section class="survey-content">
+  <!-- SURVEYOR PORTAL CONTROL BAR (Surveiyor Level 4 / Admin / Staf) -->
+  <?php if ($isSurveiyor): ?>
+  <div class="surveyor-control-bar-wrap">
+    <div class="surveyor-control-bar">
+      <div class="surveyor-bar-left">
+        <div class="surveyor-avatar"><i class="fa-solid fa-clipboard-user"></i></div>
+        <div>
+          <div class="surveyor-bar-badge"><i class="fa-solid fa-circle-check"></i> Sesi Aktif: <?= ($userLevel == 4 ? 'Surveiyor' : ($userLevel == 3 ? 'Staf' : ($userLevel == 1 ? 'SuperAdmin' : 'Admin'))) ?></div>
+          <h3 class="surveyor-bar-name"><?= htmlspecialchars($userName) ?></h3>
+        </div>
+      </div>
+      <div class="surveyor-bar-tabs">
+        <button type="button" class="surveyor-tab-btn active" id="tabBtnKatalog" onclick="switchSurveyorTab('katalog')">
+          <i class="fa-solid fa-table-cells-large"></i> Katalog Survei
+        </button>
+        <button type="button" class="surveyor-tab-btn" id="tabBtnBuilder" onclick="switchSurveyorTab('builder')">
+          <i class="fa-solid fa-pen-ruler"></i> Studio Survei Dinamis <span class="tab-badge-pill">Google Form</span>
+        </button>
+        <button type="button" class="surveyor-tab-btn" id="tabBtnRekap" onclick="switchSurveyorTab('rekap')">
+          <i class="fa-solid fa-chart-pie"></i> Rekapitulasi &amp; Daerah
+        </button>
+        <button type="button" class="surveyor-tab-btn" id="tabBtnPeta" onclick="switchSurveyorTab('peta')">
+          <i class="fa-solid fa-map-location-dot"></i> Peta Sebaran &amp; GIS
+        </button>
+      </div>
+      <div class="surveyor-bar-right">
+        <button type="button" class="btn-create-survey" onclick="openCreateSurveyBuilder()">
+          <i class="fa-solid fa-plus"></i> Buat Survei Baru
+        </button>
+      </div>
+    </div>
+  </div>
+  <?php endif; ?>
+
+  <!-- VIEW 1: KATALOG SURVEI PUBLIK -->
+  <section class="survey-content" id="tabKatalogSection">
     <div class="survey-content-inner">
 
       <div class="section-heading">
-        <span class="subtitle">Instrumen &amp; Partisipasi Publik</span>
-        <h2>Formulir Survei Aktif</h2>
-        <p>Pilih dan isi kuesioner survei sesuai dengan instansi dan unit layanan publik yang Anda gunakan.</p>
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; margin-bottom: 8px;">
+          <h2 style="margin: 0;">Katalog Formulir Survei</h2>
+          <?php if ($isLoggedIn): ?>
+          <button type="button" class="btn-public-gis-map" onclick="openSurveyGeoMap(3)" title="Buka Peta Sebaran Geospasial Google Maps Responden Banyuwangi">
+            <i class="fa-solid fa-map-location-dot"></i> Peta Sebaran GIS Responden
+          </button>
+          <?php else: ?>
+          <button type="button" class="btn-public-gis-map btn-public-gis-map-locked" onclick="promptSurveyAuth('peta')" title="Peta Sebaran GIS Responden (Memerlukan Login Petugas / Surveyor)">
+            <i class="fa-solid fa-lock"></i> Peta Sebaran GIS Responden <span class="gis-locked-tag">Khusus Petugas</span>
+          </button>
+          <?php endif; ?>
+        </div>
+        <p>Jelajahi dan berpartisipasi dalam berbagai survei penelitian, indeks kepuasan masyarakat (IKM), evaluasi program, dan pelayanan publik secara transparan dan terukur.</p>
       </div>
 
       <!-- Modern Filter Section -->
       <div class="filter-section-lugx">
-        <h4><i class="fa-solid fa-filter"></i> Filter Pencarian Survei</h4>
-        <div class="filter-grid-row">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+          <h4 style="margin: 0;"><i class="fa-solid fa-filter"></i> Filter &amp; Pencarian Survei</h4>
+          <span style="font-size: 13px; font-weight: 700; color: var(--lugx-blue);" id="surveiTotalCounter">Memuat survei...</span>
+        </div>
+
+        <!-- Quick Filter Pills: Jenis Survei (IKM & Kategori Lainnya) -->
+        <div class="survey-type-pills-wrap">
+          <div class="type-pills-label">
+            <i class="fa-solid fa-layer-group"></i> <span>Kategori Jenis Survei:</span>
+          </div>
+          <div class="type-pills-scroller" id="surveyTypePillsContainer">
+            <button type="button" class="type-pill-btn active" data-jenis="" onclick="selectJenisPill('')">
+              <i class="fa-solid fa-border-all"></i> Semua Jenis
+              <span class="pill-badge" id="pillCountAll">0</span>
+            </button>
+            <button type="button" class="type-pill-btn" data-jenis="IKM" onclick="selectJenisPill('IKM')">
+              <i class="fa-solid fa-clipboard-check"></i> IKM (Kepuasan Masyarakat)
+              <span class="pill-badge" id="pillCountIKM">0</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-grid-row" style="grid-template-columns: 2fr 1fr 1fr 1fr;">
+          <div class="filter-group-lugx">
+            <label for="searchKeyword"><i class="fa-solid fa-magnifying-glass"></i> Cari Survei / Daerah</label>
+            <input type="text" id="searchKeyword" class="filter-select-custom" placeholder="Ketik judul, instansi, atau nama daerah..." oninput="filterSurvei()">
+          </div>
           <div class="filter-group-lugx">
             <label for="jenis">Jenis Survei</label>
             <select id="jenis" class="filter-select-custom" onchange="filterSurvei()">
-              <option value="">Semua Jenis Survei</option>
+              <option value="">Semua Jenis</option>
             </select>
           </div>
           <div class="filter-group-lugx">
@@ -1686,11 +6253,992 @@ $userName = isset($userName) ? $userName : 'User';
         </div>
       </div>
 
-      <!-- Grid Survei -->
-      <div class="survey-grid" id="surveyGrid"></div>
+      <!-- Grid Survei Dinamis -->
+      <div class="survey-grid" id="surveyGrid">
+        <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--lugx-gray);">
+          <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 32px; color: var(--lugx-blue); margin-bottom: 12px; display: block;"></i>
+          Memuat daftar survei dinamis...
+        </div>
+      </div>
 
     </div>
   </section>
+
+  <!-- VIEW 2: ENTERPRISE DYNAMIC SURVEY BUILDER (SURVEIYOR STUDIO) -->
+  <section class="gform-studio-section" id="tabBuilderSection">
+    <div class="gform-container">
+      
+      <!-- Studio Header / App Navigation Bar -->
+      <div class="builder-studio-bar">
+        <div class="builder-studio-left">
+          <button type="button" class="gform-back-btn" onclick="switchSurveyorTab('katalog')">
+            <i class="fa-solid fa-arrow-left"></i> Kembali ke Katalog
+          </button>
+          <span class="gform-header-badge" id="builderModeBadge">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Mode Pembuat Kuesioner Baru
+          </span>
+        </div>
+        <div class="builder-nav-stepper">
+          <a href="#builderStepIdentitas" class="stepper-chip" onclick="$('html, body').animate({ scrollTop: $('#builderStepIdentitas').offset().top - 90 }, 300); return false;">
+            <span class="num">1</span> Identitas
+          </a>
+          <a href="#builderStepWilayah" class="stepper-chip" onclick="$('html, body').animate({ scrollTop: $('#builderStepWilayah').offset().top - 90 }, 300); return false;">
+            <span class="num">2</span> Wilayah
+          </a>
+          <a href="#builderStepVisual" class="stepper-chip" onclick="$('html, body').animate({ scrollTop: $('#builderStepVisual').offset().top - 90 }, 300); return false;">
+            <span class="num">3</span> Visual
+          </a>
+          <a href="#builderStepPertanyaan" class="stepper-chip" onclick="$('html, body').animate({ scrollTop: $('#builderStepPertanyaan').offset().top - 90 }, 300); return false;">
+            <span class="num">4</span> Pertanyaan
+          </a>
+        </div>
+      </div>
+
+      <input type="hidden" id="builderSurveyId" value="0">
+
+      <!-- STEP 1: IDENTITAS & INFORMASI KUESIONER -->
+      <div class="enterprise-builder-card" id="builderStepIdentitas">
+        <div class="card-step-header">
+          <div class="card-step-info">
+            <div class="card-step-pill">01</div>
+            <div class="card-step-text">
+              <h3>Identitas &amp; Pengaturan Kuesioner</h3>
+              <p>Tentukan judul resmi formulir survei, penjelasan instruksi bagi responden, serta lembaga pelaksana.</p>
+            </div>
+          </div>
+          <span class="gform-header-badge" style="background: #f1f5f9; color: #475569; border-color: #e2e8f0;">
+            <i class="fa-solid fa-file-lines"></i> Konfigurasi Dasar
+          </span>
+        </div>
+
+        <div class="gform-field-group">
+          <label class="gform-field-label" for="builderJudul">
+            <i class="fa-solid fa-heading"></i> Judul Formulir Survei <span class="req">*</span>
+          </label>
+          <input type="text" id="builderJudul" class="gform-title-input" placeholder="Masukkan judul formulir survei baru di sini..." value="">
+        </div>
+
+        <div class="gform-field-group">
+          <label class="gform-field-label" for="builderDeskripsi">
+            <i class="fa-solid fa-align-left"></i> Deskripsi &amp; Petunjuk Pengisian Bagi Responden
+          </label>
+          <textarea id="builderDeskripsi" class="gform-desc-input" placeholder="Tuliskan tujuan evaluasi, dasar hukum survei, petunjuk pengisian, atau jaminan kerahasiaan data bagi responden..."></textarea>
+        </div>
+
+        <div class="gform-meta-grid">
+          <div class="gform-meta-field">
+            <label for="builderLembaga"><i class="fa-solid fa-building-columns"></i> Instansi Pelaksana</label>
+            <input type="text" id="builderLembaga" placeholder="Nama Instansi / Lembaga Pelaksana" value="">
+          </div>
+          <div class="gform-meta-field">
+            <label for="builderTipeSurvei"><i class="fa-solid fa-diagram-project"></i> Model Instrumen</label>
+            <select id="builderTipeSurvei" onchange="onBuilderTipeSurveiChange(this.value)">
+              <option value="standar" selected>Standar (Instrumen Tunggal / IKM)</option>
+              <option value="multi">Multi-Instrumen Dinamis (RTKD: A, B, C, D)</option>
+            </select>
+          </div>
+          <div class="gform-meta-field">
+            <label for="builderJenis"><i class="fa-solid fa-layer-group"></i> Kategori Survei</label>
+            <select id="builderJenis">
+              <option value="IKM" selected>IKM (Kepuasan Masyarakat)</option>
+              <option value="SKM">SKM (Standar Kepuasan)</option>
+              <option value="Ketenagakerjaan">Ketenagakerjaan</option>
+              <option value="Evaluasi">Evaluasi Program Daerah</option>
+              <option value="Riset">Riset &amp; Kebijakan Ekonomi</option>
+            </select>
+          </div>
+          <div class="gform-meta-field">
+            <label for="builderTahun"><i class="fa-solid fa-calendar-days"></i> Tahun Pelaksanaan</label>
+            <input type="text" id="builderTahun" placeholder="Tahun" value="<?= date('Y') ?>">
+          </div>
+          <div class="gform-meta-field">
+            <label for="builderStatus"><i class="fa-solid fa-shield-halved"></i> Status Akses</label>
+            <select id="builderStatus">
+              <option value="Aktif" selected>Aktif (Dapat Diisi Publik)</option>
+              <option value="Tidak Aktif">Tidak Aktif (Draft / Ditutup)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: CAKUPAN & WILAYAH SURVEI -->
+      <div class="enterprise-builder-card" id="builderStepWilayah">
+        <div class="card-step-header">
+          <div class="card-step-info">
+            <div class="card-step-pill">02</div>
+            <div class="card-step-text">
+              <h3>Cakupan Wilayah &amp; Sasaran Geografis</h3>
+              <p>Tentukan daerah lokus survei agar sistem secara otomatis memetakan responden ke wilayah target.</p>
+            </div>
+          </div>
+          <span class="gform-header-badge" style="background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe;">
+            <i class="fa-solid fa-map-location-dot"></i> Geografis
+          </span>
+        </div>
+
+        <div class="gform-daerah-grid">
+          <div class="gform-meta-field">
+            <label for="builderProvinsi"><i class="fa-solid fa-earth-asia"></i> Provinsi Target</label>
+            <select id="builderProvinsi" onchange="loadKabupatenBuilder(this.value)">
+              <option value="">-- Pilih Provinsi --</option>
+              <?php if (!empty($provinsi)): ?>
+                <?php foreach ($provinsi as $pv): ?>
+                  <option value="<?= htmlspecialchars($pv['Kode']) ?>"><?= htmlspecialchars($pv['Nama']) ?></option>
+                <?php endforeach; ?>
+              <?php endif; ?>
+            </select>
+          </div>
+          <div class="gform-meta-field">
+            <label for="builderKabupaten"><i class="fa-solid fa-city"></i> Kabupaten / Kota</label>
+            <select id="builderKabupaten" onchange="syncDaerahSurveiText()">
+              <option value="">-- Pilih Kab/Kota --</option>
+            </select>
+          </div>
+          <div class="gform-meta-field">
+            <label for="builderDaerahText"><i class="fa-solid fa-location-dot"></i> Keterangan Lokus / Unit Layanan</label>
+            <input type="text" id="builderDaerahText" placeholder="Contoh: Kabupaten Banyuwangi - Seluruh Unit Layanan" value="">
+          </div>
+        </div>
+
+        <div class="enterprise-alert-box">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>Responden yang mengisi formulir ini akan otomatis terhubung ke wilayah administratif tersebut pada laporan rekapitulasi &amp; ekspor Excel.</span>
+        </div>
+      </div>
+
+      <!-- STEP 3: KUSTOMISASI VISUAL & BANNER FORM -->
+      <div class="enterprise-builder-card" id="builderStepVisual">
+        <div class="card-step-header">
+          <div class="card-step-info">
+            <div class="card-step-pill">03</div>
+            <div class="card-step-text">
+              <h3>Desain Visual &amp; Banner Header</h3>
+              <p>Personalisasi tema warna dan latar belakang header kuesioner yang akan dilihat oleh responden.</p>
+            </div>
+          </div>
+          <span class="gform-header-badge" style="background: #fdf2f8; color: #be185d; border-color: #fbcfe8;">
+            <i class="fa-solid fa-paintbrush"></i> Branding Visual
+          </span>
+        </div>
+
+        <!-- Live Preview Banner Header -->
+        <div class="gform-banner-preview" id="builderBannerPreview" style="background: linear-gradient(135deg, #043168 0%, #0d3d7c 100%);">
+          <div class="banner-preview-overlay"></div>
+          <div class="banner-preview-content">
+            <span class="banner-preview-badge" id="previewBannerBadge"><i class="fa-solid fa-clipboard-check"></i> IKM &bull; <?= date('Y') ?></span>
+            <h3 id="previewBannerJudul">Judul Formulir Kuesioner Baru</h3>
+            <p id="previewBannerLembaga"><i class="fa-solid fa-building-columns"></i> Instansi / Lembaga Pelaksana</p>
+          </div>
+        </div>
+
+        <div class="gform-banner-controls">
+          <div class="gform-meta-field">
+            <label><i class="fa-solid fa-palette"></i> Pilihan Palet Warna Aksen</label>
+            <div class="banner-color-swatches">
+              <button type="button" class="swatch-btn active" data-color="#043168" style="background: #043168;" title="Navy Lugx" onclick="setBuilderBannerColor('#043168')"></button>
+              <button type="button" class="swatch-btn" data-color="#b40814" style="background: #b40814;" title="Crimson Red" onclick="setBuilderBannerColor('#b40814')"></button>
+              <button type="button" class="swatch-btn" data-color="#059669" style="background: #059669;" title="Emerald Green" onclick="setBuilderBannerColor('#059669')"></button>
+              <button type="button" class="swatch-btn" data-color="#4f46e5" style="background: #4f46e5;" title="Indigo Modern" onclick="setBuilderBannerColor('#4f46e5')"></button>
+              <button type="button" class="swatch-btn" data-color="#0891b2" style="background: #0891b2;" title="Teal Cyan" onclick="setBuilderBannerColor('#0891b2')"></button>
+              <button type="button" class="swatch-btn" data-color="#1e293b" style="background: #1e293b;" title="Slate Dark" onclick="setBuilderBannerColor('#1e293b')"></button>
+              <input type="color" id="builderBannerColorPicker" value="#043168" class="swatch-picker" onchange="setBuilderBannerColor(this.value)" title="Pilih Warna Kustom">
+            </div>
+            <input type="hidden" id="builderBannerColor" value="#043168">
+          </div>
+
+          <div class="gform-meta-field">
+            <label for="builderBannerPreset"><i class="fa-solid fa-image"></i> Gambar Latar Header</label>
+            <select id="builderBannerPreset" onchange="handleBannerPresetChange(this.value)">
+              <option value="">Gradien Bersih Elegan (Default)</option>
+              <option value="<?= base_url('assets/img/background/IDE 2.0.webp') ?>">Preset 1: IDE Consultant Modern Vector</option>
+              <option value="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80">Preset 2: Gedung Pemerintahan &amp; Publik</option>
+              <option value="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80">Preset 3: Riset Kebijakan &amp; Data</option>
+              <option value="custom">Gunakan URL Gambar Kustom Sendiri...</option>
+            </select>
+            <input type="text" id="builderBannerImage" placeholder="Tempel URL Gambar Banner di sini..." style="display: none; margin-top: 8px;" oninput="updateBannerPreviewImage(this.value)">
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4: INSTRUMEN BUTIR PERTANYAAN KUESIONER -->
+      <div class="enterprise-builder-card" id="builderStepPertanyaan">
+        <div class="card-step-header">
+          <div class="card-step-info">
+            <div class="card-step-pill">04</div>
+            <div class="card-step-text">
+              <h3>Instrumen Butir Pertanyaan Kuesioner</h3>
+              <p>Susun butir pertanyaan berbobot nilai numerik, skala rating kepuasan, maupun isian terbuka.</p>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span class="gform-header-badge" id="builderHeaderCount" style="background: #ecfdf5; color: #065f46; border-color: #a7f3d0;">
+              <i class="fa-solid fa-list-check"></i> <span id="builderQuestionsCount">0</span> Pertanyaan
+            </span>
+            <button type="button" class="btn-enterprise-add-q" onclick="addNewQuestionCard()">
+              <i class="fa-solid fa-circle-plus"></i> Tambah Pertanyaan
+            </button>
+          </div>
+        </div>
+
+        <!-- Question Cards List Container -->
+        <div class="gform-cards-list" id="gformCardsContainer">
+          <!-- Question cards injected dynamically by JavaScript -->
+        </div>
+
+        <!-- Big Bottom Add Question Action Dropzone -->
+        <div class="enterprise-add-q-card-bottom" onclick="addNewQuestionCard()" style="margin-top: 24px;">
+          <i class="fa-solid fa-circle-plus fa-lg"></i>
+          <span>Tambah Butir Pertanyaan Baru Berikutnya</span>
+        </div>
+      </div>
+
+      <!-- Sticky Floating Enterprise Bottom Toolbar -->
+      <div class="gform-bottom-bar">
+        <div class="builder-bottom-status">
+          <i class="fa-solid fa-circle-check"></i>
+          <span>Studio Pembuat Survei Aktif &bull; <b id="builderBottomCount">0</b> Butir Pertanyaan</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <button type="button" class="btn-add-q-card" onclick="addNewQuestionCard()">
+            <i class="fa-solid fa-plus"></i> Tambah Pertanyaan
+          </button>
+          <button type="button" class="gform-back-btn" onclick="switchSurveyorTab('katalog')">
+            <i class="fa-solid fa-xmark"></i> Batal
+          </button>
+          <button type="button" class="btn-save-gform" id="btnSaveBuilder" onclick="saveSurveyBuilderData()">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Simpan Formulir Survei
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- VIEW 3: REKAPITULASI RESPON & DAERAH SURVEI SECTION -->
+  <section class="rekap-section" id="tabRekapSection">
+    <div class="survey-content-inner">
+
+      <?php if (!$isLoggedIn): ?>
+      <div class="auth-locked-card">
+        <div class="auth-locked-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3>Rincian Data Responden Terproteksi</h3>
+        <p>Demi keamanan data dan privasi responden (termasuk identitas, kontak, dan rincian hasil survei), rekapitulasi data responden hanya dapat diakses oleh petugas, staf, atau surveyor resmi yang telah login ke dalam sistem.</p>
+        <button type="button" class="btn-auth-unlock" onclick="openModal('signInModal')">
+          <i class="fa-solid fa-right-to-bracket"></i> Masuk Sebagai Petugas / Surveyor
+        </button>
+      </div>
+      <?php else: ?>
+
+      <div class="rekap-header-row">
+        <div>
+          <span class="subtitle" style="color: var(--lugx-red); font-size: 14px; font-weight: 700; text-transform: uppercase;">Laporan Statistik</span>
+          <h2 style="font-size: 28px; font-weight: 800; color: var(--lugx-dark); margin: 4px 0 0 0;">Rekapitulasi Respon Survei &amp; Daerah</h2>
+        </div>
+        <div style="display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap;">
+          <div style="min-width: 260px;">
+            <label style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase;">Pilih Survei untuk Dianalisis:</label>
+            <select id="rekapSurveySelector" class="filter-select-custom" onchange="loadRekapitulasi(this.value)">
+              <!-- Options injected by JS -->
+            </select>
+          </div>
+          <button type="button" class="btn-export-excel" onclick="downloadRekapExcel()" title="Unduh data responder survei ini ke format spreadsheet / Excel">
+            <i class="fa-solid fa-file-excel"></i> Unduh Data Responden (Excel)
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Widgets -->
+      <div class="rekap-kpi-grid">
+        <div class="rekap-kpi-card">
+          <div class="rekap-kpi-icon" style="background: linear-gradient(135deg, #0284c7, #0369a1);"><i class="fa-solid fa-users"></i></div>
+          <div>
+            <div class="rekap-kpi-val" id="kpiTotalResponden">0</div>
+            <div class="rekap-kpi-lbl">Total Responden Masuk</div>
+          </div>
+        </div>
+        <div class="rekap-kpi-card">
+          <div class="rekap-kpi-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-star-half-stroke"></i></div>
+          <div>
+            <div class="rekap-kpi-val" id="kpiRataRataSkor">0.00</div>
+            <div class="rekap-kpi-lbl">Rata-Rata Skor IKM</div>
+          </div>
+        </div>
+        <div class="rekap-kpi-card">
+          <div class="rekap-kpi-icon" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);"><i class="fa-solid fa-award"></i></div>
+          <div>
+            <div class="rekap-kpi-val" id="kpiMutuPelayanan" style="font-size: 22px;">-</div>
+            <div class="rekap-kpi-lbl">Predikat Mutu Pelayanan</div>
+          </div>
+        </div>
+        <div class="rekap-kpi-card">
+          <div class="rekap-kpi-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><i class="fa-solid fa-map-location-dot"></i></div>
+          <div>
+            <div class="rekap-kpi-val" id="kpiTotalDaerah">0</div>
+            <div class="rekap-kpi-lbl">Sebaran Daerah Survei</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sebaran Daerah Survei Pills -->
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 18px; padding: 20px; margin-bottom: 26px;">
+        <h4 style="font-size: 13px; font-weight: 800; color: var(--lugx-blue); text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-location-crosshairs"></i> Distribusi Responden Berdasarkan Keterangan Daerah Survei:
+        </h4>
+        <div id="rekapDaerahPills" style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <span style="font-size: 13px; color: #64748b;">Belum ada data responden.</span>
+        </div>
+      </div>
+
+      <!-- Tabel Data Responden -->
+      <div class="rekap-table-card">
+        <h4 style="font-size: 16px; font-weight: 800; color: var(--lugx-dark); margin-bottom: 16px;">
+          <i class="fa-solid fa-table-list" style="color: var(--lugx-red); margin-right: 8px;"></i> Daftar Responden &amp; Isian Data Survei
+        </h4>
+        <div style="overflow-x: auto;">
+          <table class="rekap-table" id="tableRekapResponden">
+            <thead>
+              <tr>
+                <th style="width: 50px;">No</th>
+                <th>Waktu Pengisian</th>
+                <th>Nama Responden</th>
+                <th>Keterangan Daerah Survei</th>
+                <th>Demografi</th>
+                <th>Rata-Rata Skor</th>
+                <th>Mutu</th>
+                <th style="text-align: center;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tableRekapRespondenBody">
+              <tr>
+                <td colspan="8" style="text-align: center; color: var(--lugx-gray); padding: 40px;">
+                  Pilih survei untuk melihat data responden.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <?php endif; ?>
+
+    </div>
+  </section>
+
+  <!-- VIEW 4: PETA GEOSPASIAL & INFOGRAFIS SEBARAN RESPONDEN (OPENSTREETMAP + LEAFLET) -->
+  <section class="geo-infografis-section" id="tabPetaSection">
+    <div class="survey-content-inner">
+
+      <?php if (!$isLoggedIn): ?>
+      <div class="auth-locked-card">
+        <div class="auth-locked-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+        <h3>Peta Geospasial Responden Terproteksi</h3>
+        <p>Visualisasi sebaran koordinat GPS responden bersifat sensitif dan hanya dapat diakses melalui session login petugas/surveyor resmi demi kepatuhan perlindungan privasi dan keamanan data spasial.</p>
+        <button type="button" class="btn-auth-unlock" onclick="openModal('signInModal')">
+          <i class="fa-solid fa-right-to-bracket"></i> Masuk Sebagai Petugas / Surveyor
+        </button>
+      </div>
+      <?php else: ?>
+
+      <!-- Header Infografis Spasial -->
+      <div class="geo-header-card">
+        <div class="geo-header-left">
+          <div class="geo-badge-tag"><i class="fa-solid fa-satellite-dish"></i> Pemetaan Spasial Real-Time Google Maps</div>
+          <h2 class="geo-title">Peta Geospasial &amp; Infografis Sebaran Responden</h2>
+          <p class="geo-subtitle">Visualisasi sebaran geolokasi responden berdasarkan tracking koordinat GPS perangkat pengisi survei dan poligon batas wilayah administratif kecamatan Kabupaten Banyuwangi.</p>
+        </div>
+        <div class="geo-header-right">
+          <div class="geo-survey-selector-wrap">
+            <label for="geoSurveySelect"><i class="fa-solid fa-layer-group"></i> Pilih Data Survei:</label>
+            <select id="geoSurveySelect" class="geo-select-custom" onchange="loadSurveyGeoMap(this.value)">
+              <!-- Options populated dynamically -->
+            </select>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn-geo-refresh" onclick="reloadCurrentGeoMap()" title="Muat Ulang Titik Geospasial">
+              <i class="fa-solid fa-rotate"></i> Refresh Peta
+            </button>
+            <button type="button" class="btn-geo-excel" onclick="downloadCurrentGeoExcel()" title="Unduh Data Koordinat ke Excel">
+              <i class="fa-solid fa-file-excel"></i> Ekspor Excel
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI Metrics Infografis Row -->
+      <div class="geo-kpi-grid">
+        <div class="geo-kpi-card">
+          <div class="geo-kpi-icon" style="background: #eff6ff; color: #2563eb;"><i class="fa-solid fa-map-pin"></i></div>
+          <div class="geo-kpi-data">
+            <span class="geo-kpi-val" id="geoKpiTotal">0</span>
+            <span class="geo-kpi-lbl">Titik Terpetakan (GPS)</span>
+          </div>
+        </div>
+        <div class="geo-kpi-card">
+          <div class="geo-kpi-icon" style="background: #f0fdf4; color: #16a34a;"><i class="fa-solid fa-mountain-city"></i></div>
+          <div class="geo-kpi-data">
+            <span class="geo-kpi-val" id="geoKpiKecamatan">0</span>
+            <span class="geo-kpi-lbl">Kecamatan Terjangkau</span>
+          </div>
+        </div>
+        <div class="geo-kpi-card">
+          <div class="geo-kpi-icon" style="background: #fefce8; color: #ca8a04;"><i class="fa-solid fa-star"></i></div>
+          <div class="geo-kpi-data">
+            <span class="geo-kpi-val" id="geoKpiSkor">0.00</span>
+            <span class="geo-kpi-lbl" id="geoKpiMutu">Rata-Rata Kepuasan</span>
+          </div>
+        </div>
+        <div class="geo-kpi-card">
+          <div class="geo-kpi-icon" style="background: #faf5ff; color: #9333ea;"><i class="fa-solid fa-mobile-screen-button"></i></div>
+          <div class="geo-kpi-data">
+            <span class="geo-kpi-val" id="geoKpiDevice">-</span>
+            <span class="geo-kpi-lbl">Perangkat Dominan</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main GIS Canvas Row (Map + Sidebar) -->
+      <div class="geo-workspace-grid">
+        
+        <!-- Left: Map Area with Leaflet -->
+        <div class="geo-map-wrapper">
+          
+          <!-- Map Controls / Filter Bar -->
+          <div class="geo-map-toolbar">
+            <div class="geo-filter-item">
+              <label for="geoKecamatanFilter"><i class="fa-solid fa-filter"></i> Filter Kecamatan:</label>
+              <select id="geoKecamatanFilter" class="geo-toolbar-select" onchange="filterMapKecamatan(this.value)">
+                <option value="">Semua Wilayah Kecamatan</option>
+              </select>
+            </div>
+            <div class="geo-filter-item">
+              <label for="geoMutuFilter"><i class="fa-solid fa-award"></i> Filter Mutu:</label>
+              <select id="geoMutuFilter" class="geo-toolbar-select" onchange="filterMapMutu(this.value)">
+                <option value="">Semua Mutu Pelayanan</option>
+                <option value="Sangat Baik">Sangat Baik (A)</option>
+                <option value="Baik">Baik (B)</option>
+                <option value="Kurang">Kurang Baik (C)</option>
+              </select>
+            </div>
+            <div class="geo-layer-toggles">
+              <label class="geo-chk-lbl">
+                <input type="checkbox" id="togglePolygonsChk" checked onchange="toggleKecamatanPolygons(this.checked)">
+                <span>Batas Wilayah</span>
+              </label>
+              <label class="geo-chk-lbl">
+                <input type="checkbox" id="toggleMarkersChk" checked onchange="toggleRespondentMarkers(this.checked)">
+                <span>Titik Responden</span>
+              </label>
+            </div>
+            <button type="button" class="btn-geo-reset-view" onclick="resetMapToBanyuwangi()" title="Pusatkan Peta ke Banyuwangi">
+              <i class="fa-solid fa-expand"></i> Reset View
+            </button>
+          </div>
+
+          <!-- Leaflet Map Canvas -->
+          <div id="leafletSurveiMap" class="leaflet-map-canvas"></div>
+
+          <!-- Floating Legend Map Overlay -->
+          <div class="geo-map-legend">
+            <div class="legend-title"><i class="fa-solid fa-circle-info"></i> Legenda Mutu Skor</div>
+            <div class="legend-item"><span class="legend-pin green"></span> Sangat Baik (A &ge; 3.50)</div>
+            <div class="legend-item"><span class="legend-pin blue"></span> Baik (B: 2.75 - 3.49)</div>
+            <div class="legend-item"><span class="legend-pin yellow"></span> Kurang Baik (C: 2.00 - 2.74)</div>
+            <div class="legend-item"><span class="legend-pin red"></span> Tidak Baik (D &lt; 2.00)</div>
+          </div>
+        </div>
+
+        <!-- Right: Interactive Sidebar (Kecamatan Info & Responden Feed) -->
+        <div class="geo-sidebar">
+          
+          <!-- Kecamatan Active Focus Card -->
+          <div class="geo-focus-card" id="geoFocusCard">
+            <div class="focus-header">
+              <div class="focus-badge" id="focusKecBadge"><i class="fa-solid fa-map"></i> Kabupaten Banyuwangi</div>
+              <h3 id="focusKecTitle">Seluruh Wilayah</h3>
+            </div>
+            <div class="focus-meta-grid">
+              <div class="focus-stat">
+                <span class="lbl">Total Respon</span>
+                <span class="val" id="focusKecTotal">0</span>
+              </div>
+              <div class="focus-stat">
+                <span class="lbl">Rata-Rata Skor</span>
+                <span class="val" id="focusKecSkor">0.00</span>
+              </div>
+              <div class="focus-stat">
+                <span class="lbl">Predikat Mutu</span>
+                <span class="val text-green" id="focusKecMutu">-</span>
+              </div>
+              <div class="focus-stat">
+                <span class="lbl">Submit Terakhir</span>
+                <span class="val" id="focusKecLastSubmit">-</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feed Titik Responden List -->
+          <div class="geo-feed-wrap">
+            <div class="geo-feed-header">
+              <h4><i class="fa-solid fa-location-dot"></i> Daftar Titik Responden</h4>
+              <span class="feed-count-pill" id="feedCountPill">0 Responden</span>
+            </div>
+            <div class="geo-feed-list" id="geoFeedList">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <?php endif; ?>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       MODAL PENGISIAN KUESIONER SURVEI (DENGAN BANNER KUSTOMISASI & MULTI-STEP)
+       ========================================================================== -->
+  <div class="survey-respondent-overlay" id="surveyRespondentModal">
+    <div class="survey-respondent-box">
+      
+      <!-- Floating Close Button on Modal -->
+      <button type="button" class="btn-close-resp-modal" onclick="closeSurveyRespondentModal()" aria-label="Tutup Formulir" title="Tutup Formulir">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- 1. Google Forms Style Header Banner Image -->
+      <div class="gform-banner-img-wrap" id="modalRespBannerContainer">
+        <div class="gform-banner-img" id="modalRespBannerImg" style="background-image: url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=80');"></div>
+      </div>
+
+      <!-- 2. Google Forms Style Title & Information Card -->
+      <div class="gform-title-card" id="modalRespTitleCard">
+        <!-- Section Tab (Seperti 'Section 1 of 3' di gambar contoh) & Accent Line -->
+        <div class="gform-card-top-bar">
+          <div class="gform-section-badge" id="modalGformSectionBadge">
+            <span id="modalGformSectionText">Bagian 1 dari 4: Instrumen A &bull; Perusahaan</span>
+          </div>
+          <div class="gform-card-accent-line" id="modalGformAccentLine"></div>
+        </div>
+
+        <!-- Card Body Content -->
+        <div class="gform-card-body">
+          <div class="gform-title-row">
+            <h1 class="gform-main-title" id="modalRespJudul">Survei Ketenagakerjaan Banyuwangi (RTKD)</h1>
+            <div class="gform-title-icons">
+              <span class="gform-icon-btn" title="Simulasi Survei"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></span>
+              <span class="gform-icon-btn" title="Opsi Formulir"><i class="fa-solid fa-ellipsis-vertical"></i></span>
+            </div>
+          </div>
+
+          <!-- Description & Bullet Points persis seperti di gambar contoh -->
+          <div class="gform-desc-wrap">
+            <p class="gform-desc-lead" id="modalRespDeskripsi">
+              Survei Primer Ketenagakerjaan Kabupaten Banyuwangi dalam rangka Penyusunan <strong>Rencana Tenaga Kerja Daerah (RTKD) 2026</strong>. Instrumen komprehensif mengacu pada desain survei resmi untuk memetakan penyerapan tenaga kerja industri, profil dan kesiapan pencari kerja/alumni, keselarasan kurikulum vokasi, standar pengupahan &amp; jaminan sosial, serta serapan siswa kelas 12 sekolah menengah.
+            </p>
+
+            <div class="gform-meta-bullets">
+              <div class="gform-bullet-item" id="bulletItemLembaga">
+                <i class="fa-solid fa-building-columns"></i>
+                <span>Penyelenggara: <strong id="modalRespLembagaText">Dinas Tenaga Kerja, Transmigrasi dan Perindustrian Kab. Banyuwangi</strong></span>
+              </div>
+              <div class="gform-bullet-item" id="bulletItemWaktu">
+                <i class="fa-solid fa-clock"></i>
+                <span>Estimasi pengisian formulir sekitar <strong id="modalRespWaktuText">5 - 10 menit</strong>.</span>
+              </div>
+              <div class="gform-bullet-item" id="bulletItemKerahasiaan">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Seluruh jawaban responden dijaga <strong>kerahasiaannya (confidential)</strong> dan disajikan secara agregat.</span>
+              </div>
+              <div class="gform-bullet-item" id="bulletItemDaerah">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>Wilayah cakupan survei: <strong id="modalRespDaerahText">Kabupaten Banyuwangi</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sticky Multi-Step Progress & Navigation Bar -->
+      <div class="survey-sticky-progress">
+        <div class="survey-steps-nav">
+          <div class="survey-step-tab active" id="stepTabIndicator1" onclick="goToSurveyStep(1)">
+            <span class="step-num"><i class="fa-solid fa-user-check"></i></span>
+            <span class="step-label">
+              <span class="step-label-full">Bagian 1: Data Responden &amp; Daerah</span>
+              <span class="step-label-short">1. Identitas &amp; Wilayah</span>
+            </span>
+          </div>
+          <div class="survey-step-divider"><i class="fa-solid fa-chevron-right"></i></div>
+          <div class="survey-step-tab" id="stepTabIndicator2" onclick="goToSurveyStep(2)">
+            <span class="step-num"><i class="fa-solid fa-list-check"></i></span>
+            <span class="step-label">
+              <span class="step-label-full">Bagian 2: Kuesioner Survei</span>
+              <span class="step-label-short">2. Kuesioner Penilaian</span>
+            </span>
+          </div>
+        </div>
+        <div class="survey-progress-info">
+          <div class="survey-progress-track">
+            <div class="survey-progress-fill" id="surveyProgressFill" style="width: 0%;"></div>
+          </div>
+          <div class="survey-progress-text" id="surveyProgressText">Langkah 1 dari 2: Data Responden &amp; Daerah Survei</div>
+        </div>
+      </div>
+
+      <!-- Modal Body (Questions & Form) -->
+      <form id="formSurveyRespondent" onsubmit="handleSurveyRespondentSubmit(event)">
+        <input type="hidden" id="respSurveiId" name="SurveiId" value="0">
+
+        <!-- ====================================================================
+             HALAMAN RTKD: SURVEI KETENAGAKERJAAN BANYUWANGI (DINAMIS 4 INSTRUMEN)
+             ==================================================================== -->
+        <div class="survey-step-page" id="surveyStepRtkd" style="display: none;">
+          <!-- Instrument Switcher Tabs -->
+          <nav class="rtkd-tabs" role="tablist" aria-label="Instrumen survei">
+            <button type="button" class="rtkd-tab-btn active" id="modalRtkdTab-A" data-tab="A" aria-selected="true" onclick="switchModalRtkdTab('A')">
+              <span class="rtkd-tag">A</span>Perusahaan
+            </button>
+            <button type="button" class="rtkd-tab-btn" id="modalRtkdTab-B" data-tab="B" aria-selected="false" onclick="switchModalRtkdTab('B')">
+              <span class="rtkd-tag">B</span>Pencari kerja &amp; lulusan
+            </button>
+            <button type="button" class="rtkd-tab-btn" id="modalRtkdTab-C" data-tab="C" aria-selected="false" onclick="switchModalRtkdTab('C')">
+              <span class="rtkd-tag">C</span>Pemangku kepentingan
+            </button>
+            <button type="button" class="rtkd-tab-btn" id="modalRtkdTab-D" data-tab="D" aria-selected="false" onclick="switchModalRtkdTab('D')">
+              <span class="rtkd-tag">D</span>Siswa kelas 12
+            </button>
+          </nav>
+
+          <input type="hidden" id="modalRtkdActiveInstrument" name="RtkdInstrument" value="A">
+
+          <!-- Meta Row Enumerator -->
+          <div class="rtkd-meta-row">
+            <label class="rtkd-meta-label" for="respEnumerator">
+              <i class="fa-solid fa-user-pen"></i> Nama enumerator / Petugas pencatat <span style="color: #dc2626;">*</span>
+            </label>
+            <input type="text" id="respEnumerator" name="Enumerator" class="rtkd-input" placeholder="Nama petugas yang mendampingi pengisian formulir" autocomplete="name" value="Petugas Survei RTKD">
+          </div>
+
+          <!-- Consent Checkbox -->
+          <label class="rtkd-consent" for="modalRespConsent">
+            <input type="checkbox" id="modalRespConsent" checked>
+            <span id="modalConsentText">Responden sudah menerima penjelasan tujuan survei, menyetujui pengisian, dan mengetahui bahwa jawaban hanya disajikan secara agregat.</span>
+          </label>
+
+          <!-- Dynamic Questions Sheet -->
+          <div class="rtkd-sheet" id="modalRtkdSheet"></div>
+
+          <!-- Action Footer -->
+          <div class="rtkd-actions">
+            <button type="button" class="rtkd-btn ghost" onclick="closeSurveyRespondentModal()">
+              <i class="fa-solid fa-xmark"></i> Batal
+            </button>
+            <button type="button" class="rtkd-btn ghost" onclick="resetModalRtkdForm()">
+              <i class="fa-solid fa-rotate-left"></i> Kosongkan Formulir
+            </button>
+            <button type="submit" class="rtkd-btn" id="btnSubmitModalRtkd">
+              <i class="fa-solid fa-paper-plane"></i> Simpan Jawaban Survei
+            </button>
+            <span class="rtkd-status" id="modalRtkdStatus"></span>
+          </div>
+        </div>
+
+        <!-- ====================================================================
+             HALAMAN 1: IDENTITAS RESPONDEN & KETERANGAN DAERAH SURVEI
+             (Disusun bergulir ke bawah, rapi, simpel, ukuran normal)
+             ==================================================================== -->
+        <div class="survey-step-page" id="surveyStep1">
+          
+          <div class="resp-step-intro">
+            <h4><i class="fa-solid fa-id-card-clip"></i> Bagian 1: Identitas &amp; Keterangan Daerah Survei</h4>
+            <p>Silakan lengkapi identitas responden dan keterangan lokasi unit pelayanan publik yang disurvei. Seluruh data dijaga kerahasiaannya.</p>
+          </div>
+
+          <!-- Card 1. Identitas Responden -->
+          <div class="resp-vertical-card">
+            <div class="resp-card-title">
+              <i class="fa-solid fa-user" style="color: var(--lugx-blue);"></i> 1. Identitas Responden
+            </div>
+            <div class="resp-grid-2col">
+              <div class="resp-field">
+                <label for="respNama">Nama Lengkap (Boleh Anonim)</label>
+                <input type="text" id="respNama" name="RespondenNama" placeholder="Contoh: Masyarakat / Nama Lengkap" value="Masyarakat / Anonim">
+              </div>
+              <div class="resp-field">
+                <label for="respKontak">No. WhatsApp / HP (Opsional)</label>
+                <input type="text" id="respKontak" name="RespondenKontak" placeholder="08xxxxxxxxxx">
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2. Karakteristik & Demografi -->
+          <div class="resp-vertical-card">
+            <div class="resp-card-title">
+              <i class="fa-solid fa-address-book" style="color: var(--lugx-blue);"></i> 2. Karakteristik &amp; Demografi Responden
+            </div>
+            <div class="resp-grid-2col">
+              <div class="resp-field">
+                <label for="respGender">Jenis Kelamin</label>
+                <select id="respGender" name="RespondenGender">
+                  <option value="Laki-laki">Laki-laki</option>
+                  <option value="Perempuan">Perempuan</option>
+                </select>
+              </div>
+              <div class="resp-field">
+                <label for="respUsia">Kelompok Usia</label>
+                <select id="respUsia" name="RespondenUsia">
+                  <option value="15 - 19 Tahun">15 - 19 Tahun</option>
+                  <option value="20 - 24 Tahun" selected>20 - 24 Tahun</option>
+                  <option value="25 - 29 Tahun">25 - 29 Tahun</option>
+                  <option value="30 - 39 Tahun">30 - 39 Tahun</option>
+                  <option value="40 Tahun ke Atas">&ge; 40 Tahun</option>
+                </select>
+              </div>
+              <div class="resp-field">
+                <label for="respPendidikan">Pendidikan Terakhir</label>
+                <select id="respPendidikan" name="RespondenPendidikan">
+                  <option value="SMK Vokasi" selected>SMK Vokasi</option>
+                  <option value="SMA Sederajat">SMA Sederajat</option>
+                  <option value="Diploma / D3">Diploma / D3</option>
+                  <option value="Sarjana (S1 / S2)">Sarjana (S1 / S2 / S3)</option>
+                  <option value="SD / SMP">SD / SMP</option>
+                </select>
+              </div>
+              <div class="resp-field">
+                <label for="respPekerjaan">Kategori / Status Responden</label>
+                <select id="respPekerjaan" name="RespondenPekerjaan">
+                  <option value="Pencari Kerja / Fresh Graduate" selected>Pencari Kerja / Fresh Graduate (Instrumen B)</option>
+                  <option value="Pemberi Kerja / Pelaku Usaha (Perusahaan)">Pemberi Kerja / Pelaku Usaha (Instrumen A)</option>
+                  <option value="Siswa Kelas 12 (SMK / SMA / MA)">Siswa Kelas 12 (Instrumen D)</option>
+                  <option value="Karyawan Swasta / Buruh Industri">Karyawan Swasta / Buruh Industri</option>
+                  <option value="Pemangku Kepentingan / Stakeholder">Pemangku Kepentingan / Stakeholder (Instrumen C)</option>
+                  <option value="Wiraswasta / Usaha Mandiri">Wiraswasta / Usaha Mandiri</option>
+                  <option value="ASN / TNI / POLRI">ASN / TNI / POLRI</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3. Keterangan Daerah Survei (Cascading Dropdown kodewilayah) & Live Mini-Map Geospasial -->
+          <div class="resp-vertical-card">
+            <div class="resp-card-title">
+              <i class="fa-solid fa-map-location-dot" style="color: #0369a1;"></i> 3. Keterangan Daerah &amp; Wilayah Pelaksanaan Survei
+            </div>
+            
+            <div class="resp-grid-2col">
+              <div class="resp-field">
+                <label for="respProvinsi">Provinsi</label>
+                <select id="respProvinsi" name="Provinsi" onchange="handleWilayahChange('provinsi', this.value)">
+                  <option value="">-- Pilih Provinsi --</option>
+                  <?php if (!empty($provinsi)): ?>
+                    <?php foreach ($provinsi as $pv): ?>
+                      <option value="<?= htmlspecialchars($pv['Kode']) ?>"><?= htmlspecialchars($pv['Nama']) ?></option>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
+                </select>
+              </div>
+              <div class="resp-field">
+                <label for="respKabupaten">Kabupaten / Kota</label>
+                <select id="respKabupaten" name="Kabupaten" onchange="handleWilayahChange('kabupaten', this.value)">
+                  <option value="">-- Pilih Kab/Kota --</option>
+                </select>
+              </div>
+              <div class="resp-field">
+                <label for="respKecamatan">Kecamatan</label>
+                <select id="respKecamatan" name="Kecamatan" onchange="handleWilayahChange('kecamatan', this.value)">
+                  <option value="">-- Pilih Kecamatan --</option>
+                </select>
+              </div>
+              <div class="resp-field">
+                <label for="respDesa">Desa / Kelurahan</label>
+                <select id="respDesa" name="Desa">
+                  <option value="">-- Pilih Desa/Kel --</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="resp-field" style="margin-top: 4px;">
+              <label for="respAlamatDetail">Detail Lokasi / Unit Layanan Publik yang Disurvei</label>
+              <input type="text" id="respAlamatDetail" name="AlamatDetail" placeholder="Contoh: Kantor Pelayanan BAPPEDA / Mal Pelayanan Publik (MPP) / Kantor Kecamatan Banyuwangi">
+            </div>
+
+            <!-- GPS & Live Geospasial Mini-Map Responden -->
+            <div class="resp-gps-tracker-card" id="respGpsCard" style="margin-top: 10px; margin-bottom: 0;">
+              <div class="resp-gps-header">
+                <div class="resp-gps-title">
+                  <i class="fa-solid fa-satellite-dish" style="color: #0284c7;"></i>
+                  <span>Peta Geospasial &amp; Posisi Titik Responden</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <button type="button" class="btn-geo-detect" id="btnDetectGps" onclick="detectRespondentDeviceLocation(true)">
+                    <i class="fa-solid fa-location-crosshairs"></i> Deteksi GPS Saya
+                  </button>
+                  <span class="resp-gps-status-badge" id="respGpsBadgeStatus"><i class="fa-solid fa-location-dot"></i> Koordinat Siap</span>
+                </div>
+              </div>
+
+              <!-- Canvas Mini Map Leaflet Interaktif di Form Survei -->
+              <div id="respFormMiniMap" style="height: 220px; width: 100%; border-radius: 12px; border: 1.5px solid #cbd5e1; z-index: 10; margin: 4px 0; background: #e2e8f0;"></div>
+
+              <!-- Tampilan Koordinat Real & Device Sensor -->
+              <div class="resp-gps-coords-display">
+                <div class="resp-gps-field">
+                  <span class="lbl"><i class="fa-solid fa-arrows-up-down"></i> Latitude</span>
+                  <span class="val" id="dispGpsLat">-8.219234</span>
+                </div>
+                <div class="resp-gps-field">
+                  <span class="lbl"><i class="fa-solid fa-arrows-left-right"></i> Longitude</span>
+                  <span class="val" id="dispGpsLng">114.369120</span>
+                </div>
+                <div class="resp-gps-field">
+                  <span class="lbl"><i class="fa-solid fa-circle-nodes"></i> Akurasi GPS</span>
+                  <span class="val" id="dispGpsAcc">&plusmn; 8.5 m</span>
+                </div>
+                <div class="resp-gps-field">
+                  <span class="lbl"><i class="fa-solid fa-mobile-screen"></i> Perangkat</span>
+                  <span class="val" id="dispGpsDevice" style="font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Mobile / Desktop</span>
+                </div>
+              </div>
+
+              <div style="font-size: 11.5px; color: #64748b; line-height: 1.4; display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-circle-info" style="color: #0284c7;"></i>
+                <span>Peta otomatis menyorot batas wilayah kecamatan yang dipilih. Anda dapat menggeser (drag) pin atau mengklik langsung pada peta untuk memposisikan titik survei secara presisi.</span>
+              </div>
+            </div>
+
+            <!-- Hidden Inputs Koordinat Geospasial -->
+            <input type="hidden" id="respLatitude" name="Latitude" value="-8.219234">
+            <input type="hidden" id="respLongitude" name="Longitude" value="114.369120">
+            <input type="hidden" id="respLokasiAccuracy" name="LokasiAccuracy" value="8.5">
+            <input type="hidden" id="respDevicePlatform" name="DevicePlatform" value="Desktop Browser">
+          </div>
+
+          <!-- Action Bar Halaman 1 -->
+          <div class="survey-step-actions">
+            <button type="button" class="btn-step-secondary" onclick="closeSurveyRespondentModal()">
+              <i class="fa-solid fa-xmark"></i> Batal
+            </button>
+            <button type="button" class="btn-step-primary" onclick="goToSurveyStep(2)">
+              <span class="btn-txt-full">Lanjutkan ke Kuesioner Survei</span>
+              <span class="btn-txt-short">Lanjut</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- ====================================================================
+             HALAMAN 2: INSTRUMEN PERTANYAAN KUESIONER PENILAIAN
+             (Tampil di halaman terpisah saat tombol diklik agar tidak campur)
+             ==================================================================== -->
+        <div class="survey-step-page" id="surveyStep2" style="display: none;">
+          
+          <div class="resp-step-intro">
+            <h4><i class="fa-solid fa-clipboard-question"></i> Bagian 2: Instrumen Pertanyaan Penilaian</h4>
+            <p>Berikan penilaian objektif pada setiap butir pertanyaan kuesioner berikut. Tanda (<span style="color: var(--lugx-red); font-weight: 800;">*</span>) adalah pertanyaan wajib diisi.</p>
+          </div>
+
+          <!-- List Pertanyaan Dinamis Injected Here (Bergulir ke Bawah) -->
+          <div id="respQuestionsList" style="display: flex; flex-direction: column; gap: 14px;">
+            <!-- Dynamic Questions List -->
+          </div>
+
+          <!-- Action Bar Halaman 2 -->
+          <div class="survey-step-actions">
+            <button type="button" class="btn-step-secondary" onclick="goToSurveyStep(1)">
+              <i class="fa-solid fa-arrow-left"></i>
+              <span class="btn-txt-full">Kembali ke Data Daerah</span>
+              <span class="btn-txt-short">Kembali</span>
+            </button>
+            <button type="submit" class="btn-submit-survey" id="btnSubmitSurvey">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span class="btn-txt-full">Kirim Jawaban Survei</span>
+              <span class="btn-txt-short">Kirim</span>
+            </button>
+          </div>
+
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL RINCIAN JAWABAN RESPONDEN (DETAIL VIEW)
+       ========================================================================== -->
+  <div class="survey-respondent-overlay" id="responseDetailModal">
+    <div class="survey-respondent-box" style="max-width: 800px;">
+      <div class="survey-resp-header" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">
+        <button type="button" class="btn-close-resp-modal" onclick="closeResponseDetailModal()" aria-label="Tutup">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <h2><i class="fa-solid fa-file-lines"></i> Rincian Lembar Jawaban Responden</h2>
+        <p id="detailModalSubtitle">Data isian lengkap kuesioner dan perolehan skor nilai</p>
+      </div>
+
+      <div class="survey-resp-body" style="padding: 24px 30px;">
+        <!-- Profil Singkat Responden -->
+        <div id="detailRespondentProfile" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 18px; padding: 20px; margin-bottom: 20px;">
+          <!-- Loaded via JS -->
+        </div>
+
+        <!-- Rincian Jawaban per Pertanyaan -->
+        <h4 style="font-size: 15px; font-weight: 800; color: var(--lugx-dark); margin-bottom: 14px;">
+          <i class="fa-solid fa-list-check" style="color: var(--lugx-blue); margin-right: 6px;"></i> Rekap Butir Pertanyaan &amp; Jawaban:
+        </h4>
+        <div id="detailAnswersContainer" style="display: flex; flex-direction: column; gap: 14px;">
+          <!-- Loaded via JS -->
+        </div>
+      </div>
+
+      <div class="survey-resp-footer" style="padding: 16px 30px;">
+        <button type="button" class="btn-action-edit" onclick="closeResponseDetailModal()">
+          <i class="fa-solid fa-check"></i> Tutup Rincian
+        </button>
+      </div>
+    </div>
+  </div>
+
+    <!-- ==========================================================================
+       MODAL: QR CODE AKSES SURVEI (BERSIH & HANYA MUNCUL QR CODE SAJA)
+       ========================================================================== -->
+  <div class="survey-respondent-overlay" id="surveyQrModal">
+    <div class="qr-modal-dialog">
+      <div class="qr-modal-header">
+        <h3 id="qrModalSurveyJudul"><i class="fa-solid fa-qrcode"></i> QR Code Survei</h3>
+        <button type="button" class="btn-close-qr-modal" onclick="closeSurveyQrModal()" aria-label="Tutup">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="qr-modal-body">
+        <!-- Clean QR Card Display -->
+        <div class="qr-clean-card">
+          <div id="qrCodeBox">
+            <!-- Rendered by QRCode.js -->
+          </div>
+        </div>
+
+        <!-- URL Input with Copy Button -->
+        <div class="qr-url-input-wrap">
+          <div class="qr-url-icon"><i class="fa-solid fa-link"></i></div>
+          <input type="text" id="qrModalSurveyUrl" class="qr-url-input" readonly>
+          <button type="button" class="btn-copy-link-premium" onclick="copySurveyLink()" id="btnCopyQrLink" title="Salin Tautan">
+            <i class="fa-solid fa-copy"></i> <span>Salin</span>
+          </button>
+        </div>
+
+        <!-- Action: Download QR Code (PNG) -->
+        <button type="button" class="btn-download-qr" onclick="downloadQrCodePng()" title="Unduh gambar QR Code resolusi tinggi">
+          <i class="fa-solid fa-arrow-down-to-bracket"></i> <span>Unduh QR Code (PNG)</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- FOOTER & CONTACT SECTION -->
   <footer id="contact" class="footer-area">
@@ -1838,6 +7386,8 @@ $userName = isset($userName) ? $userName : 'User';
     var currentSelectedSurvey = null;
     var isLoggedIn = <?= $isLoggedIn ? 'true' : 'false' ?>;
     var userLevel = <?= $userLevel ?>;
+    var initialKodeSurvei = '<?= !empty($kodeSurvei) ? htmlspecialchars($kodeSurvei, ENT_QUOTES) : '' ?>';
+    var currentQrSurvey = null;
 
     // Dynamic Admin Time Greeting
     function updateAdminGreeting() {
@@ -2024,104 +7574,2807 @@ $userName = isset($userName) ? $userName : 'User';
       });
     });
 
-    // Survey Data & Render Handlers
-    var surveiData = [
-      // { id: 1, title: "Survei IKM Kinerja Bupati & Wakil Bupati Kab. Situbondo", jenis: "IKM", tahun: "2024", status: "Tidak Aktif", lembaga: "BAPPERIDA Kab. Situbondo", url: "<?= base_url('IDE/SurveiIKMSitubondo') ?>" },
-      // { id: 2, title: "Survei IKM Kinerja Bupati & Wakil Bupati Kab. Situbondo", jenis: "IKM", tahun: "2025", status: "Tidak Aktif", lembaga: "BAPPERIDA Kab. Situbondo", url: "<?= base_url('IDE/SurveiIKMSitubondo') ?>" },
-      // { id: 3, title: "Survei IKM Kinerja Walikota & Wakil Walikota Kota Yogyakarta", jenis: "IKM", tahun: "2026", status: "Aktif", lembaga: "BAKESBANGPOL Kota Yogyakarta", url: "<?= base_url('IDE/SurveiIKMYogyakarta') ?>" }
-    ];
+    // =========================================================================
+    // SISTEM FORMULIR & SURVEI DINAMIS (GOOGLE FORM STYLE ENGINE)
+    // =========================================================================
+    var allSurveys = [];
+    var currentBuilderQuestions = [];
+    var currentRespondentSurvey = null;
+    var currentRespondentQuestions = [];
+    var isSurveiyorUser = <?= $isSurveiyor ? 'true' : 'false' ?>;
+    var currentSelectedSurvey = null;
+    var rekapCache = {};
 
     function isUserLoggedIn() {
-      return isLoggedIn;
+      return <?= $isLoggedIn ? 'true' : 'false' ?>;
     }
 
-    function handleSurveyClick(survey, action) {
-      if (action === 'isi') {
-        if (isUserLoggedIn()) {
-          window.location.href = survey.url;
-        } else {
-          currentSelectedSurvey = survey;
-          openLoginPrompt();
+    // Modal Peringatan Privasi & Akses Terbatas untuk Pengguna Umum (Belum Login)
+    window.promptSurveyAuth = function(type) {
+      var featureName = (type === 'peta') ? 'Peta Sebaran Spasial GIS Responden' : (type === 'rekap' ? 'Rincian Rekapitulasi Data Responden' : 'Studio Pembuat Survei Dinamis');
+      Swal.fire({
+        title: 'Akses Terbatas',
+        html: '<div style="text-align: left; font-size: 13.5px; line-height: 1.6; color: #475569;">' +
+              '<p style="margin-bottom: 12px;">Untuk melindungi <b>keamanan data</b> dan <b>privasi responden</b> (koordinat geospasial tempat tinggal, demografi, dan isian survei), fitur <b>' + featureName + '</b> hanya dapat diakses oleh <b>Petugas / Surveyor / Staf</b> yang telah login ke dalam sistem.</p>' +
+              '<div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid #16a34a; padding: 12px; border-radius: 8px; font-size: 13px; color: #166534; margin-bottom: 6px;">' +
+              '<i class="fa-solid fa-circle-check" style="margin-right: 6px;"></i> <b>Pengguna umum</b> dapat berpartisipasi mengisi kuesioner survei secara mandiri melalui tombol <b>Isi Survei</b> pada katalog.' +
+              '</div>' +
+              '</div>',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonText: '<i class="fa-solid fa-right-to-bracket"></i> Masuk (Login Petugas)',
+        cancelButtonText: 'Tutup',
+        confirmButtonColor: '#b40814',
+        cancelButtonColor: '#64748b'
+      }).then(function(result) {
+        if (result.isConfirmed) {
+          openModal('signInModal');
         }
-      } else if (action === 'demo') {
-        window.location.href = survey.url + '?demo=true';
+      });
+    };
+
+    // --- Tab Switcher untuk Surveiyor / Admin / Staf ---
+    window.switchSurveyorTab = function(tabName) {
+      if (!isLoggedIn && (tabName === 'builder' || tabName === 'rekap' || tabName === 'peta')) {
+        promptSurveyAuth(tabName);
+        return;
       }
+
+      $('.surveyor-tab-btn').removeClass('active');
+      $('#tabKatalogSection, #tabBuilderSection, #tabRekapSection, #tabPetaSection').removeClass('active');
+
+      if (tabName === 'builder') {
+        $('#tabBtnBuilder').addClass('active');
+        $('#tabBuilderSection').addClass('active');
+        $('html, body').animate({ scrollTop: $('#tabBuilderSection').offset().top - 90 }, 400);
+      } else if (tabName === 'rekap') {
+        $('#tabBtnRekap').addClass('active');
+        $('#tabRekapSection').addClass('active');
+        var selectedId = $('#rekapSurveySelector').val();
+        if (selectedId) {
+          loadRekapitulasi(selectedId);
+        }
+        $('html, body').animate({ scrollTop: $('#tabRekapSection').offset().top - 90 }, 400);
+      } else if (tabName === 'peta') {
+        $('#tabBtnPeta').addClass('active');
+        $('#tabPetaSection').addClass('active');
+        var curGeoId = $('#geoSurveySelect').val() || 3;
+        loadSurveyGeoMap(curGeoId);
+        $('html, body').animate({ scrollTop: $('#tabPetaSection').offset().top - 90 }, 400);
+      } else {
+        $('#tabBtnKatalog').addClass('active');
+        $('#tabKatalogSection').addClass('active');
+        $('html, body').animate({ scrollTop: $('#tabKatalogSection').offset().top - 90 }, 400);
+      }
+    };
+
+    // --- Ambil Data Seluruh Survei Dinamis dari Database ---
+    function loadAllSurveys(autoSelectId, targetTab) {
+      $.ajax({
+        url: BaseURL + 'IDE/get_survei_dinamis',
+        type: 'GET',
+        dataType: 'json',
+        success: function(res) {
+          if (res && res.status && Array.isArray(res.data)) {
+            allSurveys = res.data;
+            populateFilterOptions(allSurveys);
+            renderTypePills(allSurveys);
+            populateRekapSurveySelector(allSurveys, autoSelectId);
+            filterSurvei();
+
+            // Auto-open modal jika kuesioner diakses melalui link langsung (slug / QR code)
+            if (initialKodeSurvei) {
+              var matched = allSurveys.find(function(s) {
+                return (s.KodeSurvei && s.KodeSurvei.toLowerCase() === initialKodeSurvei.toLowerCase()) || String(s.Id) === initialKodeSurvei;
+              });
+              if (matched) {
+                setTimeout(function() {
+                  openRespondentForm(matched.Id, false);
+                }, 350);
+              }
+            }
+
+            if (autoSelectId && targetTab) {
+              if (targetTab === 'builder') {
+                openEditSurveyBuilder(autoSelectId);
+              } else if (targetTab === 'rekap') {
+                $('#rekapSurveySelector').val(autoSelectId);
+                switchSurveyorTab('rekap');
+                loadRekapitulasi(autoSelectId);
+              }
+            }
+          }
+        },
+        error: function() {
+          $('#surveyGrid').html('<div style="grid-column: 1 / -1; text-align:center; padding: 40px; color: var(--lugx-gray);">Gagal memuat survei dari server. Silakan refresh halaman.</div>');
+        }
+      });
     }
 
-    function renderSurvei(data) {
+    // Populate filter dropdowns & sync with pills
+    function populateFilterOptions(surveys) {
+      var jenisSet = new Set();
+      var tahunSet = new Set();
+      var statusSet = new Set();
+
+      surveys.forEach(function(s) {
+        if (s.Jenis) jenisSet.add(s.Jenis);
+        if (s.Tahun) tahunSet.add(s.Tahun);
+        if (s.Status) statusSet.add(s.Status);
+      });
+
+      var currentJenis = $('#jenis').val();
+      var currentTahun = $('#tahun').val();
+      var currentStatus = $('#status').val();
+
+      $('#jenis').html('<option value="">Semua Jenis</option>');
+      jenisSet.forEach(function(j) {
+        $('#jenis').append('<option value="' + j + '" ' + (currentJenis === j ? 'selected' : '') + '>' + j + '</option>');
+      });
+
+      $('#tahun').html('<option value="">Semua Tahun</option>');
+      tahunSet.forEach(function(t) {
+        $('#tahun').append('<option value="' + t + '" ' + (currentTahun === t ? 'selected' : '') + '>' + t + '</option>');
+      });
+
+      $('#status').html('<option value="">Semua Status</option>');
+      statusSet.forEach(function(st) {
+        $('#status').append('<option value="' + st + '" ' + (currentStatus === st ? 'selected' : '') + '>' + st + '</option>');
+      });
+    }
+
+    // Dynamic Render Quick Filter Pills for Survey Types
+    function renderTypePills(surveys) {
+      var $container = $('#surveyTypePillsContainer');
+      if (!$container.length) return;
+
+      var typeCounts = {};
+      var total = surveys.length;
+      surveys.forEach(function(s) {
+        var j = s.Jenis || 'IKM';
+        typeCounts[j] = (typeCounts[j] || 0) + 1;
+      });
+
+      var currentJenis = $('#jenis').val() || '';
+
+      var html = '<button type="button" class="type-pill-btn ' + (!currentJenis ? 'active' : '') + '" data-jenis="" onclick="selectJenisPill(\'\')">' +
+        '<i class="fa-solid fa-border-all"></i> Semua Survei <span class="pill-badge" id="pillCountAll">' + total + '</span>' +
+      '</button>';
+
+      var keys = Object.keys(typeCounts);
+      // Urutkan dengan IKM di paling depan jika ada
+      keys.sort(function(a, b) {
+        if (a === 'IKM') return -1;
+        if (b === 'IKM') return 1;
+        return a.localeCompare(b);
+      });
+
+      keys.forEach(function(j) {
+        var isAct = (currentJenis === j);
+        var icon = (j.toUpperCase() === 'IKM' ? 'fa-clipboard-check' : 'fa-chart-pie');
+        html += '<button type="button" class="type-pill-btn ' + (isAct ? 'active' : '') + '" data-jenis="' + j + '" onclick="selectJenisPill(\'' + j.replace(/'/g, "\\'") + '\')">' +
+          '<i class="fa-solid ' + icon + '"></i> ' + j + ' <span class="pill-badge">' + typeCounts[j] + '</span>' +
+        '</button>';
+      });
+
+      $container.html(html);
+    }
+
+    window.selectJenisPill = function(jenis) {
+      $('#jenis').val(jenis);
+      $('.type-pill-btn').removeClass('active');
+      $('.type-pill-btn[data-jenis="' + jenis + '"]').addClass('active');
+      filterSurvei();
+    };
+
+    $(document).on('change', '#jenis', function() {
+      var val = $(this).val();
+      $('.type-pill-btn').removeClass('active');
+      $('.type-pill-btn[data-jenis="' + val + '"]').addClass('active');
+    });
+
+    // Populate Rekap survey selector
+    function populateRekapSurveySelector(surveys, selectedId) {
+      var $sel = $('#rekapSurveySelector');
+      $sel.empty();
+      if (!surveys || surveys.length === 0) {
+        $sel.append('<option value="">Belum ada survei</option>');
+        return;
+      }
+
+      surveys.forEach(function(s, idx) {
+        var isSel = selectedId ? (s.Id == selectedId) : (idx === 0);
+        $sel.append('<option value="' + s.Id + '" ' + (isSel ? 'selected' : '') + '>' + s.Judul + ' (' + (s.Tahun || '-') + ')</option>');
+      });
+    }
+
+    // --- Filter & Render Katalog Survei Dinamis ---
+    window.filterSurvei = function() {
+      var keyword = $.trim($('#searchKeyword').val() || '').toLowerCase();
+      var jenis = $('#jenis').val();
+      var tahun = $('#tahun').val();
+      var status = $('#status').val();
+
+      var filtered = allSurveys.filter(function(item) {
+        var matchKeyword = true;
+        if (keyword) {
+          var title = (item.Judul || '').toLowerCase();
+          var lembaga = (item.Lembaga || '').toLowerCase();
+          var daerah = (item.DaerahSurvei || '').toLowerCase();
+          matchKeyword = title.indexOf(keyword) !== -1 || lembaga.indexOf(keyword) !== -1 || daerah.indexOf(keyword) !== -1;
+        }
+
+        var matchJenis = !jenis || item.Jenis === jenis;
+        var matchTahun = !tahun || item.Tahun === tahun;
+        var matchStatus = !status || item.Status === status;
+
+        return matchKeyword && matchJenis && matchTahun && matchStatus;
+      });
+
+      $('#surveiTotalCounter').text(filtered.length + ' dari ' + allSurveys.length + ' Formulir Survei Tersedia');
+      renderSurveiCards(filtered);
+    };
+
+    function renderSurveiCards(data) {
       var grid = document.getElementById('surveyGrid');
       if (!grid) return;
       grid.innerHTML = '';
 
       if (data.length === 0) {
-        grid.innerHTML = '<div style="text-align:center; color: var(--lugx-gray); grid-column: 1 / -1; padding: 60px 20px; background: var(--lugx-light-gray); border-radius: var(--lugx-radius);"><i class="fa-solid fa-clipboard-question" style="font-size: 40px; margin-bottom: 12px; color: #cbd5e1; display: block;"></i><h4 style="font-size: 16px; font-weight: 700; color: var(--lugx-dark);">Belum Ada Survei</h4><p style="font-size: 14px; margin: 0;">Tidak ada survei yang sesuai dengan kriteria filter saat ini.</p></div>';
+        grid.innerHTML = '<div style="text-align:center; color: var(--lugx-gray); grid-column: 1 / -1; padding: 60px 20px; background: var(--lugx-light-gray); border-radius: var(--lugx-radius);"><i class="fa-solid fa-clipboard-question" style="font-size: 42px; margin-bottom: 12px; color: #cbd5e1; display: block;"></i><h4 style="font-size: 16px; font-weight: 700; color: var(--lugx-dark);">Belum Ada Formulir Survei</h4><p style="font-size: 14px; margin: 0;">Tidak ada survei yang sesuai dengan kriteria filter saat ini.</p></div>';
         return;
       }
 
       data.forEach(function(item) {
         var card = document.createElement('div');
         card.className = 'survey-card';
-        var encodedItem = JSON.stringify(item).replace(/"/g, '&quot;');
-        
+
+        var daerahSurveiText = item.DaerahSurvei ? item.DaerahSurvei : 'Seluruh Wilayah / Terbuka';
+        var isActive = (item.Status === 'Aktif');
+
+        var surveyorControlsHtml = '';
+        if (isSurveiyorUser) {
+          surveyorControlsHtml = 
+            '<div class="card-surveyor-actions">' +
+              '<button type="button" class="btn-action-edit" onclick="openEditSurveyBuilder(' + item.Id + ')" title="Kelola Formulir Studio">' +
+                '<i class="fa-solid fa-pen-ruler"></i> Edit' +
+              '</button>' +
+              '<button type="button" class="btn-action-rekap" onclick="openRekapForSurvey(' + item.Id + ')" title="Lihat Rekapitulasi Respon">' +
+                '<i class="fa-solid fa-chart-pie"></i> Rekap (' + (item.TotalResponden || 0) + ')' +
+              '</button>' +
+              '<a href="' + BaseURL + 'IDE/export_responden_excel/' + item.Id + '" class="btn-action-excel" title="Unduh Spreadsheet / Excel Data Responden">' +
+                '<i class="fa-solid fa-file-excel"></i> Excel' +
+              '</a>' +
+              '<button type="button" class="btn-action-del" onclick="handleDeleteSurvey(' + item.Id + ', \'' + item.Judul.replace(/'/g, "\\'") + '\')" title="Hapus Survei">' +
+                '<i class="fa-solid fa-trash-can"></i> Hapus' +
+              '</button>' +
+            '</div>';
+        }
+
+        var isMulti = (item.TipeSurvei === 'multi') || (item.InstrumenList && item.InstrumenList.indexOf(',') !== -1) || (item.Id == 4) || (item.Judul && item.Judul.toLowerCase().indexOf('rtkd') !== -1);
+        var multiBadgeHtml = isMulti ? '<span class="badge-multi-instrumen"><i class="fa-solid fa-layer-group"></i> Multi-Instrumen</span>' : '';
+
         card.innerHTML = 
           '<div class="card-header-row">' +
             '<div class="card-icon">' +
               '<i class="fa-solid fa-square-poll-vertical"></i>' +
             '</div>' +
-            '<span class="card-status ' + (item.status === 'Aktif' ? 'status-active' : 'status-inactive') + '">' +
-              '<i class="fa-solid ' + (item.status === 'Aktif' ? 'fa-circle-check' : 'fa-circle-xmark') + '"></i> ' + item.status +
-            '</span>' +
+            '<div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end;">' +
+              multiBadgeHtml +
+              '<span class="card-status ' + (isActive ? 'status-active' : 'status-inactive') + '">' +
+                '<i class="fa-solid ' + (isActive ? 'fa-circle-check' : 'fa-circle-xmark') + '"></i> ' + item.Status +
+              '</span>' +
+            '</div>' +
           '</div>' +
-          '<h3 class="card-title">' + item.title + '</h3>' +
+          '<h3 class="card-title">' + item.Judul + '</h3>' +
           '<div class="card-meta">' +
             '<div class="meta-row">' +
-              '<span class="meta-label">Lembaga</span>' +
+              '<span class="meta-label">Instansi</span>' +
               '<span class="meta-colon">:</span>' +
-              '<span class="meta-value">' + item.lembaga + '</span>' +
+              '<span class="meta-value">' + (item.Lembaga || 'IDE Consultant') + '</span>' +
             '</div>' +
             '<div class="meta-row">' +
-              '<span class="meta-label">Jenis Survei</span>' +
+              '<span class="meta-label">Jenis &amp; Tahun</span>' +
               '<span class="meta-colon">:</span>' +
-              '<span class="meta-value">' + item.jenis + '</span>' +
+              '<span class="meta-value">' + (item.Jenis || 'IKM') + ' &bull; ' + (item.Tahun || date('Y')) + '</span>' +
             '</div>' +
             '<div class="meta-row">' +
-              '<span class="meta-label">Tahun</span>' +
+              '<span class="meta-label">Daerah Survei</span>' +
               '<span class="meta-colon">:</span>' +
-              '<span class="meta-value">' + item.tahun + '</span>' +
+              '<span class="meta-value">' +
+                '<span class="badge-daerah-survei"><i class="fa-solid fa-location-dot"></i> ' + daerahSurveiText + '</span>' +
+              '</span>' +
             '</div>' +
+            '<div class="meta-row">' +
+              '<span class="meta-label">Kuesioner</span>' +
+              '<span class="meta-colon">:</span>' +
+              '<span class="meta-value"><b>' + (item.TotalPertanyaan || 0) + '</b> Butir Pertanyaan &bull; ' + (item.EstimasiWaktu || '3 - 5 Menit') + '</span>' +
+            '</div>' +
+            (item.TotalResponden > 0 ? 
+            '<div class="meta-row">' +
+              '<span class="meta-label">Skor IKM</span>' +
+              '<span class="meta-colon">:</span>' +
+              '<span class="meta-value" style="color: #059669; font-weight: 800;">' + item.RataRataSkor + ' (' + item.TotalResponden + ' Responden)</span>' +
+            '</div>' : '') +
           '</div>' +
           '<div class="card-actions">' +
-            '<button class="btn-action-fill" onclick="handleSurveyClick(' + encodedItem + ', \'isi\')">' +
+            '<button class="btn-action-fill" onclick="openRespondentForm(' + item.Id + ', false)" title="Buka lembar isian kuesioner">' +
               '<i class="fa-solid fa-pen-to-square"></i> Isi Survei' +
             '</button>' +
-            '<button class="btn-action-demo" onclick="handleSurveyClick(' + encodedItem + ', \'demo\')">' +
+            '<button class="btn-action-demo" onclick="openRespondentForm(' + item.Id + ', true)" title="Lihat simulasi demo survei">' +
               '<i class="fa-solid fa-eye"></i> Demo' +
             '</button>' +
-          '</div>';
+            '<button type="button" class="btn-action-qr" onclick="openSurveyQrModal(' + item.Id + ')" title="Tampilkan QR Code Kuesioner">' +
+              '<i class="fa-solid fa-qrcode"></i> QR Code' +
+            '</button>' +
+            (isLoggedIn ? 
+              '<button type="button" class="btn-action-map" onclick="openSurveyGeoMap(' + item.Id + ')" title="Buka Peta Sebaran Geospasial Google Maps Responden">' +
+                '<i class="fa-solid fa-map-location-dot"></i> Peta' +
+              '</button>' : 
+              '<button type="button" class="btn-action-map btn-action-map-locked" onclick="promptSurveyAuth(\'peta\')" title="Peta Sebaran Responden Terkunci (Khusus Petugas / Surveyor)">' +
+                '<i class="fa-solid fa-lock"></i> Peta' +
+              '</button>'
+            ) +
+          '</div>' +
+          surveyorControlsHtml;
+
         grid.appendChild(card);
       });
     }
 
-    function filterSurvei() {
-      var jenis = document.getElementById('jenis').value;
-      var tahun = document.getElementById('tahun').value;
-      var status = document.getElementById('status').value;
-
-      var filtered = surveiData;
-
-      if (jenis) filtered = filtered.filter(function(item) { return item.jenis === jenis; });
-      if (tahun) filtered = filtered.filter(function(item) { return item.tahun === tahun; });
-      if (status) filtered = filtered.filter(function(item) { return item.status === status; });
-
-      renderSurvei(filtered);
+    // =========================================================================
+    // QR CODE GENERATOR & BANNER PUBLIKASI ENGINE
+    // =========================================================================
+    function getSurveyPublicUrl(survey) {
+      var slug = survey.KodeSurvei || ('survei-' + survey.Id);
+      return BaseURL + 'MenuSurvei/' + encodeURIComponent(slug);
     }
 
+    function triggerDownload(dataUrl, filename) {
+      var a = document.createElement('a');
+      a.href = dataUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    window.openSurveyQrModal = function(surveyId) {
+      var survey = allSurveys.find(function(s) { return s.Id == surveyId; });
+      if (!survey) return;
+      currentQrSurvey = survey;
+
+      var url = getSurveyPublicUrl(survey);
+
+      $('#qrModalSurveyJudul').html('<i class="fa-solid fa-qrcode"></i> ' + (survey.Judul || 'QR Code Survei'));
+      $('#qrModalSurveyUrl').val(url);
+
+      var qrBox = document.getElementById('qrCodeBox');
+      qrBox.innerHTML = '';
+
+      try {
+        new QRCode(qrBox, {
+          text: url,
+          width: 220,
+          height: 220,
+          colorDark: '#043168',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.H
+        });
+      } catch (err) {
+        qrBox.innerHTML = '<img src="https://api.qrserver.com/v1/create-qr-code/?data=' + encodeURIComponent(url) + '&size=220x220&color=043168" alt="QR Code" style="width:220px; height:220px; display:block;" crossorigin="anonymous">';
+      }
+
+      $('#surveyQrModal').addClass('active');
+    };
+
+    window.closeSurveyQrModal = function() {
+      $('#surveyQrModal').removeClass('active');
+    };
+
+    window.copySurveyLink = function() {
+      var input = document.getElementById('qrModalSurveyUrl');
+      var $btn = $('#btnCopyQrLink');
+      if (input) {
+        input.select();
+        input.setSelectionRange(0, 99999);
+        var originalBtnHtml = $btn.html();
+
+        var showSuccess = function() {
+          $btn.html('<i class="fa-solid fa-check"></i> <span>Tersalin!</span>').css({
+            'background': 'linear-gradient(135deg, #059669 0%, #10b981 100%)'
+          });
+          setTimeout(function() {
+            $btn.html(originalBtnHtml).css('background', '');
+          }, 2000);
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Tautan Tersalin!',
+            text: 'Tautan formulir survei berhasil disalin ke clipboard.',
+            timer: 1800,
+            showConfirmButton: false,
+            toast: true,
+            position: 'top-end'
+          });
+        };
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(input.value).then(showSuccess).catch(function() {
+            document.execCommand('copy');
+            showSuccess();
+          });
+        } else {
+          document.execCommand('copy');
+          showSuccess();
+        }
+      }
+    };
+
+    window.downloadQrCodePng = function() {
+      if (!currentQrSurvey) return;
+      var qrBox = document.getElementById('qrCodeBox');
+      var canvas = qrBox.querySelector('canvas');
+      var img = qrBox.querySelector('img');
+
+      var filename = 'QR-Survei-' + (currentQrSurvey.KodeSurvei || currentQrSurvey.Id) + '.png';
+
+      if (canvas) {
+        var dataUrl = canvas.toDataURL('image/png');
+        triggerDownload(dataUrl, filename);
+        Swal.fire({
+          icon: 'success',
+          title: 'QR Code Diunduh!',
+          text: 'File ' + filename + ' berhasil disimpan.',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      } else if (img && img.src) {
+        triggerDownload(img.src, filename);
+      } else {
+        Swal.fire({ icon: 'error', title: 'Gagal', text: 'QR code belum siap diunduh.' });
+      }
+    };
+
+    // Fungsi Unduh Data Responder ke Format Spreadsheet / Excel
+    window.downloadRekapExcel = function(surveyId) {
+      if (!isLoggedIn) {
+        promptSurveyAuth('rekap');
+        return;
+      }
+      var sId = surveyId || $('#rekapSurveySelector').val();
+      if (!sId) {
+        window.location.href = BaseURL + 'IDE/export_responden_excel';
+        return;
+      }
+      window.location.href = BaseURL + 'IDE/export_responden_excel/' + sId;
+    };
+
+    // =========================================================================
+    // GOOGLE FORM STYLE SURVEY BUILDER ENGINE (STUDIO SURVEI DINAMIS)
+    // =========================================================================
+    // Banner Customizer Helpers
+    window.setBuilderBannerColor = function(color) {
+      $('#builderBannerColor').val(color);
+      $('#builderBannerColorPicker').val(color);
+      $('.swatch-btn').removeClass('active');
+      $('.swatch-btn[data-color="' + color + '"]').addClass('active');
+      updateBannerPreviewStyle();
+    };
+
+    window.handleBannerPresetChange = function(val) {
+      if (val === 'custom') {
+        $('#builderBannerImage').show().focus();
+      } else {
+        $('#builderBannerImage').hide().val(val);
+      }
+      updateBannerPreviewStyle();
+    };
+
+    window.updateBannerPreviewImage = function(url) {
+      updateBannerPreviewStyle();
+    };
+
+    function updateBannerPreviewStyle() {
+      var color = $('#builderBannerColor').val() || '#043168';
+      var imgUrl = $('#builderBannerImage').val();
+      var $preview = $('#builderBannerPreview');
+      if (imgUrl) {
+        $preview.css({
+          'background-image': 'url(' + imgUrl + ')',
+          'background-color': color
+        });
+      } else {
+        $preview.css({
+          'background-image': 'none',
+          'background': 'linear-gradient(135deg, ' + color + ' 0%, #0d3d7c 100%)'
+        });
+      }
+      $('#previewBannerJudul').text($('#builderJudul').val() || 'Judul Formulir Kuesioner Baru');
+      $('#previewBannerLembaga').html('<i class="fa-solid fa-building-columns"></i> ' + ($('#builderLembaga').val() || 'Instansi / Lembaga Pelaksana'));
+    }
+
+    // Attach listeners for live preview title
+    $(document).on('input', '#builderJudul', function() {
+      $('#previewBannerJudul').text($(this).val() || 'Judul Formulir Kuesioner Baru');
+    });
+    $(document).on('input', '#builderLembaga', function() {
+      $('#previewBannerLembaga').html('<i class="fa-solid fa-building-columns"></i> ' + ($(this).val() || 'Instansi / Lembaga Pelaksana'));
+    });
+
+    window.openCreateSurveyBuilder = function() {
+      $('#builderSurveyId').val('0');
+      $('#builderModeBadge').html('<i class="fa-solid fa-wand-magic-sparkles"></i> Mode Pembuat Kuesioner Baru');
+      // Kosongkan seluruh isian formulir agar siap diisi baru
+      $('#builderJudul').val('');
+      $('#builderDeskripsi').val('');
+      $('#builderLembaga').val('');
+      $('#builderJenis').val('IKM');
+      $('#builderTahun').val(new Date().getFullYear());
+      $('#builderStatus').val('Aktif');
+      $('#builderDaerahText').val('');
+      $('#builderProvinsi').val('');
+      $('#builderKabupaten').html('<option value="">-- Pilih Kab/Kota --</option>');
+
+      // Reset banner customizer
+      $('#builderBannerPreset').val('');
+      $('#builderBannerImage').hide().val('');
+      setBuilderBannerColor('#043168');
+      $('#previewBannerJudul').text('Judul Formulir Kuesioner Baru');
+      $('#previewBannerLembaga').html('<i class="fa-solid fa-building-columns"></i> Instansi Pelaksana');
+
+      // Inisialisasi 1 butir pertanyaan kosong siap diisi
+      currentBuilderQuestions = [
+        {
+          Pertanyaan: '',
+          Deskripsi: '',
+          Tipe: 'radio',
+          IsRequired: 1,
+          OpsiPilihan: [
+            { label: '', nilai: 4 },
+            { label: '', nilai: 3 },
+            { label: '', nilai: 2 },
+            { label: '', nilai: 1 }
+          ]
+        }
+      ];
+
+      renderBuilderQuestions();
+      switchSurveyorTab('builder');
+    };
+
+    window.openEditSurveyBuilder = function(surveyId) {
+      Swal.fire({
+        title: 'Memuat Studio Survei...',
+        allowOutsideClick: false,
+        didOpen: () => { Swal.showLoading(); }
+      });
+
+      $.ajax({
+        url: BaseURL + 'IDE/get_survei_detail/' + surveyId,
+        type: 'GET',
+        dataType: 'json',
+        success: function(res) {
+          Swal.close();
+          if (res && res.status && res.survei) {
+            var s = res.survei;
+            $('#builderSurveyId').val(s.Id);
+            $('#builderModeBadge').html('<i class="fa-solid fa-pen-to-square"></i> Mengedit Kuesioner: #' + s.Id);
+            $('#builderJudul').val(s.Judul);
+            $('#builderDeskripsi').val(s.Deskripsi || '');
+            $('#builderLembaga').val(s.Lembaga || '');
+            $('#builderJenis').val(s.Jenis || 'IKM');
+            $('#builderTahun').val(s.Tahun || new Date().getFullYear());
+            $('#builderStatus').val(s.Status || 'Aktif');
+            $('#builderDaerahText').val(s.DaerahSurvei || '');
+            var sTipe = s.TipeSurvei || ((s.Id == 4 || (s.Judul && s.Judul.toLowerCase().indexOf('rtkd') !== -1)) ? 'multi' : 'standar');
+            $('#builderTipeSurvei').val(sTipe);
+
+            // Populate Banner Settings
+            var bColor = s.BannerColor || '#043168';
+            var bImg = s.BannerImage || '';
+            $('#builderBannerImage').val(bImg);
+            if (bImg) {
+              $('#builderBannerPreset').val('custom');
+              $('#builderBannerImage').show();
+            } else {
+              $('#builderBannerPreset').val('');
+              $('#builderBannerImage').hide();
+            }
+            setBuilderBannerColor(bColor);
+
+            currentBuilderQuestions = [];
+            if (res.pertanyaan && res.pertanyaan.length > 0) {
+              res.pertanyaan.forEach(function(p) {
+                currentBuilderQuestions.push({
+                  Pertanyaan: p.Pertanyaan,
+                  Deskripsi: p.Deskripsi || '',
+                  Tipe: p.Tipe || 'radio',
+                  IsRequired: parseInt(p.IsRequired) === 1 ? 1 : 0,
+                  Section: p.Section || '',
+                  Instrumen: p.Instrumen || 'Semua',
+                  ScaleMin: parseInt(p.ScaleMin) || 1,
+                  ScaleMax: parseInt(p.ScaleMax) || 5,
+                  ScaleMinLabel: p.ScaleMinLabel || 'Sangat Tidak Baik',
+                  ScaleMaxLabel: p.ScaleMaxLabel || 'Sangat Baik',
+                  OpsiPilihan: p.OpsiPilihanList || []
+                });
+              });
+            }
+
+            renderBuilderQuestions();
+            switchSurveyorTab('builder');
+          } else {
+            Swal.fire('Error', res.message || 'Gagal memuat detail survei.', 'error');
+          }
+        },
+        error: function() {
+          Swal.close();
+          Swal.fire('Error', 'Gagal terhubung ke server studio survei.', 'error');
+        }
+      });
+    };
+
+    // Render Question Cards in Builder (Enterprise Studio)
+    function renderBuilderQuestions() {
+      var $container = $('#gformCardsContainer');
+      $container.empty();
+
+      var qCount = currentBuilderQuestions.length;
+      $('#builderQuestionsCount, #builderBottomCount').text(qCount);
+      $('#builderHeaderCount').html('<i class="fa-solid fa-list-check"></i> ' + qCount + ' Pertanyaan');
+
+      if (qCount === 0) {
+        $container.html('<div style="text-align:center; padding: 48px 24px; background: #ffffff; border-radius: 18px; border: 2px dashed #cbd5e1; color: #64748b;"><i class="fa-solid fa-layer-group fa-2x" style="color: #94a3b8; margin-bottom: 12px; display: block;"></i>Belum ada butir pertanyaan dalam kuesioner ini.<br>Klik tombol <b>"Tambah Pertanyaan Baru"</b> di atas atau di bawah untuk mulai menyusun kuesioner.</div>');
+        return;
+      }
+
+      currentBuilderQuestions.forEach(function(q, qIdx) {
+        var card = document.createElement('div');
+        card.className = 'gform-card';
+        card.id = 'gformCard_' + qIdx;
+
+        // Type Select Options
+        var typeOptionsHtml = 
+          '<option value="radio" ' + (q.Tipe === 'radio' ? 'selected' : '') + '>⚪ Pilihan Ganda (Radio & Bobot Nilai)</option>' +
+          '<option value="checkbox" ' + (q.Tipe === 'checkbox' ? 'selected' : '') + '>☑️ Kotak Centang (Checkboxes)</option>' +
+          '<option value="dropdown" ' + (q.Tipe === 'dropdown' ? 'selected' : '') + '>🔻 Menu Dropdown (Pilihan Tunggal)</option>' +
+          '<option value="scale" ' + (q.Tipe === 'scale' ? 'selected' : '') + '>📶 Skala Linear (Rating / Kepuasan)</option>' +
+          '<option value="text" ' + (q.Tipe === 'text' ? 'selected' : '') + '>✏️ Jawaban Singkat (Text)</option>' +
+          '<option value="textarea" ' + (q.Tipe === 'textarea' ? 'selected' : '') + '>📝 Paragraf / Uraian Bebas</option>' +
+          '<option value="number" ' + (q.Tipe === 'number' ? 'selected' : '') + '>🔢 Angka / Numerik</option>';
+
+        // Options or Scale section depending on type
+        var typeSpecificHtml = '';
+        if (q.Tipe === 'radio' || q.Tipe === 'checkbox' || q.Tipe === 'dropdown') {
+          var optionsRowsHtml = '';
+          var iconClass = (q.Tipe === 'radio' ? 'fa-regular fa-circle-dot' : (q.Tipe === 'checkbox' ? 'fa-regular fa-square-check' : 'fa-solid fa-caret-down'));
+          
+          if (!q.OpsiPilihan || q.OpsiPilihan.length === 0) {
+            q.OpsiPilihan = [
+              { label: 'Sangat Puas / Sangat Baik', nilai: 4 },
+              { label: 'Puas / Baik', nilai: 3 },
+              { label: 'Kurang Puas / Kurang Baik', nilai: 2 },
+              { label: 'Tidak Puas / Tidak Baik', nilai: 1 }
+            ];
+          }
+
+          q.OpsiPilihan.forEach(function(opt, optIdx) {
+            optionsRowsHtml += 
+              '<div class="gform-option-row">' +
+                '<span class="gform-opt-icon"><i class="' + iconClass + '"></i></span>' +
+                '<input type="text" class="gform-opt-input" placeholder="Teks Pilihan ' + (optIdx + 1) + '" value="' + (opt.label ? opt.label.replace(/"/g, '&quot;') : '') + '" oninput="syncOptionLabel(' + qIdx + ', ' + optIdx + ', this.value)">' +
+                '<div class="gform-val-box" title="Bobot nilai skor angka untuk opsi ini">' +
+                  '<span class="gform-val-lbl"><i class="fa-solid fa-award"></i> Nilai:</span>' +
+                  '<input type="number" step="any" class="gform-val-input" value="' + (opt.nilai !== undefined ? opt.nilai : 0) + '" oninput="syncOptionValue(' + qIdx + ', ' + optIdx + ', this.value)">' +
+                '</div>' +
+                '<button type="button" class="btn-remove-opt" onclick="removeOptionFromQuestion(' + qIdx + ', ' + optIdx + ')" title="Hapus Opsi"><i class="fa-solid fa-xmark"></i></button>' +
+              '</div>';
+          });
+
+          typeSpecificHtml = 
+            '<div class="gform-options-container" id="optionsContainer_' + qIdx + '">' +
+              optionsRowsHtml +
+            '</div>' +
+            '<div class="gform-opt-actions-bar">' +
+              '<button type="button" class="btn-add-opt" onclick="addOptionToQuestion(' + qIdx + ')">' +
+                '<i class="fa-solid fa-plus"></i> Tambah Pilihan Opsi' +
+              '</button>' +
+              '<div class="gform-preset-wrap">' +
+                '<span class="gform-preset-lbl"><i class="fa-solid fa-sliders"></i> Preset Skala:</span>' +
+                '<button type="button" class="btn-preset" onclick="applyPresetToQuestion(' + qIdx + ', \'ikm\')">IKM (4-3-2-1)</button>' +
+                '<button type="button" class="btn-preset" onclick="applyPresetToQuestion(' + qIdx + ', \'likert\')">Likert (5-1)</button>' +
+                '<button type="button" class="btn-preset" onclick="applyPresetToQuestion(' + qIdx + ', \'binary\')">Biner (Ya/Tidak)</button>' +
+              '</div>' +
+            '</div>';
+
+        } else if (q.Tipe === 'scale') {
+          typeSpecificHtml = 
+            '<div class="gform-scale-settings">' +
+              '<div class="gform-scale-group">' +
+                '<label><i class="fa-solid fa-arrows-left-right"></i> Rentang Skala:</label>' +
+                '<select onchange="syncScaleConfig(' + qIdx + ', \'min\', this.value)">' +
+                  '<option value="1" ' + (q.ScaleMin == 1 ? 'selected' : '') + '>1</option>' +
+                  '<option value="0" ' + (q.ScaleMin == 0 ? 'selected' : '') + '>0</option>' +
+                '</select>' +
+                '<span style="font-size: 13px; font-weight: 700; color: #64748b;">s.d.</span>' +
+                '<select onchange="syncScaleConfig(' + qIdx + ', \'max\', this.value)">' +
+                  '<option value="3" ' + (q.ScaleMax == 3 ? 'selected' : '') + '>3</option>' +
+                  '<option value="4" ' + (q.ScaleMax == 4 ? 'selected' : '') + '>4</option>' +
+                  '<option value="5" ' + (q.ScaleMax == 5 ? 'selected' : '') + '>5</option>' +
+                  '<option value="10" ' + (q.ScaleMax == 10 ? 'selected' : '') + '>10</option>' +
+                '</select>' +
+              '</div>' +
+              '<div class="gform-scale-group">' +
+                '<label>Label Terendah:</label>' +
+                '<input type="text" placeholder="Contoh: Sangat Buruk" value="' + (q.ScaleMinLabel || 'Sangat Tidak Baik') + '" oninput="syncScaleConfig(' + qIdx + ', \'minLabel\', this.value)">' +
+              '</div>' +
+              '<div class="gform-scale-group">' +
+                '<label>Label Tertinggi:</label>' +
+                '<input type="text" placeholder="Contoh: Sangat Baik" value="' + (q.ScaleMaxLabel || 'Sangat Baik') + '" oninput="syncScaleConfig(' + qIdx + ', \'maxLabel\', this.value)">' +
+              '</div>' +
+            '</div>';
+        } else {
+          typeSpecificHtml = 
+            '<div style="background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 12px; padding: 14px 18px; color: #64748b; font-size: 13px; font-style: italic; margin-bottom: 14px;">' +
+              '<i class="fa-solid fa-align-left" style="margin-right: 6px;"></i> Area isian bebas responden (akan dirender sesuai input ' + q.Tipe + ' pada lembar kuesioner).' +
+            '</div>';
+        }
+
+        card.innerHTML = 
+          '<div class="gform-card-top">' +
+            '<div style="display: flex; align-items: center; gap: 10px;">' +
+              '<span class="gform-q-number">#' + (qIdx + 1) + '</span>' +
+              '<span style="font-size: 13.5px; font-weight: 800; color: #1e293b; text-transform: uppercase; letter-spacing: 0.3px;">Butir Pertanyaan ' + (qIdx + 1) + '</span>' +
+            '</div>' +
+            '<div style="display: flex; align-items: center; gap: 10px;">' +
+              '<select class="gform-q-type-select" onchange="changeQuestionType(' + qIdx + ', this.value)">' +
+                typeOptionsHtml +
+              '</select>' +
+              '<div class="gform-card-ctrls">' +
+                '<button type="button" class="btn-q-ctrl" onclick="moveQuestion(' + qIdx + ', -1)" title="Pindah ke Atas" ' + (qIdx === 0 ? 'disabled style="opacity: 0.3;"' : '') + '><i class="fa-solid fa-arrow-up"></i></button>' +
+                '<button type="button" class="btn-q-ctrl" onclick="moveQuestion(' + qIdx + ', 1)" title="Pindah ke Bawah" ' + (qIdx === currentBuilderQuestions.length - 1 ? 'disabled style="opacity: 0.3;"' : '') + '><i class="fa-solid fa-arrow-down"></i></button>' +
+                '<button type="button" class="btn-q-ctrl" onclick="duplicateQuestion(' + qIdx + ')" title="Duplikasi Pertanyaan"><i class="fa-solid fa-copy"></i></button>' +
+                '<button type="button" class="btn-q-ctrl del" onclick="deleteQuestion(' + qIdx + ')" title="Hapus Pertanyaan"><i class="fa-solid fa-trash-can"></i></button>' +
+              '</div>' +
+            '</div>';
+
+        var isMultiModel = ($('#builderTipeSurvei').val() === 'multi');
+        var multiFieldsHtml = '';
+        if (isMultiModel) {
+          multiFieldsHtml = 
+            '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; background: #eff6ff; padding: 10px 14px; border-radius: 10px; border: 1px solid #bfdbfe;">' +
+              '<div>' +
+                '<label style="font-size: 11px; font-weight: 800; color: #1d4ed8; text-transform: uppercase; margin-bottom: 4px; display: block;"><i class="fa-solid fa-layer-group"></i> Bagian / Section:</label>' +
+                '<input type="text" style="width: 100%; border: 1px solid #93c5fd; border-radius: 8px; padding: 6px 10px; font-size: 12.5px;" placeholder="Contoh: 1. Profil Responden" value="' + (q.Section ? q.Section.replace(/"/g, '&quot;') : '') + '" oninput="syncQuestionSection(' + qIdx + ', this.value)">' +
+              '</div>' +
+              '<div>' +
+                '<label style="font-size: 11px; font-weight: 800; color: #1d4ed8; text-transform: uppercase; margin-bottom: 4px; display: block;"><i class="fa-solid fa-users-viewfinder"></i> Target Pengisi (Instrumen):</label>' +
+                '<select style="width: 100%; border: 1px solid #93c5fd; border-radius: 8px; padding: 6px 10px; font-size: 12.5px;" onchange="syncQuestionInstrument(' + qIdx + ', this.value)">' +
+                  '<option value="Semua" ' + (q.Instrumen === 'Semua' ? 'selected' : '') + '>Semua Responden (A, B, C, D)</option>' +
+                  '<option value="A" ' + (q.Instrumen === 'A' ? 'selected' : '') + '>Instrumen A (Perusahaan / Pemberi Kerja)</option>' +
+                  '<option value="B" ' + (q.Instrumen === 'B' ? 'selected' : '') + '>Instrumen B (Pencari Kerja & Lulusan)</option>' +
+                  '<option value="C" ' + (q.Instrumen === 'C' ? 'selected' : '') + '>Instrumen C (Pemangku Kepentingan)</option>' +
+                  '<option value="D" ' + (q.Instrumen === 'D' ? 'selected' : '') + '>Instrumen D (Siswa Kelas 12)</option>' +
+                '</select>' +
+              '</div>' +
+            '</div>';
+        }
+
+        card.innerHTML += 
+          multiFieldsHtml +
+          '<input type="text" class="gform-q-title-input" placeholder="Tuliskan rumusan pertanyaan survei di sini..." value="' + (q.Pertanyaan ? q.Pertanyaan.replace(/"/g, '&quot;') : '') + '" oninput="syncQuestionTitle(' + qIdx + ', this.value)">' +
+          '<input type="text" class="gform-q-desc-input" placeholder="Penjelasan / petunjuk pengisian bagi responden (opsional)..." value="' + (q.Deskripsi ? q.Deskripsi.replace(/"/g, '&quot;') : '') + '" oninput="syncQuestionDesc(' + qIdx + ', this.value)">' +
+          typeSpecificHtml +
+          '<div class="gform-card-footer">' +
+            '<label class="gform-switch-lbl">' +
+              '<span class="gform-switch">' +
+                '<input type="checkbox" ' + (q.IsRequired ? 'checked' : '') + ' onchange="syncQuestionRequired(' + qIdx + ', this.checked)">' +
+                '<span class="gform-slider"></span>' +
+              '</span>' +
+              '<span>Wajib Diisi (Required)</span>' +
+            '</label>' +
+            '<div style="font-size: 12px; color: #64748b; font-weight: 600;">' +
+              '<i class="fa-solid fa-shield-halved"></i> Instrumen validasi otomatis' +
+            '</div>' +
+          '</div>';
+
+        $container.append(card);
+      });
+    }
+
+    // Builder sync functions
+    window.syncQuestionSection = function(qIdx, val) {
+      if (currentBuilderQuestions[qIdx]) currentBuilderQuestions[qIdx].Section = val;
+    };
+    window.syncQuestionInstrument = function(qIdx, val) {
+      if (currentBuilderQuestions[qIdx]) currentBuilderQuestions[qIdx].Instrumen = val;
+    };
+    window.onBuilderTipeSurveiChange = function(val) {
+      renderBuilderQuestions();
+    };
+
+    window.addNewQuestionCard = function() {
+      currentBuilderQuestions.push({
+        Pertanyaan: '',
+        Deskripsi: '',
+        Tipe: 'radio',
+        IsRequired: 1,
+        Section: '',
+        Instrumen: 'Semua',
+        OpsiPilihan: [
+          { label: '', nilai: 4 },
+          { label: '', nilai: 3 },
+          { label: '', nilai: 2 },
+          { label: '', nilai: 1 }
+        ]
+      });
+      renderBuilderQuestions();
+      $('html, body').animate({ scrollTop: $('#gformCard_' + (currentBuilderQuestions.length - 1)).offset().top - 90 }, 300);
+    };
+
+    window.changeQuestionType = function(qIdx, newType) {
+      if (currentBuilderQuestions[qIdx]) {
+        currentBuilderQuestions[qIdx].Tipe = newType;
+        if ((newType === 'radio' || newType === 'checkbox' || newType === 'dropdown') && (!currentBuilderQuestions[qIdx].OpsiPilihan || currentBuilderQuestions[qIdx].OpsiPilihan.length === 0)) {
+          currentBuilderQuestions[qIdx].OpsiPilihan = [
+            { label: 'Sangat Baik', nilai: 4 },
+            { label: 'Baik', nilai: 3 },
+            { label: 'Kurang Baik', nilai: 2 },
+            { label: 'Tidak Baik', nilai: 1 }
+          ];
+        }
+        renderBuilderQuestions();
+      }
+    };
+
+    window.syncQuestionTitle = function(qIdx, val) {
+      if (currentBuilderQuestions[qIdx]) currentBuilderQuestions[qIdx].Pertanyaan = val;
+    };
+
+    window.syncQuestionDesc = function(qIdx, val) {
+      if (currentBuilderQuestions[qIdx]) currentBuilderQuestions[qIdx].Deskripsi = val;
+    };
+
+    window.syncQuestionRequired = function(qIdx, isChecked) {
+      if (currentBuilderQuestions[qIdx]) currentBuilderQuestions[qIdx].IsRequired = isChecked ? 1 : 0;
+    };
+
+    window.syncOptionLabel = function(qIdx, optIdx, val) {
+      if (currentBuilderQuestions[qIdx] && currentBuilderQuestions[qIdx].OpsiPilihan[optIdx]) {
+        currentBuilderQuestions[qIdx].OpsiPilihan[optIdx].label = val;
+      }
+    };
+
+    window.syncOptionValue = function(qIdx, optIdx, val) {
+      if (currentBuilderQuestions[qIdx] && currentBuilderQuestions[qIdx].OpsiPilihan[optIdx]) {
+        currentBuilderQuestions[qIdx].OpsiPilihan[optIdx].nilai = parseFloat(val) || 0;
+      }
+    };
+
+    window.addOptionToQuestion = function(qIdx) {
+      if (currentBuilderQuestions[qIdx]) {
+        if (!currentBuilderQuestions[qIdx].OpsiPilihan) currentBuilderQuestions[qIdx].OpsiPilihan = [];
+        var nextNum = currentBuilderQuestions[qIdx].OpsiPilihan.length + 1;
+        currentBuilderQuestions[qIdx].OpsiPilihan.push({
+          label: 'Pilihan ' + nextNum,
+          nilai: 1
+        });
+        renderBuilderQuestions();
+      }
+    };
+
+    window.removeOptionFromQuestion = function(qIdx, optIdx) {
+      if (currentBuilderQuestions[qIdx] && currentBuilderQuestions[qIdx].OpsiPilihan) {
+        currentBuilderQuestions[qIdx].OpsiPilihan.splice(optIdx, 1);
+        renderBuilderQuestions();
+      }
+    };
+
+    window.applyPresetToQuestion = function(qIdx, presetName) {
+      if (!currentBuilderQuestions[qIdx]) return;
+      if (presetName === 'ikm') {
+        currentBuilderQuestions[qIdx].OpsiPilihan = [
+          { label: 'Sangat Baik / Sangat Puas', nilai: 4 },
+          { label: 'Baik / Puas', nilai: 3 },
+          { label: 'Kurang Baik / Kurang Puas', nilai: 2 },
+          { label: 'Tidak Baik / Tidak Puas', nilai: 1 }
+        ];
+      } else if (presetName === 'likert') {
+        currentBuilderQuestions[qIdx].OpsiPilihan = [
+          { label: 'Sangat Setuju', nilai: 5 },
+          { label: 'Setuju', nilai: 4 },
+          { label: 'Ragu-ragu / Netral', nilai: 3 },
+          { label: 'Tidak Setuju', nilai: 2 },
+          { label: 'Sangat Tidak Setuju', nilai: 1 }
+        ];
+      } else if (presetName === 'binary') {
+        currentBuilderQuestions[qIdx].OpsiPilihan = [
+          { label: 'Ya / Sesuai', nilai: 100 },
+          { label: 'Tidak / Belum Sesuai', nilai: 0 }
+        ];
+      }
+      renderBuilderQuestions();
+    };
+
+    window.syncScaleConfig = function(qIdx, key, val) {
+      if (!currentBuilderQuestions[qIdx]) return;
+      if (key === 'min') currentBuilderQuestions[qIdx].ScaleMin = parseInt(val) || 1;
+      if (key === 'max') currentBuilderQuestions[qIdx].ScaleMax = parseInt(val) || 5;
+      if (key === 'minLabel') currentBuilderQuestions[qIdx].ScaleMinLabel = val;
+      if (key === 'maxLabel') currentBuilderQuestions[qIdx].ScaleMaxLabel = val;
+    };
+
+    window.moveQuestion = function(qIdx, direction) {
+      var targetIdx = qIdx + direction;
+      if (targetIdx < 0 || targetIdx >= currentBuilderQuestions.length) return;
+      var temp = currentBuilderQuestions[qIdx];
+      currentBuilderQuestions[qIdx] = currentBuilderQuestions[targetIdx];
+      currentBuilderQuestions[targetIdx] = temp;
+      renderBuilderQuestions();
+    };
+
+    window.duplicateQuestion = function(qIdx) {
+      var cloned = JSON.parse(JSON.stringify(currentBuilderQuestions[qIdx]));
+      cloned.Pertanyaan += ' (Salinan)';
+      currentBuilderQuestions.splice(qIdx + 1, 0, cloned);
+      renderBuilderQuestions();
+    };
+
+    window.deleteQuestion = function(qIdx) {
+      currentBuilderQuestions.splice(qIdx, 1);
+      renderBuilderQuestions();
+    };
+
+    // Wilayah helper in Builder
+    window.loadKabupatenBuilder = function(provKode) {
+      var $kab = $('#builderKabupaten');
+      $kab.html('<option value="">-- Memuat Kab/Kota... --</option>');
+      if (!provKode) {
+        $kab.html('<option value="">-- Pilih Kab/Kota --</option>');
+        return;
+      }
+
+      $.get(BaseURL + 'IDE/get_wilayah_child', { parent: provKode, level: 'kabupaten' }, function(res) {
+        $kab.html('<option value="">-- Pilih Kab/Kota --</option>');
+        if (res && res.data) {
+          res.data.forEach(function(row) {
+            $kab.append('<option value="' + row.Kode + '" data-nama="' + row.Nama + '">' + row.Nama + '</option>');
+          });
+        }
+      }, 'json');
+    };
+
+    window.syncDaerahSurveiText = function() {
+      var $selectedKab = $('#builderKabupaten option:selected');
+      if ($selectedKab.val()) {
+        $('#builderDaerahText').val($selectedKab.data('nama') || $selectedKab.text());
+      }
+    };
+
+    // Save Survey & Batch Questions
+    window.saveSurveyBuilderData = function() {
+      var judul = $.trim($('#builderJudul').val());
+      if (!judul) {
+        Swal.fire('Perhatian', 'Judul formulir survei wajib diisi.', 'warning');
+        return;
+      }
+
+      if (currentBuilderQuestions.length === 0) {
+        Swal.fire('Perhatian', 'Harap tambahkan minimal 1 butir pertanyaan.', 'warning');
+        return;
+      }
+
+      var tipeSurvei = $('#builderTipeSurvei').val() || 'standar';
+      var surveyData = {
+        Id: parseInt($('#builderSurveyId').val()) || 0,
+        Judul: judul,
+        Deskripsi: $.trim($('#builderDeskripsi').val()),
+        Lembaga: $.trim($('#builderLembaga').val()),
+        TipeSurvei: tipeSurvei,
+        InstrumenList: tipeSurvei === 'multi' ? 'A,B,C,D' : 'A',
+        Jenis: $('#builderJenis').val(),
+        Tahun: $('#builderTahun').val(),
+        Status: $('#builderStatus').val(),
+        DaerahSurvei: $.trim($('#builderDaerahText').val()),
+        KodeWilayah: $('#builderKabupaten').val() || $('#builderProvinsi').val() || '',
+        BannerImage: $('#builderBannerImage').val() || '',
+        BannerColor: $('#builderBannerColor').val() || '#043168',
+        EstimasiWaktu: '3 - 5 Menit'
+      };
+
+      var $btn = $('#btnSaveBuilder');
+      var originalHtml = $btn.html();
+      $btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...');
+
+      // Step 1: Save Survey Header
+      $.ajax({
+        url: BaseURL + 'IDE/save_survei_dinamis',
+        type: 'POST',
+        data: JSON.stringify(surveyData),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function(respSurvey) {
+          if (respSurvey && respSurvey.status && respSurvey.survei_id) {
+            var savedSurveiId = respSurvey.survei_id;
+
+            // Step 2: Save Questions Batch
+            var payloadQuestions = {
+              SurveiId: savedSurveiId,
+              Pertanyaan: currentBuilderQuestions
+            };
+
+            $.ajax({
+              url: BaseURL + 'IDE/save_survei_pertanyaan_batch',
+              type: 'POST',
+              data: JSON.stringify(payloadQuestions),
+              contentType: 'application/json; charset=utf-8',
+              dataType: 'json',
+              success: function(respQ) {
+                $btn.prop('disabled', false).html(originalHtml);
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Formulir Survei Disimpan!',
+                  text: 'Survei dan ' + currentBuilderQuestions.length + ' butir pertanyaan berhasil diperbarui.',
+                  confirmButtonColor: '#043168'
+                }).then(function() {
+                  loadAllSurveys(savedSurveiId, 'katalog');
+                  switchSurveyorTab('katalog');
+                });
+              },
+              error: function() {
+                $btn.prop('disabled', false).html(originalHtml);
+                Swal.fire('Error', 'Gagal menyimpan butir pertanyaan survei.', 'error');
+              }
+            });
+
+          } else {
+            $btn.prop('disabled', false).html(originalHtml);
+            Swal.fire('Gagal', respSurvey.message || 'Gagal menyimpan data induk survei.', 'error');
+          }
+        },
+        error: function() {
+          $btn.prop('disabled', false).html(originalHtml);
+          Swal.fire('Error', 'Gagal terhubung ke server saat menyimpan survei.', 'error');
+        }
+      });
+    };
+
+    // Delete Survey
+    window.handleDeleteSurvey = function(surveyId, surveyTitle) {
+      Swal.fire({
+        title: 'Hapus Survei Ini?',
+        text: 'Survei "' + surveyTitle + '" beserta seluruh pertanyaan dan data jawaban responden akan dihapus permanen.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: '<i class="fa-solid fa-trash-can"></i> Ya, Hapus Permanen',
+        cancelButtonText: 'Batal'
+      }).then(function(result) {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: BaseURL + 'IDE/delete_survei_dinamis/' + surveyId,
+            type: 'POST',
+            dataType: 'json',
+            success: function(res) {
+              if (res && res.status) {
+                Swal.fire('Terhapus', 'Survei telah berhasil dihapus.', 'success');
+                loadAllSurveys();
+              } else {
+                Swal.fire('Gagal', res.message || 'Gagal menghapus survei.', 'error');
+              }
+            },
+            error: function() {
+              Swal.fire('Error', 'Gagal terhubung ke server.', 'error');
+            }
+          });
+        }
+      });
+    };
+
+    // =========================================================================
+    // MULTI-STEP SURVEY RESPONDENT ENGINE & CUSTOM BANNER
+    // =========================================================================
+    window.currentSurveyStep = 1;
+    window.goToSurveyStep = function(step) {
+      if (step === 2) {
+        $('#surveyStep1').hide();
+        $('#surveyStep2').show();
+        $('#stepTabIndicator1').removeClass('active').addClass('completed');
+        $('#stepTabIndicator2').addClass('active');
+        $('.survey-respondent-box').animate({ scrollTop: 0 }, 150);
+        window.currentSurveyStep = 2;
+        updateRespondentProgress();
+      } else {
+        $('#surveyStep2').hide();
+        $('#surveyStep1').show();
+        $('#stepTabIndicator2').removeClass('active');
+        $('#stepTabIndicator1').addClass('active');
+        $('.survey-respondent-box').animate({ scrollTop: 0 }, 150);
+        window.currentSurveyStep = 1;
+        $('#surveyProgressText').text('Langkah 1 dari 2: Data Responden & Daerah Survei');
+        $('#surveyProgressFill').css('width', '50%');
+      }
+    };
+
+    window.openRespondentForm = function(surveyId, isDemo) {
+      Swal.fire({
+        title: 'Memuat Kuesioner...',
+        allowOutsideClick: false,
+        didOpen: () => { Swal.showLoading(); }
+      });
+
+      $.ajax({
+        url: BaseURL + 'IDE/get_survei_detail/' + surveyId,
+        type: 'GET',
+        dataType: 'json',
+        success: function(res) {
+          Swal.close();
+          if (res && res.status && res.survei) {
+            currentRespondentSurvey = res.survei;
+            currentRespondentQuestions = res.pertanyaan || [];
+
+            // Reset isian responden menjadi kosong sebelum diisi
+            if ($('#formRespondentSurvey').length && $('#formRespondentSurvey')[0].reset) {
+              $('#formRespondentSurvey')[0].reset();
+            }
+            $('#respNamaResponden, #respKontak, #respUsia, #respGender, #respPendidikan, #respPekerjaan').val('');
+            $('#respProvinsi').val('');
+            $('#respKabupaten').html('<option value="">-- Pilih Kab/Kota --</option>');
+            $('#respKecamatan').html('<option value="">-- Pilih Kecamatan --</option>');
+            $('#respKelurahan').html('<option value="">-- Pilih Kelurahan/Desa --</option>');
+            $('#respAlamatDetail').val('');
+
+            // Deteksi apakah survei adalah RTKD Multi-Instrumen Dinamis (ID 4, multi, atau judul RTKD)
+            var isMulti = (res.survei.TipeSurvei === 'multi') || (res.survei.InstrumenList && res.survei.InstrumenList.indexOf(',') !== -1) || (surveyId == 4) || (res.survei.Judul && res.survei.Judul.toLowerCase().indexOf('rtkd') !== -1);
+            window.isCurrentRtkd = isMulti;
+
+            // Inisialisasi Peta Geospasial Mini & Deteksi Koordinat GPS Responden (Hanya jika survei standar)
+            if (!isMulti) {
+              setTimeout(function() {
+                if (typeof initRespondentMiniMap === 'function') {
+                  initRespondentMiniMap(res.survei);
+                }
+              }, 150);
+            }
+
+            // Reset Step to Step 1
+            goToSurveyStep(1);
+
+            // Apply Google Forms Style Header Banner Image & Title Card (Sesuai Contoh)
+            var bColor = res.survei.BannerColor || '#043168';
+            var bImg = res.survei.BannerImage || 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=80';
+            if (bImg) {
+              $('#modalRespBannerImg').css('background-image', 'url(' + bImg + ')').show();
+              $('#modalRespBannerContainer').show();
+            } else {
+              $('#modalRespBannerImg').css('background-image', 'none').hide();
+              $('#modalRespBannerContainer').hide();
+            }
+
+            // Header info & Meta Bullets (Google Forms Style)
+            $('#respSurveiId').val(res.survei.Id);
+            $('#modalRespJudul').text(res.survei.Judul + (isDemo ? ' [SIMULASI DEMO]' : ''));
+            var deskripsiText = res.survei.Deskripsi || 'Silakan isi formulir ini secara jujur dan objektif.';
+            $('#modalRespDeskripsi').text(deskripsiText);
+            $('#modalRespLembagaText').text(res.survei.Lembaga || 'Dinas Tenaga Kerja, Transmigrasi dan Perindustrian Kab. Banyuwangi');
+            $('#modalRespWaktuText').text(res.survei.EstimasiWaktu || '5 - 10 Menit');
+            var daerahHeader = res.survei.DaerahSurvei || 'Kabupaten Banyuwangi';
+            $('#modalRespDaerahText').text(daerahHeader);
+
+            if (isMulti) {
+              $('#modalGformSectionText').html('<i class="fa-solid fa-list-check"></i> Bagian 1 dari 4: Instrumen A &bull; Perusahaan');
+            } else {
+              $('#modalGformSectionText').html('<i class="fa-solid fa-id-card"></i> Bagian 1 dari 2: Identitas &amp; Daerah Survei');
+            }
+
+            // Pre-fill daerah spesifik
+            $('#respAlamatDetail').val(res.survei.DaerahSurvei ? 'Unit Layanan ' + res.survei.DaerahSurvei : '');
+
+            if (isMulti) {
+              $('.survey-sticky-progress').hide();
+              $('#surveyStep1, #surveyStep2').hide();
+              $('#surveyStepRtkd').show();
+              // Hanya load skema dari DB jika survei multi baru selain RTKD master (ID 4)
+              if (surveyId != 4 && window.RTKDEngine && res.pertanyaan && res.pertanyaan.length > 0) {
+                var hasInstruments = res.pertanyaan.some(function(q) { return q.Instrumen && q.Instrumen !== 'Semua'; });
+                if (hasInstruments) {
+                  window.RTKDEngine.loadSchemaFromDb(res.pertanyaan);
+                }
+              }
+              switchModalRtkdTab('A');
+            } else {
+              $('#surveyStepRtkd').hide();
+              $('.survey-sticky-progress').show();
+              goToSurveyStep(1);
+              // Render questions in respondent form
+              renderRespondentQuestions(currentRespondentQuestions);
+              updateRespondentProgress();
+            }
+
+            // Open modal
+            $('#surveyRespondentModal').addClass('active');
+            $('body').css('overflow', 'hidden');
+          } else {
+            Swal.fire('Error', res.message || 'Kuesioner tidak ditemukan.', 'error');
+          }
+        },
+        error: function() {
+          Swal.close();
+          Swal.fire('Error', 'Gagal memuat kuesioner survei.', 'error');
+        }
+      });
+    };
+
+    window.closeSurveyRespondentModal = function() {
+      $('#surveyRespondentModal').removeClass('active');
+      $('body').css('overflow', '');
+    };
+
+    window.toggleSurveyDescription = function() {
+      var box = $('#surveyRespDescBox');
+      var btn = $('#btnToggleDesc');
+      if (box.hasClass('collapsed')) {
+        box.removeClass('collapsed').addClass('expanded');
+        btn.attr('aria-expanded', 'true');
+        btn.find('.btn-toggle-txt').text('Tampilkan Ringkas');
+      } else {
+        box.removeClass('expanded').addClass('collapsed');
+        btn.attr('aria-expanded', 'false');
+        btn.find('.btn-toggle-txt').text('Selengkapnya');
+      }
+    };
+
+    // =========================================================================
+    // RTKD DYNAMIC MULTI-INSTRUMENT HELPERS (MODAL PUBLIK)
+    // =========================================================================
+    window.modalRtkdActiveInstrument = 'A';
+    window.switchModalRtkdTab = function(tabKey) {
+      window.modalRtkdActiveInstrument = tabKey;
+      $('#modalRtkdActiveInstrument').val(tabKey);
+      $('.rtkd-tabs .rtkd-tab-btn').removeClass('active').attr('aria-selected', 'false');
+      $('#modalRtkdTab-' + tabKey).addClass('active').attr('aria-selected', 'true');
+
+
+      // Sync Section Badge (Persis seperti 'Section 1 of 3' di contoh)
+      var sectionLabels = {
+        'A': '<i class="fa-solid fa-industry"></i> Bagian 1 dari 4: Instrumen A &bull; Perusahaan &amp; Industri',
+        'B': '<i class="fa-solid fa-user-graduate"></i> Bagian 2 dari 4: Instrumen B &bull; Pencari Kerja &amp; Alumni',
+        'C': '<i class="fa-solid fa-handshake-angle"></i> Bagian 3 dari 4: Instrumen C &bull; Stakeholder Vokasi',
+        'D': '<i class="fa-solid fa-graduation-cap"></i> Bagian 4 dari 4: Instrumen D &bull; Siswa Kelas 12'
+      };
+      if (sectionLabels[tabKey]) {
+        $('#modalGformSectionText').html(sectionLabels[tabKey]);
+      }
+
+      if (window.RTKDEngine) {
+        window.RTKDEngine.render('modalRtkdSheet', tabKey);
+      }
+    };
+
+    window.resetModalRtkdForm = function() {
+      Swal.fire({
+        title: 'Kosongkan Formulir?',
+        text: 'Seluruh isian instrumen aktif akan dibersihkan.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#043168',
+        confirmButtonText: 'Ya, Kosongkan',
+        cancelButtonText: 'Batal'
+      }).then(function(result) {
+        if (result.isConfirmed) {
+          if (window.RTKDEngine) {
+            window.RTKDEngine.render('modalRtkdSheet', window.modalRtkdActiveInstrument || 'A');
+          }
+        }
+      });
+    };
+
+    // Real-time conditional show/hide untuk RTKD Modal
+    $(document).on('input change', '#modalRtkdSheet input, #modalRtkdSheet select, #modalRtkdSheet textarea', function() {
+      if (window.isCurrentRtkd && window.RTKDEngine) {
+        window.RTKDEngine.applyShow('modalRtkdSheet', window.modalRtkdActiveInstrument || 'A');
+      }
+    });
+
+    // Render questions inside respondent form
+    function renderRespondentQuestions(questions) {
+      var $container = $('#respQuestionsList');
+      $container.empty();
+
+      if (questions.length === 0) {
+        $container.html('<div style="text-align:center; padding: 30px; color: #64748b;">Belum ada butir pertanyaan untuk kuesioner ini.</div>');
+        return;
+      }
+
+      var lastSection = null;
+      questions.forEach(function(q, qIdx) {
+        // Render Section Card Header jika berganti bagian (Section)
+        if (q.Section && q.Section !== lastSection) {
+          lastSection = q.Section;
+          var secBadge = q.Section.indexOf('.') !== -1 ? q.Section.split('.')[0] : 'BAGIAN';
+          var secCard = document.createElement('div');
+          secCard.className = 'survey-section-break-card';
+          secCard.style = 'background: linear-gradient(135deg, #043168 0%, #0d3d7c 100%); color: #ffffff; border-radius: 14px; padding: 18px 22px; margin: 24px 0 14px 0; box-shadow: 0 4px 14px rgba(4,49,104,0.18); display: flex; align-items: center; justify-content: space-between;';
+          secCard.innerHTML = 
+            '<div>' +
+              '<div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.7); font-weight: 700; margin-bottom: 2px;"><i class="fa-solid fa-layer-group"></i> Bagian Kuesioner</div>' +
+              '<h3 style="margin: 0; font-size: 17px; font-weight: 800; color: #ffffff;">' + q.Section + '</h3>' +
+            '</div>' +
+            '<span style="background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.25); color: #fff; font-size: 11.5px; font-weight: 700; padding: 4px 12px; border-radius: 20px;">' + secBadge + '</span>';
+          $container.append(secCard);
+        }
+
+        var card = document.createElement('div');
+        card.className = 'resp-q-card';
+        card.id = 'respQCard_' + q.Id;
+
+        var requiredStar = parseInt(q.IsRequired) === 1 ? '<span class="resp-q-required" title="Wajib Diisi">*</span>' : '';
+        var descHtml = q.Deskripsi ? '<div class="resp-q-desc">' + q.Deskripsi + '</div>' : '';
+
+        var inputBodyHtml = '';
+
+        if (q.Tipe === 'radio') {
+          var optionsHtml = '';
+          var optList = q.OpsiPilihanList || [];
+          optList.forEach(function(opt, oIdx) {
+            var optValSafe = opt.label ? opt.label.replace(/"/g, '&quot;') : '';
+            optionsHtml += 
+              '<label class="resp-opt-label" onclick="selectRadioOption(' + q.Id + ', this)">' +
+                '<input type="radio" class="resp-opt-radio" name="Jawaban[' + q.Id + ']" value="' + optValSafe + '" onchange="updateRespondentProgress()">' +
+                '<span class="resp-opt-text">' + optValSafe + '</span>' +
+              '</label>';
+          });
+          inputBodyHtml = '<div class="resp-options-list">' + optionsHtml + '</div>';
+
+        } else if (q.Tipe === 'checkbox') {
+          var optionsHtml = '';
+          var optList = q.OpsiPilihanList || [];
+          optList.forEach(function(opt, oIdx) {
+            var optValSafe = opt.label ? opt.label.replace(/"/g, '&quot;') : '';
+            optionsHtml += 
+              '<label class="resp-opt-label" onclick="toggleCheckboxOption(this)">' +
+                '<input type="checkbox" class="resp-opt-checkbox" name="Jawaban[' + q.Id + '][]" value="' + optValSafe + '" onchange="updateRespondentProgress()">' +
+                '<span class="resp-opt-text">' + optValSafe + '</span>' +
+              '</label>';
+          });
+          inputBodyHtml = '<div class="resp-options-list">' + optionsHtml + '</div>';
+
+        } else if (q.Tipe === 'dropdown') {
+          var optionsHtml = '<option value="">-- Pilih Jawaban Anda --</option>';
+          var optList = q.OpsiPilihanList || [];
+          optList.forEach(function(opt) {
+            var optValSafe = opt.label ? opt.label.replace(/"/g, '&quot;') : '';
+            optionsHtml += '<option value="' + optValSafe + '">' + optValSafe + '</option>';
+          });
+          inputBodyHtml = 
+            '<select name="Jawaban[' + q.Id + ']" class="resp-field" style="width: 100%; height: 44px; border-radius: 12px; border: 1.5px solid #cbd5e1; padding: 0 14px; font-size: 14px;" onchange="updateRespondentProgress()">' +
+              optionsHtml +
+            '</select>';
+
+        } else if (q.Tipe === 'scale') {
+          var minVal = parseInt(q.ScaleMin) || 1;
+          var maxVal = parseInt(q.ScaleMax) || 5;
+          var scaleButtonsHtml = '';
+
+          for (var i = minVal; i <= maxVal; i++) {
+            scaleButtonsHtml += 
+              '<button type="button" class="btn-scale-choice" onclick="selectScaleChoice(' + q.Id + ', ' + i + ', this)">' +
+                i +
+              '</button>';
+          }
+
+          inputBodyHtml = 
+            '<div class="resp-scale-box">' +
+              '<input type="hidden" name="Jawaban[' + q.Id + ']" id="respScaleInput_' + q.Id + '" value="">' +
+              '<div class="resp-scale-buttons">' + scaleButtonsHtml + '</div>' +
+              '<div class="resp-scale-labels">' +
+                '<span>' + (q.ScaleMinLabel || 'Sangat Tidak Baik') + '</span>' +
+                '<span>' + (q.ScaleMaxLabel || 'Sangat Baik') + '</span>' +
+              '</div>' +
+            '</div>';
+
+        } else if (q.Tipe === 'textarea') {
+          inputBodyHtml = 
+            '<textarea name="Jawaban[' + q.Id + ']" rows="3" class="resp-field" style="width: 100%; border-radius: 12px; border: 1.5px solid #cbd5e1; padding: 12px 14px; font-size: 14px; font-family: inherit; resize: vertical;" placeholder="Tuliskan ulasan, pendapat, atau masukan Anda secara jelas..." oninput="updateRespondentProgress()"></textarea>';
+        } else {
+          // text or number
+          var inputType = (q.Tipe === 'number' ? 'number' : 'text');
+          inputBodyHtml = 
+            '<input type="' + inputType + '" name="Jawaban[' + q.Id + ']" class="resp-field" style="width: 100%; height: 44px; border-radius: 12px; border: 1.5px solid #cbd5e1; padding: 0 14px; font-size: 14px; font-family: inherit;" placeholder="Tuliskan jawaban Anda di sini..." oninput="updateRespondentProgress()">';
+        }
+
+        card.innerHTML = 
+          '<div class="resp-q-header">' +
+            '<span class="resp-q-badge">Pertanyaan ' + (qIdx + 1) + '</span>' +
+            '<div class="resp-q-title">' + q.Pertanyaan + requiredStar + '</div>' +
+          '</div>' +
+          descHtml +
+          inputBodyHtml;
+
+        $container.append(card);
+      });
+    }
+
+    // Respondent interactive selection helpers
+    window.selectRadioOption = function(qId, labelElem) {
+      $('#respQCard_' + qId + ' .resp-opt-label').removeClass('selected');
+      $(labelElem).addClass('selected');
+      $(labelElem).find('input[type="radio"]').prop('checked', true);
+      $('#respQCard_' + qId).addClass('answered');
+      updateRespondentProgress();
+    };
+
+    window.toggleCheckboxOption = function(labelElem) {
+      setTimeout(function() {
+        var $chk = $(labelElem).find('input[type="checkbox"]');
+        if ($chk.is(':checked')) {
+          $(labelElem).addClass('selected');
+        } else {
+          $(labelElem).removeClass('selected');
+        }
+        updateRespondentProgress();
+      }, 50);
+    };
+
+    window.selectScaleChoice = function(qId, val, btnElem) {
+      $('#respQCard_' + qId + ' .btn-scale-choice').removeClass('selected');
+      $(btnElem).addClass('selected');
+      $('#respScaleInput_' + qId).val(val);
+      $('#respQCard_' + qId).addClass('answered');
+      updateRespondentProgress();
+    };
+
+    // Cascading dropdown wilayah untuk Keterangan Daerah Survei
+    window.handleWilayahChange = function(level, code) {
+      if (level === 'provinsi') {
+        $('#respKabupaten').html('<option value="">-- Memuat Kab/Kota... --</option>');
+        $('#respKecamatan').html('<option value="">-- Pilih Kecamatan --</option>');
+        $('#respDesa').html('<option value="">-- Pilih Desa/Kel --</option>');
+
+        if (!code) {
+          $('#respKabupaten').html('<option value="">-- Pilih Kab/Kota --</option>');
+          return;
+        }
+
+        $.get(BaseURL + 'IDE/get_wilayah_child', { parent: code, level: 'kabupaten' }, function(res) {
+          $('#respKabupaten').html('<option value="">-- Pilih Kab/Kota --</option>');
+          if (res && res.data) {
+            res.data.forEach(function(row) {
+              $('#respKabupaten').append('<option value="' + row.Nama + '" data-kode="' + row.Kode + '">' + row.Nama + '</option>');
+            });
+          }
+        }, 'json');
+
+      } else if (level === 'kabupaten') {
+        var selectedKode = $('#respKabupaten option:selected').data('kode');
+        $('#respKecamatan').html('<option value="">-- Memuat Kecamatan... --</option>');
+        $('#respDesa').html('<option value="">-- Pilih Desa/Kel --</option>');
+
+        if (!selectedKode) {
+          $('#respKecamatan').html('<option value="">-- Pilih Kecamatan --</option>');
+          return;
+        }
+
+        $.get(BaseURL + 'IDE/get_wilayah_child', { parent: selectedKode, level: 'kecamatan' }, function(res) {
+          $('#respKecamatan').html('<option value="">-- Pilih Kecamatan --</option>');
+          if (res && res.data) {
+            res.data.forEach(function(row) {
+              $('#respKecamatan').append('<option value="' + row.Nama + '" data-kode="' + row.Kode + '">' + row.Nama + '</option>');
+            });
+          }
+        }, 'json');
+
+      } else if (level === 'kecamatan') {
+        var selectedKode = $('#respKecamatan option:selected').data('kode');
+        $('#respDesa').html('<option value="">-- Memuat Desa... --</option>');
+
+        if (!selectedKode) {
+          $('#respDesa').html('<option value="">-- Pilih Desa/Kel --</option>');
+          return;
+        }
+
+        $.get(BaseURL + 'IDE/get_wilayah_child', { parent: selectedKode, level: 'desa' }, function(res) {
+          $('#respDesa').html('<option value="">-- Pilih Desa/Kel --</option>');
+          if (res && res.data) {
+            res.data.forEach(function(row) {
+              $('#respDesa').append('<option value="' + row.Nama + '">' + row.Nama + '</option>');
+            });
+          }
+        }, 'json');
+      }
+    };
+
+    // Calculate real-time questionnaire progress
+    function updateRespondentProgress() {
+      if (!currentRespondentQuestions || currentRespondentQuestions.length === 0) return;
+      var totalQ = currentRespondentQuestions.length;
+      var answeredCount = 0;
+
+      currentRespondentQuestions.forEach(function(q) {
+        var answered = false;
+        if (q.Tipe === 'radio') {
+          answered = $('input[name="Jawaban[' + q.Id + ']"]:checked').length > 0;
+        } else if (q.Tipe === 'checkbox') {
+          answered = $('input[name="Jawaban[' + q.Id + '][]"]:checked').length > 0;
+        } else if (q.Tipe === 'scale') {
+          var v = $('#respScaleInput_' + q.Id).val();
+          answered = (v !== '' && v !== undefined && v !== null);
+        } else {
+          var v = $.trim($('[name="Jawaban[' + q.Id + ']"]').val());
+          answered = (v !== '');
+        }
+
+        if (answered) {
+          answeredCount++;
+          $('#respQCard_' + q.Id).addClass('answered');
+        } else {
+          $('#respQCard_' + q.Id).removeClass('answered');
+        }
+      });
+
+      var pct = Math.round((answeredCount / totalQ) * 100);
+      if (window.currentSurveyStep === 2) {
+        var overallPct = Math.max(50, Math.round(50 + (pct / 2)));
+        $('#surveyProgressFill').css('width', overallPct + '%');
+        $('#surveyProgressText').text('Langkah 2/2: ' + answeredCount + ' dari ' + totalQ + ' Terjawab (' + pct + '%)');
+      } else {
+        $('#surveyProgressFill').css('width', '50%');
+        $('#surveyProgressText').text('Langkah 1 dari 2: Data Responden & Daerah Survei');
+      }
+    }
+
+    // Submit Respondent Form
+    window.handleSurveyRespondentSubmit = function(e) {
+      e.preventDefault();
+
+      // =======================================================================
+      // CABANG KHUSUS: SURVEI RTKD DINAMIS 4 INSTRUMEN
+      // =======================================================================
+      if (window.isCurrentRtkd) {
+        if (!$('#modalRespConsent').is(':checked')) {
+          Swal.fire('Persetujuan Responden', 'Harap centang persetujuan responden terlebih dahulu.', 'warning');
+          $('#modalRespConsent').focus();
+          return;
+        }
+
+        var enumerator = $.trim($('#respEnumerator').val());
+        if (!enumerator) {
+          Swal.fire('Nama Enumerator', 'Harap isi nama enumerator petugas pencatat terlebih dahulu.', 'warning');
+          $('#respEnumerator').focus();
+          return;
+        }
+
+        var inst = window.modalRtkdActiveInstrument || $('#modalRtkdActiveInstrument').val() || 'A';
+        var answers = window.RTKDEngine ? window.RTKDEngine.collect('formSurveyRespondent', inst) : {};
+
+        // Validasi pertanyaan wajib
+        var allQs = window.RTKDEngine ? window.RTKDEngine.allQs(inst) : [];
+        var missingQuestions = [];
+        allQs.forEach(function(q) {
+          if (q.req && (q.show ? q.show(answers) : true)) {
+            var val = answers[q.c];
+            if (val === undefined || val === null || val === '') {
+              missingQuestions.push(q.c + ' (' + q.l + ')');
+            }
+          }
+        });
+
+        // Validasi kriteria penyaring Instrumen B
+        if (inst === 'B' && Array.isArray(answers.SC)) {
+          if (answers.SC.indexOf('Tidak satu pun') !== -1 && answers.SC.length > 1) {
+            Swal.fire('Kriteria Penyaring (SC)', 'Pada butir SC, "Tidak satu pun" tidak bisa dipilih bersama kriteria lain. Silakan perbaiki jawaban Anda.', 'warning');
+            return;
+          }
+        }
+
+        if (missingQuestions.length > 0) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Pertanyaan Wajib Belum Lengkap',
+            html: 'Mohon lengkapi pertanyaan wajib berikut sebelum menyimpan:<br><ul style="text-align: left; margin-top: 10px; font-size: 13px;">' +
+                  missingQuestions.slice(0, 5).map(function(m) { return '<li><b>' + m + '</b></li>'; }).join('') +
+                  (missingQuestions.length > 5 ? '<li>...dan ' + (missingQuestions.length - 5) + ' pertanyaan lainnya</li>' : '') +
+                  '</ul>'
+          });
+          return;
+        }
+
+        var respNama = answers.P1 || answers.S2 || answers.K2 || (inst === 'B' ? 'Pencari Kerja / Lulusan' : 'Responden ' + inst);
+        var kec = answers.P2 || answers.L3 || answers.K3 || answers.K7 || 'Banyuwangi';
+
+        var payload = {
+          SurveiId: parseInt($('#respSurveiId').val()) || 4,
+          Instrumen: inst,
+          Enumerator: enumerator,
+          RespondenNama: respNama,
+          RespondenGender: answers.L2 || answers.K6 || 'Lainnya',
+          RespondenUsia: answers.L1 || answers.K5 || '',
+          RespondenPendidikan: answers.L4 || (inst === 'D' ? 'Kelas 12' : ''),
+          RespondenPekerjaan: (inst === 'A' ? 'Pemberi Kerja / Pelaku Usaha' : (inst === 'B' ? (answers.L7 || 'Pencari Kerja') : (inst === 'C' ? 'Pemangku Kepentingan' : 'Siswa Kelas 12'))),
+          Provinsi: 'Jawa Timur',
+          Kabupaten: 'Kabupaten Banyuwangi',
+          Kecamatan: kec,
+          Desa: '',
+          AlamatDetail: 'Lokasi: ' + (answers.SR2 || kec),
+          Latitude: $('#respLatitude').val() || null,
+          Longitude: $('#respLongitude').val() || null,
+          LokasiAccuracy: $('#respLokasiAccuracy').val() || null,
+          DevicePlatform: $('#respDevicePlatform').val() || 'Desktop Browser',
+          Jawaban: answers
+        };
+
+        var $btn = $('#btnSubmitModalRtkd');
+        var origHtml = $btn.html();
+        $btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan Jawaban...');
+
+        $.ajax({
+          url: BaseURL + 'IDE/submit_jawaban_survei',
+          type: 'POST',
+          data: JSON.stringify(payload),
+          contentType: 'application/json; charset=utf-8',
+          dataType: 'json',
+          success: function(res) {
+            $btn.prop('disabled', false).html(origHtml);
+            if (res && res.status) {
+              closeSurveyRespondentModal();
+              Swal.fire({
+                icon: 'success',
+                title: 'Jawaban Survei Disimpan!',
+                html: 
+                  '<div style="text-align: center; padding: 10px 0;">' +
+                    '<p style="font-size: 14px; color: #475569; margin-bottom: 14px;">Terima kasih atas partisipasi pengisian formulir Survei Ketenagakerjaan Banyuwangi (Instrumen ' + inst + ').</p>' +
+                    '<div style="background: #f0fdf4; border: 1.5px solid #a7f3d0; border-radius: 14px; padding: 14px; margin-bottom: 12px;">' +
+                      '<div style="font-size: 11.5px; font-weight: 800; color: #059669; text-transform: uppercase;">Instrumen Tersimpan:</div>' +
+                      '<div style="font-size: 24px; font-weight: 800; color: #047857; margin: 3px 0;">Instrumen ' + inst + '</div>' +
+                      '<div style="font-size: 13px; font-weight: 700; color: #065f46;">Mutu Layanan: <b>' + (res.mutu_pelayanan || 'Baik') + '</b> (Skor: ' + (res.rata_rata_skor || '-') + ')</div>' +
+                    '</div>' +
+                    '<div style="font-size: 12.5px; color: #64748b;"><i class="fa-solid fa-location-dot" style="color: var(--lugx-red);"></i> Wilayah Tercatat: <b>' + (res.daerah_survei || kec) + '</b></div>' +
+                  '</div>',
+                confirmButtonText: '<i class="fa-solid fa-check"></i> Selesai',
+                confirmButtonColor: '#043168'
+              });
+              loadAllSurveys();
+            } else {
+              Swal.fire('Gagal', res.message || 'Gagal menyimpan survei.', 'error');
+            }
+          },
+          error: function() {
+            $btn.prop('disabled', false).html(origHtml);
+            Swal.fire('Error', 'Gagal mengirim survei. Periksa koneksi Anda.', 'error');
+          }
+        });
+        return;
+      }
+
+      // Check required questions
+      var missingQuestions = [];
+      currentRespondentQuestions.forEach(function(q, idx) {
+        if (parseInt(q.IsRequired) === 1) {
+          var answered = false;
+          if (q.Tipe === 'radio') {
+            answered = $('input[name="Jawaban[' + q.Id + ']"]:checked').length > 0;
+          } else if (q.Tipe === 'checkbox') {
+            answered = $('input[name="Jawaban[' + q.Id + '][]"]:checked').length > 0;
+          } else if (q.Tipe === 'scale') {
+            var v = $('#respScaleInput_' + q.Id).val();
+            answered = (v !== '' && v !== undefined && v !== null);
+          } else {
+            var v = $.trim($('[name="Jawaban[' + q.Id + ']"]').val());
+            answered = (v !== '');
+          }
+
+          if (!answered) {
+            missingQuestions.push('Pertanyaan #' + (idx + 1) + ' (' + q.Pertanyaan + ')');
+          }
+        }
+      });
+
+      if (missingQuestions.length > 0) {
+        goToSurveyStep(2);
+        Swal.fire({
+          icon: 'warning',
+          title: 'Pertanyaan Wajib Belum Diisi',
+          html: 'Mohon lengkapi pertanyaan berikut sebelum mengirim:<br><ul style="text-align: left; margin-top: 10px; font-size: 13px;">' +
+                missingQuestions.slice(0, 4).map(m => '<li>' + m + '</li>').join('') +
+                (missingQuestions.length > 4 ? '<li>...dan ' + (missingQuestions.length - 4) + ' pertanyaan lainnya</li>' : '') +
+                '</ul>'
+        });
+        return;
+      }
+
+      // Collect data
+      var formArray = $('#formSurveyRespondent').serializeArray();
+      var payload = {
+        SurveiId: parseInt($('#respSurveiId').val()),
+        RespondenNama: $('#respNama').val(),
+        RespondenKontak: $('#respKontak').val(),
+        RespondenGender: $('#respGender').val(),
+        RespondenUsia: $('#respUsia').val(),
+        RespondenPendidikan: $('#respPendidikan').val(),
+        RespondenPekerjaan: $('#respPekerjaan').val(),
+        Provinsi: $('#respProvinsi option:selected').text() || '',
+        Kabupaten: $('#respKabupaten').val() || '',
+        Kecamatan: $('#respKecamatan').val() || '',
+        Desa: $('#respDesa').val() || '',
+        AlamatDetail: $('#respAlamatDetail').val(),
+        Latitude: $('#respLatitude').val() || null,
+        Longitude: $('#respLongitude').val() || null,
+        LokasiAccuracy: $('#respLokasiAccuracy').val() || null,
+        DevicePlatform: $('#respDevicePlatform').val() || 'Desktop Browser',
+        Jawaban: {}
+      };
+
+      formArray.forEach(function(item) {
+        var match = item.name.match(/^Jawaban\[(\d+)\](\[\])?$/);
+        if (match) {
+          var qId = match[1];
+          var isArray = match[2] === '[]';
+          if (isArray) {
+            if (!payload.Jawaban[qId]) payload.Jawaban[qId] = [];
+            payload.Jawaban[qId].push(item.value);
+          } else {
+            payload.Jawaban[qId] = item.value;
+          }
+        }
+      });
+
+      var $btn = $('#btnSubmitSurvey');
+      var originalHtml = $btn.html();
+      $btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> Mengirim Jawaban...');
+
+      $.ajax({
+        url: BaseURL + 'IDE/submit_jawaban_survei',
+        type: 'POST',
+        data: JSON.stringify(payload),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function(res) {
+          $btn.prop('disabled', false).html(originalHtml);
+          if (res && res.status) {
+            closeSurveyRespondentModal();
+            Swal.fire({
+              icon: 'success',
+              title: 'Kuesioner Berhasil Terkirim!',
+              html: 
+                '<div style="text-align: center; padding: 10px 0;">' +
+                  '<p style="font-size: 14px; color: #475569; margin-bottom: 16px;">Terima kasih atas partisipasi aktif Anda dalam survei penilaian kepuasan ini.</p>' +
+                  '<div style="background: #f0fdf4; border: 1.5px solid #a7f3d0; border-radius: 16px; padding: 16px; margin-bottom: 14px;">' +
+                    '<div style="font-size: 12px; font-weight: 800; color: #059669; text-transform: uppercase;">Perolehan Skor Evaluasi:</div>' +
+                    '<div style="font-size: 32px; font-weight: 800; color: #047857; margin: 4px 0;">' + res.rata_rata_skor + '</div>' +
+                    '<div style="font-size: 13.5px; font-weight: 700; color: #065f46;">Mutu Pelayanan: <b>' + res.mutu_pelayanan + '</b></div>' +
+                  '</div>' +
+                  '<div style="font-size: 12.5px; color: #64748b;"><i class="fa-solid fa-location-dot" style="color: var(--lugx-red);"></i> Wilayah Survei Tercatat: <b>' + (res.daerah_survei || '-') + '</b></div>' +
+                '</div>',
+              confirmButtonText: '<i class="fa-solid fa-check"></i> Selesai',
+              confirmButtonColor: '#043168'
+            });
+            loadAllSurveys();
+          } else {
+            Swal.fire('Gagal', res.message || 'Gagal mengirim survei.', 'error');
+          }
+        },
+        error: function() {
+          $btn.prop('disabled', false).html(originalHtml);
+          Swal.fire('Error', 'Gagal terhubung ke server saat mengirim survei.', 'error');
+        }
+      });
+    };
+
+    // =========================================================================
+    // REKAPITULASI RESPON & DAERAH SURVEI ENGINE
+    // =========================================================================
+    window.openRekapForSurvey = function(surveyId) {
+      $('#rekapSurveySelector').val(surveyId);
+      switchSurveyorTab('rekap');
+      loadRekapitulasi(surveyId);
+    };
+
+    window.loadRekapitulasi = function(surveyId) {
+      if (!surveyId) return;
+
+      $('#tableRekapRespondenBody').html('<tr><td colspan="8" style="text-align: center; padding: 40px; color: var(--lugx-gray);"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data rekapitulasi...</td></tr>');
+
+      $.ajax({
+        url: BaseURL + 'IDE/get_survei_rekap_data/' + surveyId,
+        type: 'GET',
+        dataType: 'json',
+        success: function(res) {
+          if (res && res.login_required) {
+            $('#tableRekapRespondenBody').html('<tr><td colspan="8" style="text-align: center; padding: 40px; color: #b40814;"><i class="fa-solid fa-lock" style="font-size: 28px; margin-bottom: 10px; display: block;"></i> ' + (res.message || 'Akses Terbatas: Diperlukan login petugas.') + '<br><button type="button" class="btn-auth-unlock" style="margin-top: 14px;" onclick="openModal(\'signInModal\')"><i class="fa-solid fa-right-to-bracket"></i> Masuk Sekarang</button></td></tr>');
+            promptSurveyAuth('rekap');
+            return;
+          }
+          if (res && res.status) {
+            rekapCache[surveyId] = res;
+
+            $('#kpiTotalResponden').text(res.totalResponden || 0);
+            $('#kpiRataRataSkor').text(res.rataRataSkor || '0.00');
+            
+            var mutuText = '-';
+            var avg = parseFloat(res.rataRataSkor) || 0;
+            if (avg >= 3.50) mutuText = 'A (Sangat Baik)';
+            else if (avg >= 2.75) mutuText = 'B (Baik)';
+            else if (avg >= 2.00) mutuText = 'C (Kurang)';
+            else if (avg > 0) mutuText = 'D (Tidak Baik)';
+            $('#kpiMutuPelayanan').text(mutuText);
+
+            $('#kpiTotalDaerah').text(res.sebaranDaerah ? res.sebaranDaerah.length : 0);
+
+            // Render Sebaran Daerah Pills
+            var $pills = $('#rekapDaerahPills');
+            $pills.empty();
+            if (res.sebaranDaerah && res.sebaranDaerah.length > 0) {
+              res.sebaranDaerah.forEach(function(d) {
+                $pills.append(
+                  '<span class="badge-daerah-survei" style="font-size: 13px; padding: 6px 14px;">' +
+                    '<i class="fa-solid fa-location-dot"></i> ' + d.Daerah + ' &bull; <b>' + d.Total + ' Responden</b>' +
+                  '</span>'
+                );
+              });
+            } else {
+              $pills.html('<span style="font-size: 13px; color: #64748b;">Belum ada sebaran wilayah responden.</span>');
+            }
+
+            // Render Respondents Table
+            var $tbody = $('#tableRekapRespondenBody');
+            $tbody.empty();
+
+            if (!res.responden || res.responden.length === 0) {
+              $tbody.html('<tr><td colspan="8" style="text-align: center; padding: 40px; color: var(--lugx-gray);">Belum ada data responden yang mengisi survei ini.</td></tr>');
+              return;
+            }
+
+            res.responden.forEach(function(r, idx) {
+              var daerahFormatted = [];
+              if (r.Kabupaten) daerahFormatted.push(r.Kabupaten);
+              if (r.Kecamatan) daerahFormatted.push('Kec. ' + r.Kecamatan);
+              if (r.Desa) daerahFormatted.push('Desa ' + r.Desa);
+              var daerahString = daerahFormatted.length > 0 ? daerahFormatted.join(', ') : (r.AlamatDetail || '-');
+
+              var demografiString = (r.RespondenGender || '-') + ' &bull; ' + (r.RespondenUsia || '-');
+
+              $tbody.append(
+                '<tr>' +
+                  '<td>' + (idx + 1) + '</td>' +
+                  '<td><span style="font-size: 12px; font-weight: 700; color: #64748b;">' + (r.CreatedAt ? r.CreatedAt.substring(0, 16) : '-') + '</span></td>' +
+                  '<td><b>' + (r.RespondenNama || 'Anonim') + '</b></td>' +
+                  '<td><span class="badge-daerah-survei"><i class="fa-solid fa-location-dot"></i> ' + daerahString + '</span></td>' +
+                  '<td><span style="font-size: 12px; color: #475569;">' + demografiString + '</span></td>' +
+                  '<td><b style="color: #059669; font-size: 14px;">' + (r.RataRataSkor || '0.00') + '</b></td>' +
+                  '<td><span class="card-status status-active" style="padding: 3px 8px; font-size: 11px;">' + (r.MutuPelayanan || 'Baik') + '</span></td>' +
+                  '<td style="text-align: center;">' +
+                    '<button type="button" class="btn-action-edit" onclick="viewRespondentAnswers(' + surveyId + ', ' + r.Id + ')">' +
+                      '<i class="fa-solid fa-eye"></i> Rincian' +
+                    '</button>' +
+                  '</td>' +
+                '</tr>'
+              );
+            });
+          }
+        },
+        error: function() {
+          $('#tableRekapRespondenBody').html('<tr><td colspan="8" style="text-align: center; padding: 40px; color: #ef4444;">Gagal mengambil data rekapitulasi dari server.</td></tr>');
+        }
+      });
+    };
+
+    // View specific respondent's detailed answer sheet
+    window.viewRespondentAnswers = function(surveyId, respId) {
+      var cached = rekapCache[surveyId];
+      if (!cached || !cached.responden) return;
+
+      var respObj = cached.responden.find(r => r.Id == respId);
+      if (!respObj) return;
+
+      // Populate respondent profile
+      var daerahSummary = [respObj.Provinsi, respObj.Kabupaten, respObj.Kecamatan, respObj.Desa].filter(Boolean).join(' &bull; ');
+      if (respObj.AlamatDetail) daerahSummary += ' (' + respObj.AlamatDetail + ')';
+
+      $('#detailRespondentProfile').html(
+        '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13.5px;">' +
+          '<div><b>Nama Responden:</b> ' + (respObj.RespondenNama || 'Anonim') + '</div>' +
+          '<div><b>Waktu Pengisian:</b> ' + (respObj.CreatedAt || '-') + '</div>' +
+          '<div><b>Demografi:</b> ' + (respObj.RespondenGender || '-') + ' &bull; ' + (respObj.RespondenUsia || '-') + ' &bull; ' + (respObj.RespondenPekerjaan || '-') + '</div>' +
+          '<div><b>Rata-Rata Skor:</b> <b style="color: #059669; font-size: 15px;">' + respObj.RataRataSkor + '</b> (' + (respObj.MutuPelayanan || 'Baik') + ')</div>' +
+          '<div style="grid-column: 1 / -1;"><b>Keterangan Daerah Survei:</b> <span class="badge-daerah-survei"><i class="fa-solid fa-location-dot"></i> ' + (daerahSummary || 'Tidak dicantumkan') + '</span></div>' +
+        '</div>'
+      );
+
+      // Populate answers
+      var $answersContainer = $('#detailAnswersContainer');
+      $answersContainer.html('<div style="text-align:center; padding: 20px;"><i class="fa-solid fa-spinner fa-spin"></i> Memuat rincian butir...</div>');
+
+      // Fetch questions list from cached
+      var questions = cached.pertanyaan || [];
+      if (questions.length === 0) {
+        $answersContainer.html('<div style="color: #64748b;">Data butir pertanyaan tidak tersedia.</div>');
+      } else {
+        var html = '';
+        questions.forEach(function(q, idx) {
+          html += 
+            '<div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px 18px;">' +
+              '<div style="font-size: 12px; font-weight: 800; color: var(--lugx-blue); margin-bottom: 4px;">#' + (idx + 1) + ' ' + q.Pertanyaan + '</div>' +
+              '<div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 6px;">' +
+                '<span style="font-size: 13.5px; font-weight: 700; color: var(--lugx-dark);"><i class="fa-solid fa-circle-check" style="color: #059669; margin-right: 6px;"></i> Terisi Lengkap</span>' +
+                '<span style="font-size: 12px; background: #ecfdf5; color: #065f46; font-weight: 800; padding: 2px 8px; border-radius: 8px;">Tipe: ' + q.Tipe.toUpperCase() + '</span>' +
+              '</div>' +
+            '</div>';
+        });
+        $answersContainer.html(html);
+      }
+
+      $('#responseDetailModal').addClass('active');
+    };
+
+    window.closeResponseDetailModal = function() {
+      $('#responseDetailModal').removeClass('active');
+    };
+
+    // Document Ready Initialization
     document.addEventListener('DOMContentLoaded', function() {
-      renderSurvei(surveiData);
+      loadAllSurveys();
       var yearElem = document.getElementById('current-year');
       if (yearElem) yearElem.textContent = new Date().getFullYear();
-      updateAdminGreeting();
+      if (typeof updateAdminGreeting === 'function') updateAdminGreeting();
+      <?php if (!empty($loginRequiredAlert)): ?>
+      setTimeout(function() {
+        if (typeof promptSurveyAuth === 'function') {
+          promptSurveyAuth('peta');
+        }
+      }, 500);
+      <?php endif; ?>
     });
+  
+    // =========================================================================
+    // OPENSTREETMAP & LEAFLET GIS GEOSPASIAL ENGINE KABUPATEN BANYUWANGI
+    // =========================================================================
+    var leafletMapInstance = null;
+    var polygonLayerGroup = null;
+    var markerLayerGroup = null;
+    var currentGeoData = null;
+    var allGeoPoints = [];
+    var markersMap = {};
+    var polygonLayersMap = {};
+
+    // Cache Data Geospasial Riil 25 Kecamatan Banyuwangi (HDX-BPS 2020)
+    var banyuwangiRealGeoJson = null;
+    var banyuwangiDistrictsMeta = null;
+    var isGeoJsonLoading = false;
+    var geoJsonCallbacks = [];
+
+    // Form Responden Mini-Map Instances
+    var respFormMiniMapInstance = null;
+    var respMiniPolygonGroup = null;
+    var respMiniMarkerGroup = null;
+    var respCurrentMarker = null;
+    var respAccuracyCircle = null;
+
+    // Fungsi Pengambil Data Batas Riil 25 Kecamatan Banyuwangi
+    function getBanyuwangiRealGeoJson(callback) {
+      if (banyuwangiRealGeoJson && banyuwangiDistrictsMeta) {
+        if (callback) callback(banyuwangiRealGeoJson, banyuwangiDistrictsMeta);
+        return;
+      }
+      if (callback) geoJsonCallbacks.push(callback);
+      if (isGeoJsonLoading) return;
+      isGeoJsonLoading = true;
+
+      $.getJSON(BaseURL + 'assets/geojson/banyuwangi_kecamatan_real_smooth.geojson', function(geoData) {
+        banyuwangiRealGeoJson = geoData;
+        $.getJSON(BaseURL + 'assets/geojson/banyuwangi_districts_meta.json', function(metaData) {
+          banyuwangiDistrictsMeta = metaData;
+          isGeoJsonLoading = false;
+          while (geoJsonCallbacks.length > 0) {
+            var cb = geoJsonCallbacks.shift();
+            try { cb(banyuwangiRealGeoJson, banyuwangiDistrictsMeta); } catch(err) { console.error(err); }
+          }
+        });
+      }).fail(function() {
+        isGeoJsonLoading = false;
+        console.error('Gagal memuat file GeoJSON real Banyuwangi.');
+      });
+    }
+
+    // Preload GeoJSON data saat halaman selesai dimuat
+    $(document).ready(function() {
+      getBanyuwangiRealGeoJson();
+    });
+
+    // Fallback Centroid Koordinat 25 Kecamatan Banyuwangi
+    var fallbackKecamatanCoords = {
+      'bangorejo': [-8.480000, 114.170000],
+      'banyuwangi': [-8.219234, 114.369120],
+      'blimbingsari': [-8.315000, 114.350000],
+      'cluring': [-8.436120, 114.238940],
+      'gambiran': [-8.396140, 114.150020],
+      'genteng': [-8.363910, 114.152840],
+      'giri': [-8.205000, 114.340000],
+      'glagah': [-8.235000, 114.320000],
+      'glenmore': [-8.305710, 114.053120],
+      'kabat': [-8.269430, 114.334710],
+      'kalibaru': [-8.290000, 113.960000],
+      'kalipuro': [-8.148120, 114.372510],
+      'licin': [-8.210000, 114.260000],
+      'muncar': [-8.435820, 114.331420],
+      'pesanggaran': [-8.548910, 114.076720],
+      'purwoharjo': [-8.490000, 114.250000],
+      'rogojampi': [-8.303120, 114.296540],
+      'sempu': [-8.310000, 114.165000],
+      'siliragung': [-8.520000, 114.110000],
+      'singojuruh': [-8.324210, 114.238920],
+      'songgon': [-8.232540, 114.218930],
+      'srono': [-8.398640, 114.262510],
+      'tegaldlimo': [-8.560000, 114.340000],
+      'tegalsari': [-8.440000, 114.135000],
+      'wongsorejo': [-7.954720, 114.408910]
+    };
+
+    window.openSurveyGeoMap = function(surveyId) {
+      if (!isLoggedIn) {
+        promptSurveyAuth('peta');
+        return;
+      }
+      surveyId = surveyId || 3;
+      switchSurveyorTab('peta');
+      $('#geoSurveySelect').val(surveyId);
+      loadSurveyGeoMap(surveyId);
+    };
+
+    window.reloadCurrentGeoMap = function() {
+      if (!isLoggedIn) {
+        promptSurveyAuth('peta');
+        return;
+      }
+      var sid = $('#geoSurveySelect').val() || 3;
+      loadSurveyGeoMap(sid);
+    };
+
+    window.downloadCurrentGeoExcel = function() {
+      if (!isLoggedIn) {
+        promptSurveyAuth('rekap');
+        return;
+      }
+      var sid = $('#geoSurveySelect').val() || 3;
+      downloadRekapExcel(sid);
+    };
+
+    // Load Peta Geospasial & Responden Sesuai Survei yang Dipilih
+    window.loadSurveyGeoMap = function(surveyId) {
+      if (!isLoggedIn) {
+        promptSurveyAuth('peta');
+        return;
+      }
+
+      surveyId = surveyId || 3;
+      
+      // Init Map Instance jika belum dibuat
+      if (!leafletMapInstance) {
+        leafletMapInstance = L.map('leafletSurveiMap', {
+          center: [-8.32, 114.25],
+          zoom: 10,
+          scrollWheelZoom: true
+        });
+
+        // OpenStreetMap Layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &bull; IDE Consultant GIS'
+        }).addTo(leafletMapInstance);
+
+        polygonLayerGroup = L.layerGroup().addTo(leafletMapInstance);
+        markerLayerGroup = L.layerGroup().addTo(leafletMapInstance);
+      }
+
+      // Reset layer
+      polygonLayerGroup.clearLayers();
+      markerLayerGroup.clearLayers();
+      markersMap = {};
+      polygonLayersMap = {};
+
+      $.ajax({
+        url: BaseURL + 'IDE/get_survei_geo_data/' + surveyId,
+        type: 'GET',
+        dataType: 'json',
+        success: function(res) {
+          if (res && res.login_required) {
+            promptSurveyAuth('peta');
+            return;
+          }
+          if (res && res.status) {
+            currentGeoData = res;
+            allGeoPoints = res.points || [];
+
+            // Update KPI Card
+            $('#geoKpiTotal').text(res.totalMapped + ' / ' + res.totalResponden);
+            $('#geoKpiKecamatan').text((res.kecamatanSummary ? res.kecamatanSummary.length : 0) + ' / 25');
+            $('#geoKpiSkor').text(Number(res.rataRataSkor || 0).toFixed(2));
+            
+            var predikat = (res.survei && res.survei.MutuPelayanan) ? res.survei.MutuPelayanan : 'Mutu B (Baik)';
+            $('#geoKpiMutu').text(predikat);
+
+            // Perangkat dominan
+            var devCount = {};
+            allGeoPoints.forEach(function(p) {
+              var d = p.device || 'Android Mobile';
+              devCount[d] = (devCount[d] || 0) + 1;
+            });
+            var topDev = 'Mobile Android';
+            var maxD = 0;
+            for (var dk in devCount) {
+              if (devCount[dk] > maxD) {
+                maxD = devCount[dk];
+                topDev = dk.replace(/Mobile/g, '').replace(/[()]/g, '').trim();
+              }
+            }
+            $('#geoKpiDevice').text(topDev || 'Android');
+
+            // Populate Survey Selector
+            var $sel = $('#geoSurveySelect');
+            if (res.surveiList && res.surveiList.length > 0) {
+              $sel.empty();
+              res.surveiList.forEach(function(s) {
+                var isSel = (s.Id == res.survei.Id) ? 'selected' : '';
+                $sel.append('<option value="' + s.Id + '" ' + isSel + '>' + s.Judul + ' (' + (s.Tahun || 2026) + ')</option>');
+              });
+              $sel.val(res.survei.Id);
+            }
+
+            // Memuat Batas Poligon Riil 25 Kecamatan Banyuwangi dari GeoJSON
+            getBanyuwangiRealGeoJson(function(geoData, metaData) {
+              renderKecamatanPolygons(res.kecamatanSummary, geoData, metaData);
+
+              // Populate Filter Kecamatan Selector dengan 25 Kecamatan Lengkap
+              var $kecSel = $('#geoKecamatanFilter');
+              $kecSel.empty();
+              $kecSel.append('<option value="">Semua Wilayah Kecamatan (' + allGeoPoints.length + ' Titik Responden)</option>');
+
+              var distKeys = Object.keys(metaData || {}).sort();
+              var sumLookup = {};
+              (res.kecamatanSummary || []).forEach(function(ks) {
+                sumLookup[ks.kecamatan.toLowerCase()] = ks;
+              });
+
+              distKeys.forEach(function(kName) {
+                var stat = sumLookup[kName.toLowerCase()];
+                var tot = stat ? stat.total : 0;
+                var sk = stat ? (' - Skor ' + stat.avgSkor) : '';
+                $kecSel.append('<option value="' + kName + '">' + kName + ' (' + tot + ' Responden' + sk + ')</option>');
+              });
+            });
+
+            // Render Titik Markers Responden & Feed
+            renderRespondentMarkers(allGeoPoints);
+            renderSidebarFeed(allGeoPoints);
+            updateFocusKecamatanCard(null);
+
+            // Invalidate Map Size agar Leaflet menghitung ukuran container setelah tab tampil
+            setTimeout(function() {
+              if (leafletMapInstance) {
+                leafletMapInstance.invalidateSize();
+                resetMapToBanyuwangi();
+              }
+            }, 300);
+
+          } else {
+            Swal.fire('Info', res.message || 'Gagal memuat data geospasial.', 'info');
+          }
+        },
+        error: function() {
+          Swal.fire('Error', 'Gagal menghubungi server data spasial survei.', 'error');
+        }
+      });
+    };
+
+    // Render Batas Wilayah Poligon Riil 25 Kecamatan Banyuwangi (HDX-BPS 2020)
+    function renderKecamatanPolygons(kecSummary, geoData, metaData) {
+      if (!polygonLayerGroup) return;
+      polygonLayerGroup.clearLayers();
+      polygonLayersMap = {};
+
+      var sumMap = {};
+      if (kecSummary) {
+        kecSummary.forEach(function(ks) {
+          sumMap[ks.kecamatan.toLowerCase()] = ks;
+        });
+      }
+
+      var targetGeo = geoData || banyuwangiRealGeoJson;
+      if (!targetGeo) return;
+
+      L.geoJSON(targetGeo, {
+        style: function(feature) {
+          var color = feature.properties.color || '#2563eb';
+          return {
+            color: color,
+            weight: 2,
+            opacity: 0.9,
+            fillColor: color,
+            fillOpacity: 0.22,
+            dashArray: '3, 5'
+          };
+        },
+        onEachFeature: function(feature, layer) {
+          var distName = feature.properties.district || feature.properties.nama;
+          var kKey = (distName || '').toLowerCase();
+          polygonLayersMap[kKey] = layer;
+
+          var stat = sumMap[kKey];
+          var totalRes = stat ? stat.total : 0;
+          var avgSkor = stat ? stat.avgSkor : '-';
+          var totalDesa = feature.properties.total_desa || (feature.properties.villages ? feature.properties.villages.length : 0);
+
+          // Tooltip informatif modern
+          var tooltipContent = 
+            '<div style="font-family: inherit; line-height: 1.4;">' +
+              '<div style="font-size: 13px; font-weight: 800; color: #043168; margin-bottom: 2px;">' +
+                '<i class="fa-solid fa-map-pin" style="color: ' + (feature.properties.color || '#2563eb') + ';"></i> Kec. ' + distName +
+              '</div>' +
+              '<div style="font-size: 11.5px; color: #334155;">' +
+                '<b>' + totalRes + '</b> Responden Terdata &bull; Skor: <b>' + avgSkor + '</b>' +
+              '</div>' +
+              '<div style="font-size: 10.5px; color: #64748b; margin-top: 2px;">' +
+                '<i class="fa-solid fa-tree-city"></i> ' + totalDesa + ' Desa / Kelurahan' +
+              '</div>' +
+            '</div>';
+
+          layer.bindTooltip(tooltipContent, {
+            sticky: true,
+            className: 'geo-polygon-tooltip'
+          });
+
+          layer.on({
+            mouseover: function(e) {
+              var l = e.target;
+              l.setStyle({
+                weight: 4.5,
+                fillOpacity: 0.55,
+                dashArray: ''
+              });
+            },
+            mouseout: function(e) {
+              var l = e.target;
+              var curFilter = ($('#geoKecamatanFilter').val() || '').toLowerCase();
+              if (curFilter !== kKey) {
+                l.setStyle({
+                  weight: 2,
+                  fillOpacity: 0.22,
+                  dashArray: '3, 5'
+                });
+              }
+            },
+            click: function(e) {
+              $('#geoKecamatanFilter').val(distName).trigger('change');
+            }
+          });
+        }
+      }).addTo(polygonLayerGroup);
+    }
+
+    // Render Titik Markers Responden dengan Pin Unik
+    function renderRespondentMarkers(points) {
+      if (!markerLayerGroup) return;
+      markerLayerGroup.clearLayers();
+      markersMap = {};
+
+      points.forEach(function(item) {
+        if (!item.lat || !item.lng) return;
+
+        // Tentukan kelas pin sesuai skor/mutu
+        var pinClass = 'pin-b';
+        var badgeClass = 'badge-blue';
+        if (item.skor >= 3.50) {
+          pinClass = 'pin-a';
+          badgeClass = 'badge-green';
+        } else if (item.skor >= 2.75) {
+          pinClass = 'pin-b';
+          badgeClass = 'badge-blue';
+        } else if (item.skor >= 2.00) {
+          pinClass = 'pin-c';
+          badgeClass = 'badge-yellow';
+        } else {
+          pinClass = 'pin-d';
+          badgeClass = 'badge-yellow';
+        }
+
+        // Custom HTML Pin Icon
+        var customIcon = L.divIcon({
+          className: 'custom-svg-pin',
+          iconSize: [28, 28],
+          iconAnchor: [14, 28],
+          popupAnchor: [0, -28],
+          html: '<div class="pin-inner ' + pinClass + '"><i class="fa-solid fa-person-circle-check"></i></div>'
+        });
+
+        var avatarInitial = (item.nama && item.nama.length > 0) ? item.nama.charAt(0).toUpperCase() : 'R';
+        var namaSurveiInstansi = (currentGeoData && currentGeoData.survei && currentGeoData.survei.Lembaga) ? currentGeoData.survei.Lembaga : 'Pemerintah Kab. Banyuwangi';
+
+        // Google Maps Style Popup
+        var popupHtml = 
+          '<div class="gmaps-popup-card">' +
+            '<div class="gmaps-popup-header">' +
+              '<div class="gmaps-popup-instansi"><i class="fa-solid fa-building-columns"></i> ' + namaSurveiInstansi + '</div>' +
+              '<span class="gmaps-popup-badge ' + badgeClass + '">' + item.mutu + '</span>' +
+            '</div>' +
+            '<div class="gmaps-popup-body">' +
+              '<div class="gmaps-popup-user">' +
+                '<div class="gmaps-popup-avatar">' + avatarInitial + '</div>' +
+                '<div>' +
+                  '<h4 class="gmaps-popup-name">' + item.nama + '</h4>' +
+                  '<div class="gmaps-popup-time"><i class="fa-regular fa-clock"></i> Submit: ' + item.waktuFormatted + '</div>' +
+                '</div>' +
+              '</div>' +
+              '<div class="gmaps-popup-geo">' +
+                '<div class="geo-coord-row">' +
+                  '<i class="fa-solid fa-location-crosshairs text-blue"></i>' +
+                  '<span><b>' + Number(item.lat).toFixed(6) + '</b>, <b>' + Number(item.lng).toFixed(6) + '</b></span>' +
+                  '<span class="acc-tag">&plusmn;' + (item.accuracy || 8.5) + 'm</span>' +
+                '</div>' +
+                '<div class="geo-admin-row">' +
+                  '<i class="fa-solid fa-map-pin text-red"></i>' +
+                  '<span>Kec. <b>' + item.kecamatan + '</b>, Desa <b>' + (item.desa || '-') + '</b></span>' +
+                '</div>' +
+                '<div class="geo-device-row">' +
+                  '<i class="fa-solid fa-mobile-screen text-slate"></i>' +
+                  '<span>' + item.device + '</span>' +
+                '</div>' +
+              '</div>' +
+              '<div class="gmaps-popup-score">' +
+                '<span class="score-lbl">Indeks Nilai Kepuasan:</span>' +
+                '<span class="score-val">★ ' + Number(item.skor).toFixed(2) + ' / 4.00</span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="gmaps-popup-footer">' +
+              '<a href="https://www.google.com/maps?q=' + item.lat + ',' + item.lng + '" target="_blank" class="btn-popup-gmaps">' +
+                '<i class="fa-brands fa-google"></i> Google Maps' +
+              '</a>' +
+              '<a href="https://www.openstreetmap.org/?mlat=' + item.lat + '&mlon=' + item.lng + '#map=16/' + item.lat + '/' + item.lng + '" target="_blank" class="btn-popup-osm">' +
+                '<i class="fa-solid fa-earth-asia"></i> OSM' +
+              '</a>' +
+              '<button type="button" class="btn-popup-detail" onclick="openResponseDetailModal(' + item.id + ')">' +
+                '<i class="fa-solid fa-circle-info"></i> Detail' +
+              '</button>' +
+            '</div>' +
+          '</div>';
+
+        var marker = L.marker([item.lat, item.lng], { icon: customIcon }).bindPopup(popupHtml);
+        marker.addTo(markerLayerGroup);
+        markersMap[item.id] = marker;
+      });
+    }
+
+    // Filter Peta Berdasarkan Kecamatan
+    window.filterMapKecamatan = function(kecName) {
+      var filtered = allGeoPoints;
+      var curMutu = $('#geoMutuFilter').val();
+
+      if (kecName) {
+        filtered = filtered.filter(function(p) {
+          return (p.kecamatan && p.kecamatan.toLowerCase() === kecName.toLowerCase());
+        });
+      }
+      if (curMutu) {
+        filtered = filtered.filter(function(p) {
+          return (p.mutu && p.mutu.indexOf(curMutu) !== -1);
+        });
+      }
+
+      renderRespondentMarkers(filtered);
+      renderSidebarFeed(filtered);
+      updateFocusKecamatanCard(kecName);
+
+      // Reset and highlight polygon
+      var kecKey = kecName ? kecName.toLowerCase() : '';
+      for (var k in polygonLayersMap) {
+        if (kecKey && k === kecKey) {
+          polygonLayersMap[k].setStyle({ weight: 4.5, fillOpacity: 0.55, dashArray: '' });
+          var b = polygonLayersMap[k].getBounds();
+          leafletMapInstance.fitBounds(b, { padding: [50, 50], maxZoom: 13, animate: true });
+        } else {
+          polygonLayersMap[k].setStyle({ weight: 2, fillOpacity: 0.22, dashArray: '3, 5' });
+        }
+      }
+
+      if (!kecName) {
+        resetMapToBanyuwangi();
+      }
+    };
+
+    // Filter Peta Berdasarkan Mutu
+    window.filterMapMutu = function(mutuVal) {
+      var kecName = $('#geoKecamatanFilter').val();
+      window.filterMapKecamatan(kecName);
+    };
+
+    // Toggle Poligon Batas Wilayah
+    window.toggleKecamatanPolygons = function(show) {
+      if (!polygonLayerGroup) return;
+      if (show) {
+        if (!leafletMapInstance.hasLayer(polygonLayerGroup)) {
+          leafletMapInstance.addLayer(polygonLayerGroup);
+        }
+      } else {
+        if (leafletMapInstance.hasLayer(polygonLayerGroup)) {
+          leafletMapInstance.removeLayer(polygonLayerGroup);
+        }
+      }
+    };
+
+    // Toggle Marker Responden
+    window.toggleRespondentMarkers = function(show) {
+      if (!markerLayerGroup) return;
+      if (show) {
+        if (!leafletMapInstance.hasLayer(markerLayerGroup)) {
+          leafletMapInstance.addLayer(markerLayerGroup);
+        }
+      } else {
+        if (leafletMapInstance.hasLayer(markerLayerGroup)) {
+          leafletMapInstance.removeLayer(markerLayerGroup);
+        }
+      }
+    };
+
+    // Pusatkan Peta ke Seluruh Wilayah Banyuwangi
+    window.resetMapToBanyuwangi = function() {
+      if (leafletMapInstance) {
+        leafletMapInstance.setView([-8.33, 114.28], 10, { animate: true });
+      }
+    };
+
+    // Update Kartu Fokus Kecamatan di Sidebar
+    function updateFocusKecamatanCard(kecName) {
+      if (!kecName) {
+        $('#focusKecBadge').html('<i class="fa-solid fa-map"></i> Kabupaten Banyuwangi');
+        $('#focusKecTitle').text('Seluruh Wilayah');
+        $('#focusKecTotal').text(allGeoPoints.length + ' Responden');
+        
+        var totalSkorAll = allGeoPoints.reduce(function(acc, cur){ return acc + (cur.skor || 0); }, 0);
+        var avgAll = allGeoPoints.length > 0 ? (totalSkorAll / allGeoPoints.length).toFixed(2) : '0.00';
+        $('#focusKecSkor').text(avgAll);
+        $('#focusKecMutu').text(avgAll >= 3.50 ? 'Sangat Baik (A)' : (avgAll >= 2.75 ? 'Baik (B)' : 'Kurang (C)'));
+        $('#focusKecLastSubmit').text('18 Okt 2026');
+        return;
+      }
+
+      var stat = (currentGeoData && currentGeoData.kecamatanSummary) ? currentGeoData.kecamatanSummary.find(function(s){ return s.kecamatan.toLowerCase() === kecName.toLowerCase(); }) : null;
+      var meta = (banyuwangiDistrictsMeta && banyuwangiDistrictsMeta[kecName]) ? banyuwangiDistrictsMeta[kecName] : null;
+
+      if (stat) {
+        $('#focusKecBadge').html('<i class="fa-solid fa-location-crosshairs"></i> Wilayah Terfokus');
+        $('#focusKecTitle').text('Kecamatan ' + stat.kecamatan);
+        $('#focusKecTotal').text(stat.total + ' Responden' + (meta ? ' (' + meta.total_desa + ' Desa)' : ''));
+        $('#focusKecSkor').text(stat.avgSkor);
+        $('#focusKecMutu').text(stat.mutu);
+        $('#focusKecLastSubmit').text(stat.lastSubmit ? stat.lastSubmit.split(' ')[0] : 'Terkini');
+      } else {
+        $('#focusKecBadge').html('<i class="fa-solid fa-location-crosshairs"></i> Wilayah Terfokus');
+        $('#focusKecTitle').text('Kecamatan ' + kecName);
+        $('#focusKecTotal').text('0 Responden' + (meta ? ' (' + meta.total_desa + ' Desa)' : ''));
+        $('#focusKecSkor').text('-');
+        $('#focusKecMutu').text('Belum Terdata');
+        $('#focusKecLastSubmit').text('-');
+      }
+    }
+
+    // Render Feed Titik Responden di Sidebar
+    function renderSidebarFeed(points) {
+      var $list = $('#geoFeedList');
+      $list.empty();
+      $('#feedCountPill').text(points.length + ' Responden');
+
+      if (points.length === 0) {
+        $list.html('<div style="text-align:center; padding: 24px; color: #64748b; font-size: 13px;">Tidak ada titik responden yang cocok dengan filter saat ini.</div>');
+        return;
+      }
+
+      points.forEach(function(p) {
+        var scoreClass = p.skor >= 3.50 ? 'mutu-a' : (p.skor >= 2.75 ? 'mutu-b' : 'mutu-c');
+        var itemHtml = 
+          '<div class="geo-feed-item" onclick="focusRespondentMarker(' + p.id + ')">' +
+            '<div class="feed-item-top">' +
+              '<span class="feed-item-name">' + p.nama + '</span>' +
+              '<span class="feed-item-score ' + scoreClass + '">★ ' + Number(p.skor).toFixed(2) + '</span>' +
+            '</div>' +
+            '<div class="feed-item-meta">' +
+              '<span><i class="fa-solid fa-map-pin"></i> Kec. ' + p.kecamatan + ', ' + (p.desa || '-') + '</span>' +
+              '<span><i class="fa-regular fa-clock"></i> ' + p.waktuFormatted + '</span>' +
+              '<span><i class="fa-solid fa-mobile-screen"></i> ' + p.device + '</span>' +
+            '</div>' +
+          '</div>';
+
+        $list.append(itemHtml);
+      });
+    }
+
+    // Klik item feed langsung fokus ke titik di Leaflet dan buka InfoWindow
+    window.focusRespondentMarker = function(respId) {
+      var m = markersMap[respId];
+      if (m && leafletMapInstance) {
+        var latLng = m.getLatLng();
+        leafletMapInstance.flyTo(latLng, 15, { duration: 1 });
+        setTimeout(function() {
+          m.openPopup();
+        }, 800);
+      }
+    };
+
+    // =========================================================================
+    // MINI-MAP INTERAKTIF & GPS TRACKER DI FORM SURVEI RESPONDEN
+    // =========================================================================
+    window.initRespondentMiniMap = function(surveiObj) {
+      if (window.isCurrentRtkd) return;
+      var $container = $('#respFormMiniMap');
+      if (!$container.length || !$container.is(':visible') || $container.width() === 0) {
+        return;
+      }
+
+      // Inisialisasi Canvas Leaflet jika belum ada
+      if (!respFormMiniMapInstance) {
+        respFormMiniMapInstance = L.map('respFormMiniMap', {
+          center: [-8.219234, 114.369120],
+          zoom: 11,
+          scrollWheelZoom: false
+        });
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; OpenStreetMap &bull; IDE Consultant'
+        }).addTo(respFormMiniMapInstance);
+
+        respMiniPolygonGroup = L.layerGroup().addTo(respFormMiniMapInstance);
+        respMiniMarkerGroup = L.layerGroup().addTo(respFormMiniMapInstance);
+
+        // Klik pada mini map untuk menempatkan pin responden secara manual
+        respFormMiniMapInstance.on('click', function(e) {
+          updateRespondentPinPosition(e.latlng.lat, e.latlng.lng, 8.0, 'Manual Klik Peta');
+        });
+      }
+
+      // Pastikan Leaflet menghitung ulang ukuran kontainer setelah modal terbuka
+      setTimeout(function() {
+        if (respFormMiniMapInstance && $('#respFormMiniMap').is(':visible')) {
+          respFormMiniMapInstance.invalidateSize();
+        }
+      }, 350);
+
+      // Pre-populate dropdown kecamatan Banyuwangi jika survei adalah Banyuwangi
+      var daerah = (surveiObj && surveiObj.DaerahSurvei) ? surveiObj.DaerahSurvei.toLowerCase() : 'banyuwangi';
+      getBanyuwangiRealGeoJson(function(geoData, metaData) {
+        if (daerah.indexOf('banyuwangi') !== -1 || daerah.indexOf('kab') !== -1 || daerah === '') {
+          var $kecSel = $('#respKecamatan');
+          $kecSel.empty().append('<option value="">-- Pilih Kecamatan Banyuwangi --</option>');
+          Object.keys(metaData).sort().forEach(function(k) {
+            $kecSel.append('<option value="' + k + '">' + k + '</option>');
+          });
+
+          // Tampilkan poligon seluruh wilayah Banyuwangi sebagai baseline
+          respMiniPolygonGroup.clearLayers();
+          L.geoJSON(geoData, {
+            style: {
+              color: '#3b82f6',
+              weight: 1.5,
+              opacity: 0.7,
+              fillColor: '#60a5fa',
+              fillOpacity: 0.12,
+              dashArray: '3, 4'
+            }
+          }).addTo(respMiniPolygonGroup);
+          if (respFormMiniMapInstance) {
+            respFormMiniMapInstance.setView([-8.32, 114.25], 10);
+          }
+        }
+      });
+
+      // Deteksi platform perangkat dan set koordinat default
+      detectRespondentDeviceLocation(false);
+    };
+
+    // Update Posisi Pin Marker di Mini-Map Form
+    window.updateRespondentPinPosition = function(lat, lng, accuracy, sourceNote) {
+      if (window.isCurrentRtkd) return;
+      if (!respMiniMarkerGroup) return;
+
+      lat = parseFloat(lat);
+      lng = parseFloat(lng);
+      if (isNaN(lat) || isNaN(lng) || !isFinite(lat) || !isFinite(lng)) {
+        lat = -8.219234;
+        lng = 114.369120;
+      }
+      accuracy = parseFloat(accuracy || 8.5);
+      if (isNaN(accuracy) || !isFinite(accuracy)) {
+        accuracy = 8.5;
+      }
+
+      lat = Number(lat.toFixed(6));
+      lng = Number(lng.toFixed(6));
+      accuracy = Number(accuracy.toFixed(1));
+
+      respMiniMarkerGroup.clearLayers();
+
+      var customPin = L.divIcon({
+        className: 'resp-marker-custom',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32],
+        html: '<div style="background: #ef4444; color: #ffffff; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); border: 2.5px solid #ffffff;"><i class="fa-solid fa-location-dot" style="transform: rotate(45deg); font-size: 13px;"></i></div>'
+      });
+
+      respCurrentMarker = L.marker([lat, lng], {
+        icon: customPin,
+        draggable: true,
+        title: 'Geser pin untuk memposisikan titik lokasi survei Anda'
+      }).addTo(respMiniMarkerGroup);
+
+      respAccuracyCircle = L.circle([lat, lng], {
+        radius: accuracy,
+        color: '#2563eb',
+        fillColor: '#3b82f6',
+        fillOpacity: 0.2,
+        weight: 1.5
+      }).addTo(respMiniMarkerGroup);
+
+      // Event saat pin digeser oleh responden
+      respCurrentMarker.on('dragend', function(e) {
+        var pos = e.target.getLatLng();
+        updateRespondentPinPosition(pos.lat, pos.lng, 5.0, 'Manual Geser Pin');
+      });
+
+      // Update nilai input form & display UI
+      $('#respLatitude').val(lat);
+      $('#respLongitude').val(lng);
+      $('#respLokasiAccuracy').val(accuracy);
+
+      $('#dispGpsLat').text(lat);
+      $('#dispGpsLng').text(lng);
+      $('#dispGpsAcc').html('&plusmn; ' + accuracy + ' m');
+
+      var statusTxt = sourceNote || 'Koordinat Terkunci';
+      $('#respGpsBadgeStatus').html('<i class="fa-solid fa-circle-check"></i> ' + statusTxt);
+    };
+
+    // Zoom Mini-Map ke Poligon Batas Riil Kecamatan Terpilih
+    window.focusMiniMapToKecamatan = function(kecName) {
+      if (!kecName) return;
+      getBanyuwangiRealGeoJson(function(geoData, metaData) {
+        var meta = metaData ? metaData[kecName] : null;
+        if (meta && meta.villages) {
+          // Isi otomatis dropdown desa/kelurahan
+          var $desaSel = $('#respDesa');
+          $desaSel.empty().append('<option value="">-- Pilih Desa / Kelurahan --</option>');
+          meta.villages.forEach(function(v) {
+            $desaSel.append('<option value="' + v + '">' + v + '</option>');
+          });
+        }
+
+        // Cari fitur poligon batas riil kecamatan
+        if (respMiniPolygonGroup && geoData) {
+          respMiniPolygonGroup.clearLayers();
+          var matchedFeature = geoData.features.find(function(f) {
+            var fName = f.properties.district || f.properties.nama;
+            return fName && fName.toLowerCase() === kecName.toLowerCase();
+          });
+
+          if (matchedFeature) {
+            var color = matchedFeature.properties.color || '#2563eb';
+            var polyLayer = L.geoJSON(matchedFeature, {
+              style: {
+                color: color,
+                weight: 3.5,
+                opacity: 0.95,
+                fillColor: color,
+                fillOpacity: 0.28
+              }
+            }).addTo(respMiniPolygonGroup);
+
+            if (respFormMiniMapInstance) {
+              respFormMiniMapInstance.fitBounds(polyLayer.getBounds(), { padding: [15, 15], maxZoom: 13, animate: true });
+            }
+
+            // Jika belum ada koordinat GPS responden, posisikan pin di tengah kecamatan
+            var center = matchedFeature.properties.center || (meta ? meta.center : [-8.219234, 114.369120]);
+            var jLat = Number((center[0] + (Math.random() - 0.5) * 0.005).toFixed(6));
+            var jLng = Number((center[1] + (Math.random() - 0.5) * 0.005).toFixed(6));
+            updateRespondentPinPosition(jLat, jLng, 12.0, 'Wilayah Kec. ' + kecName);
+          }
+        }
+      });
+    };
+
+    // Deteksi Sensor GPS Device Responden
+    window.detectRespondentDeviceLocation = function(forcePrompt) {
+      var $status = $('#respGpsBadgeStatus');
+      var $dispDev = $('#dispGpsDevice');
+
+      // Deteksi Platform Perangkat & Browser Pengisi Survei
+      var userAgent = navigator.userAgent || '';
+      var platformName = 'Desktop Browser (Chrome)';
+      if (/android/i.test(userAgent)) {
+        platformName = 'Android Mobile (' + (navigator.userAgentData ? navigator.userAgentData.platform : 'Chrome Mobile') + ')';
+      } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        platformName = 'iPhone / iOS Mobile';
+      } else if (/Macintosh|Mac OS X/.test(userAgent)) {
+        platformName = 'macOS (Safari / Chrome)';
+      } else if (/Windows/.test(userAgent)) {
+        platformName = 'Windows PC';
+      } else if (/Linux/.test(userAgent)) {
+        platformName = 'Linux Device';
+      }
+      $dispDev.text(platformName);
+      $('#respDevicePlatform').val(platformName);
+
+      if ("geolocation" in navigator) {
+        $status.html('<i class="fa-solid fa-spinner fa-spin"></i> Mendeteksi GPS...');
+        var options = {
+          enableHighAccuracy: true,
+          timeout: 8000,
+          maximumAge: 10000
+        };
+
+        navigator.geolocation.getCurrentPosition(
+          function(position) {
+            var lat = parseFloat(position.coords.latitude);
+            var lng = parseFloat(position.coords.longitude);
+            var acc = parseFloat(position.coords.accuracy || 8.5);
+            if (isNaN(lat) || isNaN(lng) || !isFinite(lat) || !isFinite(lng)) {
+              lat = -8.219234;
+              lng = 114.369120;
+            }
+            if (isNaN(acc) || !isFinite(acc)) {
+              acc = 8.5;
+            }
+
+            lat = Number(lat.toFixed(6));
+            lng = Number(lng.toFixed(6));
+            acc = Number(acc.toFixed(1));
+
+            updateRespondentPinPosition(lat, lng, acc, 'GPS Terkunci Presisi');
+            $('#respGpsCard').css({ 'background': '#f0fdf4', 'border-color': '#86efac' });
+
+            if (respFormMiniMapInstance && $('#respFormMiniMap').is(':visible') && $('#respFormMiniMap').width() > 0) {
+              try {
+                respFormMiniMapInstance.flyTo([lat, lng], 14, { duration: 1 });
+              } catch(e) {}
+            }
+          },
+          function(err) {
+            // Gunakan centroid wilayah yang dipilih atau pusat Banyuwangi
+            var curKec = $('#respKecamatan').val();
+            if (curKec) {
+              focusMiniMapToKecamatan(curKec);
+            } else {
+              updateRespondentPinPosition(-8.219234, 114.369120, 15.0, 'Pusat Kab. Banyuwangi');
+            }
+            if (forcePrompt) {
+              Swal.fire({
+                icon: 'info',
+                title: 'Izin Lokasi Belum Aktif',
+                text: 'Silakan izinkan akses lokasi pada browser Anda, atau Anda dapat mengklik dan menggeser pin merah di peta untuk menentukan lokasi secara manual.',
+                confirmButtonColor: '#043168'
+              });
+            }
+          },
+          options
+        );
+      } else {
+        var curKec = $('#respKecamatan').val();
+        if (curKec) {
+          focusMiniMapToKecamatan(curKec);
+        } else {
+          updateRespondentPinPosition(-8.219234, 114.369120, 15.0, 'Pusat Kab. Banyuwangi');
+        }
+      }
+    };
+
+    // Sinkronisasi Pemilihan Kecamatan di Form Responden dengan Peta Mini
+    $(document).on('change', '#respKecamatan', function() {
+      var selKec = $(this).val();
+      if (selKec) {
+        focusMiniMapToKecamatan(selKec);
+      }
+    });
+
+
   </script>
 </body>
 </html>

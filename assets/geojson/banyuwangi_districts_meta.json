@@ -1,0 +1,744 @@
+{
+  "Bangorejo": {
+    "district_code": "id3510020",
+    "color": "#84CC16",
+    "center": [
+      -8.521024,
+      114.163878
+    ],
+    "bounds": [
+      [
+        -8.657292,
+        114.10349
+      ],
+      [
+        -8.44667,
+        114.22376
+      ]
+    ],
+    "total_desa": 7,
+    "villages": [
+      "Bangorejo",
+      "Kebondalem",
+      "Ringintelu",
+      "Sambimulyo",
+      "Sambirejo",
+      "Sukorejo",
+      "Temurejo"
+    ]
+  },
+  "Banyuwangi": {
+    "district_code": "id3510180",
+    "color": "#F472B6",
+    "center": [
+      -8.219471,
+      114.367899
+    ],
+    "bounds": [
+      [
+        -8.26581,
+        114.335579
+      ],
+      [
+        -8.18582,
+        114.390554
+      ]
+    ],
+    "total_desa": 18,
+    "villages": [
+      "Kampung Melayu",
+      "Kampungmandar",
+      "Karangrejo",
+      "Kebalenan",
+      "Kepatihan",
+      "Kertosari",
+      "Lateng",
+      "Pakis",
+      "Panderejo",
+      "Penganjuran",
+      "Pengantigan",
+      "Singonegaran",
+      "Singotrunan",
+      "Sobo",
+      "Sumberrejo",
+      "Taman Baru",
+      "Temenggungan",
+      "Tukangkayu"
+    ]
+  },
+  "Blimbingsari": {
+    "district_code": "id3510121",
+    "color": "#EF4444",
+    "center": [
+      -8.335969,
+      114.332466
+    ],
+    "bounds": [
+      [
+        -8.38925,
+        114.29563
+      ],
+      [
+        -8.26925,
+        114.36755
+      ]
+    ],
+    "total_desa": 10,
+    "villages": [
+      "Badean",
+      "Blimbing Sari",
+      "Bomo",
+      "Gintangan",
+      "Kaligung",
+      "Kaotan",
+      "Karangrejo",
+      "Patoman",
+      "Sukojati",
+      "Watu Kebo"
+    ]
+  },
+  "Cluring": {
+    "district_code": "id3510060",
+    "color": "#EAB308",
+    "center": [
+      -8.43286,
+      114.231897
+    ],
+    "bounds": [
+      [
+        -8.48894,
+        114.17978
+      ],
+      [
+        -8.3819,
+        114.29225
+      ]
+    ],
+    "total_desa": 9,
+    "villages": [
+      "Benculuk",
+      "Cluring",
+      "Kaliploso",
+      "Plampangrejo",
+      "Sarimulyo",
+      "Sembulung",
+      "Sraten",
+      "Tamanagung",
+      "Tampo"
+    ]
+  },
+  "Gambiran": {
+    "district_code": "id3510070",
+    "color": "#4ADE80",
+    "center": [
+      -8.415739,
+      114.170886
+    ],
+    "bounds": [
+      [
+        -8.47121,
+        114.12671
+      ],
+      [
+        -8.36638,
+        114.20655
+      ]
+    ],
+    "total_desa": 6,
+    "villages": [
+      "Gambiran",
+      "Jajag",
+      "Purwodadi",
+      "Wringin Agung",
+      "Wringinrejo",
+      "Yosomulyo"
+    ]
+  },
+  "Genteng": {
+    "district_code": "id3510100",
+    "color": "#818CF8",
+    "center": [
+      -8.347262,
+      114.152728
+    ],
+    "bounds": [
+      [
+        -8.39513,
+        114.10292
+      ],
+      [
+        -8.26984,
+        114.20719
+      ]
+    ],
+    "total_desa": 5,
+    "villages": [
+      "Genteng Kulon",
+      "Genteng Wetan",
+      "Kaligondo",
+      "Kembiritan",
+      "Setail"
+    ]
+  },
+  "Giri": {
+    "district_code": "id3510190",
+    "color": "#0EA5E9",
+    "center": [
+      -8.194624,
+      114.336315
+    ],
+    "bounds": [
+      [
+        -8.223917,
+        114.29297
+      ],
+      [
+        -8.16119,
+        114.36436
+      ]
+    ],
+    "total_desa": 6,
+    "villages": [
+      "Boyolangu",
+      "Giri",
+      "Grogol",
+      "Jambesari",
+      "Mojopanggung",
+      "Penataban"
+    ]
+  },
+  "Glagah": {
+    "district_code": "id3510170",
+    "color": "#EC4899",
+    "center": [
+      -8.203118,
+      114.305317
+    ],
+    "bounds": [
+      [
+        -8.2423,
+        114.257712
+      ],
+      [
+        -8.128256,
+        114.352654
+      ]
+    ],
+    "total_desa": 10,
+    "villages": [
+      "Bakungan",
+      "Banjarsari",
+      "Glagah",
+      "Kampunganyar",
+      "Kemiren",
+      "Kenjo",
+      "Olehsari",
+      "Paspan",
+      "Rejosari",
+      "Tamansuruh"
+    ]
+  },
+  "Glenmore": {
+    "district_code": "id3510080",
+    "color": "#F43F5E",
+    "center": [
+      -8.263785,
+      114.056531
+    ],
+    "bounds": [
+      [
+        -8.42965,
+        113.94726
+      ],
+      [
+        -8.13325,
+        114.11007
+      ]
+    ],
+    "total_desa": 7,
+    "villages": [
+      "Bumiharjo",
+      "Karangharjo",
+      "Margomulyo",
+      "Sepanjang",
+      "Sumbergondo",
+      "Tegalharjo",
+      "Tulungrejo"
+    ]
+  },
+  "Kabat": {
+    "district_code": "id3510130",
+    "color": "#14B8A6",
+    "center": [
+      -8.266049,
+      114.303085
+    ],
+    "bounds": [
+      [
+        -8.30018,
+        114.24388
+      ],
+      [
+        -8.227352,
+        114.3728
+      ]
+    ],
+    "total_desa": 14,
+    "villages": [
+      "Bareng",
+      "Benelan Lor",
+      "Bunder",
+      "Dadapan",
+      "Gombolirang",
+      "Kabat",
+      "Kalirejo",
+      "Kedayunan",
+      "Labanasem",
+      "Macan Putih",
+      "Pakistaji",
+      "Pendarungan",
+      "Pondoknongko",
+      "Tambong"
+    ]
+  },
+  "Kalibaru": {
+    "district_code": "id3510090",
+    "color": "#6366F1",
+    "center": [
+      -8.257504,
+      113.983105
+    ],
+    "bounds": [
+      [
+        -8.401672,
+        113.909012
+      ],
+      [
+        -8.138671,
+        114.03947
+      ]
+    ],
+    "total_desa": 6,
+    "villages": [
+      "Banyuanyar",
+      "Kajarharjo",
+      "Kalibaru Kulon",
+      "Kalibaru Manis",
+      "Kalibaru Wetan",
+      "Kebonrejo"
+    ]
+  },
+  "Kalipuro": {
+    "district_code": "id3510200",
+    "color": "#A855F7",
+    "center": [
+      -8.119255,
+      114.323501
+    ],
+    "bounds": [
+      [
+        -8.195012,
+        114.24555
+      ],
+      [
+        -8.05793,
+        114.415661
+      ]
+    ],
+    "total_desa": 9,
+    "villages": [
+      "Bulusan",
+      "Bulusari",
+      "Gombeng Sari",
+      "Kalipuro",
+      "Kelir",
+      "Ketapang",
+      "Klatak",
+      "Pesucen",
+      "Telemung"
+    ]
+  },
+  "Licin": {
+    "district_code": "id3510171",
+    "color": "#F97316",
+    "center": [
+      -8.175073,
+      114.246429
+    ],
+    "bounds": [
+      [
+        -8.249142,
+        114.18234
+      ],
+      [
+        -8.054258,
+        114.299755
+      ]
+    ],
+    "total_desa": 8,
+    "villages": [
+      "Banjar",
+      "Gumuk",
+      "Jelun",
+      "Kluncing",
+      "Licin",
+      "Pakel",
+      "Segobang",
+      "Tamansari"
+    ]
+  },
+  "Muncar": {
+    "district_code": "id3510050",
+    "color": "#64748B",
+    "center": [
+      -8.441016,
+      114.317047
+    ],
+    "bounds": [
+      [
+        -8.523779,
+        114.2666
+      ],
+      [
+        -8.36999,
+        114.370584
+      ]
+    ],
+    "total_desa": 10,
+    "villages": [
+      "Blambangan",
+      "Kedungrejo",
+      "Kedungringin",
+      "Kumendung",
+      "Sumberberas",
+      "Sumbersewu",
+      "Tambakrejo",
+      "Tapanrejo",
+      "Tembokrejo",
+      "Wringin Putih"
+    ]
+  },
+  "Pesanggaran": {
+    "district_code": "id3510010",
+    "color": "#A3E635",
+    "center": [
+      -8.554209,
+      114.001677
+    ],
+    "bounds": [
+      [
+        -8.652037,
+        113.83696
+      ],
+      [
+        -8.4011,
+        114.11969
+      ]
+    ],
+    "total_desa": 5,
+    "villages": [
+      "Kandangan",
+      "Pesanggaran",
+      "Sarongan",
+      "Sumberagung",
+      "Sumbermulyo"
+    ]
+  },
+  "Purwoharjo": {
+    "district_code": "id3510030",
+    "color": "#22C55E",
+    "center": [
+      -8.523562,
+      114.241522
+    ],
+    "bounds": [
+      [
+        -8.63668,
+        114.181
+      ],
+      [
+        -8.45416,
+        114.29285
+      ]
+    ],
+    "total_desa": 8,
+    "villages": [
+      "Bulurejo",
+      "Glagahagung",
+      "Grajagan",
+      "Karetan",
+      "Kradenan",
+      "Purwoharjo",
+      "Sidorejo",
+      "Sumberasri"
+    ]
+  },
+  "Rogojampi": {
+    "district_code": "id3510120",
+    "color": "#F59E0B",
+    "center": [
+      -8.322973,
+      114.289668
+    ],
+    "bounds": [
+      [
+        -8.36178,
+        114.24537
+      ],
+      [
+        -8.28928,
+        114.33755
+      ]
+    ],
+    "total_desa": 10,
+    "villages": [
+      "Aliyan",
+      "Bubuk",
+      "Gitik",
+      "Gladag",
+      "Karang Bendo",
+      "Kedaleman",
+      "Lemahbang Dewo",
+      "Mangir",
+      "Pengantigan",
+      "Rogojampi"
+    ]
+  },
+  "Sempu": {
+    "district_code": "id3510150",
+    "color": "#FB923C",
+    "center": [
+      -8.298525,
+      114.169783
+    ],
+    "bounds": [
+      [
+        -8.35145,
+        114.08334
+      ],
+      [
+        -8.20795,
+        114.22085
+      ]
+    ],
+    "total_desa": 7,
+    "villages": [
+      "Gendoh",
+      "Jambewangi",
+      "Karangsari",
+      "Sempu",
+      "Tegalarum",
+      "Temuasri",
+      "Temuguruh"
+    ]
+  },
+  "Siliragung": {
+    "district_code": "id3510011",
+    "color": "#D946EF",
+    "center": [
+      -8.533662,
+      114.109288
+    ],
+    "bounds": [
+      [
+        -8.63845,
+        113.99754
+      ],
+      [
+        -8.41196,
+        114.18315
+      ]
+    ],
+    "total_desa": 5,
+    "villages": [
+      "Barurejo",
+      "Buluagung",
+      "Kesilir",
+      "Seneporejo",
+      "Siliragung"
+    ]
+  },
+  "Singojuruh": {
+    "district_code": "id3510140",
+    "color": "#3B82F6",
+    "center": [
+      -8.305528,
+      114.230444
+    ],
+    "bounds": [
+      [
+        -8.34869,
+        114.17977
+      ],
+      [
+        -8.25294,
+        114.28298
+      ]
+    ],
+    "total_desa": 11,
+    "villages": [
+      "Alas Malang",
+      "Benelan Kidul",
+      "Cantuk",
+      "Gambor",
+      "Gumirih",
+      "Kemiri",
+      "Lemahbang Kulon",
+      "Padang",
+      "Singojuruh",
+      "Singolatren",
+      "Sumber Baru"
+    ]
+  },
+  "Songgon": {
+    "district_code": "id3510160",
+    "color": "#06B6D4",
+    "center": [
+      -8.221709,
+      114.183755
+    ],
+    "bounds": [
+      [
+        -8.29471,
+        114.043474
+      ],
+      [
+        -8.101012,
+        114.26978
+      ]
+    ],
+    "total_desa": 9,
+    "villages": [
+      "Balak",
+      "Bangunsari",
+      "Bayu",
+      "Bedewang",
+      "Parangharjo",
+      "Songgon",
+      "Sragi",
+      "Sumber Arum",
+      "Sumber Bulu"
+    ]
+  },
+  "Srono": {
+    "district_code": "id3510110",
+    "color": "#8B5CF6",
+    "center": [
+      -8.371747,
+      114.247485
+    ],
+    "bounds": [
+      [
+        -8.41856,
+        114.19101
+      ],
+      [
+        -8.32966,
+        114.32449
+      ]
+    ],
+    "total_desa": 10,
+    "villages": [
+      "Bagorejo",
+      "Kebaman",
+      "Kepundungan",
+      "Parijatah Kulon",
+      "Parijatah Wetan",
+      "Rejoagung",
+      "Sukomaju",
+      "Sukonatar",
+      "Sumbersari",
+      "Wonosobo"
+    ]
+  },
+  "Tegaldlimo": {
+    "district_code": "id3510040",
+    "color": "#2DD4BF",
+    "center": [
+      -8.579089,
+      114.366386
+    ],
+    "bounds": [
+      [
+        -8.78036,
+        114.26728
+      ],
+      [
+        -8.44666,
+        114.60504
+      ]
+    ],
+    "total_desa": 9,
+    "villages": [
+      "Kalipait",
+      "Kedungasri",
+      "Kedunggebang",
+      "Kedungwungu",
+      "Kendalrejo",
+      "Purwoagung",
+      "Purwoasri",
+      "Tegaldlimo",
+      "Wringinpitu"
+    ]
+  },
+  "Tegalsari": {
+    "district_code": "id3510071",
+    "color": "#38BDF8",
+    "center": [
+      -8.414683,
+      114.122497
+    ],
+    "bounds": [
+      [
+        -8.47118,
+        114.0958
+      ],
+      [
+        -8.35724,
+        114.16954
+      ]
+    ],
+    "total_desa": 6,
+    "villages": [
+      "Dasri",
+      "Karangdoro",
+      "Karangmulyo",
+      "Tamansari",
+      "Tegalrejo",
+      "Tegalsari"
+    ]
+  },
+  "Wongsorejo": {
+    "district_code": "id3510210",
+    "color": "#10B981",
+    "center": [
+      -7.999531,
+      114.350056
+    ],
+    "bounds": [
+      [
+        -8.091928,
+        114.224258
+      ],
+      [
+        -7.884666,
+        114.434117
+      ]
+    ],
+    "total_desa": 12,
+    "villages": [
+      "Alasbulu",
+      "Alasrejo",
+      "Bajulmati",
+      "Bangsring",
+      "Bengkak",
+      "Bimorejo",
+      "Sidodadi",
+      "Sidowangi",
+      "Sumberanyar",
+      "Sumberkencono",
+      "Watukebo",
+      "Wongsorejo"
+    ]
+  }
+}
