@@ -664,7 +664,8 @@
     }
 
     /* Segmented Navigation Tab Switcher */
-    .dash-nav-tabs {
+    .dash-nav-tabs { display: none !important;
+
       background: #ffffff;
       border-radius: 16px;
       border: 1px solid var(--ide-border);
@@ -1795,7 +1796,8 @@
         grid-template-columns: repeat(var(--likert-cols, 5), 1fr) !important;
         gap: 8px;
       }
-      .dash-nav-tabs {
+      .dash-nav-tabs { display: none !important;
+
         overflow-x: auto;
         flex-wrap: nowrap;
         -webkit-overflow-scrolling: touch;
@@ -1888,7 +1890,8 @@
       .stat-lbl {
         font-size: 10px !important;
       }
-      .dash-nav-tabs {
+      .dash-nav-tabs { display: none !important;
+
         overflow-x: auto;
         flex-wrap: nowrap;
         -webkit-overflow-scrolling: touch;
@@ -2018,6 +2021,568 @@
         font-size: 9.5px !important;
       }
     }
+
+    /* ==========================================================================
+       RUMAH SURVEI CATALOG & CARDS STYLING (Identik dengan Menu Survei Umum)
+       ========================================================================== */
+    .katalog-filter-card {
+      background: #ffffff;
+      border-radius: 16px;
+      border: 1px solid var(--ide-border);
+      padding: 18px 22px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+      margin-bottom: 22px;
+    }
+
+    .katalog-filter-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .katalog-search-wrap {
+      position: relative;
+      flex: 1 1 280px;
+      min-width: 240px;
+    }
+
+    .katalog-search-wrap i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+      font-size: 14px;
+      pointer-events: none;
+    }
+
+    .katalog-search-input {
+      width: 100%;
+      height: 44px;
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 0 16px 0 40px;
+      font-size: 13.5px;
+      color: #0f172a;
+      outline: none;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .katalog-search-input:focus {
+      border-color: var(--ide-navy);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(4, 49, 104, 0.1);
+    }
+
+    .katalog-filter-select {
+      height: 44px;
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 0 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      outline: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .katalog-filter-select:focus {
+      border-color: var(--ide-navy);
+      background: #ffffff;
+    }
+
+    .katalog-stats-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .katalog-stat-box {
+      background: #ffffff;
+      border: 1px solid var(--ide-border);
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 4px 12px rgba(4, 49, 104, 0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .katalog-stat-box:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(4, 49, 104, 0.08);
+    }
+
+    .katalog-stat-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .katalog-stat-body {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .katalog-stat-val {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--ide-dark);
+      line-height: 1.2;
+    }
+
+    .katalog-stat-lbl {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-top: 2px;
+    }
+
+    /* Grid Rumah Survei Cards */
+    .survey-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+
+    .survey-card {
+      background-color: #ffffff;
+      border-radius: 20px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 8px 24px rgba(4, 49, 104, 0.06);
+      padding: 24px 22px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .survey-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(4, 49, 104, 0.05), transparent);
+      transform: skewX(-25deg);
+      transition: all 0.75s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .survey-card:hover::before {
+      left: 160%;
+    }
+
+    .survey-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--ide-red);
+      box-shadow: 0 16px 36px rgba(4, 49, 104, 0.14);
+    }
+
+    .card-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--ide-navy) 0%, #0d4f9b 100%);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 5px 14px rgba(4, 49, 104, 0.22);
+      transition: all 0.35s ease;
+    }
+
+    .survey-card:hover .card-icon {
+      background: var(--ide-red);
+      transform: scale(1.06) rotate(3deg);
+      box-shadow: 0 6px 18px rgba(180, 8, 20, 0.35);
+    }
+
+    .card-status {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .status-active {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: #059669;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .status-inactive {
+      background-color: rgba(220, 38, 38, 0.08);
+      color: #dc2626;
+      border: 1px solid rgba(220, 38, 38, 0.2);
+    }
+
+    .badge-multi-instrumen {
+      background: linear-gradient(135deg, rgba(4, 49, 104, 0.08), rgba(180, 8, 20, 0.08));
+      color: var(--ide-navy);
+      border: 1px solid rgba(4, 49, 104, 0.22);
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--ide-dark);
+      margin-bottom: 14px;
+      line-height: 1.38;
+      transition: color 0.3s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    .survey-card:hover .card-title {
+      color: var(--ide-red);
+    }
+
+    .card-meta {
+      background: #f8fafc;
+      border: 1px solid #edf2f7;
+      border-radius: 14px;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .meta-row {
+      display: grid;
+      grid-template-columns: 110px 12px 1fr;
+      align-items: baseline;
+      font-size: 12px;
+    }
+
+    .meta-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ide-navy);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .meta-colon {
+      color: #94a3b8;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .meta-value {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #1e293b;
+      word-break: break-word;
+    }
+
+    .badge-daerah-survei {
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Primary Card Actions (Isi Survei, Peta, QR Code) */
+    .card-actions {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr 0.95fr;
+      gap: 8px;
+      margin-top: auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .btn-action-fill {
+      height: 40px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #b40814 0%, #e11d48 55%, #b40814 100%);
+      background-size: 200% auto;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(180, 8, 20, 0.32);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: inherit;
+    }
+
+    .btn-action-fill:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(180, 8, 20, 0.45);
+      color: #ffffff;
+    }
+
+    .btn-action-map {
+      height: 40px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+      color: #ffffff;
+      border: none;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+      transition: all 0.25s ease;
+      text-decoration: none;
+      font-family: inherit;
+    }
+
+    .btn-action-map:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(79, 70, 229, 0.35);
+      color: #ffffff;
+    }
+
+    .btn-action-qr {
+      height: 40px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+      color: #047857;
+      border: 1.5px solid #6ee7b7;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(4, 120, 87, 0.08);
+      transition: all 0.25s ease;
+      font-family: inherit;
+    }
+
+    .btn-action-qr:hover {
+      background: #ecfdf5;
+      border-color: #059669;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 14px rgba(4, 120, 87, 0.2);
+    }
+
+    /* Surveyor & Admin Controls Row (Edit Studio, Rekap, Excel, Hapus) */
+    .card-surveyor-actions {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed #e2e8f0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .btn-action-edit,
+    .btn-action-rekap,
+    .btn-action-excel,
+    .btn-action-del {
+      height: 34px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      text-decoration: none !important;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      border: none;
+    }
+
+    .btn-action-edit {
+      background: #eff6ff;
+      color: #0369a1;
+      border: 1px solid #bfdbfe;
+    }
+
+    .btn-action-edit:hover {
+      background: var(--ide-navy);
+      color: #ffffff;
+      border-color: var(--ide-navy);
+      transform: translateY(-1px);
+    }
+
+    .btn-action-rekap {
+      background: #f8fafc;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+    }
+
+    .btn-action-rekap:hover {
+      background: var(--ide-dark);
+      color: #ffffff;
+      border-color: var(--ide-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-action-excel {
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+    }
+
+    .btn-action-excel:hover {
+      background: #059669;
+      color: #ffffff;
+      border-color: #059669;
+      transform: translateY(-1px);
+    }
+
+    .btn-action-del {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+
+    .btn-action-del:hover {
+      background: #dc2626;
+      color: #ffffff;
+      border-color: #dc2626;
+      transform: translateY(-1px);
+    }
+
+    /* Subview Top Navigation Context Bar */
+    .dash-subview-context-bar {
+      background: #ffffff;
+      border: 1px solid var(--ide-border);
+      border-radius: 14px;
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      box-shadow: 0 3px 12px rgba(4, 49, 104, 0.04);
+    }
+
+    .btn-back-katalog {
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 7px 16px;
+      font-size: 12.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: #334155;
+      transition: all 0.2s ease;
+    }
+
+    .btn-back-katalog:hover {
+      background: #f1f5f9;
+      color: var(--ide-navy);
+      border-color: var(--ide-navy);
+      transform: translateX(-2px);
+    }
+
+    .subview-context-details {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1 1 auto;
+      min-width: 200px;
+    }
+
+    .subview-badge-context {
+      font-size: 11px;
+      font-weight: 800;
+      background: rgba(4, 49, 104, 0.08);
+      color: var(--ide-navy);
+      padding: 4px 10px;
+      border-radius: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    @media (max-width: 991.98px) {
+      .katalog-stats-strip {
+        grid-template-columns: 1fr 1fr;
+      }
+      .survey-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .katalog-stats-strip {
+        grid-template-columns: 1fr;
+      }
+      .card-actions {
+        grid-template-columns: 1fr;
+      }
+      .card-surveyor-actions {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
   </style>
 </head>
 
@@ -2282,96 +2847,246 @@
           </p>
         </div>
 
+        <!-- Hidden input to maintain JS compatibility -->
+        <input type="hidden" id="dashSurveySelect" value="<?= !empty($surveiList[0]['Id']) ? $surveiList[0]['Id'] : 0 ?>">
+
         <!-- ===================================================================
-             FILTER DINAMIS ISIAN SURVEI DASHBOARD (PISAHKAN PER MASING-MASING SURVEI)
+             TAB 0: KATALOG RUMAH SURVEI DINAMIS (KARTU AKSES TERINTEGRASI)
              =================================================================== -->
-        <div class="survey-selector-card">
-          <div class="selector-top-row">
-            <div class="selector-label">
-              <i class="fa-solid fa-filter" style="color: var(--ide-red);"></i> Filter &amp; Pilihan Survei Dinamis:
-            </div>
-            <div class="selector-controls-group">
-              <select id="dashSurveySelect" class="select-survey-custom" onchange="onSurveyFilterChange(this.value)">
-                <?php foreach ($surveiList as $idx => $s): ?>
-                <option value="<?=$s['Id']?>" <?= ($idx === 0) ? 'selected' : '' ?>>
-                  <?=htmlspecialchars($s['Judul'])?> (<?=$s['TotalResponden']?> Responden)
-                </option>
-                <?php endforeach; ?>
-              </select>
-              <button type="button" class="btn btn-sm btn-outline-dark btn-selector-action" style="background: #ffffff; border: 1.5px solid #cbd5e1; box-shadow: 0 2px 6px rgba(0,0,0,0.04);" onclick="showSurveyQRCode()" title="Tampilkan QR Code Survei">
-                <i class="fa-solid fa-qrcode" style="color: var(--ide-red);"></i> QR Code Kuesioner
-              </button>
-              <button type="button" class="btn btn-sm btn-primary btn-selector-action" style="background: var(--ide-navy);" onclick="switchDashTab('studio')">
-                <i class="fa-solid fa-plus"></i> Buat Survei Baru
-              </button>
+        <div class="dash-tab-content active" id="tabContentKatalog">
+          
+          <!-- Filter & Search Bar Rumah Survei -->
+          <div class="katalog-filter-card">
+            <div class="katalog-filter-row">
+              <div class="katalog-search-wrap">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="katalogSearchInput" class="katalog-search-input" placeholder="Cari judul survei, instansi, atau wilayah..." oninput="filterKatalogCards()">
+              </div>
+              <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <select id="katalogFilterJenis" class="katalog-filter-select" onchange="filterKatalogCards()">
+                  <option value="">Semua Jenis Survei</option>
+                  <option value="IKM">IKM (Indeks Kepuasan)</option>
+                  <option value="SKM">SKM</option>
+                  <option value="Ketenagakerjaan">Ketenagakerjaan</option>
+                  <option value="Kesehatan">Kesehatan</option>
+                  <option value="Pendidikan">Pendidikan</option>
+                  <option value="Sosial Ekonomi">Sosial Ekonomi</option>
+                </select>
+                <select id="katalogFilterStatus" class="katalog-filter-select" onchange="filterKatalogCards()">
+                  <option value="">Semua Status</option>
+                  <option value="Aktif">Aktif</option>
+                  <option value="Selesai">Selesai</option>
+                  <option value="Non-Aktif">Non-Aktif</option>
+                </select>
+                <button type="button" class="btn btn-sm btn-primary" style="background: var(--ide-navy); font-weight: 700; height: 44px; border-radius: 12px; padding: 0 18px; display: inline-flex; align-items: center; gap: 8px;" onclick="initNewSurveyBuilder()">
+                  <i class="fa-solid fa-plus"></i> Buat Survei Baru
+                </button>
+              </div>
             </div>
           </div>
 
-          <!-- Quick Selector Pills -->
-          <div class="survey-pills-bar" id="surveyPillsContainer">
-            <?php foreach ($surveiList as $idx => $s): ?>
-            <button type="button" class="survey-pill-btn <?= ($idx === 0) ? 'active' : '' ?>" data-id="<?=$s['Id']?>" onclick="selectSurveyPill(<?=$s['Id']?>)">
-              <i class="fa-solid fa-clipboard-check"></i> <?=htmlspecialchars($s['Judul'])?>
-              <span class="pill-counter"><?=$s['TotalResponden']?></span>
+          <!-- Statistik Rangkuman Rumah Survei -->
+          <?php
+            $katalogTotalSurvei = count($surveiList);
+            $katalogTotalResp = 0;
+            $katalogTotalSkor = 0;
+            $katalogSurveiAktif = 0;
+            foreach ($surveiList as $ks) {
+              $katalogTotalResp += (int)($ks['TotalResponden'] ?? 0);
+              $katalogTotalSkor += (float)($ks['RataRataSkor'] ?? 0);
+              if (($ks['Status'] ?? '') === 'Aktif') $katalogSurveiAktif++;
+            }
+            $katalogAvgSkor = ($katalogTotalSurvei > 0) ? round($katalogTotalSkor / $katalogTotalSurvei, 2) : 0;
+          ?>
+          <div class="katalog-stats-strip">
+            <div class="katalog-stat-box">
+              <div class="katalog-stat-icon" style="background: rgba(4, 49, 104, 0.1); color: var(--ide-navy);">
+                <i class="fa-solid fa-house-chimney-window"></i>
+              </div>
+              <div class="katalog-stat-body">
+                <div class="katalog-stat-val"><?=$katalogTotalSurvei?></div>
+                <div class="katalog-stat-lbl">Total Rumah Survei</div>
+              </div>
+            </div>
+            <div class="katalog-stat-box">
+              <div class="katalog-stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #059669;">
+                <i class="fa-solid fa-users"></i>
+              </div>
+              <div class="katalog-stat-body">
+                <div class="katalog-stat-val"><?=$katalogTotalResp?></div>
+                <div class="katalog-stat-lbl">Total Responden Masuk</div>
+              </div>
+            </div>
+            <div class="katalog-stat-box">
+              <div class="katalog-stat-icon" style="background: rgba(2, 132, 199, 0.1); color: #0284c7;">
+                <i class="fa-solid fa-star-half-stroke"></i>
+              </div>
+              <div class="katalog-stat-body">
+                <div class="katalog-stat-val"><?=number_format($katalogAvgSkor, 2)?></div>
+                <div class="katalog-stat-lbl">Rata-Rata Indeks IKM</div>
+              </div>
+            </div>
+            <div class="katalog-stat-box">
+              <div class="katalog-stat-icon" style="background: rgba(180, 8, 20, 0.1); color: var(--ide-red);">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <div class="katalog-stat-body">
+                <div class="katalog-stat-val"><?=$katalogSurveiAktif?></div>
+                <div class="katalog-stat-lbl">Survei Aktif Lapangan</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grid Card Masing-Masing Rumah Survei -->
+          <div class="survey-grid" id="katalogSurveyGrid">
+            <?php if (!empty($surveiList)): ?>
+              <?php foreach ($surveiList as $idx => $s): 
+                $isMulti = ($s['TipeSurvei'] === 'multi') || (strpos($s['InstrumenList'] ?? '', ',') !== false) || ($s['Id'] == 4) || (stripos($s['Judul'], 'rtkd') !== false);
+                $isActive = (($s['Status'] ?? 'Aktif') === 'Aktif');
+                $daerahText = !empty($s['DaerahSurvei']) ? $s['DaerahSurvei'] : 'Kabupaten Banyuwangi';
+                $totalQ = !empty($s['TotalPertanyaan']) ? (int)$s['TotalPertanyaan'] : 0;
+                $estimasi = !empty($s['EstimasiWaktu']) ? $s['EstimasiWaktu'] : '3 - 5 Menit';
+                $totalResp = !empty($s['TotalResponden']) ? (int)$s['TotalResponden'] : 0;
+                $skorIkm = !empty($s['RataRataSkor']) ? (float)$s['RataRataSkor'] : 0;
+              ?>
+              <div class="survey-card katalog-survey-card-item" 
+                   data-id="<?=$s['Id']?>" 
+                   data-title="<?=htmlspecialchars(strtolower($s['Judul']))?>" 
+                   data-lembaga="<?=htmlspecialchars(strtolower($s['Lembaga'] ?? ''))?>" 
+                   data-daerah="<?=htmlspecialchars(strtolower($daerahText))?>" 
+                   data-jenis="<?=htmlspecialchars($s['Jenis'] ?? 'IKM')?>" 
+                   data-status="<?=htmlspecialchars($s['Status'] ?? 'Aktif')?>">
+                
+                <div class="card-header-row">
+                  <div class="card-icon">
+                    <i class="fa-solid fa-square-poll-vertical"></i>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end;">
+                    <?php if ($isMulti): ?>
+                    <span class="badge-multi-instrumen"><i class="fa-solid fa-layer-group"></i> Multi-Instrumen</span>
+                    <?php endif; ?>
+                    <span class="card-status <?= $isActive ? 'status-active' : 'status-inactive' ?>">
+                      <i class="fa-solid <?= $isActive ? 'fa-circle-check' : 'fa-circle-xmark' ?>"></i> <?= htmlspecialchars($s['Status'] ?? 'Aktif') ?>
+                    </span>
+                  </div>
+                </div>
+
+                <h3 class="card-title"><?= htmlspecialchars($s['Judul']) ?></h3>
+
+                <div class="card-meta">
+                  <div class="meta-row">
+                    <span class="meta-label">Instansi</span>
+                    <span class="meta-colon">:</span>
+                    <span class="meta-value"><?= htmlspecialchars(!empty($s['Lembaga']) ? $s['Lembaga'] : 'IDE Consultant') ?></span>
+                  </div>
+                  <div class="meta-row">
+                    <span class="meta-label">Jenis &amp; Tahun</span>
+                    <span class="meta-colon">:</span>
+                    <span class="meta-value">
+                      <span class="badge badge-info" style="font-size: 11px; padding: 3px 7px;"><?= htmlspecialchars($s['Jenis'] ?? 'IKM') ?></span>
+                      &bull; <?= htmlspecialchars($s['Tahun'] ?? date('Y')) ?>
+                    </span>
+                  </div>
+                  <div class="meta-row">
+                    <span class="meta-label">Daerah Survei</span>
+                    <span class="meta-colon">:</span>
+                    <span class="meta-value">
+                      <span class="badge-daerah-survei"><i class="fa-solid fa-location-dot"></i> <?= htmlspecialchars($daerahText) ?></span>
+                    </span>
+                  </div>
+                  <div class="meta-row">
+                    <span class="meta-label">Kuesioner</span>
+                    <span class="meta-colon">:</span>
+                    <span class="meta-value"><b><?= $totalQ ?></b> Butir Pertanyaan &bull; <?= htmlspecialchars($estimasi) ?></span>
+                  </div>
+                  <?php if ($totalResp > 0): ?>
+                  <div class="meta-row">
+                    <span class="meta-label">Skor IKM</span>
+                    <span class="meta-colon">:</span>
+                    <span class="meta-value" style="color: #059669; font-weight: 800;">
+                      <?= number_format($skorIkm, 2) ?> (<?= $totalResp ?> Responden)
+                    </span>
+                  </div>
+                  <?php else: ?>
+                  <div class="meta-row">
+                    <span class="meta-label">Responden</span>
+                    <span class="meta-colon">:</span>
+                    <span class="meta-value text-muted" style="font-weight: 500;">
+                      0 Responden (Belum ada respon)
+                    </span>
+                  </div>
+                  <?php endif; ?>
+                </div>
+
+                <!-- Primary Card Actions (Isi Survei, Peta, QR Code) -->
+                <div class="card-actions">
+                  <button type="button" class="btn-action-fill" onclick="selectSurveyAndGo(<?=$s['Id']?>, 'isian')" title="Buka lembar isian kuesioner survei ini">
+                    <i class="fa-solid fa-pen-to-square"></i> Isi Survei
+                  </button>
+                  <button type="button" class="btn-action-map" onclick="selectSurveyAndGo(<?=$s['Id']?>, 'peta')" title="Buka Peta Sebaran Responden Google Maps">
+                    <i class="fa-solid fa-map-location-dot"></i> Peta
+                  </button>
+                  <button type="button" class="btn-action-qr" onclick="showSurveyQRCode(<?=$s['Id']?>)" title="Tampilkan QR Code Kuesioner Survei">
+                    <i class="fa-solid fa-qrcode"></i> QR Code
+                  </button>
+                </div>
+
+                <!-- Surveyor & Admin Controls (Edit Studio, Rekap, Excel, Hapus) -->
+                <div class="card-surveyor-actions">
+                  <button type="button" class="btn-action-edit" onclick="selectSurveyAndGo(<?=$s['Id']?>, 'studio', true)" title="Kelola Formulir &amp; Pertanyaan di Studio">
+                    <i class="fa-solid fa-pen-ruler"></i> Edit Studio
+                  </button>
+                  <button type="button" class="btn-action-rekap" onclick="selectSurveyAndGo(<?=$s['Id']?>, 'rekap')" title="Lihat Rekapitulasi Respon Responden">
+                    <i class="fa-solid fa-chart-pie"></i> Rekap (<?= $totalResp ?>)
+                  </button>
+                  <a href="<?=base_url('IDE/export_responden_excel/' . $s['Id'])?>" class="btn-action-excel" title="Unduh Spreadsheet / Excel Data Responden">
+                    <i class="fa-solid fa-file-excel"></i> Excel
+                  </a>
+                  <button type="button" class="btn-action-del" onclick="deleteSurveyTemplate(<?=$s['Id']?>, '<?=addslashes(htmlspecialchars($s['Judul']))?>')" title="Hapus Survei">
+                    <i class="fa-solid fa-trash-can"></i> Hapus
+                  </button>
+                </div>
+              </div>
+              <?php endforeach; ?>
+            <?php endif; ?>
+          </div>
+
+          <!-- Empty State (Jika hasil filter kosong) -->
+          <div id="katalogEmptyState" style="display: none; text-align: center; padding: 60px 20px; background: #ffffff; border: 1.5px dashed #cbd5e1; border-radius: 20px; margin-bottom: 30px;">
+            <i class="fa-solid fa-clipboard-question" style="font-size: 46px; color: #94a3b8; margin-bottom: 14px; display: block;"></i>
+            <h4 style="font-size: 17px; font-weight: 800; color: var(--ide-dark); margin-bottom: 6px;">Rumah Survei Tidak Ditemukan</h4>
+            <p style="font-size: 13.5px; color: #64748b; margin: 0 0 16px 0;">Tidak ada instrumen survei yang cocok dengan kriteria pencarian atau filter yang dipilih.</p>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$('#katalogSearchInput').val(''); $('#katalogFilterJenis').val(''); $('#katalogFilterStatus').val(''); filterKatalogCards();" style="border-radius: 10px; font-weight: 700;">
+              <i class="fa-solid fa-rotate-left"></i> Reset Filter Pencarian
             </button>
-            <?php endforeach; ?>
           </div>
 
-          <!-- Selected Survey Metric Strip -->
-          <div class="survey-stat-strip">
-            <div class="survey-stat-card">
-              <div class="stat-card-icon" style="background: rgba(4, 49, 104, 0.1); color: var(--ide-navy);"><i class="fa-solid fa-building-columns"></i></div>
-              <div class="stat-card-body">
-                <div class="stat-val" id="statLembaga" style="font-size: 14px;">-</div>
-                <div class="stat-lbl">Instansi / Lembaga</div>
-              </div>
-            </div>
-            <div class="survey-stat-card">
-              <div class="stat-card-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;"><i class="fa-solid fa-users"></i></div>
-              <div class="stat-card-body">
-                <div class="stat-val" id="statTotalResponden">0</div>
-                <div class="stat-lbl">Total Responden Masuk</div>
-              </div>
-            </div>
-            <div class="survey-stat-card">
-              <div class="stat-card-icon" style="background: rgba(2, 132, 199, 0.1); color: #0284c7;"><i class="fa-solid fa-star-half-stroke"></i></div>
-              <div class="stat-card-body">
-                <div class="stat-val" id="statRataRataSkor">0.00</div>
-                <div class="stat-lbl">Rata-Rata Skor IKM</div>
-              </div>
-            </div>
-            <div class="survey-stat-card">
-              <div class="stat-card-icon" style="background: rgba(180, 8, 20, 0.1); color: var(--ide-red);"><i class="fa-solid fa-location-dot"></i></div>
-              <div class="stat-card-body">
-                <div class="stat-val" id="statDaerah" style="font-size: 14px;">-</div>
-                <div class="stat-lbl">Cakupan Daerah Survei</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ===================================================================
-             SEGMENTED NAVIGATION TABS (ISIAN SURVEI, GOOGLE MAPS, REKAP, STUDIO)
-             =================================================================== -->
-        <div class="dash-nav-tabs">
-          <button type="button" class="dash-tab-btn active" id="tabBtnIsian" onclick="switchDashTab('isian')">
-            <i class="fa-solid fa-pen-to-square"></i> Isian Lembar Survei
-          </button>
-          <button type="button" class="dash-tab-btn" id="tabBtnPeta" onclick="switchDashTab('peta')">
-            <i class="fa-solid fa-map-location-dot"></i> Peta Sebaran Google Maps
-          </button>
-          <button type="button" class="dash-tab-btn" id="tabBtnRekap" onclick="switchDashTab('rekap')">
-            <i class="fa-solid fa-table-list"></i> Rekapitulasi Data Responden
-          </button>
-          <button type="button" class="dash-tab-btn" id="tabBtnStudio" onclick="switchDashTab('studio')">
-            <i class="fa-solid fa-sliders"></i> Studio Survei Dinamis
-          </button>
         </div>
 
         <!-- ===================================================================
              TAB 1: ISIAN LEMBAR KUESIONER SURVEI (DINAMIS PER SURVEI TERPILIH)
              =================================================================== -->
-        <div class="dash-tab-content active" id="tabContentIsian">
+        <div class="dash-tab-content" id="tabContentIsian">
+          <!-- Bar Navigasi Cepat Kembali ke Rumah Survei -->
+          <div class="dash-subview-context-bar">
+            <button type="button" class="btn btn-sm btn-outline-secondary btn-back-katalog" onclick="switchDashTab('katalog')">
+              <i class="fa-solid fa-arrow-left"></i> Kembali ke Rumah Survei
+            </button>
+            <div class="subview-context-details">
+              <span class="subview-badge-context"><i class="fa-solid fa-house-chimney-window"></i> Rumah Survei:</span>
+              <span class="active-context-survey-title font-weight-bold" style="color: var(--ide-navy); font-size: 13.5px;">
+                <?= !empty($surveiList[0]['Judul']) ? htmlspecialchars($surveiList[0]['Judul']) : 'Survei Terpilih' ?>
+              </span>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button type="button" class="btn btn-sm btn-light" style="border: 1px solid #cbd5e1; font-weight: 700; border-radius: 8px;" onclick="showSurveyQRCode(currentSurveyId)" title="Tampilkan QR Code Kuesioner">
+                <i class="fa-solid fa-qrcode" style="color: var(--ide-red);"></i> QR Code
+              </button>
+              <a href="#" class="btn btn-sm btn-success" style="font-weight: 700; border-radius: 8px;" onclick="window.location.href=BaseURL+'IDE/export_responden_excel/'+currentSurveyId; return false;" title="Unduh Spreadsheet Excel">
+                <i class="fa-solid fa-file-excel"></i> Excel
+              </a>
+            </div>
+          </div>
           <div class="survey-form-card">
             <div class="survey-form-banner" id="formBannerHeader">
               <div class="form-banner-top">
@@ -2572,6 +3287,26 @@
              TAB 2: PETA SEBARAN SPASIAL GOOGLE MAPS
              =================================================================== -->
         <div class="dash-tab-content" id="tabContentPeta">
+          <!-- Bar Navigasi Cepat Kembali ke Rumah Survei -->
+          <div class="dash-subview-context-bar">
+            <button type="button" class="btn btn-sm btn-outline-secondary btn-back-katalog" onclick="switchDashTab('katalog')">
+              <i class="fa-solid fa-arrow-left"></i> Kembali ke Rumah Survei
+            </button>
+            <div class="subview-context-details">
+              <span class="subview-badge-context"><i class="fa-solid fa-house-chimney-window"></i> Rumah Survei:</span>
+              <span class="active-context-survey-title font-weight-bold" style="color: var(--ide-navy); font-size: 13.5px;">
+                <?= !empty($surveiList[0]['Judul']) ? htmlspecialchars($surveiList[0]['Judul']) : 'Survei Terpilih' ?>
+              </span>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button type="button" class="btn btn-sm btn-light" style="border: 1px solid #cbd5e1; font-weight: 700; border-radius: 8px;" onclick="showSurveyQRCode(currentSurveyId)" title="Tampilkan QR Code Kuesioner">
+                <i class="fa-solid fa-qrcode" style="color: var(--ide-red);"></i> QR Code
+              </button>
+              <a href="#" class="btn btn-sm btn-success" style="font-weight: 700; border-radius: 8px;" onclick="window.location.href=BaseURL+'IDE/export_responden_excel/'+currentSurveyId; return false;" title="Unduh Spreadsheet Excel">
+                <i class="fa-solid fa-file-excel"></i> Excel
+              </a>
+            </div>
+          </div>
           <div class="google-gis-card">
             <div class="gis-top-bar">
               <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
@@ -2643,6 +3378,26 @@
              TAB 3: REKAPITULASI DATA RESPONDEN & HASIL SURVEI
              =================================================================== -->
         <div class="dash-tab-content" id="tabContentRekap">
+          <!-- Bar Navigasi Cepat Kembali ke Rumah Survei -->
+          <div class="dash-subview-context-bar">
+            <button type="button" class="btn btn-sm btn-outline-secondary btn-back-katalog" onclick="switchDashTab('katalog')">
+              <i class="fa-solid fa-arrow-left"></i> Kembali ke Rumah Survei
+            </button>
+            <div class="subview-context-details">
+              <span class="subview-badge-context"><i class="fa-solid fa-house-chimney-window"></i> Rumah Survei:</span>
+              <span class="active-context-survey-title font-weight-bold" style="color: var(--ide-navy); font-size: 13.5px;">
+                <?= !empty($surveiList[0]['Judul']) ? htmlspecialchars($surveiList[0]['Judul']) : 'Survei Terpilih' ?>
+              </span>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button type="button" class="btn btn-sm btn-light" style="border: 1px solid #cbd5e1; font-weight: 700; border-radius: 8px;" onclick="showSurveyQRCode(currentSurveyId)" title="Tampilkan QR Code Kuesioner">
+                <i class="fa-solid fa-qrcode" style="color: var(--ide-red);"></i> QR Code
+              </button>
+              <a href="#" class="btn btn-sm btn-success" style="font-weight: 700; border-radius: 8px;" onclick="window.location.href=BaseURL+'IDE/export_responden_excel/'+currentSurveyId; return false;" title="Unduh Spreadsheet Excel">
+                <i class="fa-solid fa-file-excel"></i> Excel
+              </a>
+            </div>
+          </div>
           <div class="rekap-card">
             <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; margin-bottom: 20px;">
               <div>
@@ -2803,9 +3558,35 @@
              TAB 4: STUDIO PEMBUAT SURVEI DINAMIS (GOOGLE FORM BUILDER)
              =================================================================== -->
         <div class="dash-tab-content" id="tabContentStudio">
+          <!-- Bar Navigasi Cepat Kembali ke Rumah Survei -->
+          <div class="dash-subview-context-bar">
+            <button type="button" class="btn btn-sm btn-outline-secondary btn-back-katalog" onclick="switchDashTab('katalog')">
+              <i class="fa-solid fa-arrow-left"></i> Kembali ke Rumah Survei
+            </button>
+            <div class="subview-context-details">
+              <span class="subview-badge-context"><i class="fa-solid fa-house-chimney-window"></i> Rumah Survei:</span>
+              <span class="active-context-survey-title font-weight-bold" style="color: var(--ide-navy); font-size: 13.5px;">
+                <?= !empty($surveiList[0]['Judul']) ? htmlspecialchars($surveiList[0]['Judul']) : 'Survei Terpilih' ?>
+              </span>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button type="button" class="btn btn-sm btn-light" style="border: 1px solid #cbd5e1; font-weight: 700; border-radius: 8px;" onclick="showSurveyQRCode(currentSurveyId)" title="Tampilkan QR Code Kuesioner">
+                <i class="fa-solid fa-qrcode" style="color: var(--ide-red);"></i> QR Code
+              </button>
+              <a href="#" class="btn btn-sm btn-success" style="font-weight: 700; border-radius: 8px;" onclick="window.location.href=BaseURL+'IDE/export_responden_excel/'+currentSurveyId; return false;" title="Unduh Spreadsheet Excel">
+                <i class="fa-solid fa-file-excel"></i> Excel
+              </a>
+            </div>
+          </div>
           <div class="survey-form-card">
+            <input type="hidden" id="builderSurveyId" value="">
             <div class="survey-form-banner">
-              <h3 class="form-banner-title"><i class="fa-solid fa-pen-ruler navy-icon"></i> Studio Pembuat Survei Dinamis</h3>
+                            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                <h3 class="form-banner-title" id="builderStudioTitle" style="margin: 0;"><i class="fa-solid fa-pen-ruler navy-icon"></i> Studio Pembuat Survei Dinamis</h3>
+                <button type="button" class="btn btn-sm btn-light" style="border-radius: 8px; font-weight: 700; color: var(--ide-navy);" onclick="initNewSurveyBuilder()">
+                  <i class="fa-solid fa-plus-circle"></i> Buat Survei Baru
+                </button>
+              </div>
               <p class="form-banner-desc">Buat dan atur instrumen survei baru, rumuskan butir-butir pertanyaan dengan variasi model jawaban dan penilaian seperti Google Form, serta kustomisasi bobot nilai terstandar.</p>
             </div>
             <div class="survey-form-body">
@@ -3050,6 +3831,7 @@
   <script src="<?=base_url('vendors/bootstrap/dist/js/bootstrap.bundle.min.js')?>"></script>
   <script src="<?=base_url('build/js/custom.min.js')?>"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="<?= base_url('assets/js/survei_rtkd_engine.js') ?>?v=<?= time() ?>"></script>
 
   <script>
     var BaseURL = '<?=base_url()?>';
@@ -3119,6 +3901,9 @@
       $('#dashSurveySelect').val(surveyId);
 
       currentSurveyObj = allSurveysData.find(function(s) { return String(s.Id) === String(surveyId); });
+      if (currentSurveyObj) {
+        $('.active-context-survey-title').text(currentSurveyObj.Judul);
+      }
       updateSurveyMetricStrip();
       loadSurveyQuestionsForForm(surveyId);
       loadDashboardRekapData(surveyId);
@@ -3158,7 +3943,10 @@
       $('.dash-tab-btn').removeClass('active');
       $('.dash-tab-content').removeClass('active');
 
-      if (tabName === 'peta') {
+      if (tabName === 'katalog') {
+        $('#tabBtnKatalog').addClass('active');
+        $('#tabContentKatalog').addClass('active');
+      } else if (tabName === 'peta') {
         $('#tabBtnPeta').addClass('active');
         $('#tabContentPeta').addClass('active');
         setTimeout(function() {
@@ -3181,7 +3969,7 @@
       } else if (tabName === 'studio') {
         $('#tabBtnStudio').addClass('active');
         $('#tabContentStudio').addClass('active');
-      } else {
+      } else if (tabName === 'isian') {
         $('#tabBtnIsian').addClass('active');
         $('#tabContentIsian').addClass('active');
         setTimeout(function() {
@@ -3191,7 +3979,132 @@
             initDashMiniMap();
           }
         }, 200);
+      } else {
+        $('#tabBtnKatalog').addClass('active');
+        $('#tabContentKatalog').addClass('active');
       }
+    }
+
+    // =========================================================================
+    // NAVIGASI DARI CARD RUMAH SURVEI KE SUB-TAB TERKAIT
+    // =========================================================================
+    function selectSurveyAndGo(surveyId, tabName, isEdit) {
+      onSurveyFilterChange(surveyId);
+
+      if (isEdit) {
+        openEditSurveyBuilder(surveyId);
+      } else {
+        switchDashTab(tabName);
+      }
+    }
+
+    // =========================================================================
+    // FILTER INTERAKTIF KATALOG RUMAH SURVEI (SEARCH, JENIS, STATUS)
+    // =========================================================================
+    function filterKatalogCards() {
+      var q = $.trim($('#katalogSearchInput').val()).toLowerCase();
+      var jenis = $('#katalogFilterJenis').val();
+      var status = $('#katalogFilterStatus').val();
+
+      var visibleCount = 0;
+      $('.katalog-survey-card-item').each(function() {
+        var $card = $(this);
+        var title = ($card.data('title') || '').toString();
+        var lembaga = ($card.data('lembaga') || '').toString();
+        var daerah = ($card.data('daerah') || '').toString();
+        var cardJenis = ($card.data('jenis') || '').toString();
+        var cardStatus = ($card.data('status') || '').toString();
+
+        var matchQ = !q || title.indexOf(q) !== -1 || lembaga.indexOf(q) !== -1 || daerah.indexOf(q) !== -1;
+        var matchJenis = !jenis || cardJenis === jenis;
+        var matchStatus = !status || cardStatus === status;
+
+        if (matchQ && matchJenis && matchStatus) {
+          $card.show();
+          visibleCount++;
+        } else {
+          $card.hide();
+        }
+      });
+
+      if (visibleCount === 0) {
+        $('#katalogEmptyState').show();
+      } else {
+        $('#katalogEmptyState').hide();
+      }
+    }
+
+    // =========================================================================
+    // EDIT SURVEI DI STUDIO BUILDER
+    // =========================================================================
+    function openEditSurveyBuilder(surveyId) {
+      Swal.fire({
+        title: 'Memuat Studio Survei...',
+        allowOutsideClick: false,
+        didOpen: function() { Swal.showLoading(); }
+      });
+
+      $.ajax({
+        url: BaseURL + 'IDE/get_survei_detail/' + surveyId,
+        type: 'GET',
+        dataType: 'json',
+        success: function(res) {
+          Swal.close();
+          if (res && res.status && res.survei) {
+            var s = res.survei;
+            $('#builderSurveyId').val(s.Id);
+            $('#builderJudul').val(s.Judul);
+            $('#builderDeskripsi').val(s.Deskripsi || '');
+            $('#builderLembaga').val(s.Lembaga || '');
+            $('#builderJenis').val(s.Jenis || 'IKM');
+            $('#builderTahun').val(s.Tahun || new Date().getFullYear());
+            $('#builderDaerah').val(s.DaerahSurvei || '');
+            $('#builderStudioTitle').html('<i class="fa-solid fa-pen-ruler navy-icon"></i> Mengedit Rumah Survei: #' + s.Id + ' - ' + s.Judul);
+
+            dashBuilderQuestions = [];
+            if (res.pertanyaan && res.pertanyaan.length > 0) {
+              res.pertanyaan.forEach(function(p) {
+                dashBuilderQuestions.push({
+                  Pertanyaan: p.Pertanyaan,
+                  Deskripsi: p.Deskripsi || '',
+                  Tipe: p.Tipe || 'radio',
+                  IsRequired: parseInt(p.IsRequired) === 1 ? 1 : 0,
+                  ScaleMin: parseInt(p.ScaleMin) || 1,
+                  ScaleMax: parseInt(p.ScaleMax) || 5,
+                  ScaleMinLabel: p.ScaleMinLabel || 'Sangat Tidak Baik',
+                  ScaleMaxLabel: p.ScaleMaxLabel || 'Sangat Baik',
+                  OpsiPilihan: p.OpsiPilihanList || []
+                });
+              });
+            }
+            renderDashBuilderQuestions();
+            switchDashTab('studio');
+          } else {
+            Swal.fire('Error', res.message || 'Gagal memuat detail survei.', 'error');
+          }
+        },
+        error: function() {
+          Swal.close();
+          Swal.fire('Error', 'Gagal terhubung ke server studio survei.', 'error');
+        }
+      });
+    }
+
+    // =========================================================================
+    // INISIALISASI BUAT SURVEI BARU DARI NOL
+    // =========================================================================
+    function initNewSurveyBuilder() {
+      $('#builderSurveyId').val('');
+      $('#builderJudul').val('');
+      $('#builderDeskripsi').val('');
+      $('#builderLembaga').val('IDE Consultant');
+      $('#builderJenis').val('IKM');
+      $('#builderTahun').val(new Date().getFullYear());
+      $('#builderDaerah').val('Kabupaten Banyuwangi');
+      $('#builderStudioTitle').html('<i class="fa-solid fa-pen-ruler navy-icon"></i> Studio Pembuat Survei Dinamis Baru');
+
+      applyDefaultIKMQuestionsPreset();
+      switchDashTab('studio');
     }
 
     // =========================================================================
@@ -3205,37 +4118,19 @@
       window.isDashRtkd = isMulti;
 
       if (isMulti) {
-        // Ambil daftar pertanyaan jika survei multi baru selain RTKD master (ID 4)
-        if (surveyId != 4) {
-          $.ajax({
-            url: BaseURL + 'IDE/get_survei_pertanyaan/' + surveyId,
-            type: 'GET',
-            dataType: 'json',
-            success: function(resQ) {
-              if (window.RTKDEngine && resQ && resQ.pertanyaan && resQ.pertanyaan.length > 0) {
-                var hasInstruments = resQ.pertanyaan.some(function(q) { return q.Instrumen && q.Instrumen !== 'Semua'; });
-                if (hasInstruments) {
-                  window.RTKDEngine.loadSchemaFromDb(resQ.pertanyaan);
-                }
-              }
-              switchDashRtkdTab(window.dashRtkdActiveInstrument || 'A');
-            }
-          });
-        }
-
         var rtkdHtml = 
           '<nav class="rtkd-tabs" role="tablist" aria-label="Instrumen survei">' +
             '<button type="button" class="rtkd-tab-btn active" id="dashRtkdTab-A" data-tab="A" aria-selected="true" onclick="switchDashRtkdTab(\'A\')">' +
-              '<span class="rtkd-tag">A</span>Perusahaan' +
+              '<span class="rtkd-tag">A</span>Perusahaan / Pemberi Kerja' +
             '</button>' +
             '<button type="button" class="rtkd-tab-btn" id="dashRtkdTab-B" data-tab="B" aria-selected="false" onclick="switchDashRtkdTab(\'B\')">' +
-              '<span class="rtkd-tag">B</span>Pencari kerja &amp; lulusan' +
+              '<span class="rtkd-tag">B</span>Pencari Kerja &amp; Lulusan' +
             '</button>' +
             '<button type="button" class="rtkd-tab-btn" id="dashRtkdTab-C" data-tab="C" aria-selected="false" onclick="switchDashRtkdTab(\'C\')">' +
-              '<span class="rtkd-tag">C</span>Pemangku kepentingan' +
+              '<span class="rtkd-tag">C</span>Pemangku Kepentingan' +
             '</button>' +
             '<button type="button" class="rtkd-tab-btn" id="dashRtkdTab-D" data-tab="D" aria-selected="false" onclick="switchDashRtkdTab(\'D\')">' +
-              '<span class="rtkd-tag">D</span>Siswa kelas 12' +
+              '<span class="rtkd-tag">D</span>Siswa Kelas 12' +
             '</button>' +
           '</nav>' +
           '<input type="hidden" id="dashRtkdActiveInstrument" name="RtkdInstrument" value="A">' +
@@ -3246,7 +4141,24 @@
           '<div class="rtkd-sheet" id="dashRtkdSheet"></div>';
 
         $('#dashQuestionsContainer').html(rtkdHtml);
-        switchDashRtkdTab('A');
+        switchDashRtkdTab(window.dashRtkdActiveInstrument || 'A');
+
+        // Sinkronkan skema butir pertanyaan dinamis langsung dari database
+        $.ajax({
+          url: BaseURL + 'IDE/get_survei_pertanyaan/' + surveyId,
+          type: 'GET',
+          dataType: 'json',
+          success: function(resQ) {
+            var qList = (resQ && resQ.pertanyaan) ? resQ.pertanyaan : ((resQ && resQ.data) ? resQ.data : []);
+            if (window.RTKDEngine && Array.isArray(qList) && qList.length > 0) {
+              var hasInstruments = qList.some(function(q) { return q.Instrumen && q.Instrumen !== 'Semua'; });
+              if (hasInstruments) {
+                window.RTKDEngine.loadSchemaFromDb(qList);
+              }
+            }
+            switchDashRtkdTab(window.dashRtkdActiveInstrument || 'A');
+          }
+        });
         return;
       }
 
@@ -3411,9 +4323,20 @@
       $('#dashRtkdActiveInstrument').val(tabKey);
       $('.rtkd-tabs .rtkd-tab-btn').removeClass('active').attr('aria-selected', 'false');
       $('#dashRtkdTab-' + tabKey).addClass('active').attr('aria-selected', 'true');
-      if (window.RTKDEngine) {
-        window.RTKDEngine.render('dashRtkdSheet', tabKey, 'dash_');
-      }
+      
+      var renderQuestions = function() {
+        if (window.RTKDEngine) {
+          window.RTKDEngine.render('dashRtkdSheet', tabKey, 'dash_');
+        } else {
+          $('#dashRtkdSheet').html('<div style="text-align:center; padding: 25px; color: #64748b;"><i class="fa-solid fa-spinner fa-spin"></i> Menyiapkan butir kuesioner...</div>');
+          setTimeout(function() {
+            if (window.RTKDEngine) {
+              window.RTKDEngine.render('dashRtkdSheet', tabKey, 'dash_');
+            }
+          }, 200);
+        }
+      };
+      renderQuestions();
 
       // Sync dengan pilihan kategori responden
       if (tabKey === 'A') {
@@ -3854,19 +4777,27 @@
         var marker = L.marker([lat, lng], { icon: customIcon });
 
         // Popup Lengkap: Keterangan Sebaran Responden
+        var dispKec = p.kecamatan || '-';
+        if (dispKec !== '-' && !dispKec.toLowerCase().startsWith('kec')) {
+          dispKec = 'Kec. ' + dispKec;
+        }
+        if (p.kabupaten && p.kabupaten.toLowerCase().indexOf('banyuwangi') === -1) {
+          dispKec += ', ' + p.kabupaten;
+        }
+
         var popupContent = 
           '<div class="gmap-popup-card">' +
             '<div class="gmap-popup-header">' +
               '<div class="gmap-popup-avatar"><i class="fa-solid fa-user-check"></i></div>' +
               '<div>' +
                 '<h4 class="gmap-popup-name">' + (p.nama || 'Responden Anonim') + '</h4>' +
-                '<div class="gmap-popup-time"><i class="fa-regular fa-clock"></i> Submit: ' + (p.time || '-') + '</div>' +
+                '<div class="gmap-popup-time"><i class="fa-regular fa-clock"></i> Submit: ' + (p.time || p.waktuFormatted || p.waktuSubmit || '-') + '</div>' +
               '</div>' +
             '</div>' +
             '<div class="gmap-popup-info-grid">' +
               '<div class="gmap-popup-info-row">' +
                 '<span class="gmap-popup-info-lbl"><i class="fa-solid fa-location-dot" style="color: var(--ide-red);"></i> Wilayah:</span>' +
-                '<span class="gmap-popup-info-val">Kec. ' + (p.kecamatan || '-') + (p.desa ? ', Desa ' + p.desa : '') + '</span>' +
+                '<span class="gmap-popup-info-val">' + dispKec + (p.desa ? ', Desa ' + p.desa : '') + '</span>' +
               '</div>' +
               '<div class="gmap-popup-info-row">' +
                 '<span class="gmap-popup-info-lbl"><i class="fa-solid fa-crosshairs"></i> Koordinat:</span>' +
@@ -3897,6 +4828,14 @@
         markersList.push(marker);
 
         // Feed Item Samping
+        var feedKec = p.kecamatan || '-';
+        if (feedKec !== '-' && !feedKec.toLowerCase().startsWith('kec')) {
+          feedKec = 'Kec. ' + feedKec;
+        }
+        if (p.kabupaten && p.kabupaten.toLowerCase().indexOf('banyuwangi') === -1) {
+          feedKec += ', ' + p.kabupaten;
+        }
+
         var feedItemHtml = 
           '<div class="gis-feed-item" id="feedItem_' + idx + '" onclick="focusMapPoint(' + lat + ', ' + lng + ', ' + idx + ')">' +
             '<div style="display:flex; justify-content:space-between; align-items:center;">' +
@@ -3904,7 +4843,7 @@
               '<span style="font-size: 11px; background:#ecfdf5; color:#065f46; font-weight:700; padding:1px 6px; border-radius:6px;">' + Number(p.skor || 0).toFixed(2) + '</span>' +
             '</div>' +
             '<div style="font-size: 11px; color:#64748b; margin-top: 3px;">' +
-              '<i class="fa-solid fa-location-dot" style="color:var(--ide-red);"></i> Kec. ' + (p.kecamatan || '-') + ' &bull; <i class="fa-regular fa-clock"></i> ' + (p.time ? p.time.substring(0, 16) : '-') +
+              '<i class="fa-solid fa-location-dot" style="color:var(--ide-red);"></i> ' + feedKec + ' &bull; <i class="fa-regular fa-clock"></i> ' + (p.time ? p.time.substring(0, 16) : '-') +
             '</div>' +
           '</div>';
         $feed.append(feedItemHtml);
@@ -4444,7 +5383,14 @@
             }
 
             res.responden.forEach(function(r, idx) {
-              var wilayah = (r.Kecamatan ? 'Kec. ' + r.Kecamatan : '') + (r.Desa ? ', Desa ' + r.Desa : '');
+              var rKec = r.Kecamatan || '';
+              if (rKec && !rKec.toLowerCase().startsWith('kec')) {
+                rKec = 'Kec. ' + rKec;
+              }
+              if (r.Kabupaten && r.Kabupaten.toLowerCase().indexOf('banyuwangi') === -1) {
+                rKec += ', ' + r.Kabupaten;
+              }
+              var wilayah = (rKec ? rKec : '') + (r.Desa ? ', Desa ' + r.Desa : '');
               if (!wilayah) wilayah = r.AlamatDetail || '-';
 
               var demografi = (r.RespondenGender || '-') + ' &bull; ' + (r.RespondenUsia || '-');
@@ -4488,10 +5434,19 @@
         success: function(res) {
           if (res && res.status && res.data) {
             var r = res.data;
+            var rKec = r.Kecamatan || '-';
+            if (rKec !== '-' && !rKec.toLowerCase().startsWith('kec')) {
+              rKec = 'Kec. ' + rKec;
+            }
+            if (r.Kabupaten && r.Kabupaten.toLowerCase().indexOf('banyuwangi') === -1) {
+              rKec += ', ' + r.Kabupaten;
+            }
+            var rDesa = r.Desa ? ', Desa ' + r.Desa : '';
+
             $('#rincianRespondenInfo').html(
               '<div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 18px;">' +
                 '<div style="font-size: 16px; font-weight: 800; color: var(--ide-navy);">' + (r.RespondenNama || 'Anonim') + '</div>' +
-                '<div style="font-size: 12.5px; color: #64748b; margin-top: 4px;">NIK: ' + (r.RespondenNIK || '-') + ' &bull; Kontak: ' + (r.RespondenKontak || '-') + ' &bull; Wilayah: Kec. ' + (r.Kecamatan || '-') + '</div>' +
+                '<div style="font-size: 12.5px; color: #64748b; margin-top: 4px;">NIK: ' + (r.RespondenNIK || '-') + ' &bull; Kontak: ' + (r.RespondenKontak || '-') + ' &bull; Wilayah: ' + rKec + rDesa + '</div>' +
                 '<div style="margin-top: 6px;"><span class="badge badge-success">Skor IKM: ' + (r.RataRataSkor || '0.00') + ' (' + (r.MutuPelayanan || 'Baik') + ')</span></div>' +
               '</div>'
             );
@@ -5403,6 +6358,7 @@
         return;
       }
 
+      var editId = $('#builderSurveyId').val();
       var payload = {
         Judul: judul,
         Lembaga: lembaga,
@@ -5412,6 +6368,9 @@
         Deskripsi: $('#builderDeskripsi').val(),
         questions: JSON.stringify(dashBuilderQuestions)
       };
+      if (editId && parseInt(editId) > 0) {
+        payload.Id = parseInt(editId);
+      }
 
       Swal.fire({
         title: 'Menyimpan Survei Baru...',
@@ -5420,7 +6379,8 @@
         didOpen: function() { Swal.showLoading(); }
       });
 
-      $.post(BaseURL + 'IDE/save_survei_builder', payload).done(function(res) {
+      var targetSaveUrl = (payload.Id && payload.Id > 0) ? (BaseURL + 'IDE/save_survei_dinamis') : (BaseURL + 'IDE/save_survei_builder');
+      $.post(targetSaveUrl, payload).done(function(res) {
         Swal.close();
         try {
           var data = typeof res === 'object' ? res : JSON.parse(res);

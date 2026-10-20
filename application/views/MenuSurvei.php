@@ -7154,6 +7154,8 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
             <input type="hidden" id="respLongitude" name="Longitude" value="114.369120">
             <input type="hidden" id="respLokasiAccuracy" name="LokasiAccuracy" value="8.5">
             <input type="hidden" id="respDevicePlatform" name="DevicePlatform" value="Desktop Browser">
+            <input type="hidden" id="respRealKecamatan" name="RealKecamatan" value="">
+            <input type="hidden" id="respRealKabupaten" name="RealKabupaten" value="">
           </div>
 
           <!-- Action Bar Halaman 1 -->
@@ -9237,7 +9239,10 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
         }
 
         var respNama = answers.P1 || answers.S2 || answers.K2 || (inst === 'B' ? 'Pencari Kerja / Lulusan' : 'Responden ' + inst);
-        var kec = answers.P2 || answers.L3 || answers.K3 || answers.K7 || 'Banyuwangi';
+        var realKec = $('#respRealKecamatan').val();
+        var realKab = $('#respRealKabupaten').val();
+        var kec = realKec || answers.P2 || answers.L3 || answers.K3 || answers.K7 || 'Banyuwangi';
+        var kab = realKab || 'Kabupaten Banyuwangi';
 
         var payload = {
           SurveiId: parseInt($('#respSurveiId').val()) || 4,
@@ -9249,8 +9254,10 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
           RespondenPendidikan: answers.L4 || (inst === 'D' ? 'Kelas 12' : ''),
           RespondenPekerjaan: (inst === 'A' ? 'Pemberi Kerja / Pelaku Usaha' : (inst === 'B' ? (answers.L7 || 'Pencari Kerja') : (inst === 'C' ? 'Pemangku Kepentingan' : 'Siswa Kelas 12'))),
           Provinsi: 'Jawa Timur',
-          Kabupaten: 'Kabupaten Banyuwangi',
+          Kabupaten: kab,
           Kecamatan: kec,
+          RealKecamatan: realKec || '',
+          RealKabupaten: realKab || '',
           Desa: '',
           AlamatDetail: 'Lokasi: ' + (answers.SR2 || kec),
           Latitude: $('#respLatitude').val() || null,
@@ -9372,8 +9379,10 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
         RespondenPendidikan: $('#respPendidikan').val(),
         RespondenPekerjaan: $('#respPekerjaan').val(),
         Provinsi: $('#respProvinsi option:selected').text() || '',
-        Kabupaten: $('#respKabupaten').val() || '',
-        Kecamatan: $('#respKecamatan').val() || '',
+        Kabupaten: $('#respRealKabupaten').val() || $('#respKabupaten').val() || '',
+        Kecamatan: $('#respRealKecamatan').val() || $('#respKecamatan').val() || '',
+        RealKecamatan: $('#respRealKecamatan').val() || '',
+        RealKabupaten: $('#respRealKabupaten').val() || '',
         Desa: $('#respDesa').val() || '',
         AlamatDetail: $('#respAlamatDetail').val(),
         Latitude: $('#respLatitude').val() || null,
@@ -10452,6 +10461,58 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
       return fullInfo;
     };
 
+    // Helper: Resolusi Cepat Kecamatan Lokal (Offline Fallback)
+    window.resolveLocalKecamatan = function(lat, lng) {
+      lat = parseFloat(lat);
+      lng = parseFloat(lng);
+      if (isNaN(lat) || isNaN(lng)) return 'Banyuwangi';
+
+      // Centroid 25 Kecamatan Banyuwangi
+      var bwiCentroids = {
+        'Banyuwangi': [-8.2192, 114.3692], 'Blimbingsari': [-8.3150, 114.3410],
+        'Bangorejo': [-8.4891, 114.1878], 'Cluring': [-8.4412, 114.2389],
+        'Gambiran': [-8.4023, 114.1489], 'Genteng': [-8.3689, 114.1523],
+        'Giri': [-8.1923, 114.3512], 'Glagah': [-8.2056, 114.3289],
+        'Glenmore': [-8.3089, 114.0489], 'Kabat': [-8.2789, 114.3312],
+        'Kalibaru': [-8.2912, 113.9856], 'Kalipuro': [-8.1389, 114.3723],
+        'Licin': [-8.2089, 114.2689], 'Muncar': [-8.4356, 114.3389],
+        'Pesanggaran': [-8.5689, 114.0789], 'Purwoharjo': [-8.5023, 114.2312],
+        'Rogojampi': [-8.3089, 114.2989], 'Sempu': [-8.3389, 114.1812],
+        'Siliragung': [-8.5412, 114.1389], 'Singojuruh': [-8.3189, 114.2389],
+        'Songgon': [-8.2389, 114.2089], 'Srono': [-8.3989, 114.2689],
+        'Tegaldlimo': [-8.5389, 114.3989], 'Tegalsari': [-8.4389, 114.1189],
+        'Wongsorejo': [-7.9889, 114.4089]
+      };
+
+      if (lat >= -8.85 && lat <= -7.80 && lng >= 113.80 && lng <= 114.65) {
+        var minD = 999999, cKec = 'Banyuwangi';
+        for (var k in bwiCentroids) {
+          var d = Math.pow(lat - bwiCentroids[k][0], 2) + Math.pow(lng - bwiCentroids[k][1], 2);
+          if (d < minD) { minD = d; cKec = k; }
+        }
+        return cKec;
+      }
+
+      // Centroid Malang Raya
+      if (lat >= -8.15 && lat <= -7.85 && lng >= 112.50 && lng <= 112.75) {
+        var mlgCentroids = {
+          'Blimbing': [-7.9390, 112.6450],
+          'Lowokwaru': [-7.9337, 112.6180],
+          'Klojen': [-7.9780, 112.6310],
+          'Sukun': [-7.9950, 112.6150],
+          'Kedungkandang': [-7.9980, 112.6650]
+        };
+        var minD = 999999, cKec = 'Lowokwaru';
+        for (var k in mlgCentroids) {
+          var d = Math.pow(lat - mlgCentroids[k][0], 2) + Math.pow(lng - mlgCentroids[k][1], 2);
+          if (d < minD) { minD = d; cKec = k; }
+        }
+        return cKec;
+      }
+
+      return 'Banyuwangi';
+    };
+
     // Deteksi Sensor GPS Device & Pelacakan Perangkat Responden
     window.detectRespondentDeviceLocation = function(forcePrompt) {
       var $status = $('#respGpsBadgeStatus');
@@ -10499,9 +10560,37 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
             $('#respLongitude').val(lng);
             $('#respLokasiAccuracy').val(acc);
 
-            // Update UI RTKD Bar
+            // Update UI RTKD Bar Awal
             $rtkdBar.addClass('gps-locked');
-            $rtkdGps.html('<span style="color: #16a34a; font-weight: 700;"><i class="fa-solid fa-circle-check"></i> ' + lat + ', ' + lng + '</span> <span style="font-size: 11px; color: #15803d; font-weight: 700;">(±' + acc + 'm)</span>');
+            $rtkdGps.html('<span style="color: #16a34a; font-weight: 700;"><i class="fa-solid fa-spinner fa-spin"></i> Memetakan wilayah real...</span>');
+
+            // Resolusi Real-time Nama Kecamatan dari Koordinat GPS Real
+            $.ajax({
+              url: BaseURL + 'IDE/resolve_coordinates',
+              type: 'GET',
+              data: { lat: lat, lng: lng },
+              dataType: 'json',
+              timeout: 4000,
+              success: function(geoRes) {
+                var kecReal = (geoRes && geoRes.kecamatan) ? geoRes.kecamatan : 'Banyuwangi';
+                var kabReal = (geoRes && geoRes.kabupaten) ? geoRes.kabupaten : 'Kabupaten Banyuwangi';
+                $('#respRealKecamatan').val(kecReal);
+                $('#respRealKabupaten').val(kabReal);
+                $('#respKecamatan').val(kecReal);
+
+                var labelKec = kecReal.toLowerCase().startsWith('kec') ? kecReal : 'Kec. ' + kecReal;
+                if (kabReal && kabReal.toLowerCase().indexOf('banyuwangi') === -1) {
+                  labelKec += ' (' + kabReal + ')';
+                }
+
+                $rtkdGps.html('<span style="color: #16a34a; font-weight: 700;"><i class="fa-solid fa-location-dot"></i> ' + labelKec + '</span> <span style="font-size: 11px; color: #15803d; font-weight: 700;">(' + lat + ', ' + lng + ') (±' + acc + 'm)</span>');
+              },
+              error: function() {
+                var localKec = window.resolveLocalKecamatan(lat, lng);
+                $('#respRealKecamatan').val(localKec);
+                $rtkdGps.html('<span style="color: #16a34a; font-weight: 700;"><i class="fa-solid fa-location-dot"></i> Kec. ' + localKec + '</span> <span style="font-size: 11px; color: #15803d; font-weight: 700;">(' + lat + ', ' + lng + ') (±' + acc + 'm)</span>');
+              }
+            });
 
             // Update UI Standar
             updateRespondentPinPosition(lat, lng, acc, 'GPS Terkunci Presisi (±' + acc + 'm)');

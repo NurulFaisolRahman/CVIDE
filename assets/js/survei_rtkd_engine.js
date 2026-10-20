@@ -445,7 +445,7 @@
         ? "Sekolah sudah memberi izin, siswa sudah menerima penjelasan tujuan survei dan bersedia mengisi, serta mengetahui bahwa jawaban tidak memuat nama dan hanya disajikan secara agregat."
         : "Responden sudah menerima penjelasan tujuan survei, menyetujui pengisian, dan mengetahui bahwa jawaban hanya disajikan secara agregat.";
 
-      var consentSpan = document.getElementById(prefix + 'consentText') || document.getElementById('rtkdConsentText') || document.getElementById('modalConsentText');
+      var consentSpan = document.getElementById(prefix + 'consentText') || document.getElementById('dashConsentText') || document.getElementById('rtkdConsentText') || document.getElementById('modalConsentText');
       if (consentSpan) consentSpan.textContent = consentText;
 
       this.applyShow(sheetId, instrumentKey, prefix);
@@ -546,4 +546,4 @@
     }
   };
 
-})(window, jQuery);
+})(window, typeof jQuery !== 'undefined' ? jQuery : (typeof window.$ !== 'undefined' ? window.$ : null));

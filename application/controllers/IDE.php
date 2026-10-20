@@ -2915,10 +2915,23 @@ public function InputIKMYogyakarta()
     $defLat = isset($districtCoords[$kKey]) ? $districtCoords[$kKey][0] : -8.2192;
     $defLng = isset($districtCoords[$kKey]) ? $districtCoords[$kKey][1] : 114.3692;
 
-    $latitude = isset($input['Latitude']) && $input['Latitude'] !== '' ? (float)$input['Latitude'] : (isset($input['latitude']) && $input['latitude'] !== '' ? (float)$input['latitude'] : $defLat);
-    $longitude = isset($input['Longitude']) && $input['Longitude'] !== '' ? (float)$input['Longitude'] : (isset($input['longitude']) && $input['longitude'] !== '' ? (float)$input['longitude'] : $defLng);
+    $hasExplicitGps = (isset($input['Latitude']) && $input['Latitude'] !== '') || (isset($input['latitude']) && $input['latitude'] !== '');
+    $latitude = $hasExplicitGps ? (float)($input['Latitude'] ?? $input['latitude']) : $defLat;
+    $longitude = $hasExplicitGps ? (float)($input['Longitude'] ?? $input['longitude']) : $defLng;
     $lokasiAccuracy = isset($input['LokasiAccuracy']) && $input['LokasiAccuracy'] !== '' ? (float)$input['LokasiAccuracy'] : 15.0;
-    
+
+    // Resolusi otomatis wilayah & kecamatan dari koordinat GPS perangkat real
+    $realKecInput = trim($input['RealKecamatan'] ?? ($input['real_kecamatan'] ?? ''));
+    $realKabInput = trim($input['RealKabupaten'] ?? ($input['real_kabupaten'] ?? ''));
+    if (!empty($realKecInput)) {
+      $kecamatan = $realKecInput;
+      if (!empty($realKabInput)) $kabupaten = $realKabInput;
+    } elseif ($hasExplicitGps && !empty($latitude) && !empty($longitude)) {
+      $resolvedLoc = $this->resolveLocationFromCoordinates($latitude, $longitude, $kecamatan, $kabupaten);
+      $kecamatan = $resolvedLoc['kecamatan'];
+      $kabupaten = $resolvedLoc['kabupaten'];
+    }
+
     // Resolusi nama dan tipe perangkat pengisi survei
     $devicePlatform = isset($input['DevicePlatform']) && $input['DevicePlatform'] !== '' ? trim($input['DevicePlatform']) : '';
     if (empty($devicePlatform) || $devicePlatform === 'Desktop Browser' || $devicePlatform === 'Web Responsive') {
@@ -3155,6 +3168,156 @@ public function InputIKMYogyakarta()
   }
 
   /**
+   * Helper: Resolusi Otomatis Kecamatan & Kabupaten dari Koordinat GPS Perangkat Real
+   */
+  private function resolveLocationFromCoordinates($lat, $lng, $fallbackKec = 'Banyuwangi', $fallbackKab = 'Kabupaten Banyuwangi') {
+    if (empty($lat) || empty($lng)) {
+      return array('kecamatan' => $fallbackKec, 'kabupaten' => $fallbackKab, 'desa' => '');
+    }
+
+    $lat = (float)$lat;
+    $lng = (float)$lng;
+
+    // 1. Data Centroid 25 Kecamatan di Kabupaten Banyuwangi (0ms lookup)
+    $banyuwangiCentroids = array(
+      'Banyuwangi'   => array(-8.2192, 114.3692),
+      'Blimbingsari' => array(-8.3150, 114.3410),
+      'Bangorejo'    => array(-8.4891, 114.1878),
+      'Cluring'      => array(-8.4412, 114.2389),
+      'Gambiran'     => array(-8.4023, 114.1489),
+      'Genteng'      => array(-8.3689, 114.1523),
+      'Giri'         => array(-8.1923, 114.3512),
+      'Glagah'       => array(-8.2056, 114.3289),
+      'Glenmore'     => array(-8.3089, 114.0489),
+      'Kabat'        => array(-8.2789, 114.3312),
+      'Kalibaru'     => array(-8.2912, 113.9856),
+      'Kalipuro'     => array(-8.1389, 114.3723),
+      'Licin'        => array(-8.2089, 114.2689),
+      'Muncar'       => array(-8.4356, 114.3389),
+      'Pesanggaran'  => array(-8.5689, 114.0789),
+      'Purwoharjo'   => array(-8.5023, 114.2312),
+      'Rogojampi'    => array(-8.3089, 114.2989),
+      'Sempu'        => array(-8.3389, 114.1812),
+      'Siliragung'   => array(-8.5412, 114.1389),
+      'Singojuruh'   => array(-8.3189, 114.2389),
+      'Songgon'      => array(-8.2389, 114.2089),
+      'Srono'        => array(-8.3989, 114.2689),
+      'Tegaldlimo'   => array(-8.5389, 114.3989),
+      'Tegalsari'    => array(-8.4389, 114.1189),
+      'Wongsorejo'   => array(-7.9889, 114.4089)
+    );
+
+    // Cek apakah koordinat berada di dalam lingkup Kabupaten Banyuwangi (Lat: -8.85 s/d -7.80, Lng: 113.80 s/d 114.65)
+    if ($lat >= -8.85 && $lat <= -7.80 && $lng >= 113.80 && $lng <= 114.65) {
+      $minDist = 999999;
+      $closestKec = 'Banyuwangi';
+      foreach ($banyuwangiCentroids as $kName => $coords) {
+        $dist = sqrt(pow($lat - $coords[0], 2) + pow($lng - $coords[1], 2));
+        if ($dist < $minDist) {
+          $minDist = $dist;
+          $closestKec = $kName;
+        }
+      }
+      return array('kecamatan' => $closestKec, 'kabupaten' => 'Kabupaten Banyuwangi', 'desa' => '');
+    }
+
+    // 2. Nominatim OpenStreetMap Reverse Geocoding via cURL (Akurasi Real Nasional)
+    $url = "https://nominatim.openstreetmap.org/reverse?format=json&lat={$lat}&lon={$lng}&zoom=14&addressdetails=1";
+    $json = null;
+
+    if (function_exists('curl_init')) {
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, $url);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+      curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+      curl_setopt($ch, CURLOPT_USERAGENT, 'CVIDE-Georesolver/2.0');
+      $json = curl_exec($ch);
+      curl_close($ch);
+    }
+
+    if (!$json) {
+      $ctx = stream_context_create(array(
+        'http' => array(
+          'header'  => "User-Agent: CVIDE-Georesolver/2.0\r\n",
+          'timeout' => 2
+        ),
+        'ssl' => array(
+          'verify_peer' => false,
+          'verify_peer_name' => false
+        )
+      ));
+      $json = @file_get_contents($url, false, $ctx);
+    }
+
+    if ($json) {
+      $data = json_decode($json, true);
+      if (!empty($data['address'])) {
+        $addr = $data['address'];
+        $kec = $addr['district'] ?? ($addr['town'] ?? ($addr['suburb'] ?? ($addr['city_district'] ?? '')));
+        $kab = $addr['city'] ?? ($addr['county'] ?? ($addr['municipality'] ?? ''));
+        $desa = $addr['suburb'] ?? ($addr['village'] ?? ($addr['neighbourhood'] ?? ''));
+        if ($kec) {
+          $cleanKec = trim(preg_replace('/^(Kecamatan|Kec\.)\s*/i', '', $kec));
+          return array(
+            'kecamatan' => $cleanKec ?: $fallbackKec,
+            'kabupaten' => $kab ?: $fallbackKab,
+            'desa'      => ($desa !== $cleanKec) ? $desa : ''
+          );
+        }
+      }
+    }
+
+    // 3. Fallback Centroid Malang Raya jika Nominatim timeout/offline (Lat: -8.15 s/d -7.85, Lng: 112.50 s/d 112.75)
+    if ($lat >= -8.15 && $lat <= -7.85 && $lng >= 112.50 && $lng <= 112.75) {
+      $malangCentroids = array(
+        'Blimbing'      => array(-7.9390, 112.6450),
+        'Lowokwaru'     => array(-7.9337, 112.6180),
+        'Klojen'        => array(-7.9780, 112.6310),
+        'Sukun'         => array(-7.9950, 112.6150),
+        'Kedungkandang' => array(-7.9980, 112.6650)
+      );
+      $minDist = 999999;
+      $closestKec = 'Blimbing';
+      foreach ($malangCentroids as $kName => $coords) {
+        $dist = sqrt(pow($lat - $coords[0], 2) + pow($lng - $coords[1], 2));
+        if ($dist < $minDist) {
+          $minDist = $dist;
+          $closestKec = $kName;
+        }
+      }
+      return array('kecamatan' => $closestKec, 'kabupaten' => 'Kota Malang', 'desa' => '');
+    }
+
+    return array('kecamatan' => $fallbackKec, 'kabupaten' => $fallbackKab, 'desa' => '');
+  }
+
+  /**
+   * API Publik: Resolusi Geospasial Real-time Koordinat GPS ke Kecamatan & Kabupaten
+   */
+  public function resolve_coordinates() {
+    header('Content-Type: application/json; charset=utf-8');
+    $lat = $this->input->get_post('lat');
+    $lng = $this->input->get_post('lng');
+
+    if (empty($lat) || empty($lng)) {
+      echo json_encode(array('status' => false, 'message' => 'Koordinat lat dan lng wajib disertakan.'));
+      return;
+    }
+
+    $res = $this->resolveLocationFromCoordinates($lat, $lng);
+    echo json_encode(array(
+      'status'    => true,
+      'lat'       => (float)$lat,
+      'lng'       => (float)$lng,
+      'kecamatan' => $res['kecamatan'] ?? 'Banyuwangi',
+      'kabupaten' => $res['kabupaten'] ?? 'Kabupaten Banyuwangi',
+      'desa'      => $res['desa'] ?? ''
+    ));
+  }
+
+  /**
    * API: Submit Jawaban Survei Responden (Alias untuk Dashboard & Publik)
    */
   public function submit_survei_responden() {
@@ -3355,7 +3518,15 @@ public function InputIKMYogyakarta()
     );
     $distribusiKecamatan = array();
 
-    foreach ($responden as $r) {
+    foreach ($responden as &$r) {
+      if (!empty($r['Latitude']) && !empty($r['Longitude'])) {
+        $resolvedLoc = $this->resolveLocationFromCoordinates($r['Latitude'], $r['Longitude'], $r['Kecamatan'], $r['Kabupaten']);
+        if (!empty($resolvedLoc['kecamatan'])) {
+          $r['Kecamatan'] = $resolvedLoc['kecamatan'];
+          $r['Kabupaten'] = $resolvedLoc['kabupaten'];
+        }
+      }
+
       // Mutu
       $m = !empty($r['MutuPelayanan']) ? trim($r['MutuPelayanan']) : '';
       if (isset($distribusiMutu[$m])) {
@@ -3460,6 +3631,23 @@ public function InputIKMYogyakarta()
       return;
     }
 
+    if (!empty($responden['Latitude']) && !empty($responden['Longitude'])) {
+      $resolvedLoc = $this->resolveLocationFromCoordinates($responden['Latitude'], $responden['Longitude'], $responden['Kecamatan'], $responden['Kabupaten']);
+      if (!empty($resolvedLoc['kecamatan'])) {
+        if ($responden['Kecamatan'] !== $resolvedLoc['kecamatan'] || (empty($responden['Kabupaten']) || ($responden['Kabupaten'] === 'Kabupaten Banyuwangi' && $resolvedLoc['kabupaten'] !== 'Kabupaten Banyuwangi'))) {
+          $this->db->where('Id', $respondenId)->update('survei_responden', array(
+            'Kecamatan' => $resolvedLoc['kecamatan'],
+            'Kabupaten' => $resolvedLoc['kabupaten']
+          ));
+        }
+        $responden['Kecamatan'] = $resolvedLoc['kecamatan'];
+        $responden['Kabupaten'] = $resolvedLoc['kabupaten'];
+        if (!empty($resolvedLoc['desa']) && empty($responden['Desa'])) {
+          $responden['Desa'] = $resolvedLoc['desa'];
+        }
+      }
+    }
+
     $answers = $this->db->select('survei_jawaban.*, survei_pertanyaan.Pertanyaan, survei_pertanyaan.Section, survei_pertanyaan.Tipe')
                         ->from('survei_jawaban')
                         ->join('survei_pertanyaan', 'survei_pertanyaan.Id = survei_jawaban.PertanyaanId', 'left')
@@ -3524,6 +3712,21 @@ public function InputIKMYogyakarta()
       $hasCoords = (!empty($r['Latitude']) && !empty($r['Longitude']));
       if ($hasCoords) {
         $totalMapped++;
+        // Pastikan nama kecamatan sesuai lokasi real koordinat perangkat
+        $resolvedLoc = $this->resolveLocationFromCoordinates($r['Latitude'], $r['Longitude'], $r['Kecamatan'], $r['Kabupaten']);
+        if (!empty($resolvedLoc['kecamatan'])) {
+          if ($r['Kecamatan'] !== $resolvedLoc['kecamatan'] || (empty($r['Kabupaten']) || ($r['Kabupaten'] === 'Kabupaten Banyuwangi' && $resolvedLoc['kabupaten'] !== 'Kabupaten Banyuwangi'))) {
+            $this->db->where('Id', $r['Id'])->update('survei_responden', array(
+              'Kecamatan' => $resolvedLoc['kecamatan'],
+              'Kabupaten' => $resolvedLoc['kabupaten']
+            ));
+          }
+          $r['Kecamatan'] = $resolvedLoc['kecamatan'];
+          $r['Kabupaten'] = $resolvedLoc['kabupaten'];
+          if (!empty($resolvedLoc['desa']) && empty($r['Desa'])) {
+            $r['Desa'] = $resolvedLoc['desa'];
+          }
+        }
       }
 
       $kecName = trim($r['Kecamatan']) ?: 'Tidak Terdata';
@@ -3561,6 +3764,7 @@ public function InputIKMYogyakarta()
         'device'         => $r['DevicePlatform'] ?: ($r['UserAgent'] ? (strpos($r['UserAgent'], 'Mobile') !== false ? 'Mobile Device' : 'Desktop / PC') : 'Device Web'),
         'skor'           => (float)$r['RataRataSkor'],
         'mutu'           => $r['MutuPelayanan'] ?: 'Baik',
+        'time'           => $r['CreatedAt'] ? date('d M Y, H:i', strtotime($r['CreatedAt'])) . ' WIB' : '-',
         'waktuSubmit'    => $r['CreatedAt'],
         'waktuFormatted' => $r['CreatedAt'] ? date('d M Y, H:i', strtotime($r['CreatedAt'])) . ' WIB' : '-'
       );
@@ -3634,6 +3838,18 @@ public function InputIKMYogyakarta()
       $pertanyaanList = array();
       $respondenList = $this->db->order_by('Id', 'DESC')->get('survei_responden')->result_array();
     }
+
+    // Resolusi nama kecamatan real dari koordinat
+    foreach ($respondenList as &$r) {
+      if (!empty($r['Latitude']) && !empty($r['Longitude'])) {
+        $resolvedLoc = $this->resolveLocationFromCoordinates($r['Latitude'], $r['Longitude'], $r['Kecamatan'], $r['Kabupaten']);
+        if (!empty($resolvedLoc['kecamatan'])) {
+          $r['Kecamatan'] = $resolvedLoc['kecamatan'];
+          $r['Kabupaten'] = $resolvedLoc['kabupaten'];
+        }
+      }
+    }
+    unset($r);
 
     // Ambil mapping survei untuk info judul jika export all
     $surveiMap = array();
