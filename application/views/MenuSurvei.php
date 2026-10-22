@@ -6925,6 +6925,9 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
             <button type="button" class="rtkd-tab-btn" id="modalRtkdTab-C" data-tab="C" aria-selected="false" onclick="switchModalRtkdTab('C')">
               <span class="rtkd-tag">C</span>Pemangku kepentingan
             </button>
+            <button type="button" class="rtkd-tab-btn" id="modalRtkdTab-E" data-tab="E" aria-selected="false" onclick="switchModalRtkdTab('E')">
+              <span class="rtkd-tag">C2</span>AHP
+            </button>
             <button type="button" class="rtkd-tab-btn" id="modalRtkdTab-D" data-tab="D" aria-selected="false" onclick="switchModalRtkdTab('D')">
               <span class="rtkd-tag">D</span>Siswa kelas 12
             </button>
@@ -8888,14 +8891,17 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
 
       // Sync Section Badge (Persis seperti 'Section 1 of 3' di contoh)
       var sectionLabels = {
-        'A': '<i class="fa-solid fa-industry"></i> Bagian 1 dari 4: Instrumen A &bull; Perusahaan &amp; Industri',
-        'B': '<i class="fa-solid fa-user-graduate"></i> Bagian 2 dari 4: Instrumen B &bull; Pencari Kerja &amp; Alumni',
-        'C': '<i class="fa-solid fa-handshake-angle"></i> Bagian 3 dari 4: Instrumen C &bull; Stakeholder Vokasi',
-        'D': '<i class="fa-solid fa-graduation-cap"></i> Bagian 4 dari 4: Instrumen D &bull; Siswa Kelas 12'
+        'A': '<i class="fa-solid fa-industry"></i> Bagian 1 dari 5: Instrumen A &bull; Perusahaan &amp; Industri',
+        'B': '<i class="fa-solid fa-user-graduate"></i> Bagian 2 dari 5: Instrumen B &bull; Pencari Kerja &amp; Alumni',
+        'C': '<i class="fa-solid fa-handshake-angle"></i> Bagian 3 dari 5: Instrumen C &bull; Stakeholder Vokasi',
+        'E': '<i class="fa-solid fa-scale-balanced"></i> Bagian 4 dari 5: Instrumen C2 &bull; Prioritas Isu Strategis (AHP)',
+        'D': '<i class="fa-solid fa-graduation-cap"></i> Bagian 5 dari 5: Instrumen D &bull; Siswa Kelas 12'
       };
       if (sectionLabels[tabKey]) {
         $('#modalGformSectionText').html(sectionLabels[tabKey]);
       }
+
+      window.ahpAckCr = false;
 
       if (window.RTKDEngine) {
         window.RTKDEngine.render('modalRtkdSheet', tabKey);
@@ -8928,10 +8934,14 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
       });
     };
 
-    // Real-time conditional show/hide untuk RTKD Modal
+    // Real-time conditional show/hide dan update konsistensi AHP untuk RTKD Modal
     $(document).on('input change', '#modalRtkdSheet input, #modalRtkdSheet select, #modalRtkdSheet textarea', function() {
       if (window.isCurrentRtkd && window.RTKDEngine) {
-        window.RTKDEngine.applyShow('modalRtkdSheet', window.modalRtkdActiveInstrument || 'A');
+        var activeInst = window.modalRtkdActiveInstrument || 'A';
+        window.RTKDEngine.applyShow('modalRtkdSheet', activeInst);
+        if (activeInst === 'E') {
+          window.RTKDEngine.updateCR('modalRtkdSheet', 'E');
+        }
       }
     });
 
@@ -9238,7 +9248,23 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
           return;
         }
 
-        var respNama = answers.P1 || answers.S2 || answers.K2 || (inst === 'B' ? 'Pencari Kerja / Lulusan' : 'Responden ' + inst);
+        // Validasi konsistensi AHP untuk Instrumen E
+        if (inst === 'E' && window.RTKDEngine) {
+          var badBlocks = window.RTKDEngine.updateCR('modalRtkdSheet', 'E');
+          if (badBlocks && badBlocks.length > 0 && !window.ahpAckCr) {
+            window.ahpAckCr = true;
+            Swal.fire({
+              icon: 'warning',
+              title: 'Pemeriksaan Konsistensi (AHP)',
+              html: 'Jawaban perbandingan pada <b>' + badBlocks.join(', ') + '</b> masih ada yang bertentangan (CR > 0,10).<br><br>Sebaiknya diteliti kembali bersama narasumber. Jika narasumber tetap pada jawabannya, klik Simpan sekali lagi.<br><small style="color:#64748b;">Catatan: Rekap AHP hanya menghitung isian yang konsisten (CR &le; 0,10).</small>',
+              confirmButtonColor: '#043168',
+              confirmButtonText: 'Tinjau Kembali'
+            });
+            return;
+          }
+        }
+
+        var respNama = answers.P1 || answers.S2 || answers.K2 || (inst === 'B' ? 'Pencari Kerja / Lulusan' : (inst === 'E' ? 'Narasumber AHP' : 'Responden ' + inst));
         var realKec = $('#respRealKecamatan').val();
         var realKab = $('#respRealKabupaten').val();
         var kec = realKec || answers.P2 || answers.L3 || answers.K3 || answers.K7 || 'Banyuwangi';
@@ -9250,9 +9276,9 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
           Enumerator: enumerator,
           RespondenNama: respNama,
           RespondenGender: answers.L2 || answers.K6 || 'Lainnya',
-          RespondenUsia: answers.L1 || answers.K5 || '',
-          RespondenPendidikan: answers.L4 || (inst === 'D' ? 'Kelas 12' : ''),
-          RespondenPekerjaan: (inst === 'A' ? 'Pemberi Kerja / Pelaku Usaha' : (inst === 'B' ? (answers.L7 || 'Pencari Kerja') : (inst === 'C' ? 'Pemangku Kepentingan' : 'Siswa Kelas 12'))),
+          RespondenUsia: answers.L1 || answers.K5 || (inst === 'E' ? 'Dewasa / Ahli' : ''),
+          RespondenPendidikan: answers.L4 || (inst === 'D' ? 'Kelas 12' : (inst === 'E' ? 'Sarjana / Ahli' : '')),
+          RespondenPekerjaan: (inst === 'A' ? 'Pemberi Kerja / Pelaku Usaha' : (inst === 'B' ? (answers.L7 || 'Pencari Kerja') : (inst === 'C' ? 'Pemangku Kepentingan' : (inst === 'E' ? (answers.S1 || 'Pakar / Stakeholder AHP') : 'Siswa Kelas 12')))),
           Provinsi: 'Jawa Timur',
           Kabupaten: kab,
           Kecamatan: kec,

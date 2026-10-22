@@ -2802,9 +2802,9 @@ public function InputIKMYogyakarta()
       return;
     }
 
-    // Deteksi Instrumen (A: Perusahaan, B: Pencari Kerja, C: Pemangku Kepentingan, D: Siswa Kelas 12)
+    // Deteksi Instrumen (A: Perusahaan, B: Pencari Kerja, C: Pemangku Kepentingan, D: Siswa Kelas 12, E: AHP Pemangku Kepentingan)
     $instrumen = strtoupper(trim($input['Instrumen'] ?? ($input['instrumen'] ?? ($input['instrument'] ?? 'A'))));
-    if (!in_array($instrumen, array('A', 'B', 'C', 'D'))) {
+    if (!in_array($instrumen, array('A', 'B', 'C', 'D', 'E'))) {
       $instrumen = 'A';
     }
 
@@ -2878,6 +2878,12 @@ public function InputIKMYogyakarta()
       if (empty($usia)) $usia = trim($rawAnswers['K5'] ?? '17 tahun');
       if (empty($gender)) $gender = trim($rawAnswers['K6'] ?? 'Laki-laki');
       if (empty($pekerjaan)) $pekerjaan = 'Siswa Kelas 12';
+    } elseif ($instrumen === 'E') {
+      if (empty($namaResponden)) $namaResponden = trim($rawAnswers['S2'] ?? 'Narasumber AHP');
+      if (empty($pekerjaan)) $pekerjaan = trim($rawAnswers['S1'] ?? 'Pemangku Kepentingan (AHP)');
+      if (empty($kecamatan)) $kecamatan = 'Banyuwangi';
+      if (empty($pendidikan)) $pendidikan = 'Sarjana (S1 / S2 / S3)';
+      if (empty($usia)) $usia = '40 Tahun ke Atas';
     }
 
     if (empty($kecamatan)) $kecamatan = 'Banyuwangi';
@@ -3012,6 +3018,14 @@ public function InputIKMYogyakarta()
         if ($skorAngka <= 0) $skorAngka = 3.0;
         $totalSkor += $skorAngka;
         $countScored++;
+      } elseif ($pt['Tipe'] === 'pair') {
+        $teksJawaban = (string)$userVal;
+        if (strpos($teksJawaban, '/') !== false) {
+          $parts = explode('/', $teksJawaban);
+          $skorAngka = (float)$parts[1] > 0 ? round(1.0 / (float)$parts[1], 4) : 1.0;
+        } else {
+          $skorAngka = (float)$teksJawaban;
+        }
       } elseif ($pt['Tipe'] === 'number') {
         $skorAngka = (float)$userVal;
         $teksJawaban = (string)$userVal;

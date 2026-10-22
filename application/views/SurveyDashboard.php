@@ -4129,6 +4129,9 @@
             '<button type="button" class="rtkd-tab-btn" id="dashRtkdTab-C" data-tab="C" aria-selected="false" onclick="switchDashRtkdTab(\'C\')">' +
               '<span class="rtkd-tag">C</span>Pemangku Kepentingan' +
             '</button>' +
+            '<button type="button" class="rtkd-tab-btn" id="dashRtkdTab-E" data-tab="E" aria-selected="false" onclick="switchDashRtkdTab(\'E\')">' +
+              '<span class="rtkd-tag">C2</span>AHP' +
+            '</button>' +
             '<button type="button" class="rtkd-tab-btn" id="dashRtkdTab-D" data-tab="D" aria-selected="false" onclick="switchDashRtkdTab(\'D\')">' +
               '<span class="rtkd-tag">D</span>Siswa Kelas 12' +
             '</button>' +
@@ -4366,10 +4369,14 @@
       }
     });
 
-    // Real-time conditional show/hide untuk RTKD Dashboard
+    // Real-time conditional show/hide dan CR check untuk RTKD Dashboard
     $(document).on('input change', '#dashRtkdSheet input, #dashRtkdSheet select, #dashRtkdSheet textarea', function() {
       if (window.isDashRtkd && window.RTKDEngine) {
-        window.RTKDEngine.applyShow('dashRtkdSheet', window.dashRtkdActiveInstrument || 'A', 'dash_');
+        var activeInst = window.dashRtkdActiveInstrument || 'A';
+        window.RTKDEngine.applyShow('dashRtkdSheet', activeInst, 'dash_');
+        if (activeInst === 'E') {
+          window.RTKDEngine.updateCR('dashRtkdSheet', 'E', 'dash_');
+        }
       }
     });
 
@@ -4389,6 +4396,22 @@
 
         var inst = window.dashRtkdActiveInstrument || $('#dashRtkdActiveInstrument').val() || 'A';
         var answers = window.RTKDEngine ? window.RTKDEngine.collect('dashRespondentForm', inst, 'dash_') : {};
+
+        // Validasi konsistensi AHP untuk Instrumen E
+        if (inst === 'E' && window.RTKDEngine) {
+          var badBlocks = window.RTKDEngine.updateCR('dashRtkdSheet', 'E', 'dash_');
+          if (badBlocks && badBlocks.length > 0 && !window.dashAhpAckCr) {
+            window.dashAhpAckCr = true;
+            Swal.fire({
+              icon: 'warning',
+              title: 'Pemeriksaan Konsistensi (AHP)',
+              html: 'Jawaban perbandingan pada <b>' + badBlocks.join(', ') + '</b> masih ada yang bertentangan (CR > 0,10).<br><br>Sebaiknya diteliti kembali bersama narasumber. Jika narasumber tetap pada jawabannya, klik Simpan sekali lagi.<br><small style="color:#64748b;">Catatan: Rekap AHP hanya menghitung isian yang konsisten (CR &le; 0,10).</small>',
+              confirmButtonColor: '#043168',
+              confirmButtonText: 'Tinjau Kembali'
+            });
+            return;
+          }
+        }
 
         // Validasi pertanyaan wajib
         var allQs = window.RTKDEngine ? window.RTKDEngine.allQs(inst) : [];
@@ -4422,7 +4445,7 @@
           return;
         }
 
-        var respNama = $('#dashRespNama').val() || answers.P1 || answers.S2 || answers.K2 || (inst === 'B' ? 'Pencari Kerja / Lulusan' : 'Responden ' + inst);
+        var respNama = $('#dashRespNama').val() || answers.P1 || answers.S2 || answers.K2 || (inst === 'B' ? 'Pencari Kerja / Lulusan' : (inst === 'E' ? 'Narasumber AHP' : 'Responden ' + inst));
         var kec = answers.P2 || answers.L3 || answers.K3 || answers.K7 || $('#dashKecamatan').val() || 'Banyuwangi';
 
         var payload = {

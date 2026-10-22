@@ -79,7 +79,28 @@ label.why{display:grid;gap:4px;margin-top:10px;font-size:13px;font-weight:600;co
 label.why span{font-weight:400}
 label.why textarea{min-height:56px;font-size:15px}
 /* recap */
-.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:18px}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:18px}
+.pair{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:center}
+.pair .pl{text-align:right;font-weight:600;font-size:14px;line-height:1.3}
+.pair .pr{font-weight:600;font-size:14px;line-height:1.3}
+.pairpts{display:flex;gap:2px;overflow-x:auto;padding-block:2px}
+.pairpts label{width:24px;height:32px;flex:none;display:grid;place-items:center;border:1px solid var(--line);border-radius:6px;font-family:var(--f-mono);font-size:12px;cursor:pointer;background:var(--bg)}
+.pairpts label.m{border-color:var(--muted);font-weight:700}
+.pairpts input{position:absolute;opacity:0;pointer-events:none}
+.pairpts label:has(input:checked){background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.pairpts label:focus-within{outline:2px solid var(--sulfur);outline-offset:1px}
+.defbox{background:var(--accent-soft);border-radius:10px;padding:12px 14px;margin:4px 0 12px;font-size:15px;line-height:1.55}
+.defbox strong{display:block;margin-bottom:2px}
+.pairlegend{margin:4px 0 2px 54px}
+.pairlegend .lg{display:flex;justify-content:space-between;gap:8px;width:440px;max-width:100%;font-size:11px;color:var(--muted);font-family:var(--f-mono)}
+.crbox{margin-top:12px;padding:10px 12px;border-radius:8px;font-size:14px;background:var(--bg);border:1px solid var(--line)}
+.crbox.ok{background:var(--accent-soft);border-color:transparent}
+.crbox.bad{background:var(--crit-soft);border-color:transparent}
+.panel-note{margin:0 0 10px;color:var(--muted);font-size:13px}
+.bar.pct{grid-template-columns:minmax(0,220px) 1fr 52px}
+@media (max-width:720px){.pairlegend{display:block}.pairlegend>span{display:none}}
+@media (max-width:520px){.pairlegend{margin-left:0}}
+@media (max-width:720px){.pair:not(.pairlegend){grid-template-columns:1fr 1fr}.pair .pl{text-align:left}.pair .pr{text-align:right}.pair .pairpts{grid-column:1/-1;order:3}}
 .kpi{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
 .kpi .n{font-family:var(--f-display);font-size:30px;font-variant-numeric:tabular-nums;line-height:1.1}
 .kpi .l{font-size:13px;color:var(--muted)}
@@ -100,7 +121,7 @@ td.mono{font-family:var(--f-mono);font-size:12px}
 .chip{display:inline-block;font-family:var(--f-mono);font-size:11px;padding:2px 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
 .empty{color:var(--muted);font-size:15px;padding:8px 0}
 .exports{display:flex;flex-wrap:wrap;gap:8px}
-@media (max-width:520px){.kpis{grid-template-columns:1fr 1fr}.kpi .n{font-size:24px}.q{grid-template-columns:1fr}.code{padding-top:0}.bar{grid-template-columns:minmax(0,110px) 1fr 30px}.sheet{padding:16px}}
+@media (max-width:520px){.kpis{grid-template-columns:1fr 1fr}.kpi .n{font-size:24px}.q{grid-template-columns:1fr}.code{padding-top:0}.bar{grid-template-columns:minmax(0,110px) 1fr 30px}.bar.pct{grid-template-columns:minmax(0,120px) 1fr 48px}.sheet{padding:16px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -115,6 +136,7 @@ td.mono{font-family:var(--f-mono);font-size:12px}
     <button role="tab" id="tab-A" data-tab="A" aria-selected="true"><span class="tag">A</span>Perusahaan</button>
     <button role="tab" id="tab-B" data-tab="B" aria-selected="false"><span class="tag">B</span>Pencari kerja &amp; lulusan</button>
     <button role="tab" id="tab-C" data-tab="C" aria-selected="false"><span class="tag">C</span>Pemangku kepentingan</button>
+    <button role="tab" id="tab-E" data-tab="E" aria-selected="false"><span class="tag">C2</span>AHP</button>
     <button role="tab" id="tab-D" data-tab="D" aria-selected="false"><span class="tag">D</span>Siswa kelas 12</button>
     <button role="tab" id="tab-R" data-tab="R" aria-selected="false"><span class="tag">∑</span>Rekap</button>
   </nav>
@@ -158,6 +180,7 @@ td.mono{font-family:var(--f-mono);font-size:12px}
         <button class="btn ghost" data-export="B" type="button">Instrumen B</button>
         <button class="btn ghost" data-export="C" type="button">Instrumen C</button>
         <button class="btn ghost" data-export="D" type="button">Instrumen D</button>
+        <button class="btn ghost" data-export="E" type="button">AHP</button>
       </div>
       <div class="status" id="exportStatus" role="status" aria-live="polite" style="margin-top:8px"></div>
     </div>
@@ -170,7 +193,13 @@ const SEKTOR=["Pertanian/perikanan","Industri pengolahan","Perdagangan","Akomoda
 const BEKERJA=["Bekerja sebagai karyawan/buruh","Berusaha sendiri","Pekerja lepas","Membantu usaha keluarga"];
 const SCALE_NOTE="1 = sangat kurang · 5 = sangat baik";
 const IDENTITAS=new Set(["P1","P2","P3","P4","P5","L1","L2","L3","L4","L5","L6","K1","K2","K3","K4","K5","K6","K7"]);
-function hasWhy(q){return ["one","many","scale"].includes(q.type)&&!IDENTITAS.has(q.c)&&/^[PLK]\d/.test(q.c);}
+const NOWHY=new Set(["L30","L33","L39"]);
+function hasWhy(q){return ["one","many","scale"].includes(q.type)&&!IDENTITAS.has(q.c)&&!NOWHY.has(q.c)&&/^[PLK]\d/.test(q.c);}
+const HIJAU_DEF="Green job atau pekerjaan hijau adalah pekerjaan yang ikut menjaga alam dan lingkungan tetap bersih dan lestari, dengan upah dan perlindungan kerja yang layak. Contohnya: mengelola bank sampah, mendaur ulang plastik, bertani organik, menangkap ikan tanpa merusak laut, memandu wisata alam, dan memasang listrik tenaga surya.";
+const BIDANG_HIJAU=["Listrik tenaga surya, biogas, atau angin","Pengelolaan sampah dan daur ulang","Pertanian organik (tanpa banyak bahan kimia)","Perikanan yang tidak merusak laut","Wisata alam dan desa wisata","Bangunan hemat listrik dan air","Kendaraan listrik dan bengkelnya","Lainnya"];
+const TAHU_HIJAU=["Pernah dengar dan tahu artinya","Pernah dengar, tapi belum tahu artinya","Belum pernah dengar"];
+const MINAT_HIJAU=["Sangat tertarik","Tertarik","Kurang tertarik","Tidak tertarik"];
+const TERTARIK=v=>v==="Sangat tertarik"||v==="Tertarik";
 
 const SCHEMA={
  A:{name:"Perusahaan/pemberi kerja",blocks:[
@@ -213,7 +242,23 @@ const SCHEMA={
    {c:"P28",l:"Kecelakaan kerja dalam 12 bulan terakhir",type:"one",o:["Tidak ada","1–2 kejadian","3 atau lebih"]}]},
   {t:"G. Kendala dan harapan",qs:[
    {c:"P29",l:"Kendala utama terkait tenaga kerja",type:"area"},
-   {c:"P30",l:"Dukungan yang diharapkan dari pemerintah daerah",note:"boleh lebih dari satu",type:"many",o:["Pelatihan sesuai kebutuhan","Informasi pasar kerja","Insentif perekrutan","Sertifikasi","Lainnya"]}]}
+   {c:"P30",l:"Dukungan yang diharapkan dari pemerintah daerah",note:"boleh lebih dari satu",type:"many",o:["Pelatihan sesuai kebutuhan","Informasi pasar kerja","Insentif perekrutan","Sertifikasi","Lainnya"]}]},
+  {t:"H. Perputaran pekerja (labour turnover)",qs:[
+   {c:"P31",l:"Jumlah pekerja yang keluar atau berhenti dalam 12 bulan terakhir",type:"num"},
+   {c:"P32",l:"Rata-rata lama pekerja bertahan di perusahaan",type:"one",o:["Kurang dari 1 tahun","1–3 tahun","3–5 tahun","Lebih dari 5 tahun"]},
+   {c:"P36",l:"Apakah pekerja yang sering keluar-masuk menjadi masalah bagi perusahaan?",type:"one",o:["Ya, masalah besar","Cukup menjadi masalah","Tidak menjadi masalah"]},
+   {c:"P37",l:"Alasan paling sering pekerja mengundurkan diri",type:"one",o:["Mendapat upah lebih tinggi di tempat lain","Kontrak habis","Upah dirasa terlalu rendah","Kondisi atau beban kerja tidak cocok","Bekerja ke luar daerah atau luar negeri","Membuka usaha sendiri","Alasan keluarga atau pindah tempat tinggal","Melanjutkan sekolah","Lainnya"]},
+   {c:"P38",l:"Cara perusahaan mengatasi pekerja yang sering keluar",note:"boleh lebih dari satu",type:"many",o:["Menaikkan upah atau memberi insentif","Memberi jenjang karier atau kenaikan jabatan","Memberi pelatihan","Mengangkat menjadi pekerja tetap","Memperbaiki kondisi dan suasana kerja","Memberi tunjangan atau fasilitas tambahan","Mengikat dengan kontrak atau ikatan dinas","Belum ada upaya khusus","Lainnya"]}]},
+  {t:"I. Kegiatan ramah lingkungan (green job)",def:HIJAU_DEF,qs:[
+   {c:"P33",l:"Kegiatan ramah lingkungan apa yang sudah dilakukan perusahaan?",note:"boleh lebih dari satu",type:"many",o:["Menghemat listrik atau air","Mengolah limbah atau mendaur ulang sampah","Memakai listrik tenaga surya atau energi bersih lainnya","Memakai bahan baku yang ramah lingkungan","Punya sertifikat ramah lingkungan","Belum ada"]},
+   {c:"P34",l:"Dalam 3 tahun ke depan, apakah perusahaan berencana menambah pekerja yang punya keterampilan green job?",type:"one",o:["Ya","Mungkin","Tidak"]},
+   {c:"P35",l:"Keterampilan green job apa yang paling dibutuhkan?",note:"misalnya mengolah limbah, mendaur ulang, atau merawat panel surya",type:"text",show:a=>a.P34==="Ya"||a.P34==="Mungkin"}]},
+  {t:"J. Upah minimum dan iklim usaha",qs:[
+   {c:"P39",l:"Menurut Bapak/Ibu, apakah UMK Banyuwangi saat ini (Rp2.989.145 per bulan pada 2026) cukup kompetitif?",note:"kompetitif: tidak memberatkan usaha dan cukup menarik bagi pekerja dibandingkan daerah lain",type:"one",o:["Ya, cukup kompetitif","Kurang kompetitif","Tidak kompetitif","Tidak tahu"]},
+   {c:"P40",l:"Jika kurang atau tidak kompetitif, apa pengaruhnya bagi perusahaan?",note:"boleh lebih dari satu",type:"many",o:["Biaya produksi naik","Keuntungan turun","Sulit menambah pekerja baru","Pekerja terampil memilih bekerja di daerah lain","Pekerja lebih sering keluar","Harga produk kalah bersaing","Menunda perluasan usaha","Lainnya"],show:a=>a.P39==="Kurang kompetitif"||a.P39==="Tidak kompetitif"},
+   {c:"P41",l:"Jika UMK naik, langkah apa yang paling mungkin dilakukan perusahaan?",note:"boleh lebih dari satu",type:"many",o:["Meningkatkan produksi atau produktivitas pekerja","Menaikkan harga jual","Mengurangi jumlah pekerja","Mengganti sebagian pekerja dengan mesin atau alat produksi","Mengurangi jam kerja atau lembur","Menunda penerimaan pekerja baru","Menambah pekerja kontrak, harian, atau alih daya","Mengurangi tunjangan atau fasilitas lain","Tidak ada perubahan","Lainnya"]},
+   {c:"P42",l:"Permasalahan di Kabupaten Banyuwangi yang paling memengaruhi kinerja atau hasil produksi perusahaan",note:"boleh lebih dari satu",type:"many",o:["Sulit mendapat tenaga kerja terampil","Biaya tenaga kerja","Infrastruktur jalan dan transportasi","Pasokan listrik atau air","Perizinan usaha","Akses permodalan","Permintaan pasar lemah","Harga atau pasokan bahan baku","Persaingan usaha","Musim dan cuaca","Lainnya"]},
+   {c:"P43",l:"Jelaskan permasalahan yang paling berat dan usulan penyelesaiannya",type:"area"}]}
  ]},
  B:{name:"Pencari kerja dan lulusan",blocks:[
   {t:"Pencatatan petugas dan penyaringan",hint:"Diisi oleh enumerator sebelum wawancara. Jika responden tidak memenuhi satu pun kriteria penyaring (SC), hentikan wawancara.",qs:[
@@ -254,7 +299,22 @@ const SCHEMA={
    {c:"L26",l:"Sektor yang paling diminati",type:"one",o:[...SEKTOR,"Pemerintahan/ASN"]},
    {c:"L27",l:"Kesediaan bekerja di luar Banyuwangi",type:"one",o:["Ya, dalam negeri","Ya, termasuk luar negeri","Tidak"]},
    {c:"L28",l:"Minat membuka usaha sendiri",type:"one",o:["Sudah berusaha","Berminat","Tidak berminat"]},
-   {c:"L29",l:"Kendala utama memulai usaha",type:"one",o:["Modal","Keterampilan","Pasar","Perizinan","Lainnya"]}]}
+   {c:"L29",l:"Kendala utama memulai usaha",type:"one",o:["Modal","Keterampilan","Pasar","Perizinan","Lainnya"]},
+   {c:"L39",l:"Jika ditawari pekerjaan dengan upah di bawah UMK (Rp2.989.145 per bulan pada 2026), apa yang akan Anda lakukan?",type:"one",o:["Tetap mengambil","Mengambil sementara sambil mencari pekerjaan lain","Tergantung jenis pekerjaannya","Tidak mengambil"]},
+   {c:"L39a",l:"Alasannya",type:"area",req:1,show:a=>!!a.L39},
+   {c:"L40",l:"Lebih suka bekerja dengan penghasilan tetap atau lepas (freelance)?",type:"one",o:["Penghasilan tetap (gaji bulanan)","Lepas/freelance (dibayar per pekerjaan)","Pekerjaan tetap ditambah pekerjaan sampingan","Tidak ada pilihan khusus"]}]},
+  {t:"G. Riwayat perpindahan kerja",qs:[
+   {c:"L30",l:"Apakah pernah bekerja, termasuk pekerjaan saat ini?",type:"one",o:["Ya","Belum pernah bekerja"]},
+   {c:"L31",l:"Berapa kali berpindah tempat kerja dalam 5 tahun terakhir",type:"one",o:["Belum pernah pindah","1 kali","2–3 kali","4 kali atau lebih"],show:a=>a.L30==="Ya"},
+   {c:"L32",l:"Waktu paling lama bekerja di satu tempat kerja",type:"one",o:["Kurang dari 6 bulan","6–12 bulan","1–2 tahun","2–5 tahun","Lebih dari 5 tahun"],show:a=>a.L30==="Ya"},
+   {c:"L33",l:"Alasan utama mengundurkan diri, berhenti, atau pindah dari pekerjaan sebelumnya",type:"one",o:["Masih bekerja di tempat kerja pertama","Kontrak habis","Upah rendah","Mendapat pekerjaan yang lebih baik","PHK atau usaha tutup","Kondisi kerja tidak nyaman","Alasan keluarga atau pindah tempat tinggal","Melanjutkan sekolah","Lainnya"],show:a=>a.L30==="Ya"},
+   {c:"L33a",l:"Sebutkan alasan lainnya",type:"area",req:1,show:a=>a.L30==="Ya"&&a.L33==="Lainnya"}]},
+  {t:"H. Green job (pekerjaan ramah lingkungan)",def:HIJAU_DEF,qs:[
+   {c:"L34",l:"Sebelum membaca penjelasan di atas, apakah Anda pernah mendengar istilah green job atau pekerjaan hijau?",type:"one",o:TAHU_HIJAU},
+   {c:"L35",l:"Apakah pekerjaan Anda sekarang atau yang terakhir ikut menjaga lingkungan?",type:"one",o:["Ya","Sebagian","Tidak","Tidak tahu"],show:a=>a.L30==="Ya"},
+   {c:"L36",l:"Apakah Anda tertarik bekerja di bidang green job?",type:"one",o:MINAT_HIJAU},
+   {c:"L37",l:"Bidang green job apa yang paling Anda minati?",note:"boleh lebih dari satu",type:"many",o:BIDANG_HIJAU,show:a=>TERTARIK(a.L36)},
+   {c:"L38",l:"Apakah Anda pernah ikut pelatihan tentang green job?",note:"misalnya daur ulang, pertanian organik, atau pemasangan panel surya",type:"one",o:["Ya","Tidak"]}]}
  ]},
  C:{name:"Pemangku kepentingan",blocks:[
   {t:"Identitas narasumber",hint:"Catatan wawancara mendalam atau FGD. Tulis pokok jawaban, bukan transkrip lengkap.",qs:[
@@ -305,9 +365,34 @@ const SCHEMA={
    {c:"K23",l:"Pengetahuan tentang layanan Disnaker (kartu AK/I, bursa kerja, pelatihan)",type:"one",o:["Pernah memakai","Pernah dengar, belum memakai","Belum pernah dengar"]},
    {c:"K24",l:"Hambatan yang paling dikhawatirkan untuk mendapat pekerjaan",note:"boleh lebih dari satu",type:"many",o:["Lowongan sedikit","Keterampilan belum cukup","Belum punya pengalaman","Biaya kuliah/pelatihan","Upah rendah","Syarat umur/penampilan","Lainnya"]},
    {c:"K25",l:"Dukungan yang paling dibutuhkan dari sekolah atau pemerintah daerah",note:"boleh lebih dari satu",type:"many",o:["Informasi lowongan","Pelatihan keterampilan","Magang di perusahaan","Beasiswa","Modal usaha","Bimbingan karier"]},
-   {c:"K26",l:"Lapangan usaha pekerjaan utama orang tua atau wali",type:"one",o:[...SEKTOR,"Pemerintahan/ASN","Tidak bekerja"]}]}
+   {c:"K26",l:"Lapangan usaha pekerjaan utama orang tua atau wali",type:"one",o:[...SEKTOR,"Pemerintahan/ASN","Tidak bekerja"]}]},
+  {t:"E. Green job (pekerjaan ramah lingkungan)",def:HIJAU_DEF,qs:[
+   {c:"K27",l:"Sebelum membaca penjelasan di atas, apakah kamu pernah mendengar istilah green job atau pekerjaan hijau?",type:"one",o:TAHU_HIJAU},
+   {c:"K28",l:"Apakah kamu tertarik bekerja di bidang green job setelah lulus?",type:"one",o:MINAT_HIJAU},
+   {c:"K29",l:"Bidang green job apa yang paling kamu minati?",note:"boleh lebih dari satu",type:"many",o:BIDANG_HIJAU,show:a=>TERTARIK(a.K28)}]}
  ]}
 };
+
+/* ---------- AHP pemangku kepentingan ---------- */
+const AHP_KRIT=["Mendukung target pembangunan daerah","Dirasakan oleh banyak warga","Ikut mendorong kemajuan sektor lain","Bisa ditangani pemerintah kabupaten","Bisa diatasi dalam 5 tahun","Sejalan dengan program bupati"];
+const AHP_ISU=["Banyak pekerja tanpa kontrak dan perlindungan","Keterampilan pencari kerja belum sesuai kebutuhan","Hasil kerja petani dan nelayan masih rendah","Anak muda dan lulusan sulit mendapat kerja","Pekerja migran dan kelompok rentan kurang terlindungi"];
+const SAATY="Cara mengisi: klik angka yang lebih dekat ke hal yang menurut Anda lebih penting. Angka 1 di tengah berarti sama penting. Makin besar angkanya, makin penting: 3 = sedikit lebih penting, 5 = lebih penting, 7 = jauh lebih penting, 9 = sangat jauh lebih penting. Angka 2, 4, 6, 8 boleh dipakai jika ragu di antara dua pilihan.";
+function pairQs(prefix,items){const qs=[];for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++)qs.push({c:`${prefix}${i+1}${j+1}`,type:"pair",left:items[i],right:items[j],req:1});return qs;}
+SCHEMA.E={name:"AHP pemangku kepentingan",blocks:[
+ {t:"Identitas narasumber",hint:"Kuesioner ini meminta pendapat Bapak/Ibu tentang masalah ketenagakerjaan mana yang perlu ditangani lebih dulu di Banyuwangi. Bapak/Ibu cukup membandingkan dua hal setiap kali. Tidak ada jawaban benar atau salah. Perkiraan waktu 25–35 menit, didampingi petugas.",qs:[
+  {c:"S1",l:"Kelompok narasumber",type:"one",o:["Perencana dan pengelola program","Penyedia pelatihan dan pendidikan","Dunia usaha","Pekerja/serikat pekerja","Penempatan dan migrasi kerja"],req:1},
+  {c:"S2",l:"Nama lembaga",type:"text",req:1},
+  {c:"S3",l:"Jabatan narasumber",type:"text"},
+  {c:"S5",l:"Bentuk kegiatan",type:"one",o:["Wawancara mendalam","FGD"]}]},
+ {t:"Bagian 1. Pertimbangan mana yang lebih penting?",hint:"Saat memilih masalah ketenagakerjaan yang harus ditangani lebih dulu, pertimbangan mana yang menurut Bapak/Ibu lebih penting? "+SAATY,matrix:{n:AHP_KRIT.length,prefix:"W",items:AHP_KRIT},qs:pairQs("W",AHP_KRIT)},
+ ...AHP_KRIT.map((k,ix)=>({t:`Bagian ${ix+2}. Dilihat dari: ${k}`,hint:`Jika hanya dilihat dari sisi "${k.toLowerCase()}", masalah mana yang lebih penting untuk ditangani lebih dulu? `+SAATY,matrix:{n:AHP_ISU.length,prefix:`X${ix+1}_`,items:AHP_ISU},qs:pairQs(`X${ix+1}_`,AHP_ISU)}))
+]};
+const RI=[0,0,0,0.58,0.90,1.12,1.24,1.32,1.41,1.45];
+const fmt=(x,d)=>x.toFixed(d).replace(".",",");
+function parseR(s){if(s==null||s==="")return null;const t=String(s);return t.includes("/")?1/Number(t.split("/")[1]):Number(t);}
+function buildM(a,prefix,n){const M=[...Array(n)].map(()=>Array(n).fill(1));for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){const v=parseR(a[`${prefix}${i+1}${j+1}`]);if(v==null||!isFinite(v)||v<=0)return null;M[i][j]=v;M[j][i]=1/v;}return M;}
+function ahp(M){const n=M.length;let w=Array(n).fill(1/n);for(let it=0;it<200;it++){const nw=M.map(r=>r.reduce((s,x,j)=>s+x*w[j],0));const sum=nw.reduce((s,x)=>s+x,0);const nn=nw.map(x=>x/sum);const d=Math.max(...nn.map((x,i)=>Math.abs(x-w[i])));w=nn;if(d<1e-12)break;}const Aw=M.map(r=>r.reduce((s,x,j)=>s+x*w[j],0));const lam=Aw.reduce((s,x,i)=>s+x/w[i],0)/n;const CI=n>1?(lam-n)/(n-1):0;const CR=RI[n]?CI/RI[n]:0;return {w,lam,CI,CR};}
+function aggAHP(list,b){const n=b.matrix.n,M=[...Array(n)].map(()=>Array(n).fill(1));for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){const vals=list.map(e=>parseR((e.answers||{})[`${b.matrix.prefix}${i+1}${j+1}`])).filter(v=>v>0&&isFinite(v));const g=vals.length?Math.exp(vals.reduce((s,v)=>s+Math.log(v),0)/vals.length):1;M[i][j]=g;M[j][i]=1/g;}return ahp(M);}
 
 /* ---------- state ---------- */
 let current="A", db=null, canWrite=true, userId=null, entries=[], downloads=null;
@@ -329,16 +414,20 @@ function qHTML(q){
     body=`<div class="opts" role="${t==="radio"?"radiogroup":"group"}" aria-labelledby="lbl-${id}">${q.o.map((o,i)=>`<label class="opt" for="${id}_${i}"><input type="${t}" id="${id}_${i}" name="${id}" value="${esc(o)}">${esc(o)}</label>`).join("")}</div>`;
   } else if(q.type==="grid"){
     body=`<div class="grid">${q.f.map((f,i)=>`<label for="${id}_${i}">${esc(f)}<input type="number" min="0" inputmode="numeric" id="${id}_${i}" name="${id}" data-field="${esc(f)}"></label>`).join("")}</div>`;
+  } else if(q.type==="pair"){
+    const opts=[9,8,7,6,5,4,3,2,1,2,3,4,5,6,7,8,9].map((v,k)=>{const val=k<8?String(v):k===8?"1":"1/"+v;const side=k<8?"l":k===8?"m":"r";const tip=k<8?`${q.left} ${v} kali lebih penting`:k===8?"Sama penting":`${q.right} ${v} kali lebih penting`;return `<label class="${side}" for="${id}_${k}" title="${esc(tip)}"><input type="radio" id="${id}_${k}" name="${id}" value="${val}">${v}</label>`;}).join("");
+    body=`<div class="pair"><div class="pl">${esc(q.left)}</div><div class="pts pairpts" role="radiogroup" aria-label="${esc(q.left)} dibandingkan dengan ${esc(q.right)}">${opts}</div><div class="pr">${esc(q.right)}</div></div>`;
   } else if(q.type==="scale"){
     body=`<div class="scale"><div class="scale-key">${SCALE_NOTE}</div>${q.f.map((f,i)=>`<div class="row"><span>${esc(f)}</span><div class="pts" role="radiogroup" aria-label="${esc(f)}">${[1,2,3,4,5].map(n=>`<label for="${id}_${i}_${n}"><input type="radio" id="${id}_${i}_${n}" name="${id}__${i}" value="${n}" data-field="${esc(f)}" data-q="${id}">${n}</label>`).join("")}</div></div>`).join("")}</div>`;
   }
   const why=hasWhy(q)?`<label class="why" for="${id}__why">Alasan <span>(opsional)</span><textarea id="${id}__why" name="${id}__why" rows="2"></textarea></label>`:"";
-  return `<div class="q" id="wrap-${id}"><div class="code">${id}</div><div class="qbody"><div class="ql" id="lbl-${id}">${esc(q.l)}${req}${q.note?`<small>${esc(q.note)}</small>`:""}</div>${body}${why}</div></div>`;
+  const head=q.type==="pair"?"":`<div class="ql" id="lbl-${id}">${esc(q.l)}${req}${q.note?`<small>${esc(q.note)}</small>`:""}</div>`;
+  return `<div class="q" id="wrap-${id}"><div class="code">${id}</div><div class="qbody">${head}${body}${why}</div></div>`;
 }
 function renderForm(){
   const s=SCHEMA[current];
-  $("#sheet").innerHTML=s.blocks.map(b=>`<div class="blk"><h2>${esc(b.t)}</h2>${b.hint?`<p class="hint">${esc(b.hint)}</p>`:""}${b.qs.map(qHTML).join("")}</div>`).join("");
-  $("#consentText").textContent = current==="C"
+  $("#sheet").innerHTML=s.blocks.map(b=>`<div class="blk"><h2>${esc(b.t)}</h2>${b.hint?`<p class="hint">${esc(b.hint)}</p>`:""}${b.def?`<div class="defbox"><strong>Apa itu green job?</strong> ${esc(b.def)}</div>`:""}${b.matrix?`<div class="pair pairlegend" aria-hidden="true"><span></span><div class="lg"><span>← kiri lebih penting</span><span>sama</span><span>kanan lebih penting →</span></div><span></span></div>`:""}${b.qs.map(qHTML).join("")}${b.matrix?`<div class="crbox" id="cr-${b.matrix.prefix}" aria-live="polite"></div>`:""}</div>`).join("");
+  $("#consentText").textContent = (current==="C"||current==="E")
     ? "Narasumber sudah menerima penjelasan tujuan wawancara dan menyetujui pencatatan pokok jawaban untuk penyusunan RTKD."
     : current==="D"
     ? "Sekolah sudah memberi izin, siswa sudah menerima penjelasan tujuan survei dan bersedia mengisi, serta mengetahui bahwa jawaban tidak memuat nama dan hanya disajikan secara agregat."
@@ -346,6 +435,7 @@ function renderForm(){
   const draft=store.get("draft-"+current); if(draft){try{fill(JSON.parse(draft))}catch(e){}}
   $("#consent").checked=false;
   applyShow();
+  crAck=false; updateCR();
   setStatus(draft?"Isian sementara di perangkat ini dipulihkan.":"");
 }
 function allQs(){return SCHEMA[current].blocks.flatMap(b=>b.qs)}
@@ -354,7 +444,7 @@ function collect(){
   for(const q of allQs()){
     const c=q.c;
     if(["text","area","num","date","kec"].includes(q.type)){const v=form.querySelector("#"+c).value.trim(); if(v!=="") a[c]=q.type==="num"?Number(v):v;}
-    else if(q.type==="one"){const el=form.querySelector(`input[name="${c}"]:checked`); if(el) a[c]=el.value;}
+    else if(q.type==="one"||q.type==="pair"){const el=form.querySelector(`input[name="${c}"]:checked`); if(el) a[c]=el.value;}
     else if(q.type==="many"){const v=[...form.querySelectorAll(`input[name="${c}"]:checked`)].map(e=>e.value); if(v.length) a[c]=v;}
     else if(q.type==="grid"){const o={}; form.querySelectorAll(`input[name="${c}"]`).forEach(e=>{if(e.value!=="") o[e.dataset.field]=Number(e.value)}); if(Object.keys(o).length) a[c]=o;}
     else if(q.type==="scale"){const o={}; form.querySelectorAll(`input[data-q="${c}"]:checked`).forEach(e=>{o[e.dataset.field]=Number(e.value)}); if(Object.keys(o).length) a[c]=o;}
@@ -369,7 +459,7 @@ function fill(a){
     if(hasWhy(q)&&a[c+"_alasan"]!=null) form.querySelector("#"+c+"__why").value=a[c+"_alasan"];
     if(v==null) continue;
     if(["text","area","num","date","kec"].includes(q.type)) form.querySelector("#"+c).value=v;
-    else if(q.type==="one") form.querySelectorAll(`input[name="${c}"]`).forEach(e=>e.checked=e.value===v);
+    else if(q.type==="one"||q.type==="pair") form.querySelectorAll(`input[name="${c}"]`).forEach(e=>e.checked=e.value===v);
     else if(q.type==="many") form.querySelectorAll(`input[name="${c}"]`).forEach(e=>e.checked=v.includes(e.value));
     else if(q.type==="grid") form.querySelectorAll(`input[name="${c}"]`).forEach(e=>{if(v[e.dataset.field]!=null)e.value=v[e.dataset.field]});
     else if(q.type==="scale") form.querySelectorAll(`input[data-q="${c}"]`).forEach(e=>e.checked=v[e.dataset.field]===Number(e.value));
@@ -392,8 +482,27 @@ document.querySelectorAll("nav.tabs button").forEach(b=>b.addEventListener("clic
 
 /* ---------- form events ---------- */
 const form=$("#surveyForm");
-form.addEventListener("input",()=>{applyShow();store.set("draft-"+current,JSON.stringify(collect()));});
-form.addEventListener("change",()=>{applyShow();store.set("draft-"+current,JSON.stringify(collect()));});
+let crAck=false;
+function updateCR(){
+  const s=SCHEMA[current]; if(!s) return [];
+  const a=collect(), bad=[];
+  s.blocks.forEach((b,bi)=>{
+    if(!b.matrix) return;
+    const el=document.getElementById("cr-"+b.matrix.prefix); if(!el) return;
+    const M=buildM(a,b.matrix.prefix,b.matrix.n);
+    if(!M){const done=b.qs.filter(q=>a[q.c]!=null).length;el.className="crbox";el.textContent=`Sudah dijawab ${done} dari ${b.qs.length} pasangan. Pemeriksaan kecocokan jawaban muncul setelah semua pasangan di bagian ini dijawab.`;return;}
+    const r=ahp(M), ok=r.CR<=0.1;
+    if(!ok) bad.push(b.t.split(".")[0]);
+    const urut=b.matrix.items.map((x,i)=>[x,r.w[i]]).sort((p,q)=>q[1]-p[1]).map(([x,w],i)=>`${i+1}. ${x} (${fmt(w*100,0)}%)`).join("  ");
+    el.className="crbox "+(ok?"ok":"bad");
+    el.textContent=ok
+      ? `Jawaban di bagian ini sudah saling cocok (CR ${fmt(r.CR,2)}). Urutan menurut jawaban Bapak/Ibu: ${urut}`
+      : `Jawaban di bagian ini masih ada yang bertentangan (CR ${fmt(r.CR,2)}, batas 0,10). Coba cek lagi. Contoh: jika A lebih penting dari B, dan B lebih penting dari C, maka A seharusnya juga lebih penting dari C. Urutan sementara: ${urut}`;
+  });
+  return bad;
+}
+form.addEventListener("input",()=>{applyShow();crAck=false;updateCR();store.set("draft-"+current,JSON.stringify(collect()));});
+form.addEventListener("change",()=>{applyShow();crAck=false;updateCR();store.set("draft-"+current,JSON.stringify(collect()));});
 $("#enumerator").value=store.get("enumerator")||"";
 $("#enumerator").addEventListener("input",e=>store.set("enumerator",e.target.value));
 $("#resetBtn").addEventListener("click",()=>{$("#resetConfirm").hidden=false;});
@@ -405,10 +514,11 @@ form.addEventListener("submit",async e=>{
   const a=collect();
   // keep only answers to visible questions
   for(const q of allQs()) if(q.show&&!q.show(a)){delete a[q.c];delete a[q.c+"_alasan"];}
-  const missing=allQs().filter(q=>q.req&&a[q.c]==null).map(q=>q.c);
+  const missing=allQs().filter(q=>q.req&&(!q.show||q.show(a))&&a[q.c]==null).map(q=>q.c);
   if(!$("#consent").checked){setStatus("Centang persetujuan responden terlebih dahulu.","err");$("#consent").focus();return;}
   if(missing.length){setStatus("Lengkapi pertanyaan wajib: "+missing.join(", ")+".","err");const el=$("#wrap-"+missing[0]);el&&el.scrollIntoView({block:"center"});return;}
   if(current==="B"&&Array.isArray(a.SC)&&a.SC.includes("Tidak satu pun")){setStatus(a.SC.length===1?"Responden tidak memenuhi kriteria penyaring. Wawancara dihentikan dan jawaban tidak disimpan.":"Pada SC, \"Tidak satu pun\" tidak bisa dipilih bersama kriteria lain. Perbaiki jawaban SC.","err");$("#wrap-SC").scrollIntoView({block:"center"});return;}
+  if(current==="E"){const bad=updateCR();if(bad.length&&!crAck){crAck=true;setStatus(`Jawaban di ${bad.join(", ")} masih ada yang bertentangan. Sebaiknya dicek lagi bersama narasumber. Jika narasumber tetap pada jawabannya, tekan Simpan sekali lagi. Catatan: jawaban yang bertentangan tidak ikut dihitung dalam rekap.`,"err");return;}}
   if(!$("#enumerator").value.trim()){setStatus("Isi nama enumerator terlebih dahulu.","err");$("#enumerator").focus();return;}
   if(!db){setStatus("Jawaban belum bisa disimpan: penyimpanan tidak tersedia di tampilan ini.","err");return;}
   const btn=$("#submitBtn"); btn.disabled=true; setStatus("Menyimpan…");
@@ -431,9 +541,27 @@ function barsHTML(title,pairs,total){
   const max=Math.max(...pairs.map(p=>p[1]));
   return `<div class="panel"><h3>${esc(title)}</h3><div class="bars">${pairs.map(([k,v])=>`<div class="bar"><span class="name" title="${esc(k)}">${esc(k)}</span><div class="track"><div class="fill" style="width:${(v/max*100).toFixed(1)}%"></div></div><span class="v">${v}</span></div>`).join("")}</div></div>`;
 }
+function barsPct(title,pairs,note){
+  if(!pairs.length) return "";
+  const max=Math.max(...pairs.map(p=>p[1]));
+  return `<div class="panel"><h3>${esc(title)}</h3>${note?`<p class="panel-note">${esc(note)}</p>`:""}<div class="bars">${pairs.map(([k,v])=>`<div class="bar pct"><span class="name" title="${esc(k)}">${esc(k)}</span><div class="track"><div class="fill" style="width:${(v/max*100).toFixed(1)}%"></div></div><span class="v">${fmt(v*100,1)}%</span></div>`).join("")}</div></div>`;
+}
+function ahpRecap(E){
+  const bl=SCHEMA.E.blocks.filter(b=>b.matrix);
+  if(!E.length) return `<div class="panel"><h3>Hasil AHP pemangku kepentingan</h3><div class="empty">Belum ada isian AHP. Bobot kriteria dan prioritas isu muncul di sini setelah isian pertama disimpan di tab AHP.</div></div>`;
+  const cons=e=>bl.every(b=>{const M=buildM(e.answers||{},b.matrix.prefix,b.matrix.n);return M&&ahp(M).CR<=0.1;});
+  const ok=E.filter(cons), use=ok.length?ok:E;
+  const crit=aggAHP(use,bl[0]), loc=bl.slice(1).map(b=>aggAHP(use,b));
+  const glob=AHP_ISU.map((x,i)=>[x,loc.reduce((s,l,k)=>s+crit.w[k]*l.w[i],0)]).sort((p,q)=>q[1]-p[1]);
+  const note=`Gabungan ${use.length} narasumber dengan rata-rata geometrik. `+(ok.length?(E.length>ok.length?`${E.length-ok.length} isian tidak konsisten (CR di atas 0,10) tidak diikutkan.`:"Semua isian konsisten."):"Belum ada isian yang konsisten penuh, jadi semua isian diikutkan sementara.");
+  const rows=AHP_KRIT.map((k,ix)=>`<tr><td>${esc(k)}</td><td class="mono">${fmt(crit.w[ix]*100,1)}%</td>${loc[ix].w.map(w=>`<td class="mono">${fmt(w*100,1)}%</td>`).join("")}<td class="mono">${fmt(loc[ix].CR,3)}</td></tr>`).join("");
+  return barsPct("Prioritas isu strategis (bobot global AHP)",glob,note)
+    +barsPct(`Bobot kriteria (CR gabungan ${fmt(crit.CR,3)})`,AHP_KRIT.map((k,i)=>[k,crit.w[i]]).sort((p,q)=>q[1]-p[1]))
+    +`<div class="panel"><h3>Prioritas lokal isu menurut kriteria</h3><div class="tbl-wrap"><table><thead><tr><th>Kriteria</th><th>Bobot</th>${AHP_ISU.map((x,i)=>`<th title="${esc(x)}">Isu ${i+1}</th>`).join("")}<th>CR</th></tr></thead><tbody>${rows}</tbody></table></div><p class="panel-note">${AHP_ISU.map((x,i)=>`Isu ${i+1}: ${esc(x)}`).join(" · ")}</p></div>`;
+}
 function renderRecap(){
-  const A=entries.filter(e=>e.instrument==="A"),B=entries.filter(e=>e.instrument==="B"),C=entries.filter(e=>e.instrument==="C"),D=entries.filter(e=>e.instrument==="D");
-  $("#kpis").innerHTML=[["A","Perusahaan",A.length,"target 150–250"],["B","Pencari kerja & lulusan",B.length,"target 300–400"],["C","Narasumber",C.length,"target 10–15"],["D","Siswa kelas 12",D.length,"target 100"]]
+  const A=entries.filter(e=>e.instrument==="A"),B=entries.filter(e=>e.instrument==="B"),C=entries.filter(e=>e.instrument==="C"),D=entries.filter(e=>e.instrument==="D"),E=entries.filter(e=>e.instrument==="E");
+  $("#kpis").innerHTML=[["A","Perusahaan",A.length,"target 150–250"],["B","Pencari kerja & lulusan",B.length,"target 300–400"],["C","Narasumber",C.length,"target 10–15"],["D","Siswa kelas 12",D.length,"target 100"],["AHP","Narasumber AHP",E.length,"target 10–15"]]
     .map(([t,l,n,g])=>`<div class="kpi"><div class="t">${t}</div><div class="n">${n}</div><div class="l">${l}<br>${g}</div></div>`).join("");
   if(!db){$("#recapBody").innerHTML=`<div class="panel"><div class="empty">Rekap tampil setelah penyimpanan terhubung. Buka halaman ini dengan akun yang diberi akses oleh pemilik survei.</div></div>`;return;}
   if(!entries.length){$("#recapBody").innerHTML=`<div class="panel"><h3>Belum ada jawaban tersimpan</h3><div class="empty">Rekap terisi otomatis begitu enumerator menyimpan formulir pertama di tab A, B, C, atau D.</div></div>`;return;}
@@ -447,9 +575,15 @@ function renderRecap(){
     barsHTML("Pencari kerja/lulusan menurut pendidikan (L4)",countBy(B,e=>e.answers.L4))+
     barsHTML("Pencari kerja/lulusan menurut kegiatan utama (L7)",countBy(B,e=>e.answers.L7))+
     barsHTML("Pencari kerja/lulusan menurut sumber responden (SR)",countBy(B,e=>e.answers.SR))+
+    barsHTML("Frekuensi berpindah kerja dalam 5 tahun (L31)",countBy(B,e=>e.answers.L31))+
+    barsHTML("Sikap jika ditawari upah di bawah UMK (L39)",countBy(B,e=>e.answers.L39))+
+    barsHTML("Alasan paling sering pekerja mengundurkan diri menurut perusahaan (P37)",countBy(A,e=>e.answers.P37))+
+    barsHTML("Langkah perusahaan jika UMK naik (P41)",countBy(A,e=>e.answers.P41))+
+    barsHTML("Ketertarikan bekerja di bidang green job: pencari kerja (L36) dan siswa (K28)",countBy([...B,...D],e=>e.answers.L36||e.answers.K28))+
     barsHTML("Siswa kelas 12 menurut jenis sekolah (K1)",countBy(D,e=>e.answers.K1))+
     barsHTML("Siswa kelas 12 menurut rencana setelah lulus (K8)",countBy(D,e=>e.answers.K8))+
     barsHTML("Sebaran responden A dan B menurut kecamatan",kec)+
+    ahpRecap(E)+
     `<div class="panel"><h3>15 isian terakhir</h3><div class="tbl-wrap"><table><thead><tr><th>Instrumen</th><th>Waktu (UTC)</th><th>Enumerator</th><th>Ringkasan</th></tr></thead><tbody>${recent}</tbody></table></div></div>`;
 }
 
@@ -457,10 +591,13 @@ function renderRecap(){
 function toCSV(inst){
   const qs=SCHEMA[inst].blocks.flatMap(b=>b.qs), cols=["id","waktu","enumerator"];
   for(const q of qs){ if(q.type==="grid"||q.type==="scale") q.f.forEach(f=>cols.push(q.c+"_"+f)); else cols.push(q.c); if(hasWhy(q)) cols.push(q.c+"_alasan"); }
+  const mats=inst==="E"?SCHEMA.E.blocks.filter(b=>b.matrix):[];
+  mats.forEach((b,ix)=>cols.push(ix===0?"CR_kriteria":"CR_isu_kriteria"+ix));
   const cell=v=>{const s=v==null?"":String(v);return /[",\n;]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;};
   const rows=entries.filter(e=>e.instrument===inst).map(e=>{
     const a=e.answers||{}, r=[e._id,e.createdAt,e.enumerator];
-    for(const q of qs){ if(q.type==="grid"||q.type==="scale") q.f.forEach(f=>r.push(a[q.c]?.[f])); else r.push(Array.isArray(a[q.c])?a[q.c].join("; "):a[q.c]); if(hasWhy(q)) r.push(a[q.c+"_alasan"]); }
+    for(const q of qs){ if(q.type==="grid"||q.type==="scale") q.f.forEach(f=>r.push(a[q.c]?.[f])); else r.push(Array.isArray(a[q.c])?a[q.c].join("; "):q.type==="pair"&&a[q.c]!=null?parseR(a[q.c]).toFixed(4):a[q.c]); if(hasWhy(q)) r.push(a[q.c+"_alasan"]); }
+    mats.forEach(b=>{const M=buildM(a,b.matrix.prefix,b.matrix.n);r.push(M?ahp(M).CR.toFixed(4):"");});
     return r.map(cell).join(",");
   });
   return "﻿"+[cols.map(cell).join(","),...rows].join("\n");
@@ -498,7 +635,7 @@ function showConn(){
 })();
 
 const startTab=store.get("tab");
-selectTab(["A","B","C","D","R"].includes(startTab)?startTab:"A");
+selectTab(["A","B","C","D","E","R"].includes(startTab)?startTab:"A");
 </script>
 
 </body></html>

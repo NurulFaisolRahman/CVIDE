@@ -851,3 +851,166 @@ nav.rtkd-tabs::-webkit-scrollbar-thumb {
   border-color: #fca5a5;
 }
 
+/* ==========================================================================
+   AHP PAIRWISE MATRIX & GREEN JOB STYLES
+   ========================================================================== */
+.rtkd-defbox {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #064e3b;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 6px 0 16px 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.rtkd-defbox strong {
+  display: block;
+  font-size: 14.5px;
+  margin-bottom: 4px;
+  color: #065f46;
+}
+
+.rtkd-q-pair {
+  padding-block: 10px !important;
+  border-top: 1px solid #f1f5f9;
+}
+
+.rtkd-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) auto minmax(0, 1.2fr);
+  gap: 12px;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.rtkd-pair-l {
+  text-align: right;
+  font-weight: 600;
+  font-size: 13.5px;
+  line-height: 1.35;
+  color: #1e293b;
+}
+
+.rtkd-pair-r {
+  font-weight: 600;
+  font-size: 13.5px;
+  line-height: 1.35;
+  color: #1e293b;
+}
+
+.rtkd-pair-pts {
+  display: flex;
+  gap: 3px;
+  overflow-x: auto;
+  padding: 4px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.rtkd-pair-pt {
+  width: 26px;
+  height: 34px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-family: 'Poppins', monospace, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #ffffff;
+  color: #475569;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.rtkd-pair-pt.m {
+  border-color: #64748b;
+  background: #f1f5f9;
+}
+
+.rtkd-pair-pt input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rtkd-pair-pt:hover {
+  background: #e0f2fe;
+  border-color: #0284c7;
+  color: #0369a1;
+}
+
+.rtkd-pair-pt:has(input:checked) {
+  background: #043168 !important;
+  color: #ffffff !important;
+  border-color: #043168 !important;
+  box-shadow: 0 2px 6px rgba(4, 49, 104, 0.35);
+}
+
+.rtkd-pair-legend {
+  margin: 6px 0 8px 0;
+  padding: 6px 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px dashed #cbd5e1;
+}
+
+.rtkd-lg-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  font-family: 'Poppins', sans-serif;
+}
+
+.rtkd-crbox {
+  margin-top: 14px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  color: #334155;
+  transition: all 0.25s ease;
+}
+
+.rtkd-crbox.ok {
+  background: #ecfdf5;
+  border-color: #10b981;
+  color: #065f46;
+}
+
+.rtkd-crbox.bad {
+  background: #fef2f2;
+  border-color: #ef4444;
+  color: #991b1b;
+}
+
+@media (max-width: 768px) {
+  .rtkd-pair {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .rtkd-pair-l {
+    text-align: left;
+    grid-column: 1;
+  }
+  .rtkd-pair-r {
+    text-align: right;
+    grid-column: 2;
+  }
+  .rtkd-pair-pts {
+    grid-column: 1 / -1;
+    order: 3;
+    justify-content: space-between;
+  }
+}
+

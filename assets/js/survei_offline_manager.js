@@ -394,9 +394,12 @@
           }
         }
 
-        // Terapkan aturan kondisional show/hide
+        // Terapkan aturan kondisional show/hide & update CR AHP
         if (window.RTKDEngine) {
           window.RTKDEngine.applyShow('modalRtkdSheet', inst);
+          if (inst === 'E') {
+            window.RTKDEngine.updateCR('modalRtkdSheet', 'E');
+          }
         }
 
         $('#rtkdDraftSaveText').html('<i class="fa-solid fa-cloud-arrow-down" style="color: #0284c7;"></i> Draft dipulihkan (' + (draft.savedAt || 'tersimpan') + ')');
