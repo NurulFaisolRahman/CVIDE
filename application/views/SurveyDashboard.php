@@ -33,6 +33,7 @@
   <!-- RTKD Multi-Instrument Dynamic Survey Stylesheet & Engine -->
   <link rel="stylesheet" href="<?= base_url('assets/css/survei_rtkd.css') ?>?v=<?= time() ?>">
   <script src="<?= base_url('assets/js/survei_rtkd_engine.js') ?>?v=<?= time() ?>"></script>
+  <script src="<?= base_url('assets/js/survei_offline_manager.js') ?>?v=<?= time() ?>"></script>
 
   <!-- Enterprise Theme Styling (Selaras Dashboard Admin) -->
   <style>
@@ -3269,8 +3270,11 @@
                     <i class="fa-solid fa-rotate-left"></i> Reset Isian
                   </button>
                 </div>
-                <div style="display: flex; gap: 12px;">
-                  <button type="button" class="btn btn-outline-primary" style="border-radius: 12px; font-weight: 700; padding: 12px 20px;" onclick="previewPublicSurvey()">
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                  <button type="button" class="btn btn-outline-secondary" style="border-radius: 12px; font-weight: 700; padding: 12px 18px;" onclick="window.saveDashSurveyOfflineDirect && window.saveDashSurveyOfflineDirect()">
+                    <i class="fa-solid fa-cloud-arrow-down"></i> Simpan ke Antrean Offline
+                  </button>
+                  <button type="button" class="btn btn-outline-primary" style="border-radius: 12px; font-weight: 700; padding: 12px 18px;" onclick="previewPublicSurvey()">
                     <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Tampilan Publik
                   </button>
                   <button type="submit" class="btn-submit-survey-data" id="btnSubmitSurvey">
@@ -4141,6 +4145,11 @@
             '<input type="checkbox" id="dashRespConsent" checked>' +
             '<span id="dashConsentText">Responden sudah menerima penjelasan tujuan survei, menyetujui pengisian, dan mengetahui bahwa jawaban hanya disajikan secara agregat.</span>' +
           '</label>' +
+          '<div id="dashAhpDemoBar" style="display:none; margin-bottom:12px; text-align:right;">' +
+            '<button type="button" class="btn btn-xs btn-outline-info" style="font-size:12px; padding:4px 10px; border-radius:8px;" onclick="if(window.RTKDEngine){window.RTKDEngine.fillSampleAHP(\'dashRespondentForm\', true); Swal.fire(\'Isi AHP Otomatis\', \'75 pasangan perbandingan AHP telah terisi dengan konsisten (CR &le; 0.05). Silakan tinjau dan simpan isian.\', \'info\');}">' +
+              '<i class="fa-solid fa-wand-magic-sparkles"></i> Contoh AHP Konsisten' +
+            '</button>' +
+          '</div>' +
           '<div class="rtkd-sheet" id="dashRtkdSheet"></div>';
 
         $('#dashQuestionsContainer').html(rtkdHtml);
@@ -4153,7 +4162,7 @@
           dataType: 'json',
           success: function(resQ) {
             var qList = (resQ && resQ.pertanyaan) ? resQ.pertanyaan : ((resQ && resQ.data) ? resQ.data : []);
-            if (window.RTKDEngine && Array.isArray(qList) && qList.length > 0) {
+            if (surveyId != 4 && window.RTKDEngine && typeof window.RTKDEngine.loadSchemaFromDb === 'function' && Array.isArray(qList) && qList.length > 0) {
               var hasInstruments = qList.some(function(q) { return q.Instrumen && q.Instrumen !== 'Semua'; });
               if (hasInstruments) {
                 window.RTKDEngine.loadSchemaFromDb(qList);
@@ -4192,7 +4201,7 @@
                 html += '</div>';
               }
 
-              html += '<div class="question-box">';
+              html += '<div class="question-box" id="dashQBox_' + q.Id + '">';
               html += '  <div class="q-number-pill">Butir #' + (idx + 1) + '</div>';
               html += '  <div class="q-text">' + q.Pertanyaan + reqMark + '</div>';
               if (q.Deskripsi) {
@@ -4323,6 +4332,12 @@
     window.dashRtkdActiveInstrument = 'A';
     window.switchDashRtkdTab = function(tabKey) {
       window.dashRtkdActiveInstrument = tabKey;
+      window.dashAhpAckCr = false;
+      if (tabKey === 'E') {
+        $('#dashAhpDemoBar').show();
+      } else {
+        $('#dashAhpDemoBar').hide();
+      }
       $('#dashRtkdActiveInstrument').val(tabKey);
       $('.rtkd-tabs .rtkd-tab-btn').removeClass('active').attr('aria-selected', 'false');
       $('#dashRtkdTab-' + tabKey).addClass('active').attr('aria-selected', 'true');
@@ -4369,6 +4384,18 @@
       }
     });
 
+    window.saveDashSurveyOfflineDirect = function() {
+      window.dashForceOffline = true;
+      var form = document.getElementById('dashRespondentForm');
+      if (form) {
+        if (typeof form.requestSubmit === 'function') {
+          form.requestSubmit();
+        } else {
+          $('#dashRespondentForm').trigger('submit');
+        }
+      }
+    };
+
     // Real-time conditional show/hide dan CR check untuk RTKD Dashboard
     $(document).on('input change', '#dashRtkdSheet input, #dashRtkdSheet select, #dashRtkdSheet textarea', function() {
       if (window.isDashRtkd && window.RTKDEngine) {
@@ -4401,29 +4428,31 @@
         if (inst === 'E' && window.RTKDEngine) {
           var badBlocks = window.RTKDEngine.updateCR('dashRtkdSheet', 'E', 'dash_');
           if (badBlocks && badBlocks.length > 0 && !window.dashAhpAckCr) {
-            window.dashAhpAckCr = true;
             Swal.fire({
               icon: 'warning',
               title: 'Pemeriksaan Konsistensi (AHP)',
-              html: 'Jawaban perbandingan pada <b>' + badBlocks.join(', ') + '</b> masih ada yang bertentangan (CR > 0,10).<br><br>Sebaiknya diteliti kembali bersama narasumber. Jika narasumber tetap pada jawabannya, klik Simpan sekali lagi.<br><small style="color:#64748b;">Catatan: Rekap AHP hanya menghitung isian yang konsisten (CR &le; 0,10).</small>',
+              html: 'Jawaban perbandingan pada <b>' + badBlocks.join(', ') + '</b> masih ada yang bertentangan (CR > 0,10).<br><br>Sebaiknya diteliti kembali bersama narasumber. Anda dapat meninjau kembali atau tetap menyimpan jika narasumber mempertahankan jawabannya.<br><small style="color:#64748b;">Catatan: Rekap AHP hanya menghitung isian yang konsisten (CR &le; 0,10).</small>',
+              showCancelButton: true,
               confirmButtonColor: '#043168',
-              confirmButtonText: 'Tinjau Kembali'
+              cancelButtonColor: '#64748b',
+              confirmButtonText: '<i class="fa-solid fa-floppy-disk"></i> Tetap Simpan Jawaban',
+              cancelButtonText: '<i class="fa-solid fa-magnifying-glass"></i> Tinjau Kembali'
+            }).then(function(result) {
+              if (result.isConfirmed) {
+                window.dashAhpAckCr = true;
+                var form = document.getElementById('dashRespondentForm');
+                if (form) {
+                  if (typeof form.requestSubmit === 'function') {
+                    form.requestSubmit();
+                  } else {
+                    $('#dashRespondentForm').trigger('submit');
+                  }
+                }
+              }
             });
             return;
           }
         }
-
-        // Validasi pertanyaan wajib
-        var allQs = window.RTKDEngine ? window.RTKDEngine.allQs(inst) : [];
-        var missingQuestions = [];
-        allQs.forEach(function(q) {
-          if (q.req && (q.show ? q.show(answers) : true)) {
-            var val = answers[q.c];
-            if (val === undefined || val === null || val === '') {
-              missingQuestions.push(q.c + ' (' + q.l + ')');
-            }
-          }
-        });
 
         // Validasi kriteria penyaring Instrumen B
         if (inst === 'B' && Array.isArray(answers.SC)) {
@@ -4433,16 +4462,32 @@
           }
         }
 
-        if (missingQuestions.length > 0) {
-          Swal.fire({
-            icon: 'warning',
-            title: 'Pertanyaan Wajib Belum Lengkap',
-            html: 'Mohon lengkapi pertanyaan wajib berikut sebelum menyimpan:<br><ul style="text-align: left; margin-top: 10px; font-size: 13px;">' +
-                  missingQuestions.slice(0, 5).map(function(m) { return '<li><b>' + m + '</b></li>'; }).join('') +
-                  (missingQuestions.length > 5 ? '<li>...dan ' + (missingQuestions.length - 5) + ' pertanyaan lainnya</li>' : '') +
-                  '</ul>'
-          });
-          return;
+        // Validasi pertanyaan wajib dan beri highlight visual pada butir yang kosong
+        if (window.RTKDEngine) {
+          var valRes = window.RTKDEngine.validateAndHighlight('dashRtkdSheet', inst, 'dash_', answers);
+          if (!valRes.isValid) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Ada Jawaban Belum Terisi (' + valRes.count + ' Butir) ⚠️',
+              html: 
+                '<div style="text-align: left; padding: 4px 0;">' +
+                  '<div style="background: #fef2f2; border: 1.5px solid #fecaca; border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; color: #991b1b; font-size: 13.5px; line-height: 1.5;">' +
+                    '<i class="fa-solid fa-triangle-exclamation" style="font-size: 16px; margin-right: 6px; color: #dc2626;"></i>' +
+                    'Terdapat <b>' + valRes.count + ' pertanyaan wajib</b> yang belum Anda jawab. Setiap butir pertanyaan yang belum diisi telah <b>ditandai dengan bingkai merah</b> pada formulir di bawah.' +
+                  '</div>' +
+                  '<div style="font-size: 13px; font-weight: 700; color: #1e293b; margin-bottom: 8px;"><i class="fa-solid fa-list-ul mr-1"></i> Rincian butir yang belum terisi:</div>' +
+                  '<ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #475569; max-height: 180px; overflow-y: auto; line-height: 1.6;">' +
+                    valRes.missingList.slice(0, 10).map(function(m) { return '<li style="margin-bottom: 4px;"><span style="color:#b91c1c; font-weight:800;">' + m.code + '</span>: ' + m.label + '</li>'; }).join('') +
+                    (valRes.missingList.length > 10 ? '<li style="color: #dc2626; font-weight: 700; margin-top: 4px;">...dan ' + (valRes.missingList.length - 10) + ' butir pertanyaan lainnya</li>' : '') +
+                  '</ul>' +
+                '</div>',
+              confirmButtonText: '<i class="fa-solid fa-arrow-down-long"></i> Tunjukkan &amp; Lengkapi Sekarang',
+              confirmButtonColor: '#043168'
+            }).then(function() {
+              window.RTKDEngine.scrollToFirstUnanswered(valRes.firstElement);
+            });
+            return;
+          }
         }
 
         var respNama = $('#dashRespNama').val() || answers.P1 || answers.S2 || answers.K2 || (inst === 'B' ? 'Pencari Kerja / Lulusan' : (inst === 'E' ? 'Narasumber AHP' : 'Responden ' + inst));
@@ -4473,12 +4518,25 @@
         var origText = $btn.html();
         $btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan Isian...');
 
+        // Jika offline atau simpan offline manual aktif
+        if (!navigator.onLine || window.dashForceOffline) {
+          window.dashForceOffline = false;
+          $btn.prop('disabled', false).html(origText);
+          if (window.SurveiOfflineManager) {
+            window.SurveiOfflineManager.enqueueOffline(payload, inst, 'dashRespondentForm');
+          } else {
+            Swal.fire('Offline', 'Data tersimpan lokal. Silakan coba kembali saat terhubung.', 'info');
+          }
+          return;
+        }
+
         $.ajax({
           url: BaseURL + 'IDE/submit_survei_responden',
           type: 'POST',
           data: JSON.stringify(payload),
           contentType: 'application/json; charset=utf-8',
           dataType: 'json',
+          timeout: 15000,
           success: function(res) {
             $btn.prop('disabled', false).html(origText);
             if (res && res.status) {
@@ -4499,8 +4557,14 @@
               Swal.fire('Gagal Menyimpan', (res ? res.message : 'Terjadi kesalahan pada server.'), 'error');
             }
           },
-          error: function() {
+          error: function(xhr, status, error) {
             $btn.prop('disabled', false).html(origText);
+            if (!navigator.onLine || status === 'timeout' || xhr.status === 0 || status === 'error') {
+              if (window.SurveiOfflineManager) {
+                window.SurveiOfflineManager.enqueueOffline(payload, inst, 'dashRespondentForm');
+                return;
+              }
+            }
             Swal.fire('Error', 'Gagal menghubungi server.', 'error');
           }
         });

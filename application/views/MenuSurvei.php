@@ -6212,9 +6212,12 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
             <div class="banner-subtitle">Data aman di memori HP Anda dan otomatis disinkronkan ke server saat internet kembali terhubung.</div>
           </div>
         </div>
-        <div class="banner-right">
+        <div class="banner-right" style="display: flex; gap: 8px; align-items: center;">
+          <button type="button" class="btn-sync-now" style="background: rgba(255, 255, 255, 0.2); border: 1.5px solid rgba(255, 255, 255, 0.4);" onclick="window.SurveiOfflineManager && window.SurveiOfflineManager.showQueueModal()">
+            <i class="fa-solid fa-table-list"></i> Lihat Antrean
+          </button>
           <button type="button" class="btn-sync-now" onclick="window.SurveiOfflineManager && window.SurveiOfflineManager.syncQueue(true)">
-            <i class="fa-solid fa-rotate"></i> Sinkronkan Sekarang
+            <i class="fa-solid fa-cloud-arrow-up"></i> Sinkronkan Semua Sekarang
           </button>
         </div>
       </div>
@@ -6964,6 +6967,17 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
             <input type="text" id="respEnumerator" name="Enumerator" class="rtkd-input" placeholder="Nama petugas yang mendampingi pengisian formulir" autocomplete="name" value="Petugas Survei RTKD">
           </div>
 
+          <!-- Mode Offline & Antrean Switch -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+            <label class="offline-mode-toggle" id="toggleOfflineModeWrap" title="Aktifkan untuk menyimpan langsung ke memori HP tanpa menunggu sinyal internet">
+              <input type="checkbox" id="chkForceOfflineMode" onchange="window.toggleForceOfflineMode && window.toggleForceOfflineMode(this)">
+              <i class="fa-solid fa-plane-slash"></i> <span>Mode Lapangan (Simpan Offline Cepat)</span>
+            </label>
+            <span style="font-size: 12px; color: #64748b;" id="offlineModeNote">
+              <i class="fa-solid fa-shield-halved text-success"></i> Antrean offline aktif &bull; Mendukung banyak responden
+            </span>
+          </div>
+
           <!-- Consent Checkbox -->
           <label class="rtkd-consent" for="modalRespConsent">
             <input type="checkbox" id="modalRespConsent" checked>
@@ -6980,6 +6994,12 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
             </button>
             <button type="button" class="rtkd-btn ghost" onclick="resetModalRtkdForm()">
               <i class="fa-solid fa-rotate-left"></i> Kosongkan Formulir
+            </button>
+            <button type="button" class="rtkd-btn ghost" id="btnDemoAhpModal" style="display:none; color:#0284c7; border-color:#0284c7;" onclick="if(window.RTKDEngine){window.RTKDEngine.fillSampleAHP('formSurveyRespondent', true); Swal.fire('Isi AHP Otomatis', '75 pasangan perbandingan AHP telah terisi dengan konsisten (CR &le; 0.05). Silakan tinjau dan klik Simpan Jawaban Survei.', 'info');}">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> Contoh AHP Konsisten
+            </button>
+            <button type="button" class="rtkd-btn secondary" id="btnSaveOfflineModal" onclick="window.saveSurveyOfflineDirect()" title="Simpan langsung ke antrean perangkat tanpa menunggu internet">
+              <i class="fa-solid fa-cloud-arrow-down"></i> Simpan ke Antrean Offline
             </button>
             <button type="submit" class="rtkd-btn" id="btnSubmitModalRtkd">
               <i class="fa-solid fa-paper-plane"></i> Simpan Jawaban Survei
@@ -8902,6 +8922,11 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
       }
 
       window.ahpAckCr = false;
+      if (tabKey === 'E') {
+        $('#btnDemoAhpModal').show();
+      } else {
+        $('#btnDemoAhpModal').hide();
+      }
 
       if (window.RTKDEngine) {
         window.RTKDEngine.render('modalRtkdSheet', tabKey);
@@ -8932,6 +8957,29 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
           }
         }
       });
+    };
+
+    window.saveSurveyOfflineDirect = function() {
+      $('#chkForceOfflineMode').prop('checked', true).trigger('change');
+      var form = document.getElementById('formSurveyRespondent');
+      if (form) {
+        if (typeof form.requestSubmit === 'function') {
+          form.requestSubmit();
+        } else {
+          $('#formSurveyRespondent').trigger('submit');
+        }
+      }
+    };
+
+    window.toggleForceOfflineMode = function(el) {
+      var isChecked = $(el).is(':checked');
+      if (isChecked) {
+        $('#toggleOfflineModeWrap').addClass('active');
+        $('#offlineModeNote').html('<i class="fa-solid fa-plane-slash text-warning"></i> Mode Lapangan aktif: Data langsung disimpan ke antrean offline');
+      } else {
+        $('#toggleOfflineModeWrap').removeClass('active');
+        $('#offlineModeNote').html('<i class="fa-solid fa-shield-halved text-success"></i> Antrean offline aktif &bull; Mendukung banyak data');
+      }
     };
 
     // Real-time conditional show/hide dan update konsistensi AHP untuk RTKD Modal
@@ -9216,18 +9264,6 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
         var inst = window.modalRtkdActiveInstrument || $('#modalRtkdActiveInstrument').val() || 'A';
         var answers = window.RTKDEngine ? window.RTKDEngine.collect('formSurveyRespondent', inst) : {};
 
-        // Validasi pertanyaan wajib
-        var allQs = window.RTKDEngine ? window.RTKDEngine.allQs(inst) : [];
-        var missingQuestions = [];
-        allQs.forEach(function(q) {
-          if (q.req && (q.show ? q.show(answers) : true)) {
-            var val = answers[q.c];
-            if (val === undefined || val === null || val === '') {
-              missingQuestions.push(q.c + ' (' + q.l + ')');
-            }
-          }
-        });
-
         // Validasi kriteria penyaring Instrumen B
         if (inst === 'B' && Array.isArray(answers.SC)) {
           if (answers.SC.indexOf('Tidak satu pun') !== -1 && answers.SC.length > 1) {
@@ -9236,29 +9272,60 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
           }
         }
 
-        if (missingQuestions.length > 0) {
-          Swal.fire({
-            icon: 'warning',
-            title: 'Pertanyaan Wajib Belum Lengkap',
-            html: 'Mohon lengkapi pertanyaan wajib berikut sebelum menyimpan:<br><ul style="text-align: left; margin-top: 10px; font-size: 13px;">' +
-                  missingQuestions.slice(0, 5).map(function(m) { return '<li><b>' + m + '</b></li>'; }).join('') +
-                  (missingQuestions.length > 5 ? '<li>...dan ' + (missingQuestions.length - 5) + ' pertanyaan lainnya</li>' : '') +
-                  '</ul>'
-          });
-          return;
+        // Validasi pertanyaan wajib dan beri highlight visual pada butir yang kosong
+        if (window.RTKDEngine) {
+          var valRes = window.RTKDEngine.validateAndHighlight('modalRtkdSheet', inst, '', answers);
+          if (!valRes.isValid) {
+            $('#modalRtkdStatus').html('<span style="color:#dc2626; font-weight:700;"><i class="fa-solid fa-triangle-exclamation"></i> ' + valRes.count + ' butir pertanyaan belum terisi</span>');
+            Swal.fire({
+              icon: 'warning',
+              title: 'Ada Jawaban Belum Terisi (' + valRes.count + ' Butir) ⚠️',
+              html: 
+                '<div style="text-align: left; padding: 4px 0;">' +
+                  '<div style="background: #fef2f2; border: 1.5px solid #fecaca; border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; color: #991b1b; font-size: 13.5px; line-height: 1.5;">' +
+                    '<i class="fa-solid fa-triangle-exclamation" style="font-size: 16px; margin-right: 6px; color: #dc2626;"></i>' +
+                    'Terdapat <b>' + valRes.count + ' pertanyaan wajib</b> yang belum Anda jawab. Setiap butir pertanyaan yang belum diisi telah <b>ditandai dengan bingkai merah</b> pada formulir di bawah.' +
+                  '</div>' +
+                  '<div style="font-size: 13px; font-weight: 700; color: #1e293b; margin-bottom: 8px;"><i class="fa-solid fa-list-ul mr-1"></i> Rincian butir yang belum terisi:</div>' +
+                  '<ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #475569; max-height: 180px; overflow-y: auto; line-height: 1.6;">' +
+                    valRes.missingList.slice(0, 10).map(function(m) { return '<li style="margin-bottom: 4px;"><span style="color:#b91c1c; font-weight:800;">' + m.code + '</span>: ' + m.label + '</li>'; }).join('') +
+                    (valRes.missingList.length > 10 ? '<li style="color: #dc2626; font-weight: 700; margin-top: 4px;">...dan ' + (valRes.missingList.length - 10) + ' butir pertanyaan lainnya</li>' : '') +
+                  '</ul>' +
+                '</div>',
+              confirmButtonText: '<i class="fa-solid fa-arrow-down-long"></i> Tunjukkan &amp; Lengkapi Sekarang',
+              confirmButtonColor: '#043168'
+            }).then(function() {
+              window.RTKDEngine.scrollToFirstUnanswered(valRes.firstElement, '#surveyRespondentModal .modal-body');
+            });
+            return;
+          }
         }
 
         // Validasi konsistensi AHP untuk Instrumen E
         if (inst === 'E' && window.RTKDEngine) {
           var badBlocks = window.RTKDEngine.updateCR('modalRtkdSheet', 'E');
           if (badBlocks && badBlocks.length > 0 && !window.ahpAckCr) {
-            window.ahpAckCr = true;
             Swal.fire({
               icon: 'warning',
               title: 'Pemeriksaan Konsistensi (AHP)',
-              html: 'Jawaban perbandingan pada <b>' + badBlocks.join(', ') + '</b> masih ada yang bertentangan (CR > 0,10).<br><br>Sebaiknya diteliti kembali bersama narasumber. Jika narasumber tetap pada jawabannya, klik Simpan sekali lagi.<br><small style="color:#64748b;">Catatan: Rekap AHP hanya menghitung isian yang konsisten (CR &le; 0,10).</small>',
+              html: 'Jawaban perbandingan pada <b>' + badBlocks.join(', ') + '</b> masih ada yang bertentangan (CR > 0,10).<br><br>Sebaiknya diteliti kembali bersama narasumber. Anda dapat meninjau kembali atau tetap menyimpan jika narasumber mempertahankan jawabannya.<br><small style="color:#64748b;">Catatan: Rekap AHP hanya menghitung isian yang konsisten (CR &le; 0,10).</small>',
+              showCancelButton: true,
               confirmButtonColor: '#043168',
-              confirmButtonText: 'Tinjau Kembali'
+              cancelButtonColor: '#64748b',
+              confirmButtonText: '<i class="fa-solid fa-floppy-disk"></i> Tetap Simpan Jawaban',
+              cancelButtonText: '<i class="fa-solid fa-magnifying-glass"></i> Tinjau Kembali'
+            }).then(function(result) {
+              if (result.isConfirmed) {
+                window.ahpAckCr = true;
+                var form = document.getElementById('formSurveyRespondent');
+                if (form) {
+                  if (typeof form.requestSubmit === 'function') {
+                    form.requestSubmit();
+                  } else {
+                    $('#formSurveyRespondent').trigger('submit');
+                  }
+                }
+              }
             });
             return;
           }
@@ -9297,11 +9364,12 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
         var origHtml = $btn.html();
         $btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan Jawaban...');
 
-        // Jika perangkat sedang offline / tanpa sinyal internet, amankan ke antrean offline lokal
-        if (!navigator.onLine) {
+        // Jika perangkat sedang offline / tanpa sinyal internet, ATAU mode offline lapangan aktif
+        var isForceOffline = $('#chkForceOfflineMode').is(':checked');
+        if (!navigator.onLine || isForceOffline) {
           $btn.prop('disabled', false).html(origHtml);
           if (window.SurveiOfflineManager) {
-            window.SurveiOfflineManager.enqueueOffline(payload, inst);
+            window.SurveiOfflineManager.enqueueOffline(payload, inst, 'formSurveyRespondent');
           } else {
             Swal.fire('Offline', 'Tidak ada koneksi internet. Silakan coba kembali saat terhubung.', 'warning');
           }
@@ -9346,9 +9414,9 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
           error: function(xhr, status, error) {
             $btn.prop('disabled', false).html(origHtml);
             // Jika request gagal akibat jaringan terputus / timeout di tengah jalan
-            if (!navigator.onLine || status === 'timeout' || xhr.status === 0) {
+            if (!navigator.onLine || status === 'timeout' || xhr.status === 0 || status === 'error') {
               if (window.SurveiOfflineManager) {
-                window.SurveiOfflineManager.enqueueOffline(payload, inst);
+                window.SurveiOfflineManager.enqueueOffline(payload, inst, 'formSurveyRespondent');
                 return;
               }
             }
@@ -9376,20 +9444,67 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
           }
 
           if (!answered) {
-            missingQuestions.push('Pertanyaan #' + (idx + 1) + ' (' + q.Pertanyaan + ')');
+            missingQuestions.push({
+              idx: (idx + 1),
+              id: q.Id,
+              text: q.Pertanyaan
+            });
           }
         }
       });
 
       if (missingQuestions.length > 0) {
         goToSurveyStep(2);
+
+        // Highlight kartu pertanyaan yang belum dijawab
+        $('.resp-q-card').removeClass('rtkd-unanswered');
+        $('.resp-q-card .rtkd-unanswered-alert-badge').remove();
+        var firstMissingCard = null;
+
+        missingQuestions.forEach(function(mq) {
+          var card = document.getElementById('respQCard_' + mq.id);
+          if (card) {
+            card.classList.add('rtkd-unanswered');
+            var badge = document.createElement('div');
+            badge.className = 'rtkd-unanswered-alert-badge';
+            badge.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Pertanyaan Wajib &bull; Belum Terisi';
+            card.insertBefore(badge, card.firstChild);
+            if (!firstMissingCard) firstMissingCard = card;
+
+            // Bersihkan highlight saat ada input
+            $(card).one('input change', function() {
+              card.classList.remove('rtkd-unanswered');
+              var b = card.querySelector('.rtkd-unanswered-alert-badge');
+              if (b) b.remove();
+            });
+          }
+        });
+
         Swal.fire({
           icon: 'warning',
-          title: 'Pertanyaan Wajib Belum Diisi',
-          html: 'Mohon lengkapi pertanyaan berikut sebelum mengirim:<br><ul style="text-align: left; margin-top: 10px; font-size: 13px;">' +
-                missingQuestions.slice(0, 4).map(m => '<li>' + m + '</li>').join('') +
-                (missingQuestions.length > 4 ? '<li>...dan ' + (missingQuestions.length - 4) + ' pertanyaan lainnya</li>' : '') +
-                '</ul>'
+          title: 'Ada Jawaban Belum Terisi (' + missingQuestions.length + ' Butir) ⚠️',
+          html: 
+            '<div style="text-align: left; padding: 4px 0;">' +
+              '<div style="background: #fef2f2; border: 1.5px solid #fecaca; border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; color: #991b1b; font-size: 13.5px; line-height: 1.5;">' +
+                '<i class="fa-solid fa-triangle-exclamation" style="font-size: 16px; margin-right: 6px; color: #dc2626;"></i>' +
+                'Terdapat <b>' + missingQuestions.length + ' butir pertanyaan wajib</b> yang belum Anda jawab. Kartu pertanyaan yang belum terisi telah <b>ditandai dengan bingkai merah berdenyut</b>.' +
+              '</div>' +
+              '<div style="font-size: 13px; font-weight: 700; color: #1e293b; margin-bottom: 8px;"><i class="fa-solid fa-list-ul mr-1"></i> Rincian butir yang perlu diisi:</div>' +
+              '<ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #475569; max-height: 180px; overflow-y: auto; line-height: 1.6;">' +
+                missingQuestions.slice(0, 8).map(function(m) { return '<li style="margin-bottom: 4px;"><b>Butir #' + m.idx + '</b>: ' + m.text + '</li>'; }).join('') +
+                (missingQuestions.length > 8 ? '<li style="color: #dc2626; font-weight: 700; margin-top: 4px;">...dan ' + (missingQuestions.length - 8) + ' pertanyaan lainnya</li>' : '') +
+              '</ul>' +
+            '</div>',
+          confirmButtonText: '<i class="fa-solid fa-arrow-down-long"></i> Tunjukkan &amp; Lengkapi Sekarang',
+          confirmButtonColor: '#043168'
+        }).then(function() {
+          if (firstMissingCard) {
+            firstMissingCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            var input = firstMissingCard.querySelector('input, select, textarea');
+            if (input) {
+              setTimeout(function() { try { input.focus(); } catch(e) {} }, 450);
+            }
+          }
         });
         return;
       }

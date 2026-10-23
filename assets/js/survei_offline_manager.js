@@ -1,12 +1,12 @@
 /**
  * survei_offline_manager.js
- * Engine Pengelolaan Draft Otomatis & Sinkronisasi Offline (Auto-Sync Queue)
- * Mengadopsi Pola Google Forms & ODK Collect untuk Daerah Tanpa Sinyal (Blank Spot)
- * 
+ * Engine Pengelolaan Antrean Offline Multi-Data & Sinkronisasi Massal
  * Fitur:
- * 1. Auto-save Draft per-ketukan (Recovery saat browser/HP tertutup mendadak)
- * 2. Antrean Pengiriman Offline (Outbox Queue saat tidak ada sinyal internet)
- * 3. Auto-Sync otomatis ke server saat perangkat kembali terhubung internet
+ * 1. Simpan respon survei tanpa batas ke Antrean Offline (Outbox) saat tidak ada internet
+ * 2. Langsung lanjut menginput responden berikutnya tanpa menunggu sinyal
+ * 3. Modal Penampil Antrean (Daftar responden offline, hapus, ekspor JSON cadangan)
+ * 4. Floating Badge indikator antrean tertunda di layar
+ * 5. Sinkronisasi berurutan (Batch Sync) dengan progress bar langsung ke server database
  */
 
 (function(window, $) {
@@ -20,34 +20,33 @@
   var SurveiOfflineManager = {
 
     /**
-     * Inisialisasi Event Listener Jaringan & Auto-Sync
+     * Inisialisasi Event Listener Jaringan, Auto-Sync & Injeksi Elemen UI
      */
     init: function() {
       var self = this;
 
-      // Pantau status online / offline browser HP
+      // Injeksi elemen UI floating badge & modal antrean jika belum ada di DOM
+      this.injectUIElements();
+
+      // Pantau status online / offline browser
       window.addEventListener('online', function() {
-        console.log('[OfflineManager] Koneksi internet kembali online. Memulai auto-sync...');
+        console.log('[OfflineManager] Koneksi internet terhubung kembali.');
         self.updateOnlineStatusUI(true);
-        self.syncQueue(false);
+        // Jika ada antrean, tawarkan sinkronisasi otomatis
+        if (self.getQueue().length > 0) {
+          self.syncQueue(false);
+        }
       });
 
       window.addEventListener('offline', function() {
-        console.log('[OfflineManager] Perangkat masuk ke mode offline / hilang sinyal.');
+        console.log('[OfflineManager] Perangkat masuk ke mode offline.');
         self.updateOnlineStatusUI(false);
       });
 
-      // Update tampilan banner antrean awal
-      this.updateSyncBannerUI();
+      // Update tampilan badge awal
+      this.updateAllQueueUI();
 
-      // Cek antrean tertunda jika saat awal buka halaman dalam kondisi online
-      if (navigator.onLine && this.getQueue().length > 0) {
-        setTimeout(function() {
-          self.syncQueue(false);
-        }, 3000);
-      }
-
-      // Interval pengecekan berkala (setiap 30 detik jika ada antrean tertunda)
+      // Interval auto-sync berkala jika online dan ada antrean
       setInterval(function() {
         if (navigator.onLine && self.getQueue().length > 0 && !isSyncing) {
           self.syncQueue(false);
@@ -59,13 +58,98 @@
     },
 
     /**
-     * Bind auto-save ke semua input di form responden (debounced 350ms)
+     * Injeksi Floating Badge & Modal Antrean Offline ke DOM
+     */
+    injectUIElements: function() {
+      // 1. Injeksi Floating Badge Antrean
+      if ($('#offlineQueueFloatBadge').length === 0) {
+        var floatHtml = 
+          '<div id="offlineQueueFloatBadge" class="offline-float-pill" style="display: none;" onclick="window.SurveiOfflineManager && window.SurveiOfflineManager.showQueueModal()" title="Klik untuk melihat dan menyinkronkan data survei offline">' +
+            '<span class="pulse-dot"></span>' +
+            '<i class="fa-solid fa-cloud-arrow-up"></i>' +
+            '<span><span id="floatQueueBadgeCount">0</span> Survei Offline</span>' +
+            '<span class="q-count" id="floatQueueBadgeCountMini">0</span>' +
+          '</div>';
+        $('body').append(floatHtml);
+      }
+
+      // 2. Injeksi Modal Antrean Offline
+      if ($('#modalOfflineQueueManager').length === 0) {
+        var modalHtml = 
+          '<div class="modal fade modal-offline-queue" id="modalOfflineQueueManager" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 10500;">' +
+            '<div class="modal-dialog modal-lg modal-dialog-centered" role="document">' +
+              '<div class="modal-content">' +
+                '<div class="modal-header d-flex justify-content-between align-items-center">' +
+                  '<h5 class="modal-title font-weight-bold" style="color: #ffffff; font-size: 16px; margin: 0;">' +
+                    '<i class="fa-solid fa-cloud-arrow-up mr-2"></i> Antrean Survei Offline (<span id="modalQueueHeaderCount">0</span> Responden)' +
+                  '</h5>' +
+                  '<button type="button" class="close text-white" onclick="window.SurveiOfflineManager.closeQueueModal()" aria-label="Close" style="opacity: 1; border: none; background: transparent; font-size: 24px; cursor: pointer;">' +
+                    '<span aria-hidden="true">&times;</span>' +
+                  '</button>' +
+                '</div>' +
+                '<div class="modal-body" style="padding: 20px;">' +
+                  '<div class="queue-stats-grid">' +
+                    '<div class="queue-stat-card">' +
+                      '<div class="val" id="statQueueTotal">0</div>' +
+                      '<div class="lbl">Total Responden Tersimpan</div>' +
+                    '</div>' +
+                    '<div class="queue-stat-card">' +
+                      '<div class="val" id="statQueueConn" style="font-size: 16px; color: #059669;"><i class="fa-solid fa-wifi"></i> Online</div>' +
+                      '<div class="lbl">Status Koneksi Internet</div>' +
+                    '</div>' +
+                  '</div>' +
+                  '<div style="margin-bottom: 12px; font-size: 13px; color: #64748b; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">' +
+                    '<span><i class="fa-solid fa-circle-info text-info"></i> Data di bawah tersimpan di memori perangkat dan siap disinkronkan saat terhubung internet.</span>' +
+                    '<button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.SurveiOfflineManager.exportQueueJson()" style="font-size: 12px; border-radius: 8px;">' +
+                      '<i class="fa-solid fa-download"></i> Ekspor Cadangan (JSON)' +
+                    '</button>' +
+                  '</div>' +
+                  '<div class="queue-table-wrap">' +
+                    '<table class="table table-hover table-striped mb-0" style="font-size: 13px;">' +
+                      '<thead class="thead-light">' +
+                        '<tr>' +
+                          '<th style="width: 45px;">No</th>' +
+                          '<th>Nama Responden</th>' +
+                          '<th>Instrumen</th>' +
+                          '<th>Kecamatan</th>' +
+                          '<th>Waktu Pengisian</th>' +
+                          '<th>Jawaban</th>' +
+                          '<th style="text-align: center; width: 60px;">Aksi</th>' +
+                        '</tr>' +
+                      '</thead>' +
+                      '<tbody id="offlineQueueTableBody">' +
+                        '<tr><td colspan="7" class="text-center py-4 text-muted">Belum ada antrean data offline.</td></tr>' +
+                      '</tbody>' +
+                    '</table>' +
+                  '</div>' +
+                '</div>' +
+                '<div class="modal-footer d-flex justify-content-between" style="background: #f8fafc; border-top: 1.5px solid #e2e8f0; padding: 14px 20px;">' +
+                  '<button type="button" class="btn btn-outline-danger btn-sm" onclick="window.SurveiOfflineManager.clearAllQueue()" id="btnClearAllQueue">' +
+                    '<i class="fa-solid fa-trash-can"></i> Kosongkan Antrean' +
+                  '</button>' +
+                  '<div class="d-flex gap-2" style="gap: 10px;">' +
+                    '<button type="button" class="btn btn-secondary btn-sm" onclick="window.SurveiOfflineManager.closeQueueModal()">' +
+                      'Tutup' +
+                    '</button>' +
+                    '<button type="button" class="btn btn-primary btn-sm btn-sync-now" onclick="window.SurveiOfflineManager.syncQueue(true)">' +
+                      '<i class="fa-solid fa-cloud-arrow-up"></i> Sinkronkan Semua Sekarang (<span id="btnModalSyncCount">0</span>)' +
+                    '</button>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+        $('body').append(modalHtml);
+      }
+    },
+
+    /**
+     * Bind auto-save ke input kuesioner
      */
     bindAutoSaveListener: function() {
       var self = this;
-      $(document).on('input change', '#formSurveyRespondent input, #formSurveyRespondent select, #formSurveyRespondent textarea', function(e) {
-        // Jangan auto-save jika target adalah input pencarian kuesioner luar
-        if ($(this).closest('#formSurveyRespondent').length === 0) return;
+      $(document).on('input change', '#formSurveyRespondent input, #formSurveyRespondent select, #formSurveyRespondent textarea, #dashRespondentForm input, #dashRespondentForm select, #dashRespondentForm textarea', function(e) {
+        if ($(this).closest('#formSurveyRespondent, #dashRespondentForm').length === 0) return;
 
         clearTimeout(draftDebounceTimer);
         $('#rtkdDraftSaveText').html('<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan draft...');
@@ -97,58 +181,244 @@
       } catch (e) {
         console.error('[OfflineManager] Gagal menyimpan antrean:', e);
       }
-      this.updateSyncBannerUI();
+      this.updateAllQueueUI();
     },
 
     /**
-     * Masukkan respon survei ke Antrean Offline (Outbox) saat koneksi terputus
+     * Masukkan respon survei ke Antrean Offline (Bisa banyak responden tanpa koneksi internet)
      */
-    enqueueOffline: function(payload, inst) {
+    enqueueOffline: function(payload, inst, sourceFormId) {
       var queue = this.getQueue();
+      var now = new Date();
+      var countJawaban = Object.keys(payload.Jawaban || {}).length;
+
       var item = {
-        id: 'OFFLINE_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
-        payload: payload,
+        id: 'OFFLINE_' + now.getTime() + '_' + Math.random().toString(36).substr(2, 6),
+        surveiId: payload.SurveiId || 4,
+        judulSurvei: $('#respModalSurveyTitle').text() || 'Survei Ketenagakerjaan Banyuwangi (RTKD)',
         instrumen: inst,
-        createdAt: new Date().toISOString(),
         respondenNama: payload.RespondenNama || 'Responden ' + inst,
-        kecamatan: payload.Kecamatan || 'Banyuwangi'
+        kecamatan: payload.Kecamatan || payload.RealKecamatan || 'Banyuwangi',
+        kabupaten: payload.Kabupaten || 'Kabupaten Banyuwangi',
+        jumlahJawaban: countJawaban,
+        createdAt: now.toISOString(),
+        waktuFormat: now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }) + ' ' + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+        payload: payload
       };
 
       queue.push(item);
       this.saveQueue(queue);
 
-      // Hapus draft berjalan karena sudah masuk antrean selesai
+      // Hapus draft aktif survei ini karena sudah selesai diantrekan
       this.clearDraft(payload.SurveiId, inst);
 
-      // Tutup modal responden jika terbuka
-      if (typeof closeSurveyRespondentModal === 'function') {
-        closeSurveyRespondentModal();
-      }
-
-      // Tampilkan SweetAlert konfirmasi offline yang menenangkan enumerator
+      // SweetAlert interaktif: Enumerator bisa langsung lanjut ke responden berikutnya!
       Swal.fire({
-        icon: 'info',
-        title: 'Disimpan di Antrean Offline! 📶',
+        icon: 'success',
+        title: 'Tersimpan di Antrean Offline! 📶',
         html: 
           '<div style="text-align: center; padding: 6px 0;">' +
-            '<div style="background: #fef3c7; border: 1.5px solid #fde047; border-radius: 12px; padding: 12px; margin-bottom: 14px; color: #92400e; font-size: 13.5px; text-align: left; line-height: 1.5;">' +
-              '<i class="fa-solid fa-triangle-exclamation" style="font-size: 16px; margin-right: 6px; color: #d97706;"></i>' +
-              'Koneksi internet sedang terputus / offline. Jawaban responden <b>' + (item.respondenNama) + '</b> (Kec. ' + item.kecamatan + ') telah <b>berhasil diamankan di memori perangkat</b>.' +
+            '<div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 12px; padding: 12px; margin-bottom: 14px; color: #166534; font-size: 13.5px; text-align: left; line-height: 1.5;">' +
+              '<i class="fa-solid fa-circle-check" style="font-size: 16px; margin-right: 6px; color: #16a34a;"></i>' +
+              'Data responden <b>' + (item.respondenNama) + '</b> (Instrumen ' + inst + ') telah <b>berhasil diamankan ke memori perangkat</b>.' +
             '</div>' +
-            '<p style="font-size: 13px; color: #475569; margin: 0; line-height: 1.5;">' +
-              'Total antrean tertunda saat ini: <b>' + queue.length + ' responden</b>.<br>' +
-              'Data akan <b>otomatis terunggah ke database</b> begitu perangkat Anda mendapatkan sinyal internet / WiFi kembali.' +
+            '<div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 10px; margin-bottom: 12px; font-size: 13px; color: #475569;">' +
+              'Total Antrean Siap Sinkron: <b style="color: #043168; font-size: 16px;">' + queue.length + ' Responden</b>' +
+            '</div>' +
+            '<p style="font-size: 12.5px; color: #64748b; margin: 0; line-height: 1.4;">' +
+              'Anda dapat <b>langsung melanjutkan wawancara responden berikutnya</b> tanpa koneksi internet. Semua data akan diunggah bersamaan saat terhubung sinyal.' +
             '</p>' +
           '</div>',
-        confirmButtonText: '<i class="fa-solid fa-user-plus"></i> Siap, Lanjut Input Berikutnya',
-        confirmButtonColor: '#043168'
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: '<i class="fa-solid fa-user-plus"></i> Lanjut Isi Responden Berikutnya',
+        confirmButtonColor: '#043168',
+        denyButtonText: '<i class="fa-solid fa-table-list"></i> Lihat Antrean (' + queue.length + ')',
+        denyButtonColor: '#0284c7',
+        cancelButtonText: 'Selesai & Tutup',
+        cancelButtonColor: '#64748b'
+      }).then(function(result) {
+        if (result.isConfirmed) {
+          // KOSONGKAN FORMULIR & SIAPKAN UNTUK RESPONDEN BERIKUTNYA
+          SurveiOfflineManager.prepareFormForNextRespondent(inst, sourceFormId);
+        } else if (result.isDenied) {
+          // Buka modal daftar antrean offline
+          SurveiOfflineManager.showQueueModal();
+        } else {
+          // Tutup modal
+          if (typeof closeSurveyRespondentModal === 'function') {
+            closeSurveyRespondentModal();
+          }
+        }
       });
-
-      this.updateSyncBannerUI();
     },
 
     /**
-     * Proses Sinkronisasi Antrean ke Server Database
+     * Kosongkan form dan siapkan lembar baru untuk responden berikutnya
+     */
+    prepareFormForNextRespondent: function(inst, sourceFormId) {
+      // 1. Kosongkan field identitas responden dasar
+      $('#respEnumerator').val($('#respEnumerator').val() || 'Petugas Lapangan');
+      $('#dashRespNama, #dashRespNIK, #dashRespKontak, #dashRespUsia, #dashAlamat').val('');
+
+      // 2. Render ulang lembar butir pertanyaan kosong
+      if (sourceFormId === 'dashRespondentForm' || $('#dashRtkdSheet').length) {
+        if (window.RTKDEngine) {
+          window.RTKDEngine.render('dashRtkdSheet', inst, 'dash_');
+        }
+      } else {
+        if (window.RTKDEngine) {
+          window.RTKDEngine.render('modalRtkdSheet', inst);
+        }
+      }
+
+      // 3. Reset scroll ke atas form dengan animasi mulus
+      var $scrollTarget = $('#surveyRespondentModal .modal-body, #modalSurveyRespondent, html, body');
+      $scrollTarget.animate({ scrollTop: 0 }, 300);
+
+      // 4. Beri notifikasi toast siap
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'info',
+        title: 'Formulir Siap',
+        text: 'Formulir telah dikosongkan untuk responden berikutnya (Instrumen ' + inst + ').',
+        timer: 2500,
+        showConfirmButton: false
+      });
+    },
+
+    /**
+     * Buka Modal Penampil Antrean Offline
+     */
+    showQueueModal: function() {
+      var self = this;
+      var queue = this.getQueue();
+      var $tbody = $('#offlineQueueTableBody');
+
+      // Update status koneksi
+      if (navigator.onLine) {
+        $('#statQueueConn').html('<i class="fa-solid fa-wifi" style="color: #059669;"></i> Online (Siap Sinkron)');
+      } else {
+        $('#statQueueConn').html('<i class="fa-solid fa-plane-slash" style="color: #dc2626;"></i> Mode Offline');
+      }
+
+      $('#statQueueTotal, #modalQueueHeaderCount, #btnModalSyncCount').text(queue.length);
+
+      if (queue.length === 0) {
+        $tbody.html('<tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-folder-open mb-2" style="font-size: 24px; display: block;"></i>Belum ada antrean data survei offline. Semua data telah disinkronkan.</td></tr>');
+        $('#btnClearAllQueue').prop('disabled', true);
+      } else {
+        $('#btnClearAllQueue').prop('disabled', false);
+        var rowsHtml = '';
+        queue.forEach(function(item, idx) {
+          rowsHtml += 
+            '<tr>' +
+              '<td><b>' + (idx + 1) + '</b></td>' +
+              '<td><b>' + (item.respondenNama || '-') + '</b></td>' +
+              '<td><span class="badge badge-primary px-2 py-1" style="border-radius: 6px; font-weight: 700; background: #043168; color: #fff;">Instrumen ' + item.instrumen + '</span></td>' +
+              '<td>' + (item.kecamatan || '-') + '</td>' +
+              '<td><small class="text-muted">' + (item.waktuFormat || item.createdAt.slice(0, 16)) + '</small></td>' +
+              '<td><span class="badge badge-light border">' + (item.jumlahJawaban || 0) + ' butir</span></td>' +
+              '<td style="text-align: center;">' +
+                '<button type="button" class="btn btn-xs btn-outline-danger" title="Hapus dari antrean" onclick="window.SurveiOfflineManager.removeItem(\'' + item.id + '\')" style="padding: 2px 7px; font-size: 11px; border-radius: 6px;">' +
+                  '<i class="fa-solid fa-trash"></i>' +
+                '</button>' +
+              '</td>' +
+            '</tr>';
+        });
+        $tbody.html(rowsHtml);
+      }
+
+      // Tampilkan Modal
+      if (typeof $.fn.modal !== 'undefined') {
+        $('#modalOfflineQueueManager').modal('show');
+      } else {
+        $('#modalOfflineQueueManager').fadeIn(200);
+      }
+    },
+
+    /**
+     * Tutup Modal Antrean Offline
+     */
+    closeQueueModal: function() {
+      if (typeof $.fn.modal !== 'undefined') {
+        $('#modalOfflineQueueManager').modal('hide');
+      } else {
+        $('#modalOfflineQueueManager').fadeOut(200);
+      }
+    },
+
+    /**
+     * Hapus satu item dari antrean
+     */
+    removeItem: function(id) {
+      var self = this;
+      var queue = this.getQueue();
+      var filtered = queue.filter(function(item) { return item.id !== id; });
+
+      Swal.fire({
+        title: 'Hapus Responden ini?',
+        text: 'Data responden yang dihapus tidak akan dikirimkan ke server.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        confirmButtonText: 'Ya, Hapus',
+        cancelButtonText: 'Batal'
+      }).then(function(result) {
+        if (result.isConfirmed) {
+          self.saveQueue(filtered);
+          self.showQueueModal();
+        }
+      });
+    },
+
+    /**
+     * Kosongkan semua antrean
+     */
+    clearAllQueue: function() {
+      var self = this;
+      var queue = this.getQueue();
+      if (queue.length === 0) return;
+
+      Swal.fire({
+        title: 'Kosongkan Seluruh Antrean?',
+        text: 'Semua ' + queue.length + ' data responden offline yang belum tersinkronisasi akan dihapus permanen.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        confirmButtonText: 'Ya, Kosongkan Semua',
+        cancelButtonText: 'Batal'
+      }).then(function(result) {
+        if (result.isConfirmed) {
+          self.saveQueue([]);
+          self.showQueueModal();
+          Swal.fire('Antrean Dikosongkan', 'Seluruh data offline telah dibersihkan.', 'success');
+        }
+      });
+    },
+
+    /**
+     * Ekspor Antrean ke Berkas Cadangan JSON
+     */
+    exportQueueJson: function() {
+      var queue = this.getQueue();
+      if (queue.length === 0) {
+        Swal.fire('Kosong', 'Tidak ada antrean data untuk diekspor.', 'info');
+        return;
+      }
+
+      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(queue, null, 2));
+      var downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "cadangan_survei_offline_rtkd_" + new Date().toISOString().slice(0, 10) + ".json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    },
+
+    /**
+     * Proses Sinkronisasi Massal Semua Antrean ke Server Database
      */
     syncQueue: function(isManual) {
       var self = this;
@@ -173,8 +443,8 @@
         if (isManual) {
           Swal.fire({
             icon: 'warning',
-            title: 'Masih Offline',
-            text: 'Perangkat belum terhubung ke internet. Antrean akan disinkronkan otomatis saat sinyal kembali aktif.',
+            title: 'Perangkat Masih Offline 📶',
+            text: 'Perangkat belum terhubung ke internet. Data tersimpan aman di antrean dan siap dikirim saat sinyal aktif.',
             confirmButtonColor: '#043168'
           });
         }
@@ -184,56 +454,63 @@
       if (isSyncing) return;
       isSyncing = true;
 
-      // Update status tombol sinkronisasi
-      var $btnSync = $('.btn-sync-now');
-      var origBtnHtml = $btnSync.html();
-      $btnSync.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> Mengunggah (' + queue.length + ')...');
-
-      if (isManual) {
-        Swal.fire({
-          title: 'Menyinkronkan Data...',
-          html: 'Sedang mengunggah <b>' + queue.length + ' respon survei</b> offline ke server database...',
-          allowOutsideClick: false,
-          didOpen: function() { Swal.showLoading(); }
-        });
-      }
-
+      var totalToSync = queue.length;
       var successCount = 0;
       var failCount = 0;
       var remainingQueue = [];
 
-      // Fungsi rekursif untuk upload satu per satu secara berurutan
+      // Tampilkan SweetAlert progress sinkronisasi
+      if (isManual) {
+        Swal.fire({
+          title: 'Menyinkronkan Antrean...',
+          html: 
+            '<div style="text-align: center; padding: 10px 0;">' +
+              '<div class="progress mb-3" style="height: 16px; border-radius: 8px; background: #e2e8f0; overflow: hidden;">' +
+                '<div id="syncProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 0%; transition: width 0.3s ease;"></div>' +
+              '</div>' +
+              '<div id="syncProgressText" style="font-size: 13.5px; color: #475569;">Mengunggah 0 dari ' + totalToSync + ' responden...</div>' +
+            '</div>',
+          allowOutsideClick: false,
+          showConfirmButton: false
+        });
+      }
+
       function uploadNext(index) {
         if (index >= queue.length) {
           // Selesai seluruh antrean
           self.saveQueue(remainingQueue);
           isSyncing = false;
-          $btnSync.prop('disabled', false).html(origBtnHtml);
 
-          if (isManual) Swal.close();
+          if (isManual) {
+            Swal.close();
+            self.showQueueModal();
+          }
 
           if (successCount > 0) {
             Swal.fire({
-              toast: true,
-              position: 'top-end',
               icon: 'success',
               title: 'Sinkronisasi Berhasil!',
-              text: successCount + ' respon survei offline berhasil masuk ke server & peta GIS.',
-              timer: 4500,
-              showConfirmButton: false
+              html: 'Sebanyak <b>' + successCount + ' responden survei offline</b> berhasil diunggah ke server database & peta wilayah GIS.',
+              confirmButtonColor: '#043168'
             });
 
             // Reload data survei jika fungsi tersedia
             if (typeof loadAllSurveys === 'function') {
               loadAllSurveys();
             }
+            if (typeof loadDashboardRekapData === 'function') {
+              loadDashboardRekapData(window.currentSurveyId || 4);
+            }
+            if (typeof loadGoogleMapSurveyData === 'function') {
+              loadGoogleMapSurveyData(window.currentSurveyId || 4);
+            }
           }
 
           if (failCount > 0 && isManual) {
             Swal.fire({
               icon: 'warning',
-              title: 'Sebagian Gagal',
-              text: failCount + ' data survei gagal diunggah dan tetap disimpan di antrean offline untuk dicoba kembali.',
+              title: 'Sebagian Tertunda',
+              text: failCount + ' data survei belum berhasil diunggah karena kendala jaringan dan tetap disimpan di antrean untuk dicoba kembali.',
               confirmButtonColor: '#043168'
             });
           }
@@ -244,18 +521,24 @@
         var item = queue[index];
         var payload = item.payload;
 
+        // Update progress bar UI
+        var pct = Math.round(((index + 1) / totalToSync) * 100);
+        $('#syncProgressBar').css('width', pct + '%');
+        $('#syncProgressText').html('Mengunggah ' + (index + 1) + ' dari ' + totalToSync + ': <b>' + (item.respondenNama || 'Responden') + '</b>...');
+
+        var targetUrl = (typeof BaseURL !== 'undefined' ? BaseURL : '/') + 'IDE/submit_jawaban_survei';
+
         $.ajax({
-          url: BaseURL + 'IDE/submit_jawaban_survei',
+          url: targetUrl,
           type: 'POST',
           data: JSON.stringify(payload),
           contentType: 'application/json; charset=utf-8',
           dataType: 'json',
-          timeout: 15000,
+          timeout: 20000,
           success: function(res) {
             if (res && res.status) {
               successCount++;
             } else {
-              // Jika server menolak bukan karena koneksi, tetap log dan simpan di sisa
               console.warn('[OfflineManager] Gagal upload item:', item.id, res ? res.message : 'Unknown');
               remainingQueue.push(item);
               failCount++;
@@ -278,18 +561,14 @@
      * Simpan Draft Form Responden Berjalan ke LocalStorage
      */
     saveCurrentDraft: function() {
-      var surveyId = parseInt($('#respSurveiId').val()) || 4;
-      var inst = window.modalRtkdActiveInstrument || $('#modalRtkdActiveInstrument').val() || 'A';
+      var surveyId = parseInt($('#respSurveiId').val() || $('#dashFormSurveyId').val()) || 4;
+      var inst = window.modalRtkdActiveInstrument || window.dashRtkdActiveInstrument || 'A';
       var answers = window.RTKDEngine ? window.RTKDEngine.collect('formSurveyRespondent', inst) : {};
 
       var draftData = {
         surveyId: surveyId,
         instrumen: inst,
         enumerator: $('#respEnumerator').val(),
-        latitude: $('#respLatitude').val(),
-        longitude: $('#respLongitude').val(),
-        lokasiAccuracy: $('#respLokasiAccuracy').val(),
-        devicePlatform: $('#respDevicePlatform').val(),
         answers: answers,
         savedAt: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
       };
@@ -299,9 +578,7 @@
         localStorage.setItem(key, JSON.stringify(draftData));
         $('#rtkdDraftSaveText').html('<i class="fa-solid fa-cloud-check" style="color: #10b981;"></i> Draft tersimpan (' + draftData.savedAt + ')');
         $('#rtkdDraftIndicator').addClass('saved');
-      } catch (e) {
-        console.warn('[OfflineManager] Gagal simpan draft:', e);
-      }
+      } catch (e) {}
     },
 
     /**
@@ -322,12 +599,11 @@
         var draft = JSON.parse(raw);
         if (!draft || !draft.answers || Object.keys(draft.answers).length === 0) return false;
 
-        // Pulihkan Enumerator jika ada
         if (draft.enumerator && $('#respEnumerator').length) {
           $('#respEnumerator').val(draft.enumerator);
         }
 
-        var form = document.getElementById('formSurveyRespondent');
+        var form = document.getElementById('formSurveyRespondent') || document.getElementById('dashRespondentForm');
         if (!form) return false;
 
         var answers = draft.answers;
@@ -335,14 +611,12 @@
           if (!answers.hasOwnProperty(qKey)) continue;
           var val = answers[qKey];
 
-          // Text / number / textarea / select
           var el = form.querySelector('#' + qKey) || form.querySelector('[name="' + qKey + '"]');
           if (el && (el.tagName === 'INPUT' || el.tagName === 'SELECT' || el.tagName === 'TEXTAREA') && el.type !== 'radio' && el.type !== 'checkbox') {
             el.value = val;
             $(el).trigger('change');
           }
 
-          // Radio
           if (typeof val === 'string' || typeof val === 'number') {
             var elRadio = form.querySelector('input[type="radio"][name="' + qKey + '"][value="' + val + '"]');
             if (elRadio) {
@@ -351,7 +625,6 @@
             }
           }
 
-          // Checkbox array
           if (Array.isArray(val)) {
             val.forEach(function(itemVal) {
               var elCb = form.querySelector('input[type="checkbox"][name="' + qKey + '[]"][value="' + itemVal + '"]') ||
@@ -363,7 +636,6 @@
             });
           }
 
-          // Grid field object
           if (typeof val === 'object' && !Array.isArray(val)) {
             for (var subKey in val) {
               var gridInp = form.querySelector('input[name="' + qKey + '[' + subKey + ']"]') ||
@@ -382,19 +654,8 @@
               }
             }
           }
-
-          // Reason field
-          if (qKey.indexOf('_alasan') !== -1) {
-            var rawCode = qKey.replace('_alasan', '');
-            var whyEl = form.querySelector('#' + rawCode + '__why');
-            if (whyEl) {
-              whyEl.value = val;
-              $(whyEl).trigger('change');
-            }
-          }
         }
 
-        // Terapkan aturan kondisional show/hide & update CR AHP
         if (window.RTKDEngine) {
           window.RTKDEngine.applyShow('modalRtkdSheet', inst);
           if (inst === 'E') {
@@ -405,7 +666,6 @@
         $('#rtkdDraftSaveText').html('<i class="fa-solid fa-cloud-arrow-down" style="color: #0284c7;"></i> Draft dipulihkan (' + (draft.savedAt || 'tersimpan') + ')');
         return true;
       } catch (e) {
-        console.warn('[OfflineManager] Gagal restore draft:', e);
         return false;
       }
     },
@@ -424,20 +684,33 @@
     },
 
     /**
-     * Perbarui Tampilan Banner Antrean Offline di MenuSurvei
+     * Perbarui Tampilan Seluruh Badge & Banner Antrean Offline di UI
      */
-    updateSyncBannerUI: function() {
+    updateAllQueueUI: function() {
       var queue = this.getQueue();
       var count = queue.length;
+
+      // Banner di MenuSurvei
       var $banner = $('#offlineSyncBanner');
       var $countBadge = $('#offlineQueueBadgeCount');
-
       if (count > 0) {
         $countBadge.text(count);
         $banner.slideDown(250);
       } else {
         $banner.slideUp(250);
       }
+
+      // Floating Badge
+      var $float = $('#offlineQueueFloatBadge');
+      if (count > 0) {
+        $('#floatQueueBadgeCount').text(count);
+        $('#floatQueueBadgeCountMini').text(count);
+        $float.fadeIn(250);
+      } else {
+        $float.fadeOut(250);
+      }
+
+      $('#btnModalSyncCount, #modalQueueHeaderCount').text(count);
     },
 
     /**
@@ -452,6 +725,7 @@
           $badge.removeClass('online').addClass('offline').html('<i class="fa-solid fa-plane-slash"></i> Mode Offline');
         }
       }
+      this.updateAllQueueUI();
     }
   };
 
@@ -463,4 +737,4 @@
     SurveiOfflineManager.init();
   });
 
-})(window, jQuery);
+})(window, typeof jQuery !== 'undefined' ? jQuery : (typeof window.$ !== 'undefined' ? window.$ : null));

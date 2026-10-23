@@ -53,6 +53,7 @@
           type: "pair",
           left: items[i],
           right: items[j],
+          l: items[i] + ' vs ' + items[j],
           req: 1
         });
       }
@@ -817,6 +818,201 @@
       });
 
       return bad;
+    },
+
+    loadSchemaFromDb: function(dbList) {
+      return SCHEMA;
+    },
+
+    fillSampleAHP: function(containerId, isConsistent) {
+      if (typeof isConsistent === 'undefined') isConsistent = true;
+      var root = typeof containerId === 'string' ? document.getElementById(containerId) : containerId;
+      if (!root) root = document;
+
+      var setVal = function(name, val) {
+        var el = root.querySelector('[name="' + name + '"]') || root.querySelector('[name="dash_' + name + '"]');
+        if (el) {
+          if (el.type === 'radio') {
+            var r = root.querySelector('[name="' + name + '"][value="' + val + '"]') || root.querySelector('[name="dash_' + name + '"][value="' + val + '"]');
+            if (r) { r.checked = true; r.dispatchEvent(new Event('change', { bubbles: true })); }
+          } else {
+            el.value = val;
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+            el.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        }
+      };
+
+      setVal('S1', 'Perencana dan pengelola program');
+      setVal('S2', 'Bappeda / Dinas Tenaga Kerja Kabupaten Banyuwangi');
+      setVal('S3', 'Kepala Bidang Perencanaan Tenaga Kerja');
+      setVal('S5', 'Wawancara mendalam');
+
+      var wCrit = [0.35, 0.25, 0.18, 0.10, 0.07, 0.05];
+      var wIssues = [
+        [0.35, 0.25, 0.20, 0.12, 0.08],
+        [0.30, 0.28, 0.20, 0.14, 0.08],
+        [0.32, 0.26, 0.21, 0.13, 0.08],
+        [0.36, 0.24, 0.19, 0.13, 0.08],
+        [0.33, 0.27, 0.20, 0.12, 0.08],
+        [0.35, 0.25, 0.20, 0.12, 0.08]
+      ];
+
+      var saatyScale = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+      function getSaaty(ratio) {
+        if (!isConsistent) {
+          return Math.random() > 0.5 ? '5' : '1/5';
+        }
+        if (Math.abs(ratio - 1) < 0.15) return '1';
+        if (ratio > 1) {
+          var best = 1, minDiff = 999;
+          for (var k = 0; k < saatyScale.length; k++) {
+            var diff = Math.abs(saatyScale[k] - ratio);
+            if (diff < minDiff) { minDiff = diff; best = saatyScale[k]; }
+          }
+          return String(best);
+        } else {
+          var inv = 1 / ratio;
+          var bestInv = 1, minDiffInv = 999;
+          for (var k = 0; k < saatyScale.length; k++) {
+            var diff = Math.abs(saatyScale[k] - inv);
+            if (diff < minDiffInv) { minDiffInv = diff; bestInv = saatyScale[k]; }
+          }
+          return bestInv === 1 ? '1' : ('1/' + bestInv);
+        }
+      }
+
+      for (var i = 0; i < 6; i++) {
+        for (var j = i + 1; j < 6; j++) {
+          var qName = 'W' + (i + 1) + (j + 1);
+          var saatyVal = getSaaty(wCrit[i] / wCrit[j]);
+          var radio = root.querySelector('input[name="' + qName + '"][value="' + saatyVal + '"]') ||
+                      root.querySelector('input[name="dash_' + qName + '"][value="' + saatyVal + '"]');
+          if (radio) {
+            radio.checked = true;
+            radio.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        }
+      }
+
+      for (var k = 1; k <= 6; k++) {
+        var wList = wIssues[k - 1];
+        for (var i = 0; i < 5; i++) {
+          for (var j = i + 1; j < 5; j++) {
+            var qName = 'X' + k + '_' + (i + 1) + (j + 1);
+            var saatyVal = getSaaty(wList[i] / wList[j]);
+            var radio = root.querySelector('input[name="' + qName + '"][value="' + saatyVal + '"]') ||
+                        root.querySelector('input[name="dash_' + qName + '"][value="' + saatyVal + '"]');
+            if (radio) {
+              radio.checked = true;
+              radio.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+          }
+        }
+      }
+
+      this.updateCR('modalRtkdSheet', 'E');
+      this.updateCR('dashRtkdSheet', 'E', 'dash_');
+    },
+
+    /**
+     * Validasi butir pertanyaan wajib yang belum terisi dan berikan efek visual highlight
+     */
+    validateAndHighlight: function(sheetContainerId, instrumentKey, prefix, answers) {
+      prefix = prefix || '';
+      var allQuestions = this.allQs(instrumentKey);
+      var missingList = [];
+      var firstEl = null;
+
+      // Bersihkan highlight lama
+      var root = document.getElementById(sheetContainerId) || document;
+      var prevUnanswered = root.querySelectorAll('.rtkd-unanswered');
+      for (var p = 0; p < prevUnanswered.length; p++) {
+        prevUnanswered[p].classList.remove('rtkd-unanswered');
+        var oldBadge = prevUnanswered[p].querySelector('.rtkd-unanswered-alert-badge');
+        if (oldBadge && oldBadge.parentNode) oldBadge.parentNode.removeChild(oldBadge);
+      }
+
+      allQuestions.forEach(function(q) {
+        if (q.req && (q.show ? q.show(answers) : true)) {
+          var val = answers[q.c];
+          var isMissing = false;
+          if (val === undefined || val === null || val === '') {
+            isMissing = true;
+          } else if (Array.isArray(val) && val.length === 0) {
+            isMissing = true;
+          }
+
+          if (isMissing) {
+            var elId = 'wrap-' + prefix + q.c;
+            var el = document.getElementById(elId);
+            missingList.push({
+              code: q.c,
+              label: q.l || q.c,
+              elementId: elId,
+              element: el
+            });
+
+            if (el) {
+              el.classList.add('rtkd-unanswered');
+              if (!el.querySelector('.rtkd-unanswered-alert-badge')) {
+                var badge = document.createElement('div');
+                badge.className = 'rtkd-unanswered-alert-badge';
+                badge.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Pertanyaan Wajib &bull; Belum Terisi';
+                var bodyEl = el.querySelector('.rtkd-qbody') || el;
+                bodyEl.insertBefore(badge, bodyEl.firstChild);
+              }
+
+              if (!firstEl) {
+                firstEl = el;
+              }
+
+              // Pasang listener input change untuk otomatis menghapus highlight saat dijawab
+              var clearHandler = function() {
+                el.classList.remove('rtkd-unanswered');
+                var b = el.querySelector('.rtkd-unanswered-alert-badge');
+                if (b && b.parentNode) b.parentNode.removeChild(b);
+                el.removeEventListener('input', clearHandler);
+                el.removeEventListener('change', clearHandler);
+              };
+              el.addEventListener('input', clearHandler);
+              el.addEventListener('change', clearHandler);
+            }
+          }
+        }
+      });
+
+      return {
+        isValid: missingList.length === 0,
+        count: missingList.length,
+        missingList: missingList,
+        firstElement: firstEl
+      };
+    },
+
+    /**
+     * Scroll halus ke pertanyaan pertama yang belum terisi
+     */
+    scrollToFirstUnanswered: function(firstElement, scrollContainerSelector) {
+      if (!firstElement) return;
+
+      var scrollContainer = scrollContainerSelector ? document.querySelector(scrollContainerSelector) : null;
+      if (scrollContainer) {
+        var containerRect = scrollContainer.getBoundingClientRect();
+        var elRect = firstElement.getBoundingClientRect();
+        var scrollTop = scrollContainer.scrollTop + (elRect.top - containerRect.top) - (scrollContainer.clientHeight / 3);
+        $(scrollContainer).animate({ scrollTop: Math.max(0, scrollTop) }, 400);
+      } else {
+        firstElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      // Beri fokus ke input pertama jika ada
+      var input = firstElement.querySelector('input:not([type="hidden"]), select, textarea');
+      if (input) {
+        setTimeout(function() {
+          try { input.focus(); } catch(e) {}
+        }, 450);
+      }
     }
   };
 

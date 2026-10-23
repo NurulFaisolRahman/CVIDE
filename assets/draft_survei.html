@@ -50,6 +50,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .ql{font-weight:600;margin-bottom:8px}
 .ql .req{color:var(--crit);margin-left:2px}
 .ql small{display:block;font-weight:400;color:var(--muted)}
+.q.unanswered{background:#fef2f2;border:2px solid #ef4444!important;border-radius:10px;padding:12px;margin-block:6px}
+.q.unanswered .code{background:#dc2626;color:#fff;padding:2px 6px;border-radius:4px}
 .qbody{min-width:0}
 input[type=text],input[type=number],input[type=date],select,textarea{width:100%;font:16px var(--f-body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 11px}
 textarea{min-height:84px;resize:vertical}
@@ -377,7 +379,7 @@ const SCHEMA={
 const AHP_KRIT=["Mendukung target pembangunan daerah","Dirasakan oleh banyak warga","Ikut mendorong kemajuan sektor lain","Bisa ditangani pemerintah kabupaten","Bisa diatasi dalam 5 tahun","Sejalan dengan program bupati"];
 const AHP_ISU=["Banyak pekerja tanpa kontrak dan perlindungan","Keterampilan pencari kerja belum sesuai kebutuhan","Hasil kerja petani dan nelayan masih rendah","Anak muda dan lulusan sulit mendapat kerja","Pekerja migran dan kelompok rentan kurang terlindungi"];
 const SAATY="Cara mengisi: klik angka yang lebih dekat ke hal yang menurut Anda lebih penting. Angka 1 di tengah berarti sama penting. Makin besar angkanya, makin penting: 3 = sedikit lebih penting, 5 = lebih penting, 7 = jauh lebih penting, 9 = sangat jauh lebih penting. Angka 2, 4, 6, 8 boleh dipakai jika ragu di antara dua pilihan.";
-function pairQs(prefix,items){const qs=[];for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++)qs.push({c:`${prefix}${i+1}${j+1}`,type:"pair",left:items[i],right:items[j],req:1});return qs;}
+function pairQs(prefix,items){const qs=[];for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++)qs.push({c:`${prefix}${i+1}${j+1}`,type:"pair",left:items[i],right:items[j],l:`${items[i]} vs ${items[j]}`,req:1});return qs;}
 SCHEMA.E={name:"AHP pemangku kepentingan",blocks:[
  {t:"Identitas narasumber",hint:"Kuesioner ini meminta pendapat Bapak/Ibu tentang masalah ketenagakerjaan mana yang perlu ditangani lebih dulu di Banyuwangi. Bapak/Ibu cukup membandingkan dua hal setiap kali. Tidak ada jawaban benar atau salah. Perkiraan waktu 25–35 menit, didampingi petugas.",qs:[
   {c:"S1",l:"Kelompok narasumber",type:"one",o:["Perencana dan pengelola program","Penyedia pelatihan dan pendidikan","Dunia usaha","Pekerja/serikat pekerja","Penempatan dan migrasi kerja"],req:1},
@@ -399,6 +401,10 @@ let current="A", db=null, canWrite=true, userId=null, entries=[], downloads=null
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+try {
+  const savedEntries = store.get("rtkd_entries");
+  if (savedEntries) entries = JSON.parse(savedEntries) || [];
+} catch(e) {}
 
 /* ---------- render form ---------- */
 function qHTML(q){
@@ -514,18 +520,81 @@ form.addEventListener("submit",async e=>{
   const a=collect();
   // keep only answers to visible questions
   for(const q of allQs()) if(q.show&&!q.show(a)){delete a[q.c];delete a[q.c+"_alasan"];}
-  const missing=allQs().filter(q=>q.req&&(!q.show||q.show(a))&&a[q.c]==null).map(q=>q.c);
   if(!$("#consent").checked){setStatus("Centang persetujuan responden terlebih dahulu.","err");$("#consent").focus();return;}
-  if(missing.length){setStatus("Lengkapi pertanyaan wajib: "+missing.join(", ")+".","err");const el=$("#wrap-"+missing[0]);el&&el.scrollIntoView({block:"center"});return;}
+  const missing=allQs().filter(q=>q.req&&(!q.show||q.show(a))&&a[q.c]==null).map(q=>q.c);
+  document.querySelectorAll(".q.unanswered").forEach(el=>el.classList.remove("unanswered"));
+  if(missing.length){
+    missing.forEach(c=>{
+      const el=$("#wrap-"+c);
+      if(el){
+        el.classList.add("unanswered");
+        el.addEventListener("input",()=>el.classList.remove("unanswered"),{once:true});
+        el.addEventListener("change",()=>el.classList.remove("unanswered"),{once:true});
+      }
+    });
+    setStatus("Ada "+missing.length+" pertanyaan wajib belum terisi: "+missing.join(", ")+". Silakan lengkapi butir berbingkai merah.","err");
+    const el=$("#wrap-"+missing[0]);
+    if(el){
+      el.scrollIntoView({behavior:"smooth",block:"center"});
+      const inp=el.querySelector("input,select,textarea");
+      if(inp) inp.focus();
+    }
+    return;
+  }
   if(current==="B"&&Array.isArray(a.SC)&&a.SC.includes("Tidak satu pun")){setStatus(a.SC.length===1?"Responden tidak memenuhi kriteria penyaring. Wawancara dihentikan dan jawaban tidak disimpan.":"Pada SC, \"Tidak satu pun\" tidak bisa dipilih bersama kriteria lain. Perbaiki jawaban SC.","err");$("#wrap-SC").scrollIntoView({block:"center"});return;}
   if(current==="E"){const bad=updateCR();if(bad.length&&!crAck){crAck=true;setStatus(`Jawaban di ${bad.join(", ")} masih ada yang bertentangan. Sebaiknya dicek lagi bersama narasumber. Jika narasumber tetap pada jawabannya, tekan Simpan sekali lagi. Catatan: jawaban yang bertentangan tidak ikut dihitung dalam rekap.`,"err");return;}}
   if(!$("#enumerator").value.trim()){setStatus("Isi nama enumerator terlebih dahulu.","err");$("#enumerator").focus();return;}
-  if(!db){setStatus("Jawaban belum bisa disimpan: penyimpanan tidak tersedia di tampilan ini.","err");return;}
   const btn=$("#submitBtn"); btn.disabled=true; setStatus("Menyimpan…");
+  const newEntry={instrument:current,enumerator:$("#enumerator").value.trim(),createdBy:userId||"local-surveyor",createdAt:new Date().toISOString(),answers:a};
   try{
-    await db.collection("entries").add({instrument:current,enumerator:$("#enumerator").value.trim(),createdBy:userId||"",createdAt:new Date().toISOString(),answers:a});
+    if(db){
+      await db.collection("entries").add(newEntry);
+    } else {
+      entries.unshift(newEntry);
+      store.set("rtkd_entries", JSON.stringify(entries));
+      let syncedOnline = false;
+      if(navigator.onLine){
+        try {
+          const resp = await fetch('../IDE/submit_survei_responden', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              SurveiId: 4,
+              Instrumen: current,
+              Enumerator: newEntry.enumerator,
+              Jawaban: a
+            })
+          });
+          if(resp && resp.ok) syncedOnline = true;
+        } catch(fetchErr) {
+          syncedOnline = false;
+        }
+      }
+      if(!syncedOnline){
+        try {
+          let q = JSON.parse(localStorage.getItem('CVIDE_OFFLINE_SURVEY_QUEUE') || '[]');
+          q.push({
+            id: 'off_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+            surveiId: 4,
+            instrumen: current,
+            enumerator: newEntry.enumerator,
+            nama: a.P1 || a.L1 || a.N1 || a.S1 || a.K2 || 'Responden Draft ' + current,
+            kecamatan: a.P2 || a.L3 || a.N2 || a.S2 || a.K3 || '',
+            jawabanCount: Object.keys(a).length,
+            timestamp: new Date().toISOString(),
+            payload: {
+              SurveiId: 4,
+              Instrumen: current,
+              Enumerator: newEntry.enumerator,
+              Jawaban: a
+            }
+          });
+          localStorage.setItem('CVIDE_OFFLINE_SURVEY_QUEUE', JSON.stringify(q));
+        } catch(qErr) {}
+      }
+    }
     store.del("draft-"+current); renderForm();
-    setStatus("Tersimpan. Formulir siap untuk responden berikutnya.","ok");
+    setStatus(navigator.onLine && !db ? "Tersimpan online ke server. Formulir siap untuk responden berikutnya." : "Tersimpan di antrean offline lokal. Formulir siap untuk responden berikutnya tanpa perlu internet.", "ok");
     window.scrollTo({top:0});
   }catch(err){
     if(err&&err.code==="invalid_argument"){canWrite=false;showConn();setStatus("Akun Anda belum punya izin menyimpan jawaban. Minta pemilik survei memberi akses Editor.","err");}
@@ -563,7 +632,7 @@ function renderRecap(){
   const A=entries.filter(e=>e.instrument==="A"),B=entries.filter(e=>e.instrument==="B"),C=entries.filter(e=>e.instrument==="C"),D=entries.filter(e=>e.instrument==="D"),E=entries.filter(e=>e.instrument==="E");
   $("#kpis").innerHTML=[["A","Perusahaan",A.length,"target 150–250"],["B","Pencari kerja & lulusan",B.length,"target 300–400"],["C","Narasumber",C.length,"target 10–15"],["D","Siswa kelas 12",D.length,"target 100"],["AHP","Narasumber AHP",E.length,"target 10–15"]]
     .map(([t,l,n,g])=>`<div class="kpi"><div class="t">${t}</div><div class="n">${n}</div><div class="l">${l}<br>${g}</div></div>`).join("");
-  if(!db){$("#recapBody").innerHTML=`<div class="panel"><div class="empty">Rekap tampil setelah penyimpanan terhubung. Buka halaman ini dengan akun yang diberi akses oleh pemilik survei.</div></div>`;return;}
+  if(!db && !entries.length){$("#recapBody").innerHTML=`<div class="panel"><div class="empty">Rekap tampil setelah formulir pertama disimpan. Buka halaman ini dengan akun yang diberi akses atau simpan jawaban di tab formulir.</div></div>`;return;}
   if(!entries.length){$("#recapBody").innerHTML=`<div class="panel"><h3>Belum ada jawaban tersimpan</h3><div class="empty">Rekap terisi otomatis begitu enumerator menyimpan formulir pertama di tab A, B, C, atau D.</div></div>`;return;}
   const kec=countBy([...A,...B],e=>e.answers.P2||e.answers.L3);
   const recent=entries.slice(0,15).map(e=>{
@@ -604,10 +673,22 @@ function toCSV(inst){
 }
 document.querySelectorAll("[data-export]").forEach(b=>b.addEventListener("click",async()=>{
   const inst=b.dataset.export, st=$("#exportStatus");
-  if(!downloads){st.textContent="Unduhan tidak tersedia di tampilan ini.";return;}
   if(!entries.some(e=>e.instrument===inst)){st.textContent="Belum ada data untuk instrumen "+inst+".";return;}
-  try{const r=await downloads.save({filename:`survei-ketenagakerjaan-instrumen-${inst}.csv`,data:new Blob([toCSV(inst)],{type:"text/csv"})});st.textContent=r.status==="saved"?"File CSV diunduh.":"";}
-  catch(err){st.textContent=err&&err.code==="unavailable"?"Unduhan tidak tersedia di tampilan ini.":"";}
+  try{
+    if(downloads){
+      const r=await downloads.save({filename:`survei-ketenagakerjaan-instrumen-${inst}.csv`,data:new Blob([toCSV(inst)],{type:"text/csv"})});
+      st.textContent=r.status==="saved"?"File CSV diunduh.":"";
+    } else {
+      const blob=new Blob([toCSV(inst)],{type:"text/csv;charset=utf-8;"});
+      const link=document.createElement("a");
+      link.href=URL.createObjectURL(blob);
+      link.download=`survei-ketenagakerjaan-instrumen-${inst}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      st.textContent="File CSV berhasil diunduh.";
+    }
+  } catch(err){st.textContent="Gagal mengunduh CSV.";}
 }));
 
 /* ---------- connection ---------- */
