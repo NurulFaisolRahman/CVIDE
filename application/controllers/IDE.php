@@ -2108,6 +2108,9 @@ public function InputIKMYogyakarta()
     if (!$this->db->field_exists('LokasiAccuracy', 'survei_responden')) {
       $this->db->query("ALTER TABLE `survei_responden` ADD COLUMN `LokasiAccuracy` DECIMAL(8,2) NULL DEFAULT NULL AFTER `Longitude`");
     }
+    if (!$this->db->field_exists('FotoDokumentasi', 'survei_responden')) {
+      $this->db->query("ALTER TABLE `survei_responden` ADD COLUMN `FotoDokumentasi` VARCHAR(255) NULL AFTER `LokasiAccuracy`");
+    }
     if (!$this->db->field_exists('DevicePlatform', 'survei_responden')) {
       $this->db->query("ALTER TABLE `survei_responden` ADD COLUMN `DevicePlatform` VARCHAR(100) NULL DEFAULT NULL AFTER `UserAgent`");
     }
@@ -3062,6 +3065,46 @@ public function InputIKMYogyakarta()
 
     $createdByUser = $enumerator ?: ($this->session->userdata('Username') ?: 'Surveyor');
 
+    // Penanganan Unggah Foto Dokumentasi Lapangan (Kamera HP / File)
+    $fotoPath = null;
+    $rawFoto = $input['FotoDokumentasi'] ?? ($input['foto_dokumentasi'] ?? null);
+
+    if (!empty($rawFoto) && is_string($rawFoto)) {
+      // Jika berupa Base64 Data URL (misal: data:image/jpeg;base64,...)
+      if (preg_match('/^data:image\/(\w+);base64,(.+)$/s', $rawFoto, $fotoMatches)) {
+        $ext = strtolower($fotoMatches[1]);
+        if ($ext === 'jpeg') $ext = 'jpg';
+        if (!in_array($ext, array('jpg', 'jpeg', 'png', 'webp'))) {
+          $ext = 'jpg';
+        }
+        $decodedData = base64_decode($fotoMatches[2]);
+        if ($decodedData !== false) {
+          $uploadDir = FCPATH . 'uploads/survei_rtkd/';
+          if (!is_dir($uploadDir)) {
+            @mkdir($uploadDir, 0777, true);
+          }
+          $fileName = 'foto_rtkd_' . $surveiId . '_' . $instrumen . '_' . date('Ymd_His') . '_' . substr(md5(uniqid(mt_rand(), true)), 0, 8) . '.' . $ext;
+          $targetPath = $uploadDir . $fileName;
+          if (@file_put_contents($targetPath, $decodedData)) {
+            $fotoPath = 'uploads/survei_rtkd/' . $fileName;
+          }
+        }
+      } elseif (strpos($rawFoto, 'uploads/') === 0) {
+        $fotoPath = $rawFoto;
+      }
+    } elseif (!empty($_FILES['FotoDokumentasi']['tmp_name']) && is_uploaded_file($_FILES['FotoDokumentasi']['tmp_name'])) {
+      $uploadDir = FCPATH . 'uploads/survei_rtkd/';
+      if (!is_dir($uploadDir)) {
+        @mkdir($uploadDir, 0777, true);
+      }
+      $ext = pathinfo($_FILES['FotoDokumentasi']['name'], PATHINFO_EXTENSION) ?: 'jpg';
+      $fileName = 'foto_rtkd_' . $surveiId . '_' . $instrumen . '_' . date('Ymd_His') . '_' . substr(md5(uniqid(mt_rand(), true)), 0, 8) . '.' . strtolower($ext);
+      $targetPath = $uploadDir . $fileName;
+      if (@move_uploaded_file($_FILES['FotoDokumentasi']['tmp_name'], $targetPath)) {
+        $fotoPath = 'uploads/survei_rtkd/' . $fileName;
+      }
+    }
+
     // Simpan Data Responden
     $respondenData = array(
       'SurveiId'            => $surveiId,
@@ -3081,6 +3124,7 @@ public function InputIKMYogyakarta()
       'Latitude'            => $latitude,
       'Longitude'           => $longitude,
       'LokasiAccuracy'      => $lokasiAccuracy,
+      'FotoDokumentasi'     => $fotoPath,
       'TotalSkor'           => $totalSkor,
       'RataRataSkor'        => $rataRataSkor,
       'MutuPelayanan'       => $mutuPelayanan,
@@ -3102,13 +3146,14 @@ public function InputIKMYogyakarta()
     }
 
     echo json_encode(array(
-      'status'          => true,
-      'message'         => 'Terima kasih! Jawaban survei Anda berhasil disimpan.',
-      'responden_id'    => $respondenId,
-      'total_skor'      => $totalSkor,
-      'rata_rata_skor'  => $rataRataSkor,
-      'mutu_pelayanan'  => $mutuPelayanan,
-      'daerah_survei'   => trim($kabupaten . ' ' . $kecamatan . ' ' . $desa) ?: ($survei['DaerahSurvei'] ?: 'Nasional')
+      'status'            => true,
+      'message'           => 'Terima kasih! Jawaban survei Anda berhasil disimpan.',
+      'responden_id'      => $respondenId,
+      'total_skor'        => $totalSkor,
+      'rata_rata_skor'    => $rataRataSkor,
+      'mutu_pelayanan'    => $mutuPelayanan,
+      'foto_dokumentasi'  => !empty($fotoPath) ? base_url($fotoPath) : null,
+      'daerah_survei'     => trim($kabupaten . ' ' . $kecamatan . ' ' . $desa) ?: ($survei['DaerahSurvei'] ?: 'Nasional')
     ));
     return;
   }
@@ -3668,6 +3713,8 @@ public function InputIKMYogyakarta()
                         ->where('survei_jawaban.RespondenId', $respondenId)
                         ->get()->result_array();
 
+    $responden['FotoDokumentasiUrl'] = !empty($responden['FotoDokumentasi']) ? base_url($responden['FotoDokumentasi']) : null;
+
     echo json_encode(array('status' => true, 'data' => $responden, 'answers' => $answers));
   }
 
@@ -3939,6 +3986,7 @@ public function InputIKMYogyakarta()
     echo '<th rowspan="2" style="width: 130px;">Pekerjaan</th>';
     echo '<th colspan="5">Keterangan Daerah Survei</th>';
     echo '<th colspan="3">Geolokasi &amp; Perangkat Device</th>';
+    echo '<th rowspan="2" style="width: 130px;">Foto Dokumentasi</th>';
     echo '<th rowspan="2" style="width: 90px;">Rata-Rata Skor</th>';
     echo '<th rowspan="2" style="width: 110px;">Mutu Pelayanan</th>';
 
@@ -3992,6 +4040,8 @@ public function InputIKMYogyakarta()
         echo '<td class="text-left">' . htmlspecialchars($r['Kecamatan'] ?: '-') . '</td>';
         echo '<td class="text-left">' . htmlspecialchars($r['Desa'] ?: '-') . '</td>';
         echo '<td class="text-left">' . htmlspecialchars($r['AlamatDetail'] ?: '-') . '</td>';
+        $fotoHtml = !empty($r['FotoDokumentasi']) ? ('<a href="' . base_url($r['FotoDokumentasi']) . '" target="_blank" style="color: #043168; font-weight: bold;">Lihat Foto</a>') : '<span style="color: #94a3b8;">-</span>';
+        echo '<td class="text-center">' . $fotoHtml . '</td>';
         echo '<td class="decimal">' . number_format((float)$r['RataRataSkor'], 2) . '</td>';
         echo '<td class="highlight">' . htmlspecialchars($r['MutuPelayanan'] ?: 'Baik') . '</td>';
 

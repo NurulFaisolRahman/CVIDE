@@ -6987,6 +6987,57 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
           <!-- Dynamic Questions Sheet -->
           <div class="rtkd-sheet" id="modalRtkdSheet"></div>
 
+          <!-- DOKUMENTASI FOTO SURVEI (KAMERA HP / UPLOAD FOTO) -->
+          <div class="rtkd-photo-section" id="rtkdPhotoSection">
+            <div class="rtkd-photo-card">
+              <div class="rtkd-photo-header">
+                <div class="rtkd-photo-title">
+                  <i class="fa-solid fa-camera" style="color: #043168;"></i>
+                  <span>Foto Dokumentasi Survei Lapangan</span>
+                </div>
+                <span class="rtkd-photo-tag"><i class="fa-solid fa-camera-rotate"></i> Kamera HP Surveiyor</span>
+              </div>
+              <p class="rtkd-photo-subtitle">
+                Ambil foto kegiatan wawancara, responden, atau unit usaha melalui kamera HP surveiyor sebagai bukti dokumentasi kunjungan lapangan. Geotag lokasi GPS &amp; waktu akan disematkan otomatis pada foto.
+              </p>
+
+              <!-- Hidden file inputs -->
+              <input type="file" id="rtkdCameraInput" accept="image/*" capture="environment" style="display:none;" onchange="handleRtkdPhotoCaptured(this)">
+              <input type="file" id="rtkdGalleryInput" accept="image/*" style="display:none;" onchange="handleRtkdPhotoCaptured(this)">
+              <input type="hidden" id="respFotoDokumentasi" name="FotoDokumentasi" value="">
+
+              <!-- Upload / Camera Buttons Bar -->
+              <div class="rtkd-photo-btn-bar" id="rtkdPhotoBtnBar">
+                <button type="button" class="rtkd-cam-btn primary" onclick="$('#rtkdCameraInput').trigger('click')" title="Buka Kamera HP Langsung">
+                  <i class="fa-solid fa-camera"></i>
+                  <span>Ambil Foto Kamera HP</span>
+                </button>
+                <button type="button" class="rtkd-cam-btn secondary" onclick="$('#rtkdGalleryInput').trigger('click')" title="Pilih foto dari galeri / berkas">
+                  <i class="fa-solid fa-image"></i>
+                  <span>Pilih dari Galeri</span>
+                </button>
+              </div>
+
+              <!-- Live Photo Preview Box (Hidden by default, shown when photo captured) -->
+              <div class="rtkd-photo-preview-wrap" id="rtkdPhotoPreviewWrap" style="display:none;">
+                <div class="rtkd-photo-thumb-box" onclick="previewRtkdPhotoFull()" title="Klik untuk melihat foto ukuran penuh">
+                  <img id="rtkdPhotoPreviewImg" src="" alt="Preview Foto Dokumentasi">
+                  <div class="rtkd-photo-badge"><i class="fa-solid fa-circle-check"></i> Foto Siap Terkirim</div>
+                </div>
+                <div class="rtkd-photo-meta-info">
+                  <div class="meta-row"><i class="fa-solid fa-file-image"></i> <span id="rtkdPhotoSizeInfo">-</span></div>
+                  <div class="meta-row"><i class="fa-solid fa-clock"></i> <span id="rtkdPhotoTimeInfo">-</span></div>
+                  <div class="meta-row" id="rtkdPhotoGeoRow"><i class="fa-solid fa-location-dot"></i> <span id="rtkdPhotoGeoInfo">Koordinat GPS disematkan</span></div>
+                  <div class="rtkd-photo-actions-row">
+                    <button type="button" class="btn-photo-action preview" onclick="previewRtkdPhotoFull()"><i class="fa-solid fa-magnifying-glass-plus"></i> Lihat Penuh</button>
+                    <button type="button" class="btn-photo-action retake" onclick="$('#rtkdCameraInput').trigger('click')"><i class="fa-solid fa-camera-rotate"></i> Foto Ulang</button>
+                    <button type="button" class="btn-photo-action remove" onclick="clearRtkdPhoto()"><i class="fa-solid fa-trash-can"></i> Hapus Foto</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Action Footer -->
           <div class="rtkd-actions">
             <button type="button" class="rtkd-btn ghost" onclick="closeSurveyRespondentModal()">
@@ -8882,6 +8933,9 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
     window.closeSurveyRespondentModal = function() {
       $('#surveyRespondentModal').removeClass('active');
       $('body').css('overflow', '');
+      if (typeof clearRtkdPhoto === 'function') {
+        clearRtkdPhoto();
+      }
     };
 
     window.toggleSurveyDescription = function() {
@@ -8941,7 +8995,7 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
     window.resetModalRtkdForm = function() {
       Swal.fire({
         title: 'Kosongkan Formulir?',
-        text: 'Seluruh isian instrumen aktif akan dibersihkan.',
+        text: 'Seluruh isian instrumen aktif dan foto dokumentasi akan dibersihkan.',
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#043168',
@@ -8949,6 +9003,9 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
         cancelButtonText: 'Batal'
       }).then(function(result) {
         if (result.isConfirmed) {
+          if (typeof clearRtkdPhoto === 'function') {
+            clearRtkdPhoto();
+          }
           if (window.RTKDEngine) {
             window.RTKDEngine.render('modalRtkdSheet', window.modalRtkdActiveInstrument || 'A');
           }
@@ -8980,6 +9037,145 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
         $('#toggleOfflineModeWrap').removeClass('active');
         $('#offlineModeNote').html('<i class="fa-solid fa-shield-halved text-success"></i> Antrean offline aktif &bull; Mendukung banyak data');
       }
+    };
+
+    // =========================================================================
+    // DOKUMENTASI FOTO SURVEI RTKD (KAMERA HP SURVEIYOR & UPLOAD)
+    // =========================================================================
+    window.handleRtkdPhotoCaptured = function(inputEl) {
+      if (!inputEl.files || !inputEl.files[0]) return;
+      var file = inputEl.files[0];
+
+      // Tampilkan indikator proses
+      Swal.fire({
+        title: 'Memproses Foto Kamera...',
+        html: '<div style="font-size:13px; color:#475569; padding: 6px 0;"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengoptimalkan foto dan menyematkan geotag survei lapangan...</div>',
+        allowOutsideClick: false,
+        didOpen: function() {
+          Swal.showLoading();
+        }
+      });
+
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var img = new Image();
+        img.onload = function() {
+          try {
+            var canvas = document.createElement('canvas');
+            var maxDim = 1280;
+            var width = img.width;
+            var height = img.height;
+
+            if (width > height) {
+              if (width > maxDim) {
+                height = Math.round(height * (maxDim / width));
+                width = maxDim;
+              }
+            } else {
+              if (height > maxDim) {
+                width = Math.round(width * (maxDim / height));
+                height = maxDim;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Watermark Banner profesional di bagian bawah foto
+            var bannerHeight = Math.max(56, Math.round(height * 0.11));
+            ctx.fillStyle = 'rgba(4, 49, 104, 0.88)'; // Deep Navy IDE
+            ctx.fillRect(0, height - bannerHeight, width, bannerHeight);
+
+            // Aksen garis merah di batas kiri watermark
+            ctx.fillStyle = '#b40814'; // Lugx Red
+            ctx.fillRect(0, height - bannerHeight, 8, bannerHeight);
+
+            // Informasi Metadata Watermark
+            var surveyor = $.trim($('#respEnumerator').val()) || 'Surveiyor Lapangan';
+            var inst = window.modalRtkdActiveInstrument || $('#modalRtkdActiveInstrument').val() || 'A';
+            var instNames = {
+              'A': 'Instrumen A - Perusahaan / Pemberi Kerja',
+              'B': 'Instrumen B - Pencari Kerja & Lulusan',
+              'C': 'Instrumen C - Pemangku Kepentingan',
+              'E': 'Instrumen E - AHP Isu Strategis',
+              'D': 'Instrumen D - Siswa Kelas 12'
+            };
+            var instLabel = instNames[inst] || ('Instrumen ' + inst);
+
+            var now = new Date();
+            var dateStr = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+            var timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB';
+
+            var lat = $('#respLatitude').val();
+            var lng = $('#respLongitude').val();
+            var realKec = $('#respRealKecamatan').val();
+            var locStr = realKec ? ('Kec. ' + realKec) : 'Kabupaten Banyuwangi';
+            if (lat && lng) {
+              locStr += ' (' + parseFloat(lat).toFixed(5) + ', ' + parseFloat(lng).toFixed(5) + ')';
+            }
+
+            var fontSizeTitle = Math.max(12, Math.round(bannerHeight * 0.28));
+            var fontSizeSub = Math.max(10, Math.round(bannerHeight * 0.22));
+
+            ctx.font = 'bold ' + fontSizeTitle + 'px sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText('SURVEI RTKD BANYUWANGI 2026 • ' + instLabel, 18, height - (bannerHeight * 0.55));
+
+            ctx.font = fontSizeSub + 'px sans-serif';
+            ctx.fillStyle = '#cbd5e1';
+            ctx.fillText('Petugas: ' + surveyor + ' | ' + locStr + ' | ' + dateStr + ' ' + timeStr, 18, height - (bannerHeight * 0.2));
+
+            // Kompresi kualitas JPEG 0.82
+            var dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+            var sizeKb = Math.round((dataUrl.length * 3 / 4) / 1024);
+
+            $('#respFotoDokumentasi').val(dataUrl);
+            $('#rtkdPhotoPreviewImg').attr('src', dataUrl);
+            $('#rtkdPhotoSizeInfo').text(width + ' × ' + height + ' px • ' + sizeKb + ' KB (Terkompresi Cepat)');
+            $('#rtkdPhotoTimeInfo').text(dateStr + ' ' + timeStr);
+            $('#rtkdPhotoGeoInfo').text(locStr);
+
+            $('#rtkdPhotoPreviewWrap').show();
+            $('#rtkdPhotoBtnBar').hide();
+
+            Swal.close();
+          } catch (err) {
+            console.error('Error watermarking image:', err);
+            $('#respFotoDokumentasi').val(e.target.result);
+            $('#rtkdPhotoPreviewImg').attr('src', e.target.result);
+            $('#rtkdPhotoPreviewWrap').show();
+            $('#rtkdPhotoBtnBar').hide();
+            Swal.close();
+          }
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+
+    window.clearRtkdPhoto = function() {
+      $('#respFotoDokumentasi').val('');
+      $('#rtkdPhotoPreviewImg').attr('src', '');
+      $('#rtkdCameraInput').val('');
+      $('#rtkdGalleryInput').val('');
+      $('#rtkdPhotoPreviewWrap').hide();
+      $('#rtkdPhotoBtnBar').show();
+    };
+
+    window.previewRtkdPhotoFull = function() {
+      var photoSrc = $('#respFotoDokumentasi').val() || $('#rtkdPhotoPreviewImg').attr('src');
+      if (!photoSrc) return;
+
+      Swal.fire({
+        title: 'Foto Dokumentasi Survei',
+        html: '<div style="text-align:center; padding: 10px 0;"><img src="' + photoSrc + '" style="max-width:100%; max-height:70vh; border-radius:12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);"></div>',
+        width: 'auto',
+        showCloseButton: true,
+        confirmButtonText: '<i class="fa-solid fa-check"></i> Tutup',
+        confirmButtonColor: '#043168'
+      });
     };
 
     // Real-time conditional show/hide dan update konsistensi AHP untuk RTKD Modal
@@ -9357,6 +9553,7 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
           Longitude: $('#respLongitude').val() || null,
           LokasiAccuracy: $('#respLokasiAccuracy').val() || null,
           DevicePlatform: $('#respDevicePlatform').val() || 'Desktop Browser',
+          FotoDokumentasi: $('#respFotoDokumentasi').val() || null,
           Jawaban: answers
         };
 
@@ -9530,6 +9727,7 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
         Longitude: $('#respLongitude').val() || null,
         LokasiAccuracy: $('#respLokasiAccuracy').val() || null,
         DevicePlatform: $('#respDevicePlatform').val() || 'Desktop Browser',
+        FotoDokumentasi: $('#respFotoDokumentasi').val() || null,
         Jawaban: {}
       };
 

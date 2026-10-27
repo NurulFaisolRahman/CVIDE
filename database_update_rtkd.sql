@@ -106,6 +106,7 @@ ALTER TABLE `survei_responden` ADD COLUMN IF NOT EXISTS `RespondenNIK` VARCHAR(2
 ALTER TABLE `survei_responden` ADD COLUMN IF NOT EXISTS `Latitude` DECIMAL(11,8) NULL DEFAULT NULL AFTER `AlamatDetail`;
 ALTER TABLE `survei_responden` ADD COLUMN IF NOT EXISTS `Longitude` DECIMAL(11,8) NULL DEFAULT NULL AFTER `Latitude`;
 ALTER TABLE `survei_responden` ADD COLUMN IF NOT EXISTS `LokasiAccuracy` DECIMAL(8,2) NULL DEFAULT NULL AFTER `Longitude`;
+ALTER TABLE `survei_responden` ADD COLUMN IF NOT EXISTS `FotoDokumentasi` VARCHAR(255) NULL AFTER `LokasiAccuracy`;
 ALTER TABLE `survei_responden` ADD COLUMN IF NOT EXISTS `DevicePlatform` VARCHAR(100) NULL DEFAULT NULL AFTER `UserAgent`;
 
 CREATE TABLE IF NOT EXISTS `survei_jawaban` (

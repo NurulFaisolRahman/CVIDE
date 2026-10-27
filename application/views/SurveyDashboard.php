@@ -3541,6 +3541,7 @@
                     <th>Nama Responden</th>
                     <th>Wilayah (Kecamatan / Desa)</th>
                     <th>Demografi</th>
+                    <th style="text-align: center; width: 120px;">Foto Lapangan</th>
                     <th>Rata-Rata Skor</th>
                     <th>Mutu</th>
                     <th style="text-align: center;">Aksi</th>
@@ -3548,7 +3549,7 @@
                 </thead>
                 <tbody id="dashRekapTableBody">
                   <tr>
-                    <td colspan="8" style="text-align: center; padding: 30px; color: #64748b;">
+                    <td colspan="9" style="text-align: center; padding: 30px; color: #64748b;">
                       Memuat data responden...
                     </td>
                   </tr>
@@ -5450,7 +5451,7 @@
     }
 
     function loadDashboardRekapData(surveyId) {
-      $('#dashRekapTableBody').html('<tr><td colspan="8" style="text-align: center; padding: 30px; color: #64748b;"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data rekapitulasi...</td></tr>');
+      $('#dashRekapTableBody').html('<tr><td colspan="9" style="text-align: center; padding: 30px; color: #64748b;"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data rekapitulasi...</td></tr>');
 
       $.ajax({
         url: BaseURL + 'IDE/get_survei_rekap_data/' + surveyId,
@@ -5465,7 +5466,7 @@
             $tbody.empty();
 
             if (!Array.isArray(res.responden) || res.responden.length === 0) {
-              $tbody.html('<tr><td colspan="8" style="text-align: center; padding: 30px; color: #94a3b8;">Belum ada data responden untuk survei ini.</td></tr>');
+              $tbody.html('<tr><td colspan="9" style="text-align: center; padding: 30px; color: #94a3b8;">Belum ada data responden untuk survei ini.</td></tr>');
               return;
             }
 
@@ -5482,6 +5483,15 @@
 
               var demografi = (r.RespondenGender || '-') + ' &bull; ' + (r.RespondenUsia || '-');
 
+              var fotoCell = '<span class="text-muted" style="font-size: 11.5px;">-</span>';
+              if (r.FotoDokumentasi) {
+                var safeNama = r.RespondenNama ? r.RespondenNama.replace(/'/g, "\\'") : 'Responden';
+                fotoCell = 
+                  '<button type="button" class="btn btn-sm btn-outline-info" style="border-radius: 8px; font-size: 11px; font-weight: 700; padding: 3px 8px; display: inline-flex; align-items: center; gap: 4px;" onclick="previewDashboardPhoto(\'' + BaseURL + r.FotoDokumentasi + '\', \'' + safeNama + '\')" title="Lihat Foto Dokumentasi">' +
+                    '<i class="fa-solid fa-camera"></i> Foto' +
+                  '</button>';
+              }
+
               $tbody.append(
                 '<tr>' +
                   '<td>' + (idx + 1) + '</td>' +
@@ -5489,6 +5499,7 @@
                   '<td><b>' + (r.RespondenNama || 'Anonim') + '</b></td>' +
                   '<td><span class="badge badge-light" style="font-size: 12px;"><i class="fa-solid fa-location-dot" style="color: var(--ide-red);"></i> ' + wilayah + '</span></td>' +
                   '<td><span style="font-size: 12px; color: #475569;">' + demografi + '</span></td>' +
+                  '<td style="text-align: center;">' + fotoCell + '</td>' +
                   '<td><strong style="color: #059669; font-size: 14px;">' + (r.RataRataSkor || '0.00') + '</strong></td>' +
                   '<td><span class="badge badge-success" style="padding: 4px 8px;">' + (r.MutuPelayanan || 'Baik') + '</span></td>' +
                   '<td style="text-align: center;">' +
@@ -5506,6 +5517,26 @@
             });
           }
         }
+      });
+    }
+
+    function previewDashboardPhoto(url, nama) {
+      if (!url) return;
+      Swal.fire({
+        title: 'Foto Dokumentasi: ' + (nama || 'Responden'),
+        html: 
+          '<div style="text-align:center; padding: 10px 0;">' +
+            '<img src="' + url + '" style="max-width:100%; max-height:68vh; border-radius:12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); border: 2px solid #e2e8f0;">' +
+            '<div style="margin-top:14px;">' +
+              '<a href="' + url + '" target="_blank" download class="btn btn-sm btn-primary" style="font-size:12px; font-weight:700; border-radius:8px; padding: 6px 14px;">' +
+                '<i class="fa-solid fa-download mr-1"></i> Unduh Foto Penuh' +
+              '</a>' +
+            '</div>' +
+          '</div>',
+        width: 'auto',
+        showCloseButton: true,
+        confirmButtonText: '<i class="fa-solid fa-check"></i> Tutup',
+        confirmButtonColor: '#043168'
       });
     }
 
@@ -5530,11 +5561,23 @@
             }
             var rDesa = r.Desa ? ', Desa ' + r.Desa : '';
 
+            var fotoSection = r.FotoDokumentasi ? (
+              '<div style="margin-top: 12px; display: flex; align-items: center; gap: 14px; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">' +
+                '<img src="' + BaseURL + r.FotoDokumentasi + '" style="width: 75px; height: 60px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid #043168; box-shadow: 0 2px 6px rgba(0,0,0,0.1);" onclick="previewDashboardPhoto(\'' + BaseURL + r.FotoDokumentasi + '\', \'' + (r.RespondenNama ? r.RespondenNama.replace(/'/g, "\\'") : 'Responden') + '\')" title="Klik untuk melihat foto penuh">' +
+                '<div style="flex: 1;">' +
+                  '<div style="font-size: 12.5px; font-weight: 800; color: #043168;"><i class="fa-solid fa-camera mr-1"></i> Foto Dokumentasi Survei Lapangan</div>' +
+                  '<div style="font-size: 11px; color: #64748b; margin-top: 2px;">Tercatat dari kamera HP surveiyor saat submit jawaban</div>' +
+                  '<button type="button" class="btn btn-sm btn-outline-primary mt-1" style="font-size: 11px; padding: 2px 10px; font-weight: 700; border-radius: 6px;" onclick="previewDashboardPhoto(\'' + BaseURL + r.FotoDokumentasi + '\', \'' + (r.RespondenNama ? r.RespondenNama.replace(/'/g, "\\'") : 'Responden') + '\')"><i class="fa-solid fa-magnifying-glass-plus"></i> Lihat Foto Penuh</button>' +
+                '</div>' +
+              '</div>'
+            ) : '';
+
             $('#rincianRespondenInfo').html(
               '<div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 18px;">' +
                 '<div style="font-size: 16px; font-weight: 800; color: var(--ide-navy);">' + (r.RespondenNama || 'Anonim') + '</div>' +
                 '<div style="font-size: 12.5px; color: #64748b; margin-top: 4px;">NIK: ' + (r.RespondenNIK || '-') + ' &bull; Kontak: ' + (r.RespondenKontak || '-') + ' &bull; Wilayah: ' + rKec + rDesa + '</div>' +
                 '<div style="margin-top: 6px;"><span class="badge badge-success">Skor IKM: ' + (r.RataRataSkor || '0.00') + ' (' + (r.MutuPelayanan || 'Baik') + ')</span></div>' +
+                fotoSection +
               '</div>'
             );
 
