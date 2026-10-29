@@ -3633,7 +3633,7 @@
                 <thead class="thead-light">
                   <tr>
                     <th style="width: 45px; text-align: center;">No</th>
-                    <th style="width: 140px;">Waktu Pengisian</th>
+                    <th style="width: 155px;"><i class="fa-regular fa-clock" style="color: var(--ide-red); margin-right: 4px;"></i>Waktu Pengisian (WIB)</th>
                     <th>Nama Responden &amp; Profil</th>
                     <th>Wilayah (Kecamatan / Desa)</th>
                     <th>Demografi</th>
@@ -4625,6 +4625,8 @@
           AlamatDetail: $('#dashAlamat').val() || ('Lokasi: ' + (answers.SR2 || kec)),
           Latitude: $('#dashLatitude').val() || null,
           Longitude: $('#dashLongitude').val() || null,
+          CreatedAt: new Date().toISOString(),
+          waktu_pengisian: new Date().toISOString(),
           Jawaban: answers
         };
 
@@ -5731,7 +5733,7 @@
         $tbody.append(
           '<tr>' +
             '<td style="text-align: center; font-weight: 700; color: #64748b;">' + (idx + 1) + '</td>' +
-            '<td><span style="font-size: 12px; font-weight: 700; color: #64748b;">' + (r.CreatedAt ? r.CreatedAt.substring(0, 16) : '-') + '</span></td>' +
+            '<td><span style="font-size: 12px; font-weight: 700; color: #1e293b;"><i class="fa-regular fa-clock" style="color: var(--ide-red); margin-right: 4px;"></i>' + (r.CreatedAt ? r.CreatedAt.substring(0, 16) + ' WIB' : '-') + '</span></td>' +
             '<td><b>' + (r.RespondenNama || 'Anonim') + '</b>' + nikInfo + (instBadge ? '<br>' + instBadge : '') + '</td>' +
             '<td><span class="badge badge-light" style="font-size: 12px;"><i class="fa-solid fa-location-dot" style="color: var(--ide-red);"></i> ' + wilayah + '</span></td>' +
             '<td><span style="font-size: 12px; color: #475569;">' + demografi + '</span></td>' +
@@ -5859,7 +5861,10 @@
               '<div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 18px;">' +
                 '<div style="font-size: 16px; font-weight: 800; color: var(--ide-navy);">' + (r.RespondenNama || 'Anonim') + '</div>' +
                 '<div style="font-size: 12.5px; color: #64748b; margin-top: 4px;">NIK: ' + (r.RespondenNIK || '-') + ' &bull; Kontak: ' + (r.RespondenKontak || '-') + ' &bull; Wilayah: ' + rKec + rDesa + '</div>' +
-                '<div style="margin-top: 6px;"><span class="badge badge-success">' + modalSkorLabel + (r.RataRataSkor || '0.00') + ' (' + (r.MutuPelayanan || 'Baik') + ')</span></div>' +
+                '<div style="margin-top: 6px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">' +
+                  '<span class="badge badge-success">' + modalSkorLabel + (r.RataRataSkor || '0.00') + ' (' + (r.MutuPelayanan || 'Baik') + ')</span>' +
+                  (r.CreatedAt ? '<span class="badge badge-light" style="font-size: 11.5px; border: 1px solid #cbd5e1; color: #334155;"><i class="fa-regular fa-clock" style="color: var(--ide-red); margin-right: 4px;"></i>' + r.CreatedAt + ' WIB</span>' : '') +
+                '</div>' +
                 fotoSection +
               '</div>'
             );

@@ -192,6 +192,10 @@
       var now = new Date();
       var countJawaban = Object.keys(payload.Jawaban || {}).length;
 
+      var nowIso = now.toISOString();
+      payload.CreatedAt = nowIso;
+      payload.waktu_pengisian = nowIso;
+
       var item = {
         id: 'OFFLINE_' + now.getTime() + '_' + Math.random().toString(36).substr(2, 6),
         surveiId: payload.SurveiId || 4,
@@ -201,8 +205,8 @@
         kecamatan: payload.Kecamatan || payload.RealKecamatan || 'Banyuwangi',
         kabupaten: payload.Kabupaten || 'Kabupaten Banyuwangi',
         jumlahJawaban: countJawaban,
-        createdAt: now.toISOString(),
-        waktuFormat: now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }) + ' ' + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+        createdAt: nowIso,
+        waktuFormat: now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }) + ' ' + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB',
         payload: payload
       };
 

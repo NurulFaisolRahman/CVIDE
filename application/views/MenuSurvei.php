@@ -9633,6 +9633,8 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
           LokasiAccuracy: $('#respLokasiAccuracy').val() || null,
           DevicePlatform: $('#respDevicePlatform').val() || 'Desktop Browser',
           FotoDokumentasi: $('#respFotoDokumentasi').val() || null,
+          CreatedAt: new Date().toISOString(),
+          waktu_pengisian: new Date().toISOString(),
           Jawaban: answers
         };
 
@@ -9807,6 +9809,8 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
         LokasiAccuracy: $('#respLokasiAccuracy').val() || null,
         DevicePlatform: $('#respDevicePlatform').val() || 'Desktop Browser',
         FotoDokumentasi: $('#respFotoDokumentasi').val() || null,
+        CreatedAt: new Date().toISOString(),
+        waktu_pengisian: new Date().toISOString(),
         Jawaban: {}
       };
 

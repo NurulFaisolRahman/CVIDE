@@ -3,6 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require_once FCPATH . 'vendor/autoload.php';
 class IDE extends CI_Controller {
 
+  public function __construct() {
+    parent::__construct();
+    date_default_timezone_set('Asia/Jakarta');
+    if (isset($this->db)) {
+      $this->db->query("SET time_zone = '+07:00'");
+    }
+  }
+
 	public function index(){
     $Data['Kategori'] = $this->db->query('SELECT DISTINCT(Kategori) FROM `portfolio`')->result_array();
     $Data['Portfolio'] = $this->db->get('portfolio')->result_array();
@@ -2965,7 +2973,21 @@ public function InputIKMYogyakarta()
     $totalSkor = 0.0;
     $countScored = 0;
     $jawabanBatch = array();
+    
+    // Pastikan zona waktu selalu WIB (Asia/Jakarta, UTC+7) dan real time
+    date_default_timezone_set('Asia/Jakarta');
+    $clientTimestamp = trim($input['CreatedAt'] ?? ($input['created_at'] ?? ($input['client_time'] ?? ($input['waktu_pengisian'] ?? ''))));
     $now = date('Y-m-d H:i:s');
+    if (!empty($clientTimestamp)) {
+      $ts = strtotime($clientTimestamp);
+      // Validasi batas waktu masuk akal (tidak 0 dan tidak melompat ke masa depan)
+      if ($ts !== false && $ts > 1577836800 && $ts <= (time() + 3600)) {
+        $dt = new DateTime();
+        $dt->setTimezone(new DateTimeZone('Asia/Jakarta'));
+        $dt->setTimestamp($ts);
+        $now = $dt->format('Y-m-d H:i:s');
+      }
+    }
 
     foreach ($rawAnswers as $key => $userVal) {
       if (strpos($key, '_alasan') !== false) continue; // Alasan disimpan bersama pertanyaan induk
@@ -3989,7 +4011,7 @@ public function InputIKMYogyakarta()
     echo '<thead>';
     echo '<tr>';
     echo '<th rowspan="2" style="width: 45px;">No</th>';
-    echo '<th rowspan="2" style="width: 140px;">Waktu Pengisian</th>';
+    echo '<th rowspan="2" style="width: 145px;">Waktu Pengisian (WIB)</th>';
     if (!$survei) {
       echo '<th rowspan="2" style="width: 220px;">Judul Survei</th>';
     }
@@ -4039,7 +4061,7 @@ public function InputIKMYogyakarta()
         $rowClass = ($no % 2 === 0) ? 'alt-row' : '';
         echo '<tr class="' . $rowClass . '">';
         echo '<td class="num">' . $no++ . '</td>';
-        echo '<td class="text-center">' . htmlspecialchars($r['CreatedAt'] ?: '-') . '</td>';
+        echo '<td class="text-center">' . htmlspecialchars($r['CreatedAt'] ? $r['CreatedAt'] . ' WIB' : '-') . '</td>';
         if (!$survei) {
           $sJudul = isset($surveiMap[$r['SurveiId']]) ? $surveiMap[$r['SurveiId']]['Judul'] : 'Survei #' . $r['SurveiId'];
           echo '<td class="text-left">' . htmlspecialchars($sJudul) . '</td>';
