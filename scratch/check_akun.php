@@ -1,6 +1,12 @@
 <?php
-$c = mysqli_connect("localhost", "root", "", "cvide");
-$res = mysqli_query($c, "SELECT Username, Password, Level FROM akun LIMIT 5");
-while ($r = mysqli_fetch_assoc($res)) {
-    print_r($r);
+$m = new mysqli('localhost', 'root', '', 'cvide');
+$res = $m->query("SELECT Username, Password, Level FROM akun");
+$common = ['admin', '123456', '12345', 'password', 'survei', 'Surveiyor', 'super', 'banyuwangi', 'cvide'];
+while ($row = $res->fetch_assoc()) {
+    foreach ($common as $test) {
+        if (password_verify($test, $row['Password'])) {
+            echo $row['Username'] . " password is: '$test'\n";
+            break;
+        }
+    }
 }

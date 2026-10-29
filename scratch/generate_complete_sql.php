@@ -95,6 +95,7 @@ $sql .= "  `AlamatDetail` text DEFAULT NULL,\n";
 $sql .= "  `Latitude` decimal(11,8) DEFAULT NULL,\n";
 $sql .= "  `Longitude` decimal(11,8) DEFAULT NULL,\n";
 $sql .= "  `LokasiAccuracy` decimal(8,2) DEFAULT NULL,\n";
+$sql .= "  `FotoDokumentasi` varchar(255) DEFAULT NULL,\n";
 $sql .= "  `TotalSkor` decimal(10,2) NOT NULL DEFAULT 0.00,\n";
 $sql .= "  `RataRataSkor` decimal(10,2) NOT NULL DEFAULT 0.00,\n";
 $sql .= "  `MutuPelayanan` varchar(50) DEFAULT 'Baik',\n";
@@ -115,6 +116,7 @@ $sql .= "ALTER TABLE `survei_responden` ADD COLUMN IF NOT EXISTS `RespondenNIK` 
 $sql .= "ALTER TABLE `survei_responden` ADD COLUMN IF NOT EXISTS `Latitude` DECIMAL(11,8) NULL DEFAULT NULL AFTER `AlamatDetail`;\n";
 $sql .= "ALTER TABLE `survei_responden` ADD COLUMN IF NOT EXISTS `Longitude` DECIMAL(11,8) NULL DEFAULT NULL AFTER `Latitude`;\n";
 $sql .= "ALTER TABLE `survei_responden` ADD COLUMN IF NOT EXISTS `LokasiAccuracy` DECIMAL(8,2) NULL DEFAULT NULL AFTER `Longitude`;\n";
+$sql .= "ALTER TABLE `survei_responden` ADD COLUMN IF NOT EXISTS `FotoDokumentasi` VARCHAR(255) NULL AFTER `LokasiAccuracy`;\n";
 $sql .= "ALTER TABLE `survei_responden` ADD COLUMN IF NOT EXISTS `DevicePlatform` VARCHAR(100) NULL DEFAULT NULL AFTER `UserAgent`;\n\n";
 
 $sql .= "CREATE TABLE IF NOT EXISTS `survei_jawaban` (\n";
@@ -182,4 +184,5 @@ $sql .= "SELECT `Instrumen`, COUNT(*) AS `JumlahResponden`, ROUND(AVG(`TotalSkor
 $sql .= "COMMIT;\n";
 
 file_put_contents('database_update_rtkd.sql', $sql);
-echo "Berhasil menghasilkan database_update_rtkd.sql (" . strlen($sql) . " bytes) dengan " . count($rows) . " pertanyaan.\n";
+file_put_contents('update_database_rtkd.sql', $sql);
+echo "Berhasil menghasilkan database_update_rtkd.sql dan update_database_rtkd.sql (" . strlen($sql) . " bytes) dengan " . count($rows) . " pertanyaan.\n";

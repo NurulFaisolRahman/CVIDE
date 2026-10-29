@@ -663,6 +663,9 @@ class IDE extends CI_Controller {
         } else if ($level == 4) {
             $Session['Surveiyor'] = true;
             $Session['Staf'] = true;
+        } else if ($level == 5) {
+            $Session['Surveiyor'] = true;
+            $Session['SurveiOnly'] = true;
         } else if ($level == 0) {
             $Session['Econk'] = true;
         }
@@ -2393,9 +2396,9 @@ public function InputIKMYogyakarta()
     $userName = $this->session->userdata('nama_lengkap') 
              ?: ($this->session->userdata('Username') 
              ?: ($this->session->userdata('Nama') 
-             ?: ($userLevel == 3 ? 'Staf' : 'Surveiyor')));
+             ?: ($userLevel == 3 ? 'Staf' : ($userLevel == 5 ? 'Petugas Survei' : 'Surveiyor'))));
 
-    $isSurveiyor = ($isLoggedIn && ($userLevel == 4 || $userLevel == 3 || $userLevel == 2 || $userLevel == 1 || $hasSurveyorSession || $hasStaffSession));
+    $isSurveiyor = ($isLoggedIn && ($userLevel == 5 || $userLevel == 4 || $userLevel == 3 || $userLevel == 2 || $userLevel == 1 || $hasSurveyorSession || $hasStaffSession));
 
     // Jika pengunjung umum (belum login) mencoba membuka tab terproteksi (peta / rekap / builder) langsung lewat URL
     $loginRequiredAlert = false;
@@ -2545,12 +2548,14 @@ public function InputIKMYogyakarta()
    */
   public function save_survei_dinamis() {
     $this->ensureSurveiStructure();
-    header('Content-Type: application/json; charset=utf-8');
+    if (!headers_sent()) {
+      @header('Content-Type: application/json; charset=utf-8');
+    }
 
     $userLevel = (int)$this->session->userdata('level');
-    $isSurveiyor = ($userLevel == 4 || $userLevel == 1 || $userLevel == 2 || $userLevel == 3 || !empty($this->session->userdata('Surveiyor')));
+    $isSurveiyor = ($userLevel == 5 || $userLevel == 4 || $userLevel == 1 || $userLevel == 2 || $userLevel == 3 || !empty($this->session->userdata('Surveiyor')));
     if (!$isSurveiyor) {
-      echo json_encode(array('status' => false, 'message' => 'Akses ditolak. Silakan login sebagai Surveiyor (Level 4) atau Admin.'));
+      echo json_encode(array('status' => false, 'message' => 'Akses ditolak. Silakan login sebagai Petugas Survei / Surveiyor atau Admin.'));
       return;
     }
 
@@ -2621,9 +2626,9 @@ public function InputIKMYogyakarta()
     header('Content-Type: application/json; charset=utf-8');
 
     $userLevel = (int)$this->session->userdata('level');
-    $isSurveiyor = ($userLevel == 4 || $userLevel == 1 || $userLevel == 2 || $userLevel == 3 || !empty($this->session->userdata('Surveiyor')));
+    $isSurveiyor = ($userLevel == 5 || $userLevel == 4 || $userLevel == 1 || $userLevel == 2 || $userLevel == 3 || !empty($this->session->userdata('Surveiyor')));
     if (!$isSurveiyor) {
-      echo json_encode(array('status' => false, 'message' => 'Akses ditolak. Silakan login sebagai Surveiyor (Level 4) atau Admin.'));
+      echo json_encode(array('status' => false, 'message' => 'Akses ditolak. Silakan login sebagai Petugas Survei / Surveiyor atau Admin.'));
       return;
     }
 
@@ -2695,9 +2700,15 @@ public function InputIKMYogyakarta()
    */
   public function delete_survei_dinamis($id = 0) {
     $this->ensureSurveiStructure();
-    header('Content-Type: application/json; charset=utf-8');
+    if (!headers_sent()) {
+      @header('Content-Type: application/json; charset=utf-8');
+    }
 
     $userLevel = (int)$this->session->userdata('level');
+    if ($userLevel == 5 || !empty($this->session->userdata('SurveiOnly'))) {
+      echo json_encode(array('status' => false, 'message' => 'Akses ditolak: User role survei tidak memiliki hak akses untuk menghapus instrumen survei.'));
+      return;
+    }
     $isSurveiyor = ($userLevel == 4 || $userLevel == 3 || $userLevel == 1 || $userLevel == 2 || !empty($this->session->userdata('Surveiyor')) || !empty($this->session->userdata('Staf')));
     if (!$isSurveiyor) {
       echo json_encode(array('status' => false, 'message' => 'Akses ditolak.'));
@@ -2736,6 +2747,10 @@ public function InputIKMYogyakarta()
     }
 
     $userLevel = (int)$this->session->userdata('level');
+    if ($userLevel == 5 || !empty($this->session->userdata('SurveiOnly'))) {
+      echo json_encode(array('status' => false, 'message' => 'Akses ditolak: User role survei tidak memiliki hak akses untuk menghapus data responden.'));
+      return;
+    }
     $hasSurveyorSession = !empty($this->session->userdata('Surveiyor')) || !empty($this->session->userdata('Surveyor'));
     $hasStaffSession    = !empty($this->session->userdata('Staf')) || ($userLevel == 3);
     $hasAdminSession    = !empty($this->session->userdata('Admin')) || ($userLevel == 2);

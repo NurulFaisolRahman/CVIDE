@@ -1,7 +1,7 @@
 -- =====================================================================
 -- SCRIPT SQL INSERT & UPDATE LENGKAP SURVEI RTKD BANYUWANGI (5 INSTRUMEN)
 -- Memastikan seluruh tabel, kolom, master survei, dan 212 pertanyaan siap jalan
--- Waktu Pembuatan: 2026-10-23 08:03:57
+-- Waktu Pembuatan: 2026-10-27 16:11:18
 -- =====================================================================
 
 SET SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO';
@@ -86,6 +86,7 @@ CREATE TABLE IF NOT EXISTS `survei_responden` (
   `Latitude` decimal(11,8) DEFAULT NULL,
   `Longitude` decimal(11,8) DEFAULT NULL,
   `LokasiAccuracy` decimal(8,2) DEFAULT NULL,
+  `FotoDokumentasi` varchar(255) DEFAULT NULL,
   `TotalSkor` decimal(10,2) NOT NULL DEFAULT 0.00,
   `RataRataSkor` decimal(10,2) NOT NULL DEFAULT 0.00,
   `MutuPelayanan` varchar(50) DEFAULT 'Baik',

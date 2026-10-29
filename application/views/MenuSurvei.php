@@ -6156,7 +6156,7 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
       <div class="surveyor-bar-left">
         <div class="surveyor-avatar"><i class="fa-solid fa-clipboard-user"></i></div>
         <div>
-          <div class="surveyor-bar-badge"><i class="fa-solid fa-circle-check"></i> Sesi Aktif: <?= ($userLevel == 4 ? 'Surveiyor' : ($userLevel == 3 ? 'Staf' : ($userLevel == 1 ? 'SuperAdmin' : 'Admin'))) ?></div>
+          <div class="surveyor-bar-badge"><i class="fa-solid fa-circle-check"></i> Sesi Aktif: <?= ($userLevel == 5 ? 'Petugas Survei' : ($userLevel == 4 ? 'Surveiyor' : ($userLevel == 3 ? 'Staf' : ($userLevel == 1 ? 'SuperAdmin' : 'Admin')))) ?></div>
           <h3 class="surveyor-bar-name"><?= htmlspecialchars($userName) ?></h3>
         </div>
       </div>
@@ -6579,7 +6579,7 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
           <div class="rekap-kpi-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-star-half-stroke"></i></div>
           <div>
             <div class="rekap-kpi-val" id="kpiRataRataSkor">0.00</div>
-            <div class="rekap-kpi-lbl">Rata-Rata Skor IKM</div>
+            <div class="rekap-kpi-lbl" id="lblKpiRataRataSkor">Rata-Rata Skor Survei</div>
           </div>
         </div>
         <div class="rekap-kpi-card">
@@ -6610,21 +6610,94 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
 
       <!-- Tabel Data Responden -->
       <div class="rekap-table-card">
-        <h4 style="font-size: 16px; font-weight: 800; color: var(--lugx-dark); margin-bottom: 16px;">
-          <i class="fa-solid fa-table-list" style="color: var(--lugx-red); margin-right: 8px;"></i> Daftar Responden &amp; Isian Data Survei
-        </h4>
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 16px;">
+          <h4 style="font-size: 16px; font-weight: 800; color: var(--lugx-dark); margin: 0;">
+            <i class="fa-solid fa-table-list" style="color: var(--lugx-red); margin-right: 8px;"></i> Daftar Responden &amp; Isian Data Survei
+          </h4>
+          <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700; padding: 7px 14px; border-radius: 10px; font-size: 12.5px;" id="publicRekapCountBadge">
+            <i class="fa-solid fa-users"></i> Menampilkan 0 Responden
+          </span>
+        </div>
+
+        <!-- Filter & Search Toolbar Rekap Responden -->
+        <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 16px 18px; margin-bottom: 20px;">
+          <!-- Baris 1: Search Box -->
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 12px;">
+            <div style="flex: 1; min-width: 260px; position: relative;">
+              <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 13.5px;"></i>
+              <input type="text" id="publicRekapSearchInput" placeholder="Cari responden, NIK, kontak, instansi, alamat, kecamatan..." style="width: 100%; height: 42px; border-radius: 10px; border: 1.5px solid #cbd5e1; padding: 0 38px 0 38px; font-size: 13px; outline: none; background: #ffffff;" oninput="applyPublicRekapFilters()">
+              <button type="button" id="publicRekapSearchClearBtn" onclick="clearPublicRekapSearch()" style="display: none; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); border: none; background: transparent; color: #94a3b8; font-size: 15px; cursor: pointer;" title="Bersihkan pencarian">
+                <i class="fa-solid fa-circle-xmark"></i>
+              </button>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-secondary" style="border-radius: 10px; font-weight: 700; height: 42px; padding: 0 16px; border: 1.5px solid #cbd5e1; background: #ffffff;" onclick="resetPublicRekapFilters()" title="Reset semua filter">
+              <i class="fa-solid fa-rotate-left"></i> Reset Filter
+            </button>
+          </div>
+
+          <!-- Baris 2: Dropdown Filter -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+            <div id="publicFilterColInstrumen">
+              <label style="font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 4px; display: block;">
+                <i class="fa-solid fa-layer-group" style="color: var(--lugx-blue);"></i> Instrumen
+              </label>
+              <select id="publicRekapFilterInstrumen" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #cbd5e1; font-size: 12px; font-weight: 600; padding: 0 8px; background: #ffffff;" onchange="applyPublicRekapFilters()">
+                <option value="">Semua Instrumen</option>
+                <option value="A">Instrumen A - Perusahaan</option>
+                <option value="B">Instrumen B - Pencari Kerja</option>
+                <option value="C">Instrumen C - Stakeholder</option>
+                <option value="E">Instrumen C2 / E - AHP</option>
+                <option value="D">Instrumen D - Siswa Kelas 12</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 4px; display: block;">
+                <i class="fa-solid fa-location-dot" style="color: var(--lugx-red);"></i> Wilayah / Kecamatan
+              </label>
+              <select id="publicRekapFilterKecamatan" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #cbd5e1; font-size: 12px; font-weight: 600; padding: 0 8px; background: #ffffff;" onchange="applyPublicRekapFilters()">
+                <option value="">Semua Wilayah</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 4px; display: block;">
+                <i class="fa-solid fa-award" style="color: #10b981;"></i> Mutu Pelayanan
+              </label>
+              <select id="publicRekapFilterMutu" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #cbd5e1; font-size: 12px; font-weight: 600; padding: 0 8px; background: #ffffff;" onchange="applyPublicRekapFilters()">
+                <option value="">Semua Mutu</option>
+                <option value="Sangat Baik">Sangat Baik (A)</option>
+                <option value="Baik">Baik (B)</option>
+                <option value="Kurang Baik">Kurang Baik (C)</option>
+                <option value="Tidak Baik">Tidak Baik (D)</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 4px; display: block;">
+                <i class="fa-solid fa-arrow-down-wide-short" style="color: #0284c7;"></i> Urutkan
+              </label>
+              <select id="publicRekapSortOrder" style="width: 100%; height: 36px; border-radius: 8px; border: 1.5px solid #cbd5e1; font-size: 12px; font-weight: 600; padding: 0 8px; background: #ffffff;" onchange="applyPublicRekapFilters()">
+                <option value="newest">Waktu Terbaru</option>
+                <option value="oldest">Waktu Terlama</option>
+                <option value="name_asc">Nama (A - Z)</option>
+                <option value="name_desc">Nama (Z - A)</option>
+                <option value="score_desc">Skor Tertinggi</option>
+                <option value="score_asc">Skor Terendah</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <div style="overflow-x: auto;">
           <table class="rekap-table" id="tableRekapResponden">
             <thead>
               <tr>
-                <th style="width: 50px;">No</th>
-                <th>Waktu Pengisian</th>
-                <th>Nama Responden</th>
+                <th style="width: 45px; text-align: center;">No</th>
+                <th style="width: 140px;">Waktu Pengisian</th>
+                <th>Nama Responden &amp; Profil</th>
                 <th>Keterangan Daerah Survei</th>
                 <th>Demografi</th>
-                <th>Rata-Rata Skor</th>
-                <th>Mutu</th>
-                <th style="text-align: center;">Aksi</th>
+                <th style="text-align: center; width: 95px;">Rata-Rata Skor</th>
+                <th style="text-align: center; width: 100px;">Mutu</th>
+                <th style="text-align: center; width: 110px;">Aksi</th>
               </tr>
             </thead>
             <tbody id="tableRekapRespondenBody">
@@ -7675,7 +7748,7 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
             window.location = BaseURL + "Admin";
           } else if (trimmedRespon == '3') {
             window.location = BaseURL + "Staf";
-          } else if (trimmedRespon == '4') {
+          } else if (trimmedRespon == '4' || trimmedRespon == '5') {
             window.location.reload();
           } else if (trimmedRespon == '0') {
             window.location = BaseURL + "Econk";
@@ -7961,9 +8034,11 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
               '<a href="' + BaseURL + 'IDE/export_responden_excel/' + item.Id + '" class="btn-action-excel" title="Unduh Spreadsheet / Excel Data Responden">' +
                 '<i class="fa-solid fa-file-excel"></i> Excel' +
               '</a>' +
+              (userLevel !== 5 ? (
               '<button type="button" class="btn-action-del" onclick="handleDeleteSurvey(' + item.Id + ', \'' + item.Judul.replace(/'/g, "\\'") + '\')" title="Hapus Survei">' +
                 '<i class="fa-solid fa-trash-can"></i> Hapus' +
-              '</button>' +
+              '</button>'
+              ) : '') +
             '</div>';
         }
 
@@ -8008,7 +8083,7 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
             '</div>' +
             (item.TotalResponden > 0 ? 
             '<div class="meta-row">' +
-              '<span class="meta-label">Skor IKM</span>' +
+              '<span class="meta-label">' + ((item.Jenis === 'IKM') ? 'Skor IKM' : 'Skor Survei') + '</span>' +
               '<span class="meta-colon">:</span>' +
               '<span class="meta-value" style="color: #059669; font-weight: 800;">' + item.RataRataSkor + ' (' + item.TotalResponden + ' Responden)</span>' +
             '</div>' : '') +
@@ -8758,6 +8833,10 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
 
     // Delete Survey
     window.handleDeleteSurvey = function(surveyId, surveyTitle) {
+      if (userLevel === 5) {
+        Swal.fire('Akses Ditolak', 'User role survei tidak memiliki hak akses untuk menghapus data.', 'error');
+        return;
+      }
       Swal.fire({
         title: 'Hapus Survei Ini?',
         text: 'Survei "' + surveyTitle + '" beserta seluruh pertanyaan dan data jawaban responden akan dihapus permanen.',
@@ -9796,6 +9875,165 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
       loadRekapitulasi(surveyId);
     };
 
+    // =========================================================================
+    // PUBLIC REKAPITULASI STATE & FILTER ENGINE
+    // =========================================================================
+    window.currentPublicRekapList = [];
+    window.currentPublicRekapSurveyId = null;
+
+    window.clearPublicRekapSearch = function() {
+      $('#publicRekapSearchInput').val('');
+      window.applyPublicRekapFilters();
+    };
+
+    window.resetPublicRekapFilters = function() {
+      $('#publicRekapSearchInput').val('');
+      $('#publicRekapFilterInstrumen').val('');
+      $('#publicRekapFilterKecamatan').val('');
+      $('#publicRekapFilterMutu').val('');
+      $('#publicRekapSortOrder').val('newest');
+      window.applyPublicRekapFilters();
+    };
+
+    window.applyPublicRekapFilters = function() {
+      var $tbody = $('#tableRekapRespondenBody');
+      var list = window.currentPublicRekapList || [];
+      var surveyId = window.currentPublicRekapSurveyId;
+
+      var searchKeyword = ($('#publicRekapSearchInput').val() || '').trim().toLowerCase();
+      var filterInst = ($('#publicRekapFilterInstrumen').val() || '').trim().toUpperCase();
+      var filterKec = ($('#publicRekapFilterKecamatan').val() || '').trim().toLowerCase();
+      var filterMutu = ($('#publicRekapFilterMutu').val() || '').trim();
+      var sortOrder = $('#publicRekapSortOrder').val() || 'newest';
+
+      $('#publicRekapSearchClearBtn').toggle(searchKeyword.length > 0);
+
+      var filtered = list.filter(function(r) {
+        if (filterInst) {
+          var rInst = (r.Instrumen || '').trim().toUpperCase();
+          if (filterInst === 'C' && (rInst === 'C' || rInst === 'E')) {
+            // C or E
+          } else if (rInst !== filterInst) {
+            return false;
+          }
+        }
+
+        if (filterKec) {
+          var rKec = (r.Kecamatan || '').toLowerCase();
+          if (rKec.indexOf(filterKec) === -1) {
+            return false;
+          }
+        }
+
+        if (filterMutu) {
+          var rMutu = (r.MutuPelayanan || '');
+          if (rMutu.indexOf(filterMutu) === -1) {
+            return false;
+          }
+        }
+
+        if (searchKeyword) {
+          var blob = [
+            r.RespondenNama,
+            r.RespondenNIK,
+            r.RespondenKontak,
+            r.RespondenPekerjaan,
+            r.RespondenPendidikan,
+            r.Kecamatan,
+            r.Desa,
+            r.Kabupaten,
+            r.AlamatDetail,
+            r.MutuPelayanan,
+            r.Instrumen,
+            r.CreatedAt
+          ].filter(Boolean).join(' ').toLowerCase();
+
+          var terms = searchKeyword.split(/\s+/);
+          for (var i = 0; i < terms.length; i++) {
+            if (terms[i] && blob.indexOf(terms[i]) === -1) {
+              return false;
+            }
+          }
+        }
+
+        return true;
+      });
+
+      // Sorting
+      if (sortOrder === 'newest') {
+        filtered.sort(function(a, b) { return (b.Id || 0) - (a.Id || 0); });
+      } else if (sortOrder === 'oldest') {
+        filtered.sort(function(a, b) { return (a.Id || 0) - (b.Id || 0); });
+      } else if (sortOrder === 'name_asc') {
+        filtered.sort(function(a, b) { return (a.RespondenNama || '').localeCompare(b.RespondenNama || ''); });
+      } else if (sortOrder === 'name_desc') {
+        filtered.sort(function(a, b) { return (b.RespondenNama || '').localeCompare(a.RespondenNama || ''); });
+      } else if (sortOrder === 'score_desc') {
+        filtered.sort(function(a, b) { return (parseFloat(b.RataRataSkor) || 0) - (parseFloat(a.RataRataSkor) || 0); });
+      } else if (sortOrder === 'score_asc') {
+        filtered.sort(function(a, b) { return (parseFloat(a.RataRataSkor) || 0) - (parseFloat(b.RataRataSkor) || 0); });
+      }
+
+      $('#publicRekapCountBadge').html('<i class="fa-solid fa-users"></i> Menampilkan ' + filtered.length + ' dari ' + list.length + ' Responden');
+
+      $tbody.empty();
+
+      if (filtered.length === 0) {
+        if (list.length === 0) {
+          $tbody.html('<tr><td colspan="8" style="text-align: center; padding: 40px; color: var(--lugx-gray);"><i class="fa-solid fa-clipboard-question" style="font-size: 26px; color: #cbd5e1; display: block; margin-bottom: 8px;"></i> Belum ada data responden yang mengisi survei ini.</td></tr>');
+        } else {
+          $tbody.html('<tr><td colspan="8" style="text-align: center; padding: 40px; color: #64748b;"><i class="fa-solid fa-magnifying-glass" style="font-size: 26px; color: #cbd5e1; display: block; margin-bottom: 8px;"></i> Tidak ditemukan data responden yang sesuai filter.<br><button type="button" class="btn btn-sm btn-outline-primary" style="margin-top: 10px; border-radius: 8px; font-weight: 700;" onclick="resetPublicRekapFilters()"><i class="fa-solid fa-rotate-left"></i> Reset Filter</button></td></tr>');
+        }
+        return;
+      }
+
+      filtered.forEach(function(r, idx) {
+        var daerahFormatted = [];
+        if (r.Kabupaten) daerahFormatted.push(r.Kabupaten);
+        if (r.Kecamatan) daerahFormatted.push('Kec. ' + r.Kecamatan);
+        if (r.Desa) daerahFormatted.push('Desa ' + r.Desa);
+        var daerahString = daerahFormatted.length > 0 ? daerahFormatted.join(', ') : (r.AlamatDetail || '-');
+
+        var demografiString = (r.RespondenGender || '-') + ' &bull; ' + (r.RespondenUsia || '-');
+        if (r.RespondenPekerjaan) {
+          demografiString += '<br><span style="font-size: 11px; color: #64748b;">' + r.RespondenPekerjaan + '</span>';
+        }
+
+        var instBadge = '';
+        var inst = (r.Instrumen || '').toUpperCase();
+        if (inst === 'A') {
+          instBadge = '<span class="badge" style="background: #e0f2fe; color: #0369a1; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; margin-top: 3px; display: inline-block;"><i class="fa-solid fa-building mr-1"></i> Inst. A &bull; Perusahaan</span>';
+        } else if (inst === 'B') {
+          instBadge = '<span class="badge" style="background: #fef3c7; color: #92400e; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; margin-top: 3px; display: inline-block;"><i class="fa-solid fa-graduation-cap mr-1"></i> Inst. B &bull; Pencari Kerja</span>';
+        } else if (inst === 'C') {
+          instBadge = '<span class="badge" style="background: #f3e8ff; color: #6b21a8; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; margin-top: 3px; display: inline-block;"><i class="fa-solid fa-comments mr-1"></i> Inst. C &bull; Stakeholder</span>';
+        } else if (inst === 'E') {
+          instBadge = '<span class="badge" style="background: #ecfdf5; color: #065f46; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; margin-top: 3px; display: inline-block;"><i class="fa-solid fa-calculator mr-1"></i> Inst. E &bull; AHP</span>';
+        } else if (inst === 'D') {
+          instBadge = '<span class="badge" style="background: #fee2e2; color: #991b1b; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; margin-top: 3px; display: inline-block;"><i class="fa-solid fa-school mr-1"></i> Inst. D &bull; Siswa Kelas 12</span>';
+        }
+
+        var nikInfo = r.RespondenNIK ? '<div style="font-size: 11px; color: #94a3b8; font-weight: normal;">NIK: ' + r.RespondenNIK + '</div>' : '';
+
+        $tbody.append(
+          '<tr>' +
+            '<td style="text-align: center; font-weight: 700; color: #64748b;">' + (idx + 1) + '</td>' +
+            '<td><span style="font-size: 12px; font-weight: 700; color: #64748b;">' + (r.CreatedAt ? r.CreatedAt.substring(0, 16) : '-') + '</span></td>' +
+            '<td><b>' + (r.RespondenNama || 'Anonim') + '</b>' + nikInfo + (instBadge ? '<br>' + instBadge : '') + '</td>' +
+            '<td><span class="badge-daerah-survei"><i class="fa-solid fa-location-dot"></i> ' + daerahString + '</span></td>' +
+            '<td><span style="font-size: 12px; color: #475569;">' + demografiString + '</span></td>' +
+            '<td style="text-align: center;"><b style="color: #059669; font-size: 14px;">' + (r.RataRataSkor || '0.00') + '</b></td>' +
+            '<td style="text-align: center;"><span class="card-status status-active" style="padding: 3px 8px; font-size: 11px;">' + (r.MutuPelayanan || 'Baik') + '</span></td>' +
+            '<td style="text-align: center;">' +
+              '<button type="button" class="btn-action-edit" onclick="viewRespondentAnswers(' + surveyId + ', ' + r.Id + ')">' +
+                '<i class="fa-solid fa-eye"></i> Rincian' +
+              '</button>' +
+            '</td>' +
+          '</tr>'
+        );
+      });
+    };
+
     window.loadRekapitulasi = function(surveyId) {
       if (!surveyId) return;
 
@@ -9817,6 +10055,9 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
             $('#kpiTotalResponden').text(res.totalResponden || 0);
             $('#kpiRataRataSkor').text(res.rataRataSkor || '0.00');
             
+            var skorTitle = (res.survei && res.survei.Jenis === 'IKM') ? 'Rata-Rata Skor IKM' : 'Rata-Rata Skor Survei';
+            $('#lblKpiRataRataSkor').text(skorTitle);
+
             var mutuText = '-';
             var avg = parseFloat(res.rataRataSkor) || 0;
             if (avg >= 3.50) mutuText = 'A (Sangat Baik)';
@@ -9842,41 +10083,35 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
               $pills.html('<span style="font-size: 13px; color: #64748b;">Belum ada sebaran wilayah responden.</span>');
             }
 
-            // Render Respondents Table
-            var $tbody = $('#tableRekapRespondenBody');
-            $tbody.empty();
+            window.currentPublicRekapSurveyId = surveyId;
+            window.currentPublicRekapList = Array.isArray(res.responden) ? res.responden : [];
 
-            if (!res.responden || res.responden.length === 0) {
-              $tbody.html('<tr><td colspan="8" style="text-align: center; padding: 40px; color: var(--lugx-gray);">Belum ada data responden yang mengisi survei ini.</td></tr>');
-              return;
+            // Populate Filter Kecamatan dinamis
+            var uniqueKec = [];
+            window.currentPublicRekapList.forEach(function(r) {
+              var k = (r.Kecamatan || '').trim();
+              if (k && uniqueKec.indexOf(k) === -1) {
+                uniqueKec.push(k);
+              }
+            });
+            uniqueKec.sort();
+            var $kecSelect = $('#publicRekapFilterKecamatan');
+            var prevKecVal = $kecSelect.val();
+            $kecSelect.find('option:not(:first)').remove();
+            uniqueKec.forEach(function(k) {
+              $kecSelect.append('<option value="' + k.toLowerCase() + '">' + k + '</option>');
+            });
+            if (prevKecVal) $kecSelect.val(prevKecVal);
+
+            // Deteksi multi-instrumen (RTKD)
+            var isMultiInst = (surveyId == 4) || (res.survei && res.survei.TipeSurvei === 'multi') || window.currentPublicRekapList.some(function(r) { return r.Instrumen && r.Instrumen !== ''; });
+            if (isMultiInst) {
+              $('#publicFilterColInstrumen').show();
+            } else {
+              $('#publicFilterColInstrumen').hide();
             }
 
-            res.responden.forEach(function(r, idx) {
-              var daerahFormatted = [];
-              if (r.Kabupaten) daerahFormatted.push(r.Kabupaten);
-              if (r.Kecamatan) daerahFormatted.push('Kec. ' + r.Kecamatan);
-              if (r.Desa) daerahFormatted.push('Desa ' + r.Desa);
-              var daerahString = daerahFormatted.length > 0 ? daerahFormatted.join(', ') : (r.AlamatDetail || '-');
-
-              var demografiString = (r.RespondenGender || '-') + ' &bull; ' + (r.RespondenUsia || '-');
-
-              $tbody.append(
-                '<tr>' +
-                  '<td>' + (idx + 1) + '</td>' +
-                  '<td><span style="font-size: 12px; font-weight: 700; color: #64748b;">' + (r.CreatedAt ? r.CreatedAt.substring(0, 16) : '-') + '</span></td>' +
-                  '<td><b>' + (r.RespondenNama || 'Anonim') + '</b></td>' +
-                  '<td><span class="badge-daerah-survei"><i class="fa-solid fa-location-dot"></i> ' + daerahString + '</span></td>' +
-                  '<td><span style="font-size: 12px; color: #475569;">' + demografiString + '</span></td>' +
-                  '<td><b style="color: #059669; font-size: 14px;">' + (r.RataRataSkor || '0.00') + '</b></td>' +
-                  '<td><span class="card-status status-active" style="padding: 3px 8px; font-size: 11px;">' + (r.MutuPelayanan || 'Baik') + '</span></td>' +
-                  '<td style="text-align: center;">' +
-                    '<button type="button" class="btn-action-edit" onclick="viewRespondentAnswers(' + surveyId + ', ' + r.Id + ')">' +
-                      '<i class="fa-solid fa-eye"></i> Rincian' +
-                    '</button>' +
-                  '</td>' +
-                '</tr>'
-              );
-            });
+            window.applyPublicRekapFilters();
           }
         },
         error: function() {

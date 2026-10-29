@@ -2607,6 +2607,7 @@
               elseif ($userLevel == 2) echo base_url('Admin');
               elseif ($userLevel == 3) echo base_url('Staf');
               elseif ($userLevel == 4) echo base_url('Surveyor');
+              elseif ($userLevel == 5) echo base_url('IDE/MenuSurvei');
               else echo base_url();
             ?>">
               <img src="<?=base_url('assets/img/logo-white-solid.webp')?>" alt="IDE Logo" style="max-height: 48px; width: auto; object-fit: contain;">
@@ -2788,6 +2789,17 @@
                   <li><a href="<?=base_url('IDE/SignOut')?>"><i class="fa-solid fa-right-from-bracket"></i> <b>Keluar (Sign Out)</b> </a></li>
                 </ul>
 
+              <?php elseif ($userLevel == 5): /* ================= USER ROLE 5 (SURVEI) ================= */ ?>
+                <div class="sidebar-menu-title">Instrumen Survei</div>
+                <ul class="nav side-menu">
+                  <li class="active"><a href="<?=base_url('IDE/MenuSurvei')?>"><i class="fa-solid fa-square-poll-vertical"></i> <b>Layanan Survei</b></a></li>
+                </ul>
+
+                <div class="sidebar-menu-title">Sistem</div>
+                <ul class="nav side-menu">
+                  <li><a href="<?=base_url('IDE/SignOut')?>"><i class="fa-solid fa-right-from-bracket"></i> <b>Keluar (Sign Out)</b> </a></li>
+                </ul>
+
               <?php else: /* ================= GUEST / UMUM ================= */ ?>
                 <div class="sidebar-menu-title">Navigasi Utama</div>
                 <ul class="nav side-menu">
@@ -2924,7 +2936,7 @@
               </div>
               <div class="katalog-stat-body">
                 <div class="katalog-stat-val"><?=number_format($katalogAvgSkor, 2)?></div>
-                <div class="katalog-stat-lbl">Rata-Rata Indeks IKM</div>
+                <div class="katalog-stat-lbl">Rata-Rata Indeks Survei</div>
               </div>
             </div>
             <div class="katalog-stat-box">
@@ -3002,7 +3014,7 @@
                   </div>
                   <?php if ($totalResp > 0): ?>
                   <div class="meta-row">
-                    <span class="meta-label">Skor IKM</span>
+                    <span class="meta-label"><?= ($s['Jenis'] ?? '') === 'IKM' ? 'Skor IKM' : 'Skor Survei' ?></span>
                     <span class="meta-colon">:</span>
                     <span class="meta-value" style="color: #059669; font-weight: 800;">
                       <?= number_format($skorIkm, 2) ?> (<?= $totalResp ?> Responden)
@@ -3043,9 +3055,11 @@
                   <a href="<?=base_url('IDE/export_responden_excel/' . $s['Id'])?>" class="btn-action-excel" title="Unduh Spreadsheet / Excel Data Responden">
                     <i class="fa-solid fa-file-excel"></i> Excel
                   </a>
+                  <?php if ($userLevel != 5): ?>
                   <button type="button" class="btn-action-del" onclick="deleteSurveyTemplate(<?=$s['Id']?>, '<?=addslashes(htmlspecialchars($s['Judul']))?>')" title="Hapus Survei">
                     <i class="fa-solid fa-trash-can"></i> Hapus
                   </button>
+                  <?php endif; ?>
                 </div>
               </div>
               <?php endforeach; ?>
@@ -3092,7 +3106,7 @@
             <div class="survey-form-banner" id="formBannerHeader">
               <div class="form-banner-top">
                 <span class="badge form-badge-jenis" id="formBadgeJenis">
-                  IKM Ketenagakerjaan
+                  Survei Ketenagakerjaan (RTKD)
                 </span>
                 <div class="form-banner-actions">
                   <button type="button" class="btn btn-sm btn-light btn-banner-qr" onclick="showSurveyQRCode()">
@@ -3453,7 +3467,7 @@
                       <div class="chart-card-title">
                         <i class="fa-solid fa-circle-dot" style="color: #10b981;"></i> Bagan Donat: Mutu Pelayanan
                       </div>
-                      <span class="chart-card-subtitle">Distribusi Kategori Mutu Skor IKM Responden</span>
+                      <span class="chart-card-subtitle" id="donutMutuSubtitle">Distribusi Kategori Mutu Responden</span>
                     </div>
                     <div class="chart-card-body" style="position: relative; height: 260px; width: 100%;">
                       <canvas id="dashRekapDonutMutu" style="display: block; width: 100% !important; height: 260px !important;"></canvas>
@@ -3531,20 +3545,102 @@
               </div>
             </div>
 
+            <!-- ===============================================================
+                 TOOLBAR FILTER & PENCARIAN REKAPITULASI DATA RESPONDEN
+                 =============================================================== -->
+            <div class="rekap-filter-toolbar" style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 18px 20px; margin-bottom: 22px; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+              <!-- Baris 1: Kolom Search Input & Status Counter -->
+              <div class="row align-items-center mb-3">
+                <div class="col-lg-6 col-md-12 mb-2 mb-lg-0">
+                  <div class="rekap-search-wrap" style="position: relative;">
+                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 14px;"></i>
+                    <input type="text" id="rekapSearchInput" class="form-control" placeholder="Cari data responden (Nama, NIK, kontak, instansi, alamat, kecamatan)..." style="padding-left: 42px; padding-right: 40px; height: 44px; border-radius: 12px; border: 1.5px solid #cbd5e1; font-size: 13.5px; box-shadow: 0 1px 4px rgba(0,0,0,0.02);" oninput="applyDashboardRekapFilters()">
+                    <button type="button" id="rekapSearchClearBtn" onclick="clearRekapSearch()" style="display: none; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); border: none; background: transparent; color: #94a3b8; font-size: 16px; cursor: pointer; padding: 4px;" title="Bersihkan pencarian">
+                      <i class="fa-solid fa-circle-xmark"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-12 text-lg-right text-left">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end; align-items: center; flex-wrap: wrap;">
+                    <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700; padding: 8px 14px; border-radius: 10px; font-size: 12.5px;" id="rekapFilterCountBadge">
+                      <i class="fa-solid fa-users"></i> Menampilkan 0 Responden
+                    </span>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" style="border-radius: 10px; font-weight: 700; height: 38px; padding: 0 14px; border: 1.5px solid #cbd5e1;" onclick="resetDashboardRekapFilters()" title="Reset semua filter dan pencarian">
+                      <i class="fa-solid fa-rotate-left"></i> Reset Filter
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Baris 2: Filter Dropdown (Instrumen, Wilayah, Mutu, Sort Order) -->
+              <div class="row" style="row-gap: 10px;">
+                <div class="col-lg-3 col-md-6 col-12" id="filterColInstrumen">
+                  <label style="font-size: 11.5px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 5px; display: flex; align-items: center; gap: 5px;">
+                    <i class="fa-solid fa-layer-group" style="color: var(--ide-navy);"></i> Instrumen Survei
+                  </label>
+                  <select id="rekapFilterInstrumen" class="form-control form-control-sm" style="border-radius: 10px; height: 38px; border: 1.5px solid #cbd5e1; font-weight: 600; font-size: 12.5px;" onchange="applyDashboardRekapFilters()">
+                    <option value="">Semua Instrumen</option>
+                    <option value="A">Instrumen A - Perusahaan / Pemberi Kerja</option>
+                    <option value="B">Instrumen B - Pencari Kerja &amp; Lulusan</option>
+                    <option value="C">Instrumen C - Pemangku Kepentingan</option>
+                    <option value="E">Instrumen C2 / E - AHP Isu Strategis</option>
+                    <option value="D">Instrumen D - Siswa Kelas 12</option>
+                  </select>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-12">
+                  <label style="font-size: 11.5px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 5px; display: flex; align-items: center; gap: 5px;">
+                    <i class="fa-solid fa-location-dot" style="color: var(--ide-red);"></i> Wilayah / Kecamatan
+                  </label>
+                  <select id="rekapFilterKecamatan" class="form-control form-control-sm" style="border-radius: 10px; height: 38px; border: 1.5px solid #cbd5e1; font-weight: 600; font-size: 12.5px;" onchange="applyDashboardRekapFilters()">
+                    <option value="">Semua Wilayah</option>
+                  </select>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-12">
+                  <label style="font-size: 11.5px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 5px; display: flex; align-items: center; gap: 5px;">
+                    <i class="fa-solid fa-award" style="color: #10b981;"></i> Mutu Pelayanan
+                  </label>
+                  <select id="rekapFilterMutu" class="form-control form-control-sm" style="border-radius: 10px; height: 38px; border: 1.5px solid #cbd5e1; font-weight: 600; font-size: 12.5px;" onchange="applyDashboardRekapFilters()">
+                    <option value="">Semua Mutu</option>
+                    <option value="Sangat Baik">Sangat Baik (A)</option>
+                    <option value="Baik">Baik (B)</option>
+                    <option value="Kurang Baik">Kurang Baik (C)</option>
+                    <option value="Tidak Baik">Tidak Baik (D)</option>
+                  </select>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-12">
+                  <label style="font-size: 11.5px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 5px; display: flex; align-items: center; gap: 5px;">
+                    <i class="fa-solid fa-arrow-down-wide-short" style="color: #0284c7;"></i> Urutkan Data
+                  </label>
+                  <select id="rekapSortOrder" class="form-control form-control-sm" style="border-radius: 10px; height: 38px; border: 1.5px solid #cbd5e1; font-weight: 600; font-size: 12.5px;" onchange="applyDashboardRekapFilters()">
+                    <option value="newest">Waktu Terbaru</option>
+                    <option value="oldest">Waktu Terlama</option>
+                    <option value="name_asc">Nama Responden (A - Z)</option>
+                    <option value="name_desc">Nama Responden (Z - A)</option>
+                    <option value="score_desc">Skor Tertinggi</option>
+                    <option value="score_asc">Skor Terendah</option>
+                    <option value="with_photo">Khusus Ada Foto Lapangan</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
             <!-- Tabel Data Responden -->
             <div class="table-responsive">
               <table class="table table-bordered table-hover" id="dashRekapTable" style="width: 100%;">
                 <thead class="thead-light">
                   <tr>
-                    <th style="width: 50px;">No</th>
-                    <th>Waktu Pengisian</th>
-                    <th>Nama Responden</th>
+                    <th style="width: 45px; text-align: center;">No</th>
+                    <th style="width: 140px;">Waktu Pengisian</th>
+                    <th>Nama Responden &amp; Profil</th>
                     <th>Wilayah (Kecamatan / Desa)</th>
                     <th>Demografi</th>
-                    <th style="text-align: center; width: 120px;">Foto Lapangan</th>
-                    <th>Rata-Rata Skor</th>
-                    <th>Mutu</th>
-                    <th style="text-align: center;">Aksi</th>
+                    <th style="text-align: center; width: 110px;">Foto Lapangan</th>
+                    <th style="text-align: center; width: 95px;">Rata-Rata Skor</th>
+                    <th style="text-align: center; width: 105px;">Mutu</th>
+                    <th style="text-align: center; width: 125px;">Aksi</th>
                   </tr>
                 </thead>
                 <tbody id="dashRekapTableBody">
@@ -3727,9 +3823,11 @@
                           <button type="button" class="btn btn-sm btn-outline-primary" style="border-radius: 8px; font-weight: 700;" onclick="selectSurveyPill(<?=$sv['Id']?>)" title="Buka Survei Ini">
                             <i class="fa-solid fa-arrow-right navy-icon"></i> Buka
                           </button>
+                          <?php if ($userLevel != 5): ?>
                           <button type="button" class="btn btn-sm btn-outline-danger" style="border-radius: 8px; font-weight: 700;" onclick="deleteSurveyTemplate(<?=$sv['Id']?>, '<?=addslashes(htmlspecialchars($sv['Judul']))?>')" title="Hapus Survei">
                             <i class="fa-solid fa-trash-can"></i>
                           </button>
+                          <?php endif; ?>
                         </div>
                       </td>
                     </tr>
@@ -3840,6 +3938,7 @@
 
   <script>
     var BaseURL = '<?=base_url()?>';
+    var userLevel = <?= (int)$userLevel ?>;
     var allSurveysData = <?= json_encode($surveiList) ?>;
     var currentSurveyId = allSurveysData.length > 0 ? allSurveysData[0].Id : 0;
     var currentSurveyObj = allSurveysData.length > 0 ? allSurveysData[0] : null;
@@ -3928,7 +4027,11 @@
       $('#statDaerah').text(currentSurveyObj.DaerahSurvei || 'Kabupaten Banyuwangi');
 
       // Update Form Banner
-      $('#formBadgeJenis').text(currentSurveyObj.Jenis || 'Survei');
+      var jenisLabel = currentSurveyObj.Jenis || 'Survei';
+      if (currentSurveyObj.Id == 4 || (currentSurveyObj.Judul && currentSurveyObj.Judul.toLowerCase().indexOf('rtkd') !== -1)) {
+        jenisLabel = 'Survei Ketenagakerjaan (RTKD)';
+      }
+      $('#formBadgeJenis').text(jenisLabel);
       $('#formEstimasiWaktu').html('<i class="fa-regular fa-clock"></i> Estimasi: ' + (currentSurveyObj.EstimasiWaktu || '3 - 5 Menit'));
       $('#formSurveyTitle').text(currentSurveyObj.Judul || 'Formulir Survei');
       $('#formSurveyDesc').text(currentSurveyObj.Deskripsi || 'Silakan lengkapi seluruh isian kuesioner dengan objektif.');
@@ -3936,6 +4039,12 @@
 
       if (currentSurveyObj.BannerColor) {
         $('#formBannerHeader').css('background', 'linear-gradient(135deg, ' + currentSurveyObj.BannerColor + ', #021e42)');
+      }
+
+      if (currentSurveyObj.Id == 4 || (currentSurveyObj.Judul && currentSurveyObj.Judul.toLowerCase().indexOf('rtkd') !== -1) || currentSurveyObj.Jenis !== 'IKM') {
+        $('#donutMutuSubtitle').text('Distribusi Kategori Mutu Responden Survei Ketenagakerjaan');
+      } else {
+        $('#donutMutuSubtitle').text('Distribusi Kategori Mutu Skor IKM Responden');
       }
 
       $('#gisSurveyTitleText').text('Peta Sebaran: ' + currentSurveyObj.Judul);
@@ -4043,6 +4152,10 @@
     // EDIT SURVEI DI STUDIO BUILDER
     // =========================================================================
     function openEditSurveyBuilder(surveyId) {
+      if (userLevel === 5) {
+        Swal.fire('Akses Ditolak', 'User role survei hanya memiliki akses untuk mengisi survei.', 'warning');
+        return;
+      }
       Swal.fire({
         title: 'Memuat Studio Survei...',
         allowOutsideClick: false,
@@ -4898,7 +5011,7 @@
             '</div>' +
             '<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">' +
               '<div>' +
-                '<span style="font-size: 11px; color: #64748b;">Skor IKM:</span> ' +
+                '<span style="font-size: 11px; color: #64748b;">' + ((currentSurveyObj && currentSurveyObj.Jenis === 'IKM') ? 'Skor IKM:' : 'Skor:') + '</span> ' +
                 '<strong style="font-size: 14px; color: #043168;">' + Number(p.skor || 0).toFixed(2) + '</strong>' +
               '</div>' +
               '<span class="gmap-badge-mutu ' + mutuClass + '">' + (p.mutu || 'Baik') + '</span>' +
@@ -5450,6 +5563,198 @@
       renderRekapPieDemografi(dimension);
     }
 
+    // =========================================================================
+    // REKAPITULASI RESPONDEN STATE & REAL-TIME FILTER ENGINE
+    // =========================================================================
+    window.currentRekapRespondenList = [];
+    window.currentRekapSurveyId = null;
+
+    function clearRekapSearch() {
+      $('#rekapSearchInput').val('');
+      applyDashboardRekapFilters();
+    }
+
+    function resetDashboardRekapFilters() {
+      $('#rekapSearchInput').val('');
+      $('#rekapFilterInstrumen').val('');
+      $('#rekapFilterKecamatan').val('');
+      $('#rekapFilterMutu').val('');
+      $('#rekapSortOrder').val('newest');
+      applyDashboardRekapFilters();
+    }
+
+    function applyDashboardRekapFilters() {
+      var $tbody = $('#dashRekapTableBody');
+      var list = window.currentRekapRespondenList || [];
+      var surveyId = window.currentRekapSurveyId || currentSurveyId;
+
+      var searchKeyword = ($('#rekapSearchInput').val() || '').trim().toLowerCase();
+      var filterInst = ($('#rekapFilterInstrumen').val() || '').trim().toUpperCase();
+      var filterKec = ($('#rekapFilterKecamatan').val() || '').trim().toLowerCase();
+      var filterMutu = ($('#rekapFilterMutu').val() || '').trim();
+      var sortOrder = $('#rekapSortOrder').val() || 'newest';
+
+      $('#rekapSearchClearBtn').toggle(searchKeyword.length > 0);
+
+      var filtered = list.filter(function(r) {
+        // Filter Instrumen
+        if (filterInst) {
+          var rInst = (r.Instrumen || '').trim().toUpperCase();
+          if (filterInst === 'C' && (rInst === 'C' || rInst === 'E')) {
+            // Instrumen C / E
+          } else if (rInst !== filterInst) {
+            return false;
+          }
+        }
+
+        // Filter Kecamatan
+        if (filterKec) {
+          var rKec = (r.Kecamatan || '').toLowerCase();
+          if (rKec.indexOf(filterKec) === -1) {
+            return false;
+          }
+        }
+
+        // Filter Mutu
+        if (filterMutu) {
+          var rMutu = (r.MutuPelayanan || '');
+          if (rMutu.indexOf(filterMutu) === -1) {
+            return false;
+          }
+        }
+
+        // Filter Search Keyword across all relevant respondent fields
+        if (searchKeyword) {
+          var blob = [
+            r.RespondenNama,
+            r.RespondenNIK,
+            r.RespondenKontak,
+            r.RespondenPekerjaan,
+            r.RespondenPendidikan,
+            r.Kecamatan,
+            r.Desa,
+            r.Kabupaten,
+            r.AlamatDetail,
+            r.MutuPelayanan,
+            r.Instrumen,
+            r.CreatedAt
+          ].filter(Boolean).join(' ').toLowerCase();
+
+          var terms = searchKeyword.split(/\s+/);
+          for (var i = 0; i < terms.length; i++) {
+            if (terms[i] && blob.indexOf(terms[i]) === -1) {
+              return false;
+            }
+          }
+        }
+
+        return true;
+      });
+
+      // Sorting
+      if (sortOrder === 'newest') {
+        filtered.sort(function(a, b) { return (b.Id || 0) - (a.Id || 0); });
+      } else if (sortOrder === 'oldest') {
+        filtered.sort(function(a, b) { return (a.Id || 0) - (b.Id || 0); });
+      } else if (sortOrder === 'name_asc') {
+        filtered.sort(function(a, b) { return (a.RespondenNama || '').localeCompare(b.RespondenNama || ''); });
+      } else if (sortOrder === 'name_desc') {
+        filtered.sort(function(a, b) { return (b.RespondenNama || '').localeCompare(a.RespondenNama || ''); });
+      } else if (sortOrder === 'score_desc') {
+        filtered.sort(function(a, b) { return (parseFloat(b.RataRataSkor) || 0) - (parseFloat(a.RataRataSkor) || 0); });
+      } else if (sortOrder === 'score_asc') {
+        filtered.sort(function(a, b) { return (parseFloat(a.RataRataSkor) || 0) - (parseFloat(b.RataRataSkor) || 0); });
+      } else if (sortOrder === 'with_photo') {
+        filtered.sort(function(a, b) {
+          var hasA = a.FotoDokumentasi ? 1 : 0;
+          var hasB = b.FotoDokumentasi ? 1 : 0;
+          if (hasA !== hasB) return hasB - hasA;
+          return (b.Id || 0) - (a.Id || 0);
+        });
+      }
+
+      // Update Counter Badge
+      $('#rekapFilterCountBadge').html('<i class="fa-solid fa-users"></i> Menampilkan ' + filtered.length + ' dari ' + list.length + ' Responden');
+
+      $tbody.empty();
+
+      if (filtered.length === 0) {
+        if (list.length === 0) {
+          $tbody.html('<tr><td colspan="9" style="text-align: center; padding: 40px; color: #94a3b8;"><i class="fa-solid fa-clipboard-question" style="font-size: 28px; color: #cbd5e1; display: block; margin-bottom: 8px;"></i> Belum ada data responden untuk survei ini.</td></tr>');
+        } else {
+          $tbody.html('<tr><td colspan="9" style="text-align: center; padding: 40px; color: #64748b;"><i class="fa-solid fa-magnifying-glass" style="font-size: 28px; color: #cbd5e1; display: block; margin-bottom: 8px;"></i> Tidak ditemukan data responden yang sesuai dengan filter atau kata kunci pencarian.<br><button type="button" class="btn btn-sm btn-outline-primary" style="margin-top: 10px; border-radius: 8px; font-weight: 700;" onclick="resetDashboardRekapFilters()"><i class="fa-solid fa-rotate-left"></i> Reset Filter &amp; Pencarian</button></td></tr>');
+        }
+        return;
+      }
+
+      filtered.forEach(function(r, idx) {
+        var rKec = r.Kecamatan || '';
+        if (rKec && !rKec.toLowerCase().startsWith('kec')) {
+          rKec = 'Kec. ' + rKec;
+        }
+        if (r.Kabupaten && r.Kabupaten.toLowerCase().indexOf('banyuwangi') === -1) {
+          rKec += ', ' + r.Kabupaten;
+        }
+        var wilayah = (rKec ? rKec : '') + (r.Desa ? ', Desa ' + r.Desa : '');
+        if (!wilayah) wilayah = r.AlamatDetail || '-';
+
+        var demografi = (r.RespondenGender || '-') + ' &bull; ' + (r.RespondenUsia || '-');
+        if (r.RespondenPekerjaan) {
+          demografi += '<br><span style="font-size: 11px; color: #64748b;">' + r.RespondenPekerjaan + '</span>';
+        }
+
+        var instBadge = '';
+        var inst = (r.Instrumen || '').toUpperCase();
+        if (inst === 'A') {
+          instBadge = '<span class="badge" style="background: #e0f2fe; color: #0369a1; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; margin-top: 3px; display: inline-block;"><i class="fa-solid fa-building mr-1"></i> Inst. A &bull; Perusahaan</span>';
+        } else if (inst === 'B') {
+          instBadge = '<span class="badge" style="background: #fef3c7; color: #92400e; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; margin-top: 3px; display: inline-block;"><i class="fa-solid fa-graduation-cap mr-1"></i> Inst. B &bull; Pencari Kerja</span>';
+        } else if (inst === 'C') {
+          instBadge = '<span class="badge" style="background: #f3e8ff; color: #6b21a8; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; margin-top: 3px; display: inline-block;"><i class="fa-solid fa-comments mr-1"></i> Inst. C &bull; Stakeholder</span>';
+        } else if (inst === 'E') {
+          instBadge = '<span class="badge" style="background: #ecfdf5; color: #065f46; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; margin-top: 3px; display: inline-block;"><i class="fa-solid fa-calculator mr-1"></i> Inst. E &bull; AHP</span>';
+        } else if (inst === 'D') {
+          instBadge = '<span class="badge" style="background: #fee2e2; color: #991b1b; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; margin-top: 3px; display: inline-block;"><i class="fa-solid fa-school mr-1"></i> Inst. D &bull; Siswa Kelas 12</span>';
+        }
+
+        var nikInfo = r.RespondenNIK ? '<div style="font-size: 11px; color: #94a3b8; font-weight: normal;">NIK: ' + r.RespondenNIK + '</div>' : '';
+
+        var fotoCell = '<span class="text-muted" style="font-size: 11.5px;">-</span>';
+        if (r.FotoDokumentasi) {
+          var safeNama = r.RespondenNama ? r.RespondenNama.replace(/'/g, "\\'") : 'Responden';
+          fotoCell = 
+            '<button type="button" class="btn btn-sm btn-outline-info" style="border-radius: 8px; font-size: 11px; font-weight: 700; padding: 3px 8px; display: inline-flex; align-items: center; gap: 4px;" onclick="previewDashboardPhoto(\'' + BaseURL + r.FotoDokumentasi + '\', \'' + safeNama + '\')" title="Lihat Foto Dokumentasi">' +
+              '<i class="fa-solid fa-camera"></i> Foto' +
+            '</button>';
+        }
+
+        $tbody.append(
+          '<tr>' +
+            '<td style="text-align: center; font-weight: 700; color: #64748b;">' + (idx + 1) + '</td>' +
+            '<td><span style="font-size: 12px; font-weight: 700; color: #64748b;">' + (r.CreatedAt ? r.CreatedAt.substring(0, 16) : '-') + '</span></td>' +
+            '<td><b>' + (r.RespondenNama || 'Anonim') + '</b>' + nikInfo + (instBadge ? '<br>' + instBadge : '') + '</td>' +
+            '<td><span class="badge badge-light" style="font-size: 12px;"><i class="fa-solid fa-location-dot" style="color: var(--ide-red);"></i> ' + wilayah + '</span></td>' +
+            '<td><span style="font-size: 12px; color: #475569;">' + demografi + '</span></td>' +
+            '<td style="text-align: center;">' + fotoCell + '</td>' +
+            '<td style="text-align: center;"><strong style="color: #059669; font-size: 14px;">' + (r.RataRataSkor || '0.00') + '</strong></td>' +
+            '<td style="text-align: center;"><span class="badge badge-success" style="padding: 4px 8px;">' + (r.MutuPelayanan || 'Baik') + '</span></td>' +
+            '<td style="text-align: center;">' +
+              '<div style="display: flex; gap: 6px; justify-content: center;">' +
+                '<button type="button" class="btn btn-sm btn-outline-primary" style="border-radius: 8px; font-weight: 700;" onclick="viewRespondenDetailAnswers(' + surveyId + ', ' + r.Id + ')" title="Lihat Rincian Jawaban">' +
+                  '<i class="fa-solid fa-eye"></i> Rincian' +
+                '</button>' +
+                (userLevel !== 5 ? (
+                '<button type="button" class="btn btn-sm btn-outline-danger" style="border-radius: 8px; font-weight: 700;" onclick="deleteRespondenData(' + surveyId + ', ' + r.Id + ', \'' + (r.RespondenNama ? r.RespondenNama.replace(/'/g, "\\'") : 'Responden') + '\')" title="Hapus Data Responden">' +
+                  '<i class="fa-solid fa-trash-can"></i> Hapus' +
+                '</button>'
+                ) : '') +
+              '</div>' +
+            '</td>' +
+          '</tr>'
+        );
+      });
+    }
+
     function loadDashboardRekapData(surveyId) {
       $('#dashRekapTableBody').html('<tr><td colspan="9" style="text-align: center; padding: 30px; color: #64748b;"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data rekapitulasi...</td></tr>');
 
@@ -5462,59 +5767,36 @@
             // Render Visualisasi Data Otomatis (Donat, Batang, Lingkaran)
             renderRekapCharts(res);
 
-            var $tbody = $('#dashRekapTableBody');
-            $tbody.empty();
+            window.currentRekapSurveyId = surveyId;
+            window.currentRekapRespondenList = Array.isArray(res.responden) ? res.responden : [];
 
-            if (!Array.isArray(res.responden) || res.responden.length === 0) {
-              $tbody.html('<tr><td colspan="9" style="text-align: center; padding: 30px; color: #94a3b8;">Belum ada data responden untuk survei ini.</td></tr>');
-              return;
+            // Populate Filter Kecamatan secara dinamis dari sebaran wilayah responden aktual
+            var uniqueKec = [];
+            window.currentRekapRespondenList.forEach(function(r) {
+              var k = (r.Kecamatan || '').trim();
+              if (k && uniqueKec.indexOf(k) === -1) {
+                uniqueKec.push(k);
+              }
+            });
+            uniqueKec.sort();
+            var $kecSelect = $('#rekapFilterKecamatan');
+            var prevKecVal = $kecSelect.val();
+            $kecSelect.find('option:not(:first)').remove();
+            uniqueKec.forEach(function(k) {
+              $kecSelect.append('<option value="' + k.toLowerCase() + '">' + k + '</option>');
+            });
+            if (prevKecVal) $kecSelect.val(prevKecVal);
+
+            // Deteksi apakah survei multi-instrumen (misal RTKD)
+            var isMultiInst = (surveyId == 4) || (res.survei && res.survei.TipeSurvei === 'multi') || window.currentRekapRespondenList.some(function(r) { return r.Instrumen && r.Instrumen !== ''; });
+            if (isMultiInst) {
+              $('#filterColInstrumen').show();
+            } else {
+              $('#filterColInstrumen').hide();
             }
 
-            res.responden.forEach(function(r, idx) {
-              var rKec = r.Kecamatan || '';
-              if (rKec && !rKec.toLowerCase().startsWith('kec')) {
-                rKec = 'Kec. ' + rKec;
-              }
-              if (r.Kabupaten && r.Kabupaten.toLowerCase().indexOf('banyuwangi') === -1) {
-                rKec += ', ' + r.Kabupaten;
-              }
-              var wilayah = (rKec ? rKec : '') + (r.Desa ? ', Desa ' + r.Desa : '');
-              if (!wilayah) wilayah = r.AlamatDetail || '-';
-
-              var demografi = (r.RespondenGender || '-') + ' &bull; ' + (r.RespondenUsia || '-');
-
-              var fotoCell = '<span class="text-muted" style="font-size: 11.5px;">-</span>';
-              if (r.FotoDokumentasi) {
-                var safeNama = r.RespondenNama ? r.RespondenNama.replace(/'/g, "\\'") : 'Responden';
-                fotoCell = 
-                  '<button type="button" class="btn btn-sm btn-outline-info" style="border-radius: 8px; font-size: 11px; font-weight: 700; padding: 3px 8px; display: inline-flex; align-items: center; gap: 4px;" onclick="previewDashboardPhoto(\'' + BaseURL + r.FotoDokumentasi + '\', \'' + safeNama + '\')" title="Lihat Foto Dokumentasi">' +
-                    '<i class="fa-solid fa-camera"></i> Foto' +
-                  '</button>';
-              }
-
-              $tbody.append(
-                '<tr>' +
-                  '<td>' + (idx + 1) + '</td>' +
-                  '<td><span style="font-size: 12px; font-weight: 700; color: #64748b;">' + (r.CreatedAt ? r.CreatedAt.substring(0, 16) : '-') + '</span></td>' +
-                  '<td><b>' + (r.RespondenNama || 'Anonim') + '</b></td>' +
-                  '<td><span class="badge badge-light" style="font-size: 12px;"><i class="fa-solid fa-location-dot" style="color: var(--ide-red);"></i> ' + wilayah + '</span></td>' +
-                  '<td><span style="font-size: 12px; color: #475569;">' + demografi + '</span></td>' +
-                  '<td style="text-align: center;">' + fotoCell + '</td>' +
-                  '<td><strong style="color: #059669; font-size: 14px;">' + (r.RataRataSkor || '0.00') + '</strong></td>' +
-                  '<td><span class="badge badge-success" style="padding: 4px 8px;">' + (r.MutuPelayanan || 'Baik') + '</span></td>' +
-                  '<td style="text-align: center;">' +
-                    '<div style="display: flex; gap: 6px; justify-content: center;">' +
-                      '<button type="button" class="btn btn-sm btn-outline-primary" style="border-radius: 8px; font-weight: 700;" onclick="viewRespondenDetailAnswers(' + surveyId + ', ' + r.Id + ')" title="Lihat Rincian Jawaban">' +
-                        '<i class="fa-solid fa-eye"></i> Rincian' +
-                      '</button>' +
-                      '<button type="button" class="btn btn-sm btn-outline-danger" style="border-radius: 8px; font-weight: 700;" onclick="deleteRespondenData(' + surveyId + ', ' + r.Id + ', \'' + (r.RespondenNama ? r.RespondenNama.replace(/'/g, "\\'") : 'Responden') + '\')" title="Hapus Data Responden">' +
-                        '<i class="fa-solid fa-trash-can"></i> Hapus' +
-                      '</button>' +
-                    '</div>' +
-                  '</td>' +
-                '</tr>'
-              );
-            });
+            // Jalankan filter & render tabel
+            applyDashboardRekapFilters();
           }
         }
       });
@@ -5572,11 +5854,12 @@
               '</div>'
             ) : '';
 
+            var modalSkorLabel = (currentSurveyObj && currentSurveyObj.Jenis === 'IKM') ? 'Skor IKM: ' : 'Skor: ';
             $('#rincianRespondenInfo').html(
               '<div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 18px;">' +
                 '<div style="font-size: 16px; font-weight: 800; color: var(--ide-navy);">' + (r.RespondenNama || 'Anonim') + '</div>' +
                 '<div style="font-size: 12.5px; color: #64748b; margin-top: 4px;">NIK: ' + (r.RespondenNIK || '-') + ' &bull; Kontak: ' + (r.RespondenKontak || '-') + ' &bull; Wilayah: ' + rKec + rDesa + '</div>' +
-                '<div style="margin-top: 6px;"><span class="badge badge-success">Skor IKM: ' + (r.RataRataSkor || '0.00') + ' (' + (r.MutuPelayanan || 'Baik') + ')</span></div>' +
+                '<div style="margin-top: 6px;"><span class="badge badge-success">' + modalSkorLabel + (r.RataRataSkor || '0.00') + ' (' + (r.MutuPelayanan || 'Baik') + ')</span></div>' +
                 fotoSection +
               '</div>'
             );
@@ -5613,6 +5896,10 @@
     // HAPUS DATA RESPONDEN & HAPUS SURVEI (AKSES STAF & ADMIN)
     // =========================================================================
     function deleteRespondenData(surveyId, respondenId, respondenNama) {
+      if (userLevel === 5) {
+        Swal.fire('Akses Ditolak', 'User role survei tidak memiliki hak akses untuk menghapus data responden.', 'error');
+        return;
+      }
       Swal.fire({
         title: 'Hapus Data Responden?',
         html: 'Anda yakin ingin menghapus data responden <b>' + (respondenNama || 'ini') + '</b>?<br><span style="font-size:12.5px; color:#ef4444;">Seluruh jawaban survei terkait akan dihapus permanen.</span>',
@@ -5657,6 +5944,10 @@
     }
 
     function deleteSurveyTemplate(surveyId, surveyTitle) {
+      if (userLevel === 5) {
+        Swal.fire('Akses Ditolak', 'User role survei tidak memiliki hak akses untuk menghapus instrumen survei.', 'error');
+        return;
+      }
       Swal.fire({
         title: 'Hapus Instrumen Survei?',
         html: 'Anda yakin ingin menghapus survei <b>' + (surveyTitle || '') + '</b>?<br><span style="font-size:12px; color:#ef4444;">Semua butir pertanyaan dan seluruh rekap jawaban responden terkait akan dihapus permanen.</span>',

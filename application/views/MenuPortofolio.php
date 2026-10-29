@@ -3206,6 +3206,8 @@ Timur
             window.location = BaseURL + "Admin";
           } else if (trimmedRespon == '3' || trimmedRespon == '4') {
             window.location = BaseURL + "Staf";
+          } else if (trimmedRespon == '5') {
+            window.location = BaseURL + "IDE/MenuSurvei";
           } else if (trimmedRespon == '0') {
             window.location = BaseURL + "Econk";
           } else {
