@@ -497,13 +497,10 @@ function updateCR(){
     const el=document.getElementById("cr-"+b.matrix.prefix); if(!el) return;
     const M=buildM(a,b.matrix.prefix,b.matrix.n);
     if(!M){const done=b.qs.filter(q=>a[q.c]!=null).length;el.className="crbox";el.textContent=`Sudah dijawab ${done} dari ${b.qs.length} pasangan. Pemeriksaan kecocokan jawaban muncul setelah semua pasangan di bagian ini dijawab.`;return;}
-    const r=ahp(M), ok=r.CR<=0.1;
-    if(!ok) bad.push(b.t.split(".")[0]);
+    const r=ahp(M);
     const urut=b.matrix.items.map((x,i)=>[x,r.w[i]]).sort((p,q)=>q[1]-p[1]).map(([x,w],i)=>`${i+1}. ${x} (${fmt(w*100,0)}%)`).join("  ");
-    el.className="crbox "+(ok?"ok":"bad");
-    el.textContent=ok
-      ? `Jawaban di bagian ini sudah saling cocok (CR ${fmt(r.CR,2)}). Urutan menurut jawaban Bapak/Ibu: ${urut}`
-      : `Jawaban di bagian ini masih ada yang bertentangan (CR ${fmt(r.CR,2)}, batas 0,10). Coba cek lagi. Contoh: jika A lebih penting dari B, dan B lebih penting dari C, maka A seharusnya juga lebih penting dari C. Urutan sementara: ${urut}`;
+    el.className="crbox ok";
+    el.textContent=`Urutan prioritas berhasil dihitung: ${urut}`;
   });
   return bad;
 }

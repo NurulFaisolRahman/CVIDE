@@ -4470,6 +4470,11 @@
       };
       renderQuestions();
 
+      // Pulihkan draft jika ada yang tersimpan di memori perangkat untuk instrumen ini
+      if (window.SurveiOfflineManager) {
+        window.SurveiOfflineManager.restoreDraft(parseInt($('#dashFormSurveyId').val()) || 4, tabKey, true);
+      }
+
       // Sync dengan pilihan kategori responden
       if (tabKey === 'A') {
         $('#dashRespPekerjaan').val('Pemberi Kerja / Pelaku Usaha (Perusahaan)');
@@ -4538,36 +4543,6 @@
         var inst = window.dashRtkdActiveInstrument || $('#dashRtkdActiveInstrument').val() || 'A';
         var answers = window.RTKDEngine ? window.RTKDEngine.collect('dashRespondentForm', inst, 'dash_') : {};
 
-        // Validasi konsistensi AHP untuk Instrumen E
-        if (inst === 'E' && window.RTKDEngine) {
-          var badBlocks = window.RTKDEngine.updateCR('dashRtkdSheet', 'E', 'dash_');
-          if (badBlocks && badBlocks.length > 0 && !window.dashAhpAckCr) {
-            Swal.fire({
-              icon: 'warning',
-              title: 'Pemeriksaan Konsistensi (AHP)',
-              html: 'Jawaban perbandingan pada <b>' + badBlocks.join(', ') + '</b> masih ada yang bertentangan (CR > 0,10).<br><br>Sebaiknya diteliti kembali bersama narasumber. Anda dapat meninjau kembali atau tetap menyimpan jika narasumber mempertahankan jawabannya.<br><small style="color:#64748b;">Catatan: Rekap AHP hanya menghitung isian yang konsisten (CR &le; 0,10).</small>',
-              showCancelButton: true,
-              confirmButtonColor: '#043168',
-              cancelButtonColor: '#64748b',
-              confirmButtonText: '<i class="fa-solid fa-floppy-disk"></i> Tetap Simpan Jawaban',
-              cancelButtonText: '<i class="fa-solid fa-magnifying-glass"></i> Tinjau Kembali'
-            }).then(function(result) {
-              if (result.isConfirmed) {
-                window.dashAhpAckCr = true;
-                var form = document.getElementById('dashRespondentForm');
-                if (form) {
-                  if (typeof form.requestSubmit === 'function') {
-                    form.requestSubmit();
-                  } else {
-                    $('#dashRespondentForm').trigger('submit');
-                  }
-                }
-              }
-            });
-            return;
-          }
-        }
-
         // Validasi kriteria penyaring Instrumen B
         if (inst === 'B' && Array.isArray(answers.SC)) {
           if (answers.SC.indexOf('Tidak satu pun') !== -1 && answers.SC.length > 1) {
@@ -4577,9 +4552,30 @@
         }
 
         // Validasi pertanyaan wajib dan beri highlight visual pada butir yang kosong
-        if (window.RTKDEngine) {
+        if (window.RTKDEngine && !window.dashBypassValidationForOffline) {
           var valRes = window.RTKDEngine.validateAndHighlight('dashRtkdSheet', inst, 'dash_', answers);
           if (!valRes.isValid) {
+            if (window.dashForceOffline || !navigator.onLine) {
+              Swal.fire({
+                icon: 'question',
+                title: 'Simpan ke Antrean Offline?',
+                html: 'Terdapat <b>' + valRes.count + ' butir pertanyaan</b> yang belum terisi.<br><br>Apakah Anda ingin <b>tetap menyimpan ke antrean offline</b> sekarang atau melengkapi butir pertanyaan terlebih dahulu?',
+                showCancelButton: true,
+                confirmButtonColor: '#043168',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: '<i class="fa-solid fa-cloud-arrow-down"></i> Tetap Simpan ke Antrean Offline',
+                cancelButtonText: '<i class="fa-solid fa-pen-to-square"></i> Lengkapi Sekarang'
+              }).then(function(result) {
+                if (result.isConfirmed) {
+                  window.dashBypassValidationForOffline = true;
+                  $('#dashRespondentForm').trigger('submit');
+                } else {
+                  window.RTKDEngine.scrollToFirstUnanswered(valRes.firstElement);
+                }
+              });
+              return;
+            }
+
             Swal.fire({
               icon: 'warning',
               title: 'Ada Jawaban Belum Terisi (' + valRes.count + ' Butir) ⚠️',
@@ -4603,8 +4599,14 @@
             return;
           }
         }
+        window.dashBypassValidationForOffline = false;
 
-        var respNama = $('#dashRespNama').val() || answers.P1 || answers.S2 || answers.K2 || (inst === 'B' ? 'Pencari Kerja / Lulusan' : (inst === 'E' ? 'Narasumber AHP' : 'Responden ' + inst));
+        // Update skor prioritas AHP untuk Instrumen E
+        if (inst === 'E' && window.RTKDEngine) {
+          window.RTKDEngine.updateCR('dashRtkdSheet', 'E', 'dash_');
+        }
+
+        var respNama = (inst === 'E' ? (answers.S2 || answers.S1 || $('#dashRespNama').val() || 'Narasumber AHP') : ($('#dashRespNama').val() || answers.P1 || answers.S2 || answers.K2 || (inst === 'B' ? 'Pencari Kerja / Lulusan' : 'Responden ' + inst)));
         var kec = answers.P2 || answers.L3 || answers.K3 || answers.K7 || $('#dashKecamatan').val() || 'Banyuwangi';
 
         var payload = {

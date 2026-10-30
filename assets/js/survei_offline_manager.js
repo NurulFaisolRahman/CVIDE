@@ -530,7 +530,9 @@
         $('#syncProgressBar').css('width', pct + '%');
         $('#syncProgressText').html('Mengunggah ' + (index + 1) + ' dari ' + totalToSync + ': <b>' + (item.respondenNama || 'Responden') + '</b>...');
 
-        var targetUrl = (typeof BaseURL !== 'undefined' ? BaseURL : '/') + 'IDE/submit_jawaban_survei';
+        var bUrl = (typeof BaseURL !== 'undefined' && BaseURL) ? BaseURL : (window.location.origin + '/');
+        if (bUrl.slice(-1) !== '/') bUrl += '/';
+        var targetUrl = bUrl + 'IDE/submit_jawaban_survei';
 
         $.ajax({
           url: targetUrl,
@@ -565,14 +567,20 @@
      * Simpan Draft Form Responden Berjalan ke LocalStorage
      */
     saveCurrentDraft: function() {
+      var isDash = $('#dashRespondentForm').is(':visible') || ($('#dashRtkdSheet').length > 0 && !$('#surveyRespondentModal').hasClass('show'));
+      var formId = isDash ? 'dashRespondentForm' : 'formSurveyRespondent';
+      var prefix = isDash ? 'dash_' : '';
       var surveyId = parseInt($('#respSurveiId').val() || $('#dashFormSurveyId').val()) || 4;
-      var inst = window.modalRtkdActiveInstrument || window.dashRtkdActiveInstrument || 'A';
-      var answers = window.RTKDEngine ? window.RTKDEngine.collect('formSurveyRespondent', inst) : {};
+      var inst = isDash
+        ? (window.dashRtkdActiveInstrument || $('#dashRtkdActiveInstrument').val() || 'A')
+        : (window.modalRtkdActiveInstrument || $('#modalRtkdActiveInstrument').val() || 'A');
+      var answers = window.RTKDEngine ? window.RTKDEngine.collect(formId, inst, prefix) : {};
+      var enumerator = $('#respEnumerator').val() || $('#dashRespPetugas').val() || $('#dashRespEnumerator').val() || 'Petugas Lapangan';
 
       var draftData = {
         surveyId: surveyId,
         instrumen: inst,
-        enumerator: $('#respEnumerator').val(),
+        enumerator: enumerator,
         answers: answers,
         savedAt: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
       };
@@ -580,34 +588,41 @@
       try {
         var key = DRAFT_PREFIX + surveyId + '_' + inst;
         localStorage.setItem(key, JSON.stringify(draftData));
-        $('#rtkdDraftSaveText').html('<i class="fa-solid fa-cloud-check" style="color: #10b981;"></i> Draft tersimpan (' + draftData.savedAt + ')');
-        $('#rtkdDraftIndicator').addClass('saved');
+        $('#rtkdDraftSaveText, #dashDraftSaveText').html('<i class="fa-solid fa-cloud-check" style="color: #10b981;"></i> Draft tersimpan (' + draftData.savedAt + ')');
+        $('#rtkdDraftIndicator, #dashDraftIndicator').addClass('saved');
       } catch (e) {}
     },
 
     /**
      * Pulihkan Draft ke Form saat Kuesioner Dibuka
      */
-    restoreDraft: function(surveyId, inst) {
-      surveyId = surveyId || parseInt($('#respSurveiId').val()) || 4;
-      inst = inst || window.modalRtkdActiveInstrument || 'A';
+    restoreDraft: function(surveyId, inst, isDash) {
+      if (typeof isDash === 'undefined') {
+        isDash = $('#dashRespondentForm').is(':visible') || ($('#dashRtkdSheet').length > 0 && !$('#surveyRespondentModal').hasClass('show'));
+      }
+      var formId = isDash ? 'dashRespondentForm' : 'formSurveyRespondent';
+      var prefix = isDash ? 'dash_' : '';
+      surveyId = surveyId || parseInt($('#respSurveiId').val() || $('#dashFormSurveyId').val()) || 4;
+      inst = inst || (isDash ? (window.dashRtkdActiveInstrument || 'A') : (window.modalRtkdActiveInstrument || 'A'));
       var key = DRAFT_PREFIX + surveyId + '_' + inst;
 
       try {
         var raw = localStorage.getItem(key);
         if (!raw) {
-          $('#rtkdDraftSaveText').html('<i class="fa-solid fa-cloud"></i> Draft otomatis aktif');
+          $('#rtkdDraftSaveText, #dashDraftSaveText').html('<i class="fa-solid fa-cloud"></i> Draft otomatis aktif');
           return false;
         }
 
         var draft = JSON.parse(raw);
         if (!draft || !draft.answers || Object.keys(draft.answers).length === 0) return false;
 
-        if (draft.enumerator && $('#respEnumerator').length) {
-          $('#respEnumerator').val(draft.enumerator);
+        if (draft.enumerator) {
+          if ($('#respEnumerator').length) $('#respEnumerator').val(draft.enumerator);
+          if ($('#dashRespPetugas').length) $('#dashRespPetugas').val(draft.enumerator);
+          if ($('#dashRespEnumerator').length) $('#dashRespEnumerator').val(draft.enumerator);
         }
 
-        var form = document.getElementById('formSurveyRespondent') || document.getElementById('dashRespondentForm');
+        var form = document.getElementById(formId);
         if (!form) return false;
 
         var answers = draft.answers;
@@ -615,23 +630,24 @@
           if (!answers.hasOwnProperty(qKey)) continue;
           var val = answers[qKey];
 
-          var el = form.querySelector('#' + qKey) || form.querySelector('[name="' + qKey + '"]');
+          var el = form.querySelector('#' + prefix + qKey) || form.querySelector('#' + qKey) || form.querySelector('[name="' + qKey + '"]');
           if (el && (el.tagName === 'INPUT' || el.tagName === 'SELECT' || el.tagName === 'TEXTAREA') && el.type !== 'radio' && el.type !== 'checkbox') {
             el.value = val;
             $(el).trigger('change');
           }
 
           if (typeof val === 'string' || typeof val === 'number') {
-            var elRadio = form.querySelector('input[type="radio"][name="' + qKey + '"][value="' + val + '"]');
-            if (elRadio) {
-              elRadio.checked = true;
-              $(elRadio).trigger('change');
+            var $radios = $(form).find('input[type="radio"][name="' + qKey + '"], input[type="radio"][name="' + prefix + qKey + '"]');
+            var matched = $radios.filter(function() { return this.value === String(val); });
+            if (matched.length) {
+              matched.prop('checked', true).trigger('change');
             }
           }
 
           if (Array.isArray(val)) {
             val.forEach(function(itemVal) {
               var elCb = form.querySelector('input[type="checkbox"][name="' + qKey + '[]"][value="' + itemVal + '"]') ||
+                         form.querySelector('input[type="checkbox"][name="' + prefix + qKey + '[]"][value="' + itemVal + '"]') ||
                          form.querySelector('input[type="checkbox"][name="' + qKey + '"][value="' + itemVal + '"]');
               if (elCb) {
                 elCb.checked = true;
@@ -643,6 +659,7 @@
           if (typeof val === 'object' && !Array.isArray(val)) {
             for (var subKey in val) {
               var gridInp = form.querySelector('input[name="' + qKey + '[' + subKey + ']"]') ||
+                            form.querySelector('input[name="' + prefix + qKey + '[' + subKey + ']"]') ||
                             form.querySelector('input[data-field="' + subKey + '"][data-q="' + qKey + '"]');
               if (gridInp) {
                 if (gridInp.type === 'radio') {
@@ -661,13 +678,14 @@
         }
 
         if (window.RTKDEngine) {
-          window.RTKDEngine.applyShow('modalRtkdSheet', inst);
+          var targetSheet = isDash ? 'dashRtkdSheet' : 'modalRtkdSheet';
+          window.RTKDEngine.applyShow(targetSheet, inst, prefix);
           if (inst === 'E') {
-            window.RTKDEngine.updateCR('modalRtkdSheet', 'E');
+            window.RTKDEngine.updateCR(targetSheet, 'E', prefix);
           }
         }
 
-        $('#rtkdDraftSaveText').html('<i class="fa-solid fa-cloud-arrow-down" style="color: #0284c7;"></i> Draft dipulihkan (' + (draft.savedAt || 'tersimpan') + ')');
+        $('#rtkdDraftSaveText, #dashDraftSaveText').html('<i class="fa-solid fa-cloud-arrow-down" style="color: #0284c7;"></i> Draft dipulihkan (' + (draft.savedAt || 'tersimpan') + ')');
         return true;
       } catch (e) {
         return false;

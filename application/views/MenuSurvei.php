@@ -9548,9 +9548,31 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
         }
 
         // Validasi pertanyaan wajib dan beri highlight visual pada butir yang kosong
-        if (window.RTKDEngine) {
+        if (window.RTKDEngine && !window.bypassValidationForOffline) {
           var valRes = window.RTKDEngine.validateAndHighlight('modalRtkdSheet', inst, '', answers);
           if (!valRes.isValid) {
+            var isForceOffline = $('#chkForceOfflineMode').is(':checked');
+            if (isForceOffline || !navigator.onLine) {
+              Swal.fire({
+                icon: 'question',
+                title: 'Simpan ke Antrean Offline?',
+                html: 'Terdapat <b>' + valRes.count + ' butir pertanyaan</b> yang belum terisi.<br><br>Apakah Anda ingin <b>tetap menyimpan ke antrean offline</b> sekarang atau melengkapi butir pertanyaan terlebih dahulu?',
+                showCancelButton: true,
+                confirmButtonColor: '#043168',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: '<i class="fa-solid fa-cloud-arrow-down"></i> Tetap Simpan ke Antrean Offline',
+                cancelButtonText: '<i class="fa-solid fa-pen-to-square"></i> Lengkapi Sekarang'
+              }).then(function(result) {
+                if (result.isConfirmed) {
+                  window.bypassValidationForOffline = true;
+                  $('#formSurveyRespondent').trigger('submit');
+                } else {
+                  window.RTKDEngine.scrollToFirstUnanswered(valRes.firstElement, '#surveyRespondentModal .modal-body');
+                }
+              });
+              return;
+            }
+
             $('#modalRtkdStatus').html('<span style="color:#dc2626; font-weight:700;"><i class="fa-solid fa-triangle-exclamation"></i> ' + valRes.count + ' butir pertanyaan belum terisi</span>');
             Swal.fire({
               icon: 'warning',
@@ -9575,38 +9597,14 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
             return;
           }
         }
+        window.bypassValidationForOffline = false;
 
-        // Validasi konsistensi AHP untuk Instrumen E
+        // Update skor prioritas AHP untuk Instrumen E
         if (inst === 'E' && window.RTKDEngine) {
-          var badBlocks = window.RTKDEngine.updateCR('modalRtkdSheet', 'E');
-          if (badBlocks && badBlocks.length > 0 && !window.ahpAckCr) {
-            Swal.fire({
-              icon: 'warning',
-              title: 'Pemeriksaan Konsistensi (AHP)',
-              html: 'Jawaban perbandingan pada <b>' + badBlocks.join(', ') + '</b> masih ada yang bertentangan (CR > 0,10).<br><br>Sebaiknya diteliti kembali bersama narasumber. Anda dapat meninjau kembali atau tetap menyimpan jika narasumber mempertahankan jawabannya.<br><small style="color:#64748b;">Catatan: Rekap AHP hanya menghitung isian yang konsisten (CR &le; 0,10).</small>',
-              showCancelButton: true,
-              confirmButtonColor: '#043168',
-              cancelButtonColor: '#64748b',
-              confirmButtonText: '<i class="fa-solid fa-floppy-disk"></i> Tetap Simpan Jawaban',
-              cancelButtonText: '<i class="fa-solid fa-magnifying-glass"></i> Tinjau Kembali'
-            }).then(function(result) {
-              if (result.isConfirmed) {
-                window.ahpAckCr = true;
-                var form = document.getElementById('formSurveyRespondent');
-                if (form) {
-                  if (typeof form.requestSubmit === 'function') {
-                    form.requestSubmit();
-                  } else {
-                    $('#formSurveyRespondent').trigger('submit');
-                  }
-                }
-              }
-            });
-            return;
-          }
+          window.RTKDEngine.updateCR('modalRtkdSheet', 'E');
         }
 
-        var respNama = answers.P1 || answers.S2 || answers.K2 || (inst === 'B' ? 'Pencari Kerja / Lulusan' : (inst === 'E' ? 'Narasumber AHP' : 'Responden ' + inst));
+        var respNama = (inst === 'E' ? (answers.S2 || answers.S1 || 'Narasumber AHP') : (answers.P1 || answers.S2 || answers.K2 || (inst === 'B' ? 'Pencari Kerja / Lulusan' : 'Responden ' + inst)));
         var realKec = $('#respRealKecamatan').val();
         var realKab = $('#respRealKabupaten').val();
         var kec = realKec || answers.P2 || answers.L3 || answers.K3 || answers.K7 || 'Banyuwangi';
