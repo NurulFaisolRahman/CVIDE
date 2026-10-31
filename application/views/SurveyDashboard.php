@@ -3345,10 +3345,7 @@
                   </button>
                 </div>
               </div>
-              <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                <select id="gisKecamatanFilter" class="form-control form-control-sm" style="width: 200px; border-radius: 8px; font-weight: 700;" onchange="filterGoogleMapKecamatan(this.value)">
-                  <option value="">Semua Kecamatan (25)</option>
-                </select>
+              <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
                 <button type="button" class="btn btn-sm btn-outline-dark" style="border-radius: 8px; font-weight: 700; background: #fff;" onclick="showSurveyQRCode()" title="QR Code Kuesioner">
                   <i class="fa-solid fa-qrcode" style="color: var(--ide-red);"></i> QR Code
                 </button>
@@ -3359,6 +3356,189 @@
                   <i class="fa-solid fa-file-excel"></i> Ekspor Excel
                 </button>
               </div>
+            </div>
+
+            <!-- Bilah Filter Multi-Dimensi (Instrumen, Gender, Kecamatan, Mutu) -->
+            <div class="gis-filter-toolbar-container">
+              <div class="gis-filter-row">
+                <div class="gis-filter-group" id="filterGroupInstrumen">
+                  <label for="gisInstrumenFilter"><i class="fa-solid fa-layer-group" style="color: #7c3aed;"></i> Instrumen:</label>
+                  <select id="gisInstrumenFilter" onchange="applyGisFilters()">
+                    <option value="">Semua Instrumen RTKD</option>
+                    <option value="A">Instrumen A - Perusahaan / Pemberi Kerja</option>
+                    <option value="B">Instrumen B - Pencari Kerja &amp; Lulusan</option>
+                    <option value="C">Instrumen C - Pemangku Kepentingan</option>
+                    <option value="D">Instrumen D - Siswa Kelas 12</option>
+                    <option value="E">Instrumen E - Pakar Isu Strategis (AHP)</option>
+                  </select>
+                </div>
+
+                <div class="gis-filter-group">
+                  <label for="gisGenderFilter"><i class="fa-solid fa-venus-mars" style="color: #0284c7;"></i> Jenis Kelamin:</label>
+                  <select id="gisGenderFilter" onchange="applyGisFilters()">
+                    <option value="">Semua Gender</option>
+                    <option value="Laki-laki">Laki-laki</option>
+                    <option value="Perempuan">Perempuan</option>
+                    <option value="Tidak Mengisi">Lainnya / Tidak Mengisi</option>
+                  </select>
+                </div>
+
+                <div class="gis-filter-group">
+                  <label for="gisKecamatanFilter"><i class="fa-solid fa-map-location-dot" style="color: #16a34a;"></i> Wilayah:</label>
+                  <select id="gisKecamatanFilter" onchange="applyGisFilters()">
+                    <option value="">Semua Wilayah Kecamatan (25)</option>
+                  </select>
+                </div>
+
+                <div class="gis-filter-group">
+                  <label for="gisMutuFilter"><i class="fa-solid fa-award" style="color: #d97706;"></i> Predikat Mutu:</label>
+                  <select id="gisMutuFilter" onchange="applyGisFilters()">
+                    <option value="">Semua Kategori Mutu</option>
+                    <option value="Sangat Baik">Sangat Baik (A)</option>
+                    <option value="Baik">Baik (B)</option>
+                    <option value="Kurang">Kurang Baik (C)</option>
+                    <option value="Tidak">Tidak Baik (D)</option>
+                  </select>
+                </div>
+
+                <button type="button" class="btn-gis-reset-filter" onclick="resetGisFilters()" title="Kembalikan semua filter ke awal">
+                  <i class="fa-solid fa-filter-circle-xmark"></i> Reset Filter
+                </button>
+              </div>
+            </div>
+
+            <!-- Active Filters Feedback Banner -->
+            <div class="gis-active-filter-banner" id="gisActiveFilterBanner" style="display: none;">
+              <span style="font-weight: 700;"><i class="fa-solid fa-filter"></i> Filter Aktif:</span>
+              <div id="gisActivePillsContainer" style="display: inline-flex; gap: 6px; flex-wrap: wrap;"></div>
+            </div>
+
+            <!-- Card Statistik Dinamis Sesuai Filter untuk Data Masuk RTKD -->
+            <div class="gis-stat-cards-wrapper" id="gisStatCardsWrapper">
+              
+              <!-- Card 1: Total Data Masuk Terfilter -->
+              <div class="gis-stat-card card-total">
+                <div class="stat-card-header">
+                  <span class="stat-card-title"><i class="fa-solid fa-users-viewfinder"></i> Data Masuk Terfilter</span>
+                  <div class="stat-card-icon-badge badge-blue-soft"><i class="fa-solid fa-database"></i></div>
+                </div>
+                <div class="stat-card-main">
+                  <div class="stat-card-num">
+                    <span id="statFilteredTotal">0</span>
+                    <small>/ <span id="statAllTotal">0</span> Total</small>
+                  </div>
+                  <div class="stat-mini-progress">
+                    <div class="stat-mini-bar" id="statFilteredBar" style="width: 100%; background: linear-gradient(90deg, #043168, #2563eb);"></div>
+                  </div>
+                </div>
+                <div class="stat-card-footer">
+                  <span id="statFilteredPct"><i class="fa-solid fa-chart-pie"></i> 100% dari total populasi</span>
+                  <span id="statGpsPctBadge" class="badge" style="background:#eff6ff; color:#1d4ed8; font-size:10px;">GPS: 100%</span>
+                </div>
+              </div>
+
+              <!-- Card 2: Pengelompokan Instrumen RTKD -->
+              <div class="gis-stat-card card-inst">
+                <div class="stat-card-header">
+                  <span class="stat-card-title"><i class="fa-solid fa-layer-group"></i> Kelompok Instrumen RTKD</span>
+                  <div class="stat-card-icon-badge badge-purple-soft"><i class="fa-solid fa-sliders"></i></div>
+                </div>
+                <div class="stat-card-main">
+                  <div class="inst-chips-list" id="statInstChipsList">
+                    <span class="inst-mini-chip chip-tag-a" id="chipInstA" onclick="quickFilterInstrumen('A')" title="Klik untuk filter Instrumen A">
+                      <span class="chip-badge">A</span> Perusahaan: <b id="statInstCountA">0</b>
+                    </span>
+                    <span class="inst-mini-chip chip-tag-b" id="chipInstB" onclick="quickFilterInstrumen('B')" title="Klik untuk filter Instrumen B">
+                      <span class="chip-badge">B</span> Naker: <b id="statInstCountB">0</b>
+                    </span>
+                    <span class="inst-mini-chip chip-tag-c" id="chipInstC" onclick="quickFilterInstrumen('C')" title="Klik untuk filter Instrumen C">
+                      <span class="chip-badge">C</span> Stakeholder: <b id="statInstCountC">0</b>
+                    </span>
+                    <span class="inst-mini-chip chip-tag-d" id="chipInstD" onclick="quickFilterInstrumen('D')" title="Klik untuk filter Instrumen D">
+                      <span class="chip-badge">D</span> Siswa: <b id="statInstCountD">0</b>
+                    </span>
+                    <span class="inst-mini-chip chip-tag-e" id="chipInstE" onclick="quickFilterInstrumen('E')" title="Klik untuk filter Instrumen E">
+                      <span class="chip-badge">E</span> AHP: <b id="statInstCountE">0</b>
+                    </span>
+                  </div>
+                </div>
+                <div class="stat-card-footer">
+                  <span style="font-size: 10.5px; color: #7c3aed;"><i class="fa-regular fa-hand-pointer"></i> Klik chip untuk quick filter</span>
+                </div>
+              </div>
+
+              <!-- Card 3: Komposisi Jenis Kelamin -->
+              <div class="gis-stat-card card-gender">
+                <div class="stat-card-header">
+                  <span class="stat-card-title"><i class="fa-solid fa-venus-mars"></i> Komposisi Gender</span>
+                  <div class="stat-card-icon-badge badge-pink-soft"><i class="fa-solid fa-user-group"></i></div>
+                </div>
+                <div class="stat-card-main">
+                  <div class="gender-dual-row">
+                    <span class="male-val" onclick="quickFilterGender('Laki-laki')" style="cursor:pointer;" title="Filter Laki-laki">
+                      <i class="fa-solid fa-mars"></i> Laki-laki: <b id="statGenderMaleCount">0</b> <small id="statGenderMalePct">(0%)</small>
+                    </span>
+                    <span class="female-val" onclick="quickFilterGender('Perempuan')" style="cursor:pointer;" title="Filter Perempuan">
+                      <i class="fa-solid fa-venus"></i> Perempuan: <b id="statGenderFemaleCount">0</b> <small id="statGenderFemalePct">(0%)</small>
+                    </span>
+                  </div>
+                  <div class="gender-split-bar">
+                    <div class="gender-seg-male" id="genderSegMale" style="width: 50%;"></div>
+                    <div class="gender-seg-female" id="genderSegFemale" style="width: 50%;"></div>
+                    <div class="gender-seg-other" id="genderSegOther" style="width: 0%;"></div>
+                  </div>
+                </div>
+                <div class="stat-card-footer">
+                  <span id="statGenderNote">Rasio Gender Terfilter</span>
+                  <span id="statGenderOtherCount" style="color: #94a3b8; font-size: 10px;">Lainnya: 0</span>
+                </div>
+              </div>
+
+              <!-- Card 4: Rata-Rata Skor & Predikat Mutu -->
+              <div class="gis-stat-card card-mutu">
+                <div class="stat-card-header">
+                  <span class="stat-card-title"><i class="fa-solid fa-award"></i> Rata-Rata Skor Mutu</span>
+                  <div class="stat-card-icon-badge badge-emerald-soft"><i class="fa-solid fa-star"></i></div>
+                </div>
+                <div class="stat-card-main">
+                  <div style="display:flex; justify-content:space-between; align-items:baseline;">
+                    <div class="stat-card-num">
+                      <span id="statAvgScore" style="color: #059669;">0.00</span>
+                      <small>/ 4.00</small>
+                    </div>
+                    <span class="badge" id="statMutuBadge" style="background:#ecfdf5; color:#059669; font-size:11px; font-weight:700; padding:4px 8px; border-radius:6px;">Baik (B)</span>
+                  </div>
+                  <div class="stat-mini-progress">
+                    <div class="stat-mini-bar" id="statScoreBar" style="width: 75%; background: linear-gradient(90deg, #10b981, #059669);"></div>
+                  </div>
+                </div>
+                <div class="stat-card-footer">
+                  <span id="statScoreNote">Kinerja Pelayanan Terfilter</span>
+                  <span id="statScoreLevel" style="font-weight: 700; color: #047857;">Grade B</span>
+                </div>
+              </div>
+
+              <!-- Card 5: Jangkauan Spasial GPS & Wilayah -->
+              <div class="gis-stat-card card-geo">
+                <div class="stat-card-header">
+                  <span class="stat-card-title"><i class="fa-solid fa-mountain-city"></i> Jangkauan Wilayah</span>
+                  <div class="stat-card-icon-badge badge-amber-soft"><i class="fa-solid fa-location-crosshairs"></i></div>
+                </div>
+                <div class="stat-card-main">
+                  <div class="stat-card-num">
+                    <span id="statKecCount">0</span>
+                    <small>Kecamatan</small>
+                  </div>
+                  <div style="font-size: 11.5px; color: #475569; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    <i class="fa-solid fa-bullseye" style="color:#f59e0b;"></i> Terbanyak: <strong id="statTopKec">-</strong>
+                  </div>
+                </div>
+                <div class="stat-card-footer">
+                  <span><i class="fa-solid fa-satellite"></i> GPS Presisi: <strong id="statGpsCount">0 Titik</strong></span>
+                  <span id="statCoveragePct" style="color:#b45309; font-weight:700;">-</span>
+                </div>
+              </div>
+
             </div>
 
             <!-- Workspace: Google Maps Canvas + Sidebar -->
@@ -4916,12 +5096,21 @@
             respondentPointsData = res.points;
             $('#gisTotalPointsBadge').text(res.points.length + ' Titik');
 
-            renderRespondentMarkersAndFeed(res.points);
-            updateFocusKecamatanStats(null, res.points);
+            // Cek apakah survei ini merupakan survei multi-instrumen (RTKD)
+            var isMulti = (surveyId == 4) || (res.survei && ((res.survei.TipeSurvei === 'multi') || (res.survei.Judul && res.survei.Judul.toLowerCase().indexOf('rtkd') !== -1)));
+            if (isMulti) {
+              $('#filterGroupInstrumen').show();
+              $('.card-inst').show();
+            }
+
+            // Terapkan filter awal dan perbarui kartu statistik
+            applyGisFilters();
           } else {
+            respondentPointsData = [];
             $feed.html('<div style="text-align: center; padding: 30px; color: #94a3b8;"><i class="fa-solid fa-map-pin" style="font-size: 28px; margin-bottom: 8px; display: block;"></i>Belum ada data titik responden untuk survei ini.</div>');
             $('#gisTotalPointsBadge').text('0 Titik');
             updateFocusKecamatanStats(null, []);
+            updateGisRtkdStatCards([], []);
           }
         },
         error: function() {
@@ -4930,7 +5119,7 @@
       });
     }
 
-    // Render Markers Responden & Daftar Feed Samping
+    // Render Markers Responden & Daftar Feed Samping dengan Tag Instrumen & Gender
     function renderRespondentMarkersAndFeed(points) {
       if (respondentMarkersLayer) {
         respondentMarkersLayer.clearLayers();
@@ -4941,96 +5130,128 @@
       $feed.empty();
 
       if (!points || points.length === 0) {
-        $feed.html('<div style="text-align: center; padding: 30px; color: #94a3b8;"><i class="fa-solid fa-map-pin" style="font-size: 28px; margin-bottom: 8px; display: block;"></i>Belum ada responden pada filter ini.</div>');
+        $feed.html('<div style="text-align: center; padding: 30px; color: #94a3b8;"><i class="fa-solid fa-map-pin" style="font-size: 28px; margin-bottom: 8px; display: block;"></i>Belum ada responden pada filter yang dipilih.</div>');
         return;
       }
 
       var bounds = L.latLngBounds();
 
+      // Mapping label instrumen
+      var instrumenLabels = {
+        'A': 'Instrumen A - Perusahaan / Pemberi Kerja',
+        'B': 'Instrumen B - Pencari Kerja & Lulusan',
+        'C': 'Instrumen C - Pemangku Kepentingan',
+        'D': 'Instrumen D - Siswa Kelas 12',
+        'E': 'Instrumen E - Pakar Isu Strategis (AHP)'
+      };
+
       points.forEach(function(p, idx) {
         var lat = parseFloat(p.lat);
         var lng = parseFloat(p.lng);
-        if (isNaN(lat) || isNaN(lng)) return;
+        var hasCoord = (!isNaN(lat) && !isNaN(lng));
 
-        bounds.extend([lat, lng]);
+        if (hasCoord) {
+          bounds.extend([lat, lng]);
 
-        // Warna pin & badge mutu berdasarkan skor IKM
-        var pinClass = 'pin-green';
-        var mutuClass = 'mutu-b';
-        if (p.skor >= 3.50) {
-          pinClass = 'pin-green';
-          mutuClass = 'mutu-a';
-        } else if (p.skor >= 2.75) {
-          pinClass = 'pin-blue';
-          mutuClass = 'mutu-b';
-        } else if (p.skor >= 2.00) {
-          pinClass = 'pin-yellow';
-          mutuClass = 'mutu-c';
-        } else {
-          pinClass = 'pin-red';
-          mutuClass = 'mutu-d';
+          // Warna pin & badge mutu berdasarkan skor
+          var pinClass = 'pin-green';
+          var mutuClass = 'mutu-b';
+          if (p.skor >= 3.50) {
+            pinClass = 'pin-green';
+            mutuClass = 'mutu-a';
+          } else if (p.skor >= 2.75) {
+            pinClass = 'pin-blue';
+            mutuClass = 'mutu-b';
+          } else if (p.skor >= 2.00) {
+            pinClass = 'pin-yellow';
+            mutuClass = 'mutu-c';
+          } else {
+            pinClass = 'pin-red';
+            mutuClass = 'mutu-d';
+          }
+
+          var instTag = (p.instrumen || 'A').toUpperCase();
+          var customIcon = L.divIcon({
+            className: 'custom-div-icon',
+            html: '<div class="dash-map-pin ' + pinClass + '" title="Instrumen ' + instTag + ' - ' + (p.nama || 'Responden') + '">' +
+                    '<span style="font-size: 9.5px; font-weight: 800;">' + instTag + '</span>' +
+                  '</div>',
+            iconSize: [24, 24],
+            iconAnchor: [12, 12],
+            popupAnchor: [0, -14]
+          });
+
+          var marker = L.marker([lat, lng], { icon: customIcon });
+
+          // Popup Lengkap: Keterangan Sebaran Responden RTKD
+          var dispKec = p.kecamatan || '-';
+          if (dispKec !== '-' && !dispKec.toLowerCase().startsWith('kec')) {
+            dispKec = 'Kec. ' + dispKec;
+          }
+          if (p.kabupaten && p.kabupaten.toLowerCase().indexOf('banyuwangi') === -1) {
+            dispKec += ', ' + p.kabupaten;
+          }
+
+          var instFullLabel = instrumenLabels[instTag] || ('Instrumen ' + instTag);
+          var genderDisp = (p.gender && p.gender !== '-') ? p.gender : 'Tidak Mengisi';
+          var genderIcon = (genderDisp.toLowerCase().indexOf('perempuan') !== -1) ? 'fa-venus' : 'fa-mars';
+          var genderColor = (genderDisp.toLowerCase().indexOf('perempuan') !== -1) ? '#ec4899' : '#0284c7';
+
+          var popupContent = 
+            '<div class="gmap-popup-card">' +
+              '<div class="gmap-popup-header">' +
+                '<div class="gmap-popup-avatar"><i class="fa-solid fa-user-check"></i></div>' +
+                '<div>' +
+                  '<h4 class="gmap-popup-name">' + (p.nama || 'Responden Anonim') + '</h4>' +
+                  '<div class="gmap-popup-time"><i class="fa-regular fa-clock"></i> Submit: ' + (p.time || p.waktuFormatted || p.waktuSubmit || '-') + '</div>' +
+                '</div>' +
+              '</div>' +
+              '<div class="gmap-popup-info-grid">' +
+                '<div class="gmap-popup-info-row">' +
+                  '<span class="gmap-popup-info-lbl"><i class="fa-solid fa-layer-group" style="color: #7c3aed;"></i> Instrumen:</span>' +
+                  '<span class="gmap-popup-info-val"><strong style="color: #043168;">[' + instTag + ']</strong> ' + instFullLabel.replace('Instrumen ' + instTag + ' - ', '') + '</span>' +
+                '</div>' +
+                '<div class="gmap-popup-info-row">' +
+                  '<span class="gmap-popup-info-lbl"><i class="fa-solid ' + genderIcon + '" style="color: ' + genderColor + ';"></i> Gender:</span>' +
+                  '<span class="gmap-popup-info-val">' + genderDisp + (p.usia && p.usia !== '-' ? ' (' + p.usia + ' thn)' : '') + '</span>' +
+                '</div>' +
+                (p.pendidikan && p.pendidikan !== '-' ? 
+                '<div class="gmap-popup-info-row">' +
+                  '<span class="gmap-popup-info-lbl"><i class="fa-solid fa-graduation-cap"></i> Pendidikan:</span>' +
+                  '<span class="gmap-popup-info-val">' + p.pendidikan + '</span>' +
+                '</div>' : '') +
+                '<div class="gmap-popup-info-row">' +
+                  '<span class="gmap-popup-info-lbl"><i class="fa-solid fa-location-dot" style="color: var(--ide-red);"></i> Wilayah:</span>' +
+                  '<span class="gmap-popup-info-val">' + dispKec + (p.desa ? ', Desa ' + p.desa : '') + '</span>' +
+                '</div>' +
+                '<div class="gmap-popup-info-row">' +
+                  '<span class="gmap-popup-info-lbl"><i class="fa-solid fa-crosshairs"></i> Koordinat:</span>' +
+                  '<span class="gmap-popup-info-val">' + lat.toFixed(6) + ', ' + lng.toFixed(6) + '</span>' +
+                '</div>' +
+                '<div class="gmap-popup-info-row">' +
+                  '<span class="gmap-popup-info-lbl"><i class="fa-solid fa-mobile-screen"></i> Perangkat:</span>' +
+                  '<span class="gmap-popup-info-val">' + (p.device || 'Mobile Browser') + '</span>' +
+                '</div>' +
+              '</div>' +
+              '<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">' +
+                '<div>' +
+                  '<span style="font-size: 11px; color: #64748b;">' + ((currentSurveyObj && currentSurveyObj.Jenis === 'IKM') ? 'Skor IKM:' : 'Skor Kuesioner:') + '</span> ' +
+                  '<strong style="font-size: 14px; color: #043168;">' + Number(p.skor || 0).toFixed(2) + '</strong>' +
+                '</div>' +
+                '<span class="gmap-badge-mutu ' + mutuClass + '">' + (p.mutu || 'Baik') + '</span>' +
+              '</div>' +
+              (p.id ? 
+                '<div style="margin-top: 10px; text-align: center;">' +
+                  '<button type="button" class="btn btn-sm btn-outline-primary btn-block" style="border-radius: 8px; font-size: 11.5px; font-weight: 700; padding: 4px 8px;" onclick="viewRespondenDetailAnswers(' + currentSurveyId + ', ' + p.id + ')">' +
+                    '<i class="fa-solid fa-eye"></i> Rincian Jawaban' +
+                  '</button>' +
+                '</div>' : '') +
+            '</div>';
+
+          marker.bindPopup(popupContent, { maxWidth: 300, minWidth: 240 });
+          respondentMarkersLayer.addLayer(marker);
+          markersList.push(marker);
         }
-
-        var customIcon = L.divIcon({
-          className: 'custom-div-icon',
-          html: '<div class="dash-map-pin ' + pinClass + '"><i class="fa-solid fa-user" style="font-size: 9px;"></i></div>',
-          iconSize: [22, 22],
-          iconAnchor: [11, 11],
-          popupAnchor: [0, -12]
-        });
-
-        var marker = L.marker([lat, lng], { icon: customIcon });
-
-        // Popup Lengkap: Keterangan Sebaran Responden
-        var dispKec = p.kecamatan || '-';
-        if (dispKec !== '-' && !dispKec.toLowerCase().startsWith('kec')) {
-          dispKec = 'Kec. ' + dispKec;
-        }
-        if (p.kabupaten && p.kabupaten.toLowerCase().indexOf('banyuwangi') === -1) {
-          dispKec += ', ' + p.kabupaten;
-        }
-
-        var popupContent = 
-          '<div class="gmap-popup-card">' +
-            '<div class="gmap-popup-header">' +
-              '<div class="gmap-popup-avatar"><i class="fa-solid fa-user-check"></i></div>' +
-              '<div>' +
-                '<h4 class="gmap-popup-name">' + (p.nama || 'Responden Anonim') + '</h4>' +
-                '<div class="gmap-popup-time"><i class="fa-regular fa-clock"></i> Submit: ' + (p.time || p.waktuFormatted || p.waktuSubmit || '-') + '</div>' +
-              '</div>' +
-            '</div>' +
-            '<div class="gmap-popup-info-grid">' +
-              '<div class="gmap-popup-info-row">' +
-                '<span class="gmap-popup-info-lbl"><i class="fa-solid fa-location-dot" style="color: var(--ide-red);"></i> Wilayah:</span>' +
-                '<span class="gmap-popup-info-val">' + dispKec + (p.desa ? ', Desa ' + p.desa : '') + '</span>' +
-              '</div>' +
-              '<div class="gmap-popup-info-row">' +
-                '<span class="gmap-popup-info-lbl"><i class="fa-solid fa-crosshairs"></i> Koordinat:</span>' +
-                '<span class="gmap-popup-info-val">' + lat.toFixed(6) + ', ' + lng.toFixed(6) + '</span>' +
-              '</div>' +
-              '<div class="gmap-popup-info-row">' +
-                '<span class="gmap-popup-info-lbl"><i class="fa-solid fa-mobile-screen"></i> Perangkat:</span>' +
-                '<span class="gmap-popup-info-val">' + (p.device || 'Mobile Browser') + '</span>' +
-              '</div>' +
-            '</div>' +
-            '<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">' +
-              '<div>' +
-                '<span style="font-size: 11px; color: #64748b;">' + ((currentSurveyObj && currentSurveyObj.Jenis === 'IKM') ? 'Skor IKM:' : 'Skor:') + '</span> ' +
-                '<strong style="font-size: 14px; color: #043168;">' + Number(p.skor || 0).toFixed(2) + '</strong>' +
-              '</div>' +
-              '<span class="gmap-badge-mutu ' + mutuClass + '">' + (p.mutu || 'Baik') + '</span>' +
-            '</div>' +
-            (p.id ? 
-              '<div style="margin-top: 10px; text-align: center;">' +
-                '<button type="button" class="btn btn-sm btn-outline-primary btn-block" style="border-radius: 8px; font-size: 11.5px; font-weight: 700; padding: 4px 8px;" onclick="viewRespondenDetailAnswers(' + currentSurveyId + ', ' + p.id + ')">' +
-                  '<i class="fa-solid fa-eye"></i> Rincian Jawaban' +
-                '</button>' +
-              '</div>' : '') +
-          '</div>';
-
-        marker.bindPopup(popupContent, { maxWidth: 300, minWidth: 240 });
-        respondentMarkersLayer.addLayer(marker);
-        markersList.push(marker);
 
         // Feed Item Samping
         var feedKec = p.kecamatan || '-';
@@ -5041,14 +5262,27 @@
           feedKec += ', ' + p.kabupaten;
         }
 
+        var fInst = (p.instrumen || 'A').toUpperCase();
+        var fGenderIcon = (p.gender && p.gender.toLowerCase().indexOf('perempuan') !== -1) ? 'fa-venus' : 'fa-mars';
+        var fGenderColor = (p.gender && p.gender.toLowerCase().indexOf('perempuan') !== -1) ? '#ec4899' : '#0284c7';
+        var fClickAction = hasCoord ? ('focusMapPoint(' + lat + ', ' + lng + ', ' + (markersList.length - 1) + ')') : '';
+
         var feedItemHtml = 
-          '<div class="gis-feed-item" id="feedItem_' + idx + '" onclick="focusMapPoint(' + lat + ', ' + lng + ', ' + idx + ')">' +
+          '<div class="gis-feed-item ' + (!hasCoord ? 'no-gps' : '') + '" id="feedItem_' + idx + '" onclick="' + fClickAction + '" style="cursor:' + (hasCoord ? 'pointer' : 'default') + ';">' +
             '<div style="display:flex; justify-content:space-between; align-items:center;">' +
-              '<strong style="font-size: 12.5px; color: #0f172a;">' + (p.nama || 'Responden Anonim') + '</strong>' +
+              '<div style="display:flex; align-items:center; gap:5px; overflow:hidden;">' +
+                '<span class="badge" style="background:#043168; color:#fff; font-size:10px; padding:2px 5px; border-radius:4px; font-weight:800;">' + fInst + '</span>' +
+                '<strong style="font-size: 12.5px; color: #0f172a; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">' + (p.nama || 'Responden Anonim') + '</strong>' +
+              '</div>' +
               '<span style="font-size: 11px; background:#ecfdf5; color:#065f46; font-weight:700; padding:1px 6px; border-radius:6px;">' + Number(p.skor || 0).toFixed(2) + '</span>' +
             '</div>' +
-            '<div style="font-size: 11px; color:#64748b; margin-top: 3px;">' +
-              '<i class="fa-solid fa-location-dot" style="color:var(--ide-red);"></i> ' + feedKec + ' &bull; <i class="fa-regular fa-clock"></i> ' + (p.time ? p.time.substring(0, 16) : '-') +
+            '<div style="font-size: 11px; color:#64748b; margin-top: 4px; display:flex; justify-content:space-between; align-items:center;">' +
+              '<span><i class="fa-solid fa-location-dot" style="color:var(--ide-red);"></i> ' + feedKec + '</span>' +
+              '<span><i class="fa-solid ' + fGenderIcon + '" style="color:' + fGenderColor + '; font-size:10px;"></i> ' + (p.gender || '-') + '</span>' +
+            '</div>' +
+            '<div style="font-size: 10px; color:#94a3b8; margin-top: 2px;">' +
+              '<i class="fa-regular fa-clock"></i> ' + (p.time ? p.time.substring(0, 16) : '-') +
+              (!hasCoord ? ' <span class="badge badge-warning" style="font-size:9px;">Tanpa GPS</span>' : '') +
             '</div>' +
           '</div>';
         $feed.append(feedItemHtml);
@@ -5073,32 +5307,289 @@
       }
     }
 
-    // Filter Peta Berdasarkan Kecamatan
-    function filterMapKecamatan(kecName) {
-      if (!kecName) {
-        $('#focusKecName').text('Kabupaten Banyuwangi');
-        renderRespondentMarkersAndFeed(respondentPointsData);
-        updateFocusKecamatanStats(null, respondentPointsData);
-        if (dashMapInstance) {
-          dashMapInstance.setView([-8.32, 114.25], 10);
+    // =========================================================================
+    // SISTEM FILTER MULTI-DIMENSI REAKTIF (INSTRUMEN, GENDER, KECAMATAN, MUTU)
+    // =========================================================================
+    function applyGisFilters() {
+      if (!respondentPointsData) return;
+
+      var kecFilter = ($('#gisKecamatanFilter').val() || '').trim();
+      var instFilter = ($('#gisInstrumenFilter').val() || '').trim().toUpperCase();
+      var genderFilter = ($('#gisGenderFilter').val() || '').trim();
+      var mutuFilter = ($('#gisMutuFilter').val() || '').trim();
+
+      var filtered = respondentPointsData.filter(function(p) {
+        // Filter Kecamatan
+        if (kecFilter) {
+          var k = (p.kecamatan || '').toLowerCase();
+          if (k !== kecFilter.toLowerCase() && k.indexOf(kecFilter.toLowerCase()) === -1) {
+            return false;
+          }
         }
+        // Filter Instrumen RTKD (A, B, C, D, E)
+        if (instFilter) {
+          var ins = (p.instrumen || 'A').toUpperCase();
+          if (ins !== instFilter) {
+            return false;
+          }
+        }
+        // Filter Jenis Kelamin
+        if (genderFilter) {
+          var g = (p.gender || '').toLowerCase();
+          if (genderFilter === 'Tidak Mengisi') {
+            if (g !== '-' && g !== '' && g !== 'tidak mengisi' && g !== 'lainnya') {
+              return false;
+            }
+          } else {
+            if (g.indexOf(genderFilter.toLowerCase()) === -1) {
+              return false;
+            }
+          }
+        }
+        // Filter Kategori Mutu
+        if (mutuFilter) {
+          var m = (p.mutu || '').toLowerCase();
+          if (m.indexOf(mutuFilter.toLowerCase()) === -1) {
+            return false;
+          }
+        }
+        return true;
+      });
+
+      // Update badge jumlah titik
+      $('#gisTotalPointsBadge').text(filtered.length + ' / ' + respondentPointsData.length + ' Titik');
+
+      // Render marker dan feed responden
+      renderRespondentMarkersAndFeed(filtered);
+
+      // Perbarui panel informasi kecamatan
+      updateFocusKecamatanStats(kecFilter || null, filtered);
+
+      // Perbarui Card Statistik Dinamis RTKD
+      updateGisRtkdStatCards(filtered, respondentPointsData);
+
+      // Perbarui Banner Filter Aktif
+      renderActiveFilterBanner(kecFilter, instFilter, genderFilter, mutuFilter);
+
+      // Respon visual peta (Fly/Zoom ke wilayah atau reset)
+      if (kecFilter && dashMapInstance) {
+        var key = kecFilter.toLowerCase().replace(/[^a-z]/g, '');
+        if (districtCoords[key]) {
+          dashMapInstance.flyTo([districtCoords[key].lat, districtCoords[key].lng], 13);
+        }
+      }
+    }
+
+    // Perbarui Card Statistik Dinamis Sesuai Filter untuk Data Masuk RTKD
+    function updateGisRtkdStatCards(filtered, allPoints) {
+      filtered = filtered || [];
+      allPoints = allPoints || [];
+
+      var totalFiltered = filtered.length;
+      var totalAll = allPoints.length;
+      var pct = totalAll > 0 ? Math.round((totalFiltered / totalAll) * 100) : 0;
+
+      // 1. Card Total Terfilter
+      $('#statFilteredTotal').text(totalFiltered);
+      $('#statAllTotal').text(totalAll);
+      $('#statFilteredBar').css('width', (totalFiltered > 0 ? pct : 0) + '%');
+      $('#statFilteredPct').html('<i class="fa-solid fa-chart-pie"></i> ' + pct + '% dari total seluruh data');
+
+      var gpsCount = filtered.filter(function(p) { return p.lat && p.lng; }).length;
+      var gpsPct = totalFiltered > 0 ? Math.round((gpsCount / totalFiltered) * 100) : 0;
+      $('#statGpsPctBadge').text('GPS: ' + gpsPct + '% (' + gpsCount + ')');
+
+      // 2. Card Komposisi Instrumen RTKD (A, B, C, D, E)
+      var instCounts = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+      filtered.forEach(function(p) {
+        var ins = (p.instrumen || 'A').toUpperCase();
+        if (instCounts[ins] !== undefined) {
+          instCounts[ins]++;
+        } else {
+          instCounts[ins] = 1;
+        }
+      });
+
+      $('#statInstCountA').text(instCounts.A || 0);
+      $('#statInstCountB').text(instCounts.B || 0);
+      $('#statInstCountC').text(instCounts.C || 0);
+      $('#statInstCountD').text(instCounts.D || 0);
+      $('#statInstCountE').text(instCounts.E || 0);
+
+      // Tandai chip aktif jika ada filter instrumen
+      var curInst = ($('#gisInstrumenFilter').val() || '').toUpperCase();
+      $('.inst-mini-chip').removeClass('active');
+      if (curInst && $('#chipInst' + curInst).length) {
+        $('#chipInst' + curInst).addClass('active');
+      }
+
+      // 3. Card Komposisi Jenis Kelamin
+      var maleCount = 0;
+      var femaleCount = 0;
+      var otherCount = 0;
+
+      filtered.forEach(function(p) {
+        var g = (p.gender || '').toLowerCase();
+        if (g.indexOf('laki') !== -1) {
+          maleCount++;
+        } else if (g.indexOf('perempuan') !== -1) {
+          femaleCount++;
+        } else {
+          otherCount++;
+        }
+      });
+
+      var pMale = totalFiltered > 0 ? Math.round((maleCount / totalFiltered) * 100) : 0;
+      var pFemale = totalFiltered > 0 ? Math.round((femaleCount / totalFiltered) * 100) : 0;
+      var pOther = totalFiltered > 0 ? (100 - pMale - pFemale) : 0;
+      if (pOther < 0) pOther = 0;
+
+      $('#statGenderMaleCount').text(maleCount);
+      $('#statGenderMalePct').text('(' + pMale + '%)');
+      $('#statGenderFemaleCount').text(femaleCount);
+      $('#statGenderFemalePct').text('(' + pFemale + '%)');
+
+      $('#genderSegMale').css('width', pMale + '%');
+      $('#genderSegFemale').css('width', pFemale + '%');
+      $('#genderSegOther').css('width', pOther + '%');
+      $('#statGenderOtherCount').text('Lainnya/Kosong: ' + otherCount);
+
+      // 4. Card Rata-Rata Skor & Predikat Mutu
+      var sumScore = 0;
+      filtered.forEach(function(p) {
+        sumScore += parseFloat(p.skor || 0);
+      });
+      var avgScore = totalFiltered > 0 ? (sumScore / totalFiltered).toFixed(2) : '0.00';
+      $('#statAvgScore').text(avgScore);
+
+      var scoreBarPct = Math.min(100, Math.round((parseFloat(avgScore) / 4.0) * 100));
+      $('#statScoreBar').css('width', scoreBarPct + '%');
+
+      var mutuText = 'Baik (B)';
+      var gradeText = 'Grade B';
+      var mutuColor = '#059669';
+      var mutuBg = '#ecfdf5';
+
+      if (avgScore >= 3.50) {
+        mutuText = 'Sangat Baik (A)';
+        gradeText = 'Grade A (Sangat Baik)';
+        mutuColor = '#047857';
+        mutuBg = '#dcfce7';
+      } else if (avgScore >= 2.75) {
+        mutuText = 'Baik (B)';
+        gradeText = 'Grade B (Baik)';
+        mutuColor = '#0284c7';
+        mutuBg = '#e0f2fe';
+      } else if (avgScore >= 2.00) {
+        mutuText = 'Kurang Baik (C)';
+        gradeText = 'Grade C (Cukup)';
+        mutuColor = '#d97706';
+        mutuBg = '#fef3c7';
+      } else if (totalFiltered > 0) {
+        mutuText = 'Tidak Baik (D)';
+        gradeText = 'Grade D (Rendah)';
+        mutuColor = '#dc2626';
+        mutuBg = '#fee2e2';
+      } else {
+        mutuText = '-';
+        gradeText = '-';
+        mutuColor = '#64748b';
+        mutuBg = '#f1f5f9';
+      }
+
+      $('#statMutuBadge').text(mutuText).css({ color: mutuColor, background: mutuBg });
+      $('#statScoreLevel').text(gradeText).css('color', mutuColor);
+
+      // 5. Card Jangkauan Spasial GPS & Wilayah
+      var kecMap = {};
+      filtered.forEach(function(p) {
+        if (p.kecamatan && p.kecamatan.trim() !== '' && p.kecamatan !== '-') {
+          var k = p.kecamatan.trim();
+          kecMap[k] = (kecMap[k] || 0) + 1;
+        }
+      });
+
+      var kecCount = Object.keys(kecMap).length;
+      $('#statKecCount').text(kecCount);
+
+      var topKec = '-';
+      var maxK = 0;
+      for (var kName in kecMap) {
+        if (kecMap[kName] > maxK) {
+          maxK = kecMap[kName];
+          topKec = kName + ' (' + maxK + ')';
+        }
+      }
+      $('#statTopKec').text(topKec);
+      $('#statGpsCount').text(gpsCount + ' Titik');
+
+      var covPct = Math.round((kecCount / 25) * 100);
+      $('#statCoveragePct').text(covPct + '% Wilayah');
+    }
+
+    // Render Banner Tag Filter Aktif
+    function renderActiveFilterBanner(kec, inst, gender, mutu) {
+      var hasFilter = !!(kec || inst || gender || mutu);
+      var $banner = $('#gisActiveFilterBanner');
+      var $pills = $('#gisActivePillsContainer');
+      $pills.empty();
+
+      if (!hasFilter) {
+        $banner.hide();
         return;
       }
 
-      $('#focusKecName').text('Kecamatan ' + kecName);
-
-      var filtered = respondentPointsData.filter(function(p) {
-        var k = (p.kecamatan || '').toLowerCase();
-        return k === kecName.toLowerCase() || k.indexOf(kecName.toLowerCase()) !== -1;
-      });
-
-      renderRespondentMarkersAndFeed(filtered);
-      updateFocusKecamatanStats(kecName, filtered);
-
-      var key = kecName.toLowerCase().replace(/[^a-z]/g, '');
-      if (districtCoords[key] && dashMapInstance) {
-        dashMapInstance.flyTo([districtCoords[key].lat, districtCoords[key].lng], 13);
+      if (inst) {
+        $pills.append('<span class="active-filter-pill"><i class="fa-solid fa-layer-group"></i> Instrumen ' + inst + ' <span class="remove-pill" onclick="quickFilterInstrumen(\'\')">&times;</span></span>');
       }
+      if (gender) {
+        $pills.append('<span class="active-filter-pill"><i class="fa-solid fa-venus-mars"></i> ' + gender + ' <span class="remove-pill" onclick="quickFilterGender(\'\')">&times;</span></span>');
+      }
+      if (kec) {
+        $pills.append('<span class="active-filter-pill"><i class="fa-solid fa-location-dot"></i> Kec. ' + kec + ' <span class="remove-pill" onclick="$(\'#gisKecamatanFilter\').val(\'\'); applyGisFilters();">&times;</span></span>');
+      }
+      if (mutu) {
+        $pills.append('<span class="active-filter-pill"><i class="fa-solid fa-award"></i> ' + mutu + ' <span class="remove-pill" onclick="$(\'#gisMutuFilter\').val(\'\'); applyGisFilters();">&times;</span></span>');
+      }
+
+      $banner.show();
+    }
+
+    // Quick Filter Helper untuk Instrumen
+    window.quickFilterInstrumen = function(inst) {
+      var cur = ($('#gisInstrumenFilter').val() || '').toUpperCase();
+      if (cur === inst) {
+        $('#gisInstrumenFilter').val('');
+      } else {
+        $('#gisInstrumenFilter').val(inst);
+      }
+      applyGisFilters();
+    };
+
+    // Quick Filter Helper untuk Gender
+    window.quickFilterGender = function(g) {
+      var cur = $('#gisGenderFilter').val();
+      if (cur === g) {
+        $('#gisGenderFilter').val('');
+      } else {
+        $('#gisGenderFilter').val(g);
+      }
+      applyGisFilters();
+    };
+
+    // Reset Semua Filter
+    window.resetGisFilters = function() {
+      $('#gisKecamatanFilter').val('');
+      $('#gisInstrumenFilter').val('');
+      $('#gisGenderFilter').val('');
+      $('#gisMutuFilter').val('');
+      applyGisFilters();
+    };
+
+    // Filter Peta Berdasarkan Kecamatan (Kompatibilitas poligon klik)
+    function filterMapKecamatan(kecName) {
+      $('#gisKecamatanFilter').val(kecName || '');
+      applyGisFilters();
     }
 
     // Hitung ringkasan statistik wilayah fokus
@@ -5121,6 +5612,7 @@
         else mutu = 'Tidak Baik (D)';
       }
 
+      $('#focusKecName').text(kecName ? ('Kecamatan ' + kecName) : 'Kabupaten Banyuwangi');
       $('#focusKecTotal').text(total);
       $('#focusKecSkor').text(avg);
       $('#focusKecMutu').text(mutu);

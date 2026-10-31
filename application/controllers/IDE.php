@@ -3849,9 +3849,14 @@ public function InputIKMYogyakarta()
       $pt = array(
         'id'             => (int)$r['Id'],
         'nama'           => $r['RespondenNama'] ?: 'Anonim',
-        'gender'         => $r['RespondenGender'] ?: '-',
+        'instrumen'      => !empty($r['Instrumen']) ? strtoupper(trim($r['Instrumen'])) : 'A',
+        'gender'         => $r['RespondenGender'] ?: 'Tidak Mengisi',
         'usia'           => $r['RespondenUsia'] ?: '-',
+        'pendidikan'     => $r['RespondenPendidikan'] ?: '-',
         'pekerjaan'      => $r['RespondenPekerjaan'] ?: '-',
+        'nik'            => !empty($r['RespondenNIK']) ? $r['RespondenNIK'] : '',
+        'kontak'         => !empty($r['RespondenKontak']) ? $r['RespondenKontak'] : '',
+        'foto'           => !empty($r['FotoDokumentasi']) ? $r['FotoDokumentasi'] : '',
         'kabupaten'      => $r['Kabupaten'] ?: '',
         'kecamatan'      => $r['Kecamatan'] ?: '',
         'desa'           => $r['Desa'] ?: '',
@@ -3886,7 +3891,7 @@ public function InputIKMYogyakarta()
     }
 
     // Ambil daftar seluruh survei dinamis untuk filter/switcher
-    $surveiList = $this->db->select('Id, Judul, Lembaga, Jenis, Tahun, DaerahSurvei')->order_by('Id', 'DESC')->get('survei_dinamis')->result_array();
+    $surveiList = $this->db->select('Id, Judul, Lembaga, Jenis, Tahun, DaerahSurvei, TipeSurvei, InstrumenList')->order_by('Id', 'DESC')->get('survei_dinamis')->result_array();
 
     echo json_encode(array(
       'status'           => true,

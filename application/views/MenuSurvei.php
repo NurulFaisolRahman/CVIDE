@@ -6757,35 +6757,132 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
       </div>
 
       <!-- KPI Metrics Infografis Row -->
-      <div class="geo-kpi-grid">
-        <div class="geo-kpi-card">
-          <div class="geo-kpi-icon" style="background: #eff6ff; color: #2563eb;"><i class="fa-solid fa-map-pin"></i></div>
-          <div class="geo-kpi-data">
-            <span class="geo-kpi-val" id="geoKpiTotal">0</span>
-            <span class="geo-kpi-lbl">Titik Terpetakan (GPS)</span>
+      <!-- Card Statistik Dinamis Sesuai Filter untuk Data Masuk RTKD -->
+      <div class="gis-stat-cards-wrapper" id="geoStatCardsWrapper" style="border-radius: 14px; margin-bottom: 16px;">
+        
+        <!-- Card 1: Total Data Masuk Terfilter -->
+        <div class="gis-stat-card card-total">
+          <div class="stat-card-header">
+            <span class="stat-card-title"><i class="fa-solid fa-users-viewfinder"></i> Data Masuk Terfilter</span>
+            <div class="stat-card-icon-badge badge-blue-soft"><i class="fa-solid fa-database"></i></div>
+          </div>
+          <div class="stat-card-main">
+            <div class="stat-card-num">
+              <span id="geoKpiTotal">0</span>
+              <small>/ <span id="geoKpiAllTotal">0</span> Total</small>
+            </div>
+            <div class="stat-mini-progress">
+              <div class="stat-mini-bar" id="geoFilteredBar" style="width: 100%; background: linear-gradient(90deg, #043168, #2563eb);"></div>
+            </div>
+          </div>
+          <div class="stat-card-footer">
+            <span id="geoFilteredPct"><i class="fa-solid fa-chart-pie"></i> 100% dari total populasi</span>
+            <span id="geoGpsPctBadge" class="badge" style="background:#eff6ff; color:#1d4ed8; font-size:10px;">GPS: 100%</span>
           </div>
         </div>
-        <div class="geo-kpi-card">
-          <div class="geo-kpi-icon" style="background: #f0fdf4; color: #16a34a;"><i class="fa-solid fa-mountain-city"></i></div>
-          <div class="geo-kpi-data">
-            <span class="geo-kpi-val" id="geoKpiKecamatan">0</span>
-            <span class="geo-kpi-lbl">Kecamatan Terjangkau</span>
+
+        <!-- Card 2: Pengelompokan Instrumen RTKD -->
+        <div class="gis-stat-card card-inst" id="geoCardInst">
+          <div class="stat-card-header">
+            <span class="stat-card-title"><i class="fa-solid fa-layer-group"></i> Kelompok Instrumen RTKD</span>
+            <div class="stat-card-icon-badge badge-purple-soft"><i class="fa-solid fa-sliders"></i></div>
+          </div>
+          <div class="stat-card-main">
+            <div class="inst-chips-list" id="geoInstChipsList">
+              <span class="inst-mini-chip chip-tag-a" id="geoChipInstA" onclick="quickFilterMenuSurveiInst('A')" title="Filter Instrumen A">
+                <span class="chip-badge">A</span> Perusahaan: <b id="geoInstCountA">0</b>
+              </span>
+              <span class="inst-mini-chip chip-tag-b" id="geoChipInstB" onclick="quickFilterMenuSurveiInst('B')" title="Filter Instrumen B">
+                <span class="chip-badge">B</span> Naker: <b id="geoInstCountB">0</b>
+              </span>
+              <span class="inst-mini-chip chip-tag-c" id="geoChipInstC" onclick="quickFilterMenuSurveiInst('C')" title="Filter Instrumen C">
+                <span class="chip-badge">C</span> Stakeholder: <b id="geoInstCountC">0</b>
+              </span>
+              <span class="inst-mini-chip chip-tag-d" id="geoChipInstD" onclick="quickFilterMenuSurveiInst('D')" title="Filter Instrumen D">
+                <span class="chip-badge">D</span> Siswa: <b id="geoInstCountD">0</b>
+              </span>
+              <span class="inst-mini-chip chip-tag-e" id="geoChipInstE" onclick="quickFilterMenuSurveiInst('E')" title="Filter Instrumen E">
+                <span class="chip-badge">E</span> AHP: <b id="geoInstCountE">0</b>
+              </span>
+            </div>
+          </div>
+          <div class="stat-card-footer">
+            <span style="font-size: 10.5px; color: #7c3aed;"><i class="fa-regular fa-hand-pointer"></i> Klik chip untuk filter instrumen</span>
           </div>
         </div>
-        <div class="geo-kpi-card">
-          <div class="geo-kpi-icon" style="background: #fefce8; color: #ca8a04;"><i class="fa-solid fa-star"></i></div>
-          <div class="geo-kpi-data">
-            <span class="geo-kpi-val" id="geoKpiSkor">0.00</span>
-            <span class="geo-kpi-lbl" id="geoKpiMutu">Rata-Rata Kepuasan</span>
+
+        <!-- Card 3: Komposisi Jenis Kelamin -->
+        <div class="gis-stat-card card-gender">
+          <div class="stat-card-header">
+            <span class="stat-card-title"><i class="fa-solid fa-venus-mars"></i> Komposisi Gender</span>
+            <div class="stat-card-icon-badge badge-pink-soft"><i class="fa-solid fa-user-group"></i></div>
+          </div>
+          <div class="stat-card-main">
+            <div class="gender-dual-row">
+              <span class="male-val" onclick="quickFilterMenuSurveiGender('Laki-laki')" style="cursor:pointer;" title="Filter Laki-laki">
+                <i class="fa-solid fa-mars"></i> Laki-laki: <b id="geoGenderMaleCount">0</b> <small id="geoGenderMalePct">(0%)</small>
+              </span>
+              <span class="female-val" onclick="quickFilterMenuSurveiGender('Perempuan')" style="cursor:pointer;" title="Filter Perempuan">
+                <i class="fa-solid fa-venus"></i> Perempuan: <b id="geoGenderFemaleCount">0</b> <small id="geoGenderFemalePct">(0%)</small>
+              </span>
+            </div>
+            <div class="gender-split-bar">
+              <div class="gender-seg-male" id="geoGenderSegMale" style="width: 50%;"></div>
+              <div class="gender-seg-female" id="geoGenderSegFemale" style="width: 50%;"></div>
+              <div class="gender-seg-other" id="geoGenderSegOther" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="stat-card-footer">
+            <span id="geoGenderNote">Rasio Gender Terfilter</span>
+            <span id="geoGenderOtherCount" style="color: #94a3b8; font-size: 10px;">Lainnya: 0</span>
           </div>
         </div>
-        <div class="geo-kpi-card">
-          <div class="geo-kpi-icon" style="background: #faf5ff; color: #9333ea;"><i class="fa-solid fa-mobile-screen-button"></i></div>
-          <div class="geo-kpi-data">
-            <span class="geo-kpi-val" id="geoKpiDevice">-</span>
-            <span class="geo-kpi-lbl">Perangkat Dominan</span>
+
+        <!-- Card 4: Rata-Rata Skor & Predikat Mutu -->
+        <div class="gis-stat-card card-mutu">
+          <div class="stat-card-header">
+            <span class="stat-card-title"><i class="fa-solid fa-award"></i> Rata-Rata Skor Mutu</span>
+            <div class="stat-card-icon-badge badge-emerald-soft"><i class="fa-solid fa-star"></i></div>
+          </div>
+          <div class="stat-card-main">
+            <div style="display:flex; justify-content:space-between; align-items:baseline;">
+              <div class="stat-card-num">
+                <span id="geoKpiSkor" style="color: #059669;">0.00</span>
+                <small>/ 4.00</small>
+              </div>
+              <span class="badge" id="geoKpiMutuBadge" style="background:#ecfdf5; color:#059669; font-size:11px; font-weight:700; padding:4px 8px; border-radius:6px;">Baik (B)</span>
+            </div>
+            <div class="stat-mini-progress">
+              <div class="stat-mini-bar" id="geoScoreBar" style="width: 75%; background: linear-gradient(90deg, #10b981, #059669);"></div>
+            </div>
+          </div>
+          <div class="stat-card-footer">
+            <span id="geoKpiMutu">Kinerja Pelayanan Terfilter</span>
+            <span id="geoScoreLevel" style="font-weight: 700; color: #047857;">Grade B</span>
           </div>
         </div>
+
+        <!-- Card 5: Jangkauan Spasial GPS & Wilayah -->
+        <div class="gis-stat-card card-geo">
+          <div class="stat-card-header">
+            <span class="stat-card-title"><i class="fa-solid fa-mountain-city"></i> Jangkauan Wilayah</span>
+            <div class="stat-card-icon-badge badge-amber-soft"><i class="fa-solid fa-location-crosshairs"></i></div>
+          </div>
+          <div class="stat-card-main">
+            <div class="stat-card-num">
+              <span id="geoKpiKecamatan">0</span>
+              <small>Kecamatan</small>
+            </div>
+            <div style="font-size: 11.5px; color: #475569; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              <i class="fa-solid fa-bullseye" style="color:#f59e0b;"></i> Terbanyak: <strong id="geoTopKec">-</strong>
+            </div>
+          </div>
+          <div class="stat-card-footer">
+            <span><i class="fa-solid fa-satellite"></i> GPS Presisi: <strong id="geoGpsCount">0 Titik</strong></span>
+            <span id="geoCoveragePct" style="color:#b45309; font-weight:700;">-</span>
+          </div>
+        </div>
+
       </div>
 
       <!-- Main GIS Canvas Row (Map + Sidebar) -->
@@ -6795,22 +6892,47 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
         <div class="geo-map-wrapper">
           
           <!-- Map Controls / Filter Bar -->
-          <div class="geo-map-toolbar">
+          <div class="geo-map-toolbar" style="flex-wrap: wrap; gap: 8px;">
+            <div class="geo-filter-item" id="geoFilterItemInstrumen">
+              <label for="geoInstrumenFilter"><i class="fa-solid fa-layer-group" style="color: #7c3aed;"></i> Instrumen:</label>
+              <select id="geoInstrumenFilter" class="geo-toolbar-select" onchange="applyMenuSurveiGeoFilters()">
+                <option value="">Semua Instrumen RTKD</option>
+                <option value="A">Instrumen A - Perusahaan / Pemberi Kerja</option>
+                <option value="B">Instrumen B - Pencari Kerja &amp; Lulusan</option>
+                <option value="C">Instrumen C - Pemangku Kepentingan</option>
+                <option value="D">Instrumen D - Siswa Kelas 12</option>
+                <option value="E">Instrumen E - Pakar Isu Strategis (AHP)</option>
+              </select>
+            </div>
+
             <div class="geo-filter-item">
-              <label for="geoKecamatanFilter"><i class="fa-solid fa-filter"></i> Filter Kecamatan:</label>
-              <select id="geoKecamatanFilter" class="geo-toolbar-select" onchange="filterMapKecamatan(this.value)">
+              <label for="geoGenderFilter"><i class="fa-solid fa-venus-mars" style="color: #0284c7;"></i> Gender:</label>
+              <select id="geoGenderFilter" class="geo-toolbar-select" onchange="applyMenuSurveiGeoFilters()">
+                <option value="">Semua Gender</option>
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+                <option value="Tidak Mengisi">Lainnya / Tidak Mengisi</option>
+              </select>
+            </div>
+
+            <div class="geo-filter-item">
+              <label for="geoKecamatanFilter"><i class="fa-solid fa-filter" style="color: #16a34a;"></i> Wilayah:</label>
+              <select id="geoKecamatanFilter" class="geo-toolbar-select" onchange="applyMenuSurveiGeoFilters()">
                 <option value="">Semua Wilayah Kecamatan</option>
               </select>
             </div>
+
             <div class="geo-filter-item">
-              <label for="geoMutuFilter"><i class="fa-solid fa-award"></i> Filter Mutu:</label>
-              <select id="geoMutuFilter" class="geo-toolbar-select" onchange="filterMapMutu(this.value)">
+              <label for="geoMutuFilter"><i class="fa-solid fa-award" style="color: #d97706;"></i> Mutu:</label>
+              <select id="geoMutuFilter" class="geo-toolbar-select" onchange="applyMenuSurveiGeoFilters()">
                 <option value="">Semua Mutu Pelayanan</option>
                 <option value="Sangat Baik">Sangat Baik (A)</option>
                 <option value="Baik">Baik (B)</option>
                 <option value="Kurang">Kurang Baik (C)</option>
+                <option value="Tidak">Tidak Baik (D)</option>
               </select>
             </div>
+
             <div class="geo-layer-toggles">
               <label class="geo-chk-lbl">
                 <input type="checkbox" id="togglePolygonsChk" checked onchange="toggleKecamatanPolygons(this.checked)">
@@ -6821,8 +6943,20 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
                 <span>Titik Responden</span>
               </label>
             </div>
+
+            <button type="button" class="btn-geo-reset-view" onclick="resetMenuSurveiFilters()" title="Reset Semua Filter">
+              <i class="fa-solid fa-filter-circle-xmark"></i> Reset Filter
+            </button>
             <button type="button" class="btn-geo-reset-view" onclick="resetMapToBanyuwangi()" title="Pusatkan Peta ke Banyuwangi">
               <i class="fa-solid fa-expand"></i> Reset View
+            </button>
+          </div>
+
+          <!-- Active Filter Banner Feedback -->
+          <div class="gis-active-filter-banner" id="geoActiveFilterBanner" style="display: none;">
+            <span style="font-weight: 700;"><i class="fa-solid fa-filter"></i> Filter Aktif:</span>
+            <div id="geoActivePillsContainer" style="display: inline-flex; gap: 6px; flex-wrap: wrap;"></div>
+          </div>
             </button>
           </div>
 
@@ -10406,10 +10540,8 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
               });
             });
 
-            // Render Titik Markers Responden & Feed
-            renderRespondentMarkers(allGeoPoints);
-            renderSidebarFeed(allGeoPoints);
-            updateFocusKecamatanCard(null);
+            // Terapkan filter awal dan perbarui kartu statistik RTKD
+            applyMenuSurveiGeoFilters();
 
             // Invalidate Map Size agar Leaflet menghitung ukuran container setelah tab tampil
             setTimeout(function() {
@@ -10606,14 +10738,35 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
       });
     }
 
-    // Filter Peta Berdasarkan Kecamatan
-    window.filterMapKecamatan = function(kecName) {
-      var filtered = allGeoPoints;
-      var curMutu = $('#geoMutuFilter').val();
+    // =========================================================================
+    // SISTEM FILTER MULTI-DIMENSI & PERHITUNGAN CARD STATISTIK RTKD (MENUSURVEI)
+    // =========================================================================
+    window.applyMenuSurveiGeoFilters = function() {
+      var filtered = allGeoPoints || [];
+      var kecName = ($('#geoKecamatanFilter').val() || '').trim();
+      var instFilter = ($('#geoInstrumenFilter').val() || '').trim().toUpperCase();
+      var genderFilter = ($('#geoGenderFilter').val() || '').trim();
+      var curMutu = ($('#geoMutuFilter').val() || '').trim();
 
       if (kecName) {
         filtered = filtered.filter(function(p) {
           return (p.kecamatan && p.kecamatan.toLowerCase() === kecName.toLowerCase());
+        });
+      }
+      if (instFilter) {
+        filtered = filtered.filter(function(p) {
+          var ins = (p.instrumen || 'A').toUpperCase();
+          return ins === instFilter;
+        });
+      }
+      if (genderFilter) {
+        filtered = filtered.filter(function(p) {
+          var g = (p.gender || '').toLowerCase();
+          if (genderFilter === 'Tidak Mengisi') {
+            return (g === '-' || g === '' || g === 'tidak mengisi' || g === 'lainnya');
+          } else {
+            return g.indexOf(genderFilter.toLowerCase()) !== -1;
+          }
         });
       }
       if (curMutu) {
@@ -10625,8 +10778,10 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
       renderRespondentMarkers(filtered);
       renderSidebarFeed(filtered);
       updateFocusKecamatanCard(kecName);
+      updateMenuSurveiRtkdStatCards(filtered, allGeoPoints);
+      renderMenuSurveiActiveBanner(kecName, instFilter, genderFilter, curMutu);
 
-      // Reset and highlight polygon
+      // Polygon highlight
       var kecKey = kecName ? kecName.toLowerCase() : '';
       for (var k in polygonLayersMap) {
         if (kecKey && k === kecKey) {
@@ -10643,10 +10798,221 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
       }
     };
 
+    // Perbarui Card Statistik Dinamis Sesuai Filter untuk Data Masuk RTKD (MenuSurvei)
+    function updateMenuSurveiRtkdStatCards(filtered, allPoints) {
+      filtered = filtered || [];
+      allPoints = allPoints || [];
+
+      var totalFiltered = filtered.length;
+      var totalAll = allPoints.length;
+      var pct = totalAll > 0 ? Math.round((totalFiltered / totalAll) * 100) : 0;
+
+      // 1. Total Terfilter
+      $('#geoKpiTotal').text(totalFiltered);
+      $('#geoKpiAllTotal').text(totalAll);
+      $('#geoFilteredBar').css('width', (totalFiltered > 0 ? pct : 0) + '%');
+      $('#geoFilteredPct').html('<i class="fa-solid fa-chart-pie"></i> ' + pct + '% dari total seluruh data');
+
+      var gpsCount = filtered.filter(function(p) { return p.lat && p.lng; }).length;
+      var gpsPct = totalFiltered > 0 ? Math.round((gpsCount / totalFiltered) * 100) : 0;
+      $('#geoGpsPctBadge').text('GPS: ' + gpsPct + '% (' + gpsCount + ')');
+
+      // 2. Kelompok Instrumen RTKD
+      var instCounts = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+      filtered.forEach(function(p) {
+        var ins = (p.instrumen || 'A').toUpperCase();
+        if (instCounts[ins] !== undefined) {
+          instCounts[ins]++;
+        } else {
+          instCounts[ins] = 1;
+        }
+      });
+
+      $('#geoInstCountA').text(instCounts.A || 0);
+      $('#geoInstCountB').text(instCounts.B || 0);
+      $('#geoInstCountC').text(instCounts.C || 0);
+      $('#geoInstCountD').text(instCounts.D || 0);
+      $('#geoInstCountE').text(instCounts.E || 0);
+
+      var curInst = ($('#geoInstrumenFilter').val() || '').toUpperCase();
+      $('.inst-mini-chip').removeClass('active');
+      if (curInst && $('#geoChipInst' + curInst).length) {
+        $('#geoChipInst' + curInst).addClass('active');
+      }
+
+      // 3. Komposisi Jenis Kelamin
+      var maleCount = 0;
+      var femaleCount = 0;
+      var otherCount = 0;
+
+      filtered.forEach(function(p) {
+        var g = (p.gender || '').toLowerCase();
+        if (g.indexOf('laki') !== -1) {
+          maleCount++;
+        } else if (g.indexOf('perempuan') !== -1) {
+          femaleCount++;
+        } else {
+          otherCount++;
+        }
+      });
+
+      var pMale = totalFiltered > 0 ? Math.round((maleCount / totalFiltered) * 100) : 0;
+      var pFemale = totalFiltered > 0 ? Math.round((femaleCount / totalFiltered) * 100) : 0;
+      var pOther = totalFiltered > 0 ? (100 - pMale - pFemale) : 0;
+      if (pOther < 0) pOther = 0;
+
+      $('#geoGenderMaleCount').text(maleCount);
+      $('#geoGenderMalePct').text('(' + pMale + '%)');
+      $('#geoGenderFemaleCount').text(femaleCount);
+      $('#geoGenderFemalePct').text('(' + pFemale + '%)');
+
+      $('#geoGenderSegMale').css('width', pMale + '%');
+      $('#geoGenderSegFemale').css('width', pFemale + '%');
+      $('#geoGenderSegOther').css('width', pOther + '%');
+      $('#geoGenderOtherCount').text('Lainnya/Kosong: ' + otherCount);
+
+      // 4. Rata-Rata Skor & Predikat Mutu
+      var sumScore = 0;
+      filtered.forEach(function(p) {
+        sumScore += parseFloat(p.skor || 0);
+      });
+      var avgScore = totalFiltered > 0 ? (sumScore / totalFiltered).toFixed(2) : '0.00';
+      $('#geoKpiSkor').text(avgScore);
+
+      var scoreBarPct = Math.min(100, Math.round((parseFloat(avgScore) / 4.0) * 100));
+      $('#geoScoreBar').css('width', scoreBarPct + '%');
+
+      var mutuText = 'Baik (B)';
+      var gradeText = 'Grade B';
+      var mutuColor = '#059669';
+      var mutuBg = '#ecfdf5';
+
+      if (avgScore >= 3.50) {
+        mutuText = 'Sangat Baik (A)';
+        gradeText = 'Grade A (Sangat Baik)';
+        mutuColor = '#047857';
+        mutuBg = '#dcfce7';
+      } else if (avgScore >= 2.75) {
+        mutuText = 'Baik (B)';
+        gradeText = 'Grade B (Baik)';
+        mutuColor = '#0284c7';
+        mutuBg = '#e0f2fe';
+      } else if (avgScore >= 2.00) {
+        mutuText = 'Kurang Baik (C)';
+        gradeText = 'Grade C (Cukup)';
+        mutuColor = '#d97706';
+        mutuBg = '#fef3c7';
+      } else if (totalFiltered > 0) {
+        mutuText = 'Tidak Baik (D)';
+        gradeText = 'Grade D (Rendah)';
+        mutuColor = '#dc2626';
+        mutuBg = '#fee2e2';
+      } else {
+        mutuText = '-';
+        gradeText = '-';
+        mutuColor = '#64748b';
+        mutuBg = '#f1f5f9';
+      }
+
+      $('#geoKpiMutuBadge').text(mutuText).css({ color: mutuColor, background: mutuBg });
+      $('#geoScoreLevel').text(gradeText).css('color', mutuColor);
+
+      // 5. Jangkauan Spasial GPS & Wilayah
+      var kecMap = {};
+      filtered.forEach(function(p) {
+        if (p.kecamatan && p.kecamatan.trim() !== '' && p.kecamatan !== '-') {
+          var k = p.kecamatan.trim();
+          kecMap[k] = (kecMap[k] || 0) + 1;
+        }
+      });
+
+      var kecCount = Object.keys(kecMap).length;
+      $('#geoKpiKecamatan').text(kecCount);
+
+      var topKec = '-';
+      var maxK = 0;
+      for (var kName in kecMap) {
+        if (kecMap[kName] > maxK) {
+          maxK = kecMap[kName];
+          topKec = kName + ' (' + maxK + ')';
+        }
+      }
+      $('#geoTopKec').text(topKec);
+      $('#geoGpsCount').text(gpsCount + ' Titik');
+
+      var covPct = Math.round((kecCount / 25) * 100);
+      $('#geoCoveragePct').text(covPct + '% Wilayah');
+    }
+
+    // Render Banner Tag Filter Aktif (MenuSurvei)
+    function renderMenuSurveiActiveBanner(kec, inst, gender, mutu) {
+      var hasFilter = !!(kec || inst || gender || mutu);
+      var $banner = $('#geoActiveFilterBanner');
+      var $pills = $('#geoActivePillsContainer');
+      $pills.empty();
+
+      if (!hasFilter) {
+        $banner.hide();
+        return;
+      }
+
+      if (inst) {
+        $pills.append('<span class="active-filter-pill"><i class="fa-solid fa-layer-group"></i> Instrumen ' + inst + ' <span class="remove-pill" onclick="quickFilterMenuSurveiInst(\'\')">&times;</span></span>');
+      }
+      if (gender) {
+        $pills.append('<span class="active-filter-pill"><i class="fa-solid fa-venus-mars"></i> ' + gender + ' <span class="remove-pill" onclick="quickFilterMenuSurveiGender(\'\')">&times;</span></span>');
+      }
+      if (kec) {
+        $pills.append('<span class="active-filter-pill"><i class="fa-solid fa-location-dot"></i> Kec. ' + kec + ' <span class="remove-pill" onclick="$(\'#geoKecamatanFilter\').val(\'\'); applyMenuSurveiGeoFilters();">&times;</span></span>');
+      }
+      if (mutu) {
+        $pills.append('<span class="active-filter-pill"><i class="fa-solid fa-award"></i> ' + mutu + ' <span class="remove-pill" onclick="$(\'#geoMutuFilter\').val(\'\'); applyMenuSurveiGeoFilters();">&times;</span></span>');
+      }
+
+      $banner.show();
+    }
+
+    // Quick Filter Helper untuk Instrumen (MenuSurvei)
+    window.quickFilterMenuSurveiInst = function(inst) {
+      var cur = ($('#geoInstrumenFilter').val() || '').toUpperCase();
+      if (cur === inst) {
+        $('#geoInstrumenFilter').val('');
+      } else {
+        $('#geoInstrumenFilter').val(inst);
+      }
+      applyMenuSurveiGeoFilters();
+    };
+
+    // Quick Filter Helper untuk Gender (MenuSurvei)
+    window.quickFilterMenuSurveiGender = function(g) {
+      var cur = $('#geoGenderFilter').val();
+      if (cur === g) {
+        $('#geoGenderFilter').val('');
+      } else {
+        $('#geoGenderFilter').val(g);
+      }
+      applyMenuSurveiGeoFilters();
+    };
+
+    // Reset Semua Filter (MenuSurvei)
+    window.resetMenuSurveiFilters = function() {
+      $('#geoKecamatanFilter').val('');
+      $('#geoInstrumenFilter').val('');
+      $('#geoGenderFilter').val('');
+      $('#geoMutuFilter').val('');
+      applyMenuSurveiGeoFilters();
+    };
+
+    // Filter Peta Berdasarkan Kecamatan (Kompatibilitas poligon klik)
+    window.filterMapKecamatan = function(kecName) {
+      $('#geoKecamatanFilter').val(kecName || '');
+      applyMenuSurveiGeoFilters();
+    };
+
     // Filter Peta Berdasarkan Mutu
     window.filterMapMutu = function(mutuVal) {
-      var kecName = $('#geoKecamatanFilter').val();
-      window.filterMapKecamatan(kecName);
+      $('#geoMutuFilter').val(mutuVal || '');
+      applyMenuSurveiGeoFilters();
     };
 
     // Toggle Poligon Batas Wilayah

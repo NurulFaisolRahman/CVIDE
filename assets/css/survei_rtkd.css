@@ -1462,5 +1462,363 @@ nav.rtkd-tabs::-webkit-scrollbar-thumb {
   }
 }
 
+/* ==========================================================================
+   20. RTKD MAP STATISTIC CARDS & MULTI-DIMENSIONAL FILTER BAR (ENTERPRISE)
+   ========================================================================== */
+.gis-filter-toolbar-container {
+  background: #ffffff;
+  border-bottom: 1.5px solid #e2e8f0;
+  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
+.gis-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
 
+.gis-filter-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f8fafc;
+  padding: 4px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.gis-filter-group:hover, .gis-filter-group:focus-within {
+  border-color: #043168;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(4, 49, 104, 0.08);
+}
+
+.gis-filter-group label {
+  margin: 0;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #475569;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.gis-filter-group select {
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  color: #0f172a;
+  outline: none;
+  cursor: pointer;
+  padding: 3px 6px;
+  border-radius: 6px;
+}
+
+.gis-filter-group select:focus {
+  background: #f0f7ff;
+}
+
+.btn-gis-reset-filter {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid #fecaca;
+  background: #fff5f5;
+  color: #dc2626;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-gis-reset-filter:hover {
+  background: #fee2e2;
+  border-color: #dc2626;
+  color: #b91c1c;
+  transform: translateY(-1px);
+}
+
+/* Dynamic Statistics Cards Grid */
+.gis-stat-cards-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  padding: 14px 18px;
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  border-bottom: 1.5px solid #e2e8f0;
+}
+
+.gis-stat-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 2px 10px rgba(4, 49, 104, 0.04);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.gis-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(4, 49, 104, 0.09);
+  border-color: #94a3b8;
+}
+
+.gis-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #cbd5e1;
+}
+
+.gis-stat-card.card-total::before { background: linear-gradient(90deg, #043168, #2563eb); }
+.gis-stat-card.card-inst::before { background: linear-gradient(90deg, #7c3aed, #a855f7); }
+.gis-stat-card.card-gender::before { background: linear-gradient(90deg, #0284c7, #ec4899); }
+.gis-stat-card.card-mutu::before { background: linear-gradient(90deg, #10b981, #059669); }
+.gis-stat-card.card-geo::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
+
+.stat-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.stat-card-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stat-card-icon-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.badge-blue-soft { background: #eff6ff; color: #1d4ed8; }
+.badge-purple-soft { background: #faf5ff; color: #7c3aed; }
+.badge-emerald-soft { background: #ecfdf5; color: #047857; }
+.badge-pink-soft { background: #fdf2f8; color: #be185d; }
+.badge-amber-soft { background: #fffbeb; color: #b45309; }
+
+.stat-card-main {
+  margin-bottom: 8px;
+}
+
+.stat-card-num {
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+  font-family: 'Poppins', sans-serif;
+}
+
+.stat-card-num small {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  margin-left: 4px;
+}
+
+.stat-card-footer {
+  font-size: 11px;
+  color: #64748b;
+  border-top: 1px dashed #f1f5f9;
+  padding-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Micro progress bar */
+.stat-mini-progress {
+  height: 5px;
+  background: #e2e8f0;
+  border-radius: 99px;
+  overflow: hidden;
+  margin: 6px 0;
+  display: flex;
+}
+
+.stat-mini-bar {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+/* Instrument Breakdown Chips */
+.inst-chips-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.inst-mini-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 3px 7px;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.inst-mini-chip:hover {
+  transform: scale(1.04);
+}
+
+.inst-mini-chip.active {
+  background: #043168;
+  color: #ffffff;
+  border-color: #043168;
+}
+
+.inst-mini-chip.active .chip-badge {
+  background: #ffffff;
+  color: #043168;
+}
+
+.inst-mini-chip .chip-badge {
+  font-size: 9.5px;
+  font-weight: 800;
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.chip-tag-a { border-left: 3px solid #043168; }
+.chip-tag-b { border-left: 3px solid #10b981; }
+.chip-tag-c { border-left: 3px solid #f59e0b; }
+.chip-tag-d { border-left: 3px solid #8b5cf6; }
+.chip-tag-e { border-left: 3px solid #ec4899; }
+
+/* Gender Multi-Bar */
+.gender-dual-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.gender-dual-row .male-val { color: #0284c7; }
+.gender-dual-row .female-val { color: #ec4899; }
+
+.gender-split-bar {
+  height: 7px;
+  width: 100%;
+  background: #e2e8f0;
+  border-radius: 99px;
+  overflow: hidden;
+  display: flex;
+}
+
+.gender-seg-male {
+  background: linear-gradient(90deg, #0284c7, #38bdf8);
+  height: 100%;
+  transition: width 0.4s ease;
+}
+
+.gender-seg-female {
+  background: linear-gradient(90deg, #f472b6, #ec4899);
+  height: 100%;
+  transition: width 0.4s ease;
+}
+
+.gender-seg-other {
+  background: #cbd5e1;
+  height: 100%;
+  transition: width 0.4s ease;
+}
+
+/* Active filter feedback row */
+.gis-active-filter-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 18px;
+  background: #f0f7ff;
+  border-bottom: 1px solid #bfdbfe;
+  font-size: 11.5px;
+  color: #1e40af;
+}
+
+.active-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #ffffff;
+  border: 1px solid #93c5fd;
+  color: #1d4ed8;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-weight: 600;
+  font-size: 11px;
+}
+
+.active-filter-pill .remove-pill {
+  cursor: pointer;
+  color: #ef4444;
+  font-weight: 800;
+  margin-left: 2px;
+}
+
+.active-filter-pill .remove-pill:hover {
+  color: #b91c1c;
+}
+
+@media (max-width: 900px) {
+  .gis-stat-cards-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .gis-stat-cards-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .gis-filter-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .gis-filter-group {
+    justify-content: space-between;
+  }
+}
