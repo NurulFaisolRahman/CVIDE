@@ -275,6 +275,10 @@
         gap: 8px;
       }
 
+      .admin-top-greeting i {
+        color: #ffffff !important;
+      }
+
       .btn-header-logout {
         background-color: var(--ide-red);
         color: #ffffff !important;
@@ -1474,7 +1478,7 @@
 
             <div class="top-nav-right">
               <div class="admin-top-greeting" id="topAdminGreeting">
-                <i class="fa-solid fa-circle-user" style="color: var(--ide-navy); font-size: 16px;"></i>
+                <i class="fa-solid fa-circle-user" style="color: #ffffff; font-size: 16px;"></i>
                 <span>Halo, <strong><?=$this->session->userdata('Username') ? $this->session->userdata('Username') : 'Admin'?></strong></span>
               </div>
               <a href="<?=base_url('IDE/SignOut')?>" class="btn-header-logout">

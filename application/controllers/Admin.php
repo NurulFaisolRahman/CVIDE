@@ -365,12 +365,8 @@ public function EditPendapatanKegiatan(){
 
 
     public function Komparasi() {
-        if(\->session->userdata('IdKategori') != "1") {
-            redirect('IDE');
-        }
-        \['Title'] = "Komparasi Data";
-        \->load->view('Admin/Header', \);
-        \->load->view('Admin/Komparasi', \);
-        \->load->view('Admin/Footer');
+        $Data['Title'] = "Komparasi Data";
+        $this->load->view('Admin/Header', $Data);
+        $this->load->view('Admin/Komparasi', $Data);
     }
 }
