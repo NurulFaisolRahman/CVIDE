@@ -3996,15 +3996,15 @@
                       <td><span class="badge badge-info"><?=htmlspecialchars(!empty($sv['Jenis']) ? $sv['Jenis'] : 'IKM')?></span> <?=htmlspecialchars(!empty($sv['Tahun']) ? $sv['Tahun'] : date('Y'))?></td>
                       <td><span class="badge badge-success"><?=($sv['TotalResponden'] ?? 0)?> Responden</span></td>
                       <td style="text-align: center;">
-                        <div style="display: flex; gap: 6px; justify-content: center;">
-                          <button type="button" class="btn btn-sm btn-outline-dark" style="border-radius: 8px; font-weight: 700;" onclick="showSurveyQRCode(<?=$sv['Id']?>)" title="Lihat QR Code">
-                            <i class="fa-solid fa-qrcode navy-icon"></i> QR
+                        <div style="display: flex; gap: 6px; justify-content: center; align-items: center;">
+                          <button type="button" class="btn btn-sm btn-outline-dark" style="border-radius: 8px; font-weight: 700; width: 34px; height: 34px; padding: 0; display: inline-flex; align-items: center; justify-content: center;" onclick="showSurveyQRCode(<?=$sv['Id']?>)" title="Lihat QR Code">
+                            <i class="fa-solid fa-qrcode navy-icon"></i>
                           </button>
-                          <button type="button" class="btn btn-sm btn-outline-primary" style="border-radius: 8px; font-weight: 700;" onclick="selectSurveyPill(<?=$sv['Id']?>)" title="Buka Survei Ini">
-                            <i class="fa-solid fa-arrow-right navy-icon"></i> Buka
+                          <button type="button" class="btn btn-sm btn-outline-primary" style="border-radius: 8px; font-weight: 700; width: 34px; height: 34px; padding: 0; display: inline-flex; align-items: center; justify-content: center;" onclick="selectSurveyPill(<?=$sv['Id']?>)" title="Buka Survei Ini">
+                            <i class="fa-solid fa-arrow-right navy-icon"></i>
                           </button>
                           <?php if ($userLevel != 5): ?>
-                          <button type="button" class="btn btn-sm btn-outline-danger" style="border-radius: 8px; font-weight: 700;" onclick="deleteSurveyTemplate(<?=$sv['Id']?>, '<?=addslashes(htmlspecialchars($sv['Judul']))?>')" title="Hapus Survei">
+                          <button type="button" class="btn btn-sm btn-outline-danger" style="border-radius: 8px; font-weight: 700; width: 34px; height: 34px; padding: 0; display: inline-flex; align-items: center; justify-content: center;" onclick="deleteSurveyTemplate(<?=$sv['Id']?>, '<?=addslashes(htmlspecialchars($sv['Judul']))?>')" title="Hapus Survei">
                             <i class="fa-solid fa-trash-can"></i>
                           </button>
                           <?php endif; ?>
@@ -4041,12 +4041,235 @@
           <div id="rincianRespondenInfo" style="margin-bottom: 20px;"></div>
           <div id="rincianJawabanContainer"></div>
         </div>
-        <div class="modal-footer" style="background: #f8fafc;">
+        <div class="modal-footer" id="modalRincianFooter" style="background: #f8fafc;">
           <button type="button" class="btn btn-secondary" style="border-radius: 10px; font-weight: 700;" data-dismiss="modal">Tutup</button>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- ===================================================================
+       MODAL EDIT DATA HASIL INPUT SURVEIYOR (KHUSUS AKUN IDEDATA)
+       =================================================================== -->
+  <div class="modal fade" id="modalEditRespondenJawaban" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content" style="border-radius: 20px; overflow: hidden; border: none; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+        <div class="modal-header" style="background: linear-gradient(135deg, #043168 0%, #1e3a8a 100%); color: #ffffff; padding: 18px 24px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 42px; height: 42px; background: rgba(245, 158, 11, 0.2); border: 2px solid #f59e0b; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fbbf24;">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </div>
+            <div>
+              <h5 class="modal-title font-weight-bold" style="font-size: 17px; margin: 0; display: flex; align-items: center; gap: 8px;">
+                Edit Data Hasil Inputan Surveiyor
+                <span class="badge" style="background: #f59e0b; color: #ffffff; font-size: 11px; padding: 4px 8px; border-radius: 6px; letter-spacing: 0.3px;">
+                  <i class="fa-solid fa-shield-halved mr-1"></i> Khusus idedata
+                </span>
+              </h5>
+              <p style="font-size: 12.5px; color: #cbd5e1; margin: 3px 0 0 0;">
+                Koreksi dan perbarui profil responden serta butir jawaban hasil survei lapangan RTKD
+              </p>
+            </div>
+          </div>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.9;">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="padding: 24px; background: #f8fafc;">
+          <!-- Informational Banner: Data Sebelumnya Otomatis Dimuat -->
+          <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 14px; padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 40px; height: 40px; border-radius: 10px; background: #dcfce7; color: #15803d; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+              </div>
+              <div>
+                <div style="font-size: 13.5px; font-weight: 800; color: #166534;">Data Sebelumnya Dimuat Otomatis</div>
+                <div style="font-size: 12px; color: #475569; margin-top: 2px;">
+                  Semua profil dan butir jawaban yang sudah tersimpan sebelumnya ditampilkan di bawah. <b>Anda tidak perlu mengisi ulang semua</b>, cukup ganti/koreksi jawaban yang direvisi.
+                </div>
+              </div>
+            </div>
+            <span class="badge" style="background: #16a34a; color: #ffffff; padding: 7px 14px; font-size: 12px; font-weight: 700; border-radius: 8px;">
+              <i class="fa-solid fa-check-double mr-1"></i> <span id="editTotalFilledCount">0</span> dari <span id="editTotalQuestionsCount">0</span> Butir Terisi
+            </span>
+          </div>
+
+          <!-- Navigation Tabs -->
+          <ul class="nav nav-pills mb-3" id="editModalTabs" role="tablist" style="background: #e2e8f0; padding: 4px; border-radius: 12px;">
+            <li class="nav-item" style="flex: 1;">
+              <a class="nav-link active font-weight-bold text-center" id="tab-edit-profil-btn" data-toggle="pill" href="#tabEditProfil" role="tab" style="border-radius: 10px; padding: 10px;">
+                <i class="fa-solid fa-user-pen mr-1"></i> 1. Profil Responden &amp; Wilayah
+              </a>
+            </li>
+            <li class="nav-item" style="flex: 1;">
+              <a class="nav-link font-weight-bold text-center" id="tab-edit-jawaban-btn" data-toggle="pill" href="#tabEditJawaban" role="tab" style="border-radius: 10px; padding: 10px;">
+                <i class="fa-solid fa-list-check mr-1"></i> 2. Koreksi Butir Jawaban Survei (<span id="editJawabanCountBadge">0</span>)
+              </a>
+            </li>
+          </ul>
+
+          <form id="formEditRespondenJawaban" enctype="multipart/form-data">
+            <input type="hidden" id="editRespondenId" name="Id" value="">
+            <input type="hidden" id="editSurveiId" name="SurveiId" value="">
+
+            <div class="tab-content" id="editModalTabContent">
+              <!-- Tab 1: Profil Responden & Wilayah -->
+              <div class="tab-pane fade show active" id="tabEditProfil" role="tabpanel">
+                <div class="card border-0 shadow-sm" style="border-radius: 14px; margin-bottom: 16px;">
+                  <div class="card-header bg-white font-weight-bold" style="border-bottom: 1.5px solid #f1f5f9; color: var(--ide-navy);">
+                    <i class="fa-solid fa-address-card text-primary mr-1"></i> Identitas Responden
+                    <span id="editInstrumenBadge" class="badge ml-2" style="background: #e0f2fe; color: #0369a1;">Inst. -</span>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label class="font-weight-bold" style="font-size: 12.5px;">Nama Responden / Lembaga / Perusahaan <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="editRespondenNama" name="RespondenNama" required placeholder="Contoh: PT Sumber Manis / Bagus Aditya">
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="font-weight-bold" style="font-size: 12.5px;">NIK (Nomor Induk Kependudukan)</label>
+                        <input type="text" class="form-control" id="editRespondenNIK" name="RespondenNIK" placeholder="16 digit NIK jika tersedia">
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label class="font-weight-bold" style="font-size: 12.5px;">Kontak / WhatsApp / Telepon</label>
+                        <input type="text" class="form-control" id="editRespondenKontak" name="RespondenKontak" placeholder="08xxxxxxxxxx">
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label class="font-weight-bold" style="font-size: 12.5px;">Jenis Kelamin</label>
+                        <select class="form-control" id="editRespondenGender" name="RespondenGender">
+                          <option value="Laki-laki">Laki-laki</option>
+                          <option value="Perempuan">Perempuan</option>
+                          <option value="Lainnya">Lainnya / Perusahaan / Lembaga</option>
+                        </select>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label class="font-weight-bold" style="font-size: 12.5px;">Rentang Usia</label>
+                        <input type="text" class="form-control" id="editRespondenUsia" name="RespondenUsia" placeholder="Contoh: 20–24 tahun / 35 Tahun">
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="font-weight-bold" style="font-size: 12.5px;">Pendidikan Terakhir</label>
+                        <input type="text" class="form-control" id="editRespondenPendidikan" name="RespondenPendidikan" placeholder="Contoh: SMK Vokasi / S1 Sarjana">
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="font-weight-bold" style="font-size: 12.5px;">Pekerjaan / Sektor Jabatan</label>
+                        <input type="text" class="form-control" id="editRespondenPekerjaan" name="RespondenPekerjaan" placeholder="Contoh: HRD / Pencari Kerja / Siswa">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card border-0 shadow-sm" style="border-radius: 14px; margin-bottom: 16px;">
+                  <div class="card-header bg-white font-weight-bold" style="border-bottom: 1.5px solid #f1f5f9; color: var(--ide-navy);">
+                    <i class="fa-solid fa-map-location-dot text-danger mr-1"></i> Data Wilayah &amp; Lokasi Survei
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-4 mb-3">
+                        <label class="font-weight-bold" style="font-size: 12.5px;">Provinsi</label>
+                        <input type="text" class="form-control" id="editProvinsi" name="Provinsi" value="Jawa Timur">
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label class="font-weight-bold" style="font-size: 12.5px;">Kabupaten / Kota</label>
+                        <input type="text" class="form-control" id="editKabupaten" name="Kabupaten" value="Kabupaten Banyuwangi">
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label class="font-weight-bold" style="font-size: 12.5px;">Kecamatan</label>
+                        <select class="form-control" id="editKecamatan" name="Kecamatan">
+                          <!-- Populated dynamically -->
+                        </select>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="font-weight-bold" style="font-size: 12.5px;">Desa / Kelurahan</label>
+                        <input type="text" class="form-control" id="editDesa" name="Desa" placeholder="Nama desa / kelurahan">
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="font-weight-bold" style="font-size: 12.5px;">Alamat Lengkap / Keterangan Lokasi</label>
+                        <input type="text" class="form-control" id="editAlamatDetail" name="AlamatDetail" placeholder="Alamat detail / RT / RW / Dusun">
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="font-weight-bold" style="font-size: 12.5px;">Latitude GPS</label>
+                        <input type="number" step="any" class="form-control" id="editLatitude" name="Latitude" placeholder="-8.xxxxx">
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="font-weight-bold" style="font-size: 12.5px;">Longitude GPS</label>
+                        <input type="number" step="any" class="form-control" id="editLongitude" name="Longitude" placeholder="114.xxxxx">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card border-0 shadow-sm" style="border-radius: 14px;">
+                  <div class="card-header bg-white font-weight-bold" style="border-bottom: 1.5px solid #f1f5f9; color: var(--ide-navy);">
+                    <i class="fa-solid fa-clipboard-check text-success mr-1"></i> Data Surveyor &amp; Foto Dokumentasi Lapangan
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label class="font-weight-bold" style="font-size: 12.5px;">Nama Surveyor / Enumerator</label>
+                        <input type="text" class="form-control" id="editCreatedBy" name="CreatedBy" placeholder="Nama surveyor yang menginput data">
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="font-weight-bold" style="font-size: 12.5px;">Waktu Pengisian Survei</label>
+                        <input type="text" class="form-control" id="editCreatedAt" name="CreatedAt" placeholder="YYYY-MM-DD HH:mm:ss">
+                      </div>
+                      <div class="col-12">
+                        <label class="font-weight-bold" style="font-size: 12.5px;">Foto Dokumentasi Lapangan</label>
+                        <div id="editCurrentPhotoWrap" style="margin-bottom: 10px; display: none;">
+                          <div style="display: flex; align-items: center; gap: 12px; background: #f1f5f9; padding: 10px 14px; border-radius: 10px;">
+                            <img id="editCurrentPhotoImg" src="" style="width: 70px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid #cbd5e1;">
+                            <div style="flex: 1;">
+                              <span style="font-size: 12px; font-weight: 700; color: #1e293b;">Foto dokumentasi saat ini</span>
+                              <div style="font-size: 11px; color: #64748b;">Pilih file di bawah jika ingin mengganti foto ini.</div>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="btnPreviewEditCurrentPhoto" style="border-radius: 6px; font-size: 11px;">
+                              <i class="fa-solid fa-magnifying-glass-plus"></i> Lihat
+                            </button>
+                          </div>
+                        </div>
+                        <input type="file" class="form-control-file" id="editFotoDokumentasiFile" name="FotoDokumentasi" accept="image/*">
+                        <small class="text-muted">Biarkan kosong jika tidak ingin mengubah foto dokumentasi.</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="text-align: right; margin-top: 16px;">
+                  <button type="button" class="btn btn-primary font-weight-bold" onclick="$('#editModalTabs a[href=\'#tabEditJawaban\']').tab('show');" style="border-radius: 10px; padding: 10px 20px; box-shadow: 0 4px 12px rgba(4, 49, 104, 0.2);">
+                    Lihat &amp; Revisi Butir Jawaban Kuesioner Lapangan <i class="fa-solid fa-arrow-right ml-1"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Tab 2: Koreksi Butir Jawaban Survei -->
+              <div class="tab-pane fade" id="tabEditJawaban" role="tabpanel">
+                <div style="margin-bottom: 14px; display: flex; gap: 10px; align-items: center;">
+                  <div style="position: relative; flex: 1;">
+                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 13px;"></i>
+                    <input type="text" id="editFilterQuestionInput" class="form-control" placeholder="Cari pertanyaan kuesioner..." style="padding-left: 38px; border-radius: 10px; font-size: 13px;" oninput="filterEditQuestionsList()">
+                  </div>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$('#editFilterQuestionInput').val(''); filterEditQuestionsList();" style="border-radius: 10px; font-weight: 700; height: 38px;">
+                    Reset
+                  </button>
+                </div>
+                <div id="editQuestionsListContainer" style="max-height: 520px; overflow-y: auto; padding-right: 4px;">
+                  <!-- Dynamic questions & inputs will be rendered here -->
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer" style="background: #ffffff; border-top: 1.5px solid #e2e8f0; padding: 16px 24px;">
+          <button type="button" class="btn btn-light" style="border: 1.5px solid #cbd5e1; border-radius: 10px; font-weight: 700; padding: 9px 18px;" data-dismiss="modal">
+            Batal
+          </button>
+          <button type="button" class="btn btn-warning font-weight-bold" id="btnSaveEditedResponden" onclick="saveEditedRespondenData()" style="border-radius: 10px; background: #f59e0b; border-color: #f59e0b; color: #ffffff; padding: 9px 24px; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);">
+            <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Perubahan Data
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Modal QR Code Kuesioner Survei -->
   <div class="modal fade" id="modalSurveyQRCode" tabindex="-1" role="dialog" aria-hidden="true">
@@ -4119,6 +4342,8 @@
   <script>
     var BaseURL = '<?=base_url()?>';
     var userLevel = <?= (int)$userLevel ?>;
+    var isIdeData = <?= !empty($isIdeData) ? 'true' : 'false' ?>;
+    var currentUsername = <?= json_encode($sessionUsername ?? '') ?>;
     var allSurveysData = <?= json_encode($surveiList) ?>;
     var currentSurveyId = allSurveysData.length > 0 ? allSurveysData[0].Id : 0;
     var currentSurveyObj = allSurveysData.length > 0 ? allSurveysData[0] : null;
@@ -6235,13 +6460,18 @@
             '<td style="text-align: center;"><strong style="color: #059669; font-size: 14px;">' + (r.RataRataSkor || '0.00') + '</strong></td>' +
             '<td style="text-align: center;"><span class="badge badge-success" style="padding: 4px 8px;">' + (r.MutuPelayanan || 'Baik') + '</span></td>' +
             '<td style="text-align: center;">' +
-              '<div style="display: flex; gap: 6px; justify-content: center;">' +
-                '<button type="button" class="btn btn-sm btn-outline-primary" style="border-radius: 8px; font-weight: 700;" onclick="viewRespondenDetailAnswers(' + surveyId + ', ' + r.Id + ')" title="Lihat Rincian Jawaban">' +
-                  '<i class="fa-solid fa-eye"></i> Rincian' +
+              '<div style="display: flex; gap: 6px; justify-content: center; align-items: center;">' +
+                '<button type="button" class="btn btn-sm btn-outline-primary" style="border-radius: 8px; font-weight: 700; width: 34px; height: 34px; padding: 0; display: inline-flex; align-items: center; justify-content: center;" onclick="viewRespondenDetailAnswers(' + surveyId + ', ' + r.Id + ')" title="Lihat Rincian Jawaban">' +
+                  '<i class="fa-solid fa-eye"></i>' +
                 '</button>' +
+                (isIdeData ? (
+                '<button type="button" class="btn btn-sm btn-outline-warning" style="border-radius: 8px; font-weight: 700; color: #b45309; border-color: #f59e0b; background: #fffbeb; width: 34px; height: 34px; padding: 0; display: inline-flex; align-items: center; justify-content: center;" onclick="openEditRespondenModal(' + surveyId + ', ' + r.Id + ')" title="Edit Data Hasil Inputan Surveiyor (Khusus Akun idedata)">' +
+                  '<i class="fa-solid fa-pen-to-square"></i>' +
+                '</button>'
+                ) : '') +
                 (userLevel !== 5 ? (
-                '<button type="button" class="btn btn-sm btn-outline-danger" style="border-radius: 8px; font-weight: 700;" onclick="deleteRespondenData(' + surveyId + ', ' + r.Id + ', \'' + (r.RespondenNama ? r.RespondenNama.replace(/'/g, "\\'") : 'Responden') + '\')" title="Hapus Data Responden">' +
-                  '<i class="fa-solid fa-trash-can"></i> Hapus' +
+                '<button type="button" class="btn btn-sm btn-outline-danger" style="border-radius: 8px; font-weight: 700; width: 34px; height: 34px; padding: 0; display: inline-flex; align-items: center; justify-content: center;" onclick="deleteRespondenData(' + surveyId + ', ' + r.Id + ', \'' + (r.RespondenNama ? r.RespondenNama.replace(/'/g, "\\'") : 'Responden') + '\')" title="Hapus Data Responden">' +
+                  '<i class="fa-solid fa-trash-can"></i>' +
                 '</button>'
                 ) : '') +
               '</div>' +
@@ -6321,6 +6551,16 @@
     function viewRespondenDetailAnswers(surveyId, respondenId) {
       $('#rincianRespondenInfo').html('<i class="fa-solid fa-spinner fa-spin"></i> Memuat...');
       $('#rincianJawabanContainer').empty();
+      if (isIdeData) {
+        $('#modalRincianFooter').html(
+          '<button type="button" class="btn btn-secondary" style="border-radius: 10px; font-weight: 700;" data-dismiss="modal">Tutup</button>' +
+          '<button type="button" class="btn btn-warning font-weight-bold" style="border-radius: 10px; background: #f59e0b; border-color: #f59e0b; color: #ffffff;" onclick="$(\'#modalRincianJawaban\').modal(\'hide\'); openEditRespondenModal(' + surveyId + ', ' + respondenId + ');"><i class="fa-solid fa-pen-to-square mr-1"></i> Edit Data Responden &amp; Jawaban</button>'
+        );
+      } else {
+        $('#modalRincianFooter').html(
+          '<button type="button" class="btn btn-secondary" style="border-radius: 10px; font-weight: 700;" data-dismiss="modal">Tutup</button>'
+        );
+      }
       $('#modalRincianJawaban').modal('show');
 
       $.ajax({
@@ -6390,6 +6630,367 @@
     function previewPublicSurvey() {
       window.open(getSurveyPublicUrl(currentSurveyId), '_blank');
     }
+
+    // =========================================================================
+    // FITUR EDIT DATA HASIL INPUTAN SURVEIYOR (KHUSUS AKUN IDEDATA)
+    // =========================================================================
+    var currentEditQuestionsData = [];
+
+    function openEditRespondenModal(surveyId, respondenId) {
+      if (!isIdeData) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Akses Ditolak',
+          text: 'Fitur edit data hasil inputan surveiyor ini khusus hanya dapat dilakukan oleh akun idedata.'
+        });
+        return;
+      }
+
+      Swal.fire({
+        title: 'Memuat data responden...',
+        html: '<div style="font-size:13px; color:#64748b;">Mengambil seluruh butir isian surveiyor untuk diedit...</div>',
+        allowOutsideClick: false,
+        didOpen: function() { Swal.showLoading(); }
+      });
+
+      $.ajax({
+        url: BaseURL + 'IDE/get_responden_edit_data/' + respondenId,
+        type: 'GET',
+        dataType: 'json',
+        success: function(res) {
+          Swal.close();
+          if (res && res.status && res.responden) {
+            var r = res.responden;
+            $('#editRespondenId').val(r.Id);
+            $('#editSurveiId').val(r.SurveiId || surveyId);
+            $('#editRespondenNama').val(r.RespondenNama || '');
+            $('#editRespondenNIK').val(r.RespondenNIK || '');
+            $('#editRespondenKontak').val(r.RespondenKontak || '');
+            $('#editRespondenGender').val(r.RespondenGender || 'Laki-laki');
+            $('#editRespondenUsia').val(r.RespondenUsia || '');
+            $('#editRespondenPendidikan').val(r.RespondenPendidikan || '');
+            $('#editRespondenPekerjaan').val(r.RespondenPekerjaan || '');
+            $('#editProvinsi').val(r.Provinsi || 'Jawa Timur');
+            $('#editKabupaten').val(r.Kabupaten || 'Kabupaten Banyuwangi');
+            $('#editDesa').val(r.Desa || '');
+            $('#editAlamatDetail').val(r.AlamatDetail || '');
+            $('#editLatitude').val(r.Latitude || '');
+            $('#editLongitude').val(r.Longitude || '');
+            $('#editCreatedBy').val(r.CreatedBy || '');
+            $('#editCreatedAt').val(r.CreatedAt || '');
+
+            // Instrumen Badge
+            var inst = (r.Instrumen || 'A').toUpperCase();
+            var instLabels = {
+              'A': 'Instrumen A - Perusahaan / Pemberi Kerja',
+              'B': 'Instrumen B - Pencari Kerja & Lulusan',
+              'C': 'Instrumen C - Stakeholder Vokasi',
+              'E': 'Instrumen C2 / E - AHP Isu Strategis',
+              'D': 'Instrumen D - Siswa Kelas 12'
+            };
+            $('#editInstrumenBadge').text(instLabels[inst] || ('Instrumen ' + inst));
+
+            // Populate Kecamatan Banyuwangi
+            var bwiKecList = [
+              'Bangorejo', 'Banyuwangi', 'Blimbingsari', 'Cluring', 'Gambiran',
+              'Genteng', 'Giri', 'Glagah', 'Glenmore', 'Kabat', 'Kalibaru',
+              'Kalipuro', 'Licin', 'Muncar', 'Pesanggaran', 'Purwoharjo',
+              'Rogojampi', 'Sempu', 'Siliragung', 'Singojuruh', 'Songgon',
+              'Srono', 'Tegaldlimo', 'Tegalsari', 'Wongsorejo'
+            ];
+            var $kecSelect = $('#editKecamatan');
+            $kecSelect.empty();
+            var rKec = (r.Kecamatan || '').trim();
+            var foundKec = false;
+            bwiKecList.forEach(function(k) {
+              var isSel = (rKec && rKec.toLowerCase().indexOf(k.toLowerCase()) !== -1);
+              if (isSel) foundKec = true;
+              $kecSelect.append('<option value="' + k + '"' + (isSel ? ' selected' : '') + '>' + k + '</option>');
+            });
+            if (rKec && !foundKec) {
+              $kecSelect.prepend('<option value="' + rKec + '" selected>' + rKec + '</option>');
+            }
+
+            // Photo Preview
+            if (r.FotoDokumentasiUrl) {
+              $('#editCurrentPhotoImg').attr('src', r.FotoDokumentasiUrl);
+              $('#btnPreviewEditCurrentPhoto').off('click').on('click', function() {
+                previewDashboardPhoto(r.FotoDokumentasiUrl, r.RespondenNama);
+              });
+              $('#editCurrentPhotoWrap').show();
+            } else {
+              $('#editCurrentPhotoWrap').hide();
+            }
+            $('#editFotoDokumentasiFile').val('');
+
+            // Render Questions List in Tab 2
+            currentEditQuestionsData = Array.isArray(res.questions) ? res.questions : [];
+            $('#editJawabanCountBadge').text(currentEditQuestionsData.length);
+            renderEditQuestionsList(currentEditQuestionsData);
+
+            // Reset tab to Tab 1
+            $('#editModalTabs a[href="#tabEditProfil"]').tab('show');
+            $('#editFilterQuestionInput').val('');
+
+            $('#modalEditRespondenJawaban').modal('show');
+          } else {
+            Swal.fire('Gagal', (res && res.message) ? res.message : 'Tidak dapat memuat data responden untuk diedit.', 'error');
+          }
+        },
+        error: function(xhr, status, err) {
+          Swal.close();
+          Swal.fire('Gagal', 'Terjadi kesalahan sistem saat memuat data: ' + err, 'error');
+        }
+      });
+    }
+
+    function renderEditQuestionsList(questions) {
+      var $container = $('#editQuestionsListContainer');
+      $container.empty();
+
+      if (!questions || questions.length === 0) {
+        $container.html('<div style="text-align: center; padding: 40px; color: #64748b;"><i class="fa-solid fa-file-circle-question" style="font-size: 32px; color: #cbd5e1; display: block; margin-bottom: 8px;"></i> Tidak ada pertanyaan kuesioner yang tercatat.</div>');
+        $('#editTotalFilledCount').text(0);
+        $('#editTotalQuestionsCount').text(0);
+        return;
+      }
+
+      var filledCount = 0;
+      questions.forEach(function(q) {
+        if (q.JawabanTeks && q.JawabanTeks.toString().trim() !== '') {
+          filledCount++;
+        }
+      });
+      $('#editTotalFilledCount').text(filledCount);
+      $('#editTotalQuestionsCount').text(questions.length);
+
+      var currentSection = '';
+      var html = '';
+
+      questions.forEach(function(q, idx) {
+        var sec = q.Section || 'Kuesioner Umum';
+        if (sec !== currentSection) {
+          currentSection = sec;
+          html += 
+            '<div class="edit-section-header" style="background: linear-gradient(135deg, #043168 0%, #1e3a8a 100%); color: #ffffff; padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 700; margin: 18px 0 12px 0; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 6px rgba(4, 49, 104, 0.15);">' +
+              '<span><i class="fa-solid fa-layer-group" style="color: #f59e0b; margin-right: 8px;"></i>' + escapeHtml(sec) + '</span>' +
+              '<span class="badge badge-light" style="font-size: 11px; padding: 3px 8px; border-radius: 6px; color: #043168;">Seksi Kuesioner</span>' +
+            '</div>';
+        }
+
+        var qId = q.Id;
+        var jwb = (q.JawabanTeks || '').toString().trim();
+        var hasPrev = (jwb !== '');
+        var skor = (q.NilaiAngka !== null && q.NilaiAngka !== undefined) ? q.NilaiAngka : 0;
+        var tipe = (q.Tipe || 'text').toLowerCase();
+
+        // Banner status jawaban sebelumnya
+        var prevBadgeHtml = '';
+        if (hasPrev) {
+          prevBadgeHtml = 
+            '<div style="font-size: 11.5px; background: #ecfdf5; border: 1.5px solid #a7f3d0; border-radius: 8px; padding: 5px 12px; color: #065f46; margin-bottom: 8px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">' +
+              '<i class="fa-solid fa-circle-check" style="color: #10b981;"></i>' +
+              '<span>Jawaban Sebelumnya Tersimpan:</span>' +
+              '<b style="color: #047857; font-size: 12px;">' + escapeHtml(jwb) + '</b>' +
+            '</div>';
+        } else {
+          prevBadgeHtml = 
+            '<div style="font-size: 11.5px; background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 8px; padding: 5px 12px; color: #92400e; margin-bottom: 8px; display: inline-flex; align-items: center; gap: 6px;">' +
+              '<i class="fa-solid fa-circle-question" style="color: #f59e0b;"></i>' +
+              '<span style="color: #78350f;">Belum ada jawaban tersimpan sebelumnya</span>' +
+            '</div>';
+        }
+
+        var inputHtml = '';
+        if (tipe === 'textarea') {
+          inputHtml = '<textarea class="form-control" name="jawaban[' + qId + ']" rows="3" placeholder="Isikan jawaban revisi..." style="border-radius: 8px; font-size: 13px; font-weight: 500; color: #0f172a; border-color: ' + (hasPrev ? '#a7f3d0' : '#cbd5e1') + ';">' + escapeHtml(jwb) + '</textarea>';
+        } else if (tipe === 'radio' || tipe === 'dropdown') {
+          var options = Array.isArray(q.OpsiPilihan) ? q.OpsiPilihan : [];
+          var optsHtml = '<option value="">-- Tetap Gunakan / Pilih Jawaban --</option>';
+          var matchFound = false;
+
+          options.forEach(function(op) {
+            var lbl = (op && typeof op === 'object') ? (op.label || '') : op;
+            var val = (op && typeof op === 'object' && op.nilai !== undefined) ? op.nilai : 0;
+            var isSel = (trimStr(lbl) === trimStr(jwb)) || (String(val) === trimStr(jwb)) || (trimStr(jwb).indexOf(trimStr(lbl)) === 0);
+            if (isSel) matchFound = true;
+            optsHtml += '<option value="' + escapeHtml(lbl) + '" data-nilai="' + val + '"' + (isSel ? ' selected' : '') + '>' + escapeHtml(lbl) + (val > 0 ? ' (Skor: ' + val + ')' : '') + '</option>';
+          });
+
+          if (jwb && !matchFound) {
+            optsHtml += '<option value="' + escapeHtml(jwb) + '" selected>' + escapeHtml(jwb) + ' (Jawaban Tersimpan Sebelumnya)</option>';
+          }
+
+          inputHtml = 
+            '<select class="form-control" name="jawaban[' + qId + ']" onchange="onEditOptionChange(this, ' + qId + ')" style="border-radius: 8px; font-size: 13px; font-weight: 600; color: #043168; border-color: ' + (hasPrev ? '#a7f3d0' : '#cbd5e1') + ';">' +
+              optsHtml +
+            '</select>';
+        } else if (tipe === 'pair') {
+          var pairScales = ['9', '8', '7', '6', '5', '4', '3', '2', '1', '1/2', '1/3', '1/4', '1/5', '1/6', '1/7', '1/8', '1/9'];
+          var pairOpts = '<option value="">-- Tetap Gunakan / Pilih Perbandingan AHP --</option>';
+          var pairMatch = false;
+          pairScales.forEach(function(ps) {
+            var isSel = (trimStr(ps) === trimStr(jwb));
+            if (isSel) pairMatch = true;
+            pairOpts += '<option value="' + ps + '"' + (isSel ? ' selected' : '') + '>' + ps + '</option>';
+          });
+          if (jwb && !pairMatch) {
+            pairOpts += '<option value="' + escapeHtml(jwb) + '" selected>' + escapeHtml(jwb) + ' (Jawaban Tersimpan Sebelumnya)</option>';
+          }
+          inputHtml = 
+            '<select class="form-control" name="jawaban[' + qId + ']" onchange="onEditPairChange(this, ' + qId + ')" style="border-radius: 8px; font-size: 13px; font-weight: 600; color: #043168; border-color: ' + (hasPrev ? '#a7f3d0' : '#cbd5e1') + ';">' +
+              pairOpts +
+            '</select>';
+        } else if (tipe === 'scale') {
+          inputHtml = 
+            '<div style="display: flex; gap: 8px; align-items: center;">' +
+              '<input type="text" class="form-control" name="jawaban[' + qId + ']" value="' + escapeHtml(jwb) + '" placeholder="Isian skala..." style="border-radius: 8px; font-size: 13px; font-weight: 600; color: #043168; flex: 1; border-color: ' + (hasPrev ? '#a7f3d0' : '#cbd5e1') + ';">' +
+              '<span style="font-size: 11px; color: #64748b; white-space: nowrap;">(Skala 1 - 5)</span>' +
+            '</div>';
+        } else if (tipe === 'number') {
+          inputHtml = '<input type="number" step="any" class="form-control" name="jawaban[' + qId + ']" value="' + escapeHtml(jwb) + '" placeholder="0" style="border-radius: 8px; font-size: 13px; font-weight: 600; color: #043168; border-color: ' + (hasPrev ? '#a7f3d0' : '#cbd5e1') + ';">';
+        } else if (tipe === 'date') {
+          inputHtml = '<input type="date" class="form-control" name="jawaban[' + qId + ']" value="' + escapeHtml(jwb) + '" style="border-radius: 8px; font-size: 13px; font-weight: 600; color: #043168; border-color: ' + (hasPrev ? '#a7f3d0' : '#cbd5e1') + ';">';
+        } else {
+          inputHtml = '<input type="text" class="form-control" name="jawaban[' + qId + ']" value="' + escapeHtml(jwb) + '" placeholder="Isikan jawaban revisi..." style="border-radius: 8px; font-size: 13px; font-weight: 600; color: #043168; border-color: ' + (hasPrev ? '#a7f3d0' : '#cbd5e1') + ';">';
+        }
+
+        var itemBorderLeft = hasPrev ? '4.5px solid #10b981' : '4.5px solid #cbd5e1';
+
+        html += 
+          '<div class="edit-question-item" data-keyword="' + escapeHtml(q.Pertanyaan.toLowerCase()) + '" style="background: #ffffff; border: 1.5px solid #e2e8f0; border-left: ' + itemBorderLeft + '; border-radius: 12px; padding: 14px 18px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.02); transition: all 0.2s;">' +
+            '<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px;">' +
+              '<div style="flex: 1;">' +
+                '<span class="badge" style="background: #e0f2fe; color: #0369a1; font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 700; margin-right: 6px;">#' + (idx + 1) + '</span>' +
+                '<span style="font-size: 13px; font-weight: 700; color: #0f172a; line-height: 1.4;">' + escapeHtml(q.Pertanyaan) + '</span>' +
+                (q.Deskripsi ? '<div style="font-size: 11px; color: #64748b; margin-top: 2px;">' + escapeHtml(q.Deskripsi) + '</div>' : '') +
+              '</div>' +
+              '<div style="display: flex; align-items: center; gap: 6px; white-space: nowrap;">' +
+                '<label style="font-size: 11px; font-weight: 700; color: #64748b; margin: 0;">Skor:</label>' +
+                '<input type="number" step="0.01" class="form-control form-control-sm text-center edit-score-input" name="skor[' + qId + ']" id="edit_skor_' + qId + '" value="' + skor + '" style="width: 72px; font-weight: 800; color: #043168; border-radius: 6px; height: 30px;" title="Nilai skor butir pertanyaan">' +
+              '</div>' +
+            '</div>' +
+            prevBadgeHtml +
+            '<div style="margin-top: 6px;">' +
+              inputHtml +
+            '</div>' +
+          '</div>';
+      });
+
+      $container.html(html);
+    }
+
+    function onEditOptionChange(elem, qId) {
+      var $sel = $(elem).find('option:selected');
+      var val = $sel.data('nilai');
+      if (val !== undefined && val !== null && val !== '') {
+        $('#edit_skor_' + qId).val(val);
+      }
+    }
+
+    function onEditPairChange(elem, qId) {
+      var valStr = $(elem).val();
+      if (!valStr) return;
+      var num = 1.0;
+      if (valStr.indexOf('/') !== -1) {
+        var p = valStr.split('/');
+        var denom = parseFloat(p[1]);
+        if (denom > 0) num = (1.0 / denom).toFixed(4);
+      } else {
+        num = parseFloat(valStr) || 1.0;
+      }
+      $('#edit_skor_' + qId).val(num);
+    }
+
+    function filterEditQuestionsList() {
+      var kw = ($('#editFilterQuestionInput').val() || '').toLowerCase().trim();
+      if (!kw) {
+        $('.edit-question-item').show();
+        $('.edit-section-header').show();
+        return;
+      }
+      $('.edit-section-header').hide();
+      $('.edit-question-item').each(function() {
+        var itemKw = $(this).data('keyword') || '';
+        if (itemKw.indexOf(kw) !== -1) {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+      });
+    }
+
+    function saveEditedRespondenData() {
+      var form = document.getElementById('formEditRespondenJawaban');
+      if (!form) return;
+
+      var nama = $('#editRespondenNama').val().trim();
+      if (!nama) {
+        Swal.fire('Nama Wajib Diisi', 'Mohon isikan nama responden / perusahaan / lembaga terlebih dahulu.', 'warning');
+        $('#editModalTabs a[href="#tabEditProfil"]').tab('show');
+        $('#editRespondenNama').focus();
+        return;
+      }
+
+      Swal.fire({
+        title: 'Menyimpan Perubahan Data...',
+        html: '<div style="font-size:13px; color:#64748b;">Memperbarui profil responden, jawaban survei lapangan, dan mengkalkulasi ulang skor RTKD...</div>',
+        allowOutsideClick: false,
+        didOpen: function() { Swal.showLoading(); }
+      });
+
+      var formData = new FormData(form);
+
+      $.ajax({
+        url: BaseURL + 'IDE/update_survei_responden',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: 'json',
+        success: function(res) {
+          Swal.close();
+          if (res && res.status) {
+            $('#modalEditRespondenJawaban').modal('hide');
+            Swal.fire({
+              icon: 'success',
+              title: 'Berhasil Diperbarui!',
+              text: res.message || 'Data hasil inputan surveiyor berhasil diperbarui oleh akun idedata.',
+              confirmButtonText: '<i class="fa-solid fa-check"></i> Selesai',
+              confirmButtonColor: '#043168'
+            });
+            // Reload rekap data & peta
+            if (typeof loadDashboardRekapData === 'function') {
+              loadDashboardRekapData(currentSurveyId);
+            }
+            if (typeof loadMapSurveyData === 'function') {
+              loadMapSurveyData(currentSurveyId);
+            }
+          } else {
+            Swal.fire('Gagal Menyimpan', (res && res.message) ? res.message : 'Terjadi kendala saat menyimpan data.', 'error');
+          }
+        },
+        error: function(xhr, status, err) {
+          Swal.close();
+          Swal.fire('Gagal', 'Terjadi kesalahan sistem server: ' + err, 'error');
+        }
+      });
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function trimStr(str) {
+      return (str || '').toString().trim().toLowerCase();
+    }
+
 
     // =========================================================================
     // HAPUS DATA RESPONDEN & HAPUS SURVEI (AKSES STAF & ADMIN)

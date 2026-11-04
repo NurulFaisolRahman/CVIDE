@@ -2431,12 +2431,19 @@ public function InputIKMYogyakarta()
       $provinsi = $this->db->query("SELECT Kode, Nama FROM `kodewilayah` WHERE length(Kode) = 2 ORDER BY Nama ASC")->result_array();
     }
 
+    $sessionUsername = strtolower(trim((string)($this->session->userdata('Username') ?: ($this->session->userdata('username') ?: ($this->session->userdata('user_id') ?: '')))));
+    $isIdeData = ($sessionUsername === 'idedata');
+
     $data = array(
+      'isIdeData'          => $isIdeData,
+      'sessionUsername'    => $sessionUsername,
       'title'              => 'Portal Layanan Survei | IDE Consultant',
       'isLoggedIn'         => $isLoggedIn,
       'userLevel'          => $userLevel,
       'userName'           => $userName,
       'isSurveiyor'        => $isSurveiyor,
+      'isIdeData'          => $isIdeData,
+      'sessionUsername'    => $sessionUsername,
       'loginRequiredAlert' => $loginRequiredAlert,
       'surveiList'         => $surveiList,
       'provinsi'           => $provinsi,
@@ -2585,7 +2592,12 @@ public function InputIKMYogyakarta()
 
     $currentUser = $this->session->userdata('Username') ?: ($this->session->userdata('nama_lengkap') ?: 'Surveiyor');
 
+    $sessionUsername = strtolower(trim((string)($this->session->userdata('Username') ?: ($this->session->userdata('username') ?: ($this->session->userdata('user_id') ?: '')))));
+    $isIdeData = ($sessionUsername === 'idedata');
+
     $data = array(
+      'isIdeData'          => $isIdeData,
+      'sessionUsername'    => $sessionUsername,
       'Judul'         => $judul,
       'Deskripsi'     => trim($input['Deskripsi'] ?? ''),
       'Lembaga'       => trim($input['Lembaga'] ?? 'IDE Consultant'),
@@ -3753,6 +3765,358 @@ public function InputIKMYogyakarta()
     $responden['FotoDokumentasiUrl'] = !empty($responden['FotoDokumentasi']) ? base_url($responden['FotoDokumentasi']) : null;
 
     echo json_encode(array('status' => true, 'data' => $responden, 'answers' => $answers));
+  }
+
+  /**
+   * API: Ambil Data Responden dan Seluruh Pertanyaan/Jawaban untuk Mode Edit
+   * KHUSUS DIAKSES OLEH AKUN 'idedata'
+   */
+  public function get_responden_edit_data($respondenId = 0) {
+    $this->ensureSurveiStructure();
+    if (!headers_sent()) {
+      @header('Content-Type: application/json; charset=utf-8');
+    }
+
+    // Validasi otorisasi ketat: Khusus akun idedata
+    $sessionUsername = strtolower(trim((string)($this->session->userdata('Username') ?: ($this->session->userdata('username') ?: ($this->session->userdata('user_id') ?: '')))));
+    if ($sessionUsername !== 'idedata') {
+      echo json_encode(array(
+        'status'  => false,
+        'message' => 'Akses Ditolak: Fitur edit data hasil inputan surveiyor ini khusus hanya dapat diakses oleh akun idedata.'
+      ));
+      return;
+    }
+
+    $respondenId = (int)$respondenId;
+    if ($respondenId <= 0) {
+      echo json_encode(array('status' => false, 'message' => 'ID responden tidak valid.'));
+      return;
+    }
+
+    $responden = $this->db->where('Id', $respondenId)->get('survei_responden')->row_array();
+    if (!$responden) {
+      echo json_encode(array('status' => false, 'message' => 'Data responden tidak ditemukan.'));
+      return;
+    }
+
+    $surveiId = (int)$responden['SurveiId'];
+    $survei = $this->db->get_where('survei_dinamis', array('Id' => $surveiId))->row_array();
+    $instrumen = trim($responden['Instrumen'] ?? '');
+
+    // Ambil pertanyaan relevan sesuai instrumen
+    $this->db->where('SurveiId', $surveiId);
+    if (!empty($instrumen)) {
+      $this->db->group_start();
+      $this->db->where('Instrumen', $instrumen);
+      $this->db->or_where('Instrumen', '');
+      $this->db->or_where('Instrumen IS NULL', null, false);
+      $this->db->group_end();
+    }
+    $pertanyaan = $this->db->order_by('Urutan', 'ASC')->order_by('Id', 'ASC')->get('survei_pertanyaan')->result_array();
+
+    // Ambil jawaban yang telah tercatat dan petakan berdasarkan ID, kode pertanyaan [P1]/[S1], dan teks
+    $rawAnswers = $this->db->where('RespondenId', $respondenId)->get('survei_jawaban')->result_array();
+    $ansMap = array();
+    $ansByCodeMap = array();
+    $ansByTextMap = array();
+    foreach ($rawAnswers as $ans) {
+      $pId = (int)$ans['PertanyaanId'];
+      $ansMap[$pId] = $ans;
+
+      // Petakan juga berdasarkan kode pertanyaan seperti [P1], [S1], [SR], dll
+      $qInfo = $this->db->select('Pertanyaan')->where('Id', $pId)->get('survei_pertanyaan')->row_array();
+      if ($qInfo && !empty($qInfo['Pertanyaan'])) {
+        if (preg_match('/^\[([A-Za-z0-9_]+)\]/', $qInfo['Pertanyaan'], $mCode)) {
+          $ansByCodeMap[$mCode[1]] = $ans;
+        }
+        $cleanQText = strtolower(trim(preg_replace('/^\[[A-Za-z0-9_]+\]\s*/', '', $qInfo['Pertanyaan'])));
+        if (!empty($cleanQText)) {
+          $ansByTextMap[$cleanQText] = $ans;
+        }
+      }
+    }
+
+    $questionsCombined = array();
+    foreach ($pertanyaan as $q) {
+      $qId = (int)$q['Id'];
+      $existingAns = isset($ansMap[$qId]) ? $ansMap[$qId] : null;
+
+      // Fallback pencocokan kode pertanyaan jika direct ID belum match
+      if (!$existingAns && preg_match('/^\[([A-Za-z0-9_]+)\]/', $q['Pertanyaan'], $mqCode)) {
+        $cKey = $mqCode[1];
+        if (isset($ansByCodeMap[$cKey])) {
+          $existingAns = $ansByCodeMap[$cKey];
+        }
+      }
+
+      // Fallback pencocokan teks pertanyaan
+      if (!$existingAns) {
+        $cleanTargetText = strtolower(trim(preg_replace('/^\[[A-Za-z0-9_]+\]\s*/', '', $q['Pertanyaan'])));
+        if (!empty($cleanTargetText) && isset($ansByTextMap[$cleanTargetText])) {
+          $existingAns = $ansByTextMap[$cleanTargetText];
+        }
+      }
+
+      $opsiDecoded = array();
+      if (!empty($q['OpsiPilihan'])) {
+        $opsiDecoded = json_decode($q['OpsiPilihan'], true);
+        if (!is_array($opsiDecoded)) {
+          $opsiDecoded = array();
+        }
+      }
+
+      $questionsCombined[] = array(
+        'Id'           => $qId,
+        'Urutan'       => $q['Urutan'],
+        'Section'      => $q['Section'] ?? '',
+        'Pertanyaan'   => $q['Pertanyaan'],
+        'Deskripsi'    => $q['Deskripsi'] ?? '',
+        'Tipe'         => $q['Tipe'] ?? 'text',
+        'OpsiPilihan'  => $opsiDecoded,
+        'IsRequired'   => !empty($q['IsRequired']) ? 1 : 0,
+        'JawabanId'    => $existingAns ? (int)$existingAns['Id'] : null,
+        'JawabanTeks'  => $existingAns ? $existingAns['JawabanTeks'] : '',
+        'NilaiAngka'   => $existingAns ? (float)$existingAns['NilaiAngka'] : 0.0
+      );
+    }
+
+    $responden['FotoDokumentasiUrl'] = !empty($responden['FotoDokumentasi']) ? base_url($responden['FotoDokumentasi']) : null;
+
+    echo json_encode(array(
+      'status'    => true,
+      'responden' => $responden,
+      'survei'    => $survei,
+      'questions' => $questionsCombined
+    ));
+    return;
+  }
+
+  /**
+   * API: Simpan Pembaruan Data Hasil Inputan Surveiyor
+   * KHUSUS DILAKUKAN OLEH AKUN 'idedata'
+   */
+  public function update_survei_responden() {
+    $this->ensureSurveiStructure();
+    if (!headers_sent()) {
+      @header('Content-Type: application/json; charset=utf-8');
+    }
+
+    // Validasi otorisasi ketat: Khusus akun idedata
+    $sessionUsername = strtolower(trim((string)($this->session->userdata('Username') ?: ($this->session->userdata('username') ?: ($this->session->userdata('user_id') ?: '')))));
+    if ($sessionUsername !== 'idedata') {
+      echo json_encode(array(
+        'status'  => false,
+        'message' => 'Akses Ditolak: Fitur edit data hasil inputan surveiyor ini khusus hanya dapat dilakukan oleh akun idedata.'
+      ));
+      return;
+    }
+
+    $raw = file_get_contents('php://input');
+    $input = json_decode($raw, true) ?: $this->input->post();
+
+    $respondenId = isset($input['Id']) ? (int)$input['Id'] : (isset($input['responden_id']) ? (int)$input['responden_id'] : 0);
+    if ($respondenId <= 0) {
+      echo json_encode(array('status' => false, 'message' => 'ID responden tidak valid.'));
+      return;
+    }
+
+    $responden = $this->db->where('Id', $respondenId)->get('survei_responden')->row_array();
+    if (!$responden) {
+      echo json_encode(array('status' => false, 'message' => 'Data responden tidak ditemukan.'));
+      return;
+    }
+
+    $surveiId = (int)$responden['SurveiId'];
+    $instrumen = $responden['Instrumen'] ?? 'A';
+
+    // Update Field Profil Responden
+    $updateResponden = array();
+    $fieldMap = array(
+      'RespondenNama', 'RespondenNIK', 'RespondenKontak', 'RespondenGender', 
+      'RespondenUsia', 'RespondenPendidikan', 'RespondenPekerjaan',
+      'Provinsi', 'Kabupaten', 'Kecamatan', 'Desa', 'AlamatDetail', 'CreatedBy'
+    );
+    foreach ($fieldMap as $f) {
+      if (isset($input[$f])) {
+        $updateResponden[$f] = trim((string)$input[$f]);
+      }
+    }
+
+    if (!empty($input['CreatedAt'])) {
+      $ts = strtotime($input['CreatedAt']);
+      if ($ts !== false) {
+        $updateResponden['CreatedAt'] = date('Y-m-d H:i:s', $ts);
+      }
+    }
+
+    if (isset($input['Latitude']) && $input['Latitude'] !== '') {
+      $updateResponden['Latitude'] = (float)$input['Latitude'];
+    }
+    if (isset($input['Longitude']) && $input['Longitude'] !== '') {
+      $updateResponden['Longitude'] = (float)$input['Longitude'];
+    }
+
+    // Penanganan Penggantian Foto Dokumentasi Lapangan (Upload File / Base64)
+    $fotoPath = null;
+    $rawFoto = $input['FotoDokumentasi'] ?? null;
+    if (!empty($rawFoto) && is_string($rawFoto) && preg_match('/^data:image\/(\w+);base64,(.+)$/s', $rawFoto, $fotoMatches)) {
+      $ext = strtolower($fotoMatches[1]);
+      if ($ext === 'jpeg') $ext = 'jpg';
+      if (!in_array($ext, array('jpg', 'jpeg', 'png', 'webp'))) $ext = 'jpg';
+      $decodedData = base64_decode($fotoMatches[2]);
+      if ($decodedData !== false) {
+        $uploadDir = FCPATH . 'uploads/survei_rtkd/';
+        if (!is_dir($uploadDir)) @mkdir($uploadDir, 0777, true);
+        $fileName = 'foto_rtkd_' . $surveiId . '_' . $instrumen . '_' . date('Ymd_His') . '_' . substr(md5(uniqid(mt_rand(), true)), 0, 8) . '.' . $ext;
+        if (@file_put_contents($uploadDir . $fileName, $decodedData)) {
+          $fotoPath = 'uploads/survei_rtkd/' . $fileName;
+          $updateResponden['FotoDokumentasi'] = $fotoPath;
+        }
+      }
+    } elseif (!empty($_FILES['FotoDokumentasi']['tmp_name']) && is_uploaded_file($_FILES['FotoDokumentasi']['tmp_name'])) {
+      $uploadDir = FCPATH . 'uploads/survei_rtkd/';
+      if (!is_dir($uploadDir)) @mkdir($uploadDir, 0777, true);
+      $ext = pathinfo($_FILES['FotoDokumentasi']['name'], PATHINFO_EXTENSION) ?: 'jpg';
+      $fileName = 'foto_rtkd_' . $surveiId . '_' . $instrumen . '_' . date('Ymd_His') . '_' . substr(md5(uniqid(mt_rand(), true)), 0, 8) . '.' . strtolower($ext);
+      if (@move_uploaded_file($_FILES['FotoDokumentasi']['tmp_name'], $uploadDir . $fileName)) {
+        $fotoPath = 'uploads/survei_rtkd/' . $fileName;
+        $updateResponden['FotoDokumentasi'] = $fotoPath;
+      }
+    }
+
+    // Ambil pertanyaan survei untuk verifikasi opsi dan perhitungan skor
+    $pertanyaanList = $this->db->where('SurveiId', $surveiId)->get('survei_pertanyaan')->result_array();
+    $pertanyaanMap = array();
+    foreach ($pertanyaanList as $pt) {
+      $pertanyaanMap[(int)$pt['Id']] = $pt;
+    }
+
+    // Pemrosesan Jawaban Kuesioner
+    $answersToProcess = array();
+    if (!empty($input['answers']) && is_array($input['answers'])) {
+      foreach ($input['answers'] as $item) {
+        $pId = (int)($item['PertanyaanId'] ?? ($item['pertanyaan_id'] ?? 0));
+        if ($pId > 0) {
+          $answersToProcess[$pId] = array(
+            'JawabanTeks' => (string)($item['JawabanTeks'] ?? ($item['jawaban_teks'] ?? '')),
+            'NilaiAngka'  => isset($item['NilaiAngka']) ? (float)$item['NilaiAngka'] : (isset($item['nilai_angka']) ? (float)$item['nilai_angka'] : null)
+          );
+        }
+      }
+    } elseif (!empty($input['jawaban']) && is_array($input['jawaban'])) {
+      $skorArr = (!empty($input['skor']) && is_array($input['skor'])) ? $input['skor'] : array();
+      foreach ($input['jawaban'] as $pId => $jwbVal) {
+        $pId = (int)$pId;
+        if ($pId > 0) {
+          $answersToProcess[$pId] = array(
+            'JawabanTeks' => is_array($jwbVal) ? implode(', ', $jwbVal) : (string)$jwbVal,
+            'NilaiAngka'  => isset($skorArr[$pId]) && $skorArr[$pId] !== '' ? (float)$skorArr[$pId] : null
+          );
+        }
+      }
+    }
+
+    $now = date('Y-m-d H:i:s');
+    foreach ($answersToProcess as $pId => $ansData) {
+      $pt = isset($pertanyaanMap[$pId]) ? $pertanyaanMap[$pId] : null;
+      $jwbTeks = trim($ansData['JawabanTeks']);
+      $skorAngka = $ansData['NilaiAngka'];
+
+      // Jika skor belum diisi eksplisit, hitung dari opsi
+      if ($skorAngka === null && $pt) {
+        $skorAngka = 0.0;
+        if (in_array($pt['Tipe'], array('radio', 'dropdown'))) {
+          $opsiList = json_decode($pt['OpsiPilihan'], true) ?: array();
+          foreach ($opsiList as $op) {
+            if (trim($op['label']) === $jwbTeks) {
+              $skorAngka = isset($op['nilai']) ? (float)$op['nilai'] : 3.0;
+              break;
+            }
+          }
+          if ($skorAngka <= 0 && !empty($jwbTeks)) $skorAngka = 3.0;
+        } elseif ($pt['Tipe'] === 'scale' || $pt['Tipe'] === 'number') {
+          $skorAngka = (float)$jwbTeks;
+        } elseif ($pt['Tipe'] === 'pair') {
+          if (strpos($jwbTeks, '/') !== false) {
+            $parts = explode('/', $jwbTeks);
+            $skorAngka = (float)$parts[1] > 0 ? round(1.0 / (float)$parts[1], 4) : 1.0;
+          } else {
+            $skorAngka = (float)$jwbTeks;
+          }
+        }
+      }
+      if ($skorAngka === null) $skorAngka = 0.0;
+
+      $existingJwb = $this->db->where('RespondenId', $respondenId)->where('PertanyaanId', $pId)->get('survei_jawaban')->row_array();
+
+      // JIKA input jawaban kosong tetapi sebelumnya sudah ada jawaban tersimpan di database:
+      // PERTAHANKAN JAWABAN SEBELUMNYA agar data tidak hilang saat user hanya merevisi butir tertentu!
+      if ($jwbTeks === '' && $existingJwb && trim((string)$existingJwb['JawabanTeks']) !== '') {
+        $jwbTeks = $existingJwb['JawabanTeks'];
+        if ($skorAngka === null || $skorAngka == 0) {
+          $skorAngka = (float)$existingJwb['NilaiAngka'];
+        }
+      }
+
+      // Jika jawaban masih kosong dan belum ada di database, lewati agar tidak menyimpan baris kosong
+      if ($jwbTeks === '' && !$existingJwb) {
+        continue;
+      }
+
+      if ($existingJwb) {
+        $this->db->where('Id', $existingJwb['Id'])->update('survei_jawaban', array(
+          'JawabanTeks' => $jwbTeks,
+          'NilaiAngka'  => $skorAngka,
+          'CreatedAt'   => $now
+        ));
+      } else {
+        $this->db->insert('survei_jawaban', array(
+          'RespondenId'  => $respondenId,
+          'PertanyaanId' => $pId,
+          'JawabanTeks'  => $jwbTeks,
+          'NilaiAngka'   => $skorAngka,
+          'CreatedAt'    => $now
+        ));
+      }
+    }
+
+    // Hitung Ulang TotalSkor, RataRataSkor, dan MutuPelayanan
+    $scoresQuery = $this->db->query("
+      SELECT SUM(NilaiAngka) as total_skor, AVG(NilaiAngka) as avg_skor, COUNT(Id) as total_scored
+      FROM `survei_jawaban`
+      WHERE RespondenId = {$respondenId} AND NilaiAngka > 0
+    ")->row_array();
+
+    $totalSkor = !empty($scoresQuery['total_skor']) ? round((float)$scoresQuery['total_skor'], 2) : 0;
+    $rataRataSkor = !empty($scoresQuery['avg_skor']) ? round((float)$scoresQuery['avg_skor'], 2) : 3.0;
+
+    $mutuPelayanan = 'Baik (B)';
+    if ($rataRataSkor >= 3.50) {
+      $mutuPelayanan = 'Sangat Baik (A)';
+    } elseif ($rataRataSkor >= 2.75) {
+      $mutuPelayanan = 'Baik (B)';
+    } elseif ($rataRataSkor >= 2.00) {
+      $mutuPelayanan = 'Kurang Baik (C)';
+    } else {
+      $mutuPelayanan = 'Tidak Baik (D)';
+    }
+
+    $updateResponden['TotalSkor'] = $totalSkor;
+    $updateResponden['RataRataSkor'] = $rataRataSkor;
+    $updateResponden['MutuPelayanan'] = $mutuPelayanan;
+
+    $this->db->where('Id', $respondenId)->update('survei_responden', $updateResponden);
+
+    echo json_encode(array(
+      'status'         => true,
+      'message'        => 'Data hasil inputan surveiyor atas nama "' . ($updateResponden['RespondenNama'] ?? $responden['RespondenNama']) . '" berhasil diperbarui oleh akun idedata.',
+      'responden_id'   => $respondenId,
+      'survei_id'      => $surveiId,
+      'rata_rata_skor' => $rataRataSkor,
+      'mutu_pelayanan' => $mutuPelayanan,
+      'foto_url'       => !empty($fotoPath) ? base_url($fotoPath) : (!empty($responden['FotoDokumentasi']) ? base_url($responden['FotoDokumentasi']) : null)
+    ));
+    return;
   }
 
   /**
