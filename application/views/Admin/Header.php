@@ -275,6 +275,10 @@
         gap: 8px;
       }
 
+      .admin-top-greeting i {
+        color: #ffffff !important;
+      }
+
       .btn-header-logout {
         background-color: var(--ide-red);
         color: #ffffff !important;
@@ -1445,17 +1449,7 @@
                   </li>
                 </ul>
 
-                <div class="sidebar-menu-title">Instrumen Survei</div>
-                <ul class="nav side-menu">
-                  <li><a href="<?=base_url('IDE/MenuSurvei')?>"><i class="fa-solid fa-square-poll-vertical"></i> <b>Layanan Survei</b></a></li>
-                </ul>
-
-                                  <div class="sidebar-menu-title">Tools</div>
-                  <ul class="nav side-menu">
-                    <li><a href="<?=base_url('Admin/Komparasi')?>"><i class="fa-solid fa-code-compare"></i> <b>Komparasi</b> </a></li>
-                  </ul>
-
-                  <div class="sidebar-menu-title">Sistem</div>
+                <div class="sidebar-menu-title">Sistem</div>
                 <ul class="nav side-menu">
                   <li><a href="<?=base_url('IDE/SignOut')?>"><i class="fa-solid fa-right-from-bracket"></i> <b>Keluar (Sign Out)</b> </a></li>
                 </ul>
@@ -1474,7 +1468,7 @@
 
             <div class="top-nav-right">
               <div class="admin-top-greeting" id="topAdminGreeting">
-                <i class="fa-solid fa-circle-user" style="color: var(--ide-navy); font-size: 16px;"></i>
+                <i class="fa-solid fa-circle-user" style="color: #ffffff; font-size: 16px;"></i>
                 <span>Halo, <strong><?=$this->session->userdata('Username') ? $this->session->userdata('Username') : 'Admin'?></strong></span>
               </div>
               <a href="<?=base_url('IDE/SignOut')?>" class="btn-header-logout">
