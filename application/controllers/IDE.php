@@ -3586,17 +3586,26 @@ public function InputIKMYogyakarta()
         $valScore = $avgSkor;
       }
 
+      $ins = strtoupper(trim($q['Instrumen'] ?? 'A'));
+      $qCode = '';
+      if (preg_match('/^\[([^\]]+)\]/', trim($q['Pertanyaan']), $matches)) {
+        $qCode = trim($matches[1]);
+      }
+      $qLabel = !empty($qCode) ? $qCode : ('P' . (int)$q['Urutan']);
+
       $parameterStats[] = array(
         'Id'         => $q['Id'],
         'Urutan'     => $q['Urutan'],
+        'Instrumen'  => $ins,
         'Pertanyaan' => $q['Pertanyaan'],
         'Section'    => $q['Section'] ?? '',
         'Tipe'       => $q['Tipe'],
         'AvgScore'   => $valScore,
         'TotalJwb'   => !empty($qStats['total_answers']) ? (int)$qStats['total_answers'] : 0,
         'id'         => $q['Id'],
-        'no'         => $idx + 1,
-        'label'      => 'P' . ($idx + 1),
+        'no'         => (int)$q['Urutan'],
+        'label'      => $qLabel,
+        'code'       => $qCode,
         'section'    => $q['Section'] ?? '',
         'pertanyaan' => $q['Pertanyaan'],
         'avg'        => $valScore,
@@ -3626,6 +3635,21 @@ public function InputIKMYogyakarta()
     );
     $distribusiKecamatan = array();
 
+    // 4. Struktur Agregat per Instrumen (A, B, C, D, E) untuk Tampilan Adaptif Detail
+    $statsPerInstrumen = array();
+    $allInstKeys = array('A', 'B', 'C', 'D', 'E');
+    foreach ($allInstKeys as $ik) {
+      $statsPerInstrumen[$ik] = array(
+        'total'               => 0,
+        'avgSkor'             => 0,
+        'sumSkor'             => 0,
+        'distribusiMutu'      => array('Sangat Baik' => 0, 'Baik' => 0, 'Kurang Baik' => 0, 'Tidak Baik' => 0),
+        'distribusiGender'    => array('Laki-laki' => 0, 'Perempuan' => 0),
+        'distribusiUsia'      => array('< 20 Tahun' => 0, '20 - 30 Tahun' => 0, '31 - 40 Tahun' => 0, '41 - 50 Tahun' => 0, '> 50 Tahun' => 0),
+        'distribusiKecamatan' => array()
+      );
+    }
+
     foreach ($responden as &$r) {
       if (!empty($r['Latitude']) && !empty($r['Longitude'])) {
         $resolvedLoc = $this->resolveLocationFromCoordinates($r['Latitude'], $r['Longitude'], $r['Kecamatan'], $r['Kabupaten']);
@@ -3635,56 +3659,91 @@ public function InputIKMYogyakarta()
         }
       }
 
+      $rInst = strtoupper(trim($r['Instrumen'] ?? 'A'));
+      if (!isset($statsPerInstrumen[$rInst])) {
+        $statsPerInstrumen[$rInst] = array(
+          'total'               => 0,
+          'avgSkor'             => 0,
+          'sumSkor'             => 0,
+          'distribusiMutu'      => array('Sangat Baik' => 0, 'Baik' => 0, 'Kurang Baik' => 0, 'Tidak Baik' => 0),
+          'distribusiGender'    => array('Laki-laki' => 0, 'Perempuan' => 0),
+          'distribusiUsia'      => array('< 20 Tahun' => 0, '20 - 30 Tahun' => 0, '31 - 40 Tahun' => 0, '41 - 50 Tahun' => 0, '> 50 Tahun' => 0),
+          'distribusiKecamatan' => array()
+        );
+      }
+      $statsPerInstrumen[$rInst]['total']++;
+      $skorVal = (float)($r['RataRataSkor'] ?? 0);
+      $statsPerInstrumen[$rInst]['sumSkor'] += $skorVal;
+
       // Mutu
       $m = !empty($r['MutuPelayanan']) ? trim($r['MutuPelayanan']) : '';
       if (isset($distribusiMutu[$m])) {
         $distribusiMutu[$m]++;
       } else {
-        $skor = (float)($r['RataRataSkor'] ?? 0);
-        if ($skor >= 4.5) $distribusiMutu['Sangat Baik']++;
-        elseif ($skor >= 3.5) $distribusiMutu['Baik']++;
-        elseif ($skor >= 2.5) $distribusiMutu['Kurang Baik']++;
-        else $distribusiMutu['Tidak Baik']++;
+        $skor = $skorVal;
+        if ($skor >= 4.5) $m = 'Sangat Baik';
+        elseif ($skor >= 3.5) $m = 'Baik';
+        elseif ($skor >= 2.5) $m = 'Kurang Baik';
+        else $m = 'Tidak Baik';
+        $distribusiMutu[$m]++;
+      }
+      if (isset($statsPerInstrumen[$rInst]['distribusiMutu'][$m])) {
+        $statsPerInstrumen[$rInst]['distribusiMutu'][$m]++;
       }
 
       // Gender
       $g = !empty($r['RespondenGender']) ? trim($r['RespondenGender']) : '';
+      $gKey = 'Laki-laki';
       if (stripos($g, 'laki') !== false || stripos($g, 'pria') !== false) {
-        $distribusiGender['Laki-laki']++;
+        $gKey = 'Laki-laki';
       } elseif (stripos($g, 'perempuan') !== false || stripos($g, 'wanita') !== false) {
-        $distribusiGender['Perempuan']++;
-      } else {
-        $distribusiGender['Laki-laki']++;
+        $gKey = 'Perempuan';
       }
+      $distribusiGender[$gKey]++;
+      $statsPerInstrumen[$rInst]['distribusiGender'][$gKey]++;
 
       // Usia
       $u = !empty($r['RespondenUsia']) ? trim($r['RespondenUsia']) : '';
       $uNum = (int)preg_replace('/[^0-9]/', '', $u);
-      if ($uNum > 0 && $uNum < 20) $distribusiUsia['< 20 Tahun']++;
-      elseif ($uNum >= 20 && $uNum <= 30) $distribusiUsia['20 - 30 Tahun']++;
-      elseif ($uNum >= 31 && $uNum <= 40) $distribusiUsia['31 - 40 Tahun']++;
-      elseif ($uNum >= 41 && $uNum <= 50) $distribusiUsia['41 - 50 Tahun']++;
-      elseif ($uNum > 50) $distribusiUsia['> 50 Tahun']++;
+      $uKey = '20 - 30 Tahun';
+      if ($uNum > 0 && $uNum < 20) $uKey = '< 20 Tahun';
+      elseif ($uNum >= 20 && $uNum <= 30) $uKey = '20 - 30 Tahun';
+      elseif ($uNum >= 31 && $uNum <= 40) $uKey = '31 - 40 Tahun';
+      elseif ($uNum >= 41 && $uNum <= 50) $uKey = '41 - 50 Tahun';
+      elseif ($uNum > 50) $uKey = '> 50 Tahun';
       else {
-        if (stripos($u, '20-30') !== false || stripos($u, '20 - 30') !== false) $distribusiUsia['20 - 30 Tahun']++;
-        elseif (stripos($u, '31-40') !== false || stripos($u, '31 - 40') !== false) $distribusiUsia['31 - 40 Tahun']++;
-        elseif (stripos($u, '41-50') !== false || stripos($u, '41 - 50') !== false) $distribusiUsia['41 - 50 Tahun']++;
-        elseif (stripos($u, '50') !== false) $distribusiUsia['> 50 Tahun']++;
-        else $distribusiUsia['20 - 30 Tahun']++;
+        if (stripos($u, '20-30') !== false || stripos($u, '20 - 30') !== false) $uKey = '20 - 30 Tahun';
+        elseif (stripos($u, '31-40') !== false || stripos($u, '31 - 40') !== false) $uKey = '31 - 40 Tahun';
+        elseif (stripos($u, '41-50') !== false || stripos($u, '41 - 50') !== false) $uKey = '41 - 50 Tahun';
+        elseif (stripos($u, '50') !== false) $uKey = '> 50 Tahun';
       }
+      $distribusiUsia[$uKey]++;
+      $statsPerInstrumen[$rInst]['distribusiUsia'][$uKey]++;
 
       // Kecamatan
       $kec = !empty($r['Kecamatan']) ? trim($r['Kecamatan']) : 'Lainnya';
       if (!isset($distribusiKecamatan[$kec])) $distribusiKecamatan[$kec] = 0;
       $distribusiKecamatan[$kec]++;
+
+      if (!isset($statsPerInstrumen[$rInst]['distribusiKecamatan'][$kec])) {
+        $statsPerInstrumen[$rInst]['distribusiKecamatan'][$kec] = 0;
+      }
+      $statsPerInstrumen[$rInst]['distribusiKecamatan'][$kec]++;
     }
 
-    // 4. Distribusi Instrumen Survei (A: Perusahaan, B: Pencari Kerja, C: Pemangku Kepentingan, D: Siswa Kelas 12)
+    // Hitung rata-rata skor per instrumen
+    foreach ($statsPerInstrumen as $ik => &$sItem) {
+      $sItem['avgSkor'] = ($sItem['total'] > 0) ? round($sItem['sumSkor'] / $sItem['total'], 2) : 0;
+      unset($sItem['sumSkor']);
+    }
+
+    // 5. Distribusi Instrumen Survei (A: Perusahaan, B: Pencari Kerja, C: Pemangku Kepentingan, D: Siswa Kelas 12, E: AHP)
     $distribusiInstrumen = array(
       'A' => 0,
       'B' => 0,
       'C' => 0,
-      'D' => 0
+      'D' => 0,
+      'E' => 0
     );
     foreach ($responden as $r) {
       $ins = strtoupper(trim($r['Instrumen'] ?? 'A'));
@@ -3705,7 +3764,8 @@ public function InputIKMYogyakarta()
       'distribusiGender'    => $distribusiGender,
       'distribusiUsia'      => $distribusiUsia,
       'distribusiKecamatan' => $distribusiKecamatan,
-      'distribusiInstrumen' => $distribusiInstrumen
+      'distribusiInstrumen' => $distribusiInstrumen,
+      'statsPerInstrumen'   => $statsPerInstrumen
     ));
     return;
   }
@@ -4271,8 +4331,8 @@ public function InputIKMYogyakarta()
   }
 
   /**
-   * Ekspor Data Responden Kuesioner ke Spreadsheet / Excel (.xls)
-   * Kompatibel dengan Microsoft Excel, Google Sheets, dan LibreOffice Calc
+   * Ekspor Data Responden Kuesioner ke Excel (.xlsx) Multi-Sheet Berdasarkan Instrumen Penilaian
+   * Standar Riset & Publikasi Penelitian: 1 Sheet Per Instrumen + Sheet Rekapitulasi Umum
    */
   public function export_responden_excel($surveiId = 0) {
     // Keamanan data: Wajib session login
@@ -4297,12 +4357,12 @@ public function InputIKMYogyakarta()
       $survei = $this->db->get_where('survei_dinamis', array('Id' => $surveiId))->row_array();
     }
 
-    // Ambil butir pertanyaan
+    // Ambil butir pertanyaan dan responden
     if ($surveiId > 0) {
-      $pertanyaanList = $this->db->where('SurveiId', $surveiId)->order_by('Urutan', 'ASC')->get('survei_pertanyaan')->result_array();
+      $pertanyaanList = $this->db->where('SurveiId', $surveiId)->order_by('Urutan', 'ASC')->order_by('Id', 'ASC')->get('survei_pertanyaan')->result_array();
       $respondenList = $this->db->where('SurveiId', $surveiId)->order_by('Id', 'DESC')->get('survei_responden')->result_array();
     } else {
-      $pertanyaanList = array();
+      $pertanyaanList = $this->db->order_by('Urutan', 'ASC')->order_by('Id', 'ASC')->get('survei_pertanyaan')->result_array();
       $respondenList = $this->db->order_by('Id', 'DESC')->get('survei_responden')->result_array();
     }
 
@@ -4318,13 +4378,6 @@ public function InputIKMYogyakarta()
     }
     unset($r);
 
-    // Ambil mapping survei untuk info judul jika export all
-    $surveiMap = array();
-    $allSurveys = $this->db->get('survei_dinamis')->result_array();
-    foreach ($allSurveys as $s) {
-      $surveiMap[$s['Id']] = $s;
-    }
-
     // Ambil seluruh jawaban untuk responden terkait
     $jawabanMap = array();
     if (!empty($respondenList)) {
@@ -4335,145 +4388,452 @@ public function InputIKMYogyakarta()
       }
     }
 
-    // Nama file yang bersih dan informatif
-    $judulSafe = $survei ? preg_replace('/[^a-zA-Z0-9_-]/', '_', substr($survei['Judul'], 0, 30)) : 'Semua_Survei';
-    $filename = 'Data_Responden_' . $judulSafe . '_' . date('Ymd_His') . '.xls';
+    // Generate File OpenXML (.xlsx) Multi-Sheet
+    $tempFile = sys_get_temp_dir() . '/Survei_Export_' . uniqid() . '.xlsx';
+    $success = $this->generateSurveyMultiSheetXlsx($survei, $pertanyaanList, $respondenList, $jawabanMap, $tempFile);
 
-    // Set headers untuk streaming file spreadsheet Excel
-    header("Content-Type: application/vnd.ms-excel; charset=utf-8");
-    header("Content-Disposition: attachment; filename=\"{$filename}\"");
-    header("Pragma: no-cache");
-    header("Expires: 0");
+    if ($success && file_exists($tempFile)) {
+      $judulSafe = $survei ? preg_replace('/[^a-zA-Z0-9_-]/', '_', substr($survei['Judul'], 0, 30)) : 'Semua_Survei';
+      $filename = 'Data_Survei_' . $judulSafe . '_' . date('Ymd_His') . '.xlsx';
 
-    // Output XML / HTML format table with Excel styling
-    echo '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">';
-    echo '<head>';
-    echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
-    echo '<!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Data Responden</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->';
-    echo '<style>';
-    echo 'body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1e293b; }';
-    echo '.title { font-size: 16pt; font-weight: bold; color: #043168; }';
-    echo '.subtitle { font-size: 11pt; color: #475569; }';
-    echo 'table { border-collapse: collapse; width: 100%; margin-top: 15px; }';
-    echo 'th { background-color: #043168; color: #ffffff; font-weight: bold; text-align: center; border: 1px solid #0b3977; padding: 10px 8px; vertical-align: middle; }';
-    echo 'td { border: 1px solid #cbd5e1; padding: 8px; vertical-align: middle; }';
-    echo '.num { mso-number-format: "\#\,\#\#0"; text-align: center; }';
-    echo '.decimal { mso-number-format: "0\.00"; text-align: center; font-weight: bold; color: #059669; }';
-    echo '.text-center { text-align: center; }';
-    echo '.text-left { text-align: left; }';
-    echo '.highlight { background-color: #f0fdf4; color: #065f46; font-weight: bold; text-align: center; }';
-    echo '.alt-row { background-color: #f8fafc; }';
-    echo '</style>';
-    echo '</head>';
-    echo '<body>';
-
-    // Header Laporan
-    echo '<div class="title">' . ($survei ? htmlspecialchars($survei['Judul']) : 'REKAPITULASI DATA RESPONDEN SURVEI') . '</div>';
-    if ($survei) {
-      echo '<div class="subtitle">Instansi: ' . htmlspecialchars($survei['Lembaga'] ?: 'IDE Consultant') . ' | Jenis: ' . htmlspecialchars($survei['Jenis']) . ' | Tahun: ' . htmlspecialchars($survei['Tahun']) . ' | Wilayah: ' . htmlspecialchars($survei['DaerahSurvei'] ?: 'Terbuka') . '</div>';
-    }
-    echo '<div class="subtitle">Waktu Unduh: ' . date('d F Y - H:i:s') . ' WIB | Total Responden: ' . count($respondenList) . ' Responden</div>';
-    echo '<br/>';
-
-    // Table Content
-    echo '<table>';
-    echo '<thead>';
-    echo '<tr>';
-    echo '<th rowspan="2" style="width: 45px;">No</th>';
-    echo '<th rowspan="2" style="width: 145px;">Waktu Pengisian (WIB)</th>';
-    if (!$survei) {
-      echo '<th rowspan="2" style="width: 220px;">Judul Survei</th>';
-    }
-    echo '<th rowspan="2" style="width: 180px;">Nama Responden</th>';
-    echo '<th rowspan="2" style="width: 130px;">Kontak / No HP</th>';
-    echo '<th rowspan="2" style="width: 90px;">Gender</th>';
-    echo '<th rowspan="2" style="width: 80px;">Usia</th>';
-    echo '<th rowspan="2" style="width: 110px;">Pendidikan</th>';
-    echo '<th rowspan="2" style="width: 130px;">Pekerjaan</th>';
-    echo '<th colspan="5">Keterangan Daerah Survei</th>';
-    echo '<th colspan="3">Geolokasi &amp; Perangkat Device</th>';
-    echo '<th rowspan="2" style="width: 130px;">Foto Dokumentasi</th>';
-    echo '<th rowspan="2" style="width: 90px;">Rata-Rata Skor</th>';
-    echo '<th rowspan="2" style="width: 110px;">Mutu Pelayanan</th>';
-
-    if (!empty($pertanyaanList)) {
-      echo '<th colspan="' . count($pertanyaanList) . '">Rincian Nilai Butir Pertanyaan</th>';
-    }
-    echo '</tr>';
-
-    echo '<tr>';
-    echo '<th style="width: 120px;">Provinsi</th>';
-    echo '<th style="width: 130px;">Kabupaten / Kota</th>';
-    echo '<th style="width: 120px;">Kecamatan</th>';
-    echo '<th style="width: 120px;">Desa / Kelurahan</th>';
-    echo '<th style="width: 160px;">Unit Layanan / Alamat Detail</th>';
-    echo '<th style="width: 110px;">Latitude</th>';
-    echo '<th style="width: 110px;">Longitude</th>';
-    echo '<th style="width: 160px;">Perangkat / Device</th>';
-
-    if (!empty($pertanyaanList)) {
-      foreach ($pertanyaanList as $idx => $q) {
-        $shortQ = htmlspecialchars(mb_strimwidth($q['Pertanyaan'], 0, 35, '...'));
-        echo '<th style="width: 140px;" title="' . htmlspecialchars($q['Pertanyaan']) . '">P' . ($idx + 1) . ': ' . $shortQ . '</th>';
+      if (!headers_sent()) {
+        header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        header("Content-Disposition: attachment; filename=\"{$filename}\"");
+        header("Content-Length: " . filesize($tempFile));
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
       }
-    }
-    echo '</tr>';
-    echo '</thead>';
-    echo '<tbody>';
-
-    if (empty($respondenList)) {
-      $colSpanTotal = 13 + ($survei ? 0 : 1) + count($pertanyaanList);
-      echo '<tr><td colspan="' . $colSpanTotal . '" class="text-center" style="padding: 25px; color: #64748b;">Belum ada data responden yang mengisi survei ini.</td></tr>';
+      readfile($tempFile);
+      @unlink($tempFile);
+      exit;
     } else {
-      $no = 1;
-      foreach ($respondenList as $r) {
-        $rowClass = ($no % 2 === 0) ? 'alt-row' : '';
-        echo '<tr class="' . $rowClass . '">';
-        echo '<td class="num">' . $no++ . '</td>';
-        echo '<td class="text-center">' . htmlspecialchars($r['CreatedAt'] ? $r['CreatedAt'] . ' WIB' : '-') . '</td>';
-        if (!$survei) {
-          $sJudul = isset($surveiMap[$r['SurveiId']]) ? $surveiMap[$r['SurveiId']]['Judul'] : 'Survei #' . $r['SurveiId'];
-          echo '<td class="text-left">' . htmlspecialchars($sJudul) . '</td>';
-        }
-        echo '<td class="text-left" style="font-weight: 600;">' . htmlspecialchars($r['RespondenNama'] ?: 'Anonim') . '</td>';
-        echo '<td class="text-center" style="mso-number-format: \'\\@\';">' . htmlspecialchars($r['RespondenKontak'] ?: '-') . '</td>';
-        echo '<td class="text-center">' . htmlspecialchars($r['RespondenGender'] ?: '-') . '</td>';
-        echo '<td class="text-center">' . htmlspecialchars($r['RespondenUsia'] ?: '-') . '</td>';
-        echo '<td class="text-center">' . htmlspecialchars($r['RespondenPendidikan'] ?: '-') . '</td>';
-        echo '<td class="text-left">' . htmlspecialchars($r['RespondenPekerjaan'] ?: '-') . '</td>';
-        echo '<td class="text-left">' . htmlspecialchars($r['Provinsi'] ?: '-') . '</td>';
-        echo '<td class="text-left">' . htmlspecialchars($r['Kabupaten'] ?: '-') . '</td>';
-        echo '<td class="text-left">' . htmlspecialchars($r['Kecamatan'] ?: '-') . '</td>';
-        echo '<td class="text-left">' . htmlspecialchars($r['Desa'] ?: '-') . '</td>';
-        echo '<td class="text-left">' . htmlspecialchars($r['AlamatDetail'] ?: '-') . '</td>';
-        $fotoHtml = !empty($r['FotoDokumentasi']) ? ('<a href="' . base_url($r['FotoDokumentasi']) . '" target="_blank" style="color: #043168; font-weight: bold;">Lihat Foto</a>') : '<span style="color: #94a3b8;">-</span>';
-        echo '<td class="text-center">' . $fotoHtml . '</td>';
-        echo '<td class="decimal">' . number_format((float)$r['RataRataSkor'], 2) . '</td>';
-        echo '<td class="highlight">' . htmlspecialchars($r['MutuPelayanan'] ?: 'Baik') . '</td>';
+      // Fallback jika ZipArchive gagal
+      echo "Maaf, terjadi kendala saat membuat file spreadsheet Excel.";
+      exit;
+    }
+  }
 
-        if (!empty($pertanyaanList)) {
-          foreach ($pertanyaanList as $q) {
-            $ans = isset($jawabanMap[$r['Id']][$q['Id']]) ? $jawabanMap[$r['Id']][$q['Id']] : null;
-            if ($ans) {
-              $valText = htmlspecialchars($ans['JawabanTeks']);
-              if ($ans['NilaiAngka'] !== null && $ans['NilaiAngka'] !== '') {
-                $valText .= ' (' . $ans['NilaiAngka'] . ')';
-              }
-              echo '<td class="text-center">' . $valText . '</td>';
-            } else {
-              echo '<td class="text-center" style="color: #94a3b8;">-</td>';
+  /**
+   * Helper Private: Menghasilkan Dokumen OpenXML .xlsx Multi-Sheet Standar Penelitian
+   * Setiap sheet mewakili 1 instrumen penilaian + 1 sheet ringkasan rekapitulasi umum
+   */
+  private function generateSurveyMultiSheetXlsx($survei, $pertanyaanAll, $respondenAll, $jawabanMap, $outputPath) {
+    if (!class_exists('ZipArchive')) {
+      return false;
+    }
+    $zip = new ZipArchive();
+    if ($zip->open($outputPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+      return false;
+    }
+
+    $instLabels = array(
+      'A' => 'Instrumen A - Perusahaan',
+      'B' => 'Instrumen B - Pencari Kerja',
+      'C' => 'Instrumen C - Lembaga Pelatihan',
+      'D' => 'Instrumen D - Tenaga Kerja',
+      'E' => 'Instrumen E - AHP Pakar'
+    );
+
+    // Kelompokkan pertanyaan berdasarkan instrumen
+    $qByInst = array();
+    foreach ($pertanyaanAll as $q) {
+      $inst = !empty($q['Instrumen']) ? strtoupper(trim($q['Instrumen'])) : 'UMUM';
+      $qByInst[$inst][] = $q;
+    }
+
+    // Kelompokkan responden berdasarkan instrumen
+    $rByInst = array();
+    foreach ($respondenAll as $r) {
+      $inst = !empty($r['Instrumen']) ? strtoupper(trim($r['Instrumen'])) : 'UMUM';
+      $rByInst[$inst][] = $r;
+    }
+
+    $hasInstruments = (count($qByInst) > 1 || (count($qByInst) === 1 && !isset($qByInst['UMUM'])));
+    $sheets = array();
+
+    $esc = function($str) {
+      $s = (string)$str;
+      $s = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F]/', '', $s);
+      return htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
+    };
+
+    $getColLetter = function($colIdx) {
+      $letter = '';
+      while ($colIdx >= 0) {
+        $letter = chr($colIdx % 26 + 65) . $letter;
+        $colIdx = intdiv($colIdx, 26) - 1;
+      }
+      return $letter;
+    };
+
+    // =========================================================================
+    // SHEET 1: RINGKASAN REKAPITULASI UMUM (MASTER OVERVIEW)
+    // =========================================================================
+    $summaryRows = array();
+    $summaryRows[] = array(
+      array('val' => 'REKAPITULASI HASIL SURVEI & PENELITIAN LAPANGAN', 'style' => 'title')
+    );
+    $summaryRows[] = array(
+      array('val' => 'Judul Survei: ' . ($survei ? $survei['Judul'] : 'Semua Survei') . ' | Instansi: ' . ($survei['Lembaga'] ?? 'Bappeda / IDE Consultant') . ' | Waktu Unduh: ' . date('d-m-Y H:i:s') . ' WIB', 'style' => 'subtitle')
+    );
+    $summaryRows[] = array(); // Spasi
+
+    if ($hasInstruments) {
+      $summaryRows[] = array(
+        array('val' => 'RINGKASAN SEBARAN INSTRUMEN PENILAIAN', 'style' => 'sec_header'),
+        array('val' => '', 'style' => 'sec_header'),
+        array('val' => '', 'style' => 'sec_header'),
+        array('val' => '', 'style' => 'sec_header')
+      );
+      $summaryRows[] = array(
+        array('val' => 'Kode & Nama Instrumen', 'style' => 'header'),
+        array('val' => 'Jumlah Responden', 'style' => 'header'),
+        array('val' => 'Jumlah Butir Kuesioner', 'style' => 'header'),
+        array('val' => 'Rata-Rata Skor', 'style' => 'header')
+      );
+
+      foreach ($qByInst as $kInst => $qList) {
+        $rCount = isset($rByInst[$kInst]) ? count($rByInst[$kInst]) : 0;
+        $instTitle = $instLabels[$kInst] ?? ("Instrumen " . $kInst);
+        $scores = array();
+        if (!empty($rByInst[$kInst])) {
+          foreach ($rByInst[$kInst] as $rItem) {
+            if (!empty($rItem['RataRataSkor']) && (float)$rItem['RataRataSkor'] > 0) {
+              $scores[] = (float)$rItem['RataRataSkor'];
             }
           }
         }
-        echo '</tr>';
+        $avgScore = count($scores) > 0 ? round(array_sum($scores) / count($scores), 2) : 0;
+
+        $summaryRows[] = array(
+          array('val' => $instTitle, 'style' => 'text'),
+          array('val' => $rCount, 'style' => 'num'),
+          array('val' => count($qList), 'style' => 'num'),
+          array('val' => $avgScore, 'style' => 'decimal')
+        );
       }
+      $summaryRows[] = array();
     }
 
-    echo '</tbody>';
-    echo '</table>';
-    echo '</body>';
-    echo '</html>';
-    exit;
+    $summaryRows[] = array(
+      array('val' => 'DATA LENGKAP SELURUH RESPONDEN', 'style' => 'sec_header')
+    );
+
+    $masterHeader = array(
+      'No', 'Waktu Pengisian', 'Instrumen', 'Nama Responden / Lembaga', 'NIK', 'Kontak / No HP',
+      'Gender', 'Usia', 'Pendidikan', 'Pekerjaan', 'Provinsi', 'Kabupaten / Kota',
+      'Kecamatan', 'Desa / Kelurahan', 'Alamat Lengkap', 'Latitude', 'Longitude',
+      'Surveiyor / Pencatat', 'Total Skor', 'Rata-Rata Skor', 'Mutu Pelayanan'
+    );
+    $headerCells = array();
+    foreach ($masterHeader as $h) {
+      $headerCells[] = array('val' => $h, 'style' => 'header');
+    }
+    $summaryRows[] = $headerCells;
+
+    $no = 1;
+    foreach ($respondenAll as $r) {
+      $summaryRows[] = array(
+        array('val' => $no++, 'style' => 'num'),
+        array('val' => !empty($r['CreatedAt']) ? date('d/m/Y H:i', strtotime($r['CreatedAt'])) : '-', 'style' => 'text_center'),
+        array('val' => !empty($r['Instrumen']) ? $r['Instrumen'] : 'Umum', 'style' => 'badge_inst'),
+        array('val' => $r['RespondenNama'] ?: 'Anonim', 'style' => 'text_bold'),
+        array('val' => $r['RespondenNIK'] ?: '-', 'style' => 'text_center'),
+        array('val' => $r['RespondenKontak'] ?: '-', 'style' => 'text_center'),
+        array('val' => $r['RespondenGender'] ?: '-', 'style' => 'text_center'),
+        array('val' => $r['RespondenUsia'] ?: '-', 'style' => 'text_center'),
+        array('val' => $r['RespondenPendidikan'] ?: '-', 'style' => 'text_center'),
+        array('val' => $r['RespondenPekerjaan'] ?: '-', 'style' => 'text'),
+        array('val' => $r['Provinsi'] ?: '-', 'style' => 'text'),
+        array('val' => $r['Kabupaten'] ?: '-', 'style' => 'text'),
+        array('val' => $r['Kecamatan'] ?: '-', 'style' => 'text'),
+        array('val' => $r['Desa'] ?: '-', 'style' => 'text'),
+        array('val' => $r['AlamatDetail'] ?: '-', 'style' => 'text'),
+        array('val' => !empty($r['Latitude']) ? (float)$r['Latitude'] : '-', 'style' => 'num_coord'),
+        array('val' => !empty($r['Longitude']) ? (float)$r['Longitude'] : '-', 'style' => 'num_coord'),
+        array('val' => $r['CreatedBy'] ?? ($r['NamaSurveiyor'] ?? '-'), 'style' => 'text'),
+        array('val' => !empty($r['TotalSkor']) ? (float)$r['TotalSkor'] : 0, 'style' => 'decimal'),
+        array('val' => !empty($r['RataRataSkor']) ? (float)$r['RataRataSkor'] : 0, 'style' => 'decimal_highlight'),
+        array('val' => $r['MutuPelayanan'] ?: 'Baik', 'style' => 'text_mutu')
+      );
+    }
+
+    $sheets[] = array(
+      'name' => 'Ringkasan Rekapitulasi',
+      'rows' => $summaryRows
+    );
+
+    // =========================================================================
+    // SHEET 2..N: 1 SHEET PER INSTRUMEN PENILAIAN
+    // =========================================================================
+    foreach ($qByInst as $kInst => $qList) {
+      $sheetTitle = $instLabels[$kInst] ?? ("Instrumen " . $kInst);
+      $tabName = mb_strimwidth($sheetTitle, 0, 31, '');
+
+      $iResponden = isset($rByInst[$kInst]) ? $rByInst[$kInst] : array();
+      $iRows = array();
+
+      $iRows[] = array(
+        array('val' => strtoupper($sheetTitle) . ' - HASIL KUESIONER LENGKAP', 'style' => 'title')
+      );
+      $iRows[] = array(
+        array('val' => 'Total Responden: ' . count($iResponden) . ' Responden | Total Butir Kuesioner: ' . count($qList) . ' Butir | Waktu Ekspor: ' . date('d-m-Y H:i') . ' WIB', 'style' => 'subtitle')
+      );
+      $iRows[] = array();
+
+      $baseCols = array(
+        'No', 'Waktu Submit', 'Nama Responden / Lembaga', 'NIK', 'No HP', 'Gender',
+        'Usia', 'Pendidikan', 'Pekerjaan', 'Kecamatan', 'Desa', 'Alamat Lengkap',
+        'Latitude', 'Longitude', 'Surveiyor', 'Rata-Rata Skor', 'Mutu Pelayanan'
+      );
+
+      $headerRow = array();
+      foreach ($baseCols as $b) {
+        $headerRow[] = array('val' => $b, 'style' => 'header');
+      }
+      foreach ($qList as $idx => $q) {
+        $qLabel = 'P' . ($idx + 1) . ': ' . mb_strimwidth($q['Pertanyaan'], 0, 45, '...');
+        $headerRow[] = array('val' => $qLabel, 'style' => 'header_q');
+      }
+      $iRows[] = $headerRow;
+
+      $iNo = 1;
+      $qScoresSum = array_fill(0, count($qList), 0);
+      $qScoresCount = array_fill(0, count($qList), 0);
+
+      foreach ($iResponden as $r) {
+        $rowCells = array(
+          array('val' => $iNo++, 'style' => 'num'),
+          array('val' => !empty($r['CreatedAt']) ? date('d/m/Y H:i', strtotime($r['CreatedAt'])) : '-', 'style' => 'text_center'),
+          array('val' => $r['RespondenNama'] ?: 'Anonim', 'style' => 'text_bold'),
+          array('val' => $r['RespondenNIK'] ?: '-', 'style' => 'text_center'),
+          array('val' => $r['RespondenKontak'] ?: '-', 'style' => 'text_center'),
+          array('val' => $r['RespondenGender'] ?: '-', 'style' => 'text_center'),
+          array('val' => $r['RespondenUsia'] ?: '-', 'style' => 'text_center'),
+          array('val' => $r['RespondenPendidikan'] ?: '-', 'style' => 'text_center'),
+          array('val' => $r['RespondenPekerjaan'] ?: '-', 'style' => 'text'),
+          array('val' => $r['Kecamatan'] ?: '-', 'style' => 'text'),
+          array('val' => $r['Desa'] ?: '-', 'style' => 'text'),
+          array('val' => $r['AlamatDetail'] ?: '-', 'style' => 'text'),
+          array('val' => !empty($r['Latitude']) ? (float)$r['Latitude'] : '-', 'style' => 'num_coord'),
+          array('val' => !empty($r['Longitude']) ? (float)$r['Longitude'] : '-', 'style' => 'num_coord'),
+          array('val' => $r['CreatedBy'] ?? ($r['NamaSurveiyor'] ?? '-'), 'style' => 'text'),
+          array('val' => !empty($r['RataRataSkor']) ? (float)$r['RataRataSkor'] : 0, 'style' => 'decimal_highlight'),
+          array('val' => $r['MutuPelayanan'] ?: 'Baik', 'style' => 'text_mutu')
+        );
+
+        foreach ($qList as $qIdx => $q) {
+          $ans = isset($jawabanMap[$r['Id']][$q['Id']]) ? $jawabanMap[$r['Id']][$q['Id']] : null;
+          if ($ans) {
+            $txt = trim((string)$ans['JawabanTeks']);
+            $skor = $ans['NilaiAngka'];
+            if ($skor !== null && $skor !== '') {
+              $qScoresSum[$qIdx] += (float)$skor;
+              $qScoresCount[$qIdx]++;
+            }
+            $disp = $txt;
+            if ($skor !== null && $skor !== '' && is_numeric($skor)) {
+              $disp .= ' [' . (float)$skor . ']';
+            }
+            $rowCells[] = array('val' => $disp ?: '-', 'style' => 'text_answer');
+          } else {
+            $rowCells[] = array('val' => '-', 'style' => 'text_center');
+          }
+        }
+
+        $iRows[] = $rowCells;
+      }
+
+      // Baris Statistik Rata-rata Skor per Butir Pertanyaan
+      if (count($iResponden) > 0) {
+        $statRow = array(
+          array('val' => 'RATA-RATA (MEAN)', 'style' => 'stat_label'),
+          array('val' => '', 'style' => 'stat_label'),
+          array('val' => '', 'style' => 'stat_label'),
+          array('val' => '', 'style' => 'stat_label'),
+          array('val' => '', 'style' => 'stat_label'),
+          array('val' => '', 'style' => 'stat_label'),
+          array('val' => '', 'style' => 'stat_label'),
+          array('val' => '', 'style' => 'stat_label'),
+          array('val' => '', 'style' => 'stat_label'),
+          array('val' => '', 'style' => 'stat_label'),
+          array('val' => '', 'style' => 'stat_label'),
+          array('val' => '', 'style' => 'stat_label'),
+          array('val' => '', 'style' => 'stat_label'),
+          array('val' => '', 'style' => 'stat_label'),
+          array('val' => '', 'style' => 'stat_label'),
+          array('val' => '', 'style' => 'stat_label'),
+          array('val' => '', 'style' => 'stat_label')
+        );
+        foreach ($qList as $qIdx => $q) {
+          $cnt = $qScoresCount[$qIdx];
+          $mean = ($cnt > 0) ? round($qScoresSum[$qIdx] / $cnt, 2) : 0;
+          $statRow[] = array('val' => $mean > 0 ? $mean : '-', 'style' => 'stat_val');
+        }
+        $iRows[] = $statRow;
+      }
+
+      $sheets[] = array(
+        'name' => $tabName,
+        'rows' => $iRows
+      );
+    }
+
+    // =========================================================================
+    // WRITE OPENXML STRUCTURES
+    // =========================================================================
+    $ct = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . "\n";
+    $ct .= '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">';
+    $ct .= '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>';
+    $ct .= '<Default Extension="xml" ContentType="application/xml"/>';
+    $ct .= '<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>';
+    $ct .= '<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>';
+    foreach ($sheets as $idx => $s) {
+      $ct .= '<Override PartName="/xl/worksheets/sheet' . ($idx + 1) . '.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>';
+    }
+    $ct .= '</Types>';
+    $zip->addFromString('[Content_Types].xml', $ct);
+
+    $rels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . "\n";
+    $rels .= '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">';
+    $rels .= '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>';
+    $rels .= '</Relationships>';
+    $zip->addFromString('_rels/.rels', $rels);
+
+    $wbRels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . "\n";
+    $wbRels .= '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">';
+    $wbRels .= '<Relationship Id="rIdStyles" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>';
+    foreach ($sheets as $idx => $s) {
+      $wbRels .= '<Relationship Id="rId' . ($idx + 1) . '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet' . ($idx + 1) . '.xml"/>';
+    }
+    $wbRels .= '</Relationships>';
+    $zip->addFromString('xl/_rels/workbook.xml.rels', $wbRels);
+
+    $wb = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . "\n";
+    $wb .= '<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">';
+    $wb .= '<sheets>';
+    foreach ($sheets as $idx => $s) {
+      $wb .= '<sheet name="' . $esc($s['name']) . '" sheetId="' . ($idx + 1) . '" r:id="rId' . ($idx + 1) . '"/>';
+    }
+    $wb .= '</sheets>';
+    $wb .= '</workbook>';
+    $zip->addFromString('xl/workbook.xml', $wb);
+
+    $styleMap = array(
+      'normal' => 0, 'title' => 1, 'subtitle' => 2, 'sec_header' => 3,
+      'header' => 4, 'header_q' => 5, 'text' => 6, 'text_bold' => 7,
+      'text_center' => 8, 'num' => 9, 'decimal' => 10, 'decimal_highlight' => 11,
+      'text_mutu' => 12, 'badge_inst' => 13, 'num_coord' => 14,
+      'text_answer' => 15, 'stat_label' => 16, 'stat_val' => 17
+    );
+
+    $stylesXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . "\n";
+    $stylesXml .= '<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">';
+    $stylesXml .= '<numFmts count="2">';
+    $stylesXml .= '<numFmt numFmtId="164" formatCode="0.00"/>';
+    $stylesXml .= '<numFmt numFmtId="165" formatCode="0.000000"/>';
+    $stylesXml .= '</numFmts>';
+
+    $stylesXml .= '<fonts count="8">';
+    $stylesXml .= '<font><sz val="11"/><name val="Calibri"/></font>';
+    $stylesXml .= '<font><b/><sz val="14"/><color rgb="FF043168"/><name val="Calibri"/></font>';
+    $stylesXml .= '<font><sz val="10"/><color rgb="FF64748B"/><name val="Calibri"/></font>';
+    $stylesXml .= '<font><b/><sz val="11"/><color rgb="FF1E3A8A"/><name val="Calibri"/></font>';
+    $stylesXml .= '<font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font>';
+    $stylesXml .= '<font><b/><sz val="11"/><name val="Calibri"/></font>';
+    $stylesXml .= '<font><b/><sz val="11"/><color rgb="FF059669"/><name val="Calibri"/></font>';
+    $stylesXml .= '<font><sz val="10"/><name val="Calibri"/></font>';
+    $stylesXml .= '</fonts>';
+
+    $stylesXml .= '<fills count="7">';
+    $stylesXml .= '<fill><patternFill patternType="none"/></fill>';
+    $stylesXml .= '<fill><patternFill patternType="gray125"/></fill>';
+    $stylesXml .= '<fill><patternFill patternType="solid"><fgColor rgb="FF043168"/><bgColor indexed="64"/></patternFill></fill>';
+    $stylesXml .= '<fill><patternFill patternType="solid"><fgColor rgb="FF1E3A8A"/><bgColor indexed="64"/></patternFill></fill>';
+    $stylesXml .= '<fill><patternFill patternType="solid"><fgColor rgb="FFEFF6FF"/><bgColor indexed="64"/></patternFill></fill>';
+    $stylesXml .= '<fill><patternFill patternType="solid"><fgColor rgb="FFECFDF5"/><bgColor indexed="64"/></patternFill></fill>';
+    $stylesXml .= '<fill><patternFill patternType="solid"><fgColor rgb="FFF1F5F9"/><bgColor indexed="64"/></patternFill></fill>';
+    $stylesXml .= '</fills>';
+
+    $stylesXml .= '<borders count="2">';
+    $stylesXml .= '<border><left/><right/><top/><bottom/><diagonal/></border>';
+    $stylesXml .= '<border><left style="thin"><color rgb="FFCBD5E1"/></left><right style="thin"><color rgb="FFCBD5E1"/></right><top style="thin"><color rgb="FFCBD5E1"/></top><bottom style="thin"><color rgb="FFCBD5E1"/></bottom></border>';
+    $stylesXml .= '</borders>';
+
+    $stylesXml .= '<cellXfs count="18">';
+    $stylesXml .= '<xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0"/>';
+    $stylesXml .= '<xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/>';
+    $stylesXml .= '<xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/>';
+    $stylesXml .= '<xf numFmtId="0" fontId="3" fillId="4" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"><alignment vertical="center"/></xf>';
+    $stylesXml .= '<xf numFmtId="0" fontId="4" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>';
+    $stylesXml .= '<xf numFmtId="0" fontId="4" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>';
+    $stylesXml .= '<xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0"><alignment vertical="center"/></xf>';
+    $stylesXml .= '<xf numFmtId="0" fontId="5" fillId="0" borderId="1" xfId="0" applyFont="1"><alignment vertical="center"/></xf>';
+    $stylesXml .= '<xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0"><alignment horizontal="center" vertical="center"/></xf>';
+    $stylesXml .= '<xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0"><alignment horizontal="center" vertical="center"/></xf>';
+    $stylesXml .= '<xf numFmtId="164" fontId="6" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1"><alignment horizontal="center" vertical="center"/></xf>';
+    $stylesXml .= '<xf numFmtId="164" fontId="6" fillId="5" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1"><alignment horizontal="center" vertical="center"/></xf>';
+    $stylesXml .= '<xf numFmtId="0" fontId="6" fillId="5" borderId="1" xfId="0" applyFont="1" applyFill="1"><alignment horizontal="center" vertical="center"/></xf>';
+    $stylesXml .= '<xf numFmtId="0" fontId="5" fillId="4" borderId="1" xfId="0" applyFont="1" applyFill="1"><alignment horizontal="center" vertical="center"/></xf>';
+    $stylesXml .= '<xf numFmtId="165" fontId="7" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1"><alignment horizontal="center" vertical="center"/></xf>';
+    $stylesXml .= '<xf numFmtId="0" fontId="7" fillId="0" borderId="1" xfId="0" applyFont="1"><alignment vertical="center"/></xf>';
+    $stylesXml .= '<xf numFmtId="0" fontId="5" fillId="6" borderId="1" xfId="0" applyFont="1" applyFill="1"><alignment horizontal="right" vertical="center"/></xf>';
+    $stylesXml .= '<xf numFmtId="164" fontId="6" fillId="6" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1"><alignment horizontal="center" vertical="center"/></xf>';
+    $stylesXml .= '</cellXfs>';
+    $stylesXml .= '</styleSheet>';
+    $zip->addFromString('xl/styles.xml', $stylesXml);
+
+    foreach ($sheets as $idx => $s) {
+      $ws = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . "\n";
+      $ws .= '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">';
+
+      $maxColWidths = array();
+      foreach ($s['rows'] as $rIdx => $row) {
+        if ($rIdx < 2) continue;
+        foreach ($row as $cIdx => $cell) {
+          $valStr = (string)($cell['val'] ?? '');
+          $len = mb_strlen($valStr);
+          if (!isset($maxColWidths[$cIdx]) || $len > $maxColWidths[$cIdx]) {
+            $maxColWidths[$cIdx] = $len;
+          }
+        }
+      }
+
+      if (!empty($maxColWidths)) {
+        $ws .= '<cols>';
+        foreach ($maxColWidths as $cIdx => $maxLen) {
+          $colWidth = max(min($maxLen + 4, 50), 10);
+          $ws .= '<col min="' . ($cIdx + 1) . '" max="' . ($cIdx + 1) . '" width="' . $colWidth . '" customWidth="1"/>';
+        }
+        $ws .= '</cols>';
+      }
+
+      $ws .= '<sheetData>';
+      foreach ($s['rows'] as $rIdx => $row) {
+        $rowNum = $rIdx + 1;
+        $ws .= '<row r="' . $rowNum . '"' . (isset($row[0]['style']) && in_array($row[0]['style'], array('header', 'header_q')) ? ' ht="28" customHeight="1"' : '') . '>';
+        foreach ($row as $cIdx => $cell) {
+          $colRef = $getColLetter($cIdx) . $rowNum;
+          $val = $cell['val'] ?? '';
+          $stName = $cell['style'] ?? 'normal';
+          $sId = $styleMap[$stName] ?? 0;
+
+          if (is_numeric($val) && !in_array($stName, array('text', 'text_bold', 'text_center', 'badge_inst', 'subtitle'))) {
+            $ws .= '<c r="' . $colRef . '" s="' . $sId . '"><v>' . $val . '</v></c>';
+          } else {
+            $ws .= '<c r="' . $colRef . '" s="' . $sId . '" t="inlineStr"><is><t>' . $esc($val) . '</t></is></c>';
+          }
+        }
+        $ws .= '</row>';
+      }
+      $ws .= '</sheetData>';
+      $ws .= '</worksheet>';
+      $zip->addFromString('xl/worksheets/sheet' . ($idx + 1) . '.xml', $ws);
+    }
+
+    $zip->close();
+    return true;
   }
 
   /**

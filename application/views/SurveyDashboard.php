@@ -29,6 +29,8 @@
 
   <!-- Chart.js for Auto-Generated Data Visualizations (Donat, Batang, Lingkaran) -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- html2canvas for High-Res Geographic Map & Infographic PNG Export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <!-- RTKD Multi-Instrument Dynamic Survey Stylesheet & Engine -->
   <link rel="stylesheet" href="<?= base_url('assets/css/survei_rtkd.css') ?>?v=<?= time() ?>">
@@ -3337,27 +3339,36 @@
                 </span>
                 <strong style="color: var(--ide-navy); font-size: 15px;" id="gisSurveyTitleText">Peta Sebaran Responden</strong>
                 <!-- Watermark-Free Layer Switcher -->
-                <div style="display: flex; gap: 6px; margin-left: 10px;">
-                  <button type="button" class="btn-map-layer-switch active" id="btnLayerGoogle" onclick="switchMapBaseLayer('google')">
+                <div style="display: flex; gap: 6px; margin-left: 10px; flex-wrap: wrap;">
+                  <button type="button" class="btn-map-layer-switch active" id="btnLayerGoogle" onclick="switchMapBaseLayer('google')" title="Gaya Peta Google Maps GIS">
                     <i class="fa-solid fa-map"></i> Google Maps
                   </button>
-                  <button type="button" class="btn-map-layer-switch" id="btnLayerSatelit" onclick="switchMapBaseLayer('satelit')">
+                  <button type="button" class="btn-map-layer-switch" id="btnLayerSatelit" onclick="switchMapBaseLayer('satelit')" title="Gaya Citra Satelit &amp; Hibrida">
                     <i class="fa-solid fa-satellite"></i> Satelit
                   </button>
-                  <button type="button" class="btn-map-layer-switch" id="btnLayerOSM" onclick="switchMapBaseLayer('osm')">
+                  <button type="button" class="btn-map-layer-switch" id="btnLayerPositron" onclick="switchMapBaseLayer('positron')" title="Gaya Terang &amp; Bersih (Standar Publikasi Penelitian / Jurnal)">
+                    <i class="fa-solid fa-file-lines"></i> Light Research
+                  </button>
+                  <button type="button" class="btn-map-layer-switch" id="btnLayerDark" onclick="switchMapBaseLayer('dark')" title="Gaya Gelap Elegan (Presentasi Eksekutif)">
+                    <i class="fa-solid fa-moon"></i> Dark Mode
+                  </button>
+                  <button type="button" class="btn-map-layer-switch" id="btnLayerOSM" onclick="switchMapBaseLayer('osm')" title="Gaya Topografis &amp; Kontur Wilayah">
                     <i class="fa-solid fa-globe"></i> OpenStreetMap
                   </button>
                 </div>
               </div>
               <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                <button type="button" class="btn btn-sm btn-primary font-weight-bold" style="border-radius: 8px; background: #043168; border-color: #043168; color: #ffffff; box-shadow: 0 2px 6px rgba(4,49,104,0.2); padding: 5px 16px;" onclick="openMapExportModal()" title="Download Peta Sebaran Responden Hasil Survei (PNG HD)">
+                  <i class="fa-solid fa-download mr-1"></i> Download Peta (PNG)
+                </button>
+                <button type="button" class="btn btn-sm btn-success font-weight-bold" style="border-radius: 8px; padding: 5px 14px;" onclick="exportCurrentSurveyExcel()" title="Unduh Spreadsheet Excel Multi-Sheet Berdasarkan Instrumen">
+                  <i class="fa-solid fa-file-excel mr-1"></i> Ekspor Excel Multi-Sheet
+                </button>
                 <button type="button" class="btn btn-sm btn-outline-dark" style="border-radius: 8px; font-weight: 700; background: #fff;" onclick="showSurveyQRCode()" title="QR Code Kuesioner">
-                  <i class="fa-solid fa-qrcode" style="color: var(--ide-red);"></i> QR Code
+                  <i class="fa-solid fa-qrcode" style="color: var(--ide-red);"></i> QR
                 </button>
                 <button type="button" class="btn btn-sm btn-outline-secondary" onclick="reloadGoogleMapData()" title="Muat Ulang Titik">
                   <i class="fa-solid fa-rotate"></i> Refresh
-                </button>
-                <button type="button" class="btn btn-sm btn-success" onclick="exportCurrentSurveyExcel()" title="Unduh Excel">
-                  <i class="fa-solid fa-file-excel"></i> Ekspor Excel
                 </button>
               </div>
             </div>
@@ -3639,19 +3650,27 @@
                   <span class="badge badge-success" style="padding: 6px 12px; border-radius: 8px; font-size: 12px;" id="chartTotalRespBadge">
                     0 Responden
                   </span>
+                  <button type="button" class="btn btn-sm btn-primary font-weight-bold" onclick="downloadAllInfographics()" style="border-radius: 8px; background: #043168; border-color: #043168; color: #ffffff; padding: 5px 14px; font-size: 12px; box-shadow: 0 2px 6px rgba(4,49,104,0.18);" title="Unduh Seluruh Infografis Sekaligus sebagai Gambar PNG Standar Penelitian">
+                    <i class="fa-solid fa-file-image mr-1"></i> Unduh Semua Bagan (PNG)
+                  </button>
                 </div>
               </div>
 
               <!-- Grid 3 Bagan: Donat, Batang, Lingkaran -->
               <div class="row">
-                <!-- 1. Bagan Donat: Distribusi Mutu Pelayanan & Indeks Kepuasan -->
+                <!-- 1. Bagan Donat: Adaptif (General: Instrumen | Filter: Mutu & Skor Instrumen) -->
                 <div class="col-xl-4 col-lg-6 col-md-12 mb-4">
                   <div class="rekap-chart-card">
-                    <div class="chart-card-header">
-                      <div class="chart-card-title">
-                        <i class="fa-solid fa-circle-dot" style="color: #10b981;"></i> Bagan Donat: Mutu Pelayanan
+                    <div class="chart-card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                      <div>
+                        <div class="chart-card-title" id="chartDonutTitle">
+                          <i class="fa-solid fa-layer-group" style="color: #0284c7;"></i> Bagan Donat: Distribusi Instrumen
+                        </div>
+                        <span class="chart-card-subtitle" id="donutMutuSubtitle">Komposisi Responden Berdasarkan Instrumen Survei</span>
                       </div>
-                      <span class="chart-card-subtitle" id="donutMutuSubtitle">Distribusi Kategori Mutu Responden</span>
+                      <button type="button" class="btn btn-sm btn-outline-primary" onclick="downloadInfographic('donut')" title="Unduh Bagan Donat sebagai Gambar PNG Standar Penelitian" style="border-radius: 8px; font-weight: 700; font-size: 11.5px; padding: 4px 10px; white-space: nowrap;">
+                        <i class="fa-solid fa-download"></i> PNG
+                      </button>
                     </div>
                     <div class="chart-card-body" style="position: relative; height: 260px; width: 100%;">
                       <canvas id="dashRekapDonutMutu" style="display: block; width: 100% !important; height: 260px !important;"></canvas>
@@ -3660,29 +3679,34 @@
                         <span>Belum ada data responden</span>
                       </div>
                     </div>
-                    <div class="chart-card-footer" id="donutMutuLegend" style="display: flex; justify-content: space-around; font-size: 11.5px; border-top: 1px solid #f1f5f9; padding-top: 10px; margin-top: 5px;">
+                    <div class="chart-card-footer" id="donutMutuLegend" style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 6px; font-size: 11.5px; border-top: 1px solid #f1f5f9; padding-top: 10px; margin-top: 5px;">
                       <!-- Legend auto updated -->
                     </div>
                   </div>
                 </div>
 
-                <!-- 2. Bagan Batang: Rata-rata Skor per Parameter / Butir Pertanyaan -->
+                <!-- 2. Bagan Batang: Adaptif (General: Wilayah / Kecamatan | Filter: Detail Butir Pertanyaan) -->
                 <div class="col-xl-4 col-lg-6 col-md-12 mb-4">
                   <div class="rekap-chart-card">
-                    <div class="chart-card-header">
-                      <div class="chart-card-title">
-                        <i class="fa-solid fa-chart-column" style="color: var(--ide-navy);"></i> Bagan Batang: Parameter Survei
+                    <div class="chart-card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                      <div>
+                        <div class="chart-card-title" id="chartBarTitle">
+                          <i class="fa-solid fa-location-dot" style="color: var(--ide-navy);"></i> Bagan Batang: Sebaran Wilayah
+                        </div>
+                        <span class="chart-card-subtitle" id="chartBarSubtitle">Distribusi Responden di Wilayah Kabupaten Banyuwangi</span>
                       </div>
-                      <span class="chart-card-subtitle">Rata-Rata Skor per Butir Pertanyaan (Skala 1 - 5)</span>
+                      <button type="button" class="btn btn-sm btn-outline-primary" onclick="downloadInfographic('bar')" title="Unduh Bagan Batang sebagai Gambar PNG Standar Penelitian" style="border-radius: 8px; font-weight: 700; font-size: 11.5px; padding: 4px 10px; white-space: nowrap;">
+                        <i class="fa-solid fa-download"></i> PNG
+                      </button>
                     </div>
                     <div class="chart-card-body" style="position: relative; height: 260px; width: 100%;">
                       <canvas id="dashRekapBarParameter" style="display: block; width: 100% !important; height: 260px !important;"></canvas>
                       <div id="barEmptyState" class="chart-empty-state" style="display: none;">
                         <i class="fa-solid fa-chart-simple"></i>
-                        <span>Belum ada data parameter pertanyaan</span>
+                        <span>Belum ada data responden</span>
                       </div>
                     </div>
-                    <div class="chart-card-footer" style="font-size: 11px; color: #64748b; border-top: 1px solid #f1f5f9; padding-top: 10px; margin-top: 5px; text-align: center;">
+                    <div class="chart-card-footer" id="barParamFooter" style="font-size: 11px; color: #64748b; border-top: 1px solid #f1f5f9; padding-top: 10px; margin-top: 5px; text-align: center;">
                       <span style="display: inline-block; margin: 0 4px;"><i class="fa-solid fa-square" style="color: #10b981;"></i> &ge;4.0 Sangat Baik</span>
                       <span style="display: inline-block; margin: 0 4px;"><i class="fa-solid fa-square" style="color: #0284c7;"></i> 3.5-3.9 Baik</span>
                       <span style="display: inline-block; margin: 0 4px;"><i class="fa-solid fa-square" style="color: #f59e0b;"></i> 3.0-3.4 Cukup</span>
@@ -3691,26 +3715,31 @@
                   </div>
                 </div>
 
-                <!-- 3. Diagram Lingkaran: Demografi Responden (Gender, Usia, Wilayah) -->
+                <!-- 3. Diagram Lingkaran: Adaptif (General: Gender Responden | Filter: Demografi Instrumen Terpilih) -->
                 <div class="col-xl-4 col-lg-12 col-md-12 mb-4">
                   <div class="rekap-chart-card">
-                    <div class="chart-card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="chart-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
                       <div>
-                        <div class="chart-card-title">
-                          <i class="fa-solid fa-chart-pie" style="color: var(--ide-red);"></i> Diagram Lingkaran: Demografi
+                        <div class="chart-card-title" id="chartPieTitle">
+                          <i class="fa-solid fa-venus-mars" style="color: var(--ide-red);"></i> Diagram Lingkaran: Komposisi Gender
                         </div>
-                        <span class="chart-card-subtitle">Sebaran Profil Responden Terhimpun</span>
+                        <span class="chart-card-subtitle" id="chartPieSubtitle">Proporsi Responden Berdasarkan Jenis Kelamin</span>
                       </div>
-                      <!-- Demographic Switcher Pills -->
-                      <div class="btn-group btn-group-sm" role="group">
-                        <button type="button" class="btn btn-outline-secondary active btn-demo-filter" id="btnDemoGender" onclick="switchDemographicPie('gender')" title="Jenis Kelamin">
-                          Gender
-                        </button>
-                        <button type="button" class="btn btn-outline-secondary btn-demo-filter" id="btnDemoUsia" onclick="switchDemographicPie('usia')" title="Kelompok Usia">
-                          Usia
-                        </button>
-                        <button type="button" class="btn btn-outline-secondary btn-demo-filter" id="btnDemoKec" onclick="switchDemographicPie('kecamatan')" title="Sebaran Kecamatan">
-                          Wilayah
+                      <div style="display: flex; align-items: center; gap: 6px;">
+                        <!-- Demographic Switcher Pills -->
+                        <div class="btn-group btn-group-sm" role="group">
+                          <button type="button" class="btn btn-outline-secondary active btn-demo-filter" id="btnDemoGender" onclick="switchDemographicPie('gender')" title="Jenis Kelamin">
+                            Gender
+                          </button>
+                          <button type="button" class="btn btn-outline-secondary btn-demo-filter" id="btnDemoUsia" onclick="switchDemographicPie('usia')" title="Kelompok Usia">
+                            Usia
+                          </button>
+                          <button type="button" class="btn btn-outline-secondary btn-demo-filter" id="btnDemoKec" onclick="switchDemographicPie('kecamatan')" title="Sebaran Kecamatan">
+                            Wilayah
+                          </button>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="downloadInfographic('pie')" title="Unduh Diagram Demografi sebagai Gambar PNG Standar Penelitian" style="border-radius: 8px; font-weight: 700; font-size: 11.5px; padding: 4px 10px; white-space: nowrap;">
+                          <i class="fa-solid fa-download"></i> PNG
                         </button>
                       </div>
                     </div>
@@ -3763,12 +3792,12 @@
                     <i class="fa-solid fa-layer-group" style="color: var(--ide-navy);"></i> Instrumen Survei
                   </label>
                   <select id="rekapFilterInstrumen" class="form-control form-control-sm" style="border-radius: 10px; height: 38px; border: 1.5px solid #cbd5e1; font-weight: 600; font-size: 12.5px;" onchange="applyDashboardRekapFilters()">
-                    <option value="">Semua Instrumen</option>
+                    <option value="">Semua Instrumen (Mode General)</option>
                     <option value="A">Instrumen A - Perusahaan / Pemberi Kerja</option>
                     <option value="B">Instrumen B - Pencari Kerja &amp; Lulusan</option>
                     <option value="C">Instrumen C - Pemangku Kepentingan</option>
+                    <option value="D">Instrumen D - Siswa Kelas 12 SMA/SMK</option>
                     <option value="E">Instrumen C2 / E - AHP Isu Strategis</option>
-                    <option value="D">Instrumen D - Siswa Kelas 12</option>
                   </select>
                 </div>
 
@@ -4336,6 +4365,172 @@
     </div>
   </div>
 
+
+  <!-- ===================================================================
+       MODAL EKSPOR PETA SPASIAL HASIL SURVEI KE GAMBAR (PNG)
+       Standar Publikasi Penelitian Ilmiah, Jurnal, Skripsi & Laporan Kedinasan
+       Fitur Filter Lokasi Berdasarkan Instrumen & Posisi Presisi
+       =================================================================== -->
+  <div class="modal fade" id="modalExportPetaGis" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content" style="border-radius: 20px; overflow: hidden; border: none; box-shadow: 0 25px 60px rgba(0,0,0,0.35);">
+        <div class="modal-header" style="background: linear-gradient(135deg, #043168 0%, #1e3a8a 100%); color: #ffffff; padding: 18px 24px;">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="width: 44px; height: 44px; background: rgba(245, 158, 11, 0.2); border: 2px solid #f59e0b; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fbbf24;">
+              <i class="fa-solid fa-map-location-dot"></i>
+            </div>
+            <div>
+              <h5 class="modal-title font-weight-bold" style="font-size: 17px; margin: 0;">Download Peta Sebaran Survei (PNG HD)</h5>
+              <div style="font-size: 12px; color: #cbd5e1; margin-top: 2px;">Format gambar beresolusi tinggi (HD) dengan seluruh data sebaran lokasi responden riil via koordinat GPS</div>
+            </div>
+          </div>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.9;">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="padding: 24px;">
+          <!-- 1. Filter Lokasi Berdasarkan Instrumen Penilaian -->
+          <div class="form-group mb-4" id="exportMultiInstGroup">
+            <label class="font-weight-bold" style="font-size: 13.5px; color: var(--ide-navy); display: flex; align-items: center; justify-content: space-between;">
+              <span><i class="fa-solid fa-filter text-primary mr-1"></i> 1. Filter Lokasi Berdasarkan Instrumen Survei</span>
+              <span class="badge badge-primary" id="exportTotalGpsBadge" style="font-size: 11px; padding: 4px 10px; border-radius: 12px; font-weight: 700;">GPS Terverifikasi</span>
+            </label>
+            <div style="font-size: 12px; color: #64748b; margin-bottom: 10px;">
+              Pilih instrumen survei untuk memfilter titik-titik responden yang akan diposisikan dan ditampilkan pada gambar peta:
+            </div>
+            
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
+              <button type="button" class="export-inst-pill active" id="pillExportAll" onclick="setExportMapInstrumen('')">
+                <i class="fa-solid fa-layer-group"></i> Semua Instrumen (<span id="pillCountAll">86</span>)
+              </button>
+              <button type="button" class="export-inst-pill" id="pillExportA" onclick="setExportMapInstrumen('A')">
+                <b>A</b> &bull; Perusahaan (<span id="pillCountA">18</span>)
+              </button>
+              <button type="button" class="export-inst-pill" id="pillExportB" onclick="setExportMapInstrumen('B')">
+                <b>B</b> &bull; Pencari Kerja (<span id="pillCountB">18</span>)
+              </button>
+              <button type="button" class="export-inst-pill" id="pillExportC" onclick="setExportMapInstrumen('C')">
+                <b>C</b> &bull; Pemangku Kepentingan (<span id="pillCountC">17</span>)
+              </button>
+              <button type="button" class="export-inst-pill" id="pillExportD" onclick="setExportMapInstrumen('D')">
+                <b>D</b> &bull; Siswa Kelas 12 (<span id="pillCountD">18</span>)
+              </button>
+              <button type="button" class="export-inst-pill" id="pillExportE" onclick="setExportMapInstrumen('E')">
+                <b>E</b> &bull; Pakar AHP (<span id="pillCountE">15</span>)
+              </button>
+            </div>
+
+            <select id="exportMapInstrumenFilter" class="form-control" style="font-size: 13px; font-weight: 700; border-radius: 10px; border: 1.5px solid #cbd5e1; height: 42px;" onchange="updateExportModalFilterStats()">
+              <option value="">-- Tampilkan Seluruh Instrumen (Semua Titik Responden) --</option>
+              <option value="A">Instrumen A - Perusahaan / Pemberi Kerja</option>
+              <option value="B">Instrumen B - Pencari Kerja &amp; Lulusan</option>
+              <option value="C">Instrumen C - Pemangku Kepentingan</option>
+              <option value="D">Instrumen D - Siswa Kelas 12 / Calon Pekerja</option>
+              <option value="E">Instrumen E - Pakar Isu Strategis (AHP)</option>
+            </select>
+
+            <!-- Live Status Indikator Filter -->
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 14px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+              <div style="font-size: 12.5px; color: #1e293b; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-location-dot text-danger" style="font-size: 15px;"></i>
+                <span>Menampilkan: <strong id="exportPointCountNum" class="text-primary" style="font-size: 14px;">86</strong> dari <span id="exportPointTotalNum">86</span> Titik Lokasi Pengisian Survei</span>
+              </div>
+              <div id="exportFilterDesc" style="font-size: 11.5px; color: #64748b; font-style: italic;">
+                Menampilkan seluruh responden dari semua instrumen kuesioner.
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Pilihan Format & Kelengkapan Kartografis Penelitian -->
+          <div class="form-group mb-4">
+            <label class="font-weight-bold" style="font-size: 13px; color: var(--ide-navy); display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-vector-square text-primary"></i> 2. Kelengkapan Kartografis &amp; Bingkai Publikasi
+            </label>
+            <div class="row">
+              <div class="col-md-6 mb-2">
+                <div class="custom-control custom-radio" style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px 16px 12px 38px; cursor: pointer;">
+                  <input type="radio" id="mapLayoutFull" name="exportMapLayout" value="full" class="custom-control-input" checked>
+                  <label class="custom-control-label font-weight-bold" for="mapLayoutFull" style="font-size: 13px; color: #0f172a; cursor: pointer;">
+                    Bingkai Publikasi Riset Lengkap (Rekomendasi)
+                  </label>
+                  <div style="font-size: 11.5px; color: #64748b; margin-top: 2px; line-height: 1.4;">
+                    Menyertakan Kop Lembaga, Judul Resmi, Keterangan Filter Instrumen, Legenda Mutu/Skor, Kompas Arah Utara, Skala Grafis, dan Inset Statistik ($N$).
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-2">
+                <div class="custom-control custom-radio" style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px 16px 12px 38px; cursor: pointer;">
+                  <input type="radio" id="mapLayoutClean" name="exportMapLayout" value="clean" class="custom-control-input">
+                  <label class="custom-control-label font-weight-bold" for="mapLayoutClean" style="font-size: 13px; color: #0f172a; cursor: pointer;">
+                    Peta Bersih Tanpa Bingkai (Clean Map Only)
+                  </label>
+                  <div style="font-size: 11.5px; color: #64748b; margin-top: 2px; line-height: 1.4;">
+                    Hanya kanvas gambar peta dasar dan sebaran titik pin lokasi pengisian survei beresolusi tinggi.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Kualitas & Resolusi Ekspor -->
+          <div class="form-group mb-3">
+            <label class="font-weight-bold" style="font-size: 13px; color: var(--ide-navy); display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-sliders text-primary"></i> 3. Kualitas Resolusi Gambar (HD)
+            </label>
+            <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+              <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 12.5px; background: #f0fdf4; border: 1px solid #bbf7d0; padding: 8px 16px; border-radius: 8px; margin: 0;">
+                <input type="radio" name="exportMapScale" value="2" checked> <b style="color: #047857;">Ultra-HD (High-DPI 2x Scale / 300 DPI)</b> &bull; Sangat Tajam untuk Jurnal &amp; Cetak
+              </label>
+              <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 12.5px; background: #f1f5f9; border: 1px solid #cbd5e1; padding: 8px 16px; border-radius: 8px; margin: 0;">
+                <input type="radio" name="exportMapScale" value="1"> <b>Standar Layar (1x Scale)</b> &bull; Ukuran File Ringan
+              </label>
+            </div>
+          </div>
+
+          <!-- Status Indikator Rendering -->
+          <div id="mapExportStatus" style="display: none; background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 12px; padding: 14px 18px; margin-top: 14px; font-size: 13px; color: #1e40af;">
+            <i class="fa-solid fa-spinner fa-spin mr-2"></i> <span id="mapExportStatusText">Menyiapkan kanvas spasial dan memposisikan titik survei...</span>
+          </div>
+        </div>
+        <div class="modal-footer" style="background: #f8fafc; padding: 14px 24px; justify-content: space-between;">
+          <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal" style="border-radius: 10px; padding: 8px 18px;">
+            Tutup
+          </button>
+          <button type="button" class="btn btn-primary font-weight-bold" id="btnExecuteMapExport" onclick="processAndDownloadMapPng()" style="background: var(--ide-navy); border-color: var(--ide-navy); border-radius: 10px; padding: 9px 24px; box-shadow: 0 4px 12px rgba(4,49,104,0.25);">
+            <i class="fa-solid fa-download mr-1"></i> Mulai Unduh Gambar Peta (PNG)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .export-inst-pill {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1.5px solid #cbd5e1;
+      background: #f8fafc;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .export-inst-pill:hover {
+      border-color: #043168;
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+    .export-inst-pill.active {
+      background: #043168;
+      color: #ffffff;
+      border-color: #043168;
+      box-shadow: 0 3px 8px rgba(4, 49, 104, 0.25);
+    }
+  </style>
   <!-- Scripts -->
   <script src="<?=base_url('vendors/jquery/dist/jquery.min.js')?>"></script>
   <script src="<?=base_url('vendors/bootstrap/dist/js/bootstrap.bundle.min.js')?>"></script>
@@ -4475,6 +4670,24 @@
         setTimeout(function() {
           if (dashMapInstance) {
             dashMapInstance.invalidateSize();
+            if (respondentPointsData && respondentPointsData.length > 0) {
+              var validPts = respondentPointsData.filter(function(p) {
+                var lat = parseFloat(p.lat);
+                var lng = parseFloat(p.lng);
+                return !isNaN(lat) && !isNaN(lng);
+              });
+              if (validPts.length > 0) {
+                var b = L.latLngBounds(validPts.map(function(p) { return [parseFloat(p.lat), parseFloat(p.lng)]; }));
+                if (b.isValid()) {
+                  if (b.getNorthEast().equals(b.getSouthWest())) {
+                    dashMapInstance.setView(b.getCenter(), 14);
+                  } else {
+                    dashMapInstance.fitBounds(b, { padding: [40, 40], maxZoom: 15 });
+                  }
+                  return;
+                }
+              }
+            }
             dashMapInstance.setView([-8.32, 114.25], 10);
           } else {
             initDashMap();
@@ -5141,37 +5354,58 @@
     // MAP INTEGRATION ENGINE (WATERMARK-FREE OPENSTREETMAP & GOOGLE TILES)
     // =========================================================================
 
-    // Factory fungsi pembuat tile layer (100% Bebas Watermark)
+    // Factory fungsi pembuat tile layer (100% Bebas Watermark & Support CORS Image Export)
     function createTileLayer(type) {
       if (type === 'google') {
         // Direct Google Roadmap tiles - 100% Watermark-Free & responsif
         return L.tileLayer('https://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
           maxZoom: 20,
           subdomains: ['0', '1', '2', '3'],
-          attribution: '&copy; Google Maps &bull; IDE Consultant GIS'
+          attribution: '&copy; Google Maps &bull; IDE Consultant GIS',
+          crossOrigin: true
         });
       } else if (type === 'satelit') {
         // Direct Google Satellite + Hybrid tiles - 100% Watermark-Free
         return L.tileLayer('https://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
           maxZoom: 20,
           subdomains: ['0', '1', '2', '3'],
-          attribution: '&copy; Google Satellite &bull; IDE Consultant GIS'
+          attribution: '&copy; Google Satellite &bull; IDE Consultant GIS',
+          crossOrigin: true
+        });
+      } else if (type === 'positron') {
+        // CartoDB Positron - Light & Clean Research Publication Style (Standar Jurnal / Skripsi)
+        return L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+          maxZoom: 19,
+          subdomains: 'abcd',
+          attribution: '&copy; OpenStreetMap contributors &bull; &copy; CARTO',
+          crossOrigin: true
+        });
+      } else if (type === 'dark') {
+        // CartoDB Dark Matter - Modern Dark Mode (Presentasi Eksekutif)
+        return L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+          maxZoom: 19,
+          subdomains: 'abcd',
+          attribution: '&copy; OpenStreetMap contributors &bull; &copy; CARTO',
+          crossOrigin: true
         });
       } else {
         // Standard OpenStreetMap - 100% Watermark-Free & Open
         return L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 19,
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors &bull; IDE Consultant GIS'
+          attribution: '&copy; OpenStreetMap contributors &bull; IDE Consultant GIS',
+          crossOrigin: true
         });
       }
     }
 
-    // Switch Base Map Layer (OpenStreetMap / Google Maps / Satelit)
+    // Switch Base Map Layer (OpenStreetMap / Google Maps / Satelit / Positron / Dark)
     function switchMapBaseLayer(layerType) {
       currentBaseLayerType = layerType;
       $('.btn-map-layer-switch').removeClass('active');
       if (layerType === 'google') $('#btnLayerGoogle').addClass('active');
       else if (layerType === 'satelit') $('#btnLayerSatelit').addClass('active');
+      else if (layerType === 'positron') $('#btnLayerPositron').addClass('active');
+      else if (layerType === 'dark') $('#btnLayerDark').addClass('active');
       else $('#btnLayerOSM').addClass('active');
 
       if (dashMapInstance) {
@@ -5223,7 +5457,7 @@
     function loadBanyuwangiPolygonsToMap() {
       if (!dashMapInstance) return;
 
-      $.getJSON(BaseURL + 'assets/geojson/banyuwangi_kecamatan_real_smooth.geojson', function(geoJsonData) {
+      $.getJSON(BaseURL + 'assets/geojson/banyuwangi_kecamatan_real.geojson', function(geoJsonData) {
         currentKecamatanGeoJson = geoJsonData;
 
         var kecDropdown = $('#gisKecamatanFilter');
@@ -5232,7 +5466,7 @@
         var kecNames = [];
         if (geoJsonData.features) {
           geoJsonData.features.forEach(function(feat, idx) {
-            var name = feat.properties.kecamatan || feat.properties.district || feat.properties.nama || ('Kecamatan ' + (idx + 1));
+            var name = feat.properties.district || feat.properties.kecamatan || feat.properties.nama || ('Kecamatan ' + (idx + 1));
             if (kecNames.indexOf(name) === -1) {
               kecNames.push(name);
             }
@@ -5248,25 +5482,25 @@
 
         kecamatanGeoJsonLayer = L.geoJSON(geoJsonData, {
           style: function(feature) {
-            var kec = feature.properties.kecamatan || feature.properties.district || feature.properties.nama || '';
-            var color = '#0284c7';
+            var kec = feature.properties.district || feature.properties.kecamatan || feature.properties.nama || '';
+            var color = feature.properties.color || '#0284c7';
             for (var i = 0; i < kecNames.length; i++) {
               if (kecNames[i].toLowerCase() === kec.toLowerCase()) {
-                color = getDistrictColor(i);
+                if (!feature.properties.color) color = getDistrictColor(i);
                 break;
               }
             }
 
             return {
               fillColor: color,
-              fillOpacity: 0.18,
+              fillOpacity: 0.14,
               color: color,
-              weight: 2,
+              weight: 1.8,
               opacity: 0.85
             };
           },
           onEachFeature: function(feature, layer) {
-            var kec = feature.properties.kecamatan || feature.properties.district || feature.properties.nama || 'Banyuwangi';
+            var kec = feature.properties.district || feature.properties.kecamatan || feature.properties.nama || 'Banyuwangi';
 
             // Tooltip hover informatif
             layer.bindTooltip('<b>Kecamatan ' + kec + '</b>', {
@@ -5374,6 +5608,7 @@
         'E': 'Instrumen E - Pakar Isu Strategis (AHP)'
       };
 
+      // Render titik responden langsung pada koordinat GPS riil sesuai perangkat
       points.forEach(function(p, idx) {
         var lat = parseFloat(p.lat);
         var lng = parseFloat(p.lng);
@@ -5518,7 +5753,11 @@
       });
 
       if (bounds.isValid() && dashMapInstance) {
-        dashMapInstance.fitBounds(bounds, { padding: [35, 35], maxZoom: 13 });
+        if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
+          dashMapInstance.setView(bounds.getCenter(), 14);
+        } else {
+          dashMapInstance.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 });
+        }
       }
     }
 
@@ -5971,24 +6210,461 @@
     var currentRekapData = null;
     var currentDemoDimension = 'gender';
 
+    var RTKD_INSTRUMEN_META = {
+      'A': { code: 'A', name: 'Instrumen A - Perusahaan / Pemberi Kerja', short: 'Inst. A (Perusahaan)', color: '#0284c7' },
+      'B': { code: 'B', name: 'Instrumen B - Pencari Kerja & Lulusan', short: 'Inst. B (Pencari Kerja)', color: '#10b981' },
+      'C': { code: 'C', name: 'Instrumen C - Pemangku Kepentingan', short: 'Inst. C (Stakeholder)', color: '#8b5cf6' },
+      'D': { code: 'D', name: 'Instrumen D - Siswa Kelas 12 SMA/SMK', short: 'Inst. D (Siswa Kls 12)', color: '#f59e0b' },
+      'E': { code: 'E', name: 'Instrumen C2 / E - AHP Isu Strategis', short: 'Inst. E (AHP Isu)', color: '#ef4444' }
+    };
+
     function renderRekapCharts(res) {
+      if (!res) return;
       currentRekapData = res;
       var totalResp = (res && res.totalResponden !== undefined) ? res.totalResponden : (res && res.responden ? res.responden.length : 0);
       
+      var filterInst = ($('#rekapFilterInstrumen').val() || '').trim().toUpperCase();
+
       // Update badge header
       if (res && res.survei && res.survei.Judul) {
         $('#chartSurveyTitleBadge').text(res.survei.Judul);
       }
       $('#chartTotalRespBadge').text(totalResp + ' Responden');
 
-      // 1. Render Bagan Donat: Mutu Pelayanan
-      renderRekapDonutMutu(res.distribusiMutu, res.rataRataSkor, totalResp);
+      if (!filterInst) {
+        // =====================================================================
+        // MODE GENERAL: INSTRUMEN, WILAYAH, DAN GENDER LENGKAP
+        // =====================================================================
+        renderGeneralRekapCharts(res, totalResp);
+      } else {
+        // =====================================================================
+        // MODE FILTER PER INSTRUMEN: DETAIL PERTANYAAN MASING-MASING INSTRUMEN
+        // =====================================================================
+        renderInstrumentDetailRekapCharts(res, filterInst, totalResp);
+      }
+    }
 
-      // 2. Render Bagan Batang: Parameter Butir Pertanyaan
-      renderRekapBarParameter(res.parameterStats);
+    // =========================================================================
+    // 1. RENDER CHARTS MODE GENERAL (Semua Instrumen)
+    // =========================================================================
+    function renderGeneralRekapCharts(res, totalResp) {
+      // Update Card 1 Header & Subtitle
+      $('#chartDonutTitle').html('<i class="fa-solid fa-layer-group" style="color: #0284c7;"></i> Bagan Donat: Distribusi Instrumen');
+      $('#donutMutuSubtitle').text('Komposisi Responden Berdasarkan 5 Instrumen RTKD');
 
-      // 3. Render Diagram Lingkaran: Demografi Responden
+      // Update Card 2 Header & Subtitle
+      $('#chartBarTitle').html('<i class="fa-solid fa-location-dot" style="color: var(--ide-navy);"></i> Bagan Batang: Sebaran Wilayah');
+      $('#chartBarSubtitle').text('Distribusi Responden di Wilayah Kabupaten Banyuwangi');
+
+      // Update Card 3 Header & Subtitle
+      $('#chartPieTitle').html('<i class="fa-solid fa-venus-mars" style="color: var(--ide-red);"></i> Diagram Lingkaran: Komposisi Gender');
+      $('#chartPieSubtitle').text('Proporsi Responden Berdasarkan Jenis Kelamin');
+
+      // 1. Bagan Donat: Distribusi Instrumen A, B, C, D, E
+      renderGeneralDonutInstrumen(res.distribusiInstrumen, totalResp);
+
+      // 2. Bagan Batang: Sebaran Wilayah Kecamatan
+      renderGeneralBarWilayah(res.distribusiKecamatan, totalResp);
+
+      // 3. Diagram Lingkaran: Gender / Demografi
       renderRekapPieDemografi(currentDemoDimension);
+    }
+
+    function renderGeneralDonutInstrumen(distInst, totalResp) {
+      var ctx = document.getElementById('dashRekapDonutMutu');
+      if (!ctx) return;
+
+      if (rekapDonutChart) {
+        rekapDonutChart.destroy();
+        rekapDonutChart = null;
+      }
+
+      distInst = distInst || { 'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0 };
+      var instKeys = ['A', 'B', 'C', 'D', 'E'];
+      var labels = [
+        'Inst. A: Perusahaan',
+        'Inst. B: Pencari Kerja',
+        'Inst. C: Stakeholder',
+        'Inst. D: Siswa Kls 12',
+        'Inst. E: Isu AHP'
+      ];
+      var bgColors = ['#0284c7', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444'];
+      var vals = instKeys.map(function(k) { return distInst[k] || 0; });
+      var total = vals.reduce(function(a, b) { return a + b; }, 0);
+
+      if (total === 0) {
+        $('#donutEmptyState').show();
+        $('#donutMutuLegend').empty();
+        return;
+      }
+      $('#donutEmptyState').hide();
+
+      // Render legend with counts & %
+      var legendHtml = '';
+      labels.forEach(function(lbl, i) {
+        var count = vals[i];
+        var pct = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
+        legendHtml += 
+          '<div style="text-align: center; padding: 2px 4px; min-width: 58px;">' +
+            '<div style="display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #475569; font-size: 10.5px;">' +
+              '<span style="width: 8px; height: 8px; border-radius: 50%; background: ' + bgColors[i] + '; display: inline-block;"></span> ' + instKeys[i] +
+            '</div>' +
+            '<div style="font-weight: 800; color: #0f172a; margin-top: 2px; font-size: 11.5px;">' + count + ' <span style="font-size: 10px; color: #64748b;">(' + pct + '%)</span></div>' +
+          '</div>';
+      });
+      $('#donutMutuLegend').html(legendHtml);
+
+      rekapDonutChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: vals,
+            backgroundColor: bgColors,
+            borderWidth: 2,
+            borderColor: '#ffffff'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '68%',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(item) {
+                  var c = item.raw;
+                  var p = total > 0 ? ((c / total) * 100).toFixed(1) : 0;
+                  return ' ' + item.label + ': ' + c + ' responden (' + p + '%)';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function renderGeneralBarWilayah(distKec, totalResp) {
+      var ctx = document.getElementById('dashRekapBarParameter');
+      if (!ctx) return;
+
+      if (rekapBarChart) {
+        try { rekapBarChart.destroy(); } catch(e) {}
+        rekapBarChart = null;
+      }
+
+      distKec = distKec || {};
+      var kList = [];
+      for (var k in distKec) {
+        if (k && distKec[k] > 0) {
+          kList.push({ name: k, count: distKec[k] });
+        }
+      }
+      kList.sort(function(a, b) { return b.count - a.count; });
+
+      if (kList.length === 0) {
+        $('#barEmptyState').show();
+        $('#barParamFooter').html('<span style="color:#94a3b8;">Belum ada sebaran wilayah responden.</span>');
+        return;
+      }
+      $('#barEmptyState').hide();
+
+      var topK = kList.slice(0, 8);
+      var labels = topK.map(function(item) { return item.name; });
+      var dataVals = topK.map(function(item) { return item.count; });
+      var bgColors = ['#0284c7', '#0369a1', '#0ea5e9', '#06b6d4', '#0d9488', '#10b981', '#059669', '#3b82f6'];
+
+      // Update footer
+      var totalKecCovered = kList.length;
+      var topName = topK[0] ? topK[0].name : '-';
+      var topCnt = topK[0] ? topK[0].count : 0;
+      $('#barParamFooter').html(
+        '<span><i class="fa-solid fa-map-location-dot" style="color: #0284c7;"></i> Total <b>' + totalKecCovered + ' Kecamatan</b> Terisi &bull; Tertinggi: <b>Kec. ' + topName + '</b> (' + topCnt + ' Responden)</span>'
+      );
+
+      try {
+        rekapBarChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Jumlah Responden',
+              data: dataVals,
+              backgroundColor: bgColors.slice(0, labels.length),
+              borderRadius: 6,
+              maxBarThickness: 38
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 400 },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: { stepSize: 1, font: { size: 11, weight: '600' } },
+                grid: { color: '#f1f5f9' }
+              },
+              x: {
+                ticks: { font: { size: 10.5, weight: '700' }, autoSkip: false },
+                grid: { display: false }
+              }
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: function(item) {
+                    var tot = totalResp || 1;
+                    var p = ((item.raw / tot) * 100).toFixed(1);
+                    return ' Kec. ' + item.label + ': ' + item.raw + ' responden (' + p + '%)';
+                  }
+                }
+              }
+            }
+          }
+        });
+      } catch (err) {
+        console.error('Error rendering general bar chart:', err);
+      }
+    }
+
+    // =========================================================================
+    // 2. RENDER CHARTS MODE DETAIL INSTRUMEN (Filter A, B, C, D, atau E)
+    // =========================================================================
+    function renderInstrumentDetailRekapCharts(res, filterInst, totalResp) {
+      var curMeta = RTKD_INSTRUMEN_META[filterInst] || { name: 'Instrumen ' + filterInst, short: 'Inst. ' + filterInst, color: '#043168' };
+      var instStat = (res.statsPerInstrumen && res.statsPerInstrumen[filterInst]) ? res.statsPerInstrumen[filterInst] : null;
+      var instTotal = instStat ? instStat.total : ((res.distribusiInstrumen && res.distribusiInstrumen[filterInst]) || 0);
+      var instAvg = instStat ? Number(instStat.avgSkor || 0).toFixed(2) : Number(res.rataRataSkor || 0).toFixed(2);
+
+      // Update Card 1 Header & Subtitle
+      $('#chartDonutTitle').html('<i class="fa-solid fa-circle-dot" style="color: #10b981;"></i> Bagan Donat: Mutu Pelayanan (' + curMeta.short + ')');
+      $('#donutMutuSubtitle').text('Tingkat Kepuasan & Indeks Mutu ' + curMeta.name);
+
+      // Update Card 2 Header & Subtitle
+      $('#chartBarTitle').html('<i class="fa-solid fa-chart-column" style="color: var(--ide-navy);"></i> Bagan Batang: Butir Pertanyaan (' + curMeta.short + ')');
+      $('#chartBarSubtitle').text('Rata-Rata Skor per Butir Kuesioner ' + curMeta.short + ' (Skala 1 - 5)');
+
+      // Update Card 3 Header & Subtitle
+      $('#chartPieTitle').html('<i class="fa-solid fa-chart-pie" style="color: var(--ide-red);"></i> Diagram Lingkaran: Karakteristik (' + curMeta.short + ')');
+      $('#chartPieSubtitle').text('Profil Responden Khusus ' + curMeta.name);
+
+      // 1. Donut Mutu Pelayanan Khusus Instrumen Terpilih
+      var dMutu = instStat ? instStat.distribusiMutu : res.distribusiMutu;
+      renderRekapDonutMutu(dMutu, instAvg, instTotal);
+
+      // 2. Bar Detail Butir Pertanyaan Khusus Instrumen Terpilih
+      renderDetailBarPertanyaan(res.parameterStats, filterInst, instAvg);
+
+      // 3. Pie Demografi Khusus Instrumen Terpilih
+      renderDetailPieDemografi(instStat, currentDemoDimension, instTotal);
+    }
+
+    function renderDetailBarPertanyaan(parameterStats, filterInst, instAvg) {
+      var ctx = document.getElementById('dashRekapBarParameter');
+      if (!ctx) return;
+
+      if (rekapBarChart) {
+        try { rekapBarChart.destroy(); } catch(e) {}
+        rekapBarChart = null;
+      }
+
+      var allParams = parameterStats || [];
+      var instQuestions = allParams.filter(function(p) {
+        return (p.Instrumen || 'A').toUpperCase() === filterInst;
+      });
+
+      // Filter pertanyaan numerik / skala / nilai skor
+      var activeParams = instQuestions.filter(function(p) {
+        var t = String(p.Tipe || p.tipe || '').toLowerCase();
+        return t !== 'textarea' && t !== 'text' && t !== 'date';
+      });
+      if (activeParams.length === 0) activeParams = instQuestions;
+
+      if (activeParams.length === 0) {
+        $('#barEmptyState').show();
+        $('#barParamFooter').html('<span style="color:#94a3b8;">Belum ada data butir pertanyaan untuk instrumen ini.</span>');
+        return;
+      }
+      $('#barEmptyState').hide();
+
+      var labels = activeParams.map(function(p, idx) { 
+        return p.label || ('P' + (p.no || (idx + 1))); 
+      });
+      var dataVals = activeParams.map(function(p) { 
+        var val = (p.avg !== undefined && p.avg !== null) ? p.avg : ((p.AvgScore !== undefined && p.AvgScore !== null) ? p.AvgScore : 0);
+        return parseFloat(val) || 0;
+      });
+
+      var bgColors = dataVals.map(function(score) {
+        if (score >= 4.0) return '#10b981';
+        if (score >= 3.5) return '#0284c7';
+        if (score >= 3.0) return '#f59e0b';
+        return '#ef4444';
+      });
+
+      // Footer Keterangan
+      $('#barParamFooter').html(
+        '<span style="display: inline-block; margin: 0 4px;"><i class="fa-solid fa-square" style="color: #10b981;"></i> &ge;4.0 Sangat Baik</span>' +
+        '<span style="display: inline-block; margin: 0 4px;"><i class="fa-solid fa-square" style="color: #0284c7;"></i> 3.5-3.9 Baik</span>' +
+        '<span style="display: inline-block; margin: 0 4px;"><i class="fa-solid fa-square" style="color: #f59e0b;"></i> 3.0-3.4 Cukup</span>' +
+        '<span style="display: inline-block; margin: 0 4px;"><i class="fa-solid fa-square" style="color: #ef4444;"></i> &lt;3.0 Kurang</span>'
+      );
+
+      try {
+        rekapBarChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Rata-rata Skor',
+              data: dataVals,
+              backgroundColor: bgColors,
+              borderRadius: 6,
+              maxBarThickness: labels.length > 20 ? 24 : 38
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 400 },
+            scales: {
+              y: {
+                min: 0,
+                max: 5,
+                ticks: { stepSize: 1, font: { size: 11, weight: '600' } },
+                grid: { color: '#f1f5f9' }
+              },
+              x: {
+                ticks: { 
+                  font: { size: labels.length > 25 ? 9 : (labels.length > 15 ? 10 : 11), weight: '700' },
+                  autoSkip: false
+                },
+                grid: { display: false }
+              }
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  title: function(items) {
+                    if (!items || items.length === 0) return '';
+                    var idx = items[0].dataIndex;
+                    var p = activeParams[idx];
+                    var qLabel = p.label || ('P' + (p.no || (idx + 1)));
+                    var qText = p.pertanyaan || p.Pertanyaan || '';
+                    return qLabel + ': ' + qText;
+                  },
+                  label: function(item) {
+                    var p = activeParams[item.dataIndex];
+                    var count = p.count || p.TotalJwb || 0;
+                    return ' Skor Rata-rata: ' + item.raw + ' / 5.00 (' + count + ' jawaban)';
+                  }
+                }
+              }
+            }
+          }
+        });
+      } catch (err) {
+        console.error('Error rendering detail bar chart:', err);
+      }
+    }
+
+    function renderDetailPieDemografi(instStat, dimension, instTotal) {
+      var ctx = document.getElementById('dashRekapPieDemografi');
+      if (!ctx) return;
+
+      if (rekapPieChart) {
+        rekapPieChart.destroy();
+        rekapPieChart = null;
+      }
+
+      if (!instStat || instTotal === 0) {
+        $('#pieEmptyState').show();
+        $('#pieDemografiLegend').empty();
+        return;
+      }
+
+      var labels = [];
+      var vals = [];
+      var bgColors = [];
+
+      if (dimension === 'gender') {
+        var gDist = instStat.distribusiGender || { 'Laki-laki': 0, 'Perempuan': 0 };
+        labels = ['Laki-laki', 'Perempuan'];
+        vals = [gDist['Laki-laki'] || 0, gDist['Perempuan'] || 0];
+        bgColors = ['#0284c7', '#ec4899'];
+      } else if (dimension === 'usia') {
+        var uDist = instStat.distribusiUsia || {};
+        labels = Object.keys(uDist);
+        vals = Object.values(uDist);
+        bgColors = ['#06b6d4', '#3b82f6', '#6366f1', '#8b5cf6', '#d946ef'];
+      } else if (dimension === 'kecamatan') {
+        var kDist = instStat.distribusiKecamatan || {};
+        var kList = [];
+        for (var k in kDist) { kList.push({ name: k, count: kDist[k] }); }
+        kList.sort(function(a, b) { return b.count - a.count; });
+        var top = kList.slice(0, 5);
+        var remainder = kList.slice(5).reduce(function(sum, cur) { return sum + cur.count; }, 0);
+        labels = top.map(function(item) { return item.name; });
+        vals = top.map(function(item) { return item.count; });
+        if (remainder > 0) {
+          labels.push('Lainnya');
+          vals.push(remainder);
+        }
+        bgColors = ['#ef4444', '#f97316', '#f59e0b', '#10b981', '#06b6d4', '#8b5cf6'];
+      }
+
+      var total = vals.reduce(function(a, b) { return a + b; }, 0);
+      if (total === 0) {
+        $('#pieEmptyState').show();
+        $('#pieDemografiLegend').empty();
+        return;
+      }
+      $('#pieEmptyState').hide();
+
+      var legendHtml = '';
+      labels.forEach(function(lbl, i) {
+        var c = vals[i];
+        var p = total > 0 ? ((c / total) * 100).toFixed(1) : 0;
+        legendHtml += 
+          '<div style="display: flex; align-items: center; gap: 4px; font-size: 11px; color: #475569;">' +
+            '<span style="width: 8px; height: 8px; border-radius: 50%; background: ' + bgColors[i % bgColors.length] + '; display: inline-block;"></span> ' +
+            '<strong>' + lbl + ':</strong> ' + c + ' (' + p + '%)' +
+          '</div>';
+      });
+      $('#pieDemografiLegend').html(legendHtml);
+
+      rekapPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: vals,
+            backgroundColor: bgColors,
+            borderWidth: 2,
+            borderColor: '#ffffff'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(item) {
+                  var count = item.raw;
+                  var pct = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
+                  return ' ' + item.label + ': ' + count + ' (' + pct + '%)';
+                }
+              }
+            }
+          }
+        }
+      });
     }
 
     function renderRekapDonutMutu(dist, avgSkor, totalResp) {
@@ -6083,7 +6759,6 @@
         return;
       }
 
-      // Filter questions that are scale / likert / radio or have scores
       var activeParams = parameterStats.filter(function(p) {
         var t = String(p.Tipe || p.tipe || '').toLowerCase();
         return t !== 'textarea';
@@ -6197,18 +6872,21 @@
       var vals = [];
       var bgColors = [];
 
+      var filterInst = ($('#rekapFilterInstrumen').val() || '').trim().toUpperCase();
+      var instStat = (filterInst && currentRekapData.statsPerInstrumen && currentRekapData.statsPerInstrumen[filterInst]) ? currentRekapData.statsPerInstrumen[filterInst] : null;
+
       if (dimension === 'gender') {
-        var gDist = currentRekapData.distribusiGender || { 'Laki-laki': 0, 'Perempuan': 0 };
+        var gDist = instStat ? instStat.distribusiGender : (currentRekapData.distribusiGender || { 'Laki-laki': 0, 'Perempuan': 0 });
         labels = ['Laki-laki', 'Perempuan'];
         vals = [gDist['Laki-laki'] || 0, gDist['Perempuan'] || 0];
         bgColors = ['#0284c7', '#ec4899'];
       } else if (dimension === 'usia') {
-        var uDist = currentRekapData.distribusiUsia || {};
+        var uDist = instStat ? instStat.distribusiUsia : (currentRekapData.distribusiUsia || {});
         labels = Object.keys(uDist);
         vals = Object.values(uDist);
         bgColors = ['#06b6d4', '#3b82f6', '#6366f1', '#8b5cf6', '#d946ef'];
       } else if (dimension === 'kecamatan') {
-        var kDist = currentRekapData.distribusiKecamatan || {};
+        var kDist = instStat ? instStat.distribusiKecamatan : (currentRekapData.distribusiKecamatan || {});
         var kList = [];
         for (var k in kDist) {
           kList.push({ name: k, count: kDist[k] });
@@ -6320,6 +6998,11 @@
       var sortOrder = $('#rekapSortOrder').val() || 'newest';
 
       $('#rekapSearchClearBtn').toggle(searchKeyword.length > 0);
+
+      // Re-render bagan grafik analitik adaptif (Mode General vs Detail Instrumen)
+      if (currentRekapData) {
+        renderRekapCharts(currentRekapData);
+      }
 
       var filtered = list.filter(function(r) {
         // Filter Instrumen
@@ -6995,6 +7678,1601 @@
       return (str || '').toString().trim().toLowerCase();
     }
 
+
+
+    // =========================================================================
+    // ENGINES: EKSPOR PETA SPASIAL HASIL SURVEI (PNG)
+    // Sesuai Standar Publikasi Penelitian Ilmiah, Jurnal, Skripsi & Laporan Dinas
+    // Menggunakan Koordinat GPS Riil Tanpa Batas Wilayah Garis (Hanya Titik & Ubin Peta)
+    // Skala Peta Dinamis Menyesuaikan Seluruh Lokasi Sebaran Responden
+    // =========================================================================
+
+    function openMapExportModal() {
+      // Pastikan tab peta aktif agar elemen peta memiliki dimensi layout penuh di layar
+      switchDashTab('peta');
+
+      setTimeout(function() {
+        if (!dashMapInstance) {
+          Swal.fire('Peta Belum Siap', 'Peta belum selesai diinisialisasi. Silakan tunggu sebentar.', 'warning');
+          return;
+        }
+
+        dashMapInstance.invalidateSize();
+
+        // Cek apakah survei ini merupakan survei multi-instrumen (RTKD)
+        var isMulti = (currentSurveyId == 4) || (currentSurveyObj && ((currentSurveyObj.TipeSurvei === 'multi') || (currentSurveyObj.Judul && currentSurveyObj.Judul.toLowerCase().indexOf('rtkd') !== -1)));
+        if (isMulti) {
+          $('#exportMultiInstGroup').show();
+        } else {
+          $('#exportMultiInstGroup').hide();
+        }
+
+        // Ambil filter instrumen yang sedang aktif di toolbar dashboard
+        var currentInst = ($('#gisInstrumenFilter').val() || '').trim().toUpperCase();
+        $('#exportMapInstrumenFilter').val(currentInst);
+
+        // Hitung komposisi responden per instrumen
+        var points = respondentPointsData || [];
+        var counts = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+        var totalGps = 0;
+
+        points.forEach(function(p) {
+          var lat = parseFloat(p.lat);
+          var lng = parseFloat(p.lng);
+          if (!isNaN(lat) && !isNaN(lng)) {
+            totalGps++;
+            var ins = (p.instrumen || 'A').toUpperCase();
+            if (counts[ins] !== undefined) {
+              counts[ins]++;
+            }
+          }
+        });
+
+        $('#pillCountAll').text(totalGps);
+        $('#pillCountA').text(counts.A || 0);
+        $('#pillCountB').text(counts.B || 0);
+        $('#pillCountC').text(counts.C || 0);
+        $('#pillCountD').text(counts.D || 0);
+        $('#pillCountE').text(counts.E || 0);
+
+        updateExportModalFilterStats();
+
+        $('#mapExportStatus').hide();
+        $('#btnExecuteMapExport').prop('disabled', false).html('<i class="fa-solid fa-download mr-1"></i> Mulai Unduh Gambar Peta (PNG)');
+        $('#modalExportPetaGis').modal('show');
+      }, 250);
+    }
+
+    function setExportMapInstrumen(inst) {
+      $('#exportMapInstrumenFilter').val(inst);
+      updateExportModalFilterStats();
+    }
+
+    function updateExportModalFilterStats() {
+      var selectedInst = ($('#exportMapInstrumenFilter').val() || '').trim().toUpperCase();
+
+      // Update styling chip tombol
+      $('.export-inst-pill').removeClass('active');
+      if (!selectedInst) {
+        $('#pillExportAll').addClass('active');
+      } else if ($('#pillExport' + selectedInst).length) {
+        $('#pillExport' + selectedInst).addClass('active');
+      }
+
+      var points = respondentPointsData || [];
+      var filteredPoints = points.filter(function(p) {
+        var lat = parseFloat(p.lat);
+        var lng = parseFloat(p.lng);
+        if (isNaN(lat) || isNaN(lng)) return false;
+        if (!selectedInst) return true;
+        return (p.instrumen || 'A').toUpperCase() === selectedInst;
+      });
+
+      var totalGps = points.filter(function(p) {
+        var lat = parseFloat(p.lat);
+        var lng = parseFloat(p.lng);
+        return (!isNaN(lat) && !isNaN(lng));
+      }).length;
+
+      $('#exportPointCountNum').text(filteredPoints.length);
+      $('#exportPointTotalNum').text(totalGps);
+
+      var instNames = {
+        'A': 'Instrumen A - Perusahaan / Pemberi Kerja',
+        'B': 'Instrumen B - Pencari Kerja & Lulusan',
+        'C': 'Instrumen C - Pemangku Kepentingan',
+        'D': 'Instrumen D - Siswa Kelas 12 / Calon Tenaga Kerja',
+        'E': 'Instrumen E - Pakar Isu Strategis (AHP)'
+      };
+
+      if (selectedInst && instNames[selectedInst]) {
+        $('#exportFilterDesc').html('Memfilter lokasi responden <b>' + instNames[selectedInst] + '</b>.');
+      } else {
+        $('#exportFilterDesc').html('Menampilkan seluruh responden dari semua instrumen kuesioner.');
+      }
+
+      // DINAMIS: Sesuaikan kamera peta Leaflet ke daerah sebaran koordinat responden survei
+      if (dashMapInstance && filteredPoints.length > 0) {
+        var latLngs = [];
+        filteredPoints.forEach(function(p) {
+          var lat = parseFloat(p.lat);
+          var lng = parseFloat(p.lng);
+          if (!isNaN(lat) && !isNaN(lng)) {
+            latLngs.push([lat, lng]);
+          }
+        });
+        if (latLngs.length > 0) {
+          dashMapInstance.stop();
+          dashMapInstance.invalidateSize({ pan: false });
+          var bounds = L.latLngBounds(latLngs);
+          if (bounds.isValid()) {
+            if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
+              dashMapInstance.setView(bounds.getCenter(), 14, { animate: false });
+            } else {
+              dashMapInstance.fitBounds(bounds.pad(0.12), { padding: [60, 60], maxZoom: 15, animate: false });
+            }
+          }
+        }
+      }
+    }
+
+    /**
+     * Memproses dan Mengunduh Gambar Peta Spasial (PNG) Standar Publikasi Riset
+     * Menggunakan Koordinat GPS Riil dari Perangkat Responden
+     * Menyesuaikan Skala dan Batas Wilayah Peta Otomatis agar Seluruh Titik Terlihat
+     */
+    function processAndDownloadMapPng() {
+      var mapContainer = document.getElementById('dashGoogleSurveiMap');
+      if (!mapContainer || !dashMapInstance) {
+        Swal.fire('Peta Belum Siap', 'Peta belum selesai diinisialisasi. Silakan buka tab Sebaran Wilayah terlebih dahulu.', 'warning');
+        return;
+      }
+
+      var chosenFilter = ($('#exportMapInstrumenFilter').val() || '').trim().toUpperCase();
+      var chosenLayout = $('input[name="exportMapLayout"]:checked').val() || 'full';
+      var chosenScale = parseInt($('input[name="exportMapScale"]:checked').val() || '2', 10);
+
+      // Ambil titik responden yang cocok dengan filter instrumen
+      var points = respondentPointsData || [];
+      var activePoints = points.filter(function(p) {
+        var lat = parseFloat(p.lat);
+        var lng = parseFloat(p.lng);
+        if (isNaN(lat) || isNaN(lng)) return false;
+        if (!chosenFilter) return true;
+        return (p.instrumen || 'A').toUpperCase() === chosenFilter;
+      });
+
+      if (!activePoints || activePoints.length === 0) {
+        Swal.fire('Tidak Ada Titik Lokasi', 'Tidak ditemukan data titik koordinat GPS responden untuk instrumen yang dipilih.', 'warning');
+        return;
+      }
+
+      // 1. TUTUP MODAL SEGERA agar backdrop tidak menutupi atau meredupkan peta saat render
+      $('#modalExportPetaGis').modal('hide');
+
+      // Tampilkan SweetAlert proses
+      Swal.fire({
+        title: 'Menyiapkan Peta Sebaran Survei...',
+        html: '<div style="font-size:13px; color:#64748b; line-height: 1.6;">Menyesuaikan skala agar <b>seluruh lokasi responden terlihat</b>, memuat ubin peta, dan merender koordinat riil...</div>',
+        allowOutsideClick: false,
+        didOpen: function() {
+          Swal.showLoading();
+        }
+      });
+
+      // 2. Kumpulkan seluruh koordinat GPS riil responden yang aktif
+      var latLngs = [];
+      activePoints.forEach(function(p) {
+        var lat = parseFloat(p.lat);
+        var lng = parseFloat(p.lng);
+        if (!isNaN(lat) && !isNaN(lng)) {
+          latLngs.push([lat, lng]);
+        }
+      });
+
+      setTimeout(function() {
+        // Skala Peta Dinamis: Sesuaikan cakupan peta dengan padding 14% agar 100% lokasi berada di dalam frame
+        dashMapInstance.stop();
+        dashMapInstance.invalidateSize({ pan: false });
+        var bounds = L.latLngBounds(latLngs);
+        if (bounds.isValid()) {
+          if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
+            dashMapInstance.setView(bounds.getCenter(), 14, { animate: false });
+          } else {
+            dashMapInstance.fitBounds(bounds.pad(0.14), { padding: [70, 70], maxZoom: 15, animate: false });
+          }
+        }
+
+        // Sembunyikan elemen non-peta yang tidak boleh masuk ke hasil download
+        var hadKecamatan = false;
+        if (kecamatanGeoJsonLayer && dashMapInstance.hasLayer(kecamatanGeoJsonLayer)) {
+          hadKecamatan = true;
+          dashMapInstance.removeLayer(kecamatanGeoJsonLayer);
+        }
+
+        var controls = mapContainer.querySelectorAll('.leaflet-control-container, .leaflet-popup, .leaflet-tooltip');
+        controls.forEach(function(el) { el.style.visibility = 'hidden'; });
+
+        var markerPane = mapContainer.querySelector('.leaflet-marker-pane');
+        var origMarkerVisibility = markerPane ? markerPane.style.visibility : '';
+        if (markerPane) {
+          markerPane.style.visibility = 'hidden';
+        }
+
+        function restoreMapDOM() {
+          if (hadKecamatan && kecamatanGeoJsonLayer && !dashMapInstance.hasLayer(kecamatanGeoJsonLayer)) {
+            kecamatanGeoJsonLayer.addTo(dashMapInstance);
+            kecamatanGeoJsonLayer.bringToBack();
+          }
+          controls.forEach(function(el) { el.style.visibility = ''; });
+          if (markerPane) {
+            markerPane.style.visibility = origMarkerVisibility;
+          }
+        }
+
+        // Jeda 800ms agar browser selesai memuat dan merender ubin peta (tiles) Leaflet
+        setTimeout(function() {
+          html2canvas(mapContainer, {
+            useCORS: true,
+            allowTaint: false,
+            scale: chosenScale,
+            logging: false,
+            backgroundColor: '#ffffff'
+          }).then(function(mapCanvas) {
+            // Segera pulihkan DOM peta Leaflet live agar peta interaktif di layar tetap normal
+            restoreMapDOM();
+
+            // 3. Gambar seluruh lokasi responden langsung pada kanvas 2D berdasarkan koordinat riil
+            renderSurveyPinsOnCanvas(mapCanvas, activePoints, chosenScale);
+
+            // 4. Susun bingkai publikasi riset (Kop, Judul, Kompas, Skala, Legenda) atau peta bersih
+            var finalCanvas = null;
+            if (chosenLayout === 'clean') {
+              finalCanvas = mapCanvas;
+            } else {
+              finalCanvas = createResearchMapFrame(mapCanvas, chosenScale, chosenFilter, activePoints.length);
+            }
+
+            var safeTitle = (currentSurveyObj && currentSurveyObj.Judul ? currentSurveyObj.Judul.replace(/[^a-zA-Z0-9_-]/g, '_') : 'RTKD_Banyuwangi').substring(0, 30);
+            var filterSlug = chosenFilter ? ('_Inst_' + chosenFilter) : '_Semua_Instrumen';
+            var filename = 'Peta_Sebaran_Responden_' + safeTitle + filterSlug + '_' + (new Date().toISOString().slice(0,10)) + '.png';
+
+            finalCanvas.toBlob(function(blob) {
+              Swal.close();
+              var url = URL.createObjectURL(blob);
+              var a = document.createElement('a');
+              a.href = url;
+              a.download = filename;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+
+              Swal.fire({
+                icon: 'success',
+                title: 'Peta Berhasil Diunduh!',
+                html: '<div style="font-size:13px; color:#475569;">Gambar peta <b>' + filename + '</b> berhasil disimpan.<br>Seluruh <b>' + activePoints.length + ' lokasi survei responden</b> ditampilkan secara presisi berdasarkan koordinat GPS riil perangkat.</div>',
+                confirmButtonText: '<i class="fa-solid fa-check"></i> Selesai',
+                confirmButtonColor: '#043168'
+              });
+            }, 'image/png');
+
+          }).catch(function(err) {
+            restoreMapDOM();
+            Swal.close();
+            console.error("Gagal merender peta:", err);
+            Swal.fire('Gagal Merender Peta', 'Terjadi kendala saat menyusun kanvas peta: ' + (err.message || err), 'error');
+          });
+
+        }, 800);
+
+      }, 250);
+    }
+
+    /**
+     * Menggambar Pin Titik Koordinat Riil Responden Langsung pada Kanvas 2D
+     * Memproyeksikan GPS (lat, lng) ke Piksel Kanvas dengan Presisi 100%
+     * Menyertakan Badge Multi-Responden (misal 77x) dan Label Wilayah Serta Koordinat Riil
+     */
+    function renderSurveyPinsOnCanvas(mapCanvas, points, scale) {
+      var ctx = mapCanvas.getContext('2d');
+      var mapContainer = document.getElementById('dashGoogleSurveiMap');
+      if (!mapContainer || !dashMapInstance) return;
+
+      var containerW = mapContainer.clientWidth;
+      var containerH = mapContainer.clientHeight;
+      var scaleX = mapCanvas.width / containerW;
+      var scaleY = mapCanvas.height / containerH;
+      var s = scale || 2;
+
+      // 1. Kelompokkan titik responden berdasarkan koordinat GPS unik (akurasi ~1 meter)
+      var locMap = {};
+      points.forEach(function(p) {
+        var lat = parseFloat(p.lat);
+        var lng = parseFloat(p.lng);
+        if (isNaN(lat) || isNaN(lng)) return;
+        var key = lat.toFixed(5) + '_' + lng.toFixed(5);
+        if (!locMap[key]) {
+          locMap[key] = {
+            lat: lat,
+            lng: lng,
+            points: [],
+            kecamatan: p.kecamatan || '',
+            kabupaten: p.kabupaten || '',
+            desa: p.desa || '',
+            totalSkor: 0,
+            instruments: {}
+          };
+        }
+        locMap[key].points.push(p);
+        locMap[key].totalSkor += parseFloat(p.skor || 0);
+        var ins = (p.instrumen || 'A').toUpperCase();
+        locMap[key].instruments[ins] = (locMap[key].instruments[ins] || 0) + 1;
+      });
+
+      // Helper gambar rounded rectangle
+      function drawRoundedRect(c, x, y, width, height, radius) {
+        c.beginPath();
+        c.moveTo(x + radius, y);
+        c.lineTo(x + width - radius, y);
+        c.quadraticCurveTo(x + width, y, x + width, y + radius);
+        c.lineTo(x + width, y + height - radius);
+        c.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        c.lineTo(x + radius, y + height);
+        c.quadraticCurveTo(x, y + height, x, y + height - radius);
+        c.lineTo(x, y + radius);
+        c.quadraticCurveTo(x, y, x + radius, y);
+        c.closePath();
+      }
+
+      // 2. Render setiap lokasi sebaran responden ke atas kanvas
+      Object.keys(locMap).forEach(function(key) {
+        var loc = locMap[key];
+        var pt = dashMapInstance.latLngToContainerPoint(L.latLng(loc.lat, loc.lng));
+
+        // Koordinat tepat pada kanvas berdasarkan proyeksi GPS riil
+        var px = pt.x * scaleX;
+        var py = pt.y * scaleY;
+
+        var count = loc.points.length;
+        var avgSkor = loc.totalSkor / count;
+
+        // Warna pin berdasarkan instrumen atau mutu rata-rata
+        var instKeys = Object.keys(loc.instruments);
+        var pinColor = '#0284c7'; // default biru
+
+        if (instKeys.length === 1) {
+          var singleInst = instKeys[0];
+          if (singleInst === 'A') pinColor = '#043168';      // Navy (Perusahaan)
+          else if (singleInst === 'B') pinColor = '#0d9488'; // Teal (Pencari Kerja)
+          else if (singleInst === 'C') pinColor = '#7c3aed'; // Ungu (Stakeholder)
+          else if (singleInst === 'D') pinColor = '#ea580c'; // Oranye (Siswa Kelas 12)
+          else if (singleInst === 'E') pinColor = '#b40814'; // Merah (Pakar AHP)
+        } else {
+          // Multi instrumen: gunakan warna mutu skor
+          if (avgSkor >= 3.50) pinColor = '#10b981';      // hijau
+          else if (avgSkor >= 2.75) pinColor = '#0284c7'; // biru
+          else if (avgSkor >= 2.00) pinColor = '#f59e0b'; // amber
+          else pinColor = '#ef4444';                      // merah
+        }
+
+        // A. Lingkaran Titik Target Tanah (Ground Anchor) di koordinat GPS riil
+        ctx.beginPath();
+        ctx.arc(px, py, 6 * s, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.22)';
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(px, py, 2.5 * s, 0, Math.PI * 2);
+        ctx.fillStyle = '#043168';
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1 * s;
+        ctx.stroke();
+
+        // B. Pin Marker Teardrop Elegan
+        var headRadius = 10 * s;
+        var headCenterY = py - (20 * s);
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(px, headCenterY, headRadius, 0.16 * Math.PI, 0.84 * Math.PI, true);
+        ctx.lineTo(px, py - (1 * s));
+        ctx.closePath();
+
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
+        ctx.shadowBlur = 6 * s;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 3 * s;
+
+        ctx.fillStyle = pinColor;
+        ctx.fill();
+
+        ctx.shadowColor = 'transparent';
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2 * s;
+        ctx.stroke();
+        ctx.restore();
+
+        // C. Lingkaran Putih di Kepala Pin & Simbol
+        var innerRadius = 5.5 * s;
+        ctx.beginPath();
+        ctx.arc(px, headCenterY, innerRadius, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+
+        // Simbol instrumen: huruf instrumen atau multi '★'
+        var instTag = instKeys.length === 1 ? instKeys[0] : (instKeys.length > 1 ? '★' : 'A');
+        ctx.fillStyle = '#043168';
+        ctx.font = 'bold ' + (6.5 * s) + 'px Calibri, Arial, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(instTag, px, headCenterY);
+
+        // D. Badge Pengganda Multi-Responden (misal 77x, 3x)
+        if (count > 1) {
+          var badgeText = count + 'x';
+          var badgeX = px + (8.5 * s);
+          var badgeY = headCenterY - (7.5 * s);
+          var badgeW = (badgeText.length > 2 ? 14 : 11) * s;
+          var badgeH = 11 * s;
+
+          ctx.save();
+          drawRoundedRect(ctx, badgeX - (badgeW / 2), badgeY - (badgeH / 2), badgeW, badgeH, 4 * s);
+          ctx.fillStyle = '#dc2626'; // Merah tegas
+          ctx.fill();
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 1.2 * s;
+          ctx.stroke();
+
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold ' + (5.5 * s) + 'px Calibri, Arial, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(badgeText, badgeX, badgeY);
+          ctx.restore();
+        }
+
+        // E. Label Pill Keterangan Lokasi & Koordinat Riil
+        var kecName = loc.kecamatan ? loc.kecamatan.replace(/^kec\.?\s*/i, '') : '';
+        if (!kecName && loc.desa) kecName = loc.desa;
+        if (!kecName) kecName = 'Lokasi Survei';
+
+        var titleLine = 'Kec. ' + kecName + (count > 1 ? ' (' + count + ' Responden)' : '');
+        var coordLine = 'GPS: ' + loc.lat.toFixed(5) + ', ' + loc.lng.toFixed(5);
+
+        ctx.font = 'bold ' + (6.8 * s) + 'px Calibri, Arial, sans-serif';
+        var w1 = ctx.measureText(titleLine).width;
+        ctx.font = '500 ' + (5.8 * s) + 'px Calibri, Arial, sans-serif';
+        var w2 = ctx.measureText(coordLine).width;
+        var maxTextW = Math.max(w1, w2);
+
+        var pillPadX = 8 * s;
+        var pillW = maxTextW + (pillPadX * 2);
+        var pillH = 22 * s;
+
+        // Hitung posisi aman X agar tidak menembus batas kanvas
+        var pillX = px - (pillW / 2);
+        pillX = Math.max(8 * s, Math.min(mapCanvas.width - pillW - (8 * s), pillX));
+
+        // Jika posisi dekat bagian bawah kanvas, pindahkan pill ke atas pin
+        var pillY = py + (7 * s);
+        if (pillY + pillH > mapCanvas.height - (10 * s)) {
+          pillY = headCenterY - headRadius - pillH - (4 * s);
+        }
+
+        ctx.save();
+        drawRoundedRect(ctx, pillX, pillY, pillW, pillH, 5 * s);
+        ctx.fillStyle = 'rgba(4, 30, 66, 0.92)'; // Navy slate elegan
+        ctx.fill();
+        ctx.strokeStyle = '#38bdf8'; // Border aksen sky blue
+        ctx.lineWidth = 1 * s;
+        ctx.stroke();
+
+        // Teks Baris 1: Wilayah & Jumlah Responden
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold ' + (6.8 * s) + 'px Calibri, Arial, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(titleLine, pillX + (pillW / 2), pillY + (3.5 * s));
+
+        // Teks Baris 2: Titik Koordinat Riil (Lat, Lng)
+        ctx.fillStyle = '#38bdf8'; // Sky blue koordinat
+        ctx.font = 'bold ' + (5.8 * s) + 'px Calibri, Arial, sans-serif';
+        ctx.fillText(coordLine, pillX + (pillW / 2), pillY + (12.5 * s));
+        ctx.restore();
+      });
+    }
+
+    /**
+     * Membentuk Bingkai Kartografis Resmi Standar Penelitian untuk Peta
+     * Menyertakan Kop, Judul, Kompas Mata Angin, Skala Grafis, Legenda Mutu, dan Inset Statistik
+     * Didesain dengan Panel Bawah Dedikasi agar 100% Permukaan Peta Bebas Halangan
+     */
+    function createResearchMapFrame(mapCanvas, scale, filterCode, pointCount) {
+      var pad = 24 * scale;
+      var headerH = 96 * scale;
+      var bottomPanelH = 88 * scale; // Panel Bawah Dedikasi (Kompas, Skala, Legenda)
+      var footerH = 34 * scale;
+
+      var totalW = mapCanvas.width + (pad * 2);
+      var totalH = mapCanvas.height + headerH + bottomPanelH + footerH + (pad * 2);
+
+      var c = document.createElement('canvas');
+      c.width = totalW;
+      c.height = totalH;
+      var ctx = c.getContext('2d');
+
+      // Latar belakang putih bersih
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, totalW, totalH);
+
+      // Bingkai luar kartografis ganda
+      ctx.strokeStyle = '#043168';
+      ctx.lineWidth = 2.5 * scale;
+      ctx.strokeRect(pad / 2, pad / 2, totalW - pad, totalH - pad);
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 1 * scale;
+      ctx.strokeRect(pad / 2 + 3 * scale, pad / 2 + 3 * scale, totalW - pad - 6 * scale, totalH - pad - 6 * scale);
+
+      // =======================================================================
+      // 1. KOP & HEADER RESMI PENELITIAN
+      // =======================================================================
+      ctx.fillStyle = '#043168';
+      ctx.fillRect(pad, pad, totalW - (pad * 2), headerH - (6 * scale));
+
+      // Garis aksen emas di bawah header
+      ctx.fillStyle = '#f59e0b';
+      ctx.fillRect(pad, pad + headerH - (9 * scale), totalW - (pad * 2), 3 * scale);
+
+      // Teks Kop Lembaga
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = 'bold ' + (11 * scale) + 'px Calibri, Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('BAPPEDA LITBANG KABUPATEN BANYUWANGI • PORTAL SPASIAL RISET & SURVEI', totalW / 2, pad + (22 * scale));
+
+      // Judul Peta
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold ' + (16.5 * scale) + 'px Calibri, Arial, sans-serif';
+      var judulSurvei = (currentSurveyObj && currentSurveyObj.Judul ? currentSurveyObj.Judul.toUpperCase() : 'RENCANA TENAGA KERJA DAERAH (RTKD) BANYUWANGI');
+      ctx.fillText('PETA SEBARAN TITIK KOORDINAT SURVEI: ' + judulSurvei, totalW / 2, pad + (48 * scale));
+
+      // Subjudul & Metadata Filter
+      var instLabels = {
+        'A': 'Instrumen A - Perusahaan / Pemberi Kerja',
+        'B': 'Instrumen B - Pencari Kerja & Lulusan',
+        'C': 'Instrumen C - Pemangku Kepentingan',
+        'D': 'Instrumen D - Siswa Kelas 12',
+        'E': 'Instrumen E - Pakar Isu Strategis (AHP)'
+      };
+      var filterDesc = filterCode && instLabels[filterCode] ? ('Filter: ' + instLabels[filterCode]) : 'Filter: Seluruh Instrumen Penilaian';
+
+      ctx.fillStyle = '#cbd5e1';
+      ctx.font = (10.5 * scale) + 'px Calibri, Arial, sans-serif';
+      var subText = filterDesc + ' • N = ' + pointCount + ' Titik Lokasi Responden (GPS Terverifikasi) • Datum: WGS84';
+      ctx.fillText(subText, totalW / 2, pad + (72 * scale));
+
+      // =======================================================================
+      // 2. GAMBAR PETA UTAMA (100% BERSIH & SELURUH TITIK RESPONDEN TERLIHAT)
+      // =======================================================================
+      var mapX = pad;
+      var mapY = pad + headerH;
+      ctx.drawImage(mapCanvas, mapX, mapY);
+
+      // Garis tepi peta
+      ctx.strokeStyle = '#043168';
+      ctx.lineWidth = 1.5 * scale;
+      ctx.strokeRect(mapX, mapY, mapCanvas.width, mapCanvas.height);
+
+      // =======================================================================
+      // 3. PANEL KARTOGRAFIS DEDIKASI DI BAWAH PETA (LEGENDA, KOMPAS, SKALA)
+      // =======================================================================
+      var panelY = mapY + mapCanvas.height + (8 * scale);
+      var panelW = mapCanvas.width;
+      var panelH = bottomPanelH - (8 * scale);
+
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillRect(mapX, panelY, panelW, panelH);
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 1 * scale;
+      ctx.strokeRect(mapX, panelY, panelW, panelH);
+
+      // Kompas Arah Utara (North Arrow) di sebelah kiri panel
+      var compX = mapX + (36 * scale);
+      var compY = panelY + (panelH / 2);
+      var compR = 18 * scale;
+
+      ctx.beginPath();
+      ctx.arc(compX, compY, compR, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.strokeStyle = '#043168';
+      ctx.lineWidth = 1.2 * scale;
+      ctx.stroke();
+
+      // Jarum Utara
+      ctx.beginPath();
+      ctx.moveTo(compX, compY - compR + (3 * scale));
+      ctx.lineTo(compX - (5 * scale), compY + (2 * scale));
+      ctx.lineTo(compX - (2 * scale), compY);
+      ctx.closePath();
+      ctx.fillStyle = '#043168';
+      ctx.fill();
+
+      // Jarum Selatan
+      ctx.beginPath();
+      ctx.moveTo(compX, compY + compR - (3 * scale));
+      ctx.lineTo(compX + (5 * scale), compY - (2 * scale));
+      ctx.lineTo(compX + (2 * scale), compY);
+      ctx.closePath();
+      ctx.fillStyle = '#94a3b8';
+      ctx.fill();
+
+      ctx.fillStyle = '#b40814';
+      ctx.font = 'bold ' + (9 * scale) + 'px Calibri, Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('U', compX, compY - compR - (2 * scale));
+
+      // Skala Grafis Kartografis
+      var scaleX = compX + compR + (24 * scale);
+      var scaleY = panelY + (30 * scale);
+      var segW = 28 * scale;
+
+      ctx.fillStyle = '#043168';
+      ctx.fillRect(scaleX, scaleY, segW, 5 * scale);
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = '#043168';
+      ctx.lineWidth = 1 * scale;
+      ctx.fillRect(scaleX + segW, scaleY, segW, 5 * scale);
+      ctx.strokeRect(scaleX + segW, scaleY, segW, 5 * scale);
+      ctx.fillStyle = '#043168';
+      ctx.fillRect(scaleX + (segW * 2), scaleY, segW, 5 * scale);
+
+      ctx.fillStyle = '#043168';
+      ctx.font = 'bold ' + (8 * scale) + 'px Calibri, Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('0', scaleX, scaleY + (14 * scale));
+      ctx.fillText('5 km', scaleX + segW, scaleY + (14 * scale));
+      ctx.fillText('10 km', scaleX + (segW * 2), scaleY + (14 * scale));
+
+      ctx.fillStyle = '#64748b';
+      ctx.font = (8 * scale) + 'px Calibri, Arial, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Skala Grafis Peta Spasial', scaleX, scaleY - (6 * scale));
+
+      // Garis Pembatas Vertikal
+      var divX = scaleX + (segW * 2) + (26 * scale);
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 1.2 * scale;
+      ctx.beginPath();
+      ctx.moveTo(divX, panelY + (10 * scale));
+      ctx.lineTo(divX, panelY + panelH - (10 * scale));
+      ctx.stroke();
+
+      // Legenda Titik Koordinat & Kategori Skor
+      var legStartX = divX + (20 * scale);
+      ctx.fillStyle = '#043168';
+      ctx.font = 'bold ' + (9.5 * scale) + 'px Calibri, Arial, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('LEGENDA KATEGORI MUTU & TITIK KOORDINAT SURVEI:', legStartX, panelY + (22 * scale));
+
+      var legItems = [
+        { label: 'Sangat Baik (≥ 3.50)', color: '#10b981' },
+        { label: 'Baik (2.75 - 3.49)', color: '#0284c7' },
+        { label: 'Cukup (2.00 - 2.74)', color: '#f59e0b' },
+        { label: 'Kurang (< 2.00)', color: '#ef4444' },
+        { label: 'Titik GPS Riil', color: '#0f172a', isPoint: true },
+        { label: 'Badge (xN) = Multi-Responden Titik Sama', color: '#b40814', isBadge: true }
+      ];
+
+      var itemX = legStartX;
+      var itemY = panelY + (50 * scale);
+      legItems.forEach(function(item) {
+        if (item.isPoint) {
+          ctx.fillStyle = item.color;
+          ctx.beginPath();
+          ctx.arc(itemX + (6 * scale), itemY - (3 * scale), 4.5 * scale, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(itemX + (6 * scale), itemY - (3 * scale), 1.8 * scale, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (item.isBadge) {
+          ctx.fillStyle = item.color;
+          ctx.beginPath();
+          ctx.arc(itemX + (6 * scale), itemY - (3 * scale), 5 * scale, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 1.2 * scale;
+          ctx.stroke();
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold ' + (5.5 * scale) + 'px Calibri, Arial, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('xN', itemX + (6 * scale), itemY - (3 * scale));
+        } else {
+          ctx.fillStyle = item.color;
+          ctx.beginPath();
+          ctx.arc(itemX + (6 * scale), itemY - (3 * scale), 5 * scale, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 1.2 * scale;
+          ctx.stroke();
+        }
+
+        ctx.fillStyle = '#1e293b';
+        ctx.font = 'bold ' + (8.5 * scale) + 'px Calibri, Arial, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(item.label, itemX + (16 * scale), itemY);
+
+        itemX += (item.label.length * 6.5 * scale) + (28 * scale);
+      });
+
+      // =======================================================================
+      // 4. FOOTER INFORMASI PENELITIAN
+      // =======================================================================
+      var footerY = panelY + panelH + (20 * scale);
+      ctx.fillStyle = '#475569';
+      ctx.font = (9 * scale) + 'px Calibri, Arial, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Sumber Data: Sebaran Koordinat GPS Responden Riil (N = ' + pointCount + ' Titik Lokasi) • Kabupaten Banyuwangi', pad + (8 * scale), footerY);
+
+      ctx.textAlign = 'right';
+      ctx.fillText('Waktu Unduh: ' + (new Date().toLocaleString('id-ID')) + ' WIB • Resolusi: HD Ultra-Sharp', totalW - pad - (8 * scale), footerY);
+
+      return c;
+    }
+
+    /**
+     * Merender Bagan Chart.js pada Kanvas Offscreen Beresolusi Tinggi (HD Asli)
+     * Menghasilkan Gambar Vektor Halus & Anti-Pecah untuk Ekspor Infografis
+     * Otomatis Menyesuaikan Mode Tampilan (General vs Filter Detail Instrumen)
+     */
+    function renderHighResChartToCanvas(chartType, targetW, targetH) {
+      var offCanvas = document.createElement('canvas');
+      offCanvas.width = targetW;
+      offCanvas.height = targetH;
+      var offCtx = offCanvas.getContext('2d');
+
+      var filterInst = ($('#rekapFilterInstrumen').val() || '').trim().toUpperCase();
+      var tempChart = null;
+
+      if (!filterInst) {
+        // =====================================================================
+        // MODE GENERAL HIGH-RES CHART
+        // =====================================================================
+        if (chartType === 'donut') {
+          // Komposisi 5 Instrumen RTKD
+          var dInst = (currentRekapData && currentRekapData.distribusiInstrumen) ? currentRekapData.distribusiInstrumen : {};
+          var instKeys = ['A', 'B', 'C', 'D', 'E'];
+          var instLabels = [
+            'Inst. A: Perusahaan',
+            'Inst. B: Pencari Kerja',
+            'Inst. C: Stakeholder',
+            'Inst. D: Siswa Kls 12',
+            'Inst. E: Isu AHP'
+          ];
+          var vals = instKeys.map(function(k) { return dInst[k] || 0; });
+          var bgColors = ['#0284c7', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444'];
+          var tot = vals.reduce(function(a, b) { return a + b; }, 0) || 1;
+
+          tempChart = new Chart(offCtx, {
+            type: 'doughnut',
+            data: {
+              labels: instLabels,
+              datasets: [{
+                data: vals,
+                backgroundColor: bgColors,
+                borderWidth: 4,
+                borderColor: '#ffffff'
+              }]
+            },
+            options: {
+              responsive: false,
+              maintainAspectRatio: false,
+              animation: false,
+              cutout: '62%',
+              plugins: {
+                legend: {
+                  display: true,
+                  position: 'bottom',
+                  labels: {
+                    font: { size: 24, weight: 'bold', family: 'Calibri, Arial, sans-serif' },
+                    color: '#1e293b',
+                    padding: 24,
+                    usePointStyle: true,
+                    pointStyle: 'circle'
+                  }
+                }
+              }
+            }
+          });
+
+          // Gambar Total Responden N di tengah donat
+          var cX = targetW / 2;
+          var cY = (targetH - 60) / 2;
+          offCtx.save();
+          offCtx.textAlign = 'center';
+          offCtx.textBaseline = 'middle';
+          offCtx.fillStyle = '#0f172a';
+          offCtx.font = 'bold 56px Calibri, Arial, sans-serif';
+          offCtx.fillText('N = ' + tot, cX, cY - 18);
+          offCtx.fillStyle = '#0284c7';
+          offCtx.font = 'bold 28px Calibri, Arial, sans-serif';
+          offCtx.fillText('5 Instrumen Survei', cX, cY + 36);
+          offCtx.restore();
+
+        } else if (chartType === 'bar') {
+          // Sebaran Wilayah Kecamatan
+          var kDist = (currentRekapData && currentRekapData.distribusiKecamatan) ? currentRekapData.distribusiKecamatan : {};
+          var kList = [];
+          for (var k in kDist) {
+            if (k && kDist[k] > 0) {
+              kList.push({ name: k, count: kDist[k] });
+            }
+          }
+          kList.sort(function(a, b) { return b.count - a.count; });
+          var topK = kList.slice(0, 8);
+          var labels = topK.map(function(item) { return item.name; });
+          var vals = topK.map(function(item) { return item.count; });
+          var bgColors = ['#0284c7', '#0369a1', '#0ea5e9', '#06b6d4', '#0d9488', '#10b981', '#059669', '#3b82f6'];
+
+          tempChart = new Chart(offCtx, {
+            type: 'bar',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Jumlah Responden',
+                data: vals,
+                backgroundColor: bgColors.slice(0, labels.length),
+                borderRadius: 8,
+                borderWidth: 0,
+                maxBarThickness: 54
+              }]
+            },
+            options: {
+              responsive: false,
+              maintainAspectRatio: false,
+              animation: false,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: { stepSize: 1, font: { size: 22, weight: 'bold' }, color: '#475569' },
+                  grid: { color: '#f1f5f9', lineWidth: 2 }
+                },
+                x: {
+                  ticks: { font: { size: 20, weight: 'bold' }, color: '#1e293b', autoSkip: false },
+                  grid: { display: false }
+                }
+              },
+              plugins: { legend: { display: false } }
+            }
+          });
+
+        } else if (chartType === 'pie') {
+          // Komposisi Gender Responden
+          var gDist = (currentRekapData && currentRekapData.distribusiGender) ? currentRekapData.distribusiGender : { 'Laki-laki': 0, 'Perempuan': 0 };
+          var mVal = gDist['Laki-laki'] || 0;
+          var fVal = gDist['Perempuan'] || 0;
+
+          tempChart = new Chart(offCtx, {
+            type: 'pie',
+            data: {
+              labels: ['Laki-laki (' + mVal + ')', 'Perempuan (' + fVal + ')'],
+              datasets: [{
+                data: [mVal, fVal],
+                backgroundColor: ['#0284c7', '#ec4899'],
+                borderWidth: 4,
+                borderColor: '#ffffff'
+              }]
+            },
+            options: {
+              responsive: false,
+              maintainAspectRatio: false,
+              animation: false,
+              plugins: {
+                legend: {
+                  display: true,
+                  position: 'bottom',
+                  labels: {
+                    font: { size: 24, weight: 'bold', family: 'Calibri, Arial, sans-serif' },
+                    color: '#1e293b',
+                    padding: 26,
+                    usePointStyle: true,
+                    pointStyle: 'circle'
+                  }
+                }
+              }
+            }
+          });
+        }
+
+      } else {
+        // =====================================================================
+        // MODE FILTER PER INSTRUMEN HIGH-RES CHART
+        // =====================================================================
+        var instStat = (currentRekapData && currentRekapData.statsPerInstrumen && currentRekapData.statsPerInstrumen[filterInst]) ? currentRekapData.statsPerInstrumen[filterInst] : null;
+
+        if (chartType === 'donut') {
+          // Mutu Pelayanan Instrumen Terpilih
+          var dm = (instStat && instStat.distribusiMutu) ? instStat.distribusiMutu : (currentRekapData.distribusiMutu || {});
+          var sBaik = dm['Sangat Baik'] || 0;
+          var baik = dm['Baik'] || 0;
+          var kBaik = dm['Kurang Baik'] || 0;
+          var tBaik = dm['Tidak Baik'] || 0;
+
+          tempChart = new Chart(offCtx, {
+            type: 'doughnut',
+            data: {
+              labels: ['Sangat Baik', 'Baik', 'Kurang Baik', 'Tidak Baik'],
+              datasets: [{
+                data: [sBaik, baik, kBaik, tBaik],
+                backgroundColor: ['#10b981', '#0284c7', '#f59e0b', '#ef4444'],
+                borderWidth: 4,
+                borderColor: '#ffffff'
+              }]
+            },
+            options: {
+              responsive: false,
+              maintainAspectRatio: false,
+              animation: false,
+              cutout: '62%',
+              plugins: {
+                legend: {
+                  display: true,
+                  position: 'bottom',
+                  labels: {
+                    font: { size: 24, weight: 'bold', family: 'Calibri, Arial, sans-serif' },
+                    color: '#1e293b',
+                    padding: 26,
+                    usePointStyle: true,
+                    pointStyle: 'circle'
+                  }
+                }
+              }
+            }
+          });
+
+          var avgVal = instStat ? Number(instStat.avgSkor || 0).toFixed(2) : Number(currentRekapData.rataRataSkor || 0).toFixed(2);
+          var mText = (parseFloat(avgVal) >= 3.5 ? 'Sangat Baik' : (parseFloat(avgVal) >= 2.75 ? 'Baik' : 'Cukup'));
+          var cX = targetW / 2;
+          var cY = (targetH - 60) / 2;
+
+          offCtx.save();
+          offCtx.textAlign = 'center';
+          offCtx.textBaseline = 'middle';
+          offCtx.fillStyle = '#0f172a';
+          offCtx.font = 'bold 58px Calibri, Arial, sans-serif';
+          offCtx.fillText(avgVal + ' / 5.00', cX, cY - 18);
+          offCtx.fillStyle = '#059669';
+          offCtx.font = 'bold 28px Calibri, Arial, sans-serif';
+          offCtx.fillText('Predikat: ' + mText, cX, cY + 36);
+          offCtx.restore();
+
+        } else if (chartType === 'bar') {
+          // DETAIL BUTIR PERTANYAAN INSTRUMEN TERPILIH
+          var pStats = (currentRekapData && currentRekapData.parameterStats) ? currentRekapData.parameterStats : [];
+          var activeParams = pStats.filter(function(p) {
+            return (p.Instrumen || 'A').toUpperCase() === filterInst;
+          });
+          var scoredParams = activeParams.filter(function(p) {
+            var t = String(p.Tipe || p.tipe || '').toLowerCase();
+            return t !== 'textarea' && t !== 'text' && t !== 'date';
+          });
+          if (scoredParams.length === 0) scoredParams = activeParams;
+
+          var labels = scoredParams.map(function(p, idx) {
+            return p.label || ('P' + (p.no || (idx + 1)));
+          });
+          var dataVals = scoredParams.map(function(p) {
+            return parseFloat((p.avg !== undefined && p.avg !== null) ? p.avg : ((p.AvgScore !== undefined && p.AvgScore !== null) ? p.AvgScore : 0)) || 0;
+          });
+          var bgColors = dataVals.map(function(score) {
+            if (score >= 4.0) return '#10b981';
+            if (score >= 3.5) return '#0284c7';
+            if (score >= 3.0) return '#f59e0b';
+            return '#ef4444';
+          });
+
+          tempChart = new Chart(offCtx, {
+            type: 'bar',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Rata-Rata Skor',
+                data: dataVals,
+                backgroundColor: bgColors,
+                borderRadius: 8,
+                borderWidth: 0,
+                maxBarThickness: labels.length > 20 ? 30 : 46
+              }]
+            },
+            options: {
+              responsive: false,
+              maintainAspectRatio: false,
+              animation: false,
+              scales: {
+                y: {
+                  min: 0,
+                  max: 5,
+                  ticks: { stepSize: 1, font: { size: 22, weight: 'bold' }, color: '#475569' },
+                  grid: { color: '#f1f5f9', lineWidth: 2 }
+                },
+                x: {
+                  ticks: { 
+                    font: { size: labels.length > 25 ? 13 : (labels.length > 15 ? 15 : 18), weight: 'bold' }, 
+                    color: '#1e293b', 
+                    autoSkip: false 
+                  },
+                  grid: { display: false }
+                }
+              },
+              plugins: { legend: { display: false } }
+            }
+          });
+
+        } else if (chartType === 'pie') {
+          // Demografi Responden Instrumen Terpilih
+          var gDist = (instStat && instStat.distribusiGender) ? instStat.distribusiGender : { 'Laki-laki': 0, 'Perempuan': 0 };
+          var mVal = gDist['Laki-laki'] || 0;
+          var fVal = gDist['Perempuan'] || 0;
+
+          tempChart = new Chart(offCtx, {
+            type: 'pie',
+            data: {
+              labels: ['Laki-laki (' + mVal + ')', 'Perempuan (' + fVal + ')'],
+              datasets: [{
+                data: [mVal, fVal],
+                backgroundColor: ['#0284c7', '#ec4899'],
+                borderWidth: 4,
+                borderColor: '#ffffff'
+              }]
+            },
+            options: {
+              responsive: false,
+              maintainAspectRatio: false,
+              animation: false,
+              plugins: {
+                legend: {
+                  display: true,
+                  position: 'bottom',
+                  labels: {
+                    font: { size: 24, weight: 'bold', family: 'Calibri, Arial, sans-serif' },
+                    color: '#1e293b',
+                    padding: 26,
+                    usePointStyle: true,
+                    pointStyle: 'circle'
+                  }
+                }
+              }
+            }
+          });
+        }
+      }
+
+      // CATATAN PENTING: JANGAN PANGGIL tempChart.destroy() KARENA DESTROY AKAN MEMBERSIHKAN (CLEAR) KANVAS!
+      // offCanvas adalah elemen DOM memori detached dan akan di-garbage collect otomatis.
+
+      return offCanvas;
+    }
+
+    /**
+     * EKSPOR BAGAN INFOGRAFIS UKURAN PERSEGI (1:1) HIGH-DEFINITION (ANTI-PECAH)
+     * Menggunakan Kanvas Persegi Proporsional, Murni Keterangan Infografis & Data Real
+     * Otomatis Menyesuaikan Mode Tampilan (General vs Detail Instrumen)
+     * @param {string} chartType - 'donut', 'bar', 'pie', atau 'all'
+     */
+    function downloadInfographic(chartType) {
+      if (!currentRekapData) {
+        Swal.fire('Data Belum Dimuat', 'Data analitik survei belum selesai dimuat. Silakan tunggu sebentar.', 'warning');
+        return;
+      }
+
+      if (chartType === 'all') {
+        downloadAllInfographics();
+        return;
+      }
+
+      var filterInst = ($('#rekapFilterInstrumen').val() || '').trim().toUpperCase();
+      var curMeta = filterInst ? (RTKD_INSTRUMEN_META[filterInst] || { name: 'Instrumen ' + filterInst, short: 'Inst. ' + filterInst }) : null;
+      var instStat = (filterInst && currentRekapData.statsPerInstrumen && currentRekapData.statsPerInstrumen[filterInst]) ? currentRekapData.statsPerInstrumen[filterInst] : null;
+
+      var chartKategori = '';
+      var chartTitle = '';
+      var chartSubtitle = '';
+
+      if (!filterInst) {
+        // Mode General
+        if (chartType === 'donut') {
+          chartKategori = 'INFOGRAFIS ANALISIS DATA SURVEI (GENERAL)';
+          chartTitle = 'DISTRIBUSI RESPONDEN BERDASARKAN INSTRUMEN SURVEI';
+          chartSubtitle = 'Komposisi Responden Berdasarkan Instrumen A, B, C, D, dan E';
+        } else if (chartType === 'bar') {
+          chartKategori = 'INFOGRAFIS SEBARAN WILAYAH (GENERAL)';
+          chartTitle = 'SEBARAN RESPONDEN BERDASARKAN WILAYAH KECAMATAN';
+          chartSubtitle = 'Distribusi Lokasi Responden di Wilayah Kabupaten Banyuwangi';
+        } else if (chartType === 'pie') {
+          chartKategori = 'INFOGRAFIS KOMPOSISI GENDER (GENERAL)';
+          chartTitle = 'KOMPOSISI RESPONDEN BERDASARKAN JENIS KELAMIN';
+          chartSubtitle = 'Proporsi Gender Laki-laki vs Perempuan Seluruh Sampel Survei';
+        }
+      } else {
+        // Mode Filter per Instrumen
+        if (chartType === 'donut') {
+          chartKategori = 'INFOGRAFIS MUTU PELAYANAN - INSTRUMEN ' + filterInst;
+          chartTitle = 'DISTRIBUSI MUTU PELAYANAN (INSTRUMEN ' + filterInst + ')';
+          chartSubtitle = 'Tingkat Kepuasan & Indeks Mutu Responden ' + curMeta.name;
+        } else if (chartType === 'bar') {
+          chartKategori = 'INFOGRAFIS BUTIR PERTANYAAN - INSTRUMEN ' + filterInst;
+          chartTitle = 'RATA-RATA SKOR BUTIR PERTANYAAN (INSTRUMEN ' + filterInst + ')';
+          chartSubtitle = 'Analisis Nilai Tiap Butir Kuesioner ' + curMeta.name + ' (Skala 1 - 5)';
+        } else if (chartType === 'pie') {
+          chartKategori = 'INFOGRAFIS KARAKTERISTIK RESPONDEN - INSTRUMEN ' + filterInst;
+          chartTitle = 'KARAKTERISTIK DEMOGRAFI (INSTRUMEN ' + filterInst + ')';
+          chartSubtitle = 'Profil Demografi Responden Khusus ' + curMeta.name;
+        }
+      }
+
+      // KANVAS UKURAN PERSEGI MURNI (1:1 Aspect Ratio) Ultra-HD 2400 x 2400 px
+      var scale = 2;
+      var cardSize = 1200 * scale; // 2400 x 2400 piksel persegi
+
+      var c = document.createElement('canvas');
+      c.width = cardSize;
+      c.height = cardSize;
+      var ctx = c.getContext('2d');
+
+      // Latar belakang putih bersih murni (MURNI TANPA BORDER IDE)
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, cardSize, cardSize);
+
+      // =======================================================================
+      // KETERANGAN INFOGRAFIS (Hanya Tulis Keterangan Infografis Saja, Tanpa Border IDE)
+      // =======================================================================
+      var padX = 50 * scale;
+      var topY = 40 * scale;
+
+      // 1. Tag Kategori Keterangan Infografis
+      ctx.fillStyle = '#64748b';
+      ctx.font = 'bold ' + (11 * scale) + 'px Calibri, Arial, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(chartKategori.toUpperCase(), padX, topY + (12 * scale));
+
+      // 2. Judul Utama Infografis
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold ' + (21 * scale) + 'px Calibri, Arial, sans-serif';
+      ctx.fillText(chartTitle, padX, topY + (40 * scale));
+
+      // 3. Subtitle & Keterangan Survei Riil
+      var sJudul = (currentSurveyObj && currentSurveyObj.Judul) ? currentSurveyObj.Judul : 'Survei Ketenagakerjaan Daerah (RTKD)';
+      var totalResp = (currentRekapData && currentRekapData.totalResponden !== undefined) ? currentRekapData.totalResponden : ((currentRekapData && currentRekapData.responden) ? currentRekapData.responden.length : 0);
+      var currentSampelN = (filterInst && instStat) ? instStat.total : totalResp;
+      var tglFormat = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+      var filterNote = filterInst ? (' • Instrumen: ' + curMeta.short) : ' • Mode: General (5 Instrumen)';
+
+      ctx.fillStyle = '#475569';
+      ctx.font = (12 * scale) + 'px Calibri, Arial, sans-serif';
+      ctx.fillText('Survei: ' + sJudul + filterNote + ' • Sampel Valid: N = ' + currentSampelN + ' • Tanggal: ' + tglFormat, padX, topY + (66 * scale));
+
+      // Garis pemisah tipis halus di bawah keterangan infografis
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 1.2 * scale;
+      ctx.beginPath();
+      ctx.moveTo(padX, topY + (82 * scale));
+      ctx.lineTo(cardSize - padX, topY + (82 * scale));
+      ctx.stroke();
+
+      // =======================================================================
+      // BAGAN GRAFIK HD ASLI (ANTI-PECAH DENGAN RENDER OFSCREEN TINGGI)
+      // =======================================================================
+      var chartTargetW = (chartType === 'bar' ? 1800 : 1500);
+      var chartTargetH = 1150;
+      var drawX = (cardSize - chartTargetW) / 2;
+      var drawY = topY + (95 * scale);
+
+      // Gambar kanvas chart beresolusi tinggi langsung ke kanvas persegi
+      var highResChart = renderHighResChartToCanvas(chartType, chartTargetW, chartTargetH);
+      ctx.drawImage(highResChart, drawX, drawY, chartTargetW, chartTargetH);
+
+      // =======================================================================
+      // DATA INFOGRAFIS TERTULIS SECARA REAL SESUAI DATA (BAGAN KETERANGAN REAL)
+      // =======================================================================
+      var infoY = drawY + chartTargetH + (25 * scale);
+
+      if (!filterInst) {
+        // =====================================================================
+        // BAGAN KETERANGAN REAL MODE GENERAL
+        // =====================================================================
+        if (chartType === 'donut') {
+          // Keterangan Real 5 Instrumen RTKD
+          var dInst = currentRekapData.distribusiInstrumen || {};
+          var totI = totalResp || 1;
+          var instCards = [
+            { label: 'INSTRUMEN A (PERUSAHAAN)', count: dInst['A'] || 0, color: '#0284c7', bg: '#f0f9ff', border: '#bae6fd' },
+            { label: 'INSTRUMEN B (PENCARI KERJA)', count: dInst['B'] || 0, color: '#10b981', bg: '#f0fdf4', border: '#bbf7d0' },
+            { label: 'INSTRUMEN C (STAKEHOLDER)', count: dInst['C'] || 0, color: '#8b5cf6', bg: '#f5f3ff', border: '#ddd6fe' },
+            { label: 'INSTRUMEN D (SISWA KLS 12)', count: dInst['D'] || 0, color: '#f59e0b', bg: '#fffbeb', border: '#fde68a' },
+            { label: 'INSTRUMEN E (AHP ISU)', count: dInst['E'] || 0, color: '#ef4444', bg: '#fef2f2', border: '#fecaca' }
+          ];
+
+          var boxW = 200 * scale;
+          var boxH = 75 * scale;
+          var gap = 14 * scale;
+          var totalBoxW = boxW * 5 + gap * 4;
+          var startX = (cardSize - totalBoxW) / 2;
+
+          instCards.forEach(function(k, i) {
+            var bX = startX + (i * (boxW + gap));
+            var pct = ((k.count / totI) * 100).toFixed(1);
+
+            ctx.fillStyle = k.bg;
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(bX, infoY, boxW, boxH, 10 * scale);
+            else ctx.rect(bX, infoY, boxW, boxH);
+            ctx.fill();
+
+            ctx.strokeStyle = k.border;
+            ctx.lineWidth = 1.4 * scale;
+            ctx.stroke();
+
+            ctx.fillStyle = k.color;
+            ctx.font = 'bold ' + (10 * scale) + 'px Calibri, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(k.label, bX + (boxW / 2), infoY + (24 * scale));
+
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'bold ' + (16 * scale) + 'px Calibri, Arial, sans-serif';
+            ctx.fillText(k.count + ' (' + pct + '%)', bX + (boxW / 2), infoY + (52 * scale));
+          });
+
+          var sumY = infoY + boxH + (24 * scale);
+          ctx.fillStyle = '#475569';
+          ctx.font = 'bold ' + (11 * scale) + 'px Calibri, Arial, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('Distribusi instrumen mencakup seluruh 5 kelompok sasaran survei RTKD dengan total N = ' + totalResp + ' responden.', cardSize / 2, sumY);
+
+        } else if (chartType === 'bar') {
+          // Keterangan Real Sebaran Wilayah Kecamatan
+          var kDist = currentRekapData.distribusiKecamatan || {};
+          var kList = [];
+          for (var k in kDist) {
+            if (k && kDist[k] > 0) kList.push({ name: k, count: kDist[k] });
+          }
+          kList.sort(function(a, b) { return b.count - a.count; });
+          var topK = kList.slice(0, 4);
+          var totK = totalResp || 1;
+          var kColors = ['#0284c7', '#10b981', '#f59e0b', '#8b5cf6'];
+
+          var numCards = Math.max(topK.length, 1);
+          var boxW = Math.floor((1080 * scale) / numCards) - (14 * scale);
+          var boxH = 75 * scale;
+          var gap = 14 * scale;
+          var totalBoxW = boxW * numCards + gap * (numCards - 1);
+          var startX = (cardSize - totalBoxW) / 2;
+
+          topK.forEach(function(item, i) {
+            var bX = startX + (i * (boxW + gap));
+            var pct = ((item.count / totK) * 100).toFixed(1);
+            var clr = kColors[i % kColors.length];
+
+            ctx.fillStyle = '#f8fafc';
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(bX, infoY, boxW, boxH, 10 * scale);
+            else ctx.rect(bX, infoY, boxW, boxH);
+            ctx.fill();
+
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1.4 * scale;
+            ctx.stroke();
+
+            ctx.fillStyle = clr;
+            ctx.font = 'bold ' + (11 * scale) + 'px Calibri, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('KEC. ' + item.name.toUpperCase(), bX + (boxW / 2), infoY + (24 * scale));
+
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'bold ' + (16 * scale) + 'px Calibri, Arial, sans-serif';
+            ctx.fillText(item.count + ' Responden (' + pct + '%)', bX + (boxW / 2), infoY + (52 * scale));
+          });
+
+          var sumY = infoY + boxH + (24 * scale);
+          ctx.fillStyle = '#475569';
+          ctx.font = 'bold ' + (11 * scale) + 'px Calibri, Arial, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('Total ' + kList.length + ' kecamatan terdata dengan cakupan spasial responden riil di Kabupaten Banyuwangi.', cardSize / 2, sumY);
+
+        } else if (chartType === 'pie') {
+          // Keterangan Real Komposisi Gender
+          var gDist = currentRekapData.distribusiGender || { 'Laki-laki': 0, 'Perempuan': 0 };
+          var mCount = gDist['Laki-laki'] || 0;
+          var fCount = gDist['Perempuan'] || 0;
+          var totG = mCount + fCount || totalResp || 1;
+          var mPct = ((mCount / totG) * 100).toFixed(1);
+          var fPct = ((fCount / totG) * 100).toFixed(1);
+
+          var genderCards = [
+            { label: 'LAKI-LAKI', count: mCount, pct: mPct, color: '#0284c7', bg: '#f0f9ff', border: '#bae6fd' },
+            { label: 'PEREMPUAN', count: fCount, pct: fPct, color: '#ec4899', bg: '#fdf2f8', border: '#fbcfe8' }
+          ];
+
+          var boxW = 420 * scale;
+          var boxH = 75 * scale;
+          var gap = 24 * scale;
+          var totalBoxW = boxW * 2 + gap;
+          var startX = (cardSize - totalBoxW) / 2;
+
+          genderCards.forEach(function(k, i) {
+            var bX = startX + (i * (boxW + gap));
+            ctx.fillStyle = k.bg;
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(bX, infoY, boxW, boxH, 10 * scale);
+            else ctx.rect(bX, infoY, boxW, boxH);
+            ctx.fill();
+
+            ctx.strokeStyle = k.border;
+            ctx.lineWidth = 1.4 * scale;
+            ctx.stroke();
+
+            ctx.fillStyle = k.color;
+            ctx.font = 'bold ' + (12 * scale) + 'px Calibri, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(k.label, bX + (boxW / 2), infoY + (24 * scale));
+
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'bold ' + (18 * scale) + 'px Calibri, Arial, sans-serif';
+            ctx.fillText(k.count + ' Responden (' + k.pct + '%)', bX + (boxW / 2), infoY + (52 * scale));
+          });
+
+          var sumY = infoY + boxH + (24 * scale);
+          ctx.fillStyle = '#475569';
+          ctx.font = 'bold ' + (11 * scale) + 'px Calibri, Arial, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('Proporsi gender terhimpun dari total valid N = ' + totG + ' responden lapangan di seluruh wilayah survei.', cardSize / 2, sumY);
+        }
+
+      } else {
+        // =====================================================================
+        // BAGAN KETERANGAN REAL MODE DETAIL INSTRUMEN
+        // =====================================================================
+        if (chartType === 'donut') {
+          var dm = (instStat && instStat.distribusiMutu) ? instStat.distribusiMutu : (currentRekapData.distribusiMutu || {});
+          var sBaik = dm['Sangat Baik'] || 0;
+          var baik = dm['Baik'] || 0;
+          var kBaik = dm['Kurang Baik'] || 0;
+          var tBaik = dm['Tidak Baik'] || 0;
+          var totMutu = sBaik + baik + kBaik + tBaik;
+          if (totMutu === 0) totMutu = currentSampelN || 1;
+
+          var kpis = [
+            { label: 'SANGAT BAIK (≥ 3.50)', count: sBaik, pct: ((sBaik / totMutu) * 100).toFixed(1), color: '#10b981', bg: '#f0fdf4', border: '#bbf7d0' },
+            { label: 'BAIK (2.75 - 3.49)', count: baik, pct: ((baik / totMutu) * 100).toFixed(1), color: '#0284c7', bg: '#f0f9ff', border: '#bae6fd' },
+            { label: 'KURANG BAIK (2.00 - 2.74)', count: kBaik, pct: ((kBaik / totMutu) * 100).toFixed(1), color: '#f59e0b', bg: '#fffbeb', border: '#fde68a' },
+            { label: 'TIDAK BAIK (< 2.00)', count: tBaik, pct: ((tBaik / totMutu) * 100).toFixed(1), color: '#ef4444', bg: '#fef2f2', border: '#fecaca' }
+          ];
+
+          var boxW = 255 * scale;
+          var boxH = 75 * scale;
+          var gap = 16 * scale;
+          var totalBoxW = boxW * 4 + gap * 3;
+          var startX = (cardSize - totalBoxW) / 2;
+
+          kpis.forEach(function(k, i) {
+            var bX = startX + (i * (boxW + gap));
+            ctx.fillStyle = k.bg;
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(bX, infoY, boxW, boxH, 10 * scale);
+            else ctx.rect(bX, infoY, boxW, boxH);
+            ctx.fill();
+
+            ctx.strokeStyle = k.border;
+            ctx.lineWidth = 1.4 * scale;
+            ctx.stroke();
+
+            ctx.fillStyle = k.color;
+            ctx.font = 'bold ' + (11 * scale) + 'px Calibri, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(k.label, bX + (boxW / 2), infoY + (24 * scale));
+
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'bold ' + (17 * scale) + 'px Calibri, Arial, sans-serif';
+            ctx.fillText(k.count + ' Responden (' + k.pct + '%)', bX + (boxW / 2), infoY + (52 * scale));
+          });
+
+          var sumY = infoY + boxH + (24 * scale);
+          ctx.fillStyle = '#475569';
+          ctx.font = 'bold ' + (11 * scale) + 'px Calibri, Arial, sans-serif';
+          ctx.textAlign = 'center';
+          var avgVal = instStat ? Number(instStat.avgSkor || 0).toFixed(2) : Number(currentRekapData.rataRataSkor || 0).toFixed(2);
+          var mText = (parseFloat(avgVal) >= 3.5 ? 'Sangat Baik' : (parseFloat(avgVal) >= 2.75 ? 'Baik' : 'Cukup'));
+          ctx.fillText('Rata-Rata Skor ' + curMeta.short + ': ' + avgVal + ' / 5.00   •   Predikat: ' + mText + '   •   Jumlah Responden: N = ' + totMutu, cardSize / 2, sumY);
+
+        } else if (chartType === 'bar') {
+          // Keterangan Butir Pertanyaan Khusus Instrumen Terpilih
+          var pStats = currentRekapData.parameterStats || [];
+          var activeParams = pStats.filter(function(p) {
+            return (p.Instrumen || 'A').toUpperCase() === filterInst;
+          });
+          var scoredParams = activeParams.filter(function(p) {
+            var t = String(p.Tipe || p.tipe || '').toLowerCase();
+            return t !== 'textarea' && t !== 'text' && t !== 'date';
+          });
+          if (scoredParams.length === 0) scoredParams = activeParams;
+
+          var sumScores = 0;
+          var maxScore = -1, minScore = 999;
+          var maxLabel = '', minLabel = '';
+
+          scoredParams.forEach(function(p, idx) {
+            var val = parseFloat((p.avg !== undefined && p.avg !== null) ? p.avg : ((p.AvgScore !== undefined && p.AvgScore !== null) ? p.AvgScore : 0)) || 0;
+            sumScores += val;
+            var lbl = p.label || ('P' + (p.no || (idx + 1)));
+            if (val > maxScore) { maxScore = val; maxLabel = lbl; }
+            if (val < minScore) { minScore = val; minLabel = lbl; }
+          });
+
+          var overallAvg = scoredParams.length > 0 ? (sumScores / scoredParams.length).toFixed(2) : '0.00';
+          if (minScore === 999) minScore = 0;
+
+          var barCards = [
+            { label: 'RATA-RATA BUTIR KUESIONER', val: overallAvg + ' / 5.00', sub: scoredParams.length + ' Butir ' + curMeta.short + ' Teruji', color: '#059669', bg: '#f0fdf4', border: '#bbf7d0' },
+            { label: 'PARAMETER SKOR TERTINGGI', val: maxLabel + ' (' + maxScore.toFixed(2) + ' / 5.00)', sub: 'Indikator Capaian Kinerja Terbaik', color: '#0284c7', bg: '#f0f9ff', border: '#bae6fd' },
+            { label: 'PARAMETER SKOR TERENDAH', val: minLabel + ' (' + minScore.toFixed(2) + ' / 5.00)', sub: 'Indikator Perlu Prioritas Penguatan', color: '#f59e0b', bg: '#fffbeb', border: '#fde68a' }
+          ];
+
+          var boxW = 345 * scale;
+          var boxH = 75 * scale;
+          var gap = 18 * scale;
+          var totalBoxW = boxW * 3 + gap * 2;
+          var startX = (cardSize - totalBoxW) / 2;
+
+          barCards.forEach(function(k, i) {
+            var bX = startX + (i * (boxW + gap));
+            ctx.fillStyle = k.bg;
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(bX, infoY, boxW, boxH, 10 * scale);
+            else ctx.rect(bX, infoY, boxW, boxH);
+            ctx.fill();
+
+            ctx.strokeStyle = k.border;
+            ctx.lineWidth = 1.4 * scale;
+            ctx.stroke();
+
+            ctx.fillStyle = k.color;
+            ctx.font = 'bold ' + (10.5 * scale) + 'px Calibri, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(k.label, bX + (boxW / 2), infoY + (22 * scale));
+
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'bold ' + (16 * scale) + 'px Calibri, Arial, sans-serif';
+            ctx.fillText(k.val, bX + (boxW / 2), infoY + (48 * scale));
+
+            ctx.fillStyle = '#64748b';
+            ctx.font = (9.5 * scale) + 'px Calibri, Arial, sans-serif';
+            ctx.fillText(k.sub, bX + (boxW / 2), infoY + (65 * scale));
+          });
+
+          var sumY = infoY + boxH + (24 * scale);
+          ctx.fillStyle = '#475569';
+          ctx.font = 'bold ' + (11 * scale) + 'px Calibri, Arial, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('Data butir pertanyaan kuesioner terhimpun secara real time dari jawaban responden ' + curMeta.short + '.', cardSize / 2, sumY);
+
+        } else if (chartType === 'pie') {
+          // Demografi Khusus Instrumen Terpilih
+          var gDist = (instStat && instStat.distribusiGender) ? instStat.distribusiGender : { 'Laki-laki': 0, 'Perempuan': 0 };
+          var mCount = gDist['Laki-laki'] || 0;
+          var fCount = gDist['Perempuan'] || 0;
+          var totG = mCount + fCount || currentSampelN || 1;
+          var mPct = ((mCount / totG) * 100).toFixed(1);
+          var fPct = ((fCount / totG) * 100).toFixed(1);
+
+          var genderCards = [
+            { label: 'LAKI-LAKI', count: mCount, pct: mPct, color: '#0284c7', bg: '#f0f9ff', border: '#bae6fd' },
+            { label: 'PEREMPUAN', count: fCount, pct: fPct, color: '#ec4899', bg: '#fdf2f8', border: '#fbcfe8' }
+          ];
+
+          var boxW = 420 * scale;
+          var boxH = 75 * scale;
+          var gap = 24 * scale;
+          var totalBoxW = boxW * 2 + gap;
+          var startX = (cardSize - totalBoxW) / 2;
+
+          genderCards.forEach(function(k, i) {
+            var bX = startX + (i * (boxW + gap));
+            ctx.fillStyle = k.bg;
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(bX, infoY, boxW, boxH, 10 * scale);
+            else ctx.rect(bX, infoY, boxW, boxH);
+            ctx.fill();
+
+            ctx.strokeStyle = k.border;
+            ctx.lineWidth = 1.4 * scale;
+            ctx.stroke();
+
+            ctx.fillStyle = k.color;
+            ctx.font = 'bold ' + (12 * scale) + 'px Calibri, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(k.label, bX + (boxW / 2), infoY + (24 * scale));
+
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'bold ' + (18 * scale) + 'px Calibri, Arial, sans-serif';
+            ctx.fillText(k.count + ' Responden (' + k.pct + '%)', bX + (boxW / 2), infoY + (52 * scale));
+          });
+
+          var sumY = infoY + boxH + (24 * scale);
+          ctx.fillStyle = '#475569';
+          ctx.font = 'bold ' + (11 * scale) + 'px Calibri, Arial, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('Profil responden terverifikasi 100% dari rekam entri kuesioner ' + curMeta.name + '.', cardSize / 2, sumY);
+        }
+      }
+
+      // =======================================================================
+      // FOOTER RESMI PENELITIAN (Hanya Keterangan Singkat)
+      // =======================================================================
+      var footY = cardSize - (24 * scale);
+      ctx.fillStyle = '#64748b';
+      ctx.font = (10.5 * scale) + 'px Calibri, Arial, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Sumber Data: Entri Lapangan Responden Riil (N = ' + currentSampelN + ') • Kabupaten Banyuwangi', padX, footY);
+
+      ctx.textAlign = 'right';
+      ctx.fillText('Format: Persegi HD (1:1) • Waktu Ekspor: ' + (new Date().toLocaleString('id-ID')) + ' WIB', cardSize - padX, footY);
+
+      // Unduh File PNG
+      var safeSName = sJudul.replace(/[^a-zA-Z0-9_-]/g, '_').substring(0, 25);
+      var modeSlug = filterInst ? ('Detail_Inst_' + filterInst) : 'General';
+      var filename = 'Infografis_Persegi_' + modeSlug + '_' + chartType.toUpperCase() + '_' + safeSName + '_' + (new Date().toISOString().slice(0,10)) + '.png';
+
+      c.toBlob(function(blob) {
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 'image/png');
+    }
+
+    /**
+     * Unduh Seluruh 3 Bagan Infografis Persegi Sekaligus dalam Format Gambar PNG HD
+     */
+    function downloadAllInfographics() {
+      if (!currentRekapData) {
+        Swal.fire('Data Belum Dimuat', 'Data analitik survei belum selesai dimuat.', 'warning');
+        return;
+      }
+
+      var filterInst = ($('#rekapFilterInstrumen').val() || '').trim().toUpperCase();
+      var modeText = filterInst ? ('Detail Instrumen ' + filterInst) : 'Mode General (Instrumen, Wilayah, Gender)';
+
+      Swal.fire({
+        title: 'Mengekspor Semua Bagan Persegi HD...',
+        html: '<div style="font-size:13px; color:#64748b;">Merender 3 bagan infografis format persegi (1:1 HD Anti-Pecah) untuk <b>' + modeText + '</b>...</div>',
+        allowOutsideClick: false,
+        didOpen: function() { Swal.showLoading(); }
+      });
+
+      setTimeout(function() {
+        downloadInfographic('donut');
+        setTimeout(function() {
+          downloadInfographic('bar');
+          setTimeout(function() {
+            downloadInfographic('pie');
+            Swal.close();
+            Swal.fire({
+              icon: 'success',
+              title: '3 Infografis Persegi HD Berhasil Diunduh!',
+              html: '<div style="font-size:13px; color:#475569;">Seluruh 3 bagan infografis (<b>' + modeText + '</b>) telah berhasil diunduh dalam format <b>Persegi (1:1) High Definition</b> yang tajam dan anti-pecah.</div>',
+              confirmButtonText: '<i class="fa-solid fa-check"></i> Selesai',
+              confirmButtonColor: '#043168'
+            });
+          }, 350);
+        }, 350);
+      }, 400);
+    }
 
     // =========================================================================
     // HAPUS DATA RESPONDEN & HAPUS SURVEI (AKSES STAF & ADMIN)

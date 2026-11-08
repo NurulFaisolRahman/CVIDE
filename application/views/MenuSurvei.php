@@ -4991,6 +4991,28 @@
       border-color: #059669;
     }
 
+    .btn-geo-download {
+      background: #043168;
+      border: 1.5px solid #043168;
+      color: #ffffff;
+      padding: 9px 16px;
+      font-size: 12.5px;
+      font-weight: 700;
+      font-family: inherit;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-geo-download:hover {
+      background: #03234d;
+      border-color: #03234d;
+      color: #ffffff;
+    }
+
     /* KPI Grid */
     .geo-kpi-grid {
       display: grid;
@@ -6745,7 +6767,10 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
               <!-- Options populated dynamically -->
             </select>
           </div>
-          <div style="display: flex; gap: 8px;">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn-geo-download" onclick="downloadMenuSurveiMap()" title="Download Gambar Peta Sebaran Responden (PNG HD)">
+              <i class="fa-solid fa-download"></i> Unduh Peta (PNG)
+            </button>
             <button type="button" class="btn-geo-refresh" onclick="reloadCurrentGeoMap()" title="Muat Ulang Titik Geospasial">
               <i class="fa-solid fa-rotate"></i> Refresh Peta
             </button>
@@ -10357,7 +10382,7 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
       if (isGeoJsonLoading) return;
       isGeoJsonLoading = true;
 
-      $.getJSON(BaseURL + 'assets/geojson/banyuwangi_kecamatan_real_smooth.geojson', function(geoData) {
+      $.getJSON(BaseURL + 'assets/geojson/banyuwangi_kecamatan_real.geojson', function(geoData) {
         banyuwangiRealGeoJson = geoData;
         $.getJSON(BaseURL + 'assets/geojson/banyuwangi_districts_meta.json', function(metaData) {
           banyuwangiDistrictsMeta = metaData;
@@ -10435,6 +10460,525 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
       var sid = $('#geoSurveySelect').val() || 3;
       downloadRekapExcel(sid);
     };
+
+    /**
+     * Unduh Peta Spasial MenuSurvei (PNG HD) Standar Publikasi Riset
+     * Menggunakan Koordinat GPS Riil dari Perangkat Responden
+     * Menyesuaikan Skala dan Batas Wilayah Peta Otomatis agar Seluruh Titik Terlihat
+     */
+    window.downloadMenuSurveiMap = function() {
+      if (!isLoggedIn) {
+        promptSurveyAuth('peta');
+        return;
+      }
+      var mapContainer = document.getElementById('leafletSurveiMap');
+      if (!mapContainer || !leafletMapInstance) {
+        Swal.fire('Peta Belum Siap', 'Peta belum selesai diinisialisasi. Silakan tunggu beberapa saat.', 'warning');
+        return;
+      }
+
+      var points = allGeoPoints || [];
+      var activeInst = ($('#geoInstrumenFilter').val() || '').trim().toUpperCase();
+      var activeKec = ($('#geoKecamatanFilter').val() || '').trim().toLowerCase();
+      var activeMutu = ($('#geoMutuFilter').val() || '').trim().toLowerCase();
+
+      var activePoints = points.filter(function(p) {
+        var lat = parseFloat(p.lat);
+        var lng = parseFloat(p.lng);
+        if (isNaN(lat) || isNaN(lng)) return false;
+        if (activeInst && (p.instrumen || 'A').toUpperCase() !== activeInst) return false;
+        if (activeKec && (p.kecamatan || '').toLowerCase().indexOf(activeKec) === -1) return false;
+        if (activeMutu && (p.mutu || '').toLowerCase().indexOf(activeMutu) === -1) return false;
+        return true;
+      });
+
+      if (!activePoints || activePoints.length === 0) {
+        Swal.fire('Tidak Ada Titik Lokasi', 'Tidak ditemukan data titik koordinat GPS responden pada filter yang dipilih.', 'warning');
+        return;
+      }
+
+      Swal.fire({
+        title: 'Menyiapkan Peta Sebaran Survei...',
+        html: '<div style="font-size:13px; color:#64748b; line-height: 1.6;">Menyesuaikan skala agar <b>seluruh lokasi responden terlihat</b>, memuat ubin peta, dan merender koordinat riil...</div>',
+        allowOutsideClick: false,
+        didOpen: function() { Swal.showLoading(); }
+      });
+
+      var latLngs = [];
+      activePoints.forEach(function(p) {
+        var lat = parseFloat(p.lat);
+        var lng = parseFloat(p.lng);
+        if (!isNaN(lat) && !isNaN(lng)) latLngs.push([lat, lng]);
+      });
+
+      setTimeout(function() {
+        leafletMapInstance.stop();
+        leafletMapInstance.invalidateSize({ pan: false });
+        var bounds = L.latLngBounds(latLngs);
+        if (bounds.isValid()) {
+          if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
+            leafletMapInstance.setView(bounds.getCenter(), 14, { animate: false });
+          } else {
+            leafletMapInstance.fitBounds(bounds.pad(0.14), { padding: [70, 70], maxZoom: 15, animate: false });
+          }
+        }
+
+        var controls = mapContainer.querySelectorAll('.leaflet-control-container, .leaflet-popup, .leaflet-tooltip');
+        controls.forEach(function(el) { el.style.visibility = 'hidden'; });
+
+        var markerPane = mapContainer.querySelector('.leaflet-marker-pane');
+        var origMarkerVis = markerPane ? markerPane.style.visibility : '';
+        if (markerPane) markerPane.style.visibility = 'hidden';
+
+        var overlayPane = mapContainer.querySelector('.leaflet-overlay-pane');
+        var origOverlayVis = overlayPane ? overlayPane.style.visibility : '';
+        if (overlayPane) overlayPane.style.visibility = 'hidden';
+
+        function restoreDOM() {
+          controls.forEach(function(el) { el.style.visibility = ''; });
+          if (markerPane) markerPane.style.visibility = origMarkerVis;
+          if (overlayPane) overlayPane.style.visibility = origOverlayVis;
+        }
+
+        setTimeout(function() {
+          html2canvas(mapContainer, {
+            useCORS: true,
+            allowTaint: false,
+            scale: 2,
+            logging: false,
+            backgroundColor: '#ffffff'
+          }).then(function(mapCanvas) {
+            restoreDOM();
+
+            renderMenuSurveiPinsOnCanvas(mapCanvas, activePoints, 2);
+
+            var curSurv = currentGeoData && currentGeoData.survei ? currentGeoData.survei : null;
+            var sTitle = curSurv && curSurv.Judul ? curSurv.Judul : 'Survei Geospasial Banyuwangi';
+            var finalCanvas = createMenuSurveiResearchFrame(mapCanvas, 2, activeInst, activePoints.length, sTitle);
+
+            var safeTitle = sTitle.replace(/[^a-zA-Z0-9_-]/g, '_').substring(0, 30);
+            var filename = 'Peta_Sebaran_Responden_' + safeTitle + '_' + (new Date().toISOString().slice(0,10)) + '.png';
+
+            finalCanvas.toBlob(function(blob) {
+              Swal.close();
+              var url = URL.createObjectURL(blob);
+              var a = document.createElement('a');
+              a.href = url;
+              a.download = filename;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+
+              Swal.fire({
+                icon: 'success',
+                title: 'Peta Berhasil Diunduh!',
+                html: '<div style="font-size:13px; color:#475569;">Gambar peta <b>' + filename + '</b> berhasil disimpan.<br>Seluruh <b>' + activePoints.length + ' lokasi survei responden</b> ditampilkan secara presisi berdasarkan koordinat GPS riil perangkat.</div>',
+                confirmButtonText: '<i class="fa-solid fa-check"></i> Selesai',
+                confirmButtonColor: '#043168'
+              });
+            }, 'image/png');
+
+          }).catch(function(err) {
+            restoreDOM();
+            Swal.close();
+            console.error("Gagal merender peta:", err);
+            Swal.fire('Gagal Merender Peta', 'Terjadi kendala saat menyusun kanvas peta: ' + (err.message || err), 'error');
+          });
+
+        }, 800);
+      }, 200);
+    };
+
+    function renderMenuSurveiPinsOnCanvas(mapCanvas, points, scale) {
+      var ctx = mapCanvas.getContext('2d');
+      var mapContainer = document.getElementById('leafletSurveiMap');
+      if (!mapContainer || !leafletMapInstance) return;
+
+      var containerW = mapContainer.clientWidth;
+      var containerH = mapContainer.clientHeight;
+      var scaleX = mapCanvas.width / containerW;
+      var scaleY = mapCanvas.height / containerH;
+      var s = scale || 2;
+
+      var locMap = {};
+      points.forEach(function(p) {
+        var lat = parseFloat(p.lat);
+        var lng = parseFloat(p.lng);
+        if (isNaN(lat) || isNaN(lng)) return;
+        var key = lat.toFixed(5) + '_' + lng.toFixed(5);
+        if (!locMap[key]) {
+          locMap[key] = {
+            lat: lat,
+            lng: lng,
+            points: [],
+            kecamatan: p.kecamatan || '',
+            kabupaten: p.kabupaten || '',
+            desa: p.desa || '',
+            totalSkor: 0,
+            instruments: {}
+          };
+        }
+        locMap[key].points.push(p);
+        locMap[key].totalSkor += parseFloat(p.skor || 0);
+        var ins = (p.instrumen || 'A').toUpperCase();
+        locMap[key].instruments[ins] = (locMap[key].instruments[ins] || 0) + 1;
+      });
+
+      function drawRRect(c, x, y, width, height, radius) {
+        c.beginPath();
+        c.moveTo(x + radius, y);
+        c.lineTo(x + width - radius, y);
+        c.quadraticCurveTo(x + width, y, x + width, y + radius);
+        c.lineTo(x + width, y + height - radius);
+        c.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        c.lineTo(x + radius, y + height);
+        c.quadraticCurveTo(x, y + height, x, y + height - radius);
+        c.lineTo(x, y + radius);
+        c.quadraticCurveTo(x, y, x + radius, y);
+        c.closePath();
+      }
+
+      Object.keys(locMap).forEach(function(key) {
+        var loc = locMap[key];
+        var pt = leafletMapInstance.latLngToContainerPoint(L.latLng(loc.lat, loc.lng));
+        var px = pt.x * scaleX;
+        var py = pt.y * scaleY;
+        var count = loc.points.length;
+        var avgSkor = loc.totalSkor / count;
+
+        var instKeys = Object.keys(loc.instruments);
+        var pinColor = '#0284c7';
+        if (instKeys.length === 1) {
+          var singleInst = instKeys[0];
+          if (singleInst === 'A') pinColor = '#043168';
+          else if (singleInst === 'B') pinColor = '#0d9488';
+          else if (singleInst === 'C') pinColor = '#7c3aed';
+          else if (singleInst === 'D') pinColor = '#ea580c';
+          else if (singleInst === 'E') pinColor = '#b40814';
+        } else {
+          if (avgSkor >= 3.50) pinColor = '#10b981';
+          else if (avgSkor >= 2.75) pinColor = '#0284c7';
+          else if (avgSkor >= 2.00) pinColor = '#f59e0b';
+          else pinColor = '#ef4444';
+        }
+
+        ctx.beginPath();
+        ctx.arc(px, py, 6 * s, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.22)';
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(px, py, 2.5 * s, 0, Math.PI * 2);
+        ctx.fillStyle = '#043168';
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1 * s;
+        ctx.stroke();
+
+        var headRadius = 10 * s;
+        var headCenterY = py - (20 * s);
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(px, headCenterY, headRadius, 0.16 * Math.PI, 0.84 * Math.PI, true);
+        ctx.lineTo(px, py - (1 * s));
+        ctx.closePath();
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
+        ctx.shadowBlur = 6 * s;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 3 * s;
+        ctx.fillStyle = pinColor;
+        ctx.fill();
+        ctx.shadowColor = 'transparent';
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2 * s;
+        ctx.stroke();
+        ctx.restore();
+
+        var innerRadius = 5.5 * s;
+        ctx.beginPath();
+        ctx.arc(px, headCenterY, innerRadius, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+
+        var instTag = instKeys.length === 1 ? instKeys[0] : (instKeys.length > 1 ? '★' : 'A');
+        ctx.fillStyle = '#043168';
+        ctx.font = 'bold ' + (6.5 * s) + 'px Calibri, Arial, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(instTag, px, headCenterY);
+
+        if (count > 1) {
+          var badgeText = count + 'x';
+          var badgeX = px + (8.5 * s);
+          var badgeY = headCenterY - (7.5 * s);
+          var badgeW = (badgeText.length > 2 ? 14 : 11) * s;
+          var badgeH = 11 * s;
+
+          ctx.save();
+          drawRRect(ctx, badgeX - (badgeW / 2), badgeY - (badgeH / 2), badgeW, badgeH, 4 * s);
+          ctx.fillStyle = '#dc2626';
+          ctx.fill();
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 1.2 * s;
+          ctx.stroke();
+
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold ' + (5.5 * s) + 'px Calibri, Arial, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(badgeText, badgeX, badgeY);
+          ctx.restore();
+        }
+
+        var kecName = loc.kecamatan ? loc.kecamatan.replace(/^kec\.?\s*/i, '') : '';
+        if (!kecName && loc.desa) kecName = loc.desa;
+        if (!kecName) kecName = 'Lokasi Survei';
+
+        var titleLine = 'Kec. ' + kecName + (count > 1 ? ' (' + count + ' Responden)' : '');
+        var coordLine = 'GPS: ' + loc.lat.toFixed(5) + ', ' + loc.lng.toFixed(5);
+
+        ctx.font = 'bold ' + (6.8 * s) + 'px Calibri, Arial, sans-serif';
+        var w1 = ctx.measureText(titleLine).width;
+        ctx.font = '500 ' + (5.8 * s) + 'px Calibri, Arial, sans-serif';
+        var w2 = ctx.measureText(coordLine).width;
+        var maxTextW = Math.max(w1, w2);
+
+        var pillPadX = 8 * s;
+        var pillW = maxTextW + (pillPadX * 2);
+        var pillH = 22 * s;
+        var pillX = px - (pillW / 2);
+        pillX = Math.max(8 * s, Math.min(mapCanvas.width - pillW - (8 * s), pillX));
+
+        var pillY = py + (7 * s);
+        if (pillY + pillH > mapCanvas.height - (10 * s)) {
+          pillY = headCenterY - headRadius - pillH - (4 * s);
+        }
+
+        ctx.save();
+        drawRRect(ctx, pillX, pillY, pillW, pillH, 5 * s);
+        ctx.fillStyle = 'rgba(4, 30, 66, 0.92)';
+        ctx.fill();
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 1 * s;
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold ' + (6.8 * s) + 'px Calibri, Arial, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(titleLine, pillX + (pillW / 2), pillY + (3.5 * s));
+
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = 'bold ' + (5.8 * s) + 'px Calibri, Arial, sans-serif';
+        ctx.fillText(coordLine, pillX + (pillW / 2), pillY + (12.5 * s));
+        ctx.restore();
+      });
+    }
+
+    function createMenuSurveiResearchFrame(mapCanvas, scale, filterCode, pointCount, surveyTitle) {
+      var pad = 24 * scale;
+      var headerH = 96 * scale;
+      var bottomPanelH = 88 * scale;
+      var footerH = 34 * scale;
+
+      var totalW = mapCanvas.width + (pad * 2);
+      var totalH = mapCanvas.height + headerH + bottomPanelH + footerH + (pad * 2);
+
+      var c = document.createElement('canvas');
+      c.width = totalW;
+      c.height = totalH;
+      var ctx = c.getContext('2d');
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, totalW, totalH);
+
+      ctx.strokeStyle = '#043168';
+      ctx.lineWidth = 2.5 * scale;
+      ctx.strokeRect(pad / 2, pad / 2, totalW - pad, totalH - pad);
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 1 * scale;
+      ctx.strokeRect(pad / 2 + 3 * scale, pad / 2 + 3 * scale, totalW - pad - 6 * scale, totalH - pad - 6 * scale);
+
+      ctx.fillStyle = '#043168';
+      ctx.fillRect(pad, pad, totalW - (pad * 2), headerH - (6 * scale));
+      ctx.fillStyle = '#f59e0b';
+      ctx.fillRect(pad, pad + headerH - (9 * scale), totalW - (pad * 2), 3 * scale);
+
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = 'bold ' + (11 * scale) + 'px Calibri, Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('BAPPEDA LITBANG KABUPATEN BANYUWANGI • PORTAL SPASIAL RISET & SURVEI', totalW / 2, pad + (22 * scale));
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold ' + (16.5 * scale) + 'px Calibri, Arial, sans-serif';
+      ctx.fillText('PETA SEBARAN TITIK KOORDINAT SURVEI: ' + (surveyTitle || '').toUpperCase(), totalW / 2, pad + (48 * scale));
+
+      var instLabels = {
+        'A': 'Instrumen A - Perusahaan / Pemberi Kerja',
+        'B': 'Instrumen B - Pencari Kerja & Lulusan',
+        'C': 'Instrumen C - Pemangku Kepentingan',
+        'D': 'Instrumen D - Siswa Kelas 12',
+        'E': 'Instrumen E - Pakar Isu Strategis (AHP)'
+      };
+      var filterDesc = filterCode && instLabels[filterCode] ? ('Filter: ' + instLabels[filterCode]) : 'Filter: Seluruh Instrumen Penilaian';
+      ctx.fillStyle = '#cbd5e1';
+      ctx.font = (10.5 * scale) + 'px Calibri, Arial, sans-serif';
+      ctx.fillText(filterDesc + ' • N = ' + pointCount + ' Titik Lokasi Responden (GPS Terverifikasi) • Datum: WGS84', totalW / 2, pad + (72 * scale));
+
+      var mapX = pad;
+      var mapY = pad + headerH;
+      ctx.drawImage(mapCanvas, mapX, mapY);
+
+      ctx.strokeStyle = '#043168';
+      ctx.lineWidth = 1.5 * scale;
+      ctx.strokeRect(mapX, mapY, mapCanvas.width, mapCanvas.height);
+
+      var panelY = mapY + mapCanvas.height + (8 * scale);
+      var panelW = mapCanvas.width;
+      var panelH = bottomPanelH - (8 * scale);
+
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillRect(mapX, panelY, panelW, panelH);
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 1 * scale;
+      ctx.strokeRect(mapX, panelY, panelW, panelH);
+
+      var compX = mapX + (36 * scale);
+      var compY = panelY + (panelH / 2);
+      var compR = 18 * scale;
+      ctx.beginPath();
+      ctx.arc(compX, compY, compR, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.strokeStyle = '#043168';
+      ctx.lineWidth = 1.2 * scale;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(compX, compY - compR + (3 * scale));
+      ctx.lineTo(compX - (5 * scale), compY + (2 * scale));
+      ctx.lineTo(compX - (2 * scale), compY);
+      ctx.closePath();
+      ctx.fillStyle = '#043168';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(compX, compY + compR - (3 * scale));
+      ctx.lineTo(compX + (5 * scale), compY - (2 * scale));
+      ctx.lineTo(compX + (2 * scale), compY);
+      ctx.closePath();
+      ctx.fillStyle = '#94a3b8';
+      ctx.fill();
+
+      ctx.fillStyle = '#b40814';
+      ctx.font = 'bold ' + (9 * scale) + 'px Calibri, Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('U', compX, compY - compR - (2 * scale));
+
+      var scaleX = compX + compR + (24 * scale);
+      var scaleY = panelY + (30 * scale);
+      var segW = 28 * scale;
+      ctx.fillStyle = '#043168';
+      ctx.fillRect(scaleX, scaleY, segW, 5 * scale);
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = '#043168';
+      ctx.lineWidth = 1 * scale;
+      ctx.fillRect(scaleX + segW, scaleY, segW, 5 * scale);
+      ctx.strokeRect(scaleX + segW, scaleY, segW, 5 * scale);
+      ctx.fillStyle = '#043168';
+      ctx.fillRect(scaleX + (segW * 2), scaleY, segW, 5 * scale);
+
+      ctx.fillStyle = '#043168';
+      ctx.font = 'bold ' + (8 * scale) + 'px Calibri, Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('0', scaleX, scaleY + (14 * scale));
+      ctx.fillText('5 km', scaleX + segW, scaleY + (14 * scale));
+      ctx.fillText('10 km', scaleX + (segW * 2), scaleY + (14 * scale));
+
+      ctx.fillStyle = '#64748b';
+      ctx.font = (8 * scale) + 'px Calibri, Arial, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Skala Grafis Peta Spasial', scaleX, scaleY - (6 * scale));
+
+      var divX = scaleX + (segW * 2) + (26 * scale);
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 1.2 * scale;
+      ctx.beginPath();
+      ctx.moveTo(divX, panelY + (10 * scale));
+      ctx.lineTo(divX, panelY + panelH - (10 * scale));
+      ctx.stroke();
+
+      var legStartX = divX + (20 * scale);
+      ctx.fillStyle = '#043168';
+      ctx.font = 'bold ' + (9.5 * scale) + 'px Calibri, Arial, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('LEGENDA KATEGORI MUTU & TITIK KOORDINAT SURVEI:', legStartX, panelY + (22 * scale));
+
+      var legItems = [
+        { label: 'Sangat Baik (≥ 3.50)', color: '#10b981' },
+        { label: 'Baik (2.75 - 3.49)', color: '#0284c7' },
+        { label: 'Cukup (2.00 - 2.74)', color: '#f59e0b' },
+        { label: 'Kurang (< 2.00)', color: '#ef4444' },
+        { label: 'Titik GPS Riil', color: '#0f172a', isPoint: true },
+        { label: 'Badge (xN) = Multi-Responden Titik Sama', color: '#dc2626', isBadge: true }
+      ];
+
+      var itemX = legStartX;
+      var itemY = panelY + (50 * scale);
+      legItems.forEach(function(item) {
+        if (item.isPoint) {
+          ctx.fillStyle = item.color;
+          ctx.beginPath();
+          ctx.arc(itemX + (6 * scale), itemY - (3 * scale), 4.5 * scale, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(itemX + (6 * scale), itemY - (3 * scale), 1.8 * scale, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (item.isBadge) {
+          ctx.fillStyle = item.color;
+          ctx.beginPath();
+          ctx.arc(itemX + (6 * scale), itemY - (3 * scale), 5 * scale, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 1.2 * scale;
+          ctx.stroke();
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold ' + (5.5 * scale) + 'px Calibri, Arial, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('xN', itemX + (6 * scale), itemY - (3 * scale));
+        } else {
+          ctx.fillStyle = item.color;
+          ctx.beginPath();
+          ctx.arc(itemX + (6 * scale), itemY - (3 * scale), 5 * scale, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 1.2 * scale;
+          ctx.stroke();
+        }
+
+        ctx.fillStyle = '#1e293b';
+        ctx.font = 'bold ' + (8.5 * scale) + 'px Calibri, Arial, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(item.label, itemX + (16 * scale), itemY);
+
+        itemX += (item.label.length * 6.5 * scale) + (28 * scale);
+      });
+
+      var footerY = panelY + panelH + (20 * scale);
+      ctx.fillStyle = '#475569';
+      ctx.font = (9 * scale) + 'px Calibri, Arial, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Sumber Data: Sebaran Koordinat GPS Responden Riil (N = ' + pointCount + ' Titik Lokasi) • Kabupaten Banyuwangi', pad + (8 * scale), footerY);
+
+      ctx.textAlign = 'right';
+      ctx.fillText('Waktu Unduh: ' + (new Date().toLocaleString('id-ID')) + ' WIB • Resolusi: HD Ultra-Sharp', totalW - pad - (8 * scale), footerY);
+
+      return c;
+    }
 
     // Load Peta Geospasial & Responden Sesuai Survei yang Dipilih
     window.loadSurveyGeoMap = function(surveyId) {
