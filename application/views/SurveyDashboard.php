@@ -1456,6 +1456,58 @@
       margin-bottom: 0;
     }
 
+    .q-chart-container {
+      position: relative;
+      width: 100%;
+      margin: 4px 0 10px 0;
+      transition: all 0.2s ease;
+    }
+
+    .q-chart-scrollable {
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      padding-right: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 #f8fafc;
+    }
+
+    .q-chart-scrollable::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .q-chart-scrollable::-webkit-scrollbar-track {
+      background: #f8fafc;
+      border-radius: 4px;
+    }
+
+    .q-chart-scrollable::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+
+    .q-chart-scrollable::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    .q-scroll-hint-pill {
+      position: absolute;
+      right: 8px;
+      top: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #475569;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid #cbd5e1;
+      padding: 3px 9px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      pointer-events: none;
+      z-index: 5;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
     .chart-card-body {
       flex: 1 1 auto;
       position: relative;
@@ -7141,6 +7193,67 @@
     var defaultQuestionChartMode = 'bar-horizontal';
     var questionChartModes = {}; // qId -> 'bar-horizontal' | 'bar-vertical' | 'doughnut' | 'pie' | 'polarArea'
 
+    // 24 Palet Warna Cerah, Menarik & Beragam untuk Visualisasi Infografis Butir Pertanyaan
+    var BRIGHT_VIBRANT_PALETTE = [
+      '#0284c7', // 1. Sky Blue Cerah
+      '#10b981', // 2. Emerald Mint Green
+      '#f59e0b', // 3. Amber Gold Hangat
+      '#8b5cf6', // 4. Violet Purple Modern
+      '#ec4899', // 5. Fuchsia Pink Cerah
+      '#06b6d4', // 6. Cyan Aqua Segar
+      '#f97316', // 7. Coral Orange Cerah
+      '#14b8a6', // 8. Mint Teal Cerah
+      '#6366f1', // 9. Indigo Electric
+      '#d946ef', // 10. Magenta Cerah
+      '#84cc16', // 11. Lime Green Segar
+      '#3b82f6', // 12. Royal Blue Cerah
+      '#f43f5e', // 13. Rose Red Cerah
+      '#0ea5e9', // 14. Bright Ocean Blue
+      '#a855f7', // 15. Orchid Purple
+      '#22c55e', // 16. Fresh Leaf Green
+      '#eab308', // 17. Bright Sun Yellow
+      '#fb923c', // 18. Tangerine Orange
+      '#2dd4bf', // 19. Aqua Turquoise
+      '#c084fc', // 20. Soft Lavender
+      '#38bdf8', // 21. Ice Blue Cerah
+      '#4ade80', // 22. Pastel Spring Green
+      '#f472b6', // 23. Bubblegum Pink
+      '#a78bfa'  // 24. Periwinkle Indigo
+    ];
+
+    function calculateQuestionChartDimensions(mode, distLen) {
+      var isScrollable = false;
+      var containerH = 220;
+      var canvasH = 220;
+
+      if (mode === 'bar-horizontal') {
+        var rowH = (distLen > 15) ? 34 : (distLen > 8 ? 38 : 42);
+        canvasH = Math.max(180, (distLen * rowH) + 36);
+        if (distLen > 7) {
+          isScrollable = true;
+          containerH = Math.min(canvasH, 430);
+        } else {
+          containerH = canvasH;
+        }
+      } else if (mode === 'bar-vertical') {
+        containerH = (distLen > 10) ? 300 : (distLen > 5 ? 260 : 220);
+        canvasH = containerH;
+      } else {
+        // doughnut, pie, polarArea
+        if (distLen <= 4) containerH = 230;
+        else if (distLen <= 8) containerH = 270;
+        else if (distLen <= 14) containerH = 320;
+        else containerH = 370;
+        canvasH = containerH;
+      }
+
+      return {
+        containerH: containerH,
+        canvasH: canvasH,
+        isScrollable: isScrollable
+      };
+    }
+
     function getQuestionChartMode(qId) {
       return questionChartModes[qId] || defaultQuestionChartMode || 'bar-horizontal';
     }
@@ -7405,7 +7518,6 @@
 
       var breakdownHtml = '';
       if (hasDistData) {
-        var palette = ['#043168', '#0284c7', '#0d9488', '#10b981', '#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#06b6d4', '#64748b'];
         var previewDist = dist;
         var isLongList = dist.length > 6;
         if (isLongList) {
@@ -7414,12 +7526,7 @@
 
         breakdownHtml += '<div class="q-breakdown-list" id="qBreakdownList_' + qId + '">';
         previewDist.forEach(function(d, di) {
-          var color = palette[di % palette.length];
-          if (d.nilai >= 4) color = '#10b981';
-          else if (d.nilai >= 3) color = '#0284c7';
-          else if (d.nilai >= 2) color = '#f59e0b';
-          else if (d.nilai === 1) color = '#ef4444';
-
+          var color = BRIGHT_VIBRANT_PALETTE[di % BRIGHT_VIBRANT_PALETTE.length];
           var barWidth = Math.min(100, Math.max(0, (d.count / (totalJwb || 1)) * 100)).toFixed(1);
 
           breakdownHtml += 
@@ -7442,7 +7549,7 @@
         if (isLongList) {
           breakdownHtml += '<div id="qBreakdownMore_' + qId + '" style="display: none;">';
           dist.slice(5).forEach(function(d, di) {
-            var color = palette[(di + 5) % palette.length];
+            var color = BRIGHT_VIBRANT_PALETTE[(di + 5) % BRIGHT_VIBRANT_PALETTE.length];
             var barWidth = Math.min(100, Math.max(0, (d.count / (totalJwb || 1)) * 100)).toFixed(1);
             breakdownHtml += 
               '<div class="q-breakdown-row">' +
@@ -7474,17 +7581,8 @@
       }
 
       var curMode = getQuestionChartMode(qId);
-      var canvasHeight = 220;
-      if (curMode === 'doughnut' || curMode === 'pie' || curMode === 'polarArea') {
-        canvasHeight = 230;
-      } else if (curMode === 'bar-vertical') {
-        canvasHeight = 210;
-      } else {
-        if (dist.length <= 2) canvasHeight = 150;
-        else if (dist.length <= 4) canvasHeight = 190;
-        else if (dist.length <= 7) canvasHeight = 230;
-        else canvasHeight = 270;
-      }
+      var distLen = dist.length;
+      var dims = calculateQuestionChartDimensions(curMode, distLen);
 
       return '' +
         '<div class="col-xl-6 col-lg-6 col-md-12 mb-4 q-chart-card-wrapper" data-qid="' + qId + '" data-inst="' + ik + '">' +
@@ -7525,9 +7623,10 @@
               '</div>' +
             '</div>' +
 
-            '<div style="position: relative; height: ' + canvasHeight + 'px; width: 100%; margin: 4px 0 10px 0;">' +
+            '<div class="q-chart-container' + (dims.isScrollable ? ' q-chart-scrollable' : '') + '" id="qChartContainer_' + qId + '" style="height: ' + dims.containerH + 'px;' + (dims.isScrollable ? ' max-height: 430px;' : '') + '">' +
+              (dims.isScrollable ? '<span class="q-scroll-hint-pill"><i class="fa-solid fa-arrows-up-down"></i> ' + distLen + ' Opsi Data</span>' : '') +
               (hasDistData ? 
-                '<canvas id="canvasQChart_' + qId + '" style="display: block; width: 100% !important; height: ' + canvasHeight + 'px !important;"></canvas>' : 
+                '<canvas id="canvasQChart_' + qId + '" style="display: block; width: 100% !important; height: ' + dims.canvasH + 'px !important;"></canvas>' : 
                 '<div style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; font-size: 12px; background: #f8fafc; border-radius: 10px; border: 1px dashed #e2e8f0;">' +
                   '<i class="fa-solid fa-chart-column fa-2x mb-2" style="color: #cbd5e1;"></i>' +
                   '<span>Belum ada respons data untuk pertanyaan ini</span>' +
@@ -7574,49 +7673,36 @@
       }
 
       var curMode = customMode || getQuestionChartMode(qId);
-      var container = canvas.parentElement;
-      if (container) {
-        var targetH = 220;
-        if (curMode === 'doughnut' || curMode === 'pie' || curMode === 'polarArea') targetH = 230;
-        else if (curMode === 'bar-vertical') targetH = 210;
-        else {
-          if (dist.length <= 2) targetH = 150;
-          else if (dist.length <= 4) targetH = 190;
-          else if (dist.length <= 7) targetH = 230;
-          else targetH = 270;
+      var distLen = dist.length;
+      var dims = calculateQuestionChartDimensions(curMode, distLen);
+
+      var $container = $('#qChartContainer_' + qId);
+      if ($container.length === 0) $container = $(canvas).parent();
+
+      if ($container.length > 0) {
+        $container.css({
+          height: dims.containerH + 'px',
+          maxHeight: dims.isScrollable ? '430px' : 'none'
+        });
+        if (dims.isScrollable) {
+          $container.addClass('q-chart-scrollable');
+          if ($container.find('.q-scroll-hint-pill').length === 0) {
+            $container.prepend('<span class="q-scroll-hint-pill"><i class="fa-solid fa-arrows-up-down"></i> ' + distLen + ' Opsi Data</span>');
+          }
+        } else {
+          $container.removeClass('q-chart-scrollable');
+          $container.find('.q-scroll-hint-pill').remove();
         }
-        container.style.height = targetH + 'px';
       }
+
+      // Pastikan ukuran canvas diatur secara eksplisit sebelum inisialisasi Chart.js
+      canvas.style.height = dims.canvasH + 'px';
+      canvas.height = dims.canvasH;
 
       var rawLabels = dist.map(function(d) { return d.label || 'Opsi'; });
       var vals = dist.map(function(d) { return d.count || 0; });
-      var palette = ['#043168', '#0284c7', '#0d9488', '#10b981', '#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#06b6d4', '#64748b'];
-
       var bgColors = dist.map(function(d, di) {
-        if (d.nilai >= 4) return '#10b981';
-        if (d.nilai >= 3) return '#0284c7';
-        if (d.nilai >= 2) return '#f59e0b';
-        if (d.nilai === 1) return '#ef4444';
-        return palette[di % palette.length];
-      });
-
-      var wrappedLabels = rawLabels.map(function(lbl) {
-        if (lbl.length > 28) {
-          var words = lbl.split(' ');
-          var lines = [];
-          var cur = '';
-          words.forEach(function(w) {
-            if ((cur + ' ' + w).trim().length > 26) {
-              lines.push(cur.trim());
-              cur = w;
-            } else {
-              cur += (cur ? ' ' : '') + w;
-            }
-          });
-          if (cur) lines.push(cur.trim());
-          return lines;
-        }
-        return lbl;
+        return BRIGHT_VIBRANT_PALETTE[di % BRIGHT_VIBRANT_PALETTE.length];
       });
 
       var totalJwb = item.count !== undefined ? item.count : (item.TotalJwb || 1);
@@ -7626,8 +7712,11 @@
 
       if (curMode === 'bar-vertical') {
         var shortLabels = rawLabels.map(function(lbl) {
-          return lbl.length > 18 ? lbl.substring(0, 16) + '...' : lbl;
+          var clean = String(lbl || '').trim();
+          return clean.length > 16 ? clean.substring(0, 14) + '...' : clean;
         });
+        var dynBarThickness = Math.max(10, Math.min(36, Math.floor(400 / Math.max(distLen, 1))));
+
         chartConfig = {
           type: 'bar',
           data: {
@@ -7637,7 +7726,7 @@
               data: vals,
               backgroundColor: bgColors,
               borderRadius: 6,
-              maxBarThickness: 36
+              maxBarThickness: dynBarThickness
             }]
           },
           options: {
@@ -7654,9 +7743,9 @@
               },
               x: {
                 ticks: {
-                  font: { size: rawLabels.length > 5 ? 8.5 : 10, weight: '700' },
-                  maxRotation: 30,
-                  minRotation: 0,
+                  font: { size: distLen > 8 ? 8.5 : 9.5, weight: '700' },
+                  maxRotation: 45,
+                  minRotation: distLen > 4 ? 45 : 0,
                   autoSkip: false
                 },
                 grid: { display: false }
@@ -7829,17 +7918,26 @@
           }
         };
       } else {
-        // Default: Batang Horizontal
+        // Default: Batang Horizontal (Label 1 baris rapi dengan elipsis untuk mencegah tumpang tindih)
+        var maxCharLen = (distLen > 15) ? 26 : ((distLen > 8) ? 30 : 36);
+        var singleLineLabels = rawLabels.map(function(lbl) {
+          var clean = String(lbl || '').trim();
+          if (clean.length > maxCharLen) {
+            return clean.substring(0, maxCharLen - 2) + '...';
+          }
+          return clean;
+        });
+
         chartConfig = {
           type: 'bar',
           data: {
-            labels: wrappedLabels,
+            labels: singleLineLabels,
             datasets: [{
               label: 'Jumlah Responden',
               data: vals,
               backgroundColor: bgColors,
               borderRadius: 6,
-              maxBarThickness: 32
+              maxBarThickness: (distLen > 15) ? 20 : ((distLen > 8) ? 24 : 28)
             }]
           },
           options: {
@@ -7859,7 +7957,11 @@
               },
               y: {
                 ticks: {
-                  font: { size: rawLabels.length > 6 ? 9.5 : 10.5, weight: '700' },
+                  font: {
+                    size: (distLen > 15) ? 9.5 : ((distLen > 8) ? 10 : 10.5),
+                    weight: '700'
+                  },
+                  color: '#1e293b',
                   autoSkip: false
                 },
                 grid: { display: false }
@@ -7872,7 +7974,7 @@
                   title: function(items) {
                     if (!items || items.length === 0) return '';
                     var idx = items[0].dataIndex;
-                    return rawLabels[idx] || '';
+                    return rawLabels[idx] || ''; // Teks lengkap pada popup tooltip saat disentuh/hover
                   },
                   label: function(ctx) {
                     var c = ctx.raw;
@@ -7994,15 +8096,17 @@
       var dist = Array.isArray(item.distribusiJawaban) ? item.distribusiJawaban : [];
       var optCount = Math.max(dist.length, 2);
 
-      // Hitung tinggi kanvas berdasarkan mode diagram
+      // Hitung tinggi kanvas secara dinamis agar seluruh opsi tertampung lega tanpa bertumpuk
       var H = 900 * scale;
       if (mode === 'bar-horizontal') {
-        var barRowH = 58 * scale;
+        var barRowH = (optCount > 15) ? (48 * scale) : ((optCount > 8) ? (54 * scale) : (60 * scale));
         var barsH = optCount * barRowH;
-        H = Math.max(840 * scale, (440 * scale) + barsH);
+        H = Math.max(860 * scale, (460 * scale) + barsH);
       } else {
-        var breakdownRowsH = Math.ceil(optCount / 2) * (36 * scale);
-        H = Math.max(920 * scale, (520 * scale) + breakdownRowsH);
+        var offH = (optCount > 12) ? (400 * scale) : (350 * scale);
+        var rincianRows = Math.ceil(optCount / 2);
+        var rincianH = rincianRows * (28 * scale);
+        H = Math.max(900 * scale, (500 * scale) + offH + rincianH);
       }
 
       var c = document.createElement('canvas');
@@ -8109,7 +8213,6 @@
 
       // 5. Visualisasi Diagram Sesuai Pilihan Mode
       var diagramStartY = boxY + boxH + (30 * scale);
-      var palette = ['#043168', '#0284c7', '#0d9488', '#10b981', '#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#06b6d4', '#64748b'];
 
       if (dist.length === 0) {
         ctx.fillStyle = '#94a3b8';
@@ -8117,13 +8220,13 @@
         ctx.fillText('Belum ada data respons responden untuk butir pertanyaan ini.', padX, diagramStartY + (30 * scale));
       } else if (mode === 'bar-horizontal') {
         var trackW = W - (padX * 2) - (230 * scale);
-        var barRowH = 58 * scale;
+        var barRowH = (optCount > 15) ? (48 * scale) : ((optCount > 8) ? (54 * scale) : (60 * scale));
         dist.forEach(function(d, di) {
           var rowY = diagramStartY + (di * barRowH);
 
           // Option Text Label
           ctx.fillStyle = '#1e293b';
-          ctx.font = 'bold ' + (12.5 * scale) + 'px "Poppins", Calibri, Arial, sans-serif';
+          ctx.font = 'bold ' + (optCount > 15 ? 11 * scale : 12.5 * scale) + 'px "Poppins", Calibri, Arial, sans-serif';
           ctx.textAlign = 'left';
           var optLbl = (di + 1) + '. ' + d.label;
           if (ctx.measureText(optLbl).width > trackW) {
@@ -8136,16 +8239,12 @@
 
           // Background Track
           var barY = rowY + (22 * scale);
-          var trackH = 18 * scale;
+          var trackH = (optCount > 15) ? (15 * scale) : (18 * scale);
           ctx.fillStyle = '#f1f5f9';
           roundRectHelper(ctx, padX, barY, trackW, trackH, trackH / 2, true, false);
 
-          // Proportional Bar
-          var barColor = palette[di % palette.length];
-          if (d.nilai >= 4) barColor = '#10b981';
-          else if (d.nilai >= 3) barColor = '#0284c7';
-          else if (d.nilai >= 2) barColor = '#f59e0b';
-          else if (d.nilai === 1) barColor = '#ef4444';
+          // Proportional Bar dengan Palet Cerah & Menarik
+          var barColor = BRIGHT_VIBRANT_PALETTE[di % BRIGHT_VIBRANT_PALETTE.length];
 
           var fillW = Math.max(0, (d.count / (totalJwb || 1)) * trackW);
           if (d.count > 0 && fillW < 12 * scale) fillW = 12 * scale;
@@ -8157,7 +8256,7 @@
 
           // Count & Percentage Label at Right
           ctx.fillStyle = '#0f172a';
-          ctx.font = 'bold ' + (12.5 * scale) + 'px "Poppins", Calibri, Arial, sans-serif';
+          ctx.font = 'bold ' + (optCount > 15 ? 11 * scale : 12.5 * scale) + 'px "Poppins", Calibri, Arial, sans-serif';
           ctx.textAlign = 'left';
           ctx.fillText(d.count + ' Resp. (' + d.percentage + '%)', padX + trackW + (18 * scale), barY + (14 * scale));
         });
@@ -8166,15 +8265,11 @@
         var rawLabels = dist.map(function(d) { return d.label || 'Opsi'; });
         var vals = dist.map(function(d) { return d.count || 0; });
         var bgColors = dist.map(function(d, di) {
-          if (d.nilai >= 4) return '#10b981';
-          if (d.nilai >= 3) return '#0284c7';
-          if (d.nilai >= 2) return '#f59e0b';
-          if (d.nilai === 1) return '#ef4444';
-          return palette[di % palette.length];
+          return BRIGHT_VIBRANT_PALETTE[di % BRIGHT_VIBRANT_PALETTE.length];
         });
 
         var offW = W - (padX * 2);
-        var offH = 340 * scale;
+        var offH = (optCount > 12) ? (400 * scale) : (350 * scale);
 
         var offCanvas = document.createElement('canvas');
         offCanvas.width = offW;
@@ -8197,7 +8292,7 @@
                 data: vals,
                 backgroundColor: bgColors,
                 borderRadius: 8 * scale,
-                maxBarThickness: 45 * scale
+                maxBarThickness: (optCount > 15) ? (28 * scale) : (45 * scale)
               }]
             },
             options: {
@@ -8212,7 +8307,7 @@
                   grid: { color: '#f1f5f9', lineWidth: 1.5 * scale }
                 },
                 x: {
-                  ticks: { font: { size: 11 * scale, weight: 'bold' }, color: '#1e293b', autoSkip: false },
+                  ticks: { font: { size: (optCount > 12) ? (9.5 * scale) : (11 * scale), weight: 'bold' }, color: '#1e293b', autoSkip: false },
                   grid: { display: false }
                 }
               },
@@ -8342,11 +8437,7 @@
           var rx = padX + (colIdx * (colW + (20 * scale)));
           var ry = rincianStartY + (16 * scale) + (rowIdx * (26 * scale));
 
-          var dotColor = palette[di % palette.length];
-          if (d.nilai >= 4) dotColor = '#10b981';
-          else if (d.nilai >= 3) dotColor = '#0284c7';
-          else if (d.nilai >= 2) dotColor = '#f59e0b';
-          else if (d.nilai === 1) dotColor = '#ef4444';
+          var dotColor = BRIGHT_VIBRANT_PALETTE[di % BRIGHT_VIBRANT_PALETTE.length];
 
           ctx.fillStyle = dotColor;
           ctx.beginPath();
