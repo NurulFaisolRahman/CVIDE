@@ -10809,7 +10809,7 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
       ctx.fillStyle = '#fbbf24';
       ctx.font = 'bold ' + (11 * scale) + 'px Calibri, Arial, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('BAPPEDA LITBANG KABUPATEN BANYUWANGI • PORTAL SPASIAL RISET & SURVEI', totalW / 2, pad + (22 * scale));
+      ctx.fillText('PORTAL SPASIAL RISET & PEMETAAN DATA SURVEI TERINTEGRASI', totalW / 2, pad + (22 * scale));
 
       ctx.fillStyle = '#ffffff';
       ctx.font = 'bold ' + (16.5 * scale) + 'px Calibri, Arial, sans-serif';

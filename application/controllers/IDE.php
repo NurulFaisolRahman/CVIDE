@@ -3568,51 +3568,6 @@ public function InputIKMYogyakarta()
     // Sebaran Daerah Survei
     $sebaranDaerah = $this->db->query("SELECT IFNULL(NULLIF(Kabupaten,''), 'Lainnya') as Daerah, COUNT(*) as Total FROM `survei_responden` WHERE SurveiId = {$surveiId} GROUP BY Daerah ORDER BY Total DESC")->result_array();
 
-    // Daftar Pertanyaan untuk tabel rincian & analisis parameter visualisasi
-    $pertanyaan = $this->db->where('SurveiId', $surveiId)->order_by('Urutan', 'ASC')->get('survei_pertanyaan')->result_array();
-
-    // 1. Parameter Analysis (untuk Bagan Batang / Bar Chart)
-    $parameterStats = array();
-    foreach ($pertanyaan as $idx => $q) {
-      $qId = (int)$q['Id'];
-      $qStats = $this->db->query("
-        SELECT AVG(NilaiAngka) as avg_score, COUNT(Id) as total_answers 
-        FROM `survei_jawaban` 
-        WHERE PertanyaanId = {$qId} AND NilaiAngka > 0
-      ")->row_array();
-
-      $valScore = !empty($qStats['avg_score']) ? round((float)$qStats['avg_score'], 2) : 0;
-      if ($valScore <= 0 && $avgSkor > 0) {
-        $valScore = $avgSkor;
-      }
-
-      $ins = strtoupper(trim($q['Instrumen'] ?? 'A'));
-      $qCode = '';
-      if (preg_match('/^\[([^\]]+)\]/', trim($q['Pertanyaan']), $matches)) {
-        $qCode = trim($matches[1]);
-      }
-      $qLabel = !empty($qCode) ? $qCode : ('P' . (int)$q['Urutan']);
-
-      $parameterStats[] = array(
-        'Id'         => $q['Id'],
-        'Urutan'     => $q['Urutan'],
-        'Instrumen'  => $ins,
-        'Pertanyaan' => $q['Pertanyaan'],
-        'Section'    => $q['Section'] ?? '',
-        'Tipe'       => $q['Tipe'],
-        'AvgScore'   => $valScore,
-        'TotalJwb'   => !empty($qStats['total_answers']) ? (int)$qStats['total_answers'] : 0,
-        'id'         => $q['Id'],
-        'no'         => (int)$q['Urutan'],
-        'label'      => $qLabel,
-        'code'       => $qCode,
-        'section'    => $q['Section'] ?? '',
-        'pertanyaan' => $q['Pertanyaan'],
-        'avg'        => $valScore,
-        'count'      => !empty($qStats['total_answers']) ? (int)$qStats['total_answers'] : 0
-      );
-    }
-
     // 2. Distribusi Mutu Pelayanan / Kepuasan (untuk Bagan Donat / Donut Chart)
     $distribusiMutu = array(
       'Sangat Baik' => 0,
@@ -3749,6 +3704,224 @@ public function InputIKMYogyakarta()
       $ins = strtoupper(trim($r['Instrumen'] ?? 'A'));
       if (!isset($distribusiInstrumen[$ins])) $distribusiInstrumen[$ins] = 0;
       $distribusiInstrumen[$ins]++;
+    }
+
+    // Daftar Pertanyaan untuk tabel rincian & analisis parameter visualisasi
+    $pertanyaan = $this->db->where('SurveiId', $surveiId)->order_by('Instrumen', 'ASC')->order_by('Urutan', 'ASC')->get('survei_pertanyaan')->result_array();
+
+    // Agregasi Cepat Distribusi Jawaban per Butir Pertanyaan (Batch Group Query)
+    $distRes = $this->db->query("
+      SELECT sj.PertanyaanId, sj.JawabanTeks, COUNT(sj.Id) as total, AVG(CASE WHEN sj.NilaiAngka > 0 THEN sj.NilaiAngka ELSE NULL END) as avg_nilai
+      FROM `survei_jawaban` sj
+      JOIN `survei_pertanyaan` sp ON sj.PertanyaanId = sp.Id
+      WHERE sp.SurveiId = {$surveiId} AND TRIM(IFNULL(sj.JawabanTeks, '')) != ''
+      GROUP BY sj.PertanyaanId, sj.JawabanTeks
+      ORDER BY sj.PertanyaanId, total DESC
+    ")->result_array();
+
+    $rawAnswers = array();
+    foreach ($distRes as $row) {
+      $rawAnswers[$row['PertanyaanId']][] = $row;
+    }
+
+    $summaryRes = $this->db->query("
+      SELECT sj.PertanyaanId, 
+             COUNT(sj.Id) as total_answers,
+             AVG(CASE WHEN sj.NilaiAngka > 0 THEN sj.NilaiAngka ELSE NULL END) as avg_score
+      FROM `survei_jawaban` sj
+      JOIN `survei_pertanyaan` sp ON sj.PertanyaanId = sp.Id
+      WHERE sp.SurveiId = {$surveiId} AND (TRIM(IFNULL(sj.JawabanTeks, '')) != '' OR sj.NilaiAngka > 0)
+      GROUP BY sj.PertanyaanId
+    ")->result_array();
+
+    $rawSummary = array();
+    foreach ($summaryRes as $row) {
+      $rawSummary[$row['PertanyaanId']] = $row;
+    }
+
+    // 1. Parameter Analysis Lengkap dengan Distribusi Jawaban Tiap Butir Pertanyaan
+    $parameterStats = array();
+    foreach ($pertanyaan as $idx => $q) {
+      $qId = (int)$q['Id'];
+      $ins = strtoupper(trim($q['Instrumen'] ?? 'A'));
+      $tipe = strtolower(trim($q['Tipe'] ?? ''));
+      $opsiRaw = trim($q['OpsiPilihan'] ?? '');
+
+      $qSum = isset($rawSummary[$qId]) ? $rawSummary[$qId] : null;
+      $totalAns = $qSum ? (int)$qSum['total_answers'] : 0;
+      $valScore = ($qSum && !empty($qSum['avg_score'])) ? round((float)$qSum['avg_score'], 2) : 0;
+
+      // Decode opsi pilihan terdaftar jika ada
+      $definedOptions = array();
+      if (!empty($opsiRaw) && ($opsiRaw[0] === '[' || $opsiRaw[0] === '{')) {
+        $decoded = json_decode($opsiRaw, true);
+        if (is_array($decoded)) {
+          foreach ($decoded as $opt) {
+            if (is_array($opt) && isset($opt['label'])) {
+              $definedOptions[] = array(
+                'label' => trim($opt['label']),
+                'nilai' => isset($opt['nilai']) ? (float)$opt['nilai'] : null
+              );
+            } elseif (is_string($opt)) {
+              $definedOptions[] = array(
+                'label' => trim($opt),
+                'nilai' => null
+              );
+            }
+          }
+        }
+      }
+
+      $ansList = isset($rawAnswers[$qId]) ? $rawAnswers[$qId] : array();
+      $distribusi = array();
+
+      if ($tipe === 'checkbox' && !empty($definedOptions)) {
+        // Kotak centang: hitung setiap opsi terdaftar
+        $counts = array();
+        foreach ($definedOptions as $opt) $counts[$opt['label']] = 0;
+        $otherCounts = array();
+
+        foreach ($ansList as $a) {
+          $text = $a['JawabanTeks'];
+          $times = (int)$a['total'];
+          $parts = array_map('trim', explode(',', $text));
+          foreach ($parts as $p) {
+            if (empty($p)) continue;
+            $matched = false;
+            foreach ($definedOptions as $opt) {
+              if (strcasecmp($opt['label'], $p) === 0) {
+                $counts[$opt['label']] += $times;
+                $matched = true;
+                break;
+              }
+            }
+            if (!$matched) {
+              if (!isset($otherCounts[$p])) $otherCounts[$p] = 0;
+              $otherCounts[$p] += $times;
+            }
+          }
+        }
+
+        foreach ($definedOptions as $opt) {
+          $cnt = $counts[$opt['label']];
+          $pct = $totalAns > 0 ? round(($cnt / $totalAns) * 100, 1) : 0;
+          $distribusi[] = array(
+            'label'      => $opt['label'],
+            'count'      => $cnt,
+            'percentage' => $pct,
+            'nilai'      => $opt['nilai']
+          );
+        }
+        foreach ($otherCounts as $lbl => $cnt) {
+          $pct = $totalAns > 0 ? round(($cnt / $totalAns) * 100, 1) : 0;
+          $distribusi[] = array(
+            'label'      => $lbl,
+            'count'      => $cnt,
+            'percentage' => $pct,
+            'nilai'      => null
+          );
+        }
+      } elseif (!empty($definedOptions)) {
+        // Pilihan ganda, skala, pair, atau dropdown dengan opsi terdaftar
+        $counts = array();
+        foreach ($definedOptions as $opt) {
+          $counts[$opt['label']] = array('count' => 0, 'nilai' => $opt['nilai']);
+        }
+        $otherList = array();
+
+        foreach ($ansList as $a) {
+          $text = trim($a['JawabanTeks']);
+          $cnt = (int)$a['total'];
+          $matched = false;
+          foreach ($definedOptions as $opt) {
+            if (strcasecmp($opt['label'], $text) === 0 || ($opt['nilai'] !== null && strcasecmp((string)$opt['nilai'], $text) === 0)) {
+              $counts[$opt['label']]['count'] += $cnt;
+              $matched = true;
+              break;
+            }
+          }
+          if (!$matched) {
+            $otherList[] = array(
+              'label'      => $text,
+              'count'      => $cnt,
+              'percentage' => 0,
+              'nilai'      => !empty($a['avg_nilai']) ? (float)$a['avg_nilai'] : null
+            );
+          }
+        }
+
+        foreach ($definedOptions as $opt) {
+          $c = $counts[$opt['label']]['count'];
+          $pct = $totalAns > 0 ? round(($c / $totalAns) * 100, 1) : 0;
+          $distribusi[] = array(
+            'label'      => $opt['label'],
+            'count'      => $c,
+            'percentage' => $pct,
+            'nilai'      => $opt['nilai']
+          );
+        }
+        foreach ($otherList as $oth) {
+          $oth['percentage'] = $totalAns > 0 ? round(($oth['count'] / $totalAns) * 100, 1) : 0;
+          $distribusi[] = $oth;
+        }
+      } else {
+        // Isian teks bebas, angka, atau kuesioner tanpa opsi terdaftar
+        foreach ($ansList as $a) {
+          $cnt = (int)$a['total'];
+          $pct = $totalAns > 0 ? round(($cnt / $totalAns) * 100, 1) : 0;
+          $distribusi[] = array(
+            'label'      => $a['JawabanTeks'],
+            'count'      => $cnt,
+            'percentage' => $pct,
+            'nilai'      => !empty($a['avg_nilai']) ? (float)$a['avg_nilai'] : null
+          );
+        }
+      }
+
+      // Cari opsi dominan (pilihan responden terbanyak)
+      $dominant = null;
+      $maxC = -1;
+      foreach ($distribusi as $d) {
+        if ($d['count'] > $maxC && $d['count'] > 0) {
+          $maxC = $d['count'];
+          $dominant = $d;
+        }
+      }
+
+      $qCode = '';
+      if (preg_match('/^\[([^\]]+)\]/', trim($q['Pertanyaan']), $matches)) {
+        $qCode = trim($matches[1]);
+      }
+      $qLabel = !empty($qCode) ? $qCode : ('P' . (int)$q['Urutan']);
+
+      // Target sampel responden khusus instrumen ini
+      $instTargetResp = isset($statsPerInstrumen[$ins]['total']) && $statsPerInstrumen[$ins]['total'] > 0 ? $statsPerInstrumen[$ins]['total'] : $totalResponden;
+      $respRate = ($instTargetResp > 0) ? round(($totalAns / $instTargetResp) * 100, 1) : 0;
+
+      $parameterStats[] = array(
+        'Id'                => $q['Id'],
+        'Urutan'            => $q['Urutan'],
+        'Instrumen'         => $ins,
+        'Pertanyaan'        => $q['Pertanyaan'],
+        'Section'           => $q['Section'] ?? '',
+        'Tipe'              => $q['Tipe'],
+        'OpsiPilihan'       => $q['OpsiPilihan'] ?? '',
+        'AvgScore'          => $valScore,
+        'TotalJwb'          => $totalAns,
+        'id'                => $q['Id'],
+        'no'                => (int)$q['Urutan'],
+        'label'             => $qLabel,
+        'code'              => $qCode,
+        'section'           => $q['Section'] ?? '',
+        'pertanyaan'        => $q['Pertanyaan'],
+        'avg'               => $valScore,
+        'count'             => $totalAns,
+        'targetResponden'   => $instTargetResp,
+        'totalResponden'    => $totalResponden,
+        'responseRate'      => $respRate,
+        'distribusiJawaban' => $distribusi,
+        'dominantOption'    => $dominant
+      );
     }
 
     echo json_encode(array(

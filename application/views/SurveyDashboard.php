@@ -1369,6 +1369,93 @@
       margin-top: 2px;
     }
 
+    /* Infografis Butir Pertanyaan (Per Question Infographic Cards) */
+    .rekap-questions-section {
+      background: transparent;
+    }
+
+    .q-infographic-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 16px 18px 14px 18px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .q-infographic-card:hover {
+      box-shadow: 0 8px 24px rgba(4, 49, 104, 0.08);
+      border-color: #cbd5e1;
+    }
+
+    .q-badge-inst {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 9px;
+      border-radius: 8px;
+      color: #ffffff;
+      letter-spacing: 0.3px;
+      display: inline-block;
+    }
+
+    .q-badge-no {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 9px;
+      border-radius: 8px;
+      background: #f1f5f9;
+      color: #1e293b;
+      border: 1px solid #cbd5e1;
+      display: inline-block;
+    }
+
+    .q-badge-type {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 8px;
+      background: #f8fafc;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+      display: inline-block;
+    }
+
+    .q-stat-ribbon {
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin: 8px 0 10px 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      font-size: 11px;
+    }
+
+    .q-stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: #475569;
+    }
+
+    .q-stat-pill strong {
+      color: #0f172a;
+    }
+
+    .q-breakdown-row {
+      margin-bottom: 7px;
+    }
+
+    .q-breakdown-row:last-child {
+      margin-bottom: 0;
+    }
+
     .chart-card-body {
       flex: 1 1 auto;
       position: relative;
@@ -3755,6 +3842,80 @@
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <!-- ===================================================================
+                 INFOGRAFIS PER BUTIR PERTANYAAN (1 DIAGRAM INFOGRAFIS PER BUTIR PERTANYAAN PER INSTRUMEN)
+                 =================================================================== -->
+            <div class="rekap-questions-section" style="margin-bottom: 30px; padding-bottom: 25px; border-bottom: 2px dashed #e2e8f0;">
+              <!-- Section Title & Action Buttons -->
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                <div>
+                  <h4 style="font-size: 16px; font-weight: 800; color: var(--ide-navy); margin: 0; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-chart-pie" style="color: var(--ide-red);"></i> Infografis Statistik Jawaban Per Butir Pertanyaan
+                  </h4>
+                  <p style="font-size: 13px; color: #64748b; margin: 3px 0 0 0;">
+                    Rangkuman 1 diagram infografis untuk setiap butir pertanyaan pada setiap instrumen survei berdasarkan jawaban aktual responden.
+                  </p>
+                </div>
+                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                  <span class="badge" style="background: rgba(4, 49, 104, 0.08); color: var(--ide-navy); font-weight: 700; padding: 7px 12px; border-radius: 8px; font-size: 12px;" id="qInfographicCountBadge">
+                    <i class="fa-solid fa-list-check mr-1"></i> Memuat pertanyaan...
+                  </span>
+                  <button type="button" class="btn btn-sm btn-outline-primary font-weight-bold" onclick="downloadAllQuestionInfographics()" style="border-radius: 8px; font-size: 12px; padding: 6px 14px; border: 1.5px solid #043168; color: #043168;" title="Unduh seluruh infografis pertanyaan instrumen yang sedang aktif sebagai file gambar PNG">
+                    <i class="fa-solid fa-file-image mr-1"></i> Unduh Semua Diagram Instrumen Ini (PNG)
+                  </button>
+                </div>
+              </div>
+
+              <!-- Instrument Filter Pills, Mode Diagram Dropdown, & Search Input -->
+              <div class="card" style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 12px 16px; margin-bottom: 20px;">
+                <div class="row align-items-center" style="row-gap: 12px;">
+                  <div class="col-xl-6 col-lg-5 col-md-12">
+                    <div class="btn-group btn-group-sm flex-wrap" role="group" id="qInfographicInstTabs" style="gap: 5px;">
+                      <!-- Dinamis diisi tab instrumen (A, B, C, D, E atau Semua) -->
+                    </div>
+                  </div>
+                  <div class="col-xl-3 col-lg-3 col-md-6 col-12">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                      <label style="font-size: 11.5px; font-weight: 800; color: #475569; margin: 0; white-space: nowrap;">
+                        <i class="fa-solid fa-chart-pie" style="color: var(--ide-navy);"></i> Mode Diagram:
+                      </label>
+                      <select id="qChartGlobalModeSelect" class="form-control form-control-sm" style="border-radius: 10px; height: 38px; border: 1.5px solid #cbd5e1; font-size: 12px; font-weight: 700; color: #0f172a; background: #ffffff;" onchange="changeAllQuestionChartsMode(this.value)" title="Pilih bentuk visualisasi diagram untuk seluruh butir pertanyaan">
+                        <option value="bar-horizontal" selected>Batang Horizontal</option>
+                        <option value="bar-vertical">Batang Vertikal (Kolom)</option>
+                        <option value="doughnut">Bagan Donat (Doughnut)</option>
+                        <option value="pie">Diagram Lingkaran (Pie)</option>
+                        <option value="polarArea">Diagram Polar Area</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+                    <div style="position: relative;">
+                      <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 13px;"></i>
+                      <input type="text" id="qInfographicSearchInput" class="form-control form-control-sm" placeholder="Cari butir pertanyaan..." style="padding-left: 36px; padding-right: 32px; border-radius: 10px; border: 1.5px solid #cbd5e1; font-size: 12.5px; height: 38px;" oninput="onQuestionInfographicSearch()">
+                      <button type="button" id="qSearchClearBtn" onclick="clearQuestionSearch()" style="display: none; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); border: none; background: transparent; color: #94a3b8; font-size: 15px; cursor: pointer;" title="Bersihkan">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Grid Container untuk Seluruh Diagram Infografis Butir Pertanyaan -->
+              <div id="questionChartsGrid" class="row" style="row-gap: 22px;">
+                <!-- Dinamis diisi 1 card diagram infografis per butir pertanyaan -->
+              </div>
+
+              <!-- Tombol Tampilkan Lebih Banyak (Pagination / Lazy-load untuk instrumen dengan banyak butir) -->
+              <div id="qChartsPaginationWrap" style="text-align: center; margin-top: 24px; display: none;">
+                <button type="button" class="btn btn-sm btn-outline-primary" id="btnLoadMoreQCharts" onclick="loadMoreQuestionCharts()" style="border-radius: 10px; font-weight: 700; padding: 8px 22px; font-size: 13px;">
+                  <i class="fa-solid fa-chevron-down mr-1"></i> Tampilkan Pertanyaan Berikutnya
+                </button>
+                <button type="button" class="btn btn-sm btn-light ml-2" onclick="showAllQuestionCharts()" style="border-radius: 10px; font-weight: 700; padding: 8px 18px; font-size: 13px; border: 1px solid #cbd5e1; color: #475569;">
+                  Tampilkan Semua Sekaligus
+                </button>
               </div>
             </div>
 
@@ -6242,6 +6403,9 @@
         // =====================================================================
         renderInstrumentDetailRekapCharts(res, filterInst, totalResp);
       }
+
+      // Render 1 Diagram Infografis untuk Setiap Butir Pertanyaan pada Setiap Instrumen
+      renderQuestionInfographicSection(res, filterInst);
     }
 
     // =========================================================================
@@ -6964,6 +7128,1353 @@
       else if (dimension === 'kecamatan') $('#btnDemoKec').addClass('active');
 
       renderRekapPieDemografi(dimension);
+    }
+
+    // =========================================================================
+    // INFOGRAFIS BUTIR PERTANYAAN (1 DIAGRAM INFOGRAFIS PER BUTIR PERTANYAAN)
+    // =========================================================================
+    var questionChartInstances = {};
+    var activeQInfographicInst = 'A';
+    var currentQInfographicList = [];
+    var currentQInfographicPage = 1;
+    var Q_INFOGRAPHIC_PER_PAGE = 12;
+    var defaultQuestionChartMode = 'bar-horizontal';
+    var questionChartModes = {}; // qId -> 'bar-horizontal' | 'bar-vertical' | 'doughnut' | 'pie' | 'polarArea'
+
+    function getQuestionChartMode(qId) {
+      return questionChartModes[qId] || defaultQuestionChartMode || 'bar-horizontal';
+    }
+
+    function changeSingleQuestionChartMode(qId, mode) {
+      questionChartModes[qId] = mode;
+      var item = null;
+      if (currentRekapData && Array.isArray(currentRekapData.parameterStats)) {
+        item = currentRekapData.parameterStats.find(function(p) {
+          return String(p.id || p.Id) === String(qId);
+        });
+      }
+      if (item) {
+        renderSingleQuestionChart(item, mode);
+      }
+    }
+
+    function changeAllQuestionChartsMode(mode) {
+      defaultQuestionChartMode = mode;
+      $('.q-card-mode-select').val(mode);
+      var allParams = (currentRekapData && Array.isArray(currentRekapData.parameterStats)) ? currentRekapData.parameterStats : [];
+      allParams.forEach(function(item) {
+        var qId = item.id || item.Id;
+        questionChartModes[qId] = mode;
+      });
+
+      if (currentQInfographicList && currentQInfographicList.length > 0) {
+        var visibleCount = currentQInfographicPage * Q_INFOGRAPHIC_PER_PAGE;
+        var pageItems = currentQInfographicList.slice(0, visibleCount);
+        pageItems.forEach(function(item) {
+          renderSingleQuestionChart(item, mode);
+        });
+      }
+    }
+
+    function renderQuestionInfographicSection(res, filterInst) {
+      if (!res || !Array.isArray(res.parameterStats)) return;
+
+      var allParams = res.parameterStats;
+      if (allParams.length === 0) {
+        $('#questionChartsGrid').html(
+          '<div class="col-12 text-center py-5" style="color: #64748b; background: #ffffff; border-radius: 14px; border: 1.5px dashed #e2e8f0;">' +
+            '<i class="fa-solid fa-clipboard-question fa-3x mb-3" style="color: #cbd5e1;"></i>' +
+            '<h6>Belum ada butir pertanyaan untuk survei ini</h6>' +
+          '</div>'
+        );
+        $('#qInfographicCountBadge').html('<i class="fa-solid fa-list-check mr-1"></i> 0 Butir Pertanyaan');
+        $('#qInfographicInstTabs').empty();
+        return;
+      }
+
+      // 1. Ekstrak seluruh instrumen yang ada pada pertanyaan survei
+      var instCounts = {};
+      var instList = [];
+      allParams.forEach(function(p) {
+        var ik = (p.Instrumen || 'A').toUpperCase().trim();
+        if (!instCounts[ik]) {
+          instCounts[ik] = 0;
+          instList.push(ik);
+        }
+        instCounts[ik]++;
+      });
+      instList.sort();
+
+      // Sinkronkan tab aktif jika ada filterInst
+      if (filterInst && instList.indexOf(filterInst) !== -1) {
+        activeQInfographicInst = filterInst;
+      } else if (!activeQInfographicInst || (activeQInfographicInst !== 'ALL' && instList.indexOf(activeQInfographicInst) === -1)) {
+        activeQInfographicInst = (instList.length > 1) ? instList[0] : (instList[0] || 'ALL');
+      }
+
+      // 2. Render Tab Pills Instrumen
+      renderQuestionInstrumentTabs(instList, instCounts);
+
+      // 3. Filter dan Tampilkan Grid Butir Pertanyaan
+      filterAndRenderQuestionCards();
+    }
+
+    function renderQuestionInstrumentTabs(instList, instCounts) {
+      var $wrap = $('#qInfographicInstTabs');
+      $wrap.empty();
+
+      if (instList.length > 1) {
+        // Tab "Semua Instrumen"
+        var totalAllQ = 0;
+        for (var k in instCounts) totalAllQ += instCounts[k];
+        var isAllActive = (activeQInfographicInst === 'ALL');
+        var allStyle = isAllActive 
+          ? 'background: #043168; border-color: #043168; color: #ffffff;' 
+          : 'border-color: #cbd5e1; color: #334155;';
+
+        var allBtn = $('<button type="button" class="btn btn-outline-secondary font-weight-bold ' + (isAllActive ? 'active' : '') + '" style="border-radius: 8px; font-size: 11.5px; padding: 5px 12px; border: 1.5px solid #cbd5e1; ' + allStyle + '">' +
+          '<i class="fa-solid fa-layer-group mr-1"></i> Semua Instrumen (' + totalAllQ + ' Butir)' +
+        '</button>');
+        allBtn.on('click', function() {
+          switchQuestionInstrumentTab('ALL');
+        });
+        $wrap.append(allBtn);
+
+        // Tab per Instrumen (A, B, C, D, E)
+        instList.forEach(function(ik) {
+          var meta = RTKD_INSTRUMEN_META[ik] || { name: 'Instrumen ' + ik, short: 'Inst. ' + ik, color: '#043168' };
+          var isActive = (activeQInfographicInst === ik);
+          var count = instCounts[ik] || 0;
+          var btnStyle = isActive 
+            ? 'background: ' + meta.color + '; border-color: ' + meta.color + '; color: #ffffff;' 
+            : 'border-color: #cbd5e1; color: #334155;';
+
+          var btn = $('<button type="button" class="btn btn-outline-secondary font-weight-bold ' + (isActive ? 'active' : '') + '" style="border-radius: 8px; font-size: 11.5px; padding: 5px 12px; border: 1.5px solid #cbd5e1; ' + btnStyle + '">' +
+            '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:' + (isActive ? '#ffffff' : meta.color) + '; margin-right:5px;"></span>' +
+            meta.short + ' (' + count + ' Butir)' +
+          '</button>');
+
+          btn.on('click', function() {
+            switchQuestionInstrumentTab(ik);
+          });
+          $wrap.append(btn);
+        });
+      } else {
+        // Single Instrument Survey (e.g. IKM)
+        var singleKey = instList[0] || 'A';
+        var singleCount = instCounts[singleKey] || 0;
+        var btn = $('<button type="button" class="btn btn-outline-secondary active font-weight-bold" style="border-radius: 8px; font-size: 11.5px; padding: 5px 14px; background: #043168; color: #fff; border-color: #043168;">' +
+          '<i class="fa-solid fa-list-check mr-1"></i> Seluruh Butir Kuesioner (' + singleCount + ' Pertanyaan)' +
+        '</button>');
+        $wrap.append(btn);
+      }
+    }
+
+    function switchQuestionInstrumentTab(instKey) {
+      activeQInfographicInst = instKey;
+      currentQInfographicPage = 1;
+      
+      var allParams = (currentRekapData && currentRekapData.parameterStats) ? currentRekapData.parameterStats : [];
+      var instCounts = {};
+      var instList = [];
+      allParams.forEach(function(p) {
+        var ik = (p.Instrumen || 'A').toUpperCase().trim();
+        if (!instCounts[ik]) {
+          instCounts[ik] = 0;
+          instList.push(ik);
+        }
+        instCounts[ik]++;
+      });
+      instList.sort();
+      renderQuestionInstrumentTabs(instList, instCounts);
+
+      filterAndRenderQuestionCards();
+    }
+
+    function filterAndRenderQuestionCards() {
+      if (!currentRekapData || !Array.isArray(currentRekapData.parameterStats)) return;
+
+      var allParams = currentRekapData.parameterStats;
+      var searchKey = ($('#qInfographicSearchInput').val() || '').trim().toLowerCase();
+
+      var filtered = allParams.filter(function(p) {
+        if (activeQInfographicInst !== 'ALL') {
+          var ik = (p.Instrumen || 'A').toUpperCase().trim();
+          if (ik !== activeQInfographicInst) return false;
+        }
+        if (searchKey) {
+          var qText = (p.pertanyaan || p.Pertanyaan || '').toLowerCase();
+          var qCode = (p.code || p.label || '').toLowerCase();
+          var qSec = (p.section || p.Section || '').toLowerCase();
+          var qNo = String(p.no || p.Urutan || '');
+          if (qText.indexOf(searchKey) === -1 && qCode.indexOf(searchKey) === -1 && qSec.indexOf(searchKey) === -1 && qNo !== searchKey) {
+            return false;
+          }
+        }
+        return true;
+      });
+
+      currentQInfographicList = filtered;
+      var totalFound = filtered.length;
+
+      var instNameText = (activeQInfographicInst === 'ALL') 
+        ? 'Semua Instrumen' 
+        : (RTKD_INSTRUMEN_META[activeQInfographicInst] ? RTKD_INSTRUMEN_META[activeQInfographicInst].short : ('Inst. ' + activeQInfographicInst));
+      $('#qInfographicCountBadge').html('<i class="fa-solid fa-list-check mr-1"></i> ' + totalFound + ' Butir Pertanyaan (' + instNameText + ')');
+
+      destroyQuestionChartInstances();
+
+      var $grid = $('#questionChartsGrid');
+      $grid.empty();
+
+      if (totalFound === 0) {
+        $grid.html(
+          '<div class="col-12 text-center py-5" style="color: #64748b; background: #ffffff; border-radius: 14px; border: 1.5px dashed #e2e8f0;">' +
+            '<i class="fa-solid fa-magnifying-glass fa-2x mb-2" style="color: #cbd5e1;"></i>' +
+            '<h6>Tidak ada butir pertanyaan yang cocok dengan pencarian / instrumen ini</h6>' +
+            '<p style="font-size: 12px; margin: 0;">Silakan pilih tab instrumen lain atau bersihkan kata kunci pencarian.</p>' +
+          '</div>'
+        );
+        $('#qChartsPaginationWrap').hide();
+        return;
+      }
+
+      var visibleCount = currentQInfographicPage * Q_INFOGRAPHIC_PER_PAGE;
+      var pageItems = filtered.slice(0, visibleCount);
+
+      pageItems.forEach(function(item, idx) {
+        var cardHtml = buildQuestionInfographicCardHtml(item, idx);
+        $grid.append(cardHtml);
+      });
+
+      setTimeout(function() {
+        pageItems.forEach(function(item) {
+          renderSingleQuestionChart(item);
+        });
+      }, 50);
+
+      if (visibleCount < totalFound) {
+        $('#qChartsPaginationWrap').show();
+        var sisa = totalFound - visibleCount;
+        $('#btnLoadMoreQCharts').html('<i class="fa-solid fa-chevron-down mr-1"></i> Tampilkan ' + Math.min(sisa, Q_INFOGRAPHIC_PER_PAGE) + ' Pertanyaan Berikutnya (' + visibleCount + ' dari ' + totalFound + ')');
+      } else {
+        $('#qChartsPaginationWrap').hide();
+      }
+    }
+
+    function buildQuestionInfographicCardHtml(item, idx) {
+      var qId = item.id || item.Id;
+      var qNo = item.no || item.Urutan || (idx + 1);
+      var qCode = item.code || item.label || ('P' + qNo);
+      var ik = (item.Instrumen || 'A').toUpperCase().trim();
+      var meta = RTKD_INSTRUMEN_META[ik] || { name: 'Instrumen ' + ik, short: 'Inst. ' + ik, color: '#043168' };
+
+      var tipe = (item.Tipe || item.tipe || 'radio').toLowerCase();
+      var tipeMap = {
+        'radio': 'Pilihan Ganda',
+        'dropdown': 'Menu Dropdown',
+        'checkbox': 'Kotak Centang (Multi)',
+        'scale': 'Skala Penilaian',
+        'likert': 'Skala Likert',
+        'pair': 'Perbandingan Berpasangan (AHP)',
+        'grid': 'Matriks / Kisi-Kisi',
+        'text': 'Isian Singkat',
+        'textarea': 'Uraian Bebas',
+        'number': 'Angka Numerik',
+        'date': 'Tanggal'
+      };
+      var tipeLabel = tipeMap[tipe] || tipe.toUpperCase();
+
+      var rawTitle = item.pertanyaan || item.Pertanyaan || '';
+      var cleanTitle = rawTitle.replace(/^\[[^\]]+\]\s*/, '');
+
+      var totalJwb = item.count !== undefined ? item.count : (item.TotalJwb || 0);
+      var targetResp = item.targetResponden || item.totalResponden || 1;
+      var respRate = (item.responseRate !== undefined) ? item.responseRate : ((targetResp > 0) ? ((totalJwb / targetResp) * 100).toFixed(1) : 0);
+
+      var avgScore = (item.avg !== undefined && item.avg > 0) ? Number(item.avg).toFixed(2) : ((item.AvgScore && item.AvgScore > 0) ? Number(item.AvgScore).toFixed(2) : null);
+
+      var dom = item.dominantOption;
+      var domText = '-';
+      if (dom && dom.label) {
+        domText = escapeHtml(dom.label) + ' <b>(' + dom.percentage + '%)</b>';
+      }
+
+      var dist = Array.isArray(item.distribusiJawaban) ? item.distribusiJawaban : [];
+      var hasDistData = dist.length > 0 && dist.some(function(d) { return d.count > 0; });
+
+      var breakdownHtml = '';
+      if (hasDistData) {
+        var palette = ['#043168', '#0284c7', '#0d9488', '#10b981', '#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#06b6d4', '#64748b'];
+        var previewDist = dist;
+        var isLongList = dist.length > 6;
+        if (isLongList) {
+          previewDist = dist.slice(0, 5);
+        }
+
+        breakdownHtml += '<div class="q-breakdown-list" id="qBreakdownList_' + qId + '">';
+        previewDist.forEach(function(d, di) {
+          var color = palette[di % palette.length];
+          if (d.nilai >= 4) color = '#10b981';
+          else if (d.nilai >= 3) color = '#0284c7';
+          else if (d.nilai >= 2) color = '#f59e0b';
+          else if (d.nilai === 1) color = '#ef4444';
+
+          var barWidth = Math.min(100, Math.max(0, (d.count / (totalJwb || 1)) * 100)).toFixed(1);
+
+          breakdownHtml += 
+            '<div class="q-breakdown-row">' +
+              '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">' +
+                '<span style="font-weight: 600; color: #334155; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 65%;" title="' + escapeHtml(d.label) + '">' +
+                  '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:' + color + '; margin-right:5px;"></span>' +
+                  escapeHtml(d.label) +
+                '</span>' +
+                '<span style="font-size: 11px; color: #0f172a; font-weight: 700;">' +
+                  d.count + ' <span style="font-weight: 500; color: #64748b; font-size: 10.5px;">(' + d.percentage + '%)</span>' +
+                '</span>' +
+              '</div>' +
+              '<div class="progress" style="height: 5px; background: #f1f5f9; border-radius: 4px; overflow: hidden;">' +
+                '<div class="progress-bar" role="progressbar" style="width: ' + barWidth + '%; background-color: ' + color + ';" aria-valuenow="' + barWidth + '" aria-valuemin="0" aria-valuemax="100"></div>' +
+              '</div>' +
+            '</div>';
+        });
+
+        if (isLongList) {
+          breakdownHtml += '<div id="qBreakdownMore_' + qId + '" style="display: none;">';
+          dist.slice(5).forEach(function(d, di) {
+            var color = palette[(di + 5) % palette.length];
+            var barWidth = Math.min(100, Math.max(0, (d.count / (totalJwb || 1)) * 100)).toFixed(1);
+            breakdownHtml += 
+              '<div class="q-breakdown-row">' +
+                '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">' +
+                  '<span style="font-weight: 600; color: #334155; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 65%;" title="' + escapeHtml(d.label) + '">' +
+                    '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:' + color + '; margin-right:5px;"></span>' +
+                    escapeHtml(d.label) +
+                  '</span>' +
+                  '<span style="font-size: 11px; color: #0f172a; font-weight: 700;">' +
+                    d.count + ' <span style="font-weight: 500; color: #64748b; font-size: 10.5px;">(' + d.percentage + '%)</span>' +
+                  '</span>' +
+                '</div>' +
+                '<div class="progress" style="height: 5px; background: #f1f5f9; border-radius: 4px; overflow: hidden;">' +
+                  '<div class="progress-bar" role="progressbar" style="width: ' + barWidth + '%; background-color: ' + color + ';" aria-valuenow="' + barWidth + '" aria-valuemin="0" aria-valuemax="100"></div>' +
+                '</div>' +
+              '</div>';
+          });
+          breakdownHtml += '</div>';
+          breakdownHtml += 
+            '<div style="text-align: right; margin-top: 4px;">' +
+              '<button type="button" class="btn btn-link p-0" onclick="toggleBreakdownMore(' + qId + ')" id="btnToggleMore_' + qId + '" style="font-size: 11px; font-weight: 700; color: #0284c7; text-decoration: none;">' +
+                '+ Lihat ' + (dist.length - 5) + ' Opsi Lainnya' +
+              '</button>' +
+            '</div>';
+        }
+        breakdownHtml += '</div>';
+      } else {
+        breakdownHtml = '<div style="font-size: 11px; color: #94a3b8; font-style: italic; text-align: center; padding: 8px 0;">Belum ada jawaban dari responden</div>';
+      }
+
+      var curMode = getQuestionChartMode(qId);
+      var canvasHeight = 220;
+      if (curMode === 'doughnut' || curMode === 'pie' || curMode === 'polarArea') {
+        canvasHeight = 230;
+      } else if (curMode === 'bar-vertical') {
+        canvasHeight = 210;
+      } else {
+        if (dist.length <= 2) canvasHeight = 150;
+        else if (dist.length <= 4) canvasHeight = 190;
+        else if (dist.length <= 7) canvasHeight = 230;
+        else canvasHeight = 270;
+      }
+
+      return '' +
+        '<div class="col-xl-6 col-lg-6 col-md-12 mb-4 q-chart-card-wrapper" data-qid="' + qId + '" data-inst="' + ik + '">' +
+          '<div class="q-infographic-card">' +
+            '<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap;">' +
+              '<div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">' +
+                '<span class="q-badge-inst" style="background: ' + meta.color + ';">' + meta.short + '</span>' +
+                '<span class="q-badge-no">No. ' + qNo + ' [' + escapeHtml(qCode) + ']</span>' +
+                '<span class="q-badge-type"><i class="fa-solid fa-list-check mr-1"></i>' + tipeLabel + '</span>' +
+                (item.section ? '<span style="font-size: 11px; color: #64748b; font-weight: 600;"><i class="fa-regular fa-folder mr-1"></i>' + escapeHtml(item.section) + '</span>' : '') +
+              '</div>' +
+              '<div style="display: flex; align-items: center; gap: 6px;">' +
+                '<select class="form-control form-control-sm q-card-mode-select" data-qid="' + qId + '" onchange="changeSingleQuestionChartMode(' + qId + ', this.value)" title="Ganti mode visualisasi diagram untuk butir ini" style="border-radius: 8px; font-size: 11px; font-weight: 700; height: 30px; padding: 2px 8px; border: 1.5px solid #cbd5e1; background: #ffffff; color: #0f172a; width: auto; max-width: 155px; cursor: pointer;">' +
+                  '<option value="bar-horizontal"' + (curMode === 'bar-horizontal' ? ' selected' : '') + '>📊 Batang Horiz</option>' +
+                  '<option value="bar-vertical"' + (curMode === 'bar-vertical' ? ' selected' : '') + '>📶 Batang Vertikal</option>' +
+                  '<option value="doughnut"' + (curMode === 'doughnut' ? ' selected' : '') + '>🍩 Bagan Donat</option>' +
+                  '<option value="pie"' + (curMode === 'pie' ? ' selected' : '') + '>🥧 Diagram Pie</option>' +
+                  '<option value="polarArea"' + (curMode === 'polarArea' ? ' selected' : '') + '>❄️ Polar Area</option>' +
+                '</select>' +
+                '<button type="button" class="btn btn-sm btn-outline-primary" onclick="downloadSingleQuestionInfographic(' + qId + ')" title="Unduh Diagram Infografis Butir Ini sebagai Gambar PNG Standar Penelitian" style="border-radius: 8px; font-weight: 700; font-size: 11px; padding: 4px 10px; height: 30px; white-space: nowrap;">' +
+                  '<i class="fa-solid fa-download mr-1"></i> PNG' +
+                '</button>' +
+              '</div>' +
+            '</div>' +
+
+            '<h5 style="font-size: 13.5px; font-weight: 800; color: #0f172a; margin: 6px 0 10px 0; line-height: 1.45;">' +
+              (rawTitle.indexOf('[') === 0 ? '<span style="color:' + meta.color + ';">[' + escapeHtml(qCode) + ']</span> ' : '') +
+              escapeHtml(cleanTitle) +
+            '</h5>' +
+
+            '<div class="q-stat-ribbon">' +
+              '<div class="q-stat-pill" title="Jumlah responden yang menjawab butir ini">' +
+                '<i class="fa-solid fa-users" style="color: #0284c7;"></i> Jawaban: <strong>' + totalJwb + ' / ' + targetResp + '</strong> <span style="color:#0284c7; font-weight:700;">(' + respRate + '%)</span>' +
+              '</div>' +
+              (avgScore ? '<div class="q-stat-pill" title="Rata-rata skor butir ini (Skala 1 - 5)"><i class="fa-solid fa-star" style="color: #f59e0b;"></i> Skor: <strong style="color:#043168;">' + avgScore + '</strong> / 5.00</div>' : '') +
+              '<div class="q-stat-pill" title="Pilihan dengan frekuensi terbanyak" style="max-width: 48%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' +
+                '<i class="fa-solid fa-crown" style="color: #10b981;"></i> Dominan: ' + domText +
+              '</div>' +
+            '</div>' +
+
+            '<div style="position: relative; height: ' + canvasHeight + 'px; width: 100%; margin: 4px 0 10px 0;">' +
+              (hasDistData ? 
+                '<canvas id="canvasQChart_' + qId + '" style="display: block; width: 100% !important; height: ' + canvasHeight + 'px !important;"></canvas>' : 
+                '<div style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; font-size: 12px; background: #f8fafc; border-radius: 10px; border: 1px dashed #e2e8f0;">' +
+                  '<i class="fa-solid fa-chart-column fa-2x mb-2" style="color: #cbd5e1;"></i>' +
+                  '<span>Belum ada respons data untuk pertanyaan ini</span>' +
+                '</div>'
+              ) +
+            '</div>' +
+
+            '<div style="border-top: 1px solid #f1f5f9; padding-top: 10px; margin-top: auto;">' +
+              '<div style="font-size: 10.5px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.4px;">' +
+                'Rincian Frekuensi Jawaban:' +
+              '</div>' +
+              breakdownHtml +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    function toggleBreakdownMore(qId) {
+      var $more = $('#qBreakdownMore_' + qId);
+      var $btn = $('#btnToggleMore_' + qId);
+      if ($more.is(':visible')) {
+        $more.slideUp(200);
+        $btn.text($btn.data('orig-text') || '+ Lihat Opsi Lainnya');
+      } else {
+        if (!$btn.data('orig-text')) $btn.data('orig-text', $btn.text());
+        $more.slideDown(200);
+        $btn.text('- Sembunyikan Opsi Tambahan');
+      }
+    }
+
+    function renderSingleQuestionChart(item, customMode) {
+      var qId = item.id || item.Id;
+      var canvas = document.getElementById('canvasQChart_' + qId);
+      if (!canvas) return;
+
+      if (questionChartInstances[qId]) {
+        try { questionChartInstances[qId].destroy(); } catch(e) {}
+        delete questionChartInstances[qId];
+      }
+
+      var dist = Array.isArray(item.distribusiJawaban) ? item.distribusiJawaban : [];
+      if (dist.length === 0 || !dist.some(function(d) { return d.count > 0; })) {
+        return;
+      }
+
+      var curMode = customMode || getQuestionChartMode(qId);
+      var container = canvas.parentElement;
+      if (container) {
+        var targetH = 220;
+        if (curMode === 'doughnut' || curMode === 'pie' || curMode === 'polarArea') targetH = 230;
+        else if (curMode === 'bar-vertical') targetH = 210;
+        else {
+          if (dist.length <= 2) targetH = 150;
+          else if (dist.length <= 4) targetH = 190;
+          else if (dist.length <= 7) targetH = 230;
+          else targetH = 270;
+        }
+        container.style.height = targetH + 'px';
+      }
+
+      var rawLabels = dist.map(function(d) { return d.label || 'Opsi'; });
+      var vals = dist.map(function(d) { return d.count || 0; });
+      var palette = ['#043168', '#0284c7', '#0d9488', '#10b981', '#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#06b6d4', '#64748b'];
+
+      var bgColors = dist.map(function(d, di) {
+        if (d.nilai >= 4) return '#10b981';
+        if (d.nilai >= 3) return '#0284c7';
+        if (d.nilai >= 2) return '#f59e0b';
+        if (d.nilai === 1) return '#ef4444';
+        return palette[di % palette.length];
+      });
+
+      var wrappedLabels = rawLabels.map(function(lbl) {
+        if (lbl.length > 28) {
+          var words = lbl.split(' ');
+          var lines = [];
+          var cur = '';
+          words.forEach(function(w) {
+            if ((cur + ' ' + w).trim().length > 26) {
+              lines.push(cur.trim());
+              cur = w;
+            } else {
+              cur += (cur ? ' ' : '') + w;
+            }
+          });
+          if (cur) lines.push(cur.trim());
+          return lines;
+        }
+        return lbl;
+      });
+
+      var totalJwb = item.count !== undefined ? item.count : (item.TotalJwb || 1);
+      var maxVal = Math.max.apply(null, vals);
+
+      var chartConfig = null;
+
+      if (curMode === 'bar-vertical') {
+        var shortLabels = rawLabels.map(function(lbl) {
+          return lbl.length > 18 ? lbl.substring(0, 16) + '...' : lbl;
+        });
+        chartConfig = {
+          type: 'bar',
+          data: {
+            labels: shortLabels,
+            datasets: [{
+              label: 'Jumlah Responden',
+              data: vals,
+              backgroundColor: bgColors,
+              borderRadius: 6,
+              maxBarThickness: 36
+            }]
+          },
+          options: {
+            indexAxis: 'x',
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 300 },
+            scales: {
+              y: {
+                beginAtZero: true,
+                suggestedMax: Math.max(maxVal + 1, 2),
+                ticks: { stepSize: 1, font: { size: 10, weight: '600' } },
+                grid: { color: '#f1f5f9' }
+              },
+              x: {
+                ticks: {
+                  font: { size: rawLabels.length > 5 ? 8.5 : 10, weight: '700' },
+                  maxRotation: 30,
+                  minRotation: 0,
+                  autoSkip: false
+                },
+                grid: { display: false }
+              }
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  title: function(items) {
+                    if (!items || items.length === 0) return '';
+                    return rawLabels[items[0].dataIndex] || '';
+                  },
+                  label: function(ctx) {
+                    var c = ctx.raw;
+                    var d = dist[ctx.dataIndex];
+                    var pct = (d && d.percentage !== undefined) ? d.percentage : (((c / (totalJwb || 1)) * 100).toFixed(1));
+                    return ' Frekuensi: ' + c + ' responden (' + pct + '%)';
+                  }
+                }
+              }
+            }
+          }
+        };
+      } else if (curMode === 'doughnut') {
+        chartConfig = {
+          type: 'doughnut',
+          data: {
+            labels: rawLabels,
+            datasets: [{
+              data: vals,
+              backgroundColor: bgColors,
+              borderWidth: 2,
+              borderColor: '#ffffff'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 300 },
+            cutout: '58%',
+            plugins: {
+              legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                  boxWidth: 10,
+                  boxHeight: 10,
+                  font: { size: 9.5, weight: '600' },
+                  padding: 6,
+                  generateLabels: function(chart) {
+                    var orig = Chart.overrides.doughnut.plugins.legend.labels.generateLabels(chart);
+                    return orig.map(function(l) {
+                      if (l.text && l.text.length > 22) l.text = l.text.substring(0, 20) + '...';
+                      return l;
+                    });
+                  }
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(ctx) {
+                    var c = ctx.raw;
+                    var d = dist[ctx.dataIndex];
+                    var pct = (d && d.percentage !== undefined) ? d.percentage : (((c / (totalJwb || 1)) * 100).toFixed(1));
+                    return ' ' + (rawLabels[ctx.dataIndex] || '') + ': ' + c + ' (' + pct + '%)';
+                  }
+                }
+              }
+            }
+          }
+        };
+      } else if (curMode === 'pie') {
+        chartConfig = {
+          type: 'pie',
+          data: {
+            labels: rawLabels,
+            datasets: [{
+              data: vals,
+              backgroundColor: bgColors,
+              borderWidth: 2,
+              borderColor: '#ffffff'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 300 },
+            plugins: {
+              legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                  boxWidth: 10,
+                  boxHeight: 10,
+                  font: { size: 9.5, weight: '600' },
+                  padding: 6,
+                  generateLabels: function(chart) {
+                    var orig = Chart.overrides.pie.plugins.legend.labels.generateLabels(chart);
+                    return orig.map(function(l) {
+                      if (l.text && l.text.length > 22) l.text = l.text.substring(0, 20) + '...';
+                      return l;
+                    });
+                  }
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(ctx) {
+                    var c = ctx.raw;
+                    var d = dist[ctx.dataIndex];
+                    var pct = (d && d.percentage !== undefined) ? d.percentage : (((c / (totalJwb || 1)) * 100).toFixed(1));
+                    return ' ' + (rawLabels[ctx.dataIndex] || '') + ': ' + c + ' (' + pct + '%)';
+                  }
+                }
+              }
+            }
+          }
+        };
+      } else if (curMode === 'polarArea') {
+        chartConfig = {
+          type: 'polarArea',
+          data: {
+            labels: rawLabels,
+            datasets: [{
+              data: vals,
+              backgroundColor: bgColors.map(function(c) {
+                return c.indexOf('#') === 0 ? c + 'd0' : c;
+              }),
+              borderWidth: 1.5,
+              borderColor: '#ffffff'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 300 },
+            scales: {
+              r: { ticks: { display: false }, grid: { color: '#e2e8f0' } }
+            },
+            plugins: {
+              legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                  boxWidth: 10,
+                  boxHeight: 10,
+                  font: { size: 9.5, weight: '600' },
+                  padding: 6,
+                  generateLabels: function(chart) {
+                    var orig = Chart.overrides.polarArea.plugins.legend.labels.generateLabels(chart);
+                    return orig.map(function(l) {
+                      if (l.text && l.text.length > 22) l.text = l.text.substring(0, 20) + '...';
+                      return l;
+                    });
+                  }
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(ctx) {
+                    var c = ctx.raw;
+                    var d = dist[ctx.dataIndex];
+                    var pct = (d && d.percentage !== undefined) ? d.percentage : (((c / (totalJwb || 1)) * 100).toFixed(1));
+                    return ' ' + (rawLabels[ctx.dataIndex] || '') + ': ' + c + ' (' + pct + '%)';
+                  }
+                }
+              }
+            }
+          }
+        };
+      } else {
+        // Default: Batang Horizontal
+        chartConfig = {
+          type: 'bar',
+          data: {
+            labels: wrappedLabels,
+            datasets: [{
+              label: 'Jumlah Responden',
+              data: vals,
+              backgroundColor: bgColors,
+              borderRadius: 6,
+              maxBarThickness: 32
+            }]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 300 },
+            scales: {
+              x: {
+                beginAtZero: true,
+                suggestedMax: Math.max(maxVal + 1, 2),
+                ticks: {
+                  stepSize: 1,
+                  font: { size: 10.5, weight: '600' }
+                },
+                grid: { color: '#f1f5f9' }
+              },
+              y: {
+                ticks: {
+                  font: { size: rawLabels.length > 6 ? 9.5 : 10.5, weight: '700' },
+                  autoSkip: false
+                },
+                grid: { display: false }
+              }
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  title: function(items) {
+                    if (!items || items.length === 0) return '';
+                    var idx = items[0].dataIndex;
+                    return rawLabels[idx] || '';
+                  },
+                  label: function(ctx) {
+                    var c = ctx.raw;
+                    var d = dist[ctx.dataIndex];
+                    var pct = (d && d.percentage !== undefined) ? d.percentage : (((c / (totalJwb || 1)) * 100).toFixed(1));
+                    return ' Frekuensi: ' + c + ' responden (' + pct + '%)';
+                  }
+                }
+              }
+            }
+          }
+        };
+      }
+
+      try {
+        questionChartInstances[qId] = new Chart(canvas, chartConfig);
+      } catch (err) {
+        console.error('Error rendering chart for Q' + qId + ' (' + curMode + '):', err);
+      }
+    }
+
+    function destroyQuestionChartInstances() {
+      for (var k in questionChartInstances) {
+        if (questionChartInstances[k]) {
+          try { questionChartInstances[k].destroy(); } catch(e) {}
+        }
+      }
+      questionChartInstances = {};
+    }
+
+    function loadMoreQuestionCharts() {
+      currentQInfographicPage++;
+      filterAndRenderQuestionCards();
+    }
+
+    function showAllQuestionCharts() {
+      currentQInfographicPage = 999;
+      filterAndRenderQuestionCards();
+    }
+
+    function onQuestionInfographicSearch() {
+      var val = ($('#qInfographicSearchInput').val() || '').trim();
+      $('#qSearchClearBtn').toggle(val.length > 0);
+      currentQInfographicPage = 1;
+      filterAndRenderQuestionCards();
+    }
+
+    function clearQuestionSearch() {
+      $('#qInfographicSearchInput').val('');
+      $('#qSearchClearBtn').hide();
+      currentQInfographicPage = 1;
+      filterAndRenderQuestionCards();
+    }
+
+    function roundRectHelper(ctx, x, y, width, height, radius, fill, stroke) {
+      if (typeof stroke === 'undefined') stroke = true;
+      if (typeof radius === 'undefined') radius = 5;
+      if (typeof radius === 'number') {
+        radius = {tl: radius, tr: radius, br: radius, bl: radius};
+      } else {
+        var defaultRadius = {tl: 0, tr: 0, br: 0, bl: 0};
+        for (var side in defaultRadius) {
+          radius[side] = radius[side] || defaultRadius[side];
+        }
+      }
+      ctx.beginPath();
+      ctx.moveTo(x + radius.tl, y);
+      ctx.lineTo(x + width - radius.tr, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
+      ctx.lineTo(x + width, y + height - radius.br);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
+      ctx.lineTo(x + radius.bl, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
+      ctx.lineTo(x, y + radius.tl);
+      ctx.quadraticCurveTo(x, y, x + radius.tl, y);
+      ctx.closePath();
+      if (fill) ctx.fill();
+      if (stroke) ctx.stroke();
+    }
+
+    function wrapCanvasTextHelper(ctx, text, x, y, maxWidth, lineHeight) {
+      var words = String(text).split(' ');
+      var line = '';
+      var curY = y;
+      for (var n = 0; n < words.length; n++) {
+        var testLine = line + words[n] + ' ';
+        var metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth && n > 0) {
+          ctx.fillText(line, x, curY);
+          line = words[n] + ' ';
+          curY += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line, x, curY);
+      return curY;
+    }
+
+    function downloadSingleQuestionInfographic(qId) {
+      if (!currentRekapData || !Array.isArray(currentRekapData.parameterStats)) {
+        Swal.fire('Data Belum Dimuat', 'Data analitik butir pertanyaan belum selesai dimuat.', 'warning');
+        return;
+      }
+
+      var item = currentRekapData.parameterStats.find(function(p) {
+        return String(p.id || p.Id) === String(qId);
+      });
+      if (!item) {
+        Swal.fire('Tidak Ditemukan', 'Butir pertanyaan tidak ditemukan.', 'error');
+        return;
+      }
+
+      var mode = getQuestionChartMode(qId);
+      var scale = 2; // Ultra-HD Retina 2x DPI
+      var W = 1200 * scale;
+      var padX = 60 * scale;
+
+      var dist = Array.isArray(item.distribusiJawaban) ? item.distribusiJawaban : [];
+      var optCount = Math.max(dist.length, 2);
+
+      // Hitung tinggi kanvas berdasarkan mode diagram
+      var H = 900 * scale;
+      if (mode === 'bar-horizontal') {
+        var barRowH = 58 * scale;
+        var barsH = optCount * barRowH;
+        H = Math.max(840 * scale, (440 * scale) + barsH);
+      } else {
+        var breakdownRowsH = Math.ceil(optCount / 2) * (36 * scale);
+        H = Math.max(920 * scale, (520 * scale) + breakdownRowsH);
+      }
+
+      var c = document.createElement('canvas');
+      c.width = W;
+      c.height = H;
+      var ctx = c.getContext('2d');
+
+      // 1. Background
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, W, H);
+
+      // Top brand accent line
+      ctx.fillStyle = '#043168';
+      ctx.fillRect(0, 0, W * 0.75, 10 * scale);
+      ctx.fillStyle = '#b40814';
+      ctx.fillRect(W * 0.75, 0, W * 0.25, 10 * scale);
+
+      var topY = 40 * scale;
+
+      // 2. Category & Survey Header
+      var ik = (item.Instrumen || 'A').toUpperCase().trim();
+      var meta = RTKD_INSTRUMEN_META[ik] || { name: 'Instrumen ' + ik, short: 'Inst. ' + ik, color: '#043168' };
+      var sJudul = (currentSurveyObj && currentSurveyObj.Judul) ? currentSurveyObj.Judul : ((currentRekapData && currentRekapData.survei && currentRekapData.survei.Judul) ? currentRekapData.survei.Judul : 'Survei Penelitian');
+
+      var modeNames = {
+        'bar-horizontal': 'DIAGRAM BATANG HORIZONTAL',
+        'bar-vertical': 'DIAGRAM BATANG VERTIKAL',
+        'doughnut': 'BAGAN DONAT (DOUGHNUT)',
+        'pie': 'DIAGRAM LINGKARAN (PIE)',
+        'polarArea': 'DIAGRAM POLAR AREA'
+      };
+      var modeLabel = modeNames[mode] || 'INFOGRAFIS ANALITIK';
+
+      ctx.fillStyle = '#64748b';
+      ctx.font = 'bold ' + (12 * scale) + 'px "Poppins", Calibri, Arial, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(('INFOGRAFIS HASIL SURVEI • ' + meta.name + ' • ' + modeLabel).toUpperCase(), padX, topY + (16 * scale));
+
+      ctx.fillStyle = '#043168';
+      ctx.font = 'bold ' + (17 * scale) + 'px "Poppins", Calibri, Arial, sans-serif';
+      ctx.fillText(sJudul, padX, topY + (42 * scale));
+
+      // 3. Question Number & Prompt
+      var qNo = item.no || item.Urutan || 1;
+      var qCode = item.code || item.label || ('P' + qNo);
+      var rawTitle = item.pertanyaan || item.Pertanyaan || '';
+      var cleanTitle = rawTitle.replace(/^\[[^\]]+\]\s*/, '');
+
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold ' + (21 * scale) + 'px "Poppins", Calibri, Arial, sans-serif';
+      var textPrompt = '[' + qCode + '] ' + cleanTitle;
+      var afterTextY = wrapCanvasTextHelper(ctx, textPrompt, padX, topY + (80 * scale), W - (padX * 2), 30 * scale);
+
+      // 4. Metric KPI Strip (4 Box Cards)
+      var boxY = afterTextY + (14 * scale);
+      var boxH = 68 * scale;
+      var numBoxes = 4;
+      var boxGap = 16 * scale;
+      var totalGap = (numBoxes - 1) * boxGap;
+      var boxW = (W - (padX * 2) - totalGap) / numBoxes;
+
+      var totalJwb = item.count !== undefined ? item.count : (item.TotalJwb || 0);
+      var targetResp = item.targetResponden || item.totalResponden || 1;
+      var respRate = (item.responseRate !== undefined) ? item.responseRate : ((targetResp > 0) ? ((totalJwb / targetResp) * 100).toFixed(1) : 0);
+      var avgScore = (item.avg !== undefined && item.avg > 0) ? Number(item.avg).toFixed(2) : ((item.AvgScore && item.AvgScore > 0) ? Number(item.AvgScore).toFixed(2) : null);
+      var dom = item.dominantOption;
+      var domLabel = (dom && dom.label) ? dom.label : '-';
+      var domPct = (dom && dom.percentage !== undefined) ? dom.percentage + '%' : '-';
+
+      var tipe = (item.Tipe || item.tipe || 'radio').toLowerCase();
+      var tipeMap = { 'radio': 'Pilihan Ganda', 'dropdown': 'Dropdown', 'checkbox': 'Kotak Centang', 'scale': 'Skala 1-5', 'likert': 'Likert', 'pair': 'AHP Pair', 'grid': 'Matriks', 'text': 'Isian Teks', 'number': 'Numerik' };
+      var tipeLabel = tipeMap[tipe] || tipe.toUpperCase();
+
+      var metrics = [
+        { label: 'TOTAL JAWABAN', val: totalJwb + ' / ' + targetResp + ' Resp.', color: '#0284c7' },
+        { label: 'TINGKAT RESPONS', val: respRate + '% Terisi', color: '#10b981' },
+        { label: 'PILIHAN DOMINAN', val: domLabel + ' (' + domPct + ')', color: '#8b5cf6' },
+        { label: avgScore ? 'RATA-RATA SKOR' : 'TIPE PERTANYAAN', val: avgScore ? (avgScore + ' / 5.00') : tipeLabel, color: '#f59e0b' }
+      ];
+
+      metrics.forEach(function(m, mi) {
+        var bx = padX + (mi * (boxW + boxGap));
+        ctx.fillStyle = '#f8fafc';
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.lineWidth = 1.5 * scale;
+        roundRectHelper(ctx, bx, boxY, boxW, boxH, 10 * scale, true, true);
+
+        ctx.fillStyle = '#64748b';
+        ctx.font = 'bold ' + (10 * scale) + 'px "Poppins", Calibri, Arial, sans-serif';
+        ctx.fillText(m.label, bx + (14 * scale), boxY + (22 * scale));
+
+        ctx.fillStyle = '#0f172a';
+        ctx.font = 'bold ' + (14 * scale) + 'px "Poppins", Calibri, Arial, sans-serif';
+        var maxTxtW = boxW - (28 * scale);
+        var dispVal = m.val;
+        if (ctx.measureText(dispVal).width > maxTxtW) {
+          while (dispVal.length > 3 && ctx.measureText(dispVal + '...').width > maxTxtW) {
+            dispVal = dispVal.substring(0, dispVal.length - 1);
+          }
+          dispVal += '...';
+        }
+        ctx.fillText(dispVal, bx + (14 * scale), boxY + (48 * scale));
+      });
+
+      // 5. Visualisasi Diagram Sesuai Pilihan Mode
+      var diagramStartY = boxY + boxH + (30 * scale);
+      var palette = ['#043168', '#0284c7', '#0d9488', '#10b981', '#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#06b6d4', '#64748b'];
+
+      if (dist.length === 0) {
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = 'italic ' + (14 * scale) + 'px "Poppins", Calibri, Arial, sans-serif';
+        ctx.fillText('Belum ada data respons responden untuk butir pertanyaan ini.', padX, diagramStartY + (30 * scale));
+      } else if (mode === 'bar-horizontal') {
+        var trackW = W - (padX * 2) - (230 * scale);
+        var barRowH = 58 * scale;
+        dist.forEach(function(d, di) {
+          var rowY = diagramStartY + (di * barRowH);
+
+          // Option Text Label
+          ctx.fillStyle = '#1e293b';
+          ctx.font = 'bold ' + (12.5 * scale) + 'px "Poppins", Calibri, Arial, sans-serif';
+          ctx.textAlign = 'left';
+          var optLbl = (di + 1) + '. ' + d.label;
+          if (ctx.measureText(optLbl).width > trackW) {
+            while (optLbl.length > 4 && ctx.measureText(optLbl + '...').width > trackW) {
+              optLbl = optLbl.substring(0, optLbl.length - 1);
+            }
+            optLbl += '...';
+          }
+          ctx.fillText(optLbl, padX, rowY + (14 * scale));
+
+          // Background Track
+          var barY = rowY + (22 * scale);
+          var trackH = 18 * scale;
+          ctx.fillStyle = '#f1f5f9';
+          roundRectHelper(ctx, padX, barY, trackW, trackH, trackH / 2, true, false);
+
+          // Proportional Bar
+          var barColor = palette[di % palette.length];
+          if (d.nilai >= 4) barColor = '#10b981';
+          else if (d.nilai >= 3) barColor = '#0284c7';
+          else if (d.nilai >= 2) barColor = '#f59e0b';
+          else if (d.nilai === 1) barColor = '#ef4444';
+
+          var fillW = Math.max(0, (d.count / (totalJwb || 1)) * trackW);
+          if (d.count > 0 && fillW < 12 * scale) fillW = 12 * scale;
+
+          if (fillW > 0) {
+            ctx.fillStyle = barColor;
+            roundRectHelper(ctx, padX, barY, fillW, trackH, trackH / 2, true, false);
+          }
+
+          // Count & Percentage Label at Right
+          ctx.fillStyle = '#0f172a';
+          ctx.font = 'bold ' + (12.5 * scale) + 'px "Poppins", Calibri, Arial, sans-serif';
+          ctx.textAlign = 'left';
+          ctx.fillText(d.count + ' Resp. (' + d.percentage + '%)', padX + trackW + (18 * scale), barY + (14 * scale));
+        });
+      } else {
+        // Mode Chart.js HD Offscreen (Batang Vertikal, Donat, Pie, Polar Area)
+        var rawLabels = dist.map(function(d) { return d.label || 'Opsi'; });
+        var vals = dist.map(function(d) { return d.count || 0; });
+        var bgColors = dist.map(function(d, di) {
+          if (d.nilai >= 4) return '#10b981';
+          if (d.nilai >= 3) return '#0284c7';
+          if (d.nilai >= 2) return '#f59e0b';
+          if (d.nilai === 1) return '#ef4444';
+          return palette[di % palette.length];
+        });
+
+        var offW = W - (padX * 2);
+        var offH = 340 * scale;
+
+        var offCanvas = document.createElement('canvas');
+        offCanvas.width = offW;
+        offCanvas.height = offH;
+        var offCtx = offCanvas.getContext('2d');
+
+        var offConfig = null;
+        var maxVal = Math.max.apply(null, vals);
+
+        if (mode === 'bar-vertical') {
+          var shortLabels = rawLabels.map(function(lbl) {
+            return lbl.length > 20 ? lbl.substring(0, 18) + '...' : lbl;
+          });
+          offConfig = {
+            type: 'bar',
+            data: {
+              labels: shortLabels,
+              datasets: [{
+                label: 'Responden',
+                data: vals,
+                backgroundColor: bgColors,
+                borderRadius: 8 * scale,
+                maxBarThickness: 45 * scale
+              }]
+            },
+            options: {
+              responsive: false,
+              maintainAspectRatio: false,
+              animation: false,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  suggestedMax: Math.max(maxVal + 1, 2),
+                  ticks: { stepSize: 1, font: { size: 12 * scale, weight: 'bold' }, color: '#475569' },
+                  grid: { color: '#f1f5f9', lineWidth: 1.5 * scale }
+                },
+                x: {
+                  ticks: { font: { size: 11 * scale, weight: 'bold' }, color: '#1e293b', autoSkip: false },
+                  grid: { display: false }
+                }
+              },
+              plugins: { legend: { display: false } }
+            }
+          };
+        } else if (mode === 'doughnut') {
+          offConfig = {
+            type: 'doughnut',
+            data: {
+              labels: rawLabels,
+              datasets: [{
+                data: vals,
+                backgroundColor: bgColors,
+                borderWidth: 3 * scale,
+                borderColor: '#ffffff'
+              }]
+            },
+            options: {
+              responsive: false,
+              maintainAspectRatio: false,
+              animation: false,
+              cutout: '58%',
+              plugins: {
+                legend: {
+                  display: true,
+                  position: 'right',
+                  labels: {
+                    boxWidth: 14 * scale,
+                    boxHeight: 14 * scale,
+                    font: { size: 12 * scale, weight: 'bold' },
+                    padding: 12 * scale,
+                    color: '#1e293b'
+                  }
+                }
+              }
+            }
+          };
+        } else if (mode === 'pie') {
+          offConfig = {
+            type: 'pie',
+            data: {
+              labels: rawLabels,
+              datasets: [{
+                data: vals,
+                backgroundColor: bgColors,
+                borderWidth: 3 * scale,
+                borderColor: '#ffffff'
+              }]
+            },
+            options: {
+              responsive: false,
+              maintainAspectRatio: false,
+              animation: false,
+              plugins: {
+                legend: {
+                  display: true,
+                  position: 'right',
+                  labels: {
+                    boxWidth: 14 * scale,
+                    boxHeight: 14 * scale,
+                    font: { size: 12 * scale, weight: 'bold' },
+                    padding: 12 * scale,
+                    color: '#1e293b'
+                  }
+                }
+              }
+            }
+          };
+        } else if (mode === 'polarArea') {
+          offConfig = {
+            type: 'polarArea',
+            data: {
+              labels: rawLabels,
+              datasets: [{
+                data: vals,
+                backgroundColor: bgColors.map(function(c) {
+                  return c.indexOf('#') === 0 ? c + 'd0' : c;
+                }),
+                borderWidth: 2 * scale,
+                borderColor: '#ffffff'
+              }]
+            },
+            options: {
+              responsive: false,
+              maintainAspectRatio: false,
+              animation: false,
+              scales: {
+                r: { ticks: { display: false }, grid: { color: '#e2e8f0', lineWidth: 1.5 * scale } }
+              },
+              plugins: {
+                legend: {
+                  display: true,
+                  position: 'right',
+                  labels: {
+                    boxWidth: 14 * scale,
+                    boxHeight: 14 * scale,
+                    font: { size: 12 * scale, weight: 'bold' },
+                    padding: 12 * scale,
+                    color: '#1e293b'
+                  }
+                }
+              }
+            }
+          };
+        }
+
+        try {
+          var offChart = new Chart(offCtx, offConfig);
+          ctx.drawImage(offCanvas, padX, diagramStartY, offW, offH);
+          offChart.destroy();
+        } catch (e) {
+          console.error('Error drawing offscreen chart for PNG:', e);
+        }
+
+        // Tabel Rincian Distribusi di Bawah Diagram (2 Kolom)
+        var rincianStartY = diagramStartY + offH + (18 * scale);
+        ctx.fillStyle = '#64748b';
+        ctx.font = 'bold ' + (11 * scale) + 'px "Poppins", Calibri, Arial, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('DISTRIBUSI JAWABAN LENGKAP:', padX, rincianStartY);
+
+        var colW = (W - (padX * 2) - (20 * scale)) / 2;
+        dist.forEach(function(d, di) {
+          var colIdx = di % 2;
+          var rowIdx = Math.floor(di / 2);
+          var rx = padX + (colIdx * (colW + (20 * scale)));
+          var ry = rincianStartY + (16 * scale) + (rowIdx * (26 * scale));
+
+          var dotColor = palette[di % palette.length];
+          if (d.nilai >= 4) dotColor = '#10b981';
+          else if (d.nilai >= 3) dotColor = '#0284c7';
+          else if (d.nilai >= 2) dotColor = '#f59e0b';
+          else if (d.nilai === 1) dotColor = '#ef4444';
+
+          ctx.fillStyle = dotColor;
+          ctx.beginPath();
+          ctx.arc(rx + (6 * scale), ry - (4 * scale), 5 * scale, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = '#1e293b';
+          ctx.font = 'bold ' + (11.5 * scale) + 'px "Poppins", Calibri, Arial, sans-serif';
+          ctx.textAlign = 'left';
+          var dTxt = d.label;
+          if (ctx.measureText(dTxt).width > colW - (110 * scale)) {
+            while (dTxt.length > 3 && ctx.measureText(dTxt + '...').width > colW - (110 * scale)) {
+              dTxt = dTxt.substring(0, dTxt.length - 1);
+            }
+            dTxt += '...';
+          }
+          ctx.fillText(dTxt, rx + (18 * scale), ry);
+
+          ctx.fillStyle = '#0f172a';
+          ctx.font = 'bold ' + (11.5 * scale) + 'px "Poppins", Calibri, Arial, sans-serif';
+          ctx.textAlign = 'right';
+          ctx.fillText(d.count + ' Resp. (' + d.percentage + '%)', rx + colW, ry);
+        });
+      }
+
+      // 6. Footer Watermark (Keterangan Resmi CVIDE & IDE Consultant - Bebas Bappeda)
+      var footY = H - (32 * scale);
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 1 * scale;
+      ctx.beginPath();
+      ctx.moveTo(padX, footY - (18 * scale));
+      ctx.lineTo(W - padX, footY - (18 * scale));
+      ctx.stroke();
+
+      ctx.fillStyle = '#64748b';
+      ctx.font = '600 ' + (11 * scale) + 'px "Poppins", Calibri, Arial, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Sistem Informasi Survei CVIDE • IDE Consultant', padX, footY);
+
+      var tglStr = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+      ctx.textAlign = 'right';
+      ctx.fillText('Diunduh: ' + tglStr + ' WIB', W - padX, footY);
+
+      // 7. Convert & Trigger Download
+      c.toBlob(function(blob) {
+        var cleanQ = (item.code || ('P' + item.no)) + '_' + cleanTitle.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 30);
+        var filename = 'Infografis_Butir_' + ik + '_' + mode + '_' + cleanQ + '.png';
+        var link = document.createElement('a');
+        link.download = filename;
+        link.href = URL.createObjectURL(blob);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Infografis Berhasil Diunduh!',
+          text: 'Berkas ' + filename + ' berhasil disimpan dalam kualitas Ultra-HD.',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }, 'image/png');
+    }
+
+    function downloadAllQuestionInfographics() {
+      if (!currentRekapData || !Array.isArray(currentRekapData.parameterStats)) {
+        Swal.fire('Data Belum Dimuat', 'Data analitik survei belum selesai dimuat.', 'warning');
+        return;
+      }
+
+      var items = currentQInfographicList || [];
+      if (items.length === 0) {
+        Swal.fire('Tidak Ada Butir', 'Tidak ada butir pertanyaan yang sesuai dengan filter aktif.', 'info');
+        return;
+      }
+
+      var instName = (activeQInfographicInst === 'ALL') 
+        ? 'Semua Instrumen' 
+        : (RTKD_INSTRUMEN_META[activeQInfographicInst] ? RTKD_INSTRUMEN_META[activeQInfographicInst].name : ('Instrumen ' + activeQInfographicInst));
+
+      Swal.fire({
+        title: 'Unduh Semua Infografis?',
+        html: '<div style="font-size: 13px; color: #475569;">Anda akan mengunduh <b>' + items.length + ' diagram infografis</b> untuk <b>' + instName + '</b> sekaligus dalam format gambar Ultra-HD PNG.<br><br>Proses pengunduhan berjalan otomatis secara berurutan.</div>',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#043168',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: '<i class="fa-solid fa-download mr-1"></i> Ya, Unduh Semua (' + items.length + ')',
+        cancelButtonText: 'Batal'
+      }).then(function(result) {
+        if (!result.isConfirmed) return;
+
+        Swal.fire({
+          title: 'Memproses Infografis...',
+          html: '<div id="qBulkDownloadStatus" style="font-size: 13px; color: #475569;">Menyiapkan pengunduhan...</div>' +
+                '<div class="progress mt-3" style="height: 10px; border-radius: 5px;">' +
+                  '<div id="qBulkDownloadProgress" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%; background: #043168;"></div>' +
+                '</div>',
+          allowOutsideClick: false,
+          showConfirmButton: false
+        });
+
+        var idx = 0;
+        function processNext() {
+          if (idx >= items.length) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Pengunduhan Selesai!',
+              html: '<div style="font-size: 13px; color: #475569;">Seluruh <b>' + items.length + ' diagram infografis</b> butir pertanyaan berhasil diunduh.</div>',
+              confirmButtonColor: '#043168'
+            });
+            return;
+          }
+
+          var it = items[idx];
+          var pct = Math.round(((idx + 1) / items.length) * 100);
+          $('#qBulkDownloadStatus').html('Mengunduh butir <b>' + (idx + 1) + ' dari ' + items.length + '</b>: <br><span style="color:#0284c7;">' + escapeHtml(it.code || ('P' + it.no)) + ' - ' + escapeHtml((it.pertanyaan || '').substring(0, 35)) + '...</span>');
+          $('#qBulkDownloadProgress').css('width', pct + '%');
+
+          downloadSingleQuestionInfographic(it.id || it.Id);
+
+          idx++;
+          setTimeout(processNext, 250);
+        }
+
+        setTimeout(processNext, 300);
+      });
     }
 
     // =========================================================================
@@ -8229,7 +9740,7 @@
       ctx.fillStyle = '#fbbf24';
       ctx.font = 'bold ' + (11 * scale) + 'px Calibri, Arial, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('BAPPEDA LITBANG KABUPATEN BANYUWANGI • PORTAL SPASIAL RISET & SURVEI', totalW / 2, pad + (22 * scale));
+      ctx.fillText('PORTAL SPASIAL RISET & PEMETAAN DATA SURVEI TERINTEGRASI', totalW / 2, pad + (22 * scale));
 
       // Judul Peta
       ctx.fillStyle = '#ffffff';
