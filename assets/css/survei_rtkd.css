@@ -1822,3 +1822,8 @@ nav.rtkd-tabs::-webkit-scrollbar-thumb {
     justify-content: space-between;
   }
 }
+
+/* SweetAlert2 Topmost Layer Override */
+.swal2-container {
+  z-index: 99999 !important;
+}

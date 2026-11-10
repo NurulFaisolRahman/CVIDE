@@ -1277,6 +1277,10 @@
     /* ==========================================================================
        SIGN IN MODAL (Lugx 2-Column Split Modal)
        ========================================================================== */
+    .swal2-container {
+      z-index: 99999 !important;
+    }
+
     .modal {
       display: none;
       position: fixed;

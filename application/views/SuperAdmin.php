@@ -14,6 +14,9 @@
     <link href="../assets/img/favicon.ico" rel="icon">
     <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
+      .swal2-container {
+        z-index: 99999 !important;
+      }
       html,
       body,
       header,
@@ -69,6 +72,7 @@
     </header>
     <script src="../assets/vendor/jquery/jquery.min.js"></script>
     <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>  
       jQuery(document).ready(function($) {
         
@@ -91,16 +95,40 @@
         });
 
         $("#Masuk").click(function() {
-          var Akun = { Username: $("#Username").val(),
-                       Password: $("#Password").val() }
+          var username = $.trim($("#Username").val());
+          var password = $.trim($("#Password").val());
+          if (!username || !password) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Form Belum Lengkap',
+              text: 'Harap masukkan Username dan Password Anda!',
+              confirmButtonColor: '#007bff'
+            });
+            return;
+          }
+          var Akun = { Username: username,
+                       Password: password }
           $.post(BaseURL+"IDE/SuperAdminSignIn", Akun).done(function(Respon) {
-            if (Respon == '1') {
-              window.location = BaseURL + "SuperAdmin"
+            var trimmedRespon = $.trim(Respon);
+            if (trimmedRespon == '1') {
+              window.location = BaseURL + "SuperAdmin";
             }
             else {
-              alert(Respon)
+              Swal.fire({
+                icon: 'error',
+                title: 'Gagal Masuk',
+                text: trimmedRespon || 'Username atau Password salah. Silakan periksa kembali!',
+                confirmButtonColor: '#b40814'
+              });
             }
-          })                    
+          }).fail(function() {
+            Swal.fire({
+              icon: 'error',
+              title: 'Koneksi Terputus',
+              text: 'Terjadi kesalahan koneksi ke server. Silakan coba lagi.',
+              confirmButtonColor: '#b40814'
+            });
+          });                    
         })
       })
     </script>

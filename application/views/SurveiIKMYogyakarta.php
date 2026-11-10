@@ -21,6 +21,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <style>
+    .swal2-container {
+      z-index: 99999 !important;
+    }
     /* ===== CSS VARIABLES ===== */
     :root {
       --primary-blue: #0056b3;

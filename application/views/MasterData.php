@@ -1256,6 +1256,10 @@
     /* ==========================================================================
        SIGN IN MODAL (Lugx 2-Column Split Modal)
        ========================================================================== */
+    .swal2-container {
+      z-index: 99999 !important;
+    }
+
     .modal {
       display: none;
       position: fixed;
@@ -2422,7 +2426,12 @@ $userName   = isset($userName) ? $userName : 'User';
         var password = $.trim($("#Password").val());
 
         if (!username || !password) {
-          alert("Mohon isi username dan password.");
+          Swal.fire({
+            title: 'Form Belum Lengkap',
+            text: 'Silakan isi Username dan Password akun Anda terlebih dahulu.',
+            icon: 'warning',
+            confirmButtonColor: '#b40814'
+          });
           return;
         }
 
@@ -2436,12 +2445,22 @@ $userName   = isset($userName) ? $userName : 'User';
             if (trimmed === '1' || trimmed === '2' || trimmed === '3' || trimmed === '4' || trimmed === '0') {
               window.location = BaseURL + "MasterData";
             } else {
-              alert(trimmed || "Username atau password salah.");
+              Swal.fire({
+                title: 'Autentikasi Gagal',
+                text: trimmed || 'Username atau Kata Sandi salah. Silakan periksa kembali.',
+                icon: 'error',
+                confirmButtonColor: '#b40814'
+              });
               $btn.prop("disabled", false).html(originalText);
             }
           })
           .fail(function() {
-            alert("Gagal terhubung ke server. Silakan coba lagi.");
+            Swal.fire({
+              title: 'Koneksi Terputus',
+              text: 'Gagal terhubung ke server. Silakan coba kembali sesaat lagi.',
+              icon: 'error',
+              confirmButtonColor: '#b40814'
+            });
             $btn.prop("disabled", false).html(originalText);
           });
       });

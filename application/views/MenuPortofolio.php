@@ -1027,6 +1027,10 @@
     /* ==========================================================================
        SIGN IN MODAL (Lugx 2-Column Split Modal)
        ========================================================================== */
+    .swal2-container {
+      z-index: 99999 !important;
+    }
+
     .modal {
       display: none;
       position: fixed;
@@ -3070,6 +3074,7 @@ Timur
 
   <!-- JQUERY & SCRIPTS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     var BaseURL = '<?= base_url() ?>';
 
@@ -3184,7 +3189,12 @@ Timur
         var password = $.trim($("#Password").val());
         
         if (!username || !password) {
-          alert("Harap masukkan Username dan Password Anda!");
+          Swal.fire({
+            icon: 'warning',
+            title: 'Form Belum Lengkap',
+            text: 'Harap masukkan Username dan Password Anda!',
+            confirmButtonColor: '#043168'
+          });
           return;
         }
 
@@ -3211,11 +3221,21 @@ Timur
           } else if (trimmedRespon == '0') {
             window.location = BaseURL + "Econk";
           } else {
-            alert(trimmedRespon || 'Login gagal. Periksa Username dan Password Anda!');
+            Swal.fire({
+              icon: 'error',
+              title: 'Gagal Masuk',
+              text: trimmedRespon || 'Username atau Password salah. Silakan periksa kembali!',
+              confirmButtonColor: '#b40814'
+            });
             $btn.prop("disabled", false).html(originalText);
           }
         }).fail(function() {
-          alert('Terjadi kesalahan koneksi. Silakan coba lagi.');
+          Swal.fire({
+            icon: 'error',
+            title: 'Koneksi Terputus',
+            text: 'Terjadi kesalahan koneksi. Silakan coba lagi.',
+            confirmButtonColor: '#b40814'
+          });
           $btn.prop("disabled", false).html(originalText);
         });                         
       });

@@ -39,6 +39,9 @@
 
   <!-- Enterprise Theme Styling (Selaras Dashboard Admin) -->
   <style>
+    .swal2-container {
+      z-index: 99999 !important;
+    }
     :root {
       --ide-navy: #043168;
       --ide-navy-dark: #021e42;
