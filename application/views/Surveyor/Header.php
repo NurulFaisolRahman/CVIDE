@@ -580,22 +580,9 @@ $isSurveiBBMActive = (stripos($currentUri, 'DesaBBM') !== false || stripos($curr
       }
 
       /* Form controls & filter labels */
-      .input-group-text.bg-danger {
-        background: #f1f5f9 !important;
-        color: var(--ide-navy) !important;
-        border: 1px solid #cbd5e1 !important;
-        font-weight: 700 !important;
-        font-size: 12.5px !important;
-        border-radius: 8px 0 0 8px !important;
-      }
-
-      .input-group-prepend .input-group-text {
-        border-radius: 8px 0 0 8px !important;
-      }
-
       .custom-select,
       .form-control {
-        border-radius: 0 8px 8px 0 !important;
+        border-radius: 8px !important;
         border: 1px solid #cbd5e1 !important;
         font-size: 13px !important;
         color: var(--ide-text-dark) !important;
@@ -606,6 +593,39 @@ $isSurveiBBMActive = (stripos($currentUri, 'DesaBBM') !== false || stripos($curr
       .form-control:focus {
         border-color: var(--ide-navy) !important;
         box-shadow: 0 0 0 3px rgba(4, 49, 104, 0.15) !important;
+      }
+
+      /* Seamless input group connection */
+      .input-group > .form-control:not(:last-child),
+      .input-group > .custom-select:not(:last-child) {
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+      }
+
+      .input-group > .form-control:not(:first-child),
+      .input-group > .custom-select:not(:first-child) {
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+      }
+
+      .input-group-prepend .input-group-text {
+        border-radius: 8px 0 0 8px !important;
+        border: 1px solid #cbd5e1 !important;
+        font-size: 12.5px !important;
+      }
+
+      .input-group-append .input-group-text {
+        border-radius: 0 8px 8px 0 !important;
+        border: 1px solid #cbd5e1 !important;
+        font-size: 12.5px !important;
+      }
+
+      .input-group-text.bg-danger {
+        background: #f1f5f9 !important;
+        color: var(--ide-navy) !important;
+        border: 1px solid #cbd5e1 !important;
+        font-weight: 700 !important;
+        font-size: 12.5px !important;
       }
 
       /* =========================================================================

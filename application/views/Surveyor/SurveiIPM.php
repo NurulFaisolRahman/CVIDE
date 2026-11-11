@@ -22,37 +22,25 @@
                     <div class="card-body py-3 px-2">
                       <div class="container-fluid">
                         <div class="row">
-                          <div class="col-sm-4">
-                            <div class="input-group input-group-sm">
-                              <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-white"><b>Kecamatan</b></label>
-                              </div>
-                              <select class="custom-select" id="Kecamatan">  
-                                <?php foreach ($Kecamatan as $key) { ?>
-                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
-                                <?php } ?>                  
-                              </select>
-                            </div>
+                          <div class="col-md-4 col-sm-6 mb-3">
+                            <label class="font-weight-bold text-muted small mb-1">Kecamatan</label>
+                            <select class="custom-select" id="Kecamatan">  
+                              <?php foreach ($Kecamatan as $key) { ?>
+                                <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
+                              <?php } ?>                  
+                            </select>
                           </div>
-                          <div class="col-sm-4">
-                            <div class="input-group input-group-sm">
-                              <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-white"><b>Desa/Kelurahan</b></label>
-                              </div>
-                              <select class="custom-select" id="Desa">                    
-                                <?php foreach ($Desa as $key) { ?>
-                                  <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option>
-                                <?php } ?>                  
-                              </select>
-                            </div>
+                          <div class="col-md-4 col-sm-6 mb-3">
+                            <label class="font-weight-bold text-muted small mb-1">Desa / Kelurahan</label>
+                            <select class="custom-select" id="Desa">                    
+                              <?php foreach ($Desa as $key) { ?>
+                                <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option>
+                              <?php } ?>                  
+                            </select>
                           </div>
-                          <div class="col-sm-4">
-                            <div class="input-group input-group-sm">
-                              <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-light"><b>Alamat</b></label>
-                              </div>
-                              <input class="form-control" type="text" id="Alamat" placeholder="Nama Jalan/Gang, RT/RW, Dusun">
-                            </div>
+                          <div class="col-md-4 col-sm-12 mb-3">
+                            <label class="font-weight-bold text-muted small mb-1">Alamat Lengkap</label>
+                            <input class="form-control" type="text" id="Alamat" placeholder="Nama Jalan/Gang, RT/RW, Dusun">
                           </div>
                         </div>
                       </div>
@@ -264,34 +252,37 @@
                     <div class="card-body py-3 px-2">
                       <div class="container-fluid">
                         <div class="row">
-                          <div class="col-sm-4">
-                            <div class="input-group input-group-sm">
-                              <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-light"><b>Usia Saat Pernikahan Pertama</b></label>
-                              </div>
-                              <input class="form-control form-control-sm" type="text" id="UsiaIstriMenikah">
-                              <div class="input-group-prepend">
-                                <label class="input-group-text bg-primary text-light"><b>Tahun</b></label>
+                          <div class="col-md-6 col-sm-12 mb-3">
+                            <div class="p-3 bg-light rounded border">
+                              <label class="font-weight-bold text-dark mb-1" style="font-size: 13.5px;">
+                                <i class="fa fa-ring text-primary mr-1"></i> Usia Saat Pernikahan Pertama
+                              </label>
+                              <div class="input-group">
+                                <input class="form-control" type="text" id="UsiaIstriMenikah" placeholder="Masukkan usia pernikahan pertama">
+                                <div class="input-group-append">
+                                  <span class="input-group-text bg-primary text-white font-weight-bold px-3">Tahun</span>
+                                </div>
                               </div>
                             </div>
                           </div>
-                          <div class="col-sm-8"></div>
-                          <div class="col-sm-5">
-                            <div class="input-group input-group-sm">
-                              <div class="input-group-prepend">
-                                <label class="input-group-text bg-danger text-light"><b>Jumlah Tahun Dalam Ikatan Pernikahan</b></label>
-                              </div>
-                              <input class="form-control form-control-sm" type="text" id="UsiaPernikahan">
-                              <div class="input-group-prepend">
-                                <label class="input-group-text bg-primary text-light"><b>Tahun</b></label>
+                          <div class="col-md-6 col-sm-12 mb-3">
+                            <div class="p-3 bg-light rounded border">
+                              <label class="font-weight-bold text-dark mb-1" style="font-size: 13.5px;">
+                                <i class="fa fa-calendar-days text-primary mr-1"></i> Jumlah Tahun Dalam Ikatan Pernikahan
+                              </label>
+                              <div class="input-group">
+                                <input class="form-control" type="text" id="UsiaPernikahan" placeholder="Masukkan lama tahun ikatan pernikahan">
+                                <div class="input-group-append">
+                                  <span class="input-group-text bg-primary text-white font-weight-bold px-3">Tahun</span>
+                                </div>
                               </div>
                             </div>
                           </div>
                           <div class="col-sm-12">
                             <div class="table-responsive">
-                              <table class="table table-sm table-bordered table-striped">
-                                <thead class="bg-danger">
-                                  <tr style="font-size: 10pt;" class="text-light text-center">
+                              <table class="table table-sm table-bordered table-hover mb-0">
+                                <thead style="background: #1a2a44; color: #fff;">
+                                  <tr style="font-size: 10pt;" class="text-center">
                                     <th class="align-middle">Anak Kandung</th>
                                     <th class="align-middle">Anak Lahir Hidup</th>
                                     <th class="align-middle">Anak Masih Hidup</th>
@@ -299,33 +290,33 @@
                                     <th class="align-middle">Usia</th>
                                   </tr>
                                 </thead>
-                                <tbody class="bg-primary">
+                                <tbody class="bg-white">
                                   <?php for ($i=0; $i < 6; $i++) { ?>
-                                    <tr class="text-light text-center align-middle">
-                                      <td class="align-middle font-weight-bold"><?='Ke-'.($i+1)?></td>
-                                      <td class="align-middle font-weight-bold">
-                                        <select style="width: 50%;" class="custom-select custom-select-sm" id="AnakLahirHidup<?=$i?>">                    
-                                          <option value="0"></option>
+                                    <tr class="text-center align-middle">
+                                      <td class="align-middle font-weight-bold text-dark"><?='Ke-'.($i+1)?></td>
+                                      <td class="align-middle">
+                                        <select style="width: 60%;" class="custom-select custom-select-sm" id="AnakLahirHidup<?=$i?>">                    
+                                          <option value="0">-</option>
                                           <option value="1">Ya</option>
                                           <option value="2">Tidak</option>
                                         </select>
                                       </td>
-                                      <td class="align-middle font-weight-bold">
-                                        <select style="width: 50%;" class="custom-select custom-select-sm" id="AnakMasihHidup<?=$i?>">                    
-                                          <option value="0"></option>
+                                      <td class="align-middle">
+                                        <select style="width: 60%;" class="custom-select custom-select-sm" id="AnakMasihHidup<?=$i?>">                    
+                                          <option value="0">-</option>
                                           <option value="1">Ya</option>
                                           <option value="2">Tidak</option>
                                         </select>
                                       </td>
-                                      <td class="align-middle font-weight-bold">
-                                        <select disabled style="width: 40%;" class="custom-select custom-select-sm" id="AnakSudahMeninggal<?=$i?>">                    
-                                          <option value="0"></option>
+                                      <td class="align-middle">
+                                        <select disabled style="width: 60%;" class="custom-select custom-select-sm" id="AnakSudahMeninggal<?=$i?>">                    
+                                          <option value="0">-</option>
                                           <option value="1">Ya</option>
                                           <option value="2">Tidak</option>
                                         </select>
                                       </td>
-                                      <td class="align-middle font-weight-bold d-flex justify-content-center">
-                                        <input style="width: 20%;" class="form-control form-control-sm" type="text" id="UsiaAnak<?=$i?>">
+                                      <td class="align-middle d-flex justify-content-center">
+                                        <input style="max-width: 120px;" class="form-control form-control-sm text-center" type="text" id="UsiaAnak<?=$i?>" placeholder="Usia (thn)">
                                       </td>
                                     </tr>
                                   <?php } ?>
@@ -435,16 +426,22 @@
                                 </tbody>
                               </table>
                             </div> 
-                            <div class="col-sm-8">
-                              <div class="input-group input-group-sm">
-                                <div class="input-group-prepend">
-                                  <label class="input-group-text bg-danger text-light"><b>Apakah ada anggota keluarga yang bersekolah di pesantren?</b></label>
+                            <div class="col-md-8 col-sm-12 mt-3">
+                              <div class="p-3 bg-light rounded border">
+                                <label class="font-weight-bold text-dark mb-2" style="font-size: 13.5px;">
+                                  <i class="fa fa-school text-primary mr-1"></i> Apakah ada anggota keluarga yang bersekolah di pesantren?
+                                </label>
+                                <div class="row">
+                                  <div class="col-sm-4 mb-2 mb-sm-0">
+                                    <select class="custom-select" id="Santri">                    
+                                      <option value="Tidak">Tidak</option>
+                                      <option value="Ya">Ya</option>
+                                    </select>
+                                  </div>
+                                  <div class="col-sm-8">
+                                    <input class="form-control" type="text" id="JumlahSantri" placeholder="Jumlah anggota keluarga (angka)" disabled>
+                                  </div>
                                 </div>
-                                <select class="custom-select custom-select-sm" id="Santri">                    
-                                  <option value="Tidak">Tidak</option>
-                                  <option value="Ya">Ya</option>
-                                </select>
-                                <input class="form-control form-control-sm" type="text" id="JumlahSantri" disabled>
                               </div>
                             </div>
                           </div>
@@ -718,9 +715,9 @@
                                     <td class="align-middle font-weight-bold">Lahan/Tanah</td>
                                     <td>
                                       <div class="input-group input-group-sm">
-                                        <input class="form-control form-control-sm" type="text" id="Aset10">
-                                        <div class="input-group-prepend">
-                                          <label class="input-group-text bg-danger text-light"><b>ha</b></label>
+                                        <input class="form-control form-control-sm text-center" type="text" id="Aset10">
+                                        <div class="input-group-append">
+                                          <span class="input-group-text bg-white text-dark font-weight-bold">ha</span>
                                         </div>
                                       </div>
                                     </td>
@@ -730,9 +727,9 @@
                                     <td class="align-middle font-weight-bold">Sapi</td>
                                     <td>
                                       <div class="input-group input-group-sm">
-                                        <input class="form-control form-control-sm" type="text" id="Aset11">
-                                        <div class="input-group-prepend">
-                                          <label class="input-group-text bg-danger text-light"><b>ekor</b></label>
+                                        <input class="form-control form-control-sm text-center" type="text" id="Aset11">
+                                        <div class="input-group-append">
+                                          <span class="input-group-text bg-white text-dark font-weight-bold">ekor</span>
                                         </div>
                                       </div>
                                     </td>
@@ -742,9 +739,9 @@
                                     <td class="align-middle font-weight-bold">Kerbau</td>
                                     <td>
                                       <div class="input-group input-group-sm">
-                                        <input class="form-control form-control-sm" type="text" id="Aset12">
-                                        <div class="input-group-prepend">
-                                          <label class="input-group-text bg-danger text-light"><b>ekor</b></label>
+                                        <input class="form-control form-control-sm text-center" type="text" id="Aset12">
+                                        <div class="input-group-append">
+                                          <span class="input-group-text bg-white text-dark font-weight-bold">ekor</span>
                                         </div>
                                       </div>
                                     </td>
@@ -754,9 +751,9 @@
                                     <td class="align-middle font-weight-bold">Kambing/Domba</td>
                                     <td>
                                       <div class="input-group input-group-sm">
-                                        <input class="form-control form-control-sm" type="text" id="Aset13">
-                                        <div class="input-group-prepend">
-                                          <label class="input-group-text bg-danger text-light"><b>ekor</b></label>
+                                        <input class="form-control form-control-sm text-center" type="text" id="Aset13">
+                                        <div class="input-group-append">
+                                          <span class="input-group-text bg-white text-dark font-weight-bold">ekor</span>
                                         </div>
                                       </div>
                                     </td>
@@ -766,9 +763,9 @@
                                     <td class="align-middle font-weight-bold">Kuda</td>
                                     <td>
                                       <div class="input-group input-group-sm">
-                                        <input class="form-control form-control-sm" type="text" id="Aset14">
-                                        <div class="input-group-prepend">
-                                          <label class="input-group-text bg-danger text-light"><b>ekor</b></label>
+                                        <input class="form-control form-control-sm text-center" type="text" id="Aset14">
+                                        <div class="input-group-append">
+                                          <span class="input-group-text bg-white text-dark font-weight-bold">ekor</span>
                                         </div>
                                       </div>
                                     </td>
@@ -997,12 +994,14 @@
                       </div>
                     </div>
                   </div>
-                  <div class="d-flex justify-content-center my-3">
-                    <button type="button" class="btn btn-primary shadow" id="Simpan" style="padding: 12px 36px; border-radius: 12px; font-weight: 700; font-size: 15px;">
-                      <i class="fa-solid fa-floppy-disk mr-2"></i><b>Simpan Survei</b>
-                      <div id="LoadingInput" class="spinner-border spinner-border-sm text-white ml-2" style="display: none;" role="status"></div>
-                    </button>
-                  </div>
+                </div>
+
+                <!-- Tombol Simpan Survei di Bawah Tengah Halaman -->
+                <div class="col-12 text-center py-4 my-4 d-flex justify-content-center align-items-center">
+                  <button type="button" class="btn btn-primary btn-lg shadow font-weight-bold" id="Simpan" style="padding: 14px 48px; border-radius: 12px; font-size: 16px;">
+                    <i class="fa-solid fa-floppy-disk mr-2"></i> <b>Simpan Survei</b>
+                    <div id="LoadingInput" class="spinner-border spinner-border-sm text-white ml-2" style="display: none;" role="status"></div>
+                  </button>
                 </div>
               </div>
             </div>

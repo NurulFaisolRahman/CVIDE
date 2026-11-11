@@ -191,9 +191,11 @@
                               </div>
                             </div>
                           <?php } ?>
-                          <div class="col-sm-12 mt-4 mb-2 d-flex justify-content-center align-items-center" style="gap: 15px;">
-                            <button type="button" class="btn btn-primary shadow" id="Simpan"><i class="fa-solid fa-floppy-disk mr-2"></i><b>Simpan Survei</b></button>
-                            <div id="LoadingInput" class="spinner-border text-primary" role="status" style="display: none;"></div>
+                          <div class="col-12 text-center py-4 my-3 d-flex justify-content-center align-items-center">
+                            <button type="button" class="btn btn-primary btn-lg shadow font-weight-bold" id="Simpan" style="padding: 14px 48px; border-radius: 12px; font-size: 16px;">
+                              <i class="fa-solid fa-floppy-disk mr-2"></i> <b>Simpan Survei</b>
+                              <div id="LoadingInput" class="spinner-border spinner-border-sm text-white ml-2" style="display: none;" role="status"></div>
+                            </button>
                           </div> 
                         </div>
                       </div>
