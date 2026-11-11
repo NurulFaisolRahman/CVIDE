@@ -2,13 +2,24 @@
 				<div class="right_col" role="main" style="overflow-x: hidden;">
 					<div class="">
             <div class="clearfix"></div>
+
+            <!-- Header Banner Survei Desa (Selaras Konsep Portal Survei) -->
+            <div class="dash-survey-header">
+              <h2 class="dash-header-title">
+                <i class="fa-solid fa-chart-line"></i> Survei Indikator Kesejahteraan Masyarakat (IPM)
+              </h2>
+              <p class="dash-header-subtitle">
+                Pendataan terpadu indikator kesejahteraan masyarakat desa mencakup aspek demografi, kesehatan, pendidikan, dan ekonomi rumah tangga.
+              </p>
+            </div>
+
 							<div class="row">
                 <div class="col-sm-12">
                   <div class="card">
-                    <div class="card-header bg-primary text-light py-2">
-                      <b>Lokasi Responden</b>
+                    <div class="card-header bg-primary text-light py-2 d-flex align-items-center">
+                      <i class="fa-solid fa-location-dot mr-2"></i> <b>Lokasi &amp; Identitas Responden</b>
                     </div>
-                    <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
+                    <div class="card-body py-3 px-2">
                       <div class="container-fluid">
                         <div class="row">
                           <div class="col-sm-4">
@@ -53,7 +64,7 @@
                     <div class="card-header bg-primary text-light py-2">
                       <b>Informasi Anggota Keluarga (Ditanyakan Untuk Semua Anggota Keluarga Di Mulai Dari Kepala Keluarga)</b>
                     </div>
-                    <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
+                    <div class="card-body py-3 px-2">
                       <div class="container-fluid">
                         <div class="row">
                           <div class="col-sm-12">
@@ -184,7 +195,7 @@
                     <div class="card-header bg-primary text-light py-2">
                       <b>Kondisi Kesehatan (Ditanyakan Untuk Semua Anggota Keluarga Di Mulai Dari Kepala Keluarga)</b>
                     </div>
-                    <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
+                    <div class="card-body py-3 px-2">
                       <div class="container-fluid">
                         <div class="row">
                           <div class="col-sm-12">
@@ -250,7 +261,7 @@
                     <div class="card-header bg-primary text-light py-2">
                       <b>Kondisi Fertilitas (Ditanyakan Kepada Istri)</b>
                     </div>
-                    <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
+                    <div class="card-body py-3 px-2">
                       <div class="container-fluid">
                         <div class="row">
                           <div class="col-sm-4">
@@ -332,7 +343,7 @@
                     <div class="card-header bg-primary text-light py-2">
                       <b>Kondisi Pendidikan (Ditanyakan Untuk Seluruh Anggota Keluarga Di Mulai Dari Kepala Keluarga)</b>
                     </div>
-                    <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
+                    <div class="card-body py-3 px-2">
                       <div class="container-fluid">
                         <div class="row">
                           <div class="col-sm-12">
@@ -447,7 +458,7 @@
                     <div class="card-header bg-primary text-light py-2">
                       <b>Kepesertaan Program & Informasi Usaha (Ditanyakan untuk satu keluarga)</b>
                     </div>
-                    <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
+                    <div class="card-body py-3 px-2">
                       <div class="container-fluid">
                         <div class="row">
                           <div class="col-sm-12">
@@ -585,7 +596,7 @@
                     <div class="card-header bg-primary text-light py-2">
                       <b>Pengeluaran Perkapita (Ditanyakan untuk 1 Keluarga Untuk Konsumsi Selama 1 Minggu)</b>
                     </div>
-                    <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
+                    <div class="card-body py-3 px-2">
                       <div class="container-fluid">
                         <div class="row">
                           <div class="col-sm-12">
@@ -678,7 +689,7 @@
                     <div class="card-header bg-primary text-light py-2">
                       <b>Kepemilikan Aset (Ditanyakan Untuk 1 Keluarga)</b>
                     </div>
-                    <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
+                    <div class="card-body py-3 px-2">
                       <div class="container-fluid">
                         <div class="row">
                           <div class="col-sm-12">
@@ -776,7 +787,7 @@
                     <div class="card-header bg-primary text-light py-2">
                       <b>Keterangan Kondisi Rumah (Ditanyakan Untuk 1 Keluarga)</b>
                     </div>
-                    <div style="background-color: yellow;" class="card-body border border-primary py-2 px-0">
+                    <div class="card-body py-3 px-2">
                       <div class="container-fluid">
                         <div class="row">
                           <div class="col-sm-12">
@@ -986,7 +997,12 @@
                       </div>
                     </div>
                   </div>
-                  <button type="button" class="btn btn-primary mt-2" id="Simpan"><b>Simpan Survei <div id="LoadingInput" class="spinner-border spinner-border-sm text-white" style="display: none;" role="status"></b></button>
+                  <div class="d-flex justify-content-center my-3">
+                    <button type="button" class="btn btn-primary shadow" id="Simpan" style="padding: 12px 36px; border-radius: 12px; font-weight: 700; font-size: 15px;">
+                      <i class="fa-solid fa-floppy-disk mr-2"></i><b>Simpan Survei</b>
+                      <div id="LoadingInput" class="spinner-border spinner-border-sm text-white ml-2" style="display: none;" role="status"></div>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

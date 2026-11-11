@@ -77,24 +77,26 @@
       position: relative !important;
     }
 
-    /* Sidebar Left Column (Navy Gradient) */
+    /* Sidebar Left Column (Navy Gradient) - Sepanjang Isi, Tidak Terputus */
     .col-md-3.left_col,
     .left_col {
       background: linear-gradient(180deg, var(--ide-navy) 0%, var(--ide-navy-dark) 100%) !important;
       box-shadow: 4px 0 25px rgba(0, 0, 0, 0.15);
       position: absolute !important;
       top: 0 !important;
-      bottom: 0 !important;
+      bottom: auto !important;
       left: 0 !important;
-      height: 100% !important;
       min-height: 100% !important;
+      height: auto !important;
       z-index: 100 !important;
     }
 
     .left_col.scroll-view {
       width: 100% !important;
       min-height: 100% !important;
-      height: 100% !important;
+      height: auto !important;
+      overflow: visible !important;
+      padding-bottom: 80px !important;
     }
 
     /* Sidebar Brand Header */
@@ -269,7 +271,7 @@
     .right_col {
       background-color: var(--ide-bg) !important;
       padding: 28px 30px 50px 30px !important;
-      min-height: calc(100vh - 70px) !important;
+      min-height: calc(100vh - 70px);
       margin-left: 230px !important;
       clear: both !important;
       position: relative !important;
@@ -2809,6 +2811,70 @@
                   <li class="active"><a href="<?=base_url('IDE/MenuSurvei')?>"><i class="fa-solid fa-square-poll-vertical"></i> <b>Layanan Survei</b></a></li>
                 </ul>
 
+                <div class="sidebar-menu-title">Katalog Survei</div>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-tasks"></i> <b>Survei Desa</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/SurveiBPD')?>"><b>Kinerja Badan Permusyawaratan Desa</b></a></li>           
+                      <li><a href="<?=base_url('Surveyor/SurveiKinerjaPemDes')?>"><b>Kinerja Penyelenggaraan Pemerintahan Desa</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/SurveiKinerjaAparatur')?>"><b>Kinerja Aparatur Desa</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/SurveiIPM')?>"><b>Indikator Kesejahteraan Masyarakat</b></a></li>   
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-tasks"></i> <b>Survei NTP</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/SurveiHargaKonsumenPerdesaan')?>"><b>Harga Konsumen Perdesaan</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/SurveiHargaProdusenPerdesaan')?>"><b>Harga Produsen Perdesaan</b></a></li>   
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-tasks"></i> <b>Survei BPNT</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/PKPM')?>"><b>Keluarga Penerima Manfaat</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/BankPenyalur')?>"><b>Bank Penyalur</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/PendampingBPNT')?>"><b>Pendamping BPNT</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/EWarung')?>"><b>E-Warung</b></a></li> 
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-tasks"></i> <b>Survei BBM</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/DesaBBM')?>"><b>Pemerintah Desa</b></a></li> 
+                      <li><a href="<?=base_url('Surveyor/DampakBBM')?>"><b>Dampak BBM</b></a></li> 
+                    </ul>
+                  </li>
+                </ul>
+
+                <div class="sidebar-menu-title">Katalog Survei</div>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-tasks"></i> <b>Survei Desa</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/SurveiBPD')?>"><b>Kinerja Badan Permusyawaratan Desa</b></a></li>           
+                      <li><a href="<?=base_url('Surveyor/SurveiKinerjaPemDes')?>"><b>Kinerja Penyelenggaraan Pemerintahan Desa</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/SurveiKinerjaAparatur')?>"><b>Kinerja Aparatur Desa</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/SurveiIPM')?>"><b>Indikator Kesejahteraan Masyarakat</b></a></li>   
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-tasks"></i> <b>Survei NTP</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/SurveiHargaKonsumenPerdesaan')?>"><b>Harga Konsumen Perdesaan</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/SurveiHargaProdusenPerdesaan')?>"><b>Harga Produsen Perdesaan</b></a></li>   
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-tasks"></i> <b>Survei BPNT</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/PKPM')?>"><b>Keluarga Penerima Manfaat</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/BankPenyalur')?>"><b>Bank Penyalur</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/PendampingBPNT')?>"><b>Pendamping BPNT</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/EWarung')?>"><b>E-Warung</b></a></li> 
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-tasks"></i> <b>Survei BBM</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/DesaBBM')?>"><b>Pemerintah Desa</b></a></li> 
+                      <li><a href="<?=base_url('Surveyor/DampakBBM')?>"><b>Dampak BBM</b></a></li> 
+                    </ul>
+                  </li>
+                </ul>
+
                 <div class="sidebar-menu-title">Tools</div>
                 <ul class="nav side-menu">
                   <li><a href="<?=base_url('Admin/Komparasi')?>"><i class="fa-solid fa-code-compare"></i> <b>Komparasi</b> </a></li>
@@ -2836,6 +2902,38 @@
                 <div class="sidebar-menu-title">Instrumen Survei</div>
                 <ul class="nav side-menu">
                   <li class="active"><a href="<?=base_url('IDE/MenuSurvei')?>"><i class="fa-solid fa-square-poll-vertical"></i> <b>Layanan Survei</b></a></li>
+                </ul>
+
+                <div class="sidebar-menu-title">Katalog Survei</div>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-tasks"></i> <b>Survei Desa</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/SurveiBPD')?>"><b>Kinerja Badan Permusyawaratan Desa</b></a></li>           
+                      <li><a href="<?=base_url('Surveyor/SurveiKinerjaPemDes')?>"><b>Kinerja Penyelenggaraan Pemerintahan Desa</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/SurveiKinerjaAparatur')?>"><b>Kinerja Aparatur Desa</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/SurveiIPM')?>"><b>Indikator Kesejahteraan Masyarakat</b></a></li>   
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-tasks"></i> <b>Survei NTP</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/SurveiHargaKonsumenPerdesaan')?>"><b>Harga Konsumen Perdesaan</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/SurveiHargaProdusenPerdesaan')?>"><b>Harga Produsen Perdesaan</b></a></li>   
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-tasks"></i> <b>Survei BPNT</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/PKPM')?>"><b>Keluarga Penerima Manfaat</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/BankPenyalur')?>"><b>Bank Penyalur</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/PendampingBPNT')?>"><b>Pendamping BPNT</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/EWarung')?>"><b>E-Warung</b></a></li> 
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-tasks"></i> <b>Survei BBM</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/DesaBBM')?>"><b>Pemerintah Desa</b></a></li> 
+                      <li><a href="<?=base_url('Surveyor/DampakBBM')?>"><b>Dampak BBM</b></a></li> 
+                    </ul>
+                  </li>
                 </ul>
 
                 <div class="sidebar-menu-title">Sistem</div>
@@ -2884,22 +2982,6 @@
                   <li class="active"><a href="<?=base_url('IDE/MenuSurvei')?>"><i class="fa-solid fa-square-poll-vertical"></i> <b>Layanan Survei</b></a></li>
                 </ul>
 
-                <div class="sidebar-menu-title">Sistem</div>
-                <ul class="nav side-menu">
-                  <li><a href="<?=base_url('IDE/SignOut')?>"><i class="fa-solid fa-right-from-bracket"></i> <b>Keluar (Sign Out)</b> </a></li>
-                </ul>
-
-              <?php elseif ($userLevel == 4): /* ================= SURVEYOR ================= */ ?>
-                <div class="sidebar-menu-title">Main Control</div>
-                <ul class="nav side-menu">
-                  <li><a href="<?=base_url('Surveyor')?>"><i class="fa fa-user"></i> <b>Profil</b> </a></li>
-                </ul>
-
-                <div class="sidebar-menu-title">Instrumen Survei</div>
-                <ul class="nav side-menu">
-                  <li class="active"><a href="<?=base_url('IDE/MenuSurvei')?>"><i class="fa-solid fa-square-poll-vertical"></i> <b>Layanan Survei</b></a></li>
-                </ul>
-
                 <div class="sidebar-menu-title">Katalog Survei</div>
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-tasks"></i> <b>Survei Desa</b> <span class="fa fa-chevron-down"></span></a>
@@ -2937,10 +3019,95 @@
                   <li><a href="<?=base_url('IDE/SignOut')?>"><i class="fa-solid fa-right-from-bracket"></i> <b>Keluar (Sign Out)</b> </a></li>
                 </ul>
 
-              <?php elseif ($userLevel == 5): /* ================= USER ROLE 5 (SURVEI) ================= */ ?>
+              <?php elseif ($userLevel == 4): /* ================= SURVEYOR ================= */ ?>
+                <div class="sidebar-menu-title">Main Control</div>
+                <ul class="nav side-menu">
+                  <li><a href="<?=base_url('Surveyor')?>"><i class="fa-solid fa-user"></i> <b>Profil</b> </a></li>
+                </ul>
+
                 <div class="sidebar-menu-title">Instrumen Survei</div>
                 <ul class="nav side-menu">
                   <li class="active"><a href="<?=base_url('IDE/MenuSurvei')?>"><i class="fa-solid fa-square-poll-vertical"></i> <b>Layanan Survei</b></a></li>
+                </ul>
+
+                <div class="sidebar-menu-title">Katalog Survei</div>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa-solid fa-tasks"></i> <b>Survei Desa</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/SurveiBPD')?>"><b>Kinerja Badan Permusyawaratan Desa</b></a></li>           
+                      <li><a href="<?=base_url('Surveyor/SurveiKinerjaPemDes')?>"><b>Kinerja Penyelenggaraan Pemerintahan Desa</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/SurveiKinerjaAparatur')?>"><b>Kinerja Aparatur Desa</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/SurveiIPM')?>"><b>Indikator Kesejahteraan Masyarakat</b></a></li>   
+                    </ul>
+                  </li>
+                  <li><a><i class="fa-solid fa-tasks"></i> <b>Survei NTP</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/SurveiHargaKonsumenPerdesaan')?>"><b>Harga Konsumen Perdesaan</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/SurveiHargaProdusenPerdesaan')?>"><b>Harga Produsen Perdesaan</b></a></li>   
+                    </ul>
+                  </li>
+                  <li><a><i class="fa-solid fa-tasks"></i> <b>Survei BPNT</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/PKPM')?>"><b>Keluarga Penerima Manfaat</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/BankPenyalur')?>"><b>Bank Penyalur</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/PendampingBPNT')?>"><b>Pendamping BPNT</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/EWarung')?>"><b>E-Warung</b></a></li> 
+                    </ul>
+                  </li>
+                  <li><a><i class="fa-solid fa-tasks"></i> <b>Survei BBM</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/DesaBBM')?>"><b>Pemerintah Desa</b></a></li> 
+                      <li><a href="<?=base_url('Surveyor/DampakBBM')?>"><b>Dampak BBM</b></a></li> 
+                    </ul>
+                  </li>
+                </ul>
+
+                <div class="sidebar-menu-title">Sistem</div>
+                <ul class="nav side-menu">
+                  <li><a href="<?=base_url('IDE/SignOut')?>"><i class="fa-solid fa-right-from-bracket"></i> <b>Keluar (Sign Out)</b> </a></li>
+                </ul>
+
+              <?php elseif ($userLevel == 5): /* ================= USER ROLE 5 (SURVEI) ================= */ ?>
+                <div class="sidebar-menu-title">Main Control</div>
+                <ul class="nav side-menu">
+                  <li><a href="<?=base_url('Surveyor')?>"><i class="fa-solid fa-user"></i> <b>Profil</b> </a></li>
+                </ul>
+
+                <div class="sidebar-menu-title">Instrumen Survei</div>
+                <ul class="nav side-menu">
+                  <li class="active"><a href="<?=base_url('IDE/MenuSurvei')?>"><i class="fa-solid fa-square-poll-vertical"></i> <b>Layanan Survei</b></a></li>
+                </ul>
+
+                <div class="sidebar-menu-title">Katalog Survei</div>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa-solid fa-tasks"></i> <b>Survei Desa</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/SurveiBPD')?>"><b>Kinerja Badan Permusyawaratan Desa</b></a></li>           
+                      <li><a href="<?=base_url('Surveyor/SurveiKinerjaPemDes')?>"><b>Kinerja Penyelenggaraan Pemerintahan Desa</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/SurveiKinerjaAparatur')?>"><b>Kinerja Aparatur Desa</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/SurveiIPM')?>"><b>Indikator Kesejahteraan Masyarakat</b></a></li>   
+                    </ul>
+                  </li>
+                  <li><a><i class="fa-solid fa-tasks"></i> <b>Survei NTP</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/SurveiHargaKonsumenPerdesaan')?>"><b>Harga Konsumen Perdesaan</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/SurveiHargaProdusenPerdesaan')?>"><b>Harga Produsen Perdesaan</b></a></li>   
+                    </ul>
+                  </li>
+                  <li><a><i class="fa-solid fa-tasks"></i> <b>Survei BPNT</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/PKPM')?>"><b>Keluarga Penerima Manfaat</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/BankPenyalur')?>"><b>Bank Penyalur</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/PendampingBPNT')?>"><b>Pendamping BPNT</b></a></li>   
+                      <li><a href="<?=base_url('Surveyor/EWarung')?>"><b>E-Warung</b></a></li> 
+                    </ul>
+                  </li>
+                  <li><a><i class="fa-solid fa-tasks"></i> <b>Survei BBM</b> <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?=base_url('Surveyor/DesaBBM')?>"><b>Pemerintah Desa</b></a></li> 
+                      <li><a href="<?=base_url('Surveyor/DampakBBM')?>"><b>Dampak BBM</b></a></li> 
+                    </ul>
+                  </li>
                 </ul>
 
                 <div class="sidebar-menu-title">Sistem</div>
@@ -11814,6 +11981,65 @@
 
     // Document Ready
     $(document).ready(function() {
+      // Sidebar Height Synchronization - Memastikan Sidebar Sepanjang Isinya & Tidak Terputus
+      function syncSidebarHeight() {
+        if (window.innerWidth < 992) {
+          var leftCol = document.querySelector('.col-md-3.left_col');
+          var rightCol = document.querySelector('.right_col');
+          var mainCont = document.querySelector('.main_container');
+          if (leftCol) { leftCol.style.minHeight = ''; leftCol.style.height = ''; }
+          if (rightCol) { rightCol.style.minHeight = ''; }
+          if (mainCont) { mainCont.style.minHeight = ''; }
+          return;
+        }
+
+        var header = document.querySelector('.sidebar-brand-header');
+        var sidebarMenu = document.getElementById('sidebar-menu');
+        var leftCol = document.querySelector('.col-md-3.left_col');
+        var rightCol = document.querySelector('.right_col');
+        var mainCont = document.querySelector('.main_container');
+        var topNav = document.querySelector('.top_nav');
+
+        if (!leftCol) return;
+
+        var sidebarContentH = 0;
+        if (header) sidebarContentH += header.offsetHeight || 0;
+        if (sidebarMenu) sidebarContentH += sidebarMenu.offsetHeight || 0;
+        sidebarContentH += 80; // Safe bottom breathing space
+
+        var windowH = window.innerHeight || document.documentElement.clientHeight || 0;
+
+        var rightColNaturalH = 0;
+        if (rightCol) {
+          var children = rightCol.children;
+          if (children && children.length > 0) {
+            for (var i = 0; i < children.length; i++) {
+              var c = children[i];
+              var b = (c.offsetTop || 0) + (c.offsetHeight || 0);
+              if (b > rightColNaturalH) rightColNaturalH = b;
+            }
+            rightColNaturalH += 40;
+          } else {
+            rightColNaturalH = rightCol.scrollHeight || rightCol.offsetHeight || 0;
+          }
+        }
+        var topNavH = topNav ? (topNav.offsetHeight || 0) : 0;
+        var totalRightH = rightColNaturalH + topNavH;
+
+        var targetH = Math.max(sidebarContentH, totalRightH, windowH);
+
+        if (mainCont) {
+          mainCont.style.minHeight = targetH + 'px';
+        }
+        leftCol.style.minHeight = targetH + 'px';
+        leftCol.style.height = targetH + 'px';
+
+        if (rightCol) {
+          var contentMinH = Math.max(targetH - topNavH, 0);
+          rightCol.style.minHeight = contentMinH + 'px';
+        }
+      }
+
       // Sidebar Mobile & Desktop Toggle Handlers (Selaras Dashboard Utama)
       function isMobileScreen() {
         return $(window).width() < 992;
@@ -11824,6 +12050,9 @@
           e.preventDefault();
           e.stopPropagation();
           $('body').toggleClass('mobile-nav-open');
+        } else {
+          setTimeout(syncSidebarHeight, 100);
+          setTimeout(syncSidebarHeight, 300);
         }
       });
 
@@ -11838,11 +12067,32 @@
         }
       });
 
-      $(window).on('resize', function() {
+      // Pantau klik menu accordion sidebar
+      $(document).on('click', '#sidebar-menu a', function() {
+        setTimeout(syncSidebarHeight, 50);
+        setTimeout(syncSidebarHeight, 200);
+        setTimeout(syncSidebarHeight, 400);
+      });
+
+      $(window).on('resize orientationchange', function() {
         if (!isMobileScreen()) {
           $('body').removeClass('mobile-nav-open');
         }
+        syncSidebarHeight();
       });
+
+      // Jalankan sinkronisasi awal dan observasi perubahan dimensi sidebar
+      syncSidebarHeight();
+      var sidebarMenuElem = document.getElementById('sidebar-menu');
+      if (window.ResizeObserver && sidebarMenuElem) {
+        var ro = new ResizeObserver(function() {
+          syncSidebarHeight();
+        });
+        ro.observe(sidebarMenuElem);
+      }
+      setTimeout(syncSidebarHeight, 150);
+      setTimeout(syncSidebarHeight, 500);
+      setTimeout(syncSidebarHeight, 1200);
 
       updateSurveyMetricStrip();
       if (typeof currentSurveyId !== 'undefined' && currentSurveyId) {

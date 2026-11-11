@@ -5,9 +5,23 @@ class Surveyor extends CI_Controller {
 
   function __construct(){
 		parent::__construct();
-		if(!$this->session->userdata('Surveyor')){
+		$isSurveiAuth = $this->session->userdata('Surveyor') 
+                 || $this->session->userdata('Surveiyor') 
+                 || $this->session->userdata('SurveiOnly') 
+                 || $this->session->userdata('SuperAdmin') 
+                 || $this->session->userdata('Admin') 
+                 || $this->session->userdata('Staf') 
+                 || in_array((int)$this->session->userdata('level'), array(1, 2, 3, 4, 5));
+		if(!$isSurveiAuth){
 			redirect(base_url()); 
 		}
+    if (!$this->session->userdata('NIK')) {
+      $nik = $this->session->userdata('Username') ?: ($this->session->userdata('user_id') ?: '0');
+      $this->session->set_userdata('NIK', $nik);
+    }
+    if (!$this->session->userdata('Surveyor')) {
+      $this->session->set_userdata('Surveyor', true);
+    }
   } 
 
   public function index(){
@@ -16,6 +30,17 @@ class Surveyor extends CI_Controller {
   }
   // $2y$10$nhEvPNxmjSLuZMzDn6y5QuFOqDN6gXcN5sPrLMba8I.wVbECFkqda 12345678
   public function GantiPassword(){
+    if ((int)$this->session->userdata('level') === 5 || $this->session->userdata('SurveiOnly')) {
+      $username = $this->session->userdata('Username');
+      $this->db->where('Username', $username);
+      $this->db->update('akun', array('Password' => password_hash($_POST['Password'], PASSWORD_DEFAULT)));
+      if ($this->db->affected_rows()){
+        echo '1';
+      } else {
+        echo 'Gagal Mengganti Password!';
+      }
+      return;
+    }
     $this->db->where('NIK', $this->session->userdata('NIK'));
     $this->db->update('surveyor', array('Password' => password_hash($_POST['Password'], PASSWORD_DEFAULT)));
     if ($this->db->affected_rows()){
@@ -185,7 +210,8 @@ class Surveyor extends CI_Controller {
   public function SurveiHargaKonsumenPerdesaan(){
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.24.%' AND length(Kode) = 8")->result_array();
     // $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.24.01.%'")->result_array();
-    $Data['Data'] = $this->db->query("SELECT kodewilayah.Nama as NamaKecamatan,ntpkonsumen.* FROM kodewilayah,ntpkonsumen WHERE ntpkonsumen.Kecamatan=kodewilayah.Kode AND NIK = ".$this->session->userdata('NIK')." ORDER BY TanggalSurvei DESC")->result_array();
+    $nik = $this->db->escape_str((string)($this->session->userdata('NIK') ?: ($this->session->userdata('Username') ?: '0')));
+    $Data['Data'] = $this->db->query("SELECT kodewilayah.Nama as NamaKecamatan,ntpkonsumen.* FROM kodewilayah,ntpkonsumen WHERE ntpkonsumen.Kecamatan=kodewilayah.Kode AND NIK = '".$nik."' ORDER BY TanggalSurvei DESC")->result_array();
     $this->load->view('Surveyor/Header',$Data);
 		$this->load->view('Surveyor/SurveiHargaKonsumenPerdesaan',$Data);
   }
@@ -224,7 +250,8 @@ class Surveyor extends CI_Controller {
   public function SurveiHargaProdusenPerdesaan(){
     $Data['Kecamatan'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.24.%' AND length(Kode) = 8")->result_array();
     // $Data['Desa'] = $this->db->query("SELECT * FROM `kodewilayah` WHERE Kode LIKE '35.24.01.%'")->result_array();
-    $Data['Data'] = $this->db->query("SELECT kodewilayah.Nama as NamaKecamatan,ntpprodusen.* FROM kodewilayah,ntpprodusen WHERE ntpprodusen.Kecamatan=kodewilayah.Kode AND NIK = ".$this->session->userdata('NIK')." ORDER BY TanggalSurvei DESC")->result_array();
+    $nik = $this->db->escape_str((string)($this->session->userdata('NIK') ?: ($this->session->userdata('Username') ?: '0')));
+    $Data['Data'] = $this->db->query("SELECT kodewilayah.Nama as NamaKecamatan,ntpprodusen.* FROM kodewilayah,ntpprodusen WHERE ntpprodusen.Kecamatan=kodewilayah.Kode AND NIK = '".$nik."' ORDER BY TanggalSurvei DESC")->result_array();
     $this->load->view('Surveyor/Header',$Data);
 		$this->load->view('Surveyor/SurveiHargaProdusenPerdesaan',$Data);
   }

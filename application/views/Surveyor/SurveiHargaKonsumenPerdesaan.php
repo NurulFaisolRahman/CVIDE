@@ -2,39 +2,62 @@
 				<div class="right_col" role="main" style="overflow-x: hidden;">
 					<div class="">
             <div class="clearfix"></div>
+
+            <!-- Modern Survey Header Banner -->
+            <div class="dash-survey-header mb-4">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <div class="dash-header-title">
+                    <i class="fa fa-basket-shopping mr-2 text-warning"></i> Survei NTP - Harga Konsumen Perdesaan
+                  </div>
+                  <div class="dash-header-subtitle">
+                    Data Pemantauan Perkembangan Harga Konsumen Komoditas Perdesaan (Nilai Tukar Petani)
+                  </div>
+                </div>
+                <div class="col-md-4 text-md-right mt-3 mt-md-0">
+                  <span class="badge badge-light px-3 py-2 font-weight-normal shadow-sm" style="font-size: 13px; border-radius: 8px;">
+                    <i class="fa fa-chart-line text-primary mr-1"></i> NTP Konsumen
+                  </span>
+                </div>
+              </div>
+            </div>
+
 							<div class="row">
                 <div class="col-sm-12">
-                  <div class="card"> 
-                    <div class="card-header bg-primary text-white">
-                      <b>SURVEI HARGA KONSUMEN PERDESAAN</b>
+                  <div class="card mb-4 border-0 shadow-sm" style="border-radius: 12px; overflow: hidden;"> 
+                    <div class="card-header bg-white py-3 border-bottom d-flex align-items-center justify-content-between">
+                      <div class="font-weight-bold text-dark" style="font-size: 16px;">
+                        <i class="fa fa-table text-primary mr-2"></i> Data Riwayat Survei Harga Konsumen
+                      </div>
+                      <span class="badge badge-pill badge-primary px-3 py-1 font-weight-normal"><?=count($Data)?> Data Tercatat</span>
                     </div>
-                    <div style="background-color: yellow;" class="card-body border border-primary pl-0 pr-2 py-2">
+                    <div class="card-body p-4 bg-light">
                       <div class="container-fluid">
                         <div class="row">
                           <div class="col-sm-12">
                             <!-- <button type="button" class="btn btn-sm btn-primary border-white" data-toggle="modal" data-target="#ModalInput"><i class="fa fa-plus"></i><b> Input Data Survei</b></button> -->
                             <div class="table-responsive">
-                              <table id="TabelKonsumen" class="table table-sm table-bordered bg-light">
-                                <thead>
-                                  <tr class="bg-danger text-light">
-                                    <th scope="col" style="width: 4%;" class="text-center align-middle">No</th>
-                                    <th scope="col" class="align-middle">Kecamatan</th>
-                                    <th scope="col" class="align-middle">Tanggal Survei</th>
-                                    <th scope="col" class="align-middle">Nama Responden</th>
-                                    <th scope="col" class="text-center align-middle">Edit</th>
+                              <table id="TabelKonsumen" class="table table-sm table-bordered bg-white shadow-sm">
+                                <thead style="background: #1a2a44; color: #fff;">
+                                  <tr class="text-center">
+                                    <th scope="col" style="width: 5%; vertical-align: middle;">No</th>
+                                    <th scope="col" style="vertical-align: middle;">Kecamatan</th>
+                                    <th scope="col" style="vertical-align: middle;">Tanggal Survei</th>
+                                    <th scope="col" style="vertical-align: middle;">Nama Responden</th>
+                                    <th scope="col" style="width: 12%; vertical-align: middle;">Aksi</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   <?php $No = 1; foreach ($Data as $key) {?>
-                                    <tr>
-                                      <th scope="row" class="text-center align-middle"><?=$No++?></th>
-                                      <th scope="row" class="align-middle"><?=$key['NamaKecamatan']?></th>
-                                      <th scope="row" class="align-middle"><?=$key['TanggalSurvei']?></th>
-                                      <th scope="row" class="align-middle"><?=$key['NamaResponden']?></th>
-                                      <th scope="row" style="width: 10%;" class="text-center align-middle">
-                                        <button Edit="<?=$key['Id'].'$'.$key['Kecamatan'].'$'.$key['TanggalSurvei'].'$'.$key['NamaResponden'].'$'.$key['Alamat'].'$'.$key['NamaPasar'].'$'.$key['HariPasar'].'$'.$key['KodeKualitas'].'$'.$key['Harga'].'$'.$key['_Harga']?>" class="btn btn-sm btn-warning Edit"><i class="fa fa-edit"></i></button>
-                                        <button Copy="<?=$key['Id'].'$'.$key['Kecamatan'].'$'.$key['TanggalSurvei'].'$'.$key['NamaResponden'].'$'.$key['Alamat'].'$'.$key['NamaPasar'].'$'.$key['HariPasar'].'$'.$key['KodeKualitas'].'$'.$key['Harga'].'$'.$key['_Harga']?>?>" class="btn btn-sm btn-primary Copy"><i class="fa fa-copy"></i></button>
-                                      </th>
+                                    <tr class="align-middle">
+                                      <td class="text-center font-weight-bold text-muted"><?=$No++?></td>
+                                      <td class="font-weight-semibold text-dark"><?=$key['NamaKecamatan']?></td>
+                                      <td><?=$key['TanggalSurvei']?></td>
+                                      <td><?=$key['NamaResponden']?></td>
+                                      <td class="text-center">
+                                        <button Edit="<?=$key['Id'].'$'.$key['Kecamatan'].'$'.$key['TanggalSurvei'].'$'.$key['NamaResponden'].'$'.$key['Alamat'].'$'.$key['NamaPasar'].'$'.$key['HariPasar'].'$'.$key['KodeKualitas'].'$'.$key['Harga'].'$'.$key['_Harga']?>" class="btn btn-sm btn-outline-warning Edit" title="Edit Data"><i class="fa fa-edit"></i> Edit</button>
+                                        <button Copy="<?=$key['Id'].'$'.$key['Kecamatan'].'$'.$key['TanggalSurvei'].'$'.$key['NamaResponden'].'$'.$key['Alamat'].'$'.$key['NamaPasar'].'$'.$key['HariPasar'].'$'.$key['KodeKualitas'].'$'.$key['Harga'].'$'.$key['_Harga']?>?>" class="btn btn-sm btn-outline-primary Copy" title="Salin Data"><i class="fa fa-copy"></i> Salin</button>
+                                      </td>
                                     </tr>
                                   <?php } ?>  
                                 </tbody>
@@ -254,91 +277,76 @@
       </div>
     </div> -->
     
-    <div class="modal fade" id="ModalEdit">
+        <div class="modal fade" id="ModalEdit">
       <div class="modal-dialog modal-xl">
-        <div class="modal-content bg-warning">
-          <div class="modal-body">
-            <div class="container">
-							<div class="row">
-                <div class="col-sm-4">
-                  <div class="input-group input-group-sm">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text bg-danger text-white"><b>Kecamatan</b></label>
-                    </div>
-                    <select class="custom-select" id="EditKecamatan">  
-                      <?php foreach ($Kecamatan as $key) { ?>
-                        <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
-                      <?php } ?>                  
-                    </select>
-                  </div>
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+          <div class="modal-header text-white" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+            <h5 class="modal-title font-weight-bold"><i class="fa fa-edit mr-2"></i> Edit Data Survei Harga Konsumen</h5>
+            <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body p-4 bg-light">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-sm-4 mb-3">
+                  <label class="font-weight-bold text-muted small mb-1">Kecamatan</label>
+                  <select class="custom-select" id="EditKecamatan">  
+                    <?php foreach ($Kecamatan as $key) { ?>
+                      <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
+                    <?php } ?>                  
+                  </select>
                 </div>
-                <div class="col-sm-4">
-                  <div class="input-group input-group-sm">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text bg-danger text-white"><b>Tanggal Survei</b></label>
-                    </div>
-                    <input class="form-control" type="date" id="EditTanggalSurvei">
-                    <input class="form-control" type="hidden" id="Id">
-                  </div>
+                <div class="col-sm-4 mb-3">
+                  <label class="font-weight-bold text-muted small mb-1">Tanggal Survei</label>
+                  <input class="form-control" type="date" id="EditTanggalSurvei">
+                  <input class="form-control" type="hidden" id="Id">
                 </div> 
-                <div class="col-sm-4">
-                  <div class="input-group input-group-sm">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text bg-danger text-white"><b>Nama</b></label>
-                    </div>
-                    <input class="form-control" type="text" id="EditNamaResponden" placeholder="Nama Responden">
-                  </div>
+                <div class="col-sm-4 mb-3">
+                  <label class="font-weight-bold text-muted small mb-1">Nama Responden</label>
+                  <input class="form-control" type="text" id="EditNamaResponden" placeholder="Nama Responden">
                 </div> 
-                <div class="col-sm-4">
-                  <div class="input-group input-group-sm">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text bg-danger text-white"><b>Alamat</b></label>
-                    </div>
-                    <input class="form-control" type="text" id="EditAlamat">
-                  </div>
+                <div class="col-sm-4 mb-3">
+                  <label class="font-weight-bold text-muted small mb-1">Alamat Lengkap</label>
+                  <input class="form-control" type="text" id="EditAlamat" placeholder="Alamat">
                 </div> 
-                <div class="col-sm-4">
-                  <div class="input-group input-group-sm">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text bg-danger text-white"><b>Nama Pasar</b></label>
-                    </div>
-                    <select class="custom-select" id="EditNamaPasar">                    
-                      <option value="1">Pasar Mantup</option>
-                      <option value="2">Pasar Laren</option>
-                      <option value="3">Pasar Pucuk</option>
-                    </select>
-                  </div>
+                <div class="col-sm-4 mb-3">
+                  <label class="font-weight-bold text-muted small mb-1">Nama Pasar</label>
+                  <select class="custom-select" id="EditNamaPasar">                    
+                    <option value="1">Pasar Mantup</option>
+                    <option value="2">Pasar Laren</option>
+                    <option value="3">Pasar Pucuk</option>
+                  </select>
                 </div> 
-                <div class="col-sm-4">
-                  <div class="input-group input-group-sm">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text bg-danger text-white"><b>Hari Pasar</b></label>
-                    </div>
-                    <input class="form-control" type="text" id="EditHariPasar">
-                  </div>
+                <div class="col-sm-4 mb-3">
+                  <label class="font-weight-bold text-muted small mb-1">Hari Pasar</label>
+                  <input class="form-control" type="text" id="EditHariPasar" placeholder="Hari Pasar">
                 </div> 
                 <div class="col-sm-12">
-                  <div class="table-responsive mt-1">
-                    <table class="table table-sm table-bordered table-striped">
-                      <thead class="bg-danger">
-                        <tr style="font-size: 10pt;" class="text-white text-center">
-                          <th class="align-middle">Kode Kualitas</th>
-                          <th class="align-middle">Harga Bulan Pencacahan</th>
-                          <th class="align-middle">Harga Bulan Sebelumnya</th>
+                  <div class="table-responsive mt-1" style="max-height: 480px; overflow-y: auto;">
+                    <table class="table table-sm table-bordered table-hover bg-white mb-0 shadow-sm">
+                      <thead style="position: sticky; top: 0; z-index: 10; background: #1a2a44; color: #fff;">
+                        <tr style="font-size: 10pt;" class="text-center">
+                          <th style="width: 25%; vertical-align: middle;">Kode Kualitas</th>
+                          <th style="width: 37.5%; vertical-align: middle;">Harga Bulan Pencacahan (Rp)</th>
+                          <th style="width: 37.5%; vertical-align: middle;">Harga Bulan Sebelumnya (Rp)</th>
                         </tr>
                       </thead>
-                    <?php for ($i=0; $i < 1415; $i++) { ?>
-                      <tr id="_Edit<?=$Kode[$i]?>" class="text-white bg-primary">
-                        <td class="text-center align-middle font-weight-bold"><?=$Kode[$i]?></td>
-                        <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Edit<?=$Kode[$i]?>"></td>
-                        <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Edit<?='_'.$Kode[$i]?>"></td>
-                      </tr>
-                    <?php } ?>
+                      <tbody>
+                      <?php for ($i=0; $i < 1415; $i++) { ?>
+                        <tr id="_Edit<?=$Kode[$i]?>" class="align-middle">
+                          <td class="text-center align-middle font-weight-bold text-dark"><?=$Kode[$i]?></td>
+                          <td class="text-center font-weight-bold"><input class="form-control form-control-sm text-center" type="text" id="Edit<?=$Kode[$i]?>"></td>
+                          <td class="text-center font-weight-bold"><input class="form-control form-control-sm text-center" type="text" id="Edit<?='_'.$Kode[$i]?>"></td>
+                        </tr>
+                      <?php } ?>
+                      </tbody>
                     </table>
                   </div>
                 </div>
-                <div class="col-sm-12 mt-2 d-flex justify-content-center">
-                  <button type="button" class="btn btn-primary" id="Edit"><b>Update Survei&nbsp;</b><div id="LoadingEdit" class="spinner-border spinner-border-sm text-white" role="status" style="display: none;"></div></button>
+                <div class="col-sm-12 mt-4 d-flex justify-content-center">
+                  <button type="button" class="btn btn-primary btn-lg px-5 shadow font-weight-bold" id="Edit">
+                    <i class="fa fa-save mr-2"></i> Update Data Survei
+                    <div id="LoadingEdit" class="spinner-border spinner-border-sm text-white ml-2" role="status" style="display: none;"></div>
+                  </button>
                 </div> 
               </div>
             </div>
@@ -349,95 +357,80 @@
     
     <div class="modal fade" id="ModalCopy">
       <div class="modal-dialog modal-xl">
-        <div class="modal-content bg-warning">
-          <div class="modal-body">
-            <div class="container">
-							<div class="row">
-                <div class="col-sm-4">
-                  <div class="input-group input-group-sm">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text bg-danger text-white"><b>Kecamatan</b></label>
-                    </div>
-                    <select class="custom-select" id="CopyKecamatan">  
-                      <?php foreach ($Kecamatan as $key) { ?>
-                        <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
-                      <?php } ?>                  
-                    </select>
-                  </div>
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+          <div class="modal-header text-white" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+            <h5 class="modal-title font-weight-bold"><i class="fa fa-copy mr-2"></i> Salin (Copy) Data Survei Harga Konsumen</h5>
+            <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body p-4 bg-light">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-sm-4 mb-3">
+                  <label class="font-weight-bold text-muted small mb-1">Kecamatan</label>
+                  <select class="custom-select" id="CopyKecamatan">  
+                    <?php foreach ($Kecamatan as $key) { ?>
+                      <option value="<?=$key['Kode']?>"><?=$key['Nama']?></option> 
+                    <?php } ?>                  
+                  </select>
                 </div>
-                <div class="col-sm-4">
-                  <div class="input-group input-group-sm">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text bg-danger text-white"><b>Tanggal Survei</b></label>
-                    </div>
-                    <input class="form-control" type="date" id="CopyTanggalSurvei">
-                  </div>
+                <div class="col-sm-4 mb-3">
+                  <label class="font-weight-bold text-muted small mb-1">Tanggal Survei</label>
+                  <input class="form-control" type="date" id="CopyTanggalSurvei">
                 </div> 
-                <div class="col-sm-4">
-                  <div class="input-group input-group-sm">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text bg-danger text-white"><b>Nama</b></label>
-                    </div>
-                    <input class="form-control" type="text" id="CopyNamaResponden" placeholder="Nama Responden">
-                  </div>
+                <div class="col-sm-4 mb-3">
+                  <label class="font-weight-bold text-muted small mb-1">Nama Responden</label>
+                  <input class="form-control" type="text" id="CopyNamaResponden" placeholder="Nama Responden">
                 </div> 
-                <div class="col-sm-4">
-                  <div class="input-group input-group-sm">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text bg-danger text-white"><b>Alamat</b></label>
-                    </div>
-                    <input class="form-control" type="text" id="CopyAlamat">
-                  </div>
+                <div class="col-sm-4 mb-3">
+                  <label class="font-weight-bold text-muted small mb-1">Alamat Lengkap</label>
+                  <input class="form-control" type="text" id="CopyAlamat" placeholder="Alamat">
                 </div> 
-                <div class="col-sm-4">
-                  <div class="input-group input-group-sm">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text bg-danger text-white"><b>Nama Pasar</b></label>
-                    </div>
-                    <select class="custom-select" id="CopyNamaPasar">                    
-                      <option value="1">Pasar Mantup</option>
-                      <option value="2">Pasar Laren</option>
-                      <option value="3">Pasar Pucuk</option>
-                    </select>
-                  </div>
+                <div class="col-sm-4 mb-3">
+                  <label class="font-weight-bold text-muted small mb-1">Nama Pasar</label>
+                  <select class="custom-select" id="CopyNamaPasar">                    
+                    <option value="1">Pasar Mantup</option>
+                    <option value="2">Pasar Laren</option>
+                    <option value="3">Pasar Pucuk</option>
+                  </select>
                 </div> 
-                <div class="col-sm-4">
-                  <div class="input-group input-group-sm">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text bg-danger text-white"><b>Hari Pasar</b></label>
-                    </div>
-                    <input class="form-control" type="text" id="CopyHariPasar">
-                  </div>
+                <div class="col-sm-4 mb-3">
+                  <label class="font-weight-bold text-muted small mb-1">Hari Pasar</label>
+                  <input class="form-control" type="text" id="CopyHariPasar" placeholder="Hari Pasar">
                 </div> 
                 <div class="col-sm-12">
-                  <div class="table-responsive mt-1">
-                    <table class="table table-sm table-bordered table-striped">
-                      <thead class="bg-danger">
-                        <tr style="font-size: 10pt;" class="text-white text-center">
-                          <th class="align-middle">Kode Kualitas</th>
-                          <th class="align-middle">Harga Bulan Pencacahan</th>
-                          <th class="align-middle">Harga Bulan Sebelumnya</th>
+                  <div class="table-responsive mt-1" style="max-height: 480px; overflow-y: auto;">
+                    <table class="table table-sm table-bordered table-hover bg-white mb-0 shadow-sm">
+                      <thead style="position: sticky; top: 0; z-index: 10; background: #1a2a44; color: #fff;">
+                        <tr style="font-size: 10pt;" class="text-center">
+                          <th style="width: 25%; vertical-align: middle;">Kode Kualitas</th>
+                          <th style="width: 37.5%; vertical-align: middle;">Harga Bulan Pencacahan (Rp)</th>
+                          <th style="width: 37.5%; vertical-align: middle;">Harga Bulan Sebelumnya (Rp)</th>
                         </tr>
                       </thead>
-                    <?php for ($i=0; $i < 1415; $i++) { ?>
-                      <tr id="_Copy<?=$Kode[$i]?>" class="text-white bg-primary">
-                        <td class="text-center align-middle font-weight-bold"><?=$Kode[$i]?></td>
-                        <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Copy<?=$Kode[$i]?>"></td>
-                        <td class="text-center font-weight-bold"><input class="form-control form-control-sm" type="text" id="Copy<?='_'.$Kode[$i]?>"></td>
-                      </tr>
-                    <?php } ?>
+                      <tbody>
+                      <?php for ($i=0; $i < 1415; $i++) { ?>
+                        <tr id="_Copy<?=$Kode[$i]?>" class="align-middle">
+                          <td class="text-center align-middle font-weight-bold text-dark"><?=$Kode[$i]?></td>
+                          <td class="text-center font-weight-bold"><input class="form-control form-control-sm text-center" type="text" id="Copy<?=$Kode[$i]?>"></td>
+                          <td class="text-center font-weight-bold"><input class="form-control form-control-sm text-center" type="text" id="Copy<?='_'.$Kode[$i]?>"></td>
+                        </tr>
+                      <?php } ?>
+                      </tbody>
                     </table>
                   </div>
                 </div>
-                <div class="col-sm-12 mt-2 d-flex justify-content-center">
-                  <button type="button" class="btn btn-primary" id="Copy"><b>Simpan Survei&nbsp;</b><div id="LoadingCopy" class="spinner-border spinner-border-sm text-white" role="status" style="display: none;"></div></button>
+                <div class="col-sm-12 mt-4 d-flex justify-content-center">
+                  <button type="button" class="btn btn-primary btn-lg px-5 shadow font-weight-bold" id="Copy">
+                    <i class="fa fa-save mr-2"></i> Simpan Data Salinan
+                    <div id="LoadingCopy" class="spinner-border spinner-border-sm text-white ml-2" role="status" style="display: none;"></div>
+                  </button>
                 </div> 
               </div>
             </div>
           </div>
         </div>
       </div>
-		</div>
+    </div>
 
     <script src="<?=base_url("vendors/jquery/dist/jquery.min.js")?>"></script>
     <script src="<?=base_url("vendors/bootstrap/dist/js/bootstrap.bundle.min.js")?>"></script>

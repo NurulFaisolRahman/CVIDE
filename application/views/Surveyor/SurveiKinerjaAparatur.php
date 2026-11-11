@@ -2,13 +2,24 @@
 				<div class="right_col" role="main" style="overflow-x: hidden;">
 					<div class="">
             <div class="clearfix"></div>
+
+            <!-- Header Banner Survei Desa (Selaras Konsep Portal Survei) -->
+            <div class="dash-survey-header">
+              <h2 class="dash-header-title">
+                <i class="fa-solid fa-user-tie"></i> Survei Pengukuran Kinerja Aparatur Desa
+              </h2>
+              <p class="dash-header-subtitle">
+                Instrumen penilaian standar kinerja aparatur desa dari Kepala Desa hingga Perangkat Kewilayahan.
+              </p>
+            </div>
+
 							<div class="row">
                 <div class="col-sm-12">
                   <div class="card">
-                    <div class="card-header bg-primary text-white">
-                      <b>SURVEI PENGUKURAN KINERJA APARATUR DESA</b>
+                    <div class="card-header bg-primary text-white d-flex align-items-center">
+                      <i class="fa-solid fa-location-dot mr-2"></i> <b>Wilayah &amp; Parameter Kuesioner Aparatur Desa</b>
                     </div>
-                    <div style="background-color: yellow;" class="card-body border border-primary pl-0 pr-2 py-2">
+                    <div class="card-body pl-0 pr-2 py-3">
                       <div class="container-fluid">
                         <div class="row">
                           <div class="col-sm-4"> 
@@ -854,9 +865,9 @@
                               </table>
                             </div> 
                           </div>
-                          <div class="col-sm-12 mt-2 d-flex justify-content-center">
-                            <button type="button" class="btn btn-primary" id="Simpan"><b>Simpan Survei</b></button>
-                            <div id="LoadingInput" class="spinner-border text-success" role="status" style="display: none;"></div>
+                          <div class="col-sm-12 mt-4 mb-2 d-flex justify-content-center align-items-center" style="gap: 15px;">
+                            <button type="button" class="btn btn-primary shadow" id="Simpan"><i class="fa-solid fa-floppy-disk mr-2"></i><b>Simpan Survei</b></button>
+                            <div id="LoadingInput" class="spinner-border text-primary" role="status" style="display: none;"></div>
                           </div> 
                         </div>
                       </div>
