@@ -2455,6 +2455,196 @@ public function InputIKMYogyakarta()
       );
       $this->db->insert_batch('survei_pertanyaan', $p2);
     }
+
+    // Auto-seed Survei Indikator Kesehatan & Fertilitas (Dimensi IPM) jika belum terdaftar
+    $cekSurveiIPM = $this->db->get_where('survei_dinamis', array('KodeSurvei' => 'ipm-kesehatan-fertilitas-2026'))->row_array();
+    if ($cekSurveiIPM) {
+      $totalP = $this->db->where('SurveiId', $cekSurveiIPM['Id'])->count_all_results('survei_pertanyaan');
+      if ($totalP == 0) {
+        $this->db->where('Id', $cekSurveiIPM['Id'])->delete('survei_dinamis');
+        $cekSurveiIPM = null;
+      }
+    }
+    if (!$cekSurveiIPM) {
+      $now = date('Y-m-d H:i:s');
+      $surveiIPM = array(
+        'KodeSurvei'    => 'ipm-kesehatan-fertilitas-2026',
+        'Judul'         => 'Survei Indikator Kesehatan & Fertilitas Keluarga (Dimensi IPM Kesehatan)',
+        'Deskripsi'     => 'Instrumen pendataan kondisi kesehatan keluarga, riwayat persalinan, pemberian ASI, imunisasi, jaminan kesehatan, serta fertilitas (ALH/AMH) sebagai indikator Angka Harapan Hidup (AHH) IPM.',
+        'Lembaga'       => 'Dinas Kesehatan & BAPPEDA',
+        'Jenis'         => 'IPM',
+        'Tahun'         => '2026',
+        'Status'        => 'Aktif',
+        'DaerahSurvei'  => 'Kabupaten Banyuwangi',
+        'KodeWilayah'   => '35.10',
+        'BannerColor'   => '#0284c7',
+        'EstimasiWaktu' => '3 - 5 Menit',
+        'CreatedBy'     => 'admin',
+        'CreatedAt'     => $now,
+        'UpdatedAt'     => $now
+      );
+      $this->db->insert('survei_dinamis', $surveiIPM);
+      $sIpmId = $this->db->insert_id();
+
+      $pIpm = array(
+        array(
+          'SurveiId' => $sIpmId,
+          'Pertanyaan' => 'Pertolongan Saat Dilahirkan',
+          'Deskripsi' => 'Siapa tenaga medis penolong persalinan saat proses kelahiran anggota keluarga?',
+          'Section' => 'Bagian 1: Kondisi Kesehatan Keluarga',
+          'Tipe' => 'radio',
+          'OpsiPilihan' => json_encode(array(
+            array('label' => 'Dokter Spesialis / Dokter Umum', 'nilai' => 4),
+            array('label' => 'Bidan Praktik Mandiri / Puskesmas', 'nilai' => 4),
+            array('label' => 'Tenaga Medis / Perawat Lainnya', 'nilai' => 3),
+            array('label' => 'Dukun Bersalin Terlatih', 'nilai' => 2),
+            array('label' => 'Keluarga / Family', 'nilai' => 1),
+            array('label' => 'Lainnya / Tanpa Bantuan Medis', 'nilai' => 1)
+          )),
+          'IsRequired' => 1,
+          'Urutan' => 1,
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $sIpmId,
+          'Pertanyaan' => 'Riwayat Pemberian Air Susu Ibu (ASI)',
+          'Deskripsi' => 'Apakah bayi/anak dalam keluarga pernah diberikan Air Susu Ibu (ASI)?',
+          'Section' => 'Bagian 1: Kondisi Kesehatan Keluarga',
+          'Tipe' => 'radio',
+          'OpsiPilihan' => json_encode(array(
+            array('label' => 'Ya, Diberikan ASI Eksklusif (6 Bulan)', 'nilai' => 4),
+            array('label' => 'Ya, ASI Disertai Susu Formula/Tambahan', 'nilai' => 3),
+            array('label' => 'Tidak Pernah Diberikan ASI', 'nilai' => 1)
+          )),
+          'IsRequired' => 1,
+          'Urutan' => 2,
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $sIpmId,
+          'Pertanyaan' => 'Riwayat Imunisasi Dasar Lengkap',
+          'Deskripsi' => 'Apakah anak telah memperoleh imunisasi dasar lengkap (HB0, BCG, Polio, DPT-HB-Hib, Campak/MR)?',
+          'Section' => 'Bagian 1: Kondisi Kesehatan Keluarga',
+          'Tipe' => 'radio',
+          'OpsiPilihan' => json_encode(array(
+            array('label' => 'Lengkap Sesuai Jadwal Usia', 'nilai' => 4),
+            array('label' => 'Sebagian / Belum Lengkap', 'nilai' => 2),
+            array('label' => 'Tidak Pernah Diimunisasi', 'nilai' => 1)
+          )),
+          'IsRequired' => 1,
+          'Urutan' => 3,
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $sIpmId,
+          'Pertanyaan' => 'Kepemilikan Kartu Jaminan Kesehatan',
+          'Deskripsi' => 'Apakah seluruh anggota keluarga memiliki kartu jaminan kesehatan aktif?',
+          'Section' => 'Bagian 1: Kondisi Kesehatan Keluarga',
+          'Tipe' => 'radio',
+          'OpsiPilihan' => json_encode(array(
+            array('label' => 'BPJS Kesehatan Mandiri / Pekerja (PPU)', 'nilai' => 4),
+            array('label' => 'BPJS PBI / KIS Bantuan Pemerintah', 'nilai' => 4),
+            array('label' => 'Asuransi Kesehatan Swasta', 'nilai' => 4),
+            array('label' => 'Jamkesda Daerah', 'nilai' => 3),
+            array('label' => 'Tidak Memiliki Jaminan Kesehatan', 'nilai' => 1)
+          )),
+          'IsRequired' => 1,
+          'Urutan' => 4,
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $sIpmId,
+          'Pertanyaan' => 'Usia Ibu Saat Melangsungkan Pernikahan Pertama',
+          'Deskripsi' => 'Berapa usia ibu saat pertama kali melangsungkan pernikahan?',
+          'Section' => 'Bagian 2: Kondisi Fertilitas & Harapan Hidup',
+          'Tipe' => 'radio',
+          'OpsiPilihan' => json_encode(array(
+            array('label' => '21 Tahun atau Lebih (Usia Matang/Ideal BKKBN)', 'nilai' => 4),
+            array('label' => '19 - 20 Tahun (Cukup Dewasa)', 'nilai' => 3),
+            array('label' => 'Di Bawah 19 Tahun (Pernikahan Usia Dini)', 'nilai' => 1)
+          )),
+          'IsRequired' => 1,
+          'Urutan' => 5,
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $sIpmId,
+          'Pertanyaan' => 'Jumlah Tahun Ikatan Pernikahan',
+          'Deskripsi' => 'Berapa lama usia ikatan perkawinan telah dijalani hingga saat ini?',
+          'Section' => 'Bagian 2: Kondisi Fertilitas & Harapan Hidup',
+          'Tipe' => 'radio',
+          'OpsiPilihan' => json_encode(array(
+            array('label' => 'Kurang dari 5 Tahun', 'nilai' => 4),
+            array('label' => '5 - 14 Tahun', 'nilai' => 4),
+            array('label' => '15 - 24 Tahun', 'nilai' => 4),
+            array('label' => '25 Tahun atau Lebih', 'nilai' => 4)
+          )),
+          'IsRequired' => 1,
+          'Urutan' => 6,
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $sIpmId,
+          'Pertanyaan' => 'Status Kelangsungan Hidup Anak (Anak Lahir Hidup & Masih Hidup)',
+          'Deskripsi' => 'Bagaimana status kelangsungan hidup anak kandung yang pernah dilahirkan? (Indikator Utama Harapan Hidup IPM)',
+          'Section' => 'Bagian 2: Kondisi Fertilitas & Harapan Hidup',
+          'Tipe' => 'radio',
+          'OpsiPilihan' => json_encode(array(
+            array('label' => 'Seluruh Anak Lahir Hidup dan Masih Hidup (Sehat)', 'nilai' => 4),
+            array('label' => 'Pernah Mengalami Kematian Bayi / Anak Kandung', 'nilai' => 1),
+            array('label' => 'Belum Memiliki Anak Kandung', 'nilai' => 4)
+          )),
+          'IsRequired' => 1,
+          'Urutan' => 7,
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $sIpmId,
+          'Pertanyaan' => 'Aksesibilitas & Jarak Menuju Fasilitas Pelayanan Kesehatan',
+          'Deskripsi' => 'Bagaimana kemudahan akses transportasi dan waktu tempuh dari kediaman menuju Puskesmas/RS terdekat?',
+          'Section' => 'Bagian 3: Akses Pelayanan & Aspirasi Mutu',
+          'Tipe' => 'radio',
+          'OpsiPilihan' => json_encode(array(
+            array('label' => 'Sangat Mudah & Dekat (< 15 Menit)', 'nilai' => 4),
+            array('label' => 'Cukup Mudah & Terjangkau (15 - 30 Menit)', 'nilai' => 3),
+            array('label' => 'Kurang Mudah / Jauh (30 - 60 Menit)', 'nilai' => 2),
+            array('label' => 'Sulit & Sangat Jauh (> 1 Jam)', 'nilai' => 1)
+          )),
+          'IsRequired' => 1,
+          'Urutan' => 8,
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $sIpmId,
+          'Pertanyaan' => 'Penilaian Kepuasan Mutu Pelayanan Fasilitas Kesehatan di Lingkungan',
+          'Deskripsi' => 'Beri penilaian kepuasan Anda terhadap mutu layanan fasilitas kesehatan tingkat pertama di wilayah Anda (Skala 1 - 5).',
+          'Section' => 'Bagian 3: Akses Pelayanan & Aspirasi Mutu',
+          'Tipe' => 'scale',
+          'OpsiPilihan' => null,
+          'IsRequired' => 1,
+          'Urutan' => 9,
+          'ScaleMin' => 1,
+          'ScaleMax' => 5,
+          'ScaleMinLabel' => 'Sangat Buruk',
+          'ScaleMaxLabel' => 'Sangat Memuaskan',
+          'CreatedAt' => $now
+        ),
+        array(
+          'SurveiId' => $sIpmId,
+          'Pertanyaan' => 'Aspirasi & Kebutuhan Prioritas Layanan Kesehatan Keluarga',
+          'Deskripsi' => 'Tuliskan usulan, harapan, atau kebutuhan prioritas layanan kesehatan di desa/kelurahan Anda:',
+          'Section' => 'Bagian 3: Akses Pelayanan & Aspirasi Mutu',
+          'Tipe' => 'textarea',
+          'OpsiPilihan' => null,
+          'IsRequired' => 0,
+          'Urutan' => 10,
+          'CreatedAt' => $now
+        )
+      );
+      foreach ($pIpm as $pertanyaanItem) {
+        $this->db->insert('survei_pertanyaan', $pertanyaanItem);
+      }
+    }
   }
 
   /**

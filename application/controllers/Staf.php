@@ -672,42 +672,196 @@ class Staf extends CI_Controller {
 
   /**
    * =========================================================================
-   * MODUL BANK DATA (NAMA DOKUMEN & MULTI LINK GOOGLE DRIVE BERJUDUL)
+   * MODUL BANK DATA (NAMA DOKUMEN, UPLOAD FILE DOKUMEN & MULTI LINK GDRIVE)
    * =========================================================================
    */
-  public function BankData(){
-    $Data['BankData'] = $this->db->order_by('Id', 'DESC')->get('bank_data')->result_array();
-    $this->load->view('Staf/Header', $Data);
-    $this->load->view('Staf/BankData', $Data);
+  private function ensureBankDataStructure() {
+    if (!$this->db->table_exists('bank_data')) {
+      $this->db->query("CREATE TABLE IF NOT EXISTS `bank_data` (
+        `Id` INT(11) NOT NULL AUTO_INCREMENT,
+        `PJ` VARCHAR(70) NOT NULL,
+        `NamaDokumen` VARCHAR(255) NOT NULL,
+        `LinkGDrive` TEXT NULL,
+        `Indikator` VARCHAR(255) NULL,
+        `Tipe` VARCHAR(20) NOT NULL DEFAULT 'gdrive',
+        `FileDokumen` LONGTEXT NULL,
+        `CreatedAt` DATETIME NULL,
+        `UpdatedAt` DATETIME NULL,
+        PRIMARY KEY (`Id`)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+    } else {
+      if (!$this->db->field_exists('Tipe', 'bank_data')) {
+        $this->db->query("ALTER TABLE `bank_data` ADD COLUMN `Tipe` VARCHAR(20) NOT NULL DEFAULT 'gdrive' AFTER `Indikator`");
+      }
+      if (!$this->db->field_exists('FileDokumen', 'bank_data')) {
+        $this->db->query("ALTER TABLE `bank_data` ADD COLUMN `FileDokumen` LONGTEXT NULL AFTER `Tipe`");
+      }
+    }
+
+    $uploadDir = FCPATH . 'uploads/bank_data/';
+    if (!is_dir($uploadDir)) {
+      @mkdir($uploadDir, 0777, true);
+    }
   }
 
-  public function InputBankData(){
-    $pj = $this->session->userdata('Username') ?: ($this->session->userdata('username') ?: 'Staf');
-    $namaDokumen = trim($this->input->post('NamaDokumen'));
-    $linksRaw = $this->input->post('LinkGDrive');
+  private function handleBankDataUploads($fileInputName = 'DokumenFiles', $customTitles = array()) {
+    $uploadedList = array();
 
-    $linksArray = array();
-    if (!empty($linksRaw)) {
-      $decoded = json_decode($linksRaw, true);
-      if (is_array($decoded)) {
-        foreach ($decoded as $item) {
-          $judul = isset($item['judul']) ? trim($item['judul']) : '';
-          $url = isset($item['url']) ? trim($item['url']) : '';
-          if (!empty($url)) {
-            $linksArray[] = array(
-              'judul' => !empty($judul) ? $judul : 'Link Google Drive',
-              'url'   => $url
+    if (!isset($_FILES[$fileInputName])) {
+      return $uploadedList;
+    }
+
+    $uploadDir = FCPATH . 'uploads/bank_data/';
+    if (!is_dir($uploadDir)) {
+      @mkdir($uploadDir, 0777, true);
+    }
+
+    $files = $_FILES[$fileInputName];
+    $allowedExtensions = array(
+      'pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 
+      'ppt', 'pptx', 'txt', 'rtf', 'zip', 'rar', '7z', 
+      'tar', 'gz', 'jpg', 'jpeg', 'png'
+    );
+
+    $formatBytes = function($bytes) {
+      if ($bytes <= 0) return '0 B';
+      $units = array('B', 'KB', 'MB', 'GB');
+      $i = floor(log($bytes, 1024));
+      return round($bytes / pow(1024, $i), 1) . ' ' . ($units[$i] ?? 'MB');
+    };
+
+    if (is_array($files['name'])) {
+      $total = count($files['name']);
+      for ($i = 0; $i < $total; $i++) {
+        if (!empty($files['tmp_name'][$i]) && is_uploaded_file($files['tmp_name'][$i])) {
+          $origName = $files['name'][$i];
+          $ext = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
+
+          if (!in_array($ext, $allowedExtensions)) {
+            continue;
+          }
+
+          $fileSize = $files['size'][$i] ?? 0;
+          $formattedSize = $formatBytes($fileSize);
+
+          $userJudul = isset($customTitles[$i]) ? trim($customTitles[$i]) : '';
+          $baseNameOnly = pathinfo($origName, PATHINFO_FILENAME);
+          $cleanBaseName = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $baseNameOnly);
+          if (empty($cleanBaseName)) {
+            $cleanBaseName = 'Dokumen';
+          }
+
+          $uniqueFileName = $cleanBaseName . '_' . date('Ymd_His') . '_' . substr(md5(uniqid()), 0, 5) . '.' . $ext;
+          $targetPath = $uploadDir . $uniqueFileName;
+
+          if (move_uploaded_file($files['tmp_name'][$i], $targetPath)) {
+            $uploadedList[] = array(
+              'judul'     => !empty($userJudul) ? $userJudul : $baseNameOnly,
+              'file'      => 'uploads/bank_data/' . $uniqueFileName,
+              'nama_asli' => $origName,
+              'ukuran'    => $formattedSize,
+              'ekstensi'  => $ext
+            );
+          }
+        }
+      }
+    } else {
+      if (!empty($files['tmp_name']) && is_uploaded_file($files['tmp_name'])) {
+        $origName = $files['name'];
+        $ext = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
+
+        if (in_array($ext, $allowedExtensions)) {
+          $fileSize = $files['size'] ?? 0;
+          $formattedSize = $formatBytes($fileSize);
+
+          $userJudul = is_array($customTitles) ? ($customTitles[0] ?? '') : (is_string($customTitles) ? $customTitles : '');
+          $userJudul = trim($userJudul);
+          $baseNameOnly = pathinfo($origName, PATHINFO_FILENAME);
+          $cleanBaseName = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $baseNameOnly);
+          if (empty($cleanBaseName)) {
+            $cleanBaseName = 'Dokumen';
+          }
+
+          $uniqueFileName = $cleanBaseName . '_' . date('Ymd_His') . '_' . substr(md5(uniqid()), 0, 5) . '.' . $ext;
+          $targetPath = $uploadDir . $uniqueFileName;
+
+          if (move_uploaded_file($files['tmp_name'], $targetPath)) {
+            $uploadedList[] = array(
+              'judul'     => !empty($userJudul) ? $userJudul : $baseNameOnly,
+              'file'      => 'uploads/bank_data/' . $uniqueFileName,
+              'nama_asli' => $origName,
+              'ukuran'    => $formattedSize,
+              'ekstensi'  => $ext
             );
           }
         }
       }
     }
 
+    return $uploadedList;
+  }
+
+  public function BankData(){
+    $this->ensureBankDataStructure();
+    $Data['BankData'] = $this->db->order_by('Id', 'DESC')->get('bank_data')->result_array();
+    $this->load->view('Staf/Header', $Data);
+    $this->load->view('Staf/BankData', $Data);
+  }
+
+  public function InputBankData(){
+    $this->ensureBankDataStructure();
+
+    $pj = $this->session->userdata('Username') ?: ($this->session->userdata('username') ?: 'Staf');
+    $namaDokumen = trim($this->input->post('NamaDokumen'));
+    if (empty($namaDokumen)) {
+      echo 'Nama Dokumen tidak boleh kosong!';
+      return;
+    }
+
+    $customNames = $this->input->post('CustomNames') ?: array();
+    $driveLinks = $this->input->post('DriveLinks') ?: array();
+    $driveNames = $this->input->post('DriveNames') ?: array();
+
+    // 1. Google Drive links (sama seperti Project)
+    $linksArray = array();
+    if (!empty($driveLinks) && is_array($driveLinks)) {
+      foreach ($driveLinks as $idx => $link) {
+        $link = trim($link ?? '');
+        if (!empty($link)) {
+          $dName = isset($driveNames[$idx]) ? trim($driveNames[$idx] ?? '') : '';
+          $linksArray[] = array(
+            'judul' => !empty($dName) ? $dName : 'Link Google Drive',
+            'url'   => $link
+          );
+        }
+      }
+    }
+
+    // 2. Berkas Dokumen Upload (sama seperti Project)
+    $uploadedFiles = $this->handleBankDataUploads('Files', $customNames);
+
+    // Validasi kelengkapan berkas/link
+    if (empty($uploadedFiles) && empty($linksArray)) {
+      echo 'Silakan pilih minimal 1 berkas dokumen atau masukkan tautan Google Drive!';
+      return;
+    }
+
+    $tipe = 'gdrive';
+    if (!empty($uploadedFiles) && !empty($linksArray)) {
+      $tipe = 'keduanya';
+    } else if (!empty($uploadedFiles)) {
+      $tipe = 'dokumen';
+    }
+
     $insertData = array(
       'PJ'          => $pj,
       'NamaDokumen' => $namaDokumen,
+      'Indikator'   => $this->input->post('Indikator'),
+      'Tipe'        => $tipe,
       'LinkGDrive'  => !empty($linksArray) ? json_encode($linksArray) : null,
-      'Indikator'   => $this->input->post('Indikator')
+      'FileDokumen' => !empty($uploadedFiles) ? json_encode($uploadedFiles) : null,
+      'CreatedAt'   => date('Y-m-d H:i:s'),
+      'UpdatedAt'   => date('Y-m-d H:i:s')
     );
 
     $this->db->insert('bank_data', $insertData);
@@ -720,36 +874,108 @@ class Staf extends CI_Controller {
   }
 
   public function EditBankData(){
+    $this->ensureBankDataStructure();
+
     $id = $this->input->post('Id');
     if (empty($id)) {
       echo 'ID Bank Data tidak ditemukan!';
       return;
     }
 
-    $namaDokumen = trim($this->input->post('NamaDokumen'));
-    $linksRaw = $this->input->post('LinkGDrive');
+    $current = $this->db->get_where('bank_data', array('Id' => $id))->row_array();
+    if (!$current) {
+      echo 'Data Bank Data tidak ditemukan!';
+      return;
+    }
 
-    $linksArray = array();
-    if (!empty($linksRaw)) {
-      $decoded = json_decode($linksRaw, true);
-      if (is_array($decoded)) {
-        foreach ($decoded as $item) {
-          $judul = isset($item['judul']) ? trim($item['judul']) : '';
-          $url = isset($item['url']) ? trim($item['url']) : '';
-          if (!empty($url)) {
-            $linksArray[] = array(
-              'judul' => !empty($judul) ? $judul : 'Link Google Drive',
-              'url'   => $url
-            );
-          }
+    $namaDokumen = trim($this->input->post('NamaDokumen'));
+    if (empty($namaDokumen)) {
+      echo 'Nama Dokumen tidak boleh kosong!';
+      return;
+    }
+
+    // 1. Berkas & Link Eksisting yang Dipertahankan
+    $existingFilesRaw = $this->input->post('ExistingFiles');
+    $keptFiles = array();
+    if (!empty($existingFilesRaw)) {
+      $decodedExistingF = json_decode($existingFilesRaw, true);
+      if (is_array($decodedExistingF)) {
+        $keptFiles = array_values(array_filter($decodedExistingF));
+      }
+    }
+
+    $existingLinksRaw = $this->input->post('ExistingLinks');
+    $keptLinks = array();
+    if (!empty($existingLinksRaw)) {
+      $decodedExistingL = json_decode($existingLinksRaw, true);
+      if (is_array($decodedExistingL)) {
+        $keptLinks = array_values(array_filter($decodedExistingL));
+      }
+    }
+
+    // Unlink berkas lama yang tidak lagi dipertahankan
+    $oldFiles = array();
+    if (!empty($current['FileDokumen'])) {
+      $decodedOld = json_decode($current['FileDokumen'], true);
+      if (is_array($decodedOld)) {
+        $oldFiles = $decodedOld;
+      }
+    }
+
+    $keptFilePaths = array_map(function($f) { return $f['file'] ?? ''; }, $keptFiles);
+    foreach ($oldFiles as $oldF) {
+      $oldPath = $oldF['file'] ?? '';
+      if (!in_array($oldPath, $keptFilePaths)) {
+        if (!empty($oldPath) && file_exists(FCPATH . $oldPath)) {
+          @unlink(FCPATH . $oldPath);
         }
       }
     }
 
+    // 2. Berkas Baru & Link Baru yang Diinputkan
+    $customNames = $this->input->post('CustomNames') ?: array();
+    $driveLinks = $this->input->post('DriveLinks') ?: array();
+    $driveNames = $this->input->post('DriveNames') ?: array();
+
+    $newLinks = array();
+    if (!empty($driveLinks) && is_array($driveLinks)) {
+      foreach ($driveLinks as $idx => $link) {
+        $link = trim($link ?? '');
+        if (!empty($link)) {
+          $dName = isset($driveNames[$idx]) ? trim($driveNames[$idx] ?? '') : '';
+          $newLinks[] = array(
+            'judul' => !empty($dName) ? $dName : 'Link Google Drive',
+            'url'   => $link
+          );
+        }
+      }
+    }
+
+    $newFiles = $this->handleBankDataUploads('Files', $customNames);
+
+    $finalFiles = array_merge($keptFiles, $newFiles);
+    $finalLinks = array_merge($keptLinks, $newLinks);
+
+    // Validasi kelengkapan berkas/link
+    if (empty($finalFiles) && empty($finalLinks)) {
+      echo 'Silakan lampirkan minimal 1 berkas dokumen atau tautan Google Drive!';
+      return;
+    }
+
+    $tipe = 'gdrive';
+    if (!empty($finalFiles) && !empty($finalLinks)) {
+      $tipe = 'keduanya';
+    } else if (!empty($finalFiles)) {
+      $tipe = 'dokumen';
+    }
+
     $updateData = array(
       'NamaDokumen' => $namaDokumen,
-      'LinkGDrive'  => !empty($linksArray) ? json_encode($linksArray) : null,
-      'Indikator'   => $this->input->post('Indikator')
+      'Indikator'   => $this->input->post('Indikator'),
+      'Tipe'        => $tipe,
+      'LinkGDrive'  => !empty($finalLinks) ? json_encode($finalLinks) : null,
+      'FileDokumen' => !empty($finalFiles) ? json_encode($finalFiles) : null,
+      'UpdatedAt'   => date('Y-m-d H:i:s')
     );
 
     $this->db->where('Id', $id);
@@ -764,6 +990,24 @@ class Staf extends CI_Controller {
 
   public function HapusBankData(){
     $id = $this->input->post('Id');
+    if (empty($id)) {
+      echo 'ID Bank Data tidak valid!';
+      return;
+    }
+
+    $current = $this->db->get_where('bank_data', array('Id' => $id))->row_array();
+    if ($current && !empty($current['FileDokumen'])) {
+      $files = json_decode($current['FileDokumen'], true);
+      if (is_array($files)) {
+        foreach ($files as $f) {
+          $filePath = $f['file'] ?? '';
+          if (!empty($filePath) && file_exists(FCPATH . $filePath)) {
+            @unlink(FCPATH . $filePath);
+          }
+        }
+      }
+    }
+
     $this->db->delete('bank_data', array('Id' => $id));
     if ($this->db->affected_rows() > 0){
       echo '1';

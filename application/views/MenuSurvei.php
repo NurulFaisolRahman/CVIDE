@@ -8103,9 +8103,17 @@ $isSurveiyor = isset($isSurveiyor) ? $isSurveiyor : ($userLevel == 4 || $userLev
 
       keys.forEach(function(j) {
         var isAct = (currentJenis === j);
-        var icon = (j.toUpperCase() === 'IKM' ? 'fa-clipboard-check' : 'fa-chart-pie');
+        var icon = 'fa-chart-pie';
+        var label = j;
+        if (j.toUpperCase() === 'IKM') {
+          icon = 'fa-clipboard-check';
+          label = 'IKM (Kepuasan Masyarakat)';
+        } else if (j.toUpperCase() === 'IPM') {
+          icon = 'fa-heart-pulse';
+          label = 'IPM (Kesehatan & Fertilitas)';
+        }
         html += '<button type="button" class="type-pill-btn ' + (isAct ? 'active' : '') + '" data-jenis="' + j + '" onclick="selectJenisPill(\'' + j.replace(/'/g, "\\'") + '\')">' +
-          '<i class="fa-solid ' + icon + '"></i> ' + j + ' <span class="pill-badge">' + typeCounts[j] + '</span>' +
+          '<i class="fa-solid ' + icon + '"></i> ' + label + ' <span class="pill-badge">' + typeCounts[j] + '</span>' +
         '</button>';
       });
 
