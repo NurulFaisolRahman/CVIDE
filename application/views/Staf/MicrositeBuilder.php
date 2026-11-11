@@ -87,11 +87,7 @@ function renderBuilderTree($nodes, $level = 1) {
       $html .= '        <i class="fa-solid fa-folder-plus"></i> + Dokumen';
       $html .= '      </button>';
     }
-    $html .= '      <button type="button" class="btn btn-sm btn-warning btnEditItem" data-id="' . $node['Id'] . '" data-parent-id="' . $node['ParentId'] . '" data-tipe="' . htmlspecialchars($node['Tipe']) . '" data-judul="' . htmlspecialchars($node['Judul'], ENT_QUOTES, 'UTF-8') . '" data-url="' . htmlspecialchars($node['Url'] ?? '', ENT_QUOTES, 'UTF-8') . '" data-password="' . htmlspecialchars($node['Password'] ?? '', ENT_QUOTES, 'UTF-8') . '" data-urutan="' . $node['Urutan'] . '" title="Edit Item">';
-    $html .= '        <i class="fa-solid fa-pen-to-square"></i>';
-    $html .= '      </button>';
-
-    // Tombol Set Password (berada tepat di sebelah button edit untuk item dokumen)
+    // Tombol Set Password (berada tepat SEBELUM button edit untuk item dokumen)
     if (!$isGroup) {
       if ($hasPassword) {
         $html .= '      <button type="button" class="btn btn-sm btn-info btnSetPasswordItem" data-id="' . $node['Id'] . '" data-judul="' . htmlspecialchars($node['Judul'], ENT_QUOTES, 'UTF-8') . '" data-password="' . htmlspecialchars($node['Password'], ENT_QUOTES, 'UTF-8') . '" data-has-password="1" title="Password Terpasang: ' . htmlspecialchars($node['Password'], ENT_QUOTES, 'UTF-8') . ' (Klik untuk ubah/hapus)" style="font-weight: 600;">';
@@ -103,6 +99,10 @@ function renderBuilderTree($nodes, $level = 1) {
         $html .= '      </button>';
       }
     }
+
+    $html .= '      <button type="button" class="btn btn-sm btn-warning btnEditItem" data-id="' . $node['Id'] . '" data-parent-id="' . $node['ParentId'] . '" data-tipe="' . htmlspecialchars($node['Tipe']) . '" data-judul="' . htmlspecialchars($node['Judul'], ENT_QUOTES, 'UTF-8') . '" data-url="' . htmlspecialchars($node['Url'] ?? '', ENT_QUOTES, 'UTF-8') . '" data-password="' . htmlspecialchars($node['Password'] ?? '', ENT_QUOTES, 'UTF-8') . '" data-urutan="' . $node['Urutan'] . '" title="Edit Item">';
+    $html .= '        <i class="fa-solid fa-pen-to-square"></i>';
+    $html .= '      </button>';
 
     $html .= '      <button type="button" class="btn btn-sm btn-danger btnHapusItem" data-id="' . $node['Id'] . '" data-judul="' . htmlspecialchars($node['Judul'], ENT_QUOTES, 'UTF-8') . '" data-is-group="' . ($isGroup ? '1' : '0') . '" title="Hapus Item">';
     $html .= '        <i class="fa-solid fa-trash-can"></i>';
