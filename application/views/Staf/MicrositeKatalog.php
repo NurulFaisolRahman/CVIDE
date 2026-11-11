@@ -246,7 +246,7 @@
               </a>
               
               <div class="d-flex align-items-center justify-content-between pt-2" style="gap: 6px; border-top: 1px solid #f1f5f9;">
-                <a href="<?=base_url('IDE/Microsite/'.$m['Slug'])?>" target="_blank" class="btn btn-sm btn-outline-info btn-secondary-action flex-fill" title="Preview Tampilan Publik">
+                <a href="<?=base_url('IDE/'.$m['Slug'])?>" target="_blank" class="btn btn-sm btn-outline-info btn-secondary-action flex-fill" title="Preview Tampilan Publik">
                   <i class="fa-solid fa-arrow-up-right-from-square"></i> Preview
                 </a>
                 <button type="button" class="btn btn-sm btn-outline-warning btn-secondary-action btnEditProfilMicrosite flex-fill"
@@ -305,7 +305,7 @@
             <label class="font-weight-bold text-dark" style="font-size: 13px;">Slug URL (Otomatis)</label>
             <div class="input-group">
               <div class="input-group-prepend">
-                <span class="input-group-text" style="font-size: 12px; font-weight: 600; background: #f1f5f9;"><?=base_url('IDE/Microsite/')?></span>
+                <span class="input-group-text" style="font-size: 12px; font-weight: 600; background: #f1f5f9;"><?=base_url('IDE/')?></span>
               </div>
               <input type="text" name="Slug" class="form-control" placeholder="ippd-situbondo" style="border-radius: 0 10px 10px 0; border: 1.5px solid #cbd5e1; font-weight: 600;">
             </div>
@@ -371,7 +371,12 @@
           <!-- Slug URL -->
           <div class="form-group mb-3">
             <label class="font-weight-bold text-dark" style="font-size: 13px;">Slug URL <span class="text-danger">*</span></label>
-            <input type="text" name="Slug" id="edit_slug" class="form-control" required style="border-radius: 10px; border: 1.5px solid #cbd5e1; font-weight: 600; padding: 10px 14px;">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" style="font-size: 12px; font-weight: 600; background: #f1f5f9;"><?=base_url('IDE/')?></span>
+              </div>
+              <input type="text" name="Slug" id="edit_slug" class="form-control" required style="border-radius: 0 10px 10px 0; border: 1.5px solid #cbd5e1; font-weight: 600; padding: 10px 14px;">
+            </div>
           </div>
 
           <!-- Subjudul -->

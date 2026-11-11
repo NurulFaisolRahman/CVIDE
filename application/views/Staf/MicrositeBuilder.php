@@ -57,9 +57,14 @@ function renderBuilderTree($nodes, $level = 1) {
     $html .= '    <div class="tree-card-left">';
     $html .= '      <span class="tree-drag-handle" title="Klik & tahan untuk menggeser urutan"><i class="fa-solid fa-bars-staggered"></i></span>';
     $html .= '      <div>';
+    $hasPassword = !empty(trim($node['Password'] ?? ''));
+
     $html .= '        <div class="d-flex align-items-center flex-wrap" style="gap: 8px;">';
     $html .= '          <h6 class="tree-title mb-0">' . htmlspecialchars($node['Judul']) . '</h6>';
     $html .=            $badgeType;
+    if (!$isGroup && $hasPassword) {
+      $html .= '          <span class="badge" style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-size: 11px; padding: 4px 8px; border-radius: 6px; font-weight: 600;"><i class="fa-solid fa-lock mr-1"></i> Terproteksi Password</span>';
+    }
     $html .= '          <span class="tree-order-badge">#' . $node['Urutan'] . '</span>';
     $html .= '        </div>';
     if (!$isGroup && !empty($node['Url'])) {
@@ -82,9 +87,23 @@ function renderBuilderTree($nodes, $level = 1) {
       $html .= '        <i class="fa-solid fa-folder-plus"></i> + Dokumen';
       $html .= '      </button>';
     }
-    $html .= '      <button type="button" class="btn btn-sm btn-warning btnEditItem" data-id="' . $node['Id'] . '" data-parent-id="' . $node['ParentId'] . '" data-tipe="' . htmlspecialchars($node['Tipe']) . '" data-judul="' . htmlspecialchars($node['Judul'], ENT_QUOTES, 'UTF-8') . '" data-url="' . htmlspecialchars($node['Url'] ?? '', ENT_QUOTES, 'UTF-8') . '" data-urutan="' . $node['Urutan'] . '" title="Edit Item">';
+    $html .= '      <button type="button" class="btn btn-sm btn-warning btnEditItem" data-id="' . $node['Id'] . '" data-parent-id="' . $node['ParentId'] . '" data-tipe="' . htmlspecialchars($node['Tipe']) . '" data-judul="' . htmlspecialchars($node['Judul'], ENT_QUOTES, 'UTF-8') . '" data-url="' . htmlspecialchars($node['Url'] ?? '', ENT_QUOTES, 'UTF-8') . '" data-password="' . htmlspecialchars($node['Password'] ?? '', ENT_QUOTES, 'UTF-8') . '" data-urutan="' . $node['Urutan'] . '" title="Edit Item">';
     $html .= '        <i class="fa-solid fa-pen-to-square"></i>';
     $html .= '      </button>';
+
+    // Tombol Set Password (berada tepat di sebelah button edit untuk item dokumen)
+    if (!$isGroup) {
+      if ($hasPassword) {
+        $html .= '      <button type="button" class="btn btn-sm btn-info btnSetPasswordItem" data-id="' . $node['Id'] . '" data-judul="' . htmlspecialchars($node['Judul'], ENT_QUOTES, 'UTF-8') . '" data-password="' . htmlspecialchars($node['Password'], ENT_QUOTES, 'UTF-8') . '" data-has-password="1" title="Password Terpasang: ' . htmlspecialchars($node['Password'], ENT_QUOTES, 'UTF-8') . ' (Klik untuk ubah/hapus)" style="font-weight: 600;">';
+        $html .= '        <i class="fa-solid fa-lock"></i>';
+        $html .= '      </button>';
+      } else {
+        $html .= '      <button type="button" class="btn btn-sm btnSetPasswordItem" data-id="' . $node['Id'] . '" data-judul="' . htmlspecialchars($node['Judul'], ENT_QUOTES, 'UTF-8') . '" data-password="" data-has-password="0" title="Set Password Dokumen" style="font-weight: 600; border: 1.5px solid #cbd5e1; background: #ffffff; color: #475569;">';
+        $html .= '        <i class="fa-solid fa-key"></i>';
+        $html .= '      </button>';
+      }
+    }
+
     $html .= '      <button type="button" class="btn btn-sm btn-danger btnHapusItem" data-id="' . $node['Id'] . '" data-judul="' . htmlspecialchars($node['Judul'], ENT_QUOTES, 'UTF-8') . '" data-is-group="' . ($isGroup ? '1' : '0') . '" title="Hapus Item">';
     $html .= '        <i class="fa-solid fa-trash-can"></i>';
     $html .= '      </button>';
@@ -351,7 +370,7 @@ function renderBuilderTree($nodes, $level = 1) {
         </div>
 
         <div class="d-flex flex-wrap align-items-center" style="gap: 10px;">
-          <a href="<?=base_url('IDE/Microsite/'.$Microsite['Slug'])?>" target="_blank" class="btn btn-outline-info" style="border-radius: 10px; font-weight: 600; font-size: 12.5px; padding: 8px 16px;">
+          <a href="<?=base_url('IDE/'.$Microsite['Slug'])?>" target="_blank" class="btn btn-outline-info" style="border-radius: 10px; font-weight: 600; font-size: 12.5px; padding: 8px 16px;">
             <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Buka Tampilan Publik
           </a>
         </div>
@@ -517,6 +536,61 @@ function renderBuilderTree($nodes, $level = 1) {
           <button type="submit" class="btn btn-warning text-white" id="btnPerbaruiItem" style="border-radius: 10px; font-weight: 700; padding: 9px 24px;">
             <i class="fa-solid fa-floppy-disk mr-1"></i> Perbarui Item
           </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     MODAL SET PASSWORD DOKUMEN
+     ========================================================================= -->
+<div class="modal fade" id="ModalSetPasswordItem" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 480px;">
+    <div class="modal-content" style="border-radius: 24px; border: none; box-shadow: 0 20px 50px rgba(0,0,0,0.2); overflow: hidden;">
+      <div class="modal-header" style="background: linear-gradient(135deg, var(--ide-navy) 0%, #0a3d7c 100%); color: #ffffff; padding: 18px 24px; border: none; position: relative; display: flex; align-items: center; justify-content: space-between;">
+        <h5 class="modal-title font-weight-bold" style="font-size: 15px; letter-spacing: 0.5px; margin: 0;">
+          <i class="fa-solid fa-shield-halved mr-2 text-warning"></i> Set Password Dokumen
+        </h5>
+        <button type="button" data-dismiss="modal" aria-label="Close" style="width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.18); border: none; color: #ffffff; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; outline: none; padding: 0;">
+          <i class="fa-solid fa-xmark" style="font-size: 15px; color: #ffffff; line-height: 1;"></i>
+        </button>
+      </div>
+      <form id="formSetPasswordItem">
+        <input type="hidden" name="Id" id="pass_item_id">
+        <div class="modal-body" style="padding: 24px;">
+          <div class="mb-3">
+            <span class="text-muted" style="font-size: 12px; font-weight: 600;">Nama Dokumen:</span>
+            <div id="pass_item_judul" class="font-weight-bold text-dark mt-1" style="font-size: 14px; padding: 9px 14px; background: #f8fafc; border-radius: 10px; border: 1.5px solid #e2e8f0;"></div>
+          </div>
+          
+          <div class="form-group mb-3">
+            <label class="font-weight-bold text-dark" style="font-size: 13px;">Password Dokumen</label>
+            <div style="position: relative; width: 100%;">
+              <input type="password" name="Password" id="pass_item_password" class="form-control" placeholder="Ketik password proteksi..." style="border-radius: 12px; border: 1.5px solid #cbd5e1; font-weight: 600; padding: 10px 42px 10px 14px; height: 44px; width: 100%; box-shadow: none; font-size: 13.5px;">
+              <span class="btnTogglePass" style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #64748b; z-index: 10; display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px;">
+                <i class="fa-solid fa-eye" style="font-size: 15px;"></i>
+              </span>
+            </div>
+            <small class="text-muted d-block mt-2" style="font-size: 12px;">
+              <i class="fa-solid fa-circle-info text-primary mr-1"></i> Kosongkan password jika ingin dokumen langsung bisa diakses publik tanpa password.
+            </small>
+          </div>
+
+          <div id="alertPasswordStatus" class="alert d-none mb-0" style="font-size: 12.5px; border-radius: 10px; padding: 10px 14px;"></div>
+        </div>
+        <div class="modal-footer" style="background-color: #f8fafc; border-top: 1px solid #e2e8f0; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <button type="button" class="btn btn-outline-danger btn-sm" id="btnHapusPassword" style="border-radius: 8px; font-weight: 600; padding: 7px 14px; display: none;">
+              <i class="fa-solid fa-unlock mr-1"></i> Hapus Password
+            </button>
+          </div>
+          <div class="d-flex" style="gap: 8px;">
+            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" style="border-radius: 8px; font-weight: 600; padding: 7px 16px;">Batal</button>
+            <button type="submit" class="btn btn-primary btn-sm" id="btnSimpanPassword" style="border-radius: 8px; font-weight: 700; padding: 7px 20px; background: var(--ide-navy); border: none;">
+              <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Password
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -755,6 +829,101 @@ function renderBuilderTree($nodes, $level = 1) {
       }
 
       $('#ModalEditItem').modal('show');
+    });
+
+    // Toggle Lihat / Sembunyikan Password
+    $(document).on('click', '.btnTogglePass', function() {
+      var input = $(this).closest('div').find('input');
+      var icon = $(this).find('i');
+      if (input.attr('type') === 'password') {
+        input.attr('type', 'text');
+        icon.removeClass('fa-eye').addClass('fa-eye-slash');
+      } else {
+        input.attr('type', 'password');
+        icon.removeClass('fa-eye-slash').addClass('fa-eye');
+      }
+    });
+
+    // Tombol Buka Modal Set Password Dokumen (di sebelah tombol edit)
+    $(document).on('click', '.btnSetPasswordItem', function(e) {
+      e.preventDefault();
+      var id = $(this).data('id');
+      var judul = $(this).data('judul');
+      var pass = $(this).data('password') || '';
+      var hasPass = $(this).data('has-password') == '1';
+
+      $('#pass_item_id').val(id);
+      $('#pass_item_judul').text(judul);
+      $('#pass_item_password').val(pass).attr('type', 'password');
+      $('#formSetPasswordItem .btnTogglePass i').removeClass('fa-eye-slash').addClass('fa-eye');
+
+      if (hasPass) {
+        $('#btnHapusPassword').show();
+        $('#alertPasswordStatus').removeClass('d-none alert-success').addClass('alert-warning')
+          .html('<i class="fa-solid fa-lock mr-1"></i> Saat ini dokumen <b>terproteksi password</b>. Pengunjung wajib memasukkan password untuk membukanya.');
+      } else {
+        $('#btnHapusPassword').hide();
+        $('#alertPasswordStatus').removeClass('d-none alert-warning').addClass('alert-success')
+          .html('<i class="fa-solid fa-lock-open mr-1"></i> Dokumen saat ini <b>bebas diakses publik</b> langsung tanpa password.');
+      }
+
+      $('#ModalSetPasswordItem').modal('show');
+    });
+
+    // Submit Set Password Item
+    $('#formSetPasswordItem').on('submit', function(e) {
+      e.preventDefault();
+      var btn = $('#btnSimpanPassword');
+      var origHtml = btn.html();
+      btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin mr-1"></i> Menyimpan...');
+
+      $.ajax({
+        url: BaseURL + 'Staf/SetPasswordMicrositeItem',
+        type: 'POST',
+        data: $(this).serialize(),
+        dataType: 'json',
+        success: function(resp) {
+          btn.prop('disabled', false).html(origHtml);
+          if (resp && resp.status === 'success') {
+            $('#ModalSetPasswordItem').modal('hide');
+            alert(resp.message);
+            location.reload();
+          } else {
+            alert(resp ? resp.message : 'Gagal menyimpan password!');
+          }
+        },
+        error: function() {
+          btn.prop('disabled', false).html(origHtml);
+          alert('Terjadi kesalahan koneksi ke server!');
+        }
+      });
+    });
+
+    // Hapus Password Item
+    $('#btnHapusPassword').on('click', function(e) {
+      e.preventDefault();
+      if (!confirm('Yakin ingin menghapus password dari dokumen ini? Dokumen akan bisa dibuka langsung oleh siapapun tanpa password.')) {
+        return;
+      }
+      var id = $('#pass_item_id').val();
+      $.ajax({
+        url: BaseURL + 'Staf/SetPasswordMicrositeItem',
+        type: 'POST',
+        data: { Id: id, Password: '' },
+        dataType: 'json',
+        success: function(resp) {
+          if (resp && resp.status === 'success') {
+            $('#ModalSetPasswordItem').modal('hide');
+            alert('Proteksi password berhasil dihapus!');
+            location.reload();
+          } else {
+            alert(resp ? resp.message : 'Gagal menghapus password!');
+          }
+        },
+        error: function() {
+          alert('Terjadi kesalahan koneksi ke server!');
+        }
+      });
     });
 
     // Submit Edit Item

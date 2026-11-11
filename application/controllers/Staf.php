@@ -801,6 +801,7 @@ class Staf extends CI_Controller {
       `Tipe` VARCHAR(20) NOT NULL DEFAULT 'grup',
       `Judul` VARCHAR(255) NOT NULL,
       `Url` TEXT NULL,
+      `Password` VARCHAR(255) NULL DEFAULT NULL,
       `Icon` VARCHAR(50) NULL DEFAULT '',
       `Urutan` INT(11) NOT NULL DEFAULT 0,
       `CreatedAt` DATETIME NULL,
@@ -809,6 +810,11 @@ class Staf extends CI_Controller {
       KEY `idx_microsite_id` (`MicrositeId`),
       KEY `idx_parent_id` (`ParentId`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+    // Pastikan kolom Password ada
+    if (!$this->db->field_exists('Password', 'microsite_item')) {
+      $this->db->query("ALTER TABLE `microsite_item` ADD `Password` VARCHAR(255) NULL DEFAULT NULL AFTER `Url`;");
+    }
 
     // Pastikan seluruh ikon lama dibersihkan
     $this->db->query("UPDATE `microsite_item` SET `Icon` = '' WHERE `Icon` != ''");
@@ -1149,6 +1155,7 @@ class Staf extends CI_Controller {
       'Tipe'        => $tipe,
       'Judul'       => $judul,
       'Url'         => $url,
+      'Password'    => null,
       'Icon'        => '',
       'Urutan'      => $urutan,
       'CreatedAt'   => date('Y-m-d H:i:s'),
@@ -1206,6 +1213,34 @@ class Staf extends CI_Controller {
       $error = $this->db->error();
       echo !empty($error['message']) ? 'Gagal Update Item: ' . $error['message'] : 'Gagal Update Item!';
     }
+  }
+
+  /**
+   * SET / UBAH / HAPUS PASSWORD DOKUMEN MICROSITE
+   */
+  public function SetPasswordMicrositeItem(){
+    $this->ensureMicrositeStructure();
+    header('Content-Type: application/json');
+
+    $id = (int)$this->input->post('Id');
+    $password = trim($this->input->post('Password') ?? '');
+
+    if (empty($id)) {
+      echo json_encode(array('status' => 'error', 'message' => 'ID Item tidak valid!'));
+      return;
+    }
+
+    $val = !empty($password) ? $password : null;
+    $this->db->where('Id', $id)->update('microsite_item', array(
+      'Password'  => $val,
+      'UpdatedAt' => date('Y-m-d H:i:s')
+    ));
+
+    echo json_encode(array(
+      'status'       => 'success',
+      'message'      => !empty($val) ? 'Password dokumen berhasil disimpan!' : 'Proteksi password berhasil dihapus (dokumen dapat diakses langsung).',
+      'has_password' => !empty($val) ? 1 : 0
+    ));
   }
 
   /**

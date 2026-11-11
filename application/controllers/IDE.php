@@ -11,6 +11,30 @@ class IDE extends CI_Controller {
     }
   }
 
+  public function _remap($method, $params = array()) {
+    // 1. Jika method publik ada di controller ini, jalankan normal
+    if (method_exists($this, $method)) {
+      $reflection = new ReflectionMethod($this, $method);
+      if ($reflection->isPublic() && !$reflection->isConstructor()) {
+        return call_user_func_array(array($this, $method), $params);
+      }
+    }
+
+    // 2. Cek apakah segmen URL merupakan slug microsite publik (misal: 'ippd-situbondo')
+    if (isset($this->db)) {
+      if (!$this->db->table_exists('microsite')) {
+        $this->getMicrositeTreeData($method);
+      }
+      $microsite = $this->db->get_where('microsite', array('Slug' => $method))->row_array();
+      if ($microsite) {
+        return $this->Microsite($method);
+      }
+    }
+
+    // 3. Fallback jika tidak ditemukan
+    show_404();
+  }
+
 	public function index(){
     $Data['Kategori'] = $this->db->query('SELECT DISTINCT(Kategori) FROM `portfolio`')->result_array();
     $Data['Portfolio'] = $this->db->get('portfolio')->result_array();
@@ -1930,6 +1954,7 @@ public function InputIKMYogyakarta()
       `Tipe` VARCHAR(20) NOT NULL DEFAULT 'grup',
       `Judul` VARCHAR(255) NOT NULL,
       `Url` TEXT NULL,
+      `Password` VARCHAR(255) NULL DEFAULT NULL,
       `Icon` VARCHAR(50) NULL DEFAULT 'fas fa-file-alt',
       `Urutan` INT(11) NOT NULL DEFAULT 0,
       `CreatedAt` DATETIME NULL,
@@ -1938,6 +1963,10 @@ public function InputIKMYogyakarta()
       KEY `idx_microsite_id` (`MicrositeId`),
       KEY `idx_parent_id` (`ParentId`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+    if (!$this->db->field_exists('Password', 'microsite_item')) {
+      $this->db->query("ALTER TABLE `microsite_item` ADD `Password` VARCHAR(255) NULL DEFAULT NULL AFTER `Url`;");
+    }
 
     $microsite = $this->db->get_where('microsite', array('Slug' => $slug))->row_array();
     if (!$microsite) {
@@ -1968,8 +1997,59 @@ public function InputIKMYogyakarta()
   }
 
   public function Microsite($slug = 'ippd-situbondo'){
+    // Jika URL diakses langsung dengan segmen /Microsite/, redirect agar link bersih menjadi /IDE/{slug}
+    if (isset($_SERVER['REQUEST_URI']) && preg_match('#/Microsite/#i', $_SERVER['REQUEST_URI'])) {
+      redirect('IDE/' . $slug, 'location', 301);
+      return;
+    }
     $data = $this->getMicrositeTreeData($slug);
     $this->load->view('MicrositePublic', $data);
+  }
+
+  /**
+   * Endpoint verifikasi password dokumen microsite publik
+   */
+  public function AksesDokumen() {
+    header('Content-Type: application/json');
+    $id = (int)$this->input->post('Id');
+    $inputPassword = trim($this->input->post('Password') ?? '');
+
+    if (empty($id)) {
+      echo json_encode(array('status' => 'error', 'message' => 'Parameter dokumen tidak valid!'));
+      return;
+    }
+
+    $item = $this->db->get_where('microsite_item', array('Id' => $id))->row_array();
+    if (!$item) {
+      echo json_encode(array('status' => 'error', 'message' => 'Dokumen tidak ditemukan!'));
+      return;
+    }
+
+    $realPassword = trim($item['Password'] ?? '');
+
+    // Jika dokumen tidak diproteksi password (password kosong)
+    if (empty($realPassword)) {
+      echo json_encode(array(
+        'status' => 'success',
+        'url' => $item['Url'],
+        'protected' => false
+      ));
+      return;
+    }
+
+    // Jika dokumen diproteksi, periksa kesesuaian password
+    if ($inputPassword === $realPassword) {
+      echo json_encode(array(
+        'status' => 'success',
+        'url' => $item['Url'],
+        'protected' => true
+      ));
+    } else {
+      echo json_encode(array(
+        'status' => 'error',
+        'message' => 'Password salah! Silakan coba lagi.'
+      ));
+    }
   }
 
   public function IPPDSitubondo(){

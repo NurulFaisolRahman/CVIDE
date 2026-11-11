@@ -84,3 +84,7 @@ $route['SmbLoginPage'] = 'IDE/SmbLoginPage';
 $route['SmbLandingPage'] = 'IDE/SmbLandingPage';
 $route['SmbDashboard'] = 'IDE/SmbDashboard';
 $route['SmbLogin'] = 'IDE/SmbLogin';
+$route['IDE/ippd-situbondo'] = 'IDE/Microsite/ippd-situbondo';
+$route['IDE/ippd-banyuwangi'] = 'IDE/Microsite/ippd-banyuwangi';
+$route['ippd-situbondo'] = 'IDE/Microsite/ippd-situbondo';
+$route['ippd-banyuwangi'] = 'IDE/Microsite/ippd-banyuwangi';

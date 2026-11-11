@@ -521,6 +521,16 @@
         transform: translateX(4px) scale(1.18);
         color: #0284c7;
       }
+
+      .btn-primary.btn-microsite-item.is-locked-doc:after {
+        content: "\f023";
+        color: #d97706;
+      }
+
+      .btn-primary.btn-microsite-item.is-locked-doc:hover:after {
+        color: #b45309;
+        transform: scale(1.2);
+      }
       
       .btn-text {
         flex: 1;
@@ -538,6 +548,66 @@
         transform: translateX(4px);
       }
       
+      /* Styling Khusus Modal Akses Dokumen */
+      #ModalAksesDokumen .modal-content {
+        border-radius: 20px;
+        border: none;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        background: #ffffff;
+      }
+
+      #ModalAksesDokumen .modal-header {
+        background: linear-gradient(135deg, #043168 0%, #0a3d7c 100%);
+        color: #ffffff;
+        padding: 18px 22px;
+        border: none;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+      }
+
+      #ModalAksesDokumen .modal-header:before,
+      #ModalAksesDokumen .modal-header:after {
+        display: none !important;
+      }
+
+      .btn-modal-close {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.16);
+        border: none !important;
+        color: #ffffff !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        outline: none !important;
+        padding: 0;
+        margin: 0 0 0 14px;
+        box-shadow: none !important;
+        flex-shrink: 0;
+      }
+
+      .btn-modal-close i {
+        font-size: 15px;
+        color: #ffffff !important;
+        line-height: 1;
+      }
+
+      .btn-modal-close:hover,
+      .btn-modal-close:focus {
+        background: rgba(255, 255, 255, 0.32) !important;
+        color: #ffffff !important;
+        transform: scale(1.08);
+      }
+
       /* Footer */
       .footer {
         position: relative;
@@ -658,14 +728,29 @@
             foreach ($links as $item) {
               $url = trim($item['Url'] ?? '');
               $hasUrl = !empty($url);
-              $html .= '<a class="btn btn-primary btn-block btn-microsite-item" ';
-              if ($hasUrl) {
-                $html .= ' onclick="window.open(\'' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '\')" ';
+              $hasPassword = !empty(trim($item['Password'] ?? ''));
+
+              $html .= '<a class="btn btn-primary btn-block btn-microsite-item ' . ($hasPassword ? 'is-locked-doc' : '') . '" ';
+              if ($hasPassword) {
+                // Dokumen berpassword -> minta password sebelum direct ke dokumen
+                $html .= ' data-id="' . $item['Id'] . '" data-judul="' . htmlspecialchars($item['Judul'], ENT_QUOTES, 'UTF-8') . '" ';
+                $html .= ' onclick="bukaDokumenProtected(this)" ';
+              } else if ($hasUrl) {
+                // Dokumen tanpa password -> langsung masuk / direct ke dokumen
+                $html .= ' onclick="window.open(\'' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '\', \'_blank\')" ';
               } else {
                 $html .= ' onclick="alert(\'Dokumen ' . htmlspecialchars($item['Judul'], ENT_QUOTES, 'UTF-8') . ' belum tersedia.\')" ';
               }
               $html .= ' role="button">';
-              $html .= '  <span class="btn-text">' . htmlspecialchars($item['Judul']) . '</span>';
+              $html .= '  <span class="btn-text d-flex align-items-center flex-wrap">';
+              if ($hasPassword) {
+                $html .= '    <i class="fa-solid fa-lock text-warning" style="font-size: 13px; margin-right: 8px;" title="Dokumen Dilindungi Password"></i>';
+              }
+              $html .=        htmlspecialchars($item['Judul']);
+              if ($hasPassword) {
+                $html .= '    <span class="badge" style="background: rgba(245, 158, 11, 0.15); color: #d97706; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 6px; margin-left: 8px; border: 1px solid rgba(245, 158, 11, 0.3);">Terkunci</span>';
+              }
+              $html .= '  </span>';
               $html .= '</a>';
             }
 
@@ -715,9 +800,152 @@
       <p><?=htmlspecialchars(!empty($Microsite['FooterText']) ? $Microsite['FooterText'] : ('© ' . date('Y') . ' ' . ($Microsite['Judul'] ?? '') . ' | Kebijakan Privasi'))?></p>
     </div>
 
+    <!-- =========================================================================
+         MODAL AKSES DOKUMEN TERPROTEKSI PASSWORD
+         ========================================================================= -->
+    <div class="modal fade" id="ModalAksesDokumen" tabindex="-1" role="dialog" aria-hidden="true" style="backdrop-filter: blur(8px);">
+      <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 420px; margin: 80px auto;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div style="display: flex; align-items: center; margin: 0; padding: 0;">
+              <div style="width: 38px; height: 38px; min-width: 38px; background: rgba(255,255,255,0.15); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #fbbf24; margin-right: 13px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+                <i class="fa-solid fa-lock"></i>
+              </div>
+              <div style="display: flex; flex-direction: column; justify-content: center; margin: 0; padding: 0; text-align: left;">
+                <div style="font-size: 15px; font-weight: 700; color: #ffffff; line-height: 1.25; margin: 0; padding: 0; letter-spacing: 0.2px;">Dokumen Terproteksi</div>
+                <div style="font-size: 11.5px; color: #cbd5e1; line-height: 1.25; margin: 3px 0 0 0; padding: 0;">Masukkan password untuk membuka tautan</div>
+              </div>
+            </div>
+            <button type="button" class="btn-modal-close" data-dismiss="modal" aria-label="Close" title="Tutup">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <form id="formAksesDokumen" onsubmit="event.preventDefault(); submitAksesDokumen();">
+            <input type="hidden" id="akses_doc_id">
+            <div class="modal-body" style="padding: 18px 20px;">
+              <!-- Info Dokumen (Simple & Compact) -->
+              <div style="background: #f8fafc; border-radius: 8px; padding: 10px 12px; border-left: 3px solid #043168; border-top: 1px solid #edf2f7; border-right: 1px solid #edf2f7; border-bottom: 1px solid #edf2f7; margin-bottom: 15px;">
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;">Nama Dokumen</div>
+                <div id="akses_doc_judul" style="font-size: 13px; font-weight: 700; color: #1e293b; line-height: 1.4; word-break: break-word; margin: 0;"></div>
+              </div>
+              
+              <!-- Input Password -->
+              <div class="form-group mb-2">
+                <label style="font-weight: 700; font-size: 12px; color: #334155; margin-bottom: 5px; display: block;">Password Dokumen</label>
+                <div style="position: relative; width: 100%;">
+                  <input type="password" id="akses_doc_password" class="form-control" placeholder="Ketik password di sini..." required style="height: 42px; border-radius: 10px; border: 1.5px solid #cbd5e1; font-weight: 600; padding: 9px 40px 9px 12px; font-size: 13.5px; width: 100%; box-shadow: none;">
+                  <span onclick="toggleAksesPass()" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #64748b; z-index: 10; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px;">
+                    <i class="fa-solid fa-eye" id="iconToggleAksesPass" style="font-size: 14px;"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div id="alertAksesError" class="alert alert-danger d-none mt-2 mb-0" style="font-size: 12px; border-radius: 8px; padding: 8px 12px;">
+                <i class="fa-solid fa-circle-exclamation mr-1"></i> <span id="textAksesError">Password salah! Silakan coba lagi.</span>
+              </div>
+            </div>
+            <div class="modal-footer" style="background-color: #f8fafc; border-top: 1px solid #e2e8f0; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;">
+              <button type="button" class="btn btn-default" data-dismiss="modal" style="border-radius: 8px; font-weight: 600; padding: 8px 18px; font-size: 13px; border: 1px solid #cbd5e1; background: #ffffff;">Batal</button>
+              <button type="submit" class="btn btn-primary" id="btnSubmitAkses" style="border-radius: 8px; font-weight: 700; padding: 8px 20px; font-size: 13px; background: #043168; border: none;">
+                <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Buka Dokumen
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <!-- jQuery & Bootstrap Scripts -->
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+    <!-- Script Akses Dokumen Terproteksi Password -->
+    <script>
+      var BaseURL = '<?=base_url()?>';
+
+      function bukaDokumenProtected(param1, param2) {
+        var id, judul;
+        if (typeof param1 === 'object') {
+          id = $(param1).data('id');
+          judul = $(param1).data('judul');
+        } else {
+          id = param1;
+          judul = param2 || '';
+        }
+        $('#akses_doc_id').val(id);
+        $('#akses_doc_judul').text(judul);
+        $('#akses_doc_password').val('').attr('type', 'password');
+        $('#iconToggleAksesPass').removeClass('fa-eye-slash').addClass('fa-eye');
+        $('#alertAksesError').addClass('d-none');
+        $('#ModalAksesDokumen').modal('show');
+        setTimeout(function() {
+          $('#akses_doc_password').focus();
+        }, 500);
+      }
+
+      function toggleAksesPass() {
+        var input = $('#akses_doc_password');
+        var icon = $('#iconToggleAksesPass');
+        if (input.attr('type') === 'password') {
+          input.attr('type', 'text');
+          icon.removeClass('fa-eye').addClass('fa-eye-slash');
+        } else {
+          input.attr('type', 'password');
+          icon.removeClass('fa-eye-slash').addClass('fa-eye');
+        }
+      }
+
+      function submitAksesDokumen() {
+        var id = $('#akses_doc_id').val();
+        var password = $('#akses_doc_password').val();
+        var btn = $('#btnSubmitAkses');
+        var origHtml = btn.html();
+
+        if (!password) {
+          $('#alertAksesError').removeClass('d-none alert-warning').addClass('alert-danger');
+          $('#textAksesError').text('Silakan masukkan password dokumen!');
+          return;
+        }
+
+        btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin mr-1"></i> Memeriksa...');
+        $('#alertAksesError').addClass('d-none');
+
+        $.ajax({
+          url: BaseURL + 'IDE/AksesDokumen',
+          type: 'POST',
+          data: { Id: id, Password: password },
+          dataType: 'json',
+          success: function(resp) {
+            btn.prop('disabled', false).html(origHtml);
+            if (resp && resp.status === 'success') {
+              var targetUrl = (resp.url || '').trim();
+              if (targetUrl) {
+                $('#ModalAksesDokumen').modal('hide');
+                if (!/^https?:\/\//i.test(targetUrl) && !targetUrl.startsWith('/') && !targetUrl.startsWith('#')) {
+                  targetUrl = 'https://' + targetUrl;
+                }
+                var newWin = window.open(targetUrl, '_blank');
+                if (!newWin || newWin.closed || typeof newWin.closed == 'undefined') {
+                  window.location.href = targetUrl;
+                }
+              } else {
+                $('#alertAksesError').removeClass('d-none alert-danger').addClass('alert-warning');
+                $('#textAksesError').html('<i class="fa-solid fa-circle-check mr-1 text-success"></i> <b>Password benar!</b> Namun tautan link dokumen ini belum disematkan oleh pengelola.');
+              }
+            } else {
+              $('#alertAksesError').removeClass('d-none alert-warning').addClass('alert-danger');
+              $('#textAksesError').text(resp && resp.message ? resp.message : 'Password salah! Silakan coba lagi.');
+              $('#akses_doc_password').select().focus();
+            }
+          },
+          error: function() {
+            btn.prop('disabled', false).html(origHtml);
+            $('#alertAksesError').removeClass('d-none alert-warning').addClass('alert-danger');
+            $('#textAksesError').text('Terjadi kesalahan koneksi ke server.');
+          }
+        });
+      }
+    </script>
 
     <!-- Script Interaktif Cyber Aurora Background Spotlight & Cursor Tracker -->
     <script>
